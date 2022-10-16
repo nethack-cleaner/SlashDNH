@@ -227,7 +227,7 @@ DOOR:locked,(04,09)
 REGION:(19,00,75,16),  lit,"ordinary",unfilled
 REGION:(25,16,75,20),  lit,"ordinary",unfilled
 
-BRANCH:(73,10,73,10),(00,00,00,00)
+LADDER:(70,08),down
 LADDER:(03,11),up
 
 MONSTER:'@',"maid",(09,08), hostile, "Persephone"
@@ -241,6 +241,192 @@ MONSTER:'Z',random,(04,15), hostile
 MONSTER:'Z',"skeleton",(09,15), hostile
 MONSTER:'Z',"skeleton",(13,15), hostile
 MONSTER:'Z',random,(14,15), hostile
+
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+
+
+# Grounds and entrance to Vlad's tower
+MAZE:"tower5",' '
+FLAGS: noteleport,hardfloor
+MESSAGE:"You are standing on the surface, albeit at the bottom of a shear ravine.  You hear ravens croaking in the trees, beyond which rises a windowless tower."
+
+GEOMETRY:center,center
+#          1         2         3         4         5         6         7
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0                                                                            
+1,,,,,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,,
+2,,T,,,,,,,T,,T,,,,,T,,T,PPPPPP,,,,,,,,,,
+3,,,,,T,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,T,,,,,,
+4,,,,T,,,,,,,T,,,,T,,,T,,,,,,PPPPP,T,,,,,,,,,,,,,
+5,,,,,T,,,,T,,,,,T,,,,T,,,,,,,,,PPPPP,,,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,,PPPPPT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,,T,,T,,,T,,T,,,,,,T,,T,,,,,,,,,T,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,,,,,,,,,,,,,,T,,T,,,,,,,,T,,,,,,,,,,PPPPP,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,,,T,,,,,,T,,,,,T,,,,T,,,,T,,,,,,,T,,PPPPP,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,,,,,T,T,,,,T,,,,,,T,,,,,,,,,,,,,,,,,##P#P##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,T,,,,,,,,,,,,T,,,,,,,,T,,T,,,,,,T,,,#P#P###,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+3,,,,,T,,T,,,,T,,,,T,,,,,,,,,,,,,T,,,,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,,,T,,,,,,T,,,,,,,,,,,T,,,,,,,,,,,,,,PPPPP,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,,,,T,,,,,,,,,T,,,,,,,,,,T,,,,,,,,T,PPPPP,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,T,,,,,,,,T,,,T,,,,T,,,,,T,,PPPPP,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7B,,,T,,,,,T,,,,,,,,,,,T,,,,,,,,,,PPPPPP,,,T,,,
+8,,,,,T,,,T,,,,T,,,,,,,,,T,,T,PPPPPP,T,,,,
+9,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+0,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+ENDMAP
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+#          1         2         3         4         5         6         7
+
+NON_DIGGABLE:(00,00,75,20)
+
+REGION:(19,00,75,16),  lit,"ordinary",unfilled
+REGION:(25,16,75,20),  lit,"ordinary",unfilled
+
+LADDER:(73,10),down
+LADDER:(03,11),up
+
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+
+
+# Grounds and entrance to Vlad's tower
+MAZE:"tower6",' '
+FLAGS: noteleport,hardfloor
+MESSAGE:"You are standing on the surface, albeit at the bottom of a shear ravine.  You hear ravens croaking in the trees, beyond which rises a windowless tower."
+
+GEOMETRY:center,center
+#          1         2         3         4         5         6         7
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0                                                                            
+1,,,,,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,,
+2,,T,,,,,,,T,,T,,,,,T,,T,PPPPPP,,,,,,,,,,
+3,,,,,T,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,T,,,,,,
+4,,,,T,,,,,,,T,,,,T,,,T,,,,,,PPPPP,T,,,,,,,,,,,,,
+5,,,,,T,,,,T,,,,,T,,,,T,,,,,,,,,PPPPP,,,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,,PPPPPT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,,T,,T,,,T,,T,,,,,,T,,T,,,,,,,,,T,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,,,,,,,,,,,,,,T,,T,,,,,,,,T,,,,,,,,,,PPPPP,,T,,,,,,,,,,,,,,P,,,,,,,,,,,,,,,,
+9,,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,,,T,,,,,,T,,,,,T,,,,T,,,,T,,,,,,,T,,PPPPP,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,,,,,T,T,,,,T,,,,,,T,,,,,,,,,,,,,,,,,##P#P##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,T,,,,,,,,,,,,T,,,,,,,,T,,T,,,,,,T,,,#P#P###,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+3,,,,,T,,T,,,,T,,,,T,,,,,,,,,,,,,T,,,,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,,,T,,,,,,T,,,,,,,,,,,T,,,,,,,,,,,,,,PPPPP,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,,,,T,,,,,,,,,T,,,,,,,,,,T,,,,,,,,T,PPPPP,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,T,,,,,,,,T,,,T,,,,T,,,,,T,,PPPPP,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7B,,,T,,,,,T,,,,,,,,,,,T,,,,,,,,,,PPPPPP,,,T,,,
+8,,,,,T,,,T,,,,T,,,,,,,,,T,,T,PPPPPP,T,,,,
+9,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+0,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+ENDMAP
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+#          1         2         3         4         5         6         7
+
+NON_DIGGABLE:(00,00,75,20)
+
+REGION:(19,00,75,16),  lit,"ordinary",unfilled
+REGION:(25,16,75,20),  lit,"ordinary",unfilled
+
+LADDER:(73,10),down
+LADDER:(03,11),up
+
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+MONSTER:'Z',random,random, hostile
+
+
+# Grounds and entrance to Vlad's tower
+MAZE:"tower7",' '
+FLAGS: noteleport,hardfloor
+MESSAGE:"You are standing on the surface, albeit at the bottom of a shear ravine.  You hear ravens croaking in the trees, beyond which rises a windowless tower."
+
+GEOMETRY:center,center
+#          1         2         3         4         5         6         7
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0                                                                            
+1,,,,,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,,
+2,,T,,,,,,,T,,T,,,,,T,,T,PPPPPP,,,,,,,,,,
+3,,,,,T,,,,,,,,,,,,,,,,,,,PPPPPP,,,,,,T,,,,,,
+4,,,,T,,,,,,,T,,,,T,,,T,,,,,,PPPPP,T,,,,,,,,,,,,,
+5,,,,,T,,,,T,,,,,T,,,,T,,,,,,,,,PPPPP,,,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,,PPPPPT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,,T,,T,,,T,,T,,,,,,T,,T,,,,,,,,,T,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,,,,,,,,,,,,,,T,,T,,,,,,,,T,,,,,,,,,,PPPPP,,T,,,,,,,,,,,,,,P,,,,,,,,,,,,,,,,
+9,,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,PPPPP,,,,,,,,,,,,,,,,P,,,,,,,,,,,,,,,,
+0,,,T,,,,,,T,,,,,T,,,,T,,,,T,,,,,,,T,,PPPPP,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,,,,,T,T,,,,T,,,,,,T,,,,,,,,,,,,,,,,,##P#P##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,T,,,,,,,,,,,,T,,,,,,,,T,,T,,,,,,T,,,#P#P###,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+3,,,,,T,,T,,,,T,,,,T,,,,,,,,,,,,,T,,,,,,PPPPP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,,,T,,,,,,T,,,,,,,,,,,T,,,,,,,,,,,,,,PPPPP,,T,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,,,,T,,,,,,,,,T,,,,,,,,,,T,,,,,,,,T,PPPPP,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,,
+6,,,,,,,,T,,,,,,,,T,,,T,,,,T,,,,,T,,PPPPP,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7B,,,T,,,,,T,,,,,,,,,,,T,,,,,,,,,,PPPPPP,,,T,,,
+8,,,,,T,,,T,,,,T,,,,,,,,,T,,T,PPPPPP,T,,,,
+9,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+0,,,,,,,,,,,,,,,,,T,,,,,,,,PPPPPP,,,,,
+ENDMAP
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+#          1         2         3         4         5         6         7
+
+NON_DIGGABLE:(00,00,75,20)
+
+REGION:(19,00,75,16),  lit,"ordinary",unfilled
+REGION:(25,16,75,20),  lit,"ordinary",unfilled
+
+BRANCH:(73,10,73,10),(00,00,00,00)
+LADDER:(03,11),up
 
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile

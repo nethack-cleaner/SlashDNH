@@ -3431,6 +3431,7 @@ struct monst *owner;
 				delobj(obj);
 				obj_destroyed = (obj == obj_original);
 				continue;
+			} else if (obj->otyp == POT_BLOOD) {
 			} else
 			/* Potions turn to water or amnesia... */
 			if (is_lethe) {

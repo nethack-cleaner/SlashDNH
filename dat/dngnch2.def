@@ -360,7 +360,7 @@ LEVEL:          "stairs3" "none" @ (15, 0)
 #	It is suposed to be on the surface (in a ravine created by the mines), 
 #	but is still surrounded by stone.
 
-DUNGEON:	"Vlad's Tower" "T" (4, 0)
+DUNGEON:	"Vlad's Tower" "T" (7, 0)
 PROTOFILE:	"tower"
 DESCRIPTION:	mazelike
 ALIGNMENT:	chaotic

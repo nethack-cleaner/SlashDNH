@@ -308,7 +308,6 @@ struct obj {
 	/* Mask erosion (may be moved to oeroded3 at some point) */
 	/* Ammo for futuretech weapons */
 	/* Hilt engraving for lightsabers */
-	/* Ampule type for hypospray ampules */
 	/* Engraving for rings */
 	/* doll's tear */
 #define obj_type_uses_ovar1(otmp) (\
@@ -323,7 +322,6 @@ struct obj {
 	|| (otmp)->otyp == LIGHTSABER \
 	|| (otmp)->otyp == BEAMSWORD \
 	|| (otmp)->otyp == DOUBLE_LIGHTSABER \
-	|| (otmp)->otyp == HYPOSPRAY_AMPULE \
 	|| (otmp)->oclass == RING_CLASS \
 	|| (otmp)->otyp == POTION_VAPORIZER \
 	|| (otmp)->otyp == ETHERBLADE \
@@ -355,7 +353,6 @@ struct obj {
 	|| (otmp)->oartifact == ART_AVARICE \
 	|| (otmp)->oartifact == ART_NECRONOMICON \
 	|| (otmp)->oartifact == ART_BOOK_OF_LOST_NAMES \
-	|| (otmp)->oartifact == ART_BOOK_OF_INFINITE_SPELLS \
 	)
 #define OHEARD_FEAR		0x0000000000000001L
 #define OHEARD_HEALING	0x0000000000000002L
@@ -538,7 +535,7 @@ struct obj {
 		typ == BODYGLOVE ||\
 		typ == PLASTEEL_GAUNTLETS ||\
 		typ == PLASTEEL_BOOTS ||\
-		(typ >= SENSOR_PACK && typ <= HYPOSPRAY_AMPULE) ||\
+		typ == SENSOR_PACK ||\
 		typ == BULLET_FABBER ||\
 		typ == PROTEIN_PILL ||\
 		typ == ETHERBLADE || \
@@ -546,8 +543,7 @@ struct obj {
 		typ == POWER_ARMOR  \
 		)
 
-#define ensouled_item(otmp)	(((otmp)->otyp >= WAGE_OF_SLOTH && (otmp)->otyp <= WAGE_OF_PRIDE)\
-			 || (otmp)->otyp == VITAL_SOULSTONE\
+#define ensouled_item(otmp)	((otmp)->otyp == VITAL_SOULSTONE\
 			 || (otmp)->otyp == SPIRITUAL_SOULSTONE\
 			 || ((otmp)->otyp >= EFFIGY && (otmp)->otyp <= DOLL_S_TEAR)\
 			 || (otmp)->otyp == HOLY_SYMBOL_OF_THE_BLACK_MOTHE\
@@ -1036,6 +1032,7 @@ struct obj {
 /* Light sources */
 #define Is_candle(otmp) (otmp->otyp == TALLOW_CANDLE || \
 			 otmp->otyp == WAX_CANDLE || \
+			 otmp->otyp == MAGIC_CANDLE || \
 			 otmp->otyp == CANDLE_OF_INVOCATION)
 #define MAX_OIL_IN_FLASK 400	/* maximum amount of oil in a potion of oil */
 #define Is_darklight_source(otmp) ((otmp)->otyp == SHADOWLANDER_S_TORCH || \
@@ -1060,6 +1057,7 @@ struct obj {
 				|| (otmp)->otyp == CANDELABRUM_OF_INVOCATION\
 				|| (otmp)->otyp == TALLOW_CANDLE\
 				|| (otmp)->otyp == WAX_CANDLE\
+				|| (otmp)->otyp == MAGIC_CANDLE\
 				|| (otmp)->otyp == POT_OIL)
 /* object can be ignited -- lightsources that should be inadvertantly lit by fire damage */
 #define ignitable(otmp)	(\
@@ -1069,6 +1067,7 @@ struct obj {
 				|| (otmp)->otyp == CANDELABRUM_OF_INVOCATION\
 				|| (otmp)->otyp == TALLOW_CANDLE\
 				|| (otmp)->otyp == WAX_CANDLE\
+				|| (otmp)->otyp == MAGIC_CANDLE\
 				|| (otmp)->otyp == TORCH\
 				|| (otmp)->otyp == MAGIC_TORCH\
 				|| (otmp)->otyp == SHADOWLANDER_S_TORCH\

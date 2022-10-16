@@ -237,10 +237,19 @@ WEAPON(("trident"), /*Needs encyc entry*/
 /* blades */
 WEAPON(("dagger"),
 	DMG(D(4)), DMG(D(3)),
-	1, 1,  MZ_SMALL, 24, 10,  4,  2, P,   P_DAGGER, IRON, FALSE, HI_METAL),
+	1, 1,  MZ_SMALL, 22, 10,  4,  2, P,   P_DAGGER, IRON, FALSE, HI_METAL),
 WEAPON(("elven dagger", "runed dagger"),
 	DMG(D(5)), DMG(D(3)),
 	0, 1,  MZ_SMALL,  7,  3,  4,  4, P,   P_DAGGER, WOOD, FALSE, HI_WOOD),
+WEAPON("sharpened pencil",
+	DMG(D(4)), DMG(D(3)),
+	1, 1,  MZ_SMALL, 0, 10,  4,  2, P,   P_DAGGER, IRON, FALSE, CLR_YELLOW),
+/* 5lo: From Nethack--, very low damage but can engrave without dulling */
+WEAPON("wooden stake", 
+	DMG(D(4)), DMG(D(3)),
+	1, 1,  MZ_SMALL, 2, 10,  4,  2, P,   P_DAGGER, IRON, FALSE, HI_WOOD),
+    /* STEPHEN WHITE'S NEW CODE */
+    /* Base for artifact (Stake of Van Helsing) */
 WEAPON(("droven dagger", "dagger"), /*Needs encyc entry*/
 	DMG(D(8)), DMG(D(6)),
 	0, 1,  MZ_SMALL,  0,  5, 12,  4, P,   P_DAGGER, OBSIDIAN_MT, UNIDED, CLR_BLACK),
@@ -1165,9 +1174,10 @@ TOOL(("lock pick"),             1,   MZ_TINY, 0, 0, 0,  60,  4,  20, IRON,    HI
 #endif
 /* light sources */
 TOOL(("tallow candle", "candle"),          0,   MZ_TINY, 1, 0, 0,  15,  2,  10, WAX,     CLR_WHITE),
-TOOL(("wax candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   5,  2,  20, WAX,     CLR_WHITE),
+TOOL(("wax candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   10,  2,  20, WAX,     CLR_WHITE),
+TOOL(("magic candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   10,  2,  20, WAX,     CLR_WHITE),
 TOOL(("candle of invocation", "runed candle"), /*Needs encyc entry*/
-                                         0,   MZ_TINY, 0, 1, 0,  15,  2,  50, WAX,     CLR_ORANGE, O_NOWISH(1)),
+                                         0,   MZ_TINY, 0, 1, 0,  0,  2,  50, WAX,     CLR_ORANGE, O_NOWISH(1)),
 TOOL(("lantern"),               1,  MZ_SMALL, 0, 0, 0,  20, 30,  12, COPPER,  CLR_YELLOW, O_MATSPEC(IDED|UNIDED)),
 TOOL(("oil lamp", "lamp"),                 0,  MZ_SMALL, 0, 0, 0,  30, 20,  10, COPPER,  CLR_YELLOW),
 TOOL(("magic lamp", "lamp"),               0,  MZ_SMALL, 0, 1, 0,  15, 20,  50, COPPER,  CLR_YELLOW, O_NOWISH(1)),
@@ -1196,10 +1206,6 @@ TOOL(("armor salve", "strange shell"),
 								0,  MZ_SMALL,  0, 1, 1,   0, 10, 666, SHELL_MAT, CLR_GRAY),
 TOOL(("sensor pack", "rigid box"), /*Needs encyc entry*//*Needs tile*/
 								0,  MZ_SMALL, 0, 1, 1,   0, 15,2000, PLASTIC,CLR_WHITE),
-TOOL(("hypospray", "hammer-shaped device"), /*Needs encyc entry*//*Needs tile*/
-								0,  MZ_SMALL, 0, 1, 0,   0, 15, 500, PLASTIC,CLR_GRAY),
-TOOL(("hypospray ampule", "hard gray bottle", "hard bottle"), /*Needs encyc entry*//*Needs tile*/
-								0,   MZ_TINY, 0, 1, 0,   0,  1,  50, PLASTIC,CLR_GRAY),
 TOOL(("mask"),			1,  MZ_SMALL, 0, 0, 0,  10, 10,  80, LEATHER, CLR_WHITE),
 TOOL(("R'lyehian faceplate", "ebon pane"), /*Needs tile*/
 								0,  MZ_SMALL, 0, 1, 0,   0, 15, 200, GLASS, CLR_BLACK, O_POWER(POISON_RES, WATERPROOF)),
@@ -1244,7 +1250,6 @@ DOLL(("doll of chastity",       "Priest doll"),            CLR_WHITE),
 DOLL(("doll of cleaving",       "Berserker doll"),         CLR_RED),
 DOLL(("doll of satiation",      "Chef doll"),              CLR_WHITE),
 DOLL(("doll of good health",    "Healer doll"),            CLR_WHITE),
-DOLL(("doll of full healing",   "Nurse doll"),             CLR_WHITE),
 DOLL(("doll of destruction",    "Dancing doll"),           HI_COPPER),
 DOLL(("doll of memory",         "Scholar doll"),           CLR_BRIGHT_BLUE),
 DOLL(("doll of binding",        "Heretic doll"),           CLR_BROWN),
@@ -1670,19 +1675,6 @@ WAND(((char *)0,        "jeweled"),        0, 150, 1, 0,         IRON,        HI
 		COIN_CLASS, prob, 0, 1, worth, {0}, {0}, 0, 0, 0, 0, HI_GOLD, __VA_ARGS__)
 	COIN(("gold piece"),      1000, GOLD,1),
 #undef COIN
-
-/* soul coins */
-#define SCOIN(names, prob, worth, clr,...) OBJECT( \
-		names, BITS(0,1,0,0,0,0,0,0,MZ_TINY,0,0,0,0,P_NONE, LEAD,0), {0}, \
-		SCOIN_CLASS, prob, 0, 1, worth, {0}, {0}, 0, 0, 0, 0, clr, __VA_ARGS__)
-	SCOIN(("wage of sloth", "black-eyed coin", "strange coin"),		270, 99, CLR_BLACK),
-	SCOIN(("wage of lust", "blue-eyed coin", "strange coin"),		243, 99, CLR_BRIGHT_BLUE),
-	SCOIN(("wage of gluttony", "orange-eyed coin", "strange coin"),	223, 99, CLR_ORANGE),
-	SCOIN(("wage of greed", "gold-eyed coin", "strange coin"),		142, 99, HI_GOLD),
-	SCOIN(("wage of wrath", "red-eyed coin", "strange coin"),		61,  99, CLR_RED),
-	SCOIN(("wage of envy", "green-eyed coin", "strange coin"),		41,  99, CLR_BRIGHT_GREEN),
-	SCOIN(("wage of pride", "purple-eyed coin", "strange coin"),	20,  99, CLR_MAGENTA),
-#undef SCOIN
 
 /* gems ... - includes stones and rocks but not boulders */
 #define GEM(names,prob,wt,gval,nutr,mohs,glass,color,...) OBJECT( \

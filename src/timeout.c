@@ -2154,6 +2154,7 @@ struct obj * obj;
 	else switch (obj->otyp) 
 	{
 	case MAGIC_LAMP:
+	case MAGIC_CANDLE:
 	case DWARVISH_HELM:
 	case LANTERN:
 	case OIL_LAMP:
@@ -2365,6 +2366,7 @@ begin_burn(obj)
 	/* othere than these, lightsources don't work when age==0 */
 	if (obj->age == 0 && 
 		obj->otyp != MAGIC_LAMP && 
+		obj->otyp != MAGIC_CANDLE && 
 		obj->otyp != CANDLE_OF_INVOCATION &&
 		obj->otyp != MAGIC_TORCH &&
 		obj->otyp != POT_STARLIGHT && 
@@ -2382,6 +2384,7 @@ begin_burn(obj)
 
 	/* some things need to set lamplit on their own here */
 	if (obj->otyp == MAGIC_LAMP ||
+		obj->otyp == MAGIC_CANDLE ||
 		obj->otyp == CANDLE_OF_INVOCATION ||
 		obj->otyp == MAGIC_TORCH ||
 		artifact_light(obj) ||
@@ -2447,6 +2450,7 @@ end_burn(obj, timer_attached)
 
 	if (obj->otyp == MAGIC_LAMP 
 		|| obj->otyp == CANDLE_OF_INVOCATION
+		|| obj->otyp == MAGIC_CANDLE
 		|| obj->otyp == MAGIC_TORCH
 		|| obj->otyp == POT_STARLIGHT
 		|| obj->otyp == CHUNK_OF_FOSSIL_DARK

@@ -8686,6 +8686,1366 @@ experienced before, so be prepared!
 "For this you were born, %s!  I am very proud of you."
 %E
 #
+#	Chef
+#
+%Cc Chf 00001
+You arrive in familiar surroundings.  In the distance, you %x the
+great stone Circle, the place of worship to %d.
+
+Something is wrong, though.  Surrounding the circle are orcs!
+And they've noticed you!
+%E
+%Cp Chf 00002
+Once again, you stand before %H.
+%E
+%Cp Chf 00003
+You have the oddest feeling that this may be the last time you
+are to enter %H.
+%E
+%Cp Chf 00005
+"%p!  I have not seen you in many cycles.  How do you fare?"
+%E
+%Cp Chf 00006
+"%nC continues to threaten the circle.  But we hold fast."
+%E
+%Cp Chf 00007
+"%lC is growing weak.  The magic required to defend the circle drains us."
+%E
+%Cp Chf 00008
+"Remember %i is hard to enter.  Seek the secret
+passageways."
+%E
+%Cp Chf 00009
+"We must regain %o.  Without it we will be overrun."
+%E
+
+%Cp Chf 00010
+"%pC!  I have not seen you in many moons.  How do you fare?"
+%E
+%Cp Chf 00011
+"Birdsong has returned to the grove, surely this means you have defeated %n."
+%E
+%Cp Chf 00012
+"%lC seems to have regained some of his strength."
+%E
+%Cp Chf 00013
+"So, tell us how you entered %i, in case some new evil arises there."
+%E
+%Cp Chf 00014
+"Is that truely %o that I see you carrying?"
+%E
+
+%Cc Chf 00015
+"%p!  You have returned!  Thank %d.
+
+"We have great need of you.  But first, I must see if you have the
+required abilities to take on this responsibility."
+%E
+%Cp Chf 00016
+"Once again, %p, you stand in our midst.  Are you ready now?"
+%E
+%Cp Chf 00017
+"Ah, you are here again, %p.  Allow me to determine your readiness..."
+%E
+%Cc Chf 00018
+"%p!  You have doomed us all.  You fairly radiate %L influences
+and weaken the power we have raised in this circle as a result!
+
+"Begone!  We renounce your %shood with us!  You are an outcast now!"
+%E
+%Cc Chf 00019
+"%p, you are yet too inexperienced to withstand the demands of that
+which we need you to do.  %RA might just be able to do this thing.
+
+"Return to us when you have learned more, my %S."
+%E
+%Cc Chf 00020
+"You have strayed, %p!  You know that %d requires that
+we maintain a pure devotion to things %a!
+
+"You must go from us.  Return when you have purified yourself."
+%E
+%Cc Chf 00021
+"You are indeed ready, %p.  I shall tell you what has transpired,
+and why we so desperately need your help:
+
+"A short time ago, the Uruk-hai tribes of the mountains to the east
+invaded and enslaved the goblin tribes in this area.  The local
+%nt is now only a figurehead, and serves the Uruk-hai Overlord.
+
+"During our last gathering of worship here, we were beset by hordes of
+orcs and goblins, as you witnessed.  In the first onslaught a group,
+headed by %n himself, managed to breach the circle and
+steal %o.
+
+"Since then, we have been besieged.  We do not know how much longer
+we will be able to maintain our magical barriers.
+
+"If we are to survive, you, %p, must infiltrate
+%i.  There, you will find a pathway down, to the
+underground castle of %n.  He has always coveted
+%o, and will surely keep it on his person,
+until he delivers it to the Uruk-hai Overlord.
+
+"Recover %o for us, %p!  Only then will
+the circle of %d be safe."
+%E
+%Cp Chf 00025
+"It is rumored that the Uruk-hai have a pact with the Hill Ogres."
+%E
+%Cp Chf 00026
+"%nC is strong, but not very smart."
+%E
+%Cp Chf 00027
+"Use %o, when you find it.  It will help you survive
+to reach us."
+%E
+%Cp Chf 00028
+"Remember, let %d be your guide."
+%E
+%Cp Chf 00029
+"Call upon %d when you face %n.
+The very act of doing so will infuriate him, and give you advantage."
+%E
+%Cp Chf 00030
+"Though %n is as %C as we, he and his kind have always
+hated us."
+%E
+%Cp Chf 00031
+"We cannot hold the circle much longer, %p.  Hurry!"
+%E
+%Cp Chf 00032
+"To infiltrate %i, you must be very stealthy."
+%E
+%Cp Chf 00033
+"Remember that %n is a braggart.  Trust not what he says."
+%E
+%Cp Chf 00034
+"You can triumph, %p, if you trust in %d."
+%E
+%Cc Chf 00035
+You descend into the outer regions of %i.  You can hear
+scuffling sounds in the corridors, and vague mumblings in the distance.
+
+You remember that %ga once told you that there were many secret
+passageways in this complex.
+%E
+%Cp Chf 00036
+Once again, you descend into %i.
+%E
+%Cc Chf 00040
+You descend into a weird place, in which roughly cut cave-like walls
+join with smooth, finished ones, as if someone was in the midst of
+finishing off the construction of a subterranean complex.
+
+Off in the distance, you hear the sounds of a large, raucous gathering.
+%E
+%Cp Chf 00041
+Once again, you enter the distorted castle of %n.
+%E
+%Cc Chf 00050
+"So, %c.  %lC has sent you to recover %o.
+
+"Well, I shall keep that bauble.  It pleases me.  You, %c, shall die."
+%E
+%Cp Chf 00051
+"Back again, eh?  Well, a mere %r is no threat to me!  Die, %c!"
+%E
+%Cp Chf 00052
+"You haven't learned your lesson, %c.  You can't kill me!  You shall die now."
+%E
+%Cp Chf 00053
+"I shall have %o from you, %r.  Then I shall
+kill you."
+%E
+%Cp Chf 00060
+"Your %d is nothing, %c.  You are mine now!"
+%E
+%Cp Chf 00061
+"Run away little %c!  You can never hope to defeat %n!"
+%E
+%Cp Chf 00062
+"My Uruk-hai servants will rip you to shreds!"
+%E
+%Cp Chf 00063
+"I shall display your head as a trophy.  What do you think about that wall?"
+%E
+%Cp Chf 00064
+"I shall break your %ls circle, and destroy all the %gP!"
+%E
+%Cp Chf 00065
+"%d has abandoned you, %c.  You are doomed."
+%E
+%Cp Chf 00066
+"%rA?  %lC sends a mere %r against me?  Hah!"
+%E
+%Cp Chf 00067
+"%lC has failed, %c.  %oC will never leave here."
+%E
+%Cp Chf 00068
+"You really think you can defeat me, eh %c?  You are wrong!"
+%E
+%Cp Chf 00069
+"You weaken, %c.  I shall kill you now."
+%E
+%Cc Chf 00070
+As you pick up %o, it seems to glow, and a warmth
+fills you completely.  You realize that its power is what has protected
+your %sp against their enemies for so long.
+
+You must now return it to %l without delay -- their lives depend
+on your speed.
+%E
+%Cc Chf 00080
+%nC collapses to the ground, cursing you and %l, then says:
+
+    You have defeated me, %r!  But I curse you one final time, with my
+    dying breath!  You shall die before you leave my castle!
+%E
+%Cc Chf 00081
+"%p!  You have succeeded!  I feared it was not possible!
+
+"Your aura proclaims that you possess %o!
+
+"I fear, now, that the Uruk-hai will select yet another %nt.
+This will take some time, but if you can recover the Amulet of Yendor
+for %d before that happens, we will be eternally safe.
+
+"Take %o with you.  It will aid in your quest for
+the Amulet."
+%E
+%Cp Chf 00082
+"Welcome, %p.  Have you mastered the art of using %o yet?"
+%E
+%Cp Chf 00090
+"Welcome, %p.  How have you fared on your quest for the Amulet
+of Yendor?"
+%E
+%Cc Chf 00091
+"Utuelyes!  You have recovered the Amulet of Yendor!
+Now attend to me, %p, and I will tell you what must be done:
+
+"The Amulet has within it magic, the capability to transport you to
+the Astral Plane, where the primary circle of %d resides.
+
+"To activate this magic, you must travel upwards as far as you can.
+When you reach the temple, sacrifice the Amulet to %d.
+
+"Thus will you fulfill your destiny."
+%E
+%Cc Chf 00095
+"You have betrayed all those who hold allegiance to %d, as you once did.
+My allegiance to %d holds fast and I cannot condone or accept what you 
+have done.
+
+Leave this place.  You shall never set foot at %H again.
+That which you seek is now lost forever, for without the Bell of Opening, 
+you will never be able to enter the place where he who has the Amulet 
+resides.
+
+Go now!  You are banished from this place.
+%E
+%Cp Chf 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Chf 00101
+You again sense %l pleading for help.
+%E
+%Cp Chf 00102
+"The silver bell which was hoarded by %n will be
+essential in locating the Amulet of Yendor."
+%E
+
+#
+#       Officer
+#
+%Cc Off 00001
+You breathe a sigh of relief as you find yourself back in the familiar
+surroundings of %H.
+
+You quickly notice that things do not appear the way they did when you
+left.  The town is dark and quiet.  There are no sounds coming from
+behind the town walls, and no campfires burning in the fields.  As a
+matter of fact, you do not %x any movement in the fields at all, and
+the crops look as though they have been untended for many weeks.
+%E
+%Cp Off 00002
+Once again, you are back at %H.
+%E
+%Cp Off 00003
+You are back at %H.
+Things appear to have become so bad that you fear that soon
+%H will not be here to return to.
+%E
+%Cp Off 00005
+"Gehennom on 5 zorkmids a day -- more like 500 a day if you ask me."
+%E
+%Cp Off 00006
+"Do you know where I could find some nice postcards of The Gnomish Mines?"
+%E
+%Cp Off 00007
+"Have you tried the weird toilets?"
+%E
+%Cp Off 00008
+"Don't stay at the Inn, I hear the food is terrible and it has rats."
+%E
+%Cp Off 00009
+"They told me that this was the off season!"
+%E
+%Cp Off 00010
+"Gehennom on 5 zorkmids a day -- more like 500 a day if you ask me."
+%E
+%Cp Off 00011
+"Do you know where I could find some nice postcards of The Gnomish Mines?"
+%E
+%Cp Off 00012
+"Have you tried the weird toilets?"
+%E
+%Cp Off 00013
+"If you stick around, I'll show you the pictures from my latest trip."
+%E
+%Cp Off 00014
+"Did you bring me back any souvenirs?"
+%E
+%Cc Off 00015
+"Is it really you, %p!  I had given up hope for your return.
+As you can %x, we are desperately in need of your talents.  Someone must
+defeat %n if our town is become what it once was.
+
+"Let me see if you are ready to be that someone."
+%E
+%Cp Off 00016
+"Things are getting worse, %p.
+I hope that this time you are ready."
+%E
+%Cp Off 00017
+"I hope that for the sake of %H you have prepared
+yourself this time."
+%E
+%Cc Off 00018
+"It is too late, %p.  You are not even worthy to die amongst us.
+Leave %H and never return."
+%E
+%Cc Off 00019
+"There is still too much that you have to learn before you can undertake
+the next step.  Return to us as a proven %R, and perhaps then
+you will be ready.
+
+"Go back now, and may the teachings of %d serve you well."
+%E
+%Cc Off 00020
+"It would be an affront to %d to have one not true to the
+%a path undertake her bidding.
+
+"You must not return to us until you have purified yourself of these
+bad influences on your actions.  Remember, only by following the %a
+path can you hope to overcome the obstacles you will face."
+%E
+%Cc Off 00021
+"You have indeed proven yourself a worthy %c, %p.
+
+"But now your kinfolk and I must ask you to put aside your travels and
+help us in our time of need.  After you left us we elected a new mayor,
+%n.  He proved to be a most heinous and vile creature.
+
+"Soon after taking office he absconded with %o
+and fled town, leaving behind his henchmen to rule over us.  In order
+for us to regain control of our town, you must enter %i
+and recover %o.
+
+"Do not be distracted on your quest.  If you do not return quickly I fear
+that all will be lost.  Let us both pray now that %d will guide you
+and keep you safe."
+%E
+%Cp Off 00025
+"Do not be fooled by the false promises of %n."
+%E
+%Cp Off 00026
+"To enter %i you must pass many traps."
+%E
+%Cp Off 00027
+"If you do not return with %o, your quest
+will be in vain."
+%E
+%Cp Off 00028
+"Do not be afraid to call upon %d if you truly need help."
+%E
+%Cp Off 00029
+"If you do not destroy %n, he will follow you back here!"
+%E
+%Cp Off 00030
+"Take %o from %n
+and you may be able to defeat him."
+%E
+%Cp Off 00031
+"You must hurry, %p!"
+%E
+%Cp Off 00032
+"You are like %Sa to me, %p.  Do not let me down."
+%E
+%Cp Off 00033
+"If you are %a at all times you may succeed, %p."
+%E
+%Cp Off 00034
+"Let all who meet you on your journey know that you are on an quest for
+%l and grant safe passage."
+%E
+%Cc Off 00035
+Only your faith in %d keeps you from trembling.  You %x
+the handiwork of %ns henchlings everywhere.
+%E
+%Cp Off 00036
+You know that this time you must find and destroy %n.
+%E
+%Cc Off 00040
+You sense the presence of %o.
+%E
+%Cp Off 00041
+You gain confidence, knowing that you may soon be united with
+%o.
+%E
+%Cc Off 00050
+"So, %p, %l thinks that you can wrest
+%o from me!
+
+"It only proves how desperate he has become that he sends %ra to
+try and defeat me.  When this day is over, I will have you enslaved
+in the mines where you will rue the day that you ever entered
+%i."
+%E
+%Cp Off 00051
+"I let you live the last time because it gave me pleasure.
+This time I will destroy you, %p."
+%E
+%Cc Off 00052
+"These meetings come to bore me.  You disturb my workings with
+%o.
+
+"If you do not run away now, I will inflict so much suffering on you that
+%l will feel guilty for ever having sent his %S to me!"
+%E
+%Cc Off 00053
+"You fool.  You do not know how to call upon the powers of
+%o.
+
+"Return it to me and I will teach you how to use it, and together we
+will rule %H.  But do so now, as my patience
+grows thin."
+%E
+%Cp Off 00060
+"I defeated %l and I will defeat you, %p."
+%E
+%Cp Off 00061
+"Where is %d now!  You must realize no one can help you here."
+%E
+%Cp Off 00062
+"Beg for mercy now and I may be lenient on you."
+%E
+%Cp Off 00063
+"If you were not so %a, you might have stood a chance."
+%E
+%Cp Off 00064
+"Vengeance is mine at last, %p."
+%E
+%Cp Off 00065
+"I only wish that %l had a more worthy %r to send against me."
+%E
+%Cp Off 00066
+"With %o in my possession you cannot
+hope to defeat me."
+%E
+%Cp Off 00067
+"%nC has never been defeated, NEVER!"
+%E
+%Cp Off 00068
+"Are you truly the best %H has to send against me?
+I pity %l."
+%E
+%Cp Off 00069
+"How do you spell %p?  I want to ensure the marker on your grave is
+correct as a warning to your %sp."
+%E
+%Cc Off 00070
+As you pick up %o, you feel a great
+weight has been lifted from your shoulders.  Your only thoughts are
+to quickly return to %H and find %l.
+%E
+%Cc Off 00080
+You turn in the direction of %n.  As his earthly body begins
+to vanish before your eyes, you hear him curse:
+
+    You shall never be rid of me, %p!
+    I will find you where ever you go and regain what is rightly mine.
+%E
+%Cc Off 00081
+As %l detects the presence of %o,
+he almost smiles for the first time in many a full moon.
+
+As he looks up from %o he says:
+
+    You have recovered %o.  You are its
+    owner now, but not its master.  Let it work with you as you continue
+    your journey.  With its help, and %d to guide you on the
+    %a path, you may yet recover the Amulet of Yendor.
+%E
+%Cc Off 00082
+"%oC is yours now.  %Z await your
+return through the magic portal that brought you here."
+%E
+%Cp Off 00090
+"I could not be more proud than if you were my own %S, %p!
+Tell me of your adventures in quest of the Amulet of Yendor."
+%E
+%Cc Off 00091
+"Stand back and let me look at you, %p.
+Now that you have recovered the Amulet of Yendor, I'm afraid living
+out your days in %H would seem pretty tame.
+
+"You have come too far to stop now, for there are still more tasks that
+our oral history foretells for you.  Forever more, though, your name shall
+be spoken by the %gP with awe.  You are truly an inspiration to your
+%sp!"
+%E
+%Cc Off 00095
+"You have betrayed all those who hold allegiance to %d, as you once did.
+My allegiance to %d holds fast and I cannot condone or accept what you 
+have done.
+
+Leave this place.  You shall never set foot at %H again.
+That which you seek is now lost forever, for without the Bell of Opening, 
+you will never be able to enter the place where he who has the Amulet 
+resides.
+
+Go now!  You are banished from this place.
+%E
+
+%Cp Off 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Off 00101
+You again sense %l pleading for help.
+%E
+%Cp Off 00102
+"The silver bell which was hoarded by %n will be
+essential in locating the Amulet of Yendor."
+%E
+
+#
+#       Undead Slayer
+#
+%Cc Und 00001
+You find yourself standing in sight of %H.  Something
+is obviously wrong here.  The holy light that usually fills the sky
+is gone, and strange human shapes shamble around outside.
+
+You realize that %l needs your assistance!
+%E
+%Cp Und 00002
+Once again, you stand before %H.
+%E
+%Cp Und 00003
+Again you face %H.  Your intuition hints that this may be
+the final time you come here.
+%E
+%Cp Und 00005
+"Greetings, %r.  It is good to see you."
+%E
+%Cp Und 00006
+"Ah, %p!  Surely you can help us in our hour of need."
+%E
+%Cp Und 00007
+"Greetings, %s.  %lC has great need of your help."
+%E
+%Cp Und 00008
+"Alas, it seems as if even %d has deserted us."
+%E
+%Cp Und 00009
+"May %d be with you, %s."
+%E
+%Cp Und 00010
+"Greetings, %r.  It is good to see you."
+%E
+%Cp Und 00011
+"May %d be with you, %s."
+%E
+%Cp Und 00012
+"Have you heard the rumors about the vampire known as 'The Day Walker'
+that stalks his own breed?"
+%E
+%Cp Und 00013
+"With %n destroyed, we are safe once more!"
+%E
+%Cp Und 00014
+"I hear you are to be nominated as next leader of the order!"
+%E
+%Cc Und 00015
+"Ah, %p, my %S.  You have returned to us at last.
+A great blow has befallen our order; perhaps you can help us.
+First, however, I must determine if you are prepared for this
+great challenge."
+%E
+%Cp Und 00016
+"Again, my %S, you stand before me.  Are you ready now to help us?"
+%E
+%Cp Und 00017
+"Once more, %p, you stand within the sanctum.  Are you ready now?"
+%E
+%Cc Und 00018
+"You are a heretic, %p!  How can you, %ra, deviate so from the
+teachings of %d?  Begone from this temple.  You are no longer
+%sa to this order.  We will pray to %d for other assistance,
+as you have failed us utterly."
+%E
+%Cc Und 00019
+"Alas, %p, it is not yet to be.  A mere %r could never
+withstand the might of %n.  Go forth, again into the world, and return
+when you have attained the post of %R."
+%E
+%Cc Und 00020
+"This is terrible, %p.  You have deviated from the true path!
+You know that %d requires the most strident devotion of this
+order.  The %shood must stand for utmost piety.
+
+"Go from here, atone for your sins against %d.  Return only when
+you have purified yourself."
+%E
+%Cc Und 00021
+"Yes, %p.  You are truly ready now.  Attend to me and I shall
+tell you of what has transpired:
+
+"Recently, %n and a legion of undead invaded %H.
+Many %gP were killed, and %o was stolen from us!
+
+"Now, there are barely enough %gP left to keep
+the undead at bay.
+
+"We need you to find %i, and then, from there, travel
+to %ns lair.  If you can manage to defeat %n
+and return %o here, we can then drive off the
+legions of undead that befoul the land.
+
+"Go with %d as your guide, %p."
+%E
+%Cp Und 00025
+"You can prevail, if you rely on %d."
+%E
+%Cp Und 00026
+"Remember that %n has great magic at his command."
+%E
+%Cp Und 00027
+"Be pure, my %S."
+%E
+%Cp Und 00028
+"Beware, %i is surrounded by a great graveyard."
+%E
+%Cp Und 00029
+"Remember, no mercy for the evil!"
+%E
+%Cp Und 00030
+"Acquire and wield %o if you can.  It will aid you
+against %n."
+%E
+%Cp Und 00031
+"Call upon %d when your need is greatest.  You will be answered."
+%E
+%Cp Und 00032
+"The undead legions are weakest during the daylight hours."
+%E
+%Cp Und 00033
+"Do not lose faith, %p.  If you do so, %n will grow stronger."
+%E
+%Cp Und 00034
+"Wear %o.  It will assist you against the undead."
+%E
+%Cc Und 00035
+You stand facing a large graveyard.  The sky above is filled with clouds
+that seem to get thicker closer to the center.  You sense the presence of
+undead in larger numbers than you have ever encountered before.
+
+You remember the descriptions of %i, given to you by
+%l.  It is ahead that you will find %ns trail.
+%E
+%Cp Und 00036
+Again, you stand before %i.
+%E
+%Cc Und 00040
+The stench of brimstone is all about you, and the shrieks and moans
+of tortured souls assault your psyche.
+
+Ahead, there is a small clearing amidst the bubbling pits of lava...
+%E
+%Cp Und 00041
+Again, you have invaded %ns domain.
+%E
+%Cc Und 00050
+"Ah, so %l has sent another %g to retrieve
+%o.
+
+"No, I see you are no %g.  Perhaps I shall have some fun today
+after all.  Prepare to die, %r!  You shall never regain
+%o."
+%E
+%Cp Und 00051
+"So, %r.  Again you challenge me."
+%E
+%Cp Und 00052
+"Die now, %r.  %d has no power here to aid you."
+%E
+%Cp Und 00053
+"You shall die, %r, and I will have %o back."
+%E
+%Cp Und 00060
+"Submit to my will, %c, and I shall spare you."
+%E
+%Cp Und 00061
+"Your puny powers are no match for me, %c."
+%E
+%Cp Und 00062
+"I shall have you turned into a zombie for my pleasure!"
+%E
+%Cp Und 00063
+"Despair now, %r.  %d cannot help you."
+%E
+%Cp Und 00064
+"I shall feast upon your soul for many days, %c."
+%E
+%Cp Und 00065
+"Your death will be slow and painful.  That I promise!"
+%E
+%Cp Und 00066
+"You cannot defeat %n, you fool.  I shall kill you now."
+%E
+%Cp Und 00067
+"Your precious %l will be my next victim."
+%E
+%Cp Und 00068
+"I feel your powers failing you, %r.  You shall die now."
+%E
+%Cp Und 00069
+"With %o, nothing can stand in my way."
+%E
+%Cc Und 00070
+As you pick up %o, you feel the essence of
+%d fill your soul.  You know now why %n stole it from
+%H, for with it, %ca of %d could
+easily defeat his plans.
+
+You sense a message from %d.  Though not verbal, you
+get the impression that you must return to %l as soon
+as possible.
+%E
+%Cc Und 00080
+You feel a wrenching shift in the ether as %ns body dissolves
+into a cloud of noxious gas.
+
+Suddenly, a voice booms out:
+
+    Mark my words, niggling! I shall return!
+
+You then hear the voice of %n, laughing insanely...
+%E
+%Cc Und 00081
+"You have returned, %p.  And with %o, I see.
+Congratulations.
+
+"I have been in meditation, and have received direction from
+a minion of %d.  %d commands that you retain
+%o.  With it, you must recover the Amulet
+of Yendor.
+
+"Go forth, and let %d guide your steps."
+%E
+%Cc Und 00082
+%l reiterates that %o is yours now.
+
+"The time has come to resume your search for the Amulet.
+%Z await your return through the magic portal which brought
+you here."
+%E
+%Cp Und 00090
+"Welcome back, %p.  How is your quest for the Amulet going?"
+%E
+%Cc Und 00091
+"You have prevailed, %p!  %d is surely with you.  Now,
+you must take the amulet, and sacrifice it on %ds altar on
+the Astral plane.  I suspect that I shall never see you again in this
+life, but I hope to at %ds feet."
+%E
+%Cc Und 00095
+"You have betrayed all those who hold allegiance to %d, as you once did.
+My allegiance to %d holds fast and I cannot condone or accept what you 
+have done.
+
+Leave this place.  You shall never set foot at %H again.
+That which you seek is now lost forever, for without the Bell of Opening, 
+you will never be able to enter the place where he who has the Amulet 
+resides.
+
+Go now!  You are banished from this place.
+%E
+%Cp Und 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Und 00101
+You again sense %l pleading for help.
+%E
+%Cp Und 00102
+"The silver bell which was hoarded by %n will be
+essential in locating the Amulet of Yendor."
+%E
+
+#
+#       Jedi
+#
+%Cc Jed 00001
+You are back at %H where you were raised and trained during your youth.
+You fondly remember your mentor, %l, and your fellow %g.
+Looking around, to the eye everything looks normal. You wonder why
+%l would call you here without necessity.
+
+Then some stormtroopers jump from the shadows...
+%E
+%Cp Jed 00002
+Once again you are back at %H.
+%E
+%Cp Jed 00003
+Again, you stand before %H.  You vaguely sense that this
+may be the last time you stand before %l.
+%E
+%Cp Jed 00005
+"Hello, %p. May the force be with you!"
+%E
+%Cp Jed 00006
+"%p, it seems the force has left us..."
+%E
+%Cp Jed 00007
+"The dark side is strong, or so they tell us."
+%E
+%Cp Jed 00008
+"If the dark side is so powerful, why not use its power for us?"
+%E
+%Cp Jed 00009
+"What shall we do, %p?"
+%E
+%Cp Jed 00010
+"Hello, %p. May the force be with you!"
+%E
+%Cp Jed 00011
+"The force has led us to victory!"
+%E
+%Cp Jed 00012
+"Will the Sith ever be defeated?"
+%E
+%Cp Jed 00013
+"So you defeated %n?"
+%E
+%Cp Jed 00014
+"Is this the fabled %o?"
+%E
+%Cc Jed 00015
+"It's good to see you again, %p. I'm glad you got our transmission.
+Let me check if you are capable of helping us in this dark hour."
+%E
+%Cp Jed 00016
+"The force is strong in you, %p. But is it strong enough now?"
+%E
+%Cp Jed 00017
+"Again, you are back, %p. Have you enhanced your knowledge of the force
+far enough now?"
+%E
+%Cc Jed 00018
+"You are arrogant, %p. This is the way to the Dark Side. Unfortunately,
+we cannot allow you to walk the halls of %H anymore to protect our %gP.
+Leave, now, and never return here, or we will have to deal with you
+in ways other than words."
+%E
+%Cc Jed 00019
+"The force is strong within you, %p. But sadly, a mere %r could never
+hope to be a help in this dark hour.
+Go and learn more of the way of the force. When you reached the skills
+of a %R, return here.
+
+May the force be with you!"
+%E
+%Cc Jed 00020
+"You have strayed from the light side of the force! Leave, now!
+And return only when you made up your mind about which way to
+follow."
+%E
+%Cc Jed 00021
+"Ah, %p. You have become a fine %r, you have become skilled in using
+the force and the ways of the Jedi. As such, you must help us:"
+
+"As you surely noticed, war has broken out between the Sith and the
+Jedi. Stormtroopers, Sith and Jedi are desperately fighting and
+dying for what they believe in."
+
+"What they are fighting over? A mighty artifact, %o.
+It is the first lightsaber ever made and has powers greater than any
+lightsaber in use today. It never runs out of power and has a built-in
+targeting device."
+
+"It was also thought to be lost forever, but eventually a merchant
+discovered it in the outer rim and announced it for sale. Needless to
+say, that merchant was no longer alive when we got there, slaughtered
+by the Sith, who - despite all their efforts - couldn't get their hands
+on it yet."
+
+"We need your help in this matter. Every man on the front in the outer
+rim counts."
+
+"Oh, and we got word that %n himself has gone to the outer rim to claim
+%o. You better hurry."
+
+"May the force be with you!"
+%E
+%Cp Jed 00025
+"Remember, %p, follow always the path of the %d."
+%E
+%Cp Jed 00026
+"May the force be with you!"
+%E
+%Cp Jed 00027
+"Remember, %p, follow always the path of the %d."
+%E
+%Cp Jed 00028
+"May the force be with you!"
+%E
+%Cp Jed 00029
+"Remember, %p, follow always the path of the %d."
+%E
+%Cp Jed 00030
+"May the force be with you!"
+%E
+%Cp Jed 00031
+"Remember, %p, follow always the path of the %d."
+%E
+%Cp Jed 00032
+"May the force be with you!"
+%E
+%Cp Jed 00033
+"Remember, %p, follow always the path of the %d."
+%E
+%Cp Jed 00034
+"May the force be with you!"
+%E
+%Cc Jed 00035
+You arrive at the %i.
+Following the emanations of the force, you work your way through the
+different planets trying to locate %o.
+%E
+%Cp Jed 00036
+Again, you arrive at the %i.
+%E
+%Cc Jed 00040
+You arrive at an unnamed planet.
+You can feel large disturbances in the force before you, like huge
+armies crossing weapons.
+You know that you must hurry in order to not disappoint %l.
+%E
+%Cp Jed 00041
+Again, you arrive at the unnamed planet.
+%E
+%Cc Jed 00050
+"Again, %l sends a worthless %c to get %o from me?
+Well, I can give you a choice: Join me!"
+%E
+%Cp Jed 00051
+"Again, you challenge me, %r? You can't beat the dark side of the force!"
+%E
+%Cp Jed 00052
+"Haven't you learned your lesson yet? I shall teach it to you now!"
+%E
+%Cp Jed 00053
+"Got your hands on %o, little %c? You will not be able to draw all its
+powers anyway. Now, you wouldn't kill an unarmed, would you?"
+%E
+%Cp Jed 00060
+"Join the dark side and you'll be granted powers beyond your wildest dreams!"
+%E
+%Cp Jed 00061
+"%l's faith in you is his weak point!"
+%E
+%Cp Jed 00062
+"A %c you want to be? I call you a %g!"
+%E
+%Cp Jed 00063
+"Join the dark side and you'll be granted powers beyond your wildest dreams!"
+%E
+%Cp Jed 00064
+"%l's faith in you is his weak point!"
+%E
+%Cp Jed 00065
+"A %c you want to be? I call you a %g!"
+%E
+%Cp Jed 00066
+"Join the dark side and you'll be granted powers beyond your wildest dreams!"
+%E
+%Cp Jed 00067
+"%l's faith in you is his weak point!"
+%E
+%Cp Jed 00068
+"A %c you want to be? I call you a %g!"
+%E
+%Cp Jed 00069
+"Join the dark side and you'll be granted powers beyond your wildest dreams!"
+%E
+%Cc Jed 00070
+You have %o in your hands.
+Force surrounds it like air surrounds a planet. You can see why no
+other lightsaber was made like this one.
+%E
+%Cc Jed 00080
+You finally manage to land the final blow against %n.
+But as you just want to claim your victory, his body dissolves into
+nothingness.
+
+"You can't win against %n! I will be back!"
+
+You feel a shiver run up and down your spine as you head back
+to %l.
+%E
+%Cc Jed 00081
+As you approach %l, he beams at you and says:
+
+	You have not disappointed the halls of %H.
+	The war is over, %o is secured and peace
+	can be restored.
+
+	Though %n escaped us again, we will not rest until he is
+	destroyed. The Sith must never return to power.
+%E
+%Cc Jed 00082
+"Be careful with %o. Though it gives great power, it also requires
+great responsibility from its owner. Use the portal to return to
+%Z and find the Amulet of Yendor.
+%E
+%Cp Jed 00090
+"Welcome back, %p. How is the search for the Amulet of Yendor?"
+%E
+%Cc Jed 00091
+"You really are a %S of %H."
+
+"Ancient Jedi Legends tell us that the amulet must be brought to
+a place called 'The Astral Plane' and offered to %d there."
+
+"May the force be with you, %p."
+%E
+%Cc Jed 00095
+"So you're not a real Jedi, are you? Actually, you must be
+out of your mind! Why did you decide to leave the path of %d?
+
+Go away, your mere sight is a disgrace to a true Jedi!"
+%E
+
+%Cp Jed 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Jed 00101
+You again sense %l pleading for help.
+%E
+%Cp Jed 00102
+"You can't use the force if you don't get what %n had!
+It should be a metallic object."
+%E
+
+#
+#	Firefighter
+#
+%Cc Fir 00001
+Waves of blistering heat ripple off of the lava-covered landscape that
+surrounds you.  Off in the distance, you can see the craggy rocks
+of %H.
+
+Suddenly, the hairs on your neck stand on end as you detect a faint hint of
+evil moisture in the air.
+
+%E
+%Cp Fir 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Fir 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Fir 00005
+"The battles here have been good -- our enemies' blood has boiled away!"
+%E
+%Cp Fir 00006
+"May your days always be warm!"
+%E
+%Cp Fir 00007
+"We have had trouble concentrating on our studies!"
+%E
+%Cp Fir 00008
+"The water elementals are fierce, but they boil away under our fire!"
+%E
+%Cp Fir 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Fir 00010
+"The battles here have been good -- our enemies' blood has boiled away!"
+%E
+%Cp Fir 00011
+"May your days always be warm!"
+%E
+%Cp Fir 00012
+"Since the defeat of the hoarde, all can concentrate fully on our studies!"
+%E
+%Cp Fir 00013
+"I'm taking my holidays in Gehennom this year - very warm there, supposedly"
+%E
+%Cp Fir 00014
+"Have you noticed how much stronger %l is since %o was recovered?"
+%E
+%Cc Fir 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Fir 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Fir 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Fir 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Fir 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cp Fir 00020
+"%p!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Fir 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to summon horrible elementals from the plane of 
+Water.
+
+"%nC and his hordes of elementals swept down upon %H and stole
+%o, and seeks to bend it to his will.  
+After many brave wizards were slain by his watery servants, I
+sent forth a summons for you!
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave our elementals,
+and destroy us.  You are our only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Fir 00025
+"%n is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Fir 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Fir 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Fir 00028
+"To enter %i, you must be very stealthy.  The elementals will be on
+guard."
+%E
+%Cp Fir 00029
+"Call upon %d in your time of need."
+%E
+%Cp Fir 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Fir 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Fir 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Fir 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Fir 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Fir 00035
+The soggy scent of water comes to you in the breeze.  You know that
+you have located %i.
+%E
+%Cp Fir 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Fir 00040
+You sense an evil energy in the very air around you.  You fight
+down a primordial panic that seeks to make you turn and run.
+This is surely the lair of %n.
+%E
+%Cp Fir 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Fir 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Fir 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Fir 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Fir 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Fir 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Fir 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Fir 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Fir 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Fir 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Fir 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Fir 00066
+"Come, %c.  I shall kill you, then unleash the horde on your people."
+%E
+%Cp Fir 00067
+"Once you are dead, my horde shall finish off %l, and your people."
+%E
+%Cp Fir 00068
+"Fight, %c, or are you afraid of the mighty %nt?"
+%E
+%Cp Fir 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Fir 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cp Fir 00080
+%n falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Fir 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These wizards, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Fir 00082
+%l gazes at %o warmly for a moment, then looks at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Fir 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Fir 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
+%Cc Fir 00095
+"You have betrayed all those who hold allegiance to %d, as you once did.
+My allegiance to %d holds fast and I cannot condone or accept what you 
+have done.
+
+Leave this place.  You shall never set foot at %H again.
+That which you seek is now lost forever, for without the Bell of Opening, 
+you will never be able to enter the place where he who has the Amulet 
+resides.
+
+Go now!  You are banished from this place.
+%E
+
+%Cp Fir 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Fir 00101
+You again sense %l pleading for help.
+%E
+%Cp Fir 00102
+"The silver bell which was hoarded by %n will be
+essential in locating the Amulet of Yendor."
+%E
+
+#
 #	General
 #
 %Cc - 00001

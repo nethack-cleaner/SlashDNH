@@ -1152,7 +1152,6 @@ calc_total_maxhp()
 		hpmax = &u.uhpmax;
 		hprolled = &u.uhprolled;
 		hpcap = 24 + 2*maxhp(1);
-	}
 	
 	if(u.uhpbonus > 0){
 		rawmax = *hprolled + ulev*conplus(ACURR(A_CON));
@@ -1187,6 +1186,7 @@ calc_total_maxhp()
 			rawmax = rawmax + (rawmax * u.uhpmultiplier / 10); /*Multiplier is in units of tenths*/
 		
 		*hpmax = rawmax + u.uhpbonus + u.uhpmod;
+	}
 	}
 	
 	if(*hpmax < 1) *hpmax = 1;

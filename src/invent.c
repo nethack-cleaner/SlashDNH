@@ -305,8 +305,6 @@ struct obj *obj;
 //ifdef RECORD_ACHIEVE Record_achieve now mission-critical for Binder, so....
 		} else if(obj->oartifact == ART_SILVER_KEY){
 			achieve.get_skey = TRUE;
-		} else if(obj->oartifact == ART_CAGE_KEY){
-			achieve.get_ckey = TRUE;
 		} else if(obj->oartifact >= ART_FIRST_KEY_OF_LAW && obj->oartifact <= ART_THIRD_KEY_OF_NEUTRALITY){
 			achieve.get_keys |= (1 << (obj->oartifact - ART_FIRST_KEY_OF_LAW));
 //endif
@@ -1222,7 +1220,6 @@ register const char *let,*word;
 		|| (!strcmp(word, "eat") && !is_edible(otmp))
 		|| (!strcmp(word, "zap") &&
 		    (otmp->oclass == TOOL_CLASS && otmp->otyp != ROD_OF_FORCE))
-		|| (!strcmp(word, "inject") && !(otmp->otyp == HYPOSPRAY_AMPULE && otmp->spe > 0))
 		|| (!strcmp(word, "give the tear to") &&
 			!(otmp->otyp == BROKEN_ANDROID && otmp->ovar1 == 0) &&
 			!(otmp->otyp == BROKEN_GYNOID && otmp->ovar1 == 0) &&
@@ -2341,9 +2338,6 @@ struct obj *obj;
 	else if (obj->otyp == SENSOR_PACK)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Use this sensor pack", MENU_UNSELECTED);
-	else if (obj->otyp == HYPOSPRAY)
-		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
-				"Inject an ampule with this hypospray", MENU_UNSELECTED);
 	else if ((is_knife(obj) && !(obj->oartifact == ART_PEN_OF_THE_VOID && obj->ovar1&SEAL_MARIONETTE))
 		&& (u.wardsknown & (WARD_TOUSTEFNA | WARD_DREPRUN | WARD_OTTASTAFUR | WARD_KAUPALOKI | WARD_VEIOISTAFUR | WARD_THJOFASTAFUR)))
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
@@ -3542,9 +3536,6 @@ winid *datawin;
 		case ART_BOOK_OF_LOST_NAMES:
 			OBJPUTSTR("Spirits from the void call out from its pages.");
 			break;
-		case ART_BOOK_OF_INFINITE_SPELLS:
-			OBJPUTSTR("Arcane magics fill its endless pages.");
-			break;
 		}
 	}
 	if (olet == WAND_CLASS) {
@@ -3584,38 +3575,6 @@ winid *datawin;
 			printed_type = TRUE;
 		}
 	}
-	if (olet == SCOIN_CLASS) {
-		switch(otyp) {
-		case WAGE_OF_PRIDE:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's weighty ego.");
-			OBJPUTSTR("Weakens a thinking creature, and causes an Angel to fall from grace.");
-			break;
-		case WAGE_OF_ENVY:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's material jealousy.");
-			OBJPUTSTR("Makes a thinking creature discard all its things in desire of others'.");
-			break;
-		case WAGE_OF_LUST:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's aimless bluster.");
-			OBJPUTSTR("Creates a hurricane of wind around you.");
-			break;
-		case WAGE_OF_WRATH:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's spilled blood.");
-			OBJPUTSTR("Fills the lungs of a creature with enraging blood.");
-			break;
-		case WAGE_OF_GLUTTONY:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's endless hunger.");
-			OBJPUTSTR("Causes an ediate creature to starve.");
-			break;
-		case WAGE_OF_GREED:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's hoarded things.");
-			OBJPUTSTR("Creates a mass of random objects to throw at a location.");
-			break;
-		case WAGE_OF_SLOTH:
-			OBJPUTSTR("Apply to crush the coin and harness the trapped soul's wasted time.");
-			OBJPUTSTR("Gives you a brief period of accelerated time.");
-			break;
-		}
-	}
 	if (olet == TOOL_CLASS && !printed_type) {
 		const char* subclass = "tool";
 		switch (otyp) {
@@ -3647,6 +3606,7 @@ winid *datawin;
 			break;
 		case TALLOW_CANDLE:
 		case WAX_CANDLE:
+		case MAGIC_CANDLE:
 		case CANDLE_OF_INVOCATION:
 		case TORCH: //actually over-ridden by being a weapon-tool
 		case SUNROD: //actually over-ridden by being a weapon-tool
@@ -3682,7 +3642,6 @@ winid *datawin;
 		case MAGIC_HARP:
 			subclass = "tonal instrument";
 			break;
-		case HYPOSPRAY:
 		case SENSOR_PACK:
 		case POWER_PACK:
 		case BULLET_FABBER:

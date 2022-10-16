@@ -34,6 +34,36 @@ CHAINBRANCH:	"The Quest" "qstlb" + (0, 0) portal
 RNDLEVEL:	"bigrm" "B" @ (10, 10) 75 5
 RNDLEVEL:	"bgrmb" "G" @ (15, 10) 50 4
 BRANCH:		"Fort Ludios" @ (14, 8) portal
+BRANCH:		"Starting Zone Arc" @ (2, 0) portal
+BRANCH:		"Starting Zone Ana" @ (2, 0) portal
+BRANCH:		"Starting Zone Bar" @ (2, 0) portal
+BRANCH:		"Starting Zone Bin" @ (2, 0) portal
+BRANCH:		"Starting Zone Cav" @ (2, 0) portal
+BRANCH:		"Starting Zone Con" @ (2, 0) portal
+BRANCH:		"Starting Zone Hea" @ (2, 0) portal
+BRANCH:		"Starting Zone Acu" @ (2, 0) portal
+BRANCH:		"Starting Zone Kni" @ (2, 0) portal
+BRANCH:		"Starting Zone Mon" @ (2, 0) portal
+BRANCH:		"Starting Zone Mad" @ (2, 0) portal
+BRANCH:		"Starting Zone Nob" @ (2, 0) portal
+BRANCH:		"Starting Zone Pri" @ (2, 0) portal
+BRANCH:		"Starting Zone Pir" @ (2, 0) portal
+BRANCH:		"Starting Zone Rog" @ (2, 0) portal
+BRANCH:		"Starting Zone Ran" @ (2, 0) portal
+BRANCH:		"Starting Zone Sam" @ (2, 0) portal
+BRANCH:		"Starting Zone Tou" @ (2, 0) portal
+BRANCH:		"Starting Zone Brd" @ (2, 0) portal
+BRANCH:		"Starting Zone Val" @ (2, 0) portal
+BRANCH:		"Starting Zone Wiz" @ (2, 0) portal
+BRANCH:		"Starting Zone Jed" @ (2, 0) portal
+BRANCH:		"Starting Zone Chf" @ (2, 0) portal
+BRANCH:		"Starting Zone Fir" @ (2, 0) portal
+BRANCH:		"Starting Zone Off" @ (2, 0) portal
+BRANCH:		"Starting Zone Und" @ (2, 0) portal
+BRANCH:		"Starting Zone Drow" @ (2, 0) portal
+BRANCH:		"Starting Zone DNob" @ (2, 0) portal
+BRANCH:		"Starting Zone Aand" @ (2, 0) portal
+BRANCH:		"Starting Zone Ethe" @ (2, 0) portal
 
 RNDLEVEL:	"stor" "S" @ (5, 20) 90 7
 BRANCH: 	"The Lost Tomb" @ (5, 25)
@@ -268,6 +298,276 @@ LEVEL:	"x-loca" "L" @ (3, 1)
 LEVEL:	"x-goal" "none" @ (-1, 0)
 
 #
+# Starting Zone Arc
+#
+DUNGEON:		"Starting Zone Arc" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0arc" "none" @ (1, 0)
+LEVEL:		"szarc" "none" @ (2, 0)
+
+#
+# Starting Zone Ana
+#
+DUNGEON:		"Starting Zone Ana" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0ana" "none" @ (1, 0)
+LEVEL:		"szana" "none" @ (2, 0)
+
+#
+# Starting Zone Bar
+#
+DUNGEON:		"Starting Zone Bar" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0bar" "none" @ (1, 0)
+LEVEL:		"szbar" "none" @ (2, 0)
+
+#
+# Starting Zone Bin
+#
+DUNGEON:		"Starting Zone Bin" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0bin" "none" @ (1, 0)
+LEVEL:		"szbin" "none" @ (2, 0)
+
+#
+# Starting Zone Cav
+#
+DUNGEON:		"Starting Zone Cav" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0cav" "none" @ (1, 0)
+LEVEL:		"szcav" "none" @ (2, 0)
+
+#
+# Starting Zone Con
+#
+DUNGEON:		"Starting Zone Con" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0con" "none" @ (1, 0)
+LEVEL:		"szcon" "none" @ (2, 0)
+
+#
+# Starting Zone Hea
+#
+DUNGEON:		"Starting Zone Hea" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0hea" "none" @ (1, 0)
+LEVEL:		"szhea" "none" @ (2, 0)
+
+#
+# Starting Zone Acu
+#
+DUNGEON:		"Starting Zone Acu" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0acu" "none" @ (1, 0)
+LEVEL:		"szacu" "none" @ (2, 0)
+
+#
+# Starting Zone kni
+#
+DUNGEON:		"Starting Zone Kni" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0kni" "none" @ (1, 0)
+LEVEL:		"szkni" "none" @ (2, 0)
+
+#
+# Starting Zone mon
+#
+DUNGEON:		"Starting Zone Mon" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0mon" "none" @ (1, 0)
+LEVEL:		"szmon" "none" @ (2, 0)
+
+#
+# Starting Zone mad
+#
+DUNGEON:		"Starting Zone Mad" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0mad" "none" @ (1, 0)
+LEVEL:		"szmad" "none" @ (2, 0)
+
+#
+# Starting Zone nob
+#
+DUNGEON:		"Starting Zone Nob" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0nob" "none" @ (1, 0)
+LEVEL:		"sznob" "none" @ (2, 0)
+
+#
+# Starting Zone pri
+#
+DUNGEON:		"Starting Zone Pri" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0pri" "none" @ (1, 0)
+LEVEL:		"szpri" "none" @ (2, 0)
+
+#
+# Starting Zone pir
+#
+DUNGEON:		"Starting Zone Pir" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0pir" "none" @ (1, 0)
+LEVEL:		"szpir" "none" @ (2, 0)
+
+#
+# Starting Zone rog
+#
+DUNGEON:		"Starting Zone Rog" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0rog" "none" @ (1, 0)
+LEVEL:		"szrog" "none" @ (2, 0)
+
+#
+# Starting Zone ran
+#
+DUNGEON:		"Starting Zone Ran" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0ran" "none" @ (1, 0)
+LEVEL:		"szran" "none" @ (2, 0)
+
+#
+# Starting Zone sam
+#
+DUNGEON:		"Starting Zone Sam" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0sam" "none" @ (1, 0)
+LEVEL:		"szsam" "none" @ (2, 0)
+
+#
+# Starting Zone tou
+#
+DUNGEON:		"Starting Zone Tou" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0tou" "none" @ (1, 0)
+LEVEL:		"sztou" "none" @ (2, 0)
+
+#
+# Starting Zone brd
+#
+DUNGEON:		"Starting Zone Brd" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0brd" "none" @ (1, 0)
+LEVEL:		"szbrd" "none" @ (2, 0)
+
+#
+# Starting Zone val
+#
+DUNGEON:		"Starting Zone Val" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0val" "none" @ (1, 0)
+LEVEL:		"szval" "none" @ (2, 0)
+
+#
+# Starting Zone wiz
+#
+DUNGEON:		"Starting Zone Wiz" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0wiz" "none" @ (1, 0)
+LEVEL:		"szwiz" "none" @ (2, 0)
+
+#
+# Starting Zone jed
+#
+DUNGEON:		"Starting Zone Jed" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0jed" "none" @ (1, 0)
+LEVEL:		"szjed" "none" @ (2, 0)
+
+#
+# Starting Zone chf
+#
+DUNGEON:		"Starting Zone Chf" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0chf" "none" @ (1, 0)
+LEVEL:		"szchf" "none" @ (2, 0)
+
+#
+# Starting Zone fir
+#
+DUNGEON:		"Starting Zone Fir" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0fir" "none" @ (1, 0)
+LEVEL:		"szfir" "none" @ (2, 0)
+
+#
+# Starting Zone off
+#
+DUNGEON:		"Starting Zone Off" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0off" "none" @ (1, 0)
+LEVEL:		"szoff" "none" @ (2, 0)
+
+#
+# Starting Zone und
+#
+DUNGEON:		"Starting Zone Und" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0und" "none" @ (1, 0)
+LEVEL:		"szund" "none" @ (2, 0)
+
+#
+# Starting Zone aand
+#
+DUNGEON:		"Starting Zone Aand" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0aand" "none" @ (1, 0)
+LEVEL:		"szaand" "none" @ (2, 0)
+
+#
+# Starting Zone drow
+#
+DUNGEON:		"Starting Zone Drow" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0drow" "none" @ (1, 0)
+LEVEL:		"szdrow" "none" @ (2, 0)
+
+#
+# Starting Zone dnob
+#
+DUNGEON:		"Starting Zone DNob" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0dnob" "none" @ (1, 0)
+LEVEL:		"szdnob" "none" @ (2, 0)
+
+#
+# Starting Zone ethe
+#
+DUNGEON:		"Starting Zone Ethe" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0ethe" "none" @ (1, 0)
+LEVEL:		"szethe" "none" @ (2, 0)
+
+#
 # Lokoban
 #
 DUNGEON:		"Lokoban" "none" (1, 0)
@@ -331,25 +631,12 @@ LEVEL:          "lbyrnth" "none" @ (1, 0)
 
 
 ##
-DUNGEON:        "The Spire" "none" (15, 0)
+DUNGEON:        "The Spire" "none" (2, 0)
 ALIGNMENT:      neutral
 DESCRIPTION:    mazelike
 ENTRY:		-1
 LEVEL:          "sigil" "none" @ (1, 0)
-LEVEL:          "stairs2" "none" @ (2, 0)
-LEVEL:          "stairs1" "none" @ (3, 0)
-LEVEL:          "stairs2" "none" @ (4, 0)
-LEVEL:          "stairs1" "none" @ (5, 0)
-LEVEL:          "stairs2" "none" @ (6, 0)
-LEVEL:          "stairs1" "none" @ (7, 0)
-LEVEL:          "stairs2" "none" @ (8, 0)
-LEVEL:          "stairs1" "none" @ (9, 0)
-LEVEL:          "stairs2" "none" @ (10, 0)
-LEVEL:          "stairs1" "none" @ (11, 0)
-LEVEL:          "stairs2" "none" @ (12, 0)
-LEVEL:          "stairs1" "none" @ (13, 0)
-LEVEL:          "stairs2" "none" @ (14, 0)
-LEVEL:          "stairs3" "none" @ (15, 0)
+LEVEL:          "stairs3" "none" @ (2, 0)
 
 
 #
@@ -362,7 +649,7 @@ LEVEL:          "stairs3" "none" @ (15, 0)
 #	It is suposed to be on the surface (in a ravine created by the mines), 
 #	but is still surrounded by stone.
 
-DUNGEON:	"Vlad's Tower" "T" (4, 0)
+DUNGEON:	"Vlad's Tower" "T" (7, 0)
 PROTOFILE:	"tower"
 DESCRIPTION:	mazelike
 ALIGNMENT:	chaotic

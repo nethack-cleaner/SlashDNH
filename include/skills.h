@@ -140,7 +140,7 @@
 #define P_MASTER		5	/* Unarmed combat/martial arts only */
 #define P_GRAND_MASTER	6	/* Unarmed combat/martial arts only */
 
-#define practice_needed_to_advance(level) ((level)*(level)*20)
+#define practice_needed_to_advance(level) ((level)*(level)*40)
 
 /* The hero's skill in various weapons. */
 struct skills {

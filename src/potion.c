@@ -1403,6 +1403,10 @@ healup(nhp, nxtra, curesick, cureblind)
 {
 	int * hpmax;
 	int * hp;
+	if (Is_nowhere(&u.uz)) {
+        pline("In this land beyond space and time you don't seem to be able to change your health");
+        return;
+    }
 	if(active_glyph(RADIANCE))
 		nhp *= 1.3;
 	if (nhp) {
@@ -2459,6 +2463,12 @@ boolean amnesia;
 			makeknown(obj->otyp);
 			used = TRUE;
 			break;
+		} else if (obj->otyp == POT_BLOOD) {
+            pline("The blood disperses completely");
+            makeknown(obj->otyp);
+            used = TRUE;
+            useupall(obj);
+            break;
 		}
 		if (amnesia)
 		    pline("%s %s completely.", Your_buf, aobjnam(obj,"dilute"));
@@ -2840,7 +2850,7 @@ dodip()
 			else if (was_swapwep) setuswapwep(obj);
 			else if (was_quiver) setuqwep(obj);
 
-			if (!obj || obj->otyp != save_otyp || (obj->otyp == HYPOSPRAY_AMPULE && objects[HYPOSPRAY_AMPULE].oc_name_known)) {
+			if (!obj || obj->otyp != save_otyp) {
 				if (save_otyp == POT_POLYMORPH || potion->otyp == POT_POLYMORPH)
 					makeknown(POT_POLYMORPH);
 				useup(potion);
@@ -2856,14 +2866,24 @@ dodip()
 	    return MOVE_STANDARD;
 	} else if(obj->oclass == POTION_CLASS && (obj->otyp != potion->otyp || (obj->otyp == POT_BLOOD && obj->corpsenm != potion->corpsenm))) {
 		/* Mixing potions is dangerous... */
+		if (obj->quan > 5 || potion->quan > 5) {
+            pline("You have difficulty handling a stack of potions that large, try five or fewer.");
+            return(1);
+        }
+		if (obj->otyp == POT_BLOOD) {
+            pline("Dipping doesn't seem to alter the contents.");
+            return(1);
+        }
 		pline_The("potions mix...");
 		/* KMH, balance patch -- acid is particularly unstable */
 		// Slashem tweak added
+		/* HARD CHANGE:  Without an alchemy smock or lab coat fails 50% of the time */
 		if (obj->cursed || obj->otyp == POT_ACID || 
 			(obj->otyp == POT_BLOOD && acidic(&mons[obj->corpsenm])) ||
 		    potion->cursed || potion->otyp == POT_ACID || 
 			(potion->otyp == POT_BLOOD && acidic(&mons[potion->corpsenm])) || 
 			!rn2(10)
+			|| ((!uarmc || uarmc->otyp != ALCHEMY_SMOCK) && rn2(2))
 		) {
 			pline("BOOM!  They explode!");
 			exercise(A_STR, FALSE);

@@ -425,6 +425,7 @@ give_up:	/* Quit */
 	/* Select a role, if necessary */
 	/* we'll try to be compatible with pre-selected race/gender/alignment,
 	 * but may not succeed */
+	int extraletter = 0;
 	if (flags.initrole < 0) {
 	    char rolenamebuf[QBUFSZ];
 	    /* Process the choice */
@@ -449,6 +450,18 @@ give_up:	/* Quit */
 			any.a_int = i+1;	/* must be non-zero */
 			thisch = lowc(roles[i].name.m[0]);
 			if (thisch == lastch) thisch = highc(thisch);
+			if (thisch == lowc(lastch)) {
+				if (extraletter == 0) {
+					thisch = 'E';
+				} else if (extraletter == 1) {
+					thisch = 'H';
+				} else if (extraletter == 2) {
+					thisch = 'J';
+				} else if (extraletter == 3) {
+					thisch = 'K';
+				}
+				extraletter++;
+			}
 			if (flags.initgend != ROLE_NONE && flags.initgend != ROLE_RANDOM) {
 				if (flags.initgend == 1  && roles[i].name.f)
 					Strcpy(rolenamebuf, roles[i].name.f);

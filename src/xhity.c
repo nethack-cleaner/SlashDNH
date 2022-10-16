@@ -2149,30 +2149,6 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
 		}
 	}
 
-	/* Unpolyed player Barbarians get up to 2 bonus attacks (and offhand attacks) */
-	/* Would be shown in pokedex, if you could look up yourself in it. */
-	if (youagr && !Upolyd && Role_if(PM_BARBARIAN) && (*indexnum > 0)
-			&& ((is_null_attk(attk) || (attk->aatyp != AT_WEAP && attk->aatyp != AT_XWEP))
-			&& (prev_attack.aatyp == AT_WEAP || prev_attack.aatyp == AT_XWEP))) {
-		int nattacks = (u.ulevel >= 14) + (u.ulevel >= 30);
-		/* note: this code assumes subout_barb1 and barb2 are sequential bits, as it uses them like a tiny int */
-		int attacknum = (*subout&(SUBOUT_BARB1|SUBOUT_BARB2)) / SUBOUT_BARB1;
-
-		if (attacknum < nattacks)
-		{
-			attk->aatyp = AT_WEAP;
-			attk->adtyp = AD_PHYS;
-			attk->damn = 1;
-			attk->damd = 4;
-			*tohitmod = -10 * attacknum;
-			fromlist = FALSE;
-
-			(*subout) |= ((SUBOUT_BARB1 & (*subout&SUBOUT_BARB1)) ? SUBOUT_BARB2 : 0);
-			(*subout) ^= SUBOUT_BARB1;
-			(*subout) &= ~SUBOUT_XWEP;	/* allow another followup offhand attack if twoweaponing */
-		}
-	}
-
 	/*Weapon user, not as good without*/
 	if (pa->mtyp == PM_DAO_LAO_GUI_MONK && attk->aatyp == AT_WEAP && (
 		 (youagr && !uwep) ||
@@ -2919,6 +2895,11 @@ int dmg;				/* damage to deal */
 		if (*hp(mdef) < 1) {
 			if (Upolyd && !Unchanging)
 				rehumanize();
+				/* HARD CHANGE:  Returning from polymorph at no more than 25% max hp */
+                if (u.uhpmax * 0.25 < u.uhp)
+                    u.uhp = (int) u.uhpmax * 0.25;
+                if (u.uhpmax * 0.25 < *hp(mdef))
+                    *hp(mdef) = (int) u.uhpmax * 0.25;
 			else if (magr && !oldkiller)
 				done_in_by(magr);
 			else {
@@ -5698,8 +5679,9 @@ boolean ranged;
 
 			/* Player vampires are smart enough not to feed while
 			   biting if they might have trouble getting it down */
+			/* Hard change vampires drain blood only 1/2th the time and gain only 5 instead of 6 food. */
 			if (youagr && !Race_if(PM_INCANTIFIER) && is_vampire(youracedata)
-				&& u.uhunger <= 1420 && attk->aatyp == AT_BITE) {
+				&& u.uhunger <= 1420 && attk->aatyp == AT_BITE && rn2(2) == 1) {
 				/* For the life of a creature is in the blood (Lev 17:11) */
 				if (flags.verbose)
 				    You("feed on the lifeblood.");
@@ -5707,7 +5689,7 @@ boolean ranged;
 				   eating conducts. The draining of life is
 				   considered to be primarily a non-physical
 				   effect */
-				lesshungry(ptmp * 6);
+				lesshungry(ptmp * 5);
 			}
 			/* tame vampires gain nutrition */
 			if (uncancelled && !youagr && get_mx(magr, MX_EDOG))

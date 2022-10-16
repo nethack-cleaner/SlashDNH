@@ -286,7 +286,11 @@ boolean forcecontrol;
 			else if ((!polyok(&mons[mntmp]) && (!(allow_nopoly_poly = (wizard && yn("Poly into forbidden form") == 'y')))) ||
 				(your_race(&mons[mntmp]) && !allow_selfrace_poly))
 				You("cannot polymorph into that.");
-			else break;
+			else {
+				if (u.ulevel + 5 < (int)mons[mntmp].mlevel) {
+                    You("find that form too difficult for you to master at your skill level.");
+                } else break;
+			}
 		} while(++tries < 5);
 		if (tries==5) pline("%s", thats_enough_tries);
 		/* allow skin merging, even when polymorph is controlled */
@@ -350,10 +354,9 @@ boolean forcecontrol;
 	if (mntmp < LOW_PM) {
 		tries = 0;
 		do {
-			/* randomly pick an "ordinary" monster */
-			mntmp = rn1(SPECIAL_PM - LOW_PM, LOW_PM);
-		} while((!polyok(&mons[mntmp]) || is_placeholder(&mons[mntmp]))
-				&& tries++ < 200);
+            /* randomly pick an "ordinary" monster */
+            mntmp = rn1(SPECIAL_PM - LOW_PM, LOW_PM);
+        } while((!polyok(&mons[mntmp]) || is_placeholder(&mons[mntmp]) || (u.ulevel + 5 < (int)mons[mntmp].mlevel)) && tries++ < 200);
 	}
 
 	/* The below polyok() fails either if everything is genocided, or if

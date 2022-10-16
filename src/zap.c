@@ -1622,9 +1622,6 @@ struct obj * obj;
 			if (obj->spe)
 				new_otyp = EGG;
 			break;
-		case HYPOSPRAY_AMPULE:
-			new_otyp = HYPOSPRAY_AMPULE;
-			break;
 		case SCR_GOLD_SCROLL_OF_LAW:
 			new_otyp = GOLD_PIECE;
 			break;
@@ -1693,16 +1690,6 @@ struct obj * obj;
 			break;
 		    }
 		}
-	}
-	/* hypospray ampules randomize the contained potion (and were guaranteed to turn into ampules)  */
-	if (obj->otyp == HYPOSPRAY_AMPULE) {
-		int hypospray_ampules[] = {POT_GAIN_ABILITY,POT_RESTORE_ABILITY,POT_BLINDNESS,POT_CONFUSION,POT_PARALYSIS,
-				POT_SPEED,POT_HALLUCINATION,POT_HEALING,POT_EXTRA_HEALING,POT_GAIN_ENERGY,
-				POT_SLEEPING,POT_FULL_HEALING,POT_POLYMORPH,POT_AMNESIA};
-		do {
-			otmp->ovar1 = (long)ROLL_FROM(hypospray_ampules);
-		} while(otmp->ovar1 == obj->ovar1);
-		otmp->spe = obj->spe;
 	}
 	/* gold scrolls of law turn a small randomize amount of gold (and were guaranteed to turn into gold pieces) */
 	if (obj->otyp == SCR_GOLD_SCROLL_OF_LAW) {

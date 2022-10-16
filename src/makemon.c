@@ -1348,7 +1348,6 @@ boolean goodequip;
 		}
 	} else if(ptr->mtyp == PM_LADY_OF_PAIN){
 		otmp = mksobj(SKELETON_KEY, mkobjflags);
-		otmp = oname(otmp, artiname(ART_CAGE_KEY));
 		(void) mpickobj(mtmp,otmp);
 				
 	} else if(is_mercenary(ptr)) {
@@ -9799,9 +9798,6 @@ boolean goodequip;
 			int rng = 0;
 			switch(monsndx(ptr)){
 				case PM_MIGO_WORKER:
-					rng = LAST_GEM-DILITHIUM_CRYSTAL;
-					n = rn2(8);
-					for(i=0; i<n; i++) (void)mongets(mtmp, rn2(rng)+DILITHIUM_CRYSTAL, mkobjflags);
 					n = rn2(10);
 					for(i=0; i<n; i++) (void)mongets(mtmp, FLINT, mkobjflags);
 					n = rn2(20);
@@ -13595,6 +13591,7 @@ rndmonst()
 	else minmlev = zlevel / 6;
 	/* determine the level of the strongest monster to make. */
 	maxmlev = (zlevel + u.ulevel) / 2;
+	maxmlev += 3; /* max monster level is increased by 3 */
 
 	if(u.ukinghill){ /* You have pirate quest artifact in open inventory */
 		if(rnd(100)>80){
@@ -13629,7 +13626,7 @@ rndmonst()
 	}
 	else if (In_neu(&u.uz) && 
 		(
-			Is_rlyeh(&u.uz) ||  Is_sumall(&u.uz) || Is_gatetown(&u.uz) || 
+			Is_rlyeh(&u.uz) ||  Is_sumall(&u.uz) || 
 			(rn2(10) && (In_outlands(&u.uz)))
 		)
 	){
@@ -13886,6 +13883,7 @@ rndmonst()
 	    minmlev = zlevel / 6;
 	    /* determine the level of the strongest monster to make. */
 	    maxmlev = (zlevel + u.ulevel) / 2;
+		maxmlev += 3;
 	    elemlevel = In_endgame(&u.uz) && !Is_astralevel(&u.uz);
 
 /*

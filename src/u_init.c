@@ -204,10 +204,6 @@ static struct trobj Anachrononaut_Elf[] = {
 	{ JUMPING_BOOTS, 0, ARMOR_CLASS, 1, 0 },
 	{ POWER_PACK, 0, TOOL_CLASS, 10, 0 },
 	{ LEMBAS_WAFER, 0, FOOD_CLASS, 3, 0 },
-	{ HYPOSPRAY, 0, FOOD_CLASS, 1, 0 },
-	{ HYPOSPRAY_AMPULE, 15, TOOL_CLASS, 1, 0 },
-	{ HYPOSPRAY_AMPULE, 10, TOOL_CLASS, 1, 0 },
-	{ HYPOSPRAY_AMPULE,  5, TOOL_CLASS, 1, 0 },
 	{ TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, 0 },
 	{ TIN_OPENER, UNDEF_SPE, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -1682,6 +1678,9 @@ int count;
 static void
 set_ent_species(){
 	int type = rn2(ENT_MAX_SPECIES);
+	while (type == ENT_REDWOOD || type == ENT_CYPRESS || type == ENT_FIR || type == ENT_POPLAR || type == ENT_SPRUCE || type == ENT_DOGWOOD || type == ENT_ELM) {
+		type = rn2(ENT_MAX_SPECIES);
+	}
 	u.ent_species = type;
 	switch(type){
 		case ENT_DOGWOOD:
@@ -1989,6 +1988,11 @@ u_init()
 		knows_object(SACK);
 		knows_object(TOUCHSTONE);
 		skill_init(Skill_A);
+		if (Race_if(PM_CHIROPTERAN)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 	break;
 	case PM_ANACHRONOUNBINDER:
 		ini_inv(Anachronounbinder);
@@ -2005,8 +2009,23 @@ u_init()
 		flags.initalign = 0; // 0 == lawful
 		skill_init(Skill_Acu);
 	break;
+	case PM_OFFICER:
+		if (Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
+	break;
+	case PM_UNDEAD_SLAYER:
+		if (Race_if(PM_HUMAN)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
+	break;
 	case PM_ANACHRONONAUT:
 		u.veil = FALSE;
+		u.ualign.type = A_CHAOTIC;
 		if(Race_if(PM_MYRKALFR) && !flags.female){
 			ini_inv(Anachrononaut_Dro);
 		} else if(Race_if(PM_MYRKALFR) && flags.female){
@@ -2054,8 +2073,6 @@ u_init()
 		knows_object(LASER_BEAM);
 		knows_object(BULLET_FABBER);
 		knows_object(SENSOR_PACK);
-		knows_object(HYPOSPRAY);
-		knows_object(HYPOSPRAY_AMPULE);
 		knows_object(POWER_PACK);
 		knows_object(PROTEIN_PILL);
 		knows_object(FORCE_PIKE);
@@ -2078,7 +2095,6 @@ u_init()
 		knows_object(POWER_ARMOR);
 		knows_object(KNUCKLE_DUSTERS);
 		if(Race_if(PM_DWARF)){
-			u.ualign.type = A_CHAOTIC;
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 			flags.initalign = 2; // 2 == chaotic
 		}
@@ -2102,6 +2118,11 @@ u_init()
 		
 	break;
 	case PM_BARBARIAN:
+		if (Race_if(PM_SALAMANDER) || Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		u.role_variant = TWO_HANDED_SWORD;
 		if (rn2(100) >= 50) {	/* see above comment */
 			u.role_variant = BATTLE_AXE;
@@ -2128,7 +2149,7 @@ u_init()
 			ini_inv(BlackTorches);
 		}
 		if(Race_if(PM_CLOCKWORK_AUTOMATON)){
-			u.ualign.type = A_LAWFUL;
+			/* u.ualign.type = A_LAWFUL; */
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 			flags.initalign = 0; // 0 == lawful
 		}
@@ -2142,6 +2163,11 @@ u_init()
 		knows_object(SPE_SLOW_MONSTER);
 		knows_object(SPE_CAUSE_FEAR);
 		knows_object(SPE_CHARM_MONSTER);
+		if (Race_if(PM_CHIROPTERAN)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		/* Bards also know a lot about legendary & magical stuff. */
 		know_random_obj(rn1(11,5));
 		/* Bards also know all the basic wards. */
@@ -2201,10 +2227,16 @@ u_init()
 		Cave_man[C_AMMO].trquan = rn1(11, 10);	/* 10..20 */
 		ini_inv(Cave_man);
 		skill_init(Skill_C);
+		u.ualign.type = A_LAWFUL;
 		break;
 #ifdef CONVICT
 	case PM_CONVICT:
         ini_inv(Convict);
+		if (Race_if(PM_ETHEREALOID)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_CHAOTIC;
+		}
         knows_object(SKELETON_KEY);
         knows_object(GRAPPLING_HOOK);
         skill_init(Skill_Con);
@@ -2249,6 +2281,7 @@ u_init()
         knows_object(WAN_POLYMORPH);
         knows_object(WAN_PROBING);
         skill_init(Skill_Mad);
+		u.ualign.type = A_CHAOTIC;
 		u.ualign.sins += 13; /* You have sinned */
 		/* gods slightly torqued */
 		godlist[urole.lgod].anger = 1;
@@ -2260,6 +2293,7 @@ u_init()
 
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Madmen are pariahs of their race */
+		u.ualign.type = A_CHAOTIC;
         break;
 	case PM_HEALER:
 #ifndef GOLDOBJ
@@ -2271,6 +2305,11 @@ u_init()
 		ini_inv(Lamp);
 		knows_object(POT_FULL_HEALING);
 		skill_init(Skill_H);
+		if (Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		break;
 	case PM_KNIGHT:
 		if(Race_if(PM_DWARF)) ini_inv(DwarfNoble);
@@ -2281,6 +2320,7 @@ u_init()
 		} else ini_inv(Knight);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
+		u.ualign.type = A_LAWFUL;
 		/* give knights chess-like mobility
 		 * -- idea from wooledge@skybridge.scl.cwru.edu */
 		HJumping |= FROMOUTSIDE;
@@ -2304,6 +2344,11 @@ u_init()
 		knows_object(BESTIAL_CLAW);
 		knows_object(SHURIKEN);
 		knows_object(KATAR);
+		if (Race_if(PM_ORC)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		// if(!rn2(5)) ini_inv(Magicmarker);
 		// else if(!rn2(10)) ini_inv(Lamp);
 		// knows_class(ARMOR_CLASS);
@@ -2343,6 +2388,11 @@ u_init()
 		} else if(Race_if(PM_DROW) && !flags.female){
 			ini_inv(BlackTorches);
 		}
+		if (Race_if(PM_CLOCKWORK_AUTOMATON) || Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 		// knows_class(ARMOR_CLASS);
 		if(Race_if(PM_DROW) && flags.female) skill_init(Skill_DNob);
 		else if(Race_if(PM_DWARF)) skill_init(Skill_DwaNob);
@@ -2378,19 +2428,26 @@ u_init()
 		knows_object(OILSKIN_CLOAK);
 		knows_object(GRAPPLING_HOOK);
 		skill_init(Skill_Pir);
+		u.ualign.type = A_CHAOTIC;
 		break;
 	case PM_PRIEST:
 		if(!(flags.female) && Race_if(PM_DROW)){
 			Priest[PRI_WEAPON].trotyp = DROVEN_GREATSWORD;
 		}
+		u.ualign.type = A_LAWFUL;
 		if(flags.female && Race_if(PM_DROW)) ini_inv(DPriest);
 		else ini_inv(Priest);
 		if(Race_if(PM_DROW)){
 			if(flags.female){
 				ini_inv(DrainBook);
 				ini_inv(FamBook);
+				u.ualign.type = A_CHAOTIC;
+			} else {
+				u.ualign.type = A_NEUTRAL;
 			}
 			ini_inv(DarkWand);
+		} else if (Race_if(PM_ELF)) {
+			u.ualign.type = A_CHAOTIC;
 		}
 		// if(!rn2(10)) ini_inv(Magicmarker);
 		// else if(!rn2(10)) ini_inv(Lamp);
@@ -2419,6 +2476,11 @@ u_init()
 		if(Race_if(PM_DROW)){
 			ini_inv(BlackTorches);
 		}
+		if (Race_if(PM_HUMAN)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		break;
 	case PM_ROGUE:
 		Rogue[R_DAGGERS].trquan = rn1(10, 6);
@@ -2431,6 +2493,7 @@ u_init()
 		ini_inv(Blindfold);
 		knows_object(SACK);
 		skill_init(Skill_R);
+		u.ualign.type = A_CHAOTIC;
 		break;
 	case PM_SAMURAI:
 		u.umartial = TRUE;
@@ -2446,6 +2509,11 @@ u_init()
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
 		skill_init(Skill_S);
+		if (Race_if(PM_DROW)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 		break;
 #ifdef TOURIST
 	case PM_TOURIST:
@@ -2458,6 +2526,7 @@ u_init()
 		ini_inv(Tourist);
 		ini_inv(Leash);
 		ini_inv(Towel);
+		u.ualign.type = A_NEUTRAL;
 		// else if(!rn2(25)) ini_inv(Magicmarker);
 		skill_init(Skill_T);
 		break;
@@ -2468,6 +2537,28 @@ u_init()
 		knows_class(WEAPON_CLASS);
 		// knows_class(ARMOR_CLASS);
 		skill_init(Skill_V);
+		if (Race_if(PM_HUMAN)) {
+			u.ualign.type = A_LAWFUL;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
+		break;
+	case PM_CHEF:
+		if (Race_if(PM_ORC)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
+		break;
+	case PM_FIREFIGHTER:
+		u.ualign.type = A_LAWFUL;
+		break;
+	case PM_JEDI:
+		if (Race_if(PM_DROW)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 		break;
 	case PM_WIZARD:
 		if(flags.female && Race_if(PM_DROW)){
@@ -2482,6 +2573,11 @@ u_init()
 			ini_inv(DarkWand);
 		}
 		skill_init(Skill_W);
+		if (Race_if(PM_ORC) || Race_if(PM_HUMAN)) {
+			u.ualign.type = A_CHAOTIC;
+		} else {
+			u.ualign.type = A_NEUTRAL;
+		}
 		if(Race_if(PM_DROW) && flags.female) skill_add(Skill_DW);
 		break;
 
@@ -2570,7 +2666,7 @@ u_init()
 		skill_add(Skill_Drow_Unarmed);
 		
 		if(Role_if(PM_NOBLEMAN)){
-			if(!flags.female){
+			if(!flags.female && FALSE){
 				/* Males are neutral */
 				u.ualign.type = A_NEUTRAL;
 				u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
@@ -2581,7 +2677,7 @@ u_init()
 		} else if(!Role_if(PM_EXILE) && !Role_if(PM_CONVICT)){
 			if(!Role_if(PM_MADMAN))
 				ini_inv(DrovenCloak);
-			if(!flags.female && !Role_if(PM_ANACHRONOUNBINDER)){
+			if(!flags.female && !Role_if(PM_ANACHRONOUNBINDER) && FALSE){
 				/* Males are neutral */
 				u.ualign.type = A_NEUTRAL;
 				u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
@@ -3085,8 +3181,6 @@ register struct trobj *trop;
 				|| otyp == nocreate5
 				|| otyp == nocreate6
 				|| otyp == nocreate7
-				|| (obj->otyp == HYPOSPRAY_AMPULE && nocreateam1 == (short)obj->ovar1)
-				|| (obj->otyp == HYPOSPRAY_AMPULE && nocreateam2 == (short)obj->ovar1)
 				|| otyp == RIN_LEVITATION
 				/* 'useless' items */
 				|| otyp == POT_HALLUCINATION
@@ -3154,11 +3248,6 @@ register struct trobj *trop;
 				else if(nocreate5 == STRANGE_OBJECT) nocreate5 = otyp;
 				else if(nocreate6 == STRANGE_OBJECT) nocreate6 = otyp;
 				else if(nocreate7 == STRANGE_OBJECT) nocreate7 = otyp;
-			}
-			/* or ampule */
-			if (obj->otyp == HYPOSPRAY_AMPULE){
-				if(nocreateam1 == STRANGE_OBJECT) nocreateam1 = (short)obj->ovar1;
-				else if(nocreateam2 == STRANGE_OBJECT) nocreateam2 = (short)obj->ovar1;
 			}
 		}
 

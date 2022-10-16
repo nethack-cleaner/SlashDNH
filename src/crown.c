@@ -36,7 +36,6 @@ static const struct crowning hand_of_elbereth[] = {
 {GOD_GOD_THE_FATHER,             ART_CROWN_OF_THE_SAINT_KING,	"the Saint %s",							verb_thee_the("crown"),					"received the crown of the Saint King",	CRWN_TTL_KING	},
 {GOD_MOTHER_EARTH,               ART_CROWN_OF_THE_SAINT_KING,	"the Grey Saint",						verb_thee_the("crown"),					"received the crown of the Saint King"	},
 {GOD_THE_SATAN,                  ART_HELM_OF_THE_DARK_LORD,		"the Dark %s",							verb_thee_the("crown"),					"received the helm of the Dark Lord",	CRWN_TTL_LORD	},
-	/* Wizard. Artifact is replaced by Book of Infinite Spells if Necronomicon already exists. */
 {GOD_PTAH,                       ART_NECRONOMICON,				"the Magister of Law",					dub_thee_the,							became_the	},
 {GOD_THOTH,                      ART_NECRONOMICON,				"the Wizard of Balance",				"Thou shalt be the %s!",				became_the	},
 {GOD_ANHUR,                      ART_NECRONOMICON,				"the Glory of Chardros",				chosen("take lives for My Glory"),		became_the	},
@@ -340,10 +339,6 @@ gcrownu()
 		/* does it already exist? might need to change what artifact we try to give */
 		if (art_already_exists(arti)) {
 			already_exists = TRUE;
-			if (arti == ART_NECRONOMICON) {
-				arti = ART_BOOK_OF_INFINITE_SPELLS;
-				already_exists = art_already_exists(arti);
-			}
 		}
 
 		/* if it doesn't already exist, make it */
@@ -437,9 +432,6 @@ gcrownu()
 					break;
 				case ART_NECRONOMICON:
 					obj->ovar1 |= SP_DEATH;
-					break;
-				case ART_BOOK_OF_INFINITE_SPELLS:
-					obj->ovar1 = SPE_FINGER_OF_DEATH;
 					break;
 				case ART_POSEIDON_S_TRIDENT:
 					HSwimming |= FROMOUTSIDE;

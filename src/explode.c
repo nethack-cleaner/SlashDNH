@@ -755,6 +755,8 @@ boolean yours; /* is it your fault (for killing monsters) */
 				change_usanity(-rnd(6), FALSE);
 			}
 		}
+		/* HARD CHANGE, triple all explosion damage */
+		damu = damu * 3;
 		ugolemeffects((int) adtyp, damu);
 
 		if (uhurt == 2 || uhurt == 3) {

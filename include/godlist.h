@@ -413,6 +413,57 @@ GOD_V2("the Silver Flame", A_NONE, HOLY_HOLINESS,
 GOD_V2("Nyarlathotep", A_NONE, NEUTRAL_HOLINESS,
 	MINIONS(PM_HUNTING_HORROR)
 	),
+/* Chef */
+GOD_V2("Demeter",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Hestia",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Adephagia",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Firefighter */
+GOD_V2("Prometheus",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Thor",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Arson",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Jedi */
+GOD_V2("The Light Side",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("The Force",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("The Dark Side",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Officer */
+GOD_V2("Magnum",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Smith",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Wesson",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Undead Slayer */
+GOD_V2("Seeker",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Osiris",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Seth",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+
 /* the great terminator */
 GOD_V2((const char *)0, 0, 0, MINIONS())
 };

@@ -42,7 +42,7 @@ baalphegor_kill,A universe without motion,Destroyed Baalphegor,x,
 angel_hell_vault OR ancient_hell_vault OR tanninim_hell_vault,Relics of a bygone era,Opened one type of hellish seal,x,Statue in a vault
 angel_hell_vault AND ancient_hell_vault AND tanninim_hell_vault,There are a lot of these.,Opened all three types of hellish seal (across all games played),x,Three statues
 bokrug_ascension,Detestable gods,Completed Bokrug's ascension ritual,x,Bokrug statue over water
-notdNetHack,,,,
+SlashDNH,,,,
 get_kroo,Kroo's Bling,Acquire the dismal swamp completion prize.,,
 get_raggo,Pet Rock,Acquire the gnomish mines completion prize.,uses same image as luckstone,
 get_poplar,Punishing Poplars,Acquire the black forest completion prize.,,

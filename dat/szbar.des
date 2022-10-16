@@ -1,0 +1,140 @@
+#	SCCS Id: @(#)sokoban.des	3.4	1999/03/15
+#	Copyright (c) 1998-1999 by Kevin Hugo
+# NetHack may be freely redistributed.  See license for details.
+#
+# In case you haven't played the game Sokoban, you'll learn
+# quickly.  This branch isn't particularly difficult, just time
+# consuming.  Some players may wish to skip this branch.
+#
+# The following actions are currently permitted without penalty:
+#   Carrying or throwing a boulder already in inventory
+#     (player or nonplayer).
+#   Teleporting boulders.
+#   Digging in the floor.
+# The following actions are permitted, but with a luck penalty:
+#   Breaking boulders.
+#   Stone-to-fleshing boulders.
+#   Creating new boulders (e.g., with a scroll of earth).
+#   Jumping.
+#   Being pulled by a thrown iron ball.
+#   Hurtling through the air from Newton's 3rd law.
+#   Squeezing past boulders when naked or as a giant.
+# These actions are not permitted:
+#   Moving diagonally between two boulders and/or walls.
+#   Pushing a boulder diagonally.
+#   Picking up boulders (player or nonplayer).
+#   Digging or walking through walls.
+#   Teleporting within levels or between levels of this branch.
+#   Using cursed potions of gain level.
+#   Escaping a pit/hole (e.g., by flying, levitation, or
+#     passing a dexterity check).
+#   Bones files are not permitted.
+# Sokoban is stupid. I hate sokoban. We lokoban now.
+
+MAZE:"sz0bar",' '
+FLAGS:noteleport,hardfloor
+GEOMETRY:center,center
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0-------- ------
+1|......|-|....|
+2|.............|
+3|.............|
+4|.......P.....|
+5|.........-----
+6|.|    |......|
+7|.-----|......|
+8|.............|
+9|..|---|......|
+0----   --------
+ENDMAP
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+BRANCH:(03,01,03,01),(0,0,0,0)
+STAIR: (01,01), down
+REGION:(00,00,14,10),lit,"ordinary"
+NON_DIGGABLE:(00,00,14,10)
+NON_PASSWALL:(00,00,14,10)
+
+##
+
+MAZE:"szbar",' '
+FLAGS:noteleport,hardfloor
+GEOMETRY:center,center
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+-------- -----------------------------------------------
+|......|-|.............................................|
+|......................................................|
+|.......|..............................................|
+|.......|..............................................|
+|.|-----|..........................................-----
+|.|    |...............................................|
+|.-----|................P..............................|
+|.......................P..............................|
+|.......................P..............................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|..|---|...............................................|
+----   -------------------------------------------------
+ENDMAP
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+STAIR: (10,10), up
+REGION:(00,00,52,18),lit,"ordinary"
+NON_DIGGABLE:(00,00,14,10)
+NON_PASSWALL:(00,00,14,10)
+
+# Crates
+OBJECT:'(',"massive stone crate",(05,02)
+OBJECT:'(',"massive stone crate",(06,02)
+OBJECT:'(',"massive stone crate",(06,03)
+OBJECT:'(',"massive stone crate",(07,03)
+# A little help
+OBJECT:'?',"earth",(01,09)
+OBJECT:'?',"earth",(02,09)
+
+#prize
+MONSTER: 'u', "Lokoban Pinata", (45,16)
+MONSTER: 'h', "Lokoban Handler", (43,14), hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+
+# Random objects
+OBJECT:'%',random,random
+OBJECT:'*',random,random
+OBJECT:'(',random,random
+OBJECT:'"',random,random
+OBJECT:'=',random,random
+OBJECT:'/',random,random
+OBJECT:'!',random,random
+OBJECT:'!',random,random
+OBJECT:'?',random,random
+OBJECT:'?',random,random
+

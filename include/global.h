@@ -349,7 +349,7 @@ struct version_info {
 #define PL_PSIZ		63	/* player-given names for pets, other
 				 * monsters, objects */
 
-#define MAXDUNGEON	32	/* current maximum number of dungeons */ //where the hell did these come from?
+#define MAXDUNGEON	64	/* current maximum number of dungeons */ //where the hell did these come from?
 #define MAXLEVEL	64	/* max number of levels in one dungeon */ // NOTE:flagged as DANGEROUS!  was 16 dungeons and 32 levels
 #define MAXSTAIRS	1	/* max # of special stairways in a dungeon */
 #define ALIGNWEIGHT	4	/* generation weight of alignment */

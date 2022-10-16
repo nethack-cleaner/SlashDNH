@@ -844,7 +844,7 @@ boolean you_abilities;
 	case MATTK_LAVA: return lavaify();
 	break;
 	case MATTK_PHASE_OUT:
-		if(In_endgame(&u.uz) || In_void(&u.uz) ||  u.uhave.amulet){
+		if(In_endgame(&u.uz) || In_void(&u.uz) ||  u.uhave.amulet || achieve.get_amulet){
 			pline("A mysterious force prevents you from phasing out.");
 			return MOVE_CANCELLED;
 		}
@@ -1193,18 +1193,6 @@ doMabilForm()
 			Sprintf(buf,	"Force Punch");
 		}
 		any.a_int = FORCE_PUNCH;	/* must be non-zero */
-		add_menu(tmpwin, NO_GLYPH, &any,
-			incntlet, 0, ATR_NONE, buf,
-			MENU_UNSELECTED);
-		incntlet = (incntlet != 'z') ? (incntlet+1) : 'A';
-	}
-	if(u.ulevel >= CHI_HEALING_LVL || u.umabil & CHI_HEALING){
-		if(u.umabil & CHI_HEALING) {
-			Sprintf(buf,	"Chi Healing (active)");
-		} else {
-			Sprintf(buf,	"Chi Healing");
-		}
-		any.a_int = CHI_HEALING;	/* must be non-zero */
 		add_menu(tmpwin, NO_GLYPH, &any,
 			incntlet, 0, ATR_NONE, buf,
 			MENU_UNSELECTED);

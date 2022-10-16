@@ -1938,14 +1938,6 @@ boolean with_price;
 				if (obj->corpsenm != NON_PM)
 					Sprintf(eos(buf), "%s ", mons[obj->corpsenm].mname);
 			}
-			if (typ == HYPOSPRAY_AMPULE && nn && obj->dknown){
-				int ptyp = (int)(obj->ovar1);
-				if (ptyp == POT_WATER && obj->bknown && (obj->blessed || obj->cursed)) {
-					Strcat(buf, obj->blessed ? "holy " : "unholy ");
-				}
-				Strcat(buf, OBJ_NAME(objects[ptyp]));
-				Strcat(buf, " ");
-			}
 			if (obj->oclass == BALL_CLASS && (obj->owt > ocl->oc_weight)) {
 				Strcat(buf, "very ");
 			}
@@ -1959,7 +1951,6 @@ boolean with_price;
 			/* blind desc, or desc, or name */
 			if ((obj->dknown) ||
 				(typ == SLIME_MOLD) ||
-				(typ == HYPOSPRAY_AMPULE && nn) ||
 				(is_firearm(obj) && nn)
 				) {
 				/* we can see it */
@@ -2306,9 +2297,6 @@ weapon:
 				if (obj->lamplit)
 					Strcat(buf, " (lit)");
 				break;
-			}
-			else if (typ == HYPOSPRAY_AMPULE && nn && obj->dknown) {
-				Sprintf(eos(buf), " (%d doses)", (int)(obj->spe));
 			}
 			if (objects[obj->otyp].oc_charged && !is_weptool(obj))
 				goto charges;
@@ -3689,7 +3677,6 @@ struct alt_spellings {
 	{ "bazooka", ROCKET_LAUNCHER },
 	{ "hand grenade", FRAG_GRENADE },
 	{ "dynamite", STICK_OF_DYNAMITE },
-	{ "ampule", HYPOSPRAY_AMPULE },
 //#endif
 	{ "rum", POT_BOOZE },
 	{ "sea biscuit", CRAM_RATION },
@@ -5762,11 +5749,6 @@ typfnd:
 			otmp = poly_obj(otmp, SKELETON_KEY);
 			break;
 		}
-	}
-
-	/* set ampule type */
-	if(ampule != -1 && otmp->otyp == HYPOSPRAY_AMPULE){
-		otmp->ovar1 = ampule;
 	}
 
 	/* set viper heads, probability of getting what you wished for copied loosely from setting weapon/armor spe, but the minimum is 1, not 0. */

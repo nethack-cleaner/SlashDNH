@@ -11,35 +11,35 @@ STATIC_DCL int FDECL(enermod, (int));
 
 static long expUps[] = {
 0,		//1
-20,		//2
-50,		//3
-100,	//4
-200,	//5
-400,	//6
-800,	//7
-1600,	//8
-3200,	//9
-6400,	//10
-10400,	//11
-15600,	//12
-22800,	//13
-32500,	//14
-45200,	//15
-61900,	//16
-83100,	//17
-109300,	//18
-141000,	//19
-178700,	//20
-223000,	//21
-274500,	//22
-333800,	//23
-401500,	//24
-478200,	//25
-563900,	//26
-659600,	//27
-766300,	//28
-885000,	//29
-1000000	//30
+40,		//2
+80,		//3
+160,	//4
+320,	//5
+640,	//6
+1280,	//7
+2560,	//8
+5120,	//9
+10000,	//10
+20000,	//11
+40000,	//12
+60000,	//13
+80000,	//14
+120000,	//15
+160000,	//16
+200000,	//17
+240000,	//18
+280000,	//19
+320000,	//20
+360000,	//21
+400000,	//22
+450000,	//23
+500000,	//24
+600000,	//25
+700000,	//26
+800000,	//27
+900000,	//28
+1000000,//29
+1100000 //30
 };
 
 long
@@ -199,10 +199,10 @@ more_experienced(exp, rexp)
 	if(u.ulevel < u.ulevelmax){
 		//if you have lost levels to level drain, gain XP at 5x rate.
 		//if you are about to regain the last drained level, gain at least the base xp total
-		if(newuexp(u.ulevelmax - 1) < u.uexp + exp*5){
+		if(newuexp(u.ulevelmax - 1) < u.uexp + exp*2){
 			u.uexp += max(exp, newuexp(u.ulevelmax - 1) - u.uexp);
 		} else {
-			u.uexp += exp*5;
+			u.uexp += exp*2;
 		}
 	} else u.uexp += exp;
 	u.urexp += 4*exp + rexp;

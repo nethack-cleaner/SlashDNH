@@ -1619,16 +1619,6 @@ A("The Silver Key",					UNIVERSAL_KEY,			"strangely figured %s",
 	CREATE_PORTAL, NOFLAG
 	),
 
-A("The Cage Key",					SKELETON_KEY,			(const char *)0,
-	5000L, BONE, MZ_DEFAULT, WT_DEFAULT,
-	A_NEUTRAL, NON_PM, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH),
-	NO_MONS(),
-	NO_ATTK(), NOFLAG,
-	PROPS(), NOFLAG,
-	PROPS(TELEPORT_CONTROL), NOFLAG,
-	CREATE_PORTAL, NOFLAG
-	),
-
 /*//////////Artifact Books///////////*/
 #define ARTIFACT_BOOK(name, invoke)												\
 A((name),							SPE_SECRETS,			(const char *)0,	\
@@ -1645,7 +1635,6 @@ ARTIFACT_BOOK("The Necronomicon", NECRONOMICON),
 /*Needs encyc entry*/
 ARTIFACT_BOOK("The Book of Lost Names", SPIRITNAMES),
 /*Needs encyc entry*/
-ARTIFACT_BOOK("The Book of Infinite Spells", INFINITESPELLS),
 #undef ARTIFACT_BOOK
 
 /*//////////Role-specific Crowning Artifacts//////////*/
@@ -3861,6 +3850,52 @@ A("The Trappings of the Grave",			AMULET_OF_RESTFUL_SLEEP,			(const char *)0,
 	PROPS(), NOFLAG,
 	SUMMON_VAMP, NOFLAG
 	),
+
+A("The Deluxe Yendorian Knife", KNIFE, "Perfectly balanced and ever sharp %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, PM_CHEF, NON_PM, TIER_D, (ARTG_GIFT),
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 6), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+),
+A("The Fire Chief Helmet",                HELMET, "Well balanced and shiny %s",
+	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, PM_FIREFIGHTER, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	LEADERSHIP, (ARTI_PLUSSEV)
+),
+A("The Lightsaber Prototype",					LIGHTSABER,			"custom featured lightsaber %s",
+	3000L, SILVER, MZ_DEFAULT, WT_SPECIAL,
+	A_LAWFUL, PM_JEDI, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	NO_MONS(),
+	ATTK(AD_PHYS, 5, 1), ARTA_RETURNING,	/*Actually Phys(5,0) if not a lightsaber*/
+	PROPS(), NOFLAG,
+	PROPS(ANTIMAGIC, HALF_SPDAM), NOFLAG,
+	ENERGY_BOOST, NOFLAG
+	),
+A("The Whistle of the Warden", MAGIC_WHISTLE, "Sharp sounding %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, PM_OFFICER, NON_PM, TIER_D, (ARTG_GIFT),
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 6), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+),
+A("The Stake of Van Helsing",        WOODEN_STAKE, "Extremely hard and sharp %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, PM_UNDEAD_SLAYER, NON_PM, TIER_D, (ARTG_GIFT),
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 6), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+),
 /*
  *  terminator; otyp must be zero
  */

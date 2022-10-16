@@ -15,9 +15,9 @@
 
 const char *DUNGEON_FILES[] = {
 	"dngnch1", //Temple of Chaos (FF1) TEMPLE_OF_CHAOS
-	"dngnch2", //Aquallor->Mithardir (D&D) MITHARDIR
-	"dngnch3"  //sorta-Mordor (LotR) MORDOR
 };
+	//"dngnch2", //Aquallor->Mithardir (D&D) MITHARDIR
+	//"dngnch3"  //sorta-Mordor (LotR) MORDOR
 
 #define X_START		"x-strt"
 #define X_LOCATE	"x-loca"
@@ -785,6 +785,36 @@ struct level_map {
 	{ "bore4",&borehole_4_level },
 	/*Fort Knox*/
 	{ "knox",	&knox_level },
+	{ "szarc",	&szarc_level },
+	{ "szana",	&szana_level },
+	{ "szbar",	&szbar_level },
+	{ "szbin",	&szbin_level },
+	{ "szcav",	&szcav_level },
+	{ "szcon",	&szcon_level },
+	{ "szhea",	&szhea_level },
+	{ "szacu",	&szacu_level },
+	{ "szkni",	&szkni_level },
+	{ "szmon",	&szmon_level },
+	{ "szmad",	&szmad_level },
+	{ "sznob",	&sznob_level },
+	{ "szpri",	&szpri_level },
+	{ "szpir",	&szpir_level },
+	{ "szrog",	&szrog_level },
+	{ "szran",	&szran_level },
+	{ "szsam",	&szsam_level },
+	{ "sztou",	&sztou_level },
+	{ "szbrd",	&szbrd_level },
+	{ "szval",	&szval_level },
+	{ "szwiz",	&szwiz_level },
+	{ "szjed",	&szjed_level },
+	{ "szchf",	&szchf_level },
+	{ "szfir",	&szfir_level },
+	{ "szoff",	&szoff_level },
+	{ "szund",	&szund_level },
+	{ "szaand",	&szaand_level },
+	{ "szdrow",	&szdrow_level },
+	{ "szdnob",	&szdnob_level },
+	{ "szethe",	&szethe_level },
 	{ "",		(d_level *)0 }
 };
 
@@ -797,15 +827,19 @@ init_dungeons()		/* initialize the "dungeon" structs */
 	struct proto_dungeon pd;
 	struct level_map *lev_map;
 	struct version_info vers_info;
-	int dungeonversion;
+	int dungeonversion = 0;
 	
 	if(flags.chaosvar && (wizard || is_june())) {
 		//chaosvar is incremented by 1 so that all variants are nonzero
 		dungeonversion = flags.chaosvar-1;
+		if (dungeonversion + 1 > SIZE(DUNGEON_FILES)) {
+			dungeonversion = rn2(SIZE(DUNGEON_FILES));
+		}
 	} else {
 		//Otherwise pick a random variant
-		dungeonversion = rn2(3);
+		dungeonversion = rn2(SIZE(DUNGEON_FILES));
 	}
+
 	//Record chaos quest version (note: in the future not all dungeonversions will relate to the chaos quest)
 	chaos_dvariant = dungeonversion;
 	
@@ -1040,6 +1074,8 @@ init_dungeons()		/* initialize the "dungeon" structs */
  *	I hate hardwiring these names. :-(
  */
 	quest_dnum = dname_to_dnum("The Quest");
+	szarc_dnum = dname_to_dnum("Starting Zone Arc");
+	szana_dnum = dname_to_dnum("Starting Zone Ana");
 	neutral_dnum = dname_to_dnum("Neutral Quest");
 	rlyeh_dnum = dname_to_dnum("The Lost Cities");
 	spire_dnum = dname_to_dnum("The Spire");

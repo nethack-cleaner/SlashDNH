@@ -934,7 +934,7 @@ you_regen_hp()
 	}
 	
 	// regeneration 'trinsic
-	if (Regeneration){
+	if (Regeneration && !is_vampire(youracedata)){
 		perX += HEALCYCLE;
 	}
 	
@@ -1000,25 +1000,6 @@ you_regen_hp()
 				perX += HEALCYCLE;
 			}
 		}
-		
-
-		// Barbarian role bonus
-		if (Role_if(PM_BARBARIAN) && !Upolyd)
-			reglevel *= 3;
-		// Melee roles can be slightly less concerned about taking hits
-		else if(!Upolyd && (
-			Role_if(PM_KNIGHT)
-			|| Role_if(PM_PIRATE)
-			|| Role_if(PM_SAMURAI)
-			|| Role_if(PM_VALKYRIE)
-			|| Role_if(PM_CONVICT)
-			|| (u.sealsActive&SEAL_BERITH)
-		))
-			reglevel *= 2;
-		else if(!Upolyd && (
-			Role_if(PM_MADMAN)
-		))
-			reglevel *= 1.5;
 
 		//Additive bonuses
 		// Elf bonus
@@ -1026,9 +1007,6 @@ you_regen_hp()
 			reglevel += 7;
 		if (Race_if(PM_DROW) && !Upolyd)
 			reglevel += 8;
-		// Healer role bonus
-		if (Role_if(PM_HEALER) && !Upolyd)
-			reglevel += 10;
 		// fast healing ent bonus applies after all others
 		if(is_fast_healing_ent(youracedata, u.ent_species))
 			reglevel *= 2;
@@ -1037,8 +1015,11 @@ you_regen_hp()
 		reglevel -= u_healing_penalty();
 
 		// minimum 1
-		if (reglevel < 1)
+		if (reglevel < 1) {
 			reglevel = 1;
+		} else if (reglevel > 15) {
+			reglevel = 15;
+		}
 
 		perX += reglevel;
 	}
@@ -2258,9 +2239,7 @@ karemade:
 					if (u.uevent.invoked && xupstair && rn2(10)) {
 						(void) makemon((struct permonst *)0, xupstair, yupstair, MM_ADJACENTOK);
 					} //TEAM ATTACKS
-					if(In_sokoban(&u.uz)){
-						if(u.uz.dlevel != 1 && u.uz.dlevel != 4) makemon((struct permonst *)0, xupstair, yupstair, MM_ADJACENTSTRICT|MM_ADJACENTOK);
-					} else if(Infuture && Is_qstart(&u.uz) && !(quest_status.leader_is_dead)){
+					if(Infuture && Is_qstart(&u.uz) && !(quest_status.leader_is_dead)){
 						(void) makemon((struct permonst *)0, xdnstair, ydnstair, MM_ADJACENTOK);
 						if(ANA_SPAWN_TWO) (void) makemon((struct permonst *)0, xdnstair, ydnstair, MM_ADJACENTOK);
 						if(ANA_SPAWN_THREE) (void) makemon((struct permonst *)0, xdnstair, ydnstair, MM_ADJACENTOK);
@@ -3504,8 +3483,8 @@ boolean new_game;	/* false => restoring an old game */
 	Sprintf(eos(racebuf), "%s", urace.adj);
     }
 
-    pline(new_game ? "%s %s, welcome to notdNetHack!  You are a%s %s %s."
-		   : "%s %s, the%s %s %s, welcome back to notdNetHack!",
+    pline(new_game ? "%s %s, welcome to SlashDNH!  You are a%s %s %s."
+		   : "%s %s, the%s %s %s, welcome back to SlashDNH!",
 	  Hello((struct monst *) 0), plname, buf, racebuf,
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 	if(iflags.dnethack_start_text){
@@ -3554,6 +3533,71 @@ boolean new_game;	/* false => restoring an old game */
 	if (Role_if(PM_ANACHRONONAUT) && Race_if(PM_GNOME)){
 		pline("Use f to fire from your power suit.");	
 	}
+	}
+	if(Race_if(PM_ETHEREALOID)){
+		goto_level(&szethe_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_ANACHRONONAUT)) {
+		if (uandroid) {
+			goto_level(&szaand_level, FALSE, FALSE, FALSE);
+		} else {
+			goto_level(&szana_level, FALSE, FALSE, FALSE);
+		}
+	} else if (Role_if(PM_ANACHRONOUNBINDER)) {
+		goto_level(&szacu_level, FALSE, FALSE, FALSE);
+	} else if (Race_if(PM_DROW)) {
+		goto_level(&szdrow_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_ARCHEOLOGIST)) {
+		goto_level(&szarc_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_BARBARIAN)) {
+		goto_level(&szbar_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_EXILE)) {
+		goto_level(&szbin_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_CAVEMAN)) {
+		goto_level(&szcav_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_CONVICT)) {
+		goto_level(&szcon_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_HEALER)) {
+		goto_level(&szhea_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_KNIGHT)) {
+		goto_level(&szkni_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_MONK)) {
+		goto_level(&szmon_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_MADMAN)) {
+		goto_level(&szmad_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_NOBLEMAN)) {
+		if (Race_if(PM_HALF_DRAGON)) {
+			goto_level(&szdnob_level, FALSE, FALSE, FALSE);
+		} else {
+			goto_level(&sznob_level, FALSE, FALSE, FALSE);
+		}
+	} else if (Role_if(PM_PRIEST)) {
+		goto_level(&szpri_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_PIRATE)) {
+		goto_level(&szpir_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_ROGUE)) {
+		goto_level(&szrog_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_RANGER)) {
+		goto_level(&szran_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_SAMURAI)) {
+		goto_level(&szsam_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_TOURIST)) {
+		goto_level(&sztou_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_BARD)) {
+		goto_level(&szbrd_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_VALKYRIE)) {
+		goto_level(&szval_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_WIZARD)) {
+		goto_level(&szwiz_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_JEDI)) {
+		goto_level(&szjed_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_CHEF)) {
+		goto_level(&szchf_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_FIREFIGHTER)) {
+		goto_level(&szfir_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_OFFICER)) {
+		goto_level(&szoff_level, FALSE, FALSE, FALSE);
+	} else if (Role_if(PM_UNDEAD_SLAYER)) {
+		goto_level(&szund_level, FALSE, FALSE, FALSE);
 	}
 }
 

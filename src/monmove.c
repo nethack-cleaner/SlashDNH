@@ -214,7 +214,6 @@ struct monst *mtmp;
 			 || (wardAt == CARTOUCHE_OF_THE_CAT_LORD && scaryCat(num_wards_at(x,y), mtmp))
 			 || (wardAt == WINGS_OF_GARUDA && scaryWings(num_wards_at(x,y), mtmp))
 			 || (wardAt == YELLOW_SIGN && scaryYellow(num_wards_at(x,y), mtmp))
-			 || (scaryElb(mtmp) && sengr_at("Elbereth", x, y))
 			 || (scaryLol(mtmp) && sengr_at("Lolth", x, y) && (mtmp->m_lev < u.ulevel || u.ualign.record-- > 0))
 			 || (scaryTou(mtmp) && toustefna_at(x,y))
 			 || (scaryDre(mtmp) && dreprun_at(x,y))
@@ -629,39 +628,6 @@ struct monst *mtmp;
   } else return(FALSE);
 }
 
-boolean
-scaryElb(mtmp)
-struct monst *mtmp;
-{
-  if(Infuture) return FALSE;
-  if(Race_if(PM_ELF)){
-	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || is_blind(mtmp) ||
-	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN || 
-	    is_lminion(mtmp) || mtmp->mtyp == PM_ANGEL ||
-	    (is_rider(mtmp->data) && !(mtmp->mtyp == PM_NAZGUL)) || 
-		mtmp->mtyp == PM_MINOTAUR)
-		return(FALSE);
-	return (boolean) (mtmp->mtyp != PM_ELDER_PRIEST) &&
-					(mtmp->mtyp != PM_GREAT_CTHULHU) &&
-					(mtmp->mtyp != PM_CHOKHMAH_SEPHIRAH) &&
-					(mtmp->mtyp != PM_CHAOS || rn2(2)) &&
-					(mtmp->mtyp != PM_DEMOGORGON || !rn2(3)) &&
-					(mtmp->mtyp != PM_LAMASHTU) &&
-					(mtmp->mtyp != PM_ASMODEUS || !rn2(9));
-  }
-  else{
-	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || is_blind(mtmp) ||
-	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN || 
-	    is_lminion(mtmp) || mtmp->mtyp == PM_ANGEL ||
-	    (is_rider(mtmp->data) && !(mtmp->mtyp == PM_NAZGUL)) || 
-		mtmp->mtyp == PM_MINOTAUR)
-		return(FALSE);
-	return (boolean) mtmp->data->mlet == S_ORC || mtmp->data->mlet == S_OGRE 
-				|| mtmp->data->mlet == S_TROLL || mtmp->mtyp == PM_NAZGUL;
-  }
-	
-
-}
 #endif /* OVL2 */
 #ifdef OVL0
 

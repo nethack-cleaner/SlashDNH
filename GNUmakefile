@@ -1,4 +1,4 @@
-GAMEDIR = notdnethackdir
+GAMEDIR = /var/lib/slashdnh/slashdnhdir
 
 # gprof flags
 # CFLAGS = -pg
@@ -29,14 +29,14 @@ CPPFLAGS += -Wno-format-overflow
 .DELETE_ON_ERROR:
 
 .PHONY: all
-all: src/notdnethack util/recover dat/nhdat dat/license
+all: src/slashdnh util/recover dat/nhdat dat/license
 
 ATOMIC_LN = ln $(1) $(2).new && mv $(2).new $(2)
 
 .PHONY: install
 install: all
 	mkdir -p $(GAMEDIR)
-	install src/notdnethack $(GAMEDIR)
+	install src/slashdnh $(GAMEDIR)
 	install util/recover $(GAMEDIR)
 	install -m 644 dat/nhdat dat/license $(GAMEDIR)
 	touch $(GAMEDIR)/perm
@@ -76,9 +76,9 @@ GAME_O = $(SRCOBJ:%.o=src/%.o) $(SYSUNIXOBJ:%.o=sys/unix/%.o)	\
          $(SYSSHAREOBJ:%.o=sys/share/%.o)			\
          $(WINTTYOBJ:%.o=win/tty/%.o)				\
          $(WINCURSESOBJ:%.o=win/curses/%.o)
-src/notdnethack: $(GAME_O)
+src/slashdnh: $(GAME_O)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) $(GAMELIBS) -o $@
-AUTO_BIN += src/notdnethack
+AUTO_BIN += src/slashdnh
 
 RECOVER_O = util/recover_main.o src/recover.o
 util/recover: $(RECOVER_O)
@@ -194,14 +194,20 @@ QUEST_DES = Arch.des Anachrononaut.des Android.des Barb.des Bard.des Binder.des 
             Convict.des Drow.des DrowNoble.des Elf.des Erebor.des GnomeRanger.des	\
             HalfDragonFemaleNoble.des Healer.des Hedrow.des HedrowNoble.des Knight.des \
 			Monk.des Moria.des Madman.des Noble.des Pirate.des Priest.des Ranger.des Rogue.des	\
-            Samurai.des Tourist.des Valkyrie.des Wizard.des Anachronounbinder.des Salamander.des
+            Samurai.des Tourist.des Valkyrie.des Wizard.des Anachronounbinder.des Salamander.des \
+			Offic.des Firef.des Chef.des Slayer.des Jedi.des
 
 SPEC_DES = bigroom.des blacktemple.des castle.des chaos.des chaos2.des chaos3.des	\
            endgame.des gehennom.des knox.des labr.des law.des		\
            medusa.des grue.des mines.des neutrality.des oracle.des sokoban.des	\
            storage.des sunlesssea.des tomb.des tower.des yendor.des \
 	   void.des sacristy.des nowhere.des spire.des village.des \
-	   icecave.des blackforest.des dismalswamp.des archipelago.des
+	   icecave.des blackforest.des dismalswamp.des archipelago.des \
+	   szarc.des szana.des szbar.des szbin.des szcav.des szcon.des \
+	   szhea.des szacu.des szkni.des szmon.des szmad.des sznob.des \
+	   szpri.des szpir.des szrog.des szran.des szsam.des sztou.des \
+	   szbrd.des szval.des szwiz.des szaand.des szdrow.des szdnob.des \
+	   szjed.des szethe.des szchf.des szfir.des szoff.des szund.des
 
 ALL_TAG = $(QUEST_DES:%.des=dat/%.tag) $(SPEC_DES:%.des=dat/%.tag)
 

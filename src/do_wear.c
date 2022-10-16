@@ -2432,7 +2432,17 @@ base_uac()
 	if(uleft && uleft->otyp == RIN_PROTECTION) uac -= uleft->spe;
 	if(uright && uright->otyp == RIN_PROTECTION) uac -= uright->spe;
 	if (HProtection & INTRINSIC) uac -= (u.ublessed+1)/2;
-	if(Race_if(PM_ETHEREALOID)) uac -= u.ulevel;	
+	if(Race_if(PM_ETHEREALOID)) {
+        if (u.ulevel < 10) {
+            uac -= u.ulevel;
+        } else if (u.ulevel < 20) {
+            int reduce = (int) ((u.ulevel - 10) / 2);
+            uac -= (reduce + 9);
+        } else {
+            int reduce = (int) ((u.ulevel - 20) / 3);
+            uac -= (reduce + 14);
+        }
+    }
 	if(u.utats & TAT_BULWARK) uac -= 1;
 	uac -= u.uacinc;
 	uac -= u.spiritAC;

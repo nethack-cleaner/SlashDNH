@@ -129,7 +129,7 @@ test_readobjnam()
 	for (i=1; i < NROFARTIFACTS; i++) {
 		/* known and acceptable failures */
 		if (i == ART_GENOCIDE ||	// gives scroll, which is acceptable since it's literally the same name
-			i == ART_NECRONOMICON || i == ART_BOOK_OF_LOST_NAMES || i == ART_BOOK_OF_INFINITE_SPELLS)//gives randomly of the three
+			i == ART_NECRONOMICON || i == ART_BOOK_OF_LOST_NAMES)//gives randomly of the three
 			continue;
 		/* save old artifact-existance state */
 		savestate = artinstance[i].exists;

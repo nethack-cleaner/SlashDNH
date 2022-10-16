@@ -72,7 +72,8 @@ struct tmpbranch {
  */
 //increased LEV_LIMIT from 50 to 100 >:[ Not sure WHY there is a limit to begin with...
 //...and now to 150
-#define LEV_LIMIT	150
-#define BRANCH_LIMIT	32
+//...and now to 200
+#define LEV_LIMIT	200
+#define BRANCH_LIMIT	64
 
 #endif /* DGN_FILE_H */

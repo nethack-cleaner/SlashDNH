@@ -595,9 +595,6 @@ test_twoweapon()
 	else if (uswapwep && uswapwep->otyp == ARM_BLASTER && uarmg && is_metallic(uarmg))
 		You("cannot fit the bracer over such bulky, rigid gloves.");
 	/* some artifacts resist being offhanded */
-	else if (uswapwep && uswapwep->oartifact && !is_twoweapable_artifact(uswapwep))
-		pline("%s %s being held second to another weapon!",
-			Yname2(uswapwep), otense(uswapwep, "resist"));
 	else
 		return (TRUE);
 	return (FALSE);

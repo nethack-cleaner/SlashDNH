@@ -299,7 +299,6 @@ register struct monst *mon;
 		(ward_at(u.ux,u.uy) == ELDER_ELEMENTAL_EYE && num_wards_at(u.ux, u.uy) == 7) || 
 		ward_at(u.ux,u.uy) == PENTAGRAM || ward_at(u.ux,u.uy) == HEPTAGRAM ||
 		ward_at(u.ux,u.uy) == HEXAGRAM || 
-		(scaryElb(mon) && sengr_at("Elbereth", u.ux, u.uy)) || 
 		(scaryLol(mon) && sengr_at("Lolth", u.ux, u.uy))
 	) return 0;
 	

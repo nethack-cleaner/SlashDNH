@@ -141,9 +141,6 @@ E struct dgn_topology {		/* special dungeon levels for speed */
     xchar	d_sacris_dnum;
     d_level	d_sacris_level;
 
-    xchar	d_nowhere_dnum;
-    d_level	d_nowhere_level;
-
 	/*The Lost Tomb*/
     xchar	d_tomb_dnum;
 	/*The Sunless Sea*/
@@ -177,6 +174,69 @@ E struct dgn_topology {		/* special dungeon levels for speed */
     d_level	d_nkai_a, d_nkai_b, d_nkai_c, d_nkai_z;
 	/*Spire*/
    	xchar d_spire_dnum;
+   	xchar d_szbar_dnum;
+   	xchar d_szbin_dnum;
+   	xchar d_szcon_dnum;
+   	xchar d_szarc_dnum;
+   	xchar d_szana_dnum;
+    d_level	d_szarc_level;
+    d_level	d_szana_level;
+    d_level	d_szbar_level;
+    d_level	d_szbin_level;
+    d_level	d_szcav_level;
+   	xchar d_szcav_dnum;
+    d_level	d_szaand_level;
+   	xchar d_szaand_dnum;
+    d_level	d_szethe_level;
+   	xchar d_szethe_dnum;
+    d_level	d_szdrow_level;
+   	xchar d_szdrow_dnum;
+    d_level	d_szdnob_level;
+   	xchar d_szdnob_dnum;
+    d_level	d_szhea_level;
+   	xchar d_szhea_dnum;
+    d_level	d_szacu_level;
+   	xchar d_szacu_dnum;
+    d_level	d_szkni_level;
+   	xchar d_szkni_dnum;
+    d_level	d_szmon_level;
+   	xchar d_szmon_dnum;
+    d_level	d_szmad_level;
+   	xchar d_szmad_dnum;
+    d_level	d_sznob_level;
+   	xchar d_sznob_dnum;
+    d_level	d_szpri_level;
+   	xchar d_szpri_dnum;
+    d_level	d_szpir_level;
+   	xchar d_szpir_dnum;
+    d_level	d_szrog_level;
+   	xchar d_szrog_dnum;
+    d_level	d_szran_level;
+   	xchar d_szran_dnum;
+    d_level	d_szsam_level;
+   	xchar d_szsam_dnum;
+    d_level	d_sztou_level;
+   	xchar d_sztou_dnum;
+    d_level	d_szbrd_level;
+   	xchar d_szbrd_dnum;
+    d_level	d_szval_level;
+   	xchar d_szval_dnum;
+    d_level	d_szwiz_level;
+   	xchar d_szwiz_dnum;
+    d_level	d_szjed_level;
+   	xchar d_szjed_dnum;
+    d_level	d_szchf_level;
+   	xchar d_szchf_dnum;
+    d_level	d_szfir_level;
+   	xchar d_szfir_dnum;
+    d_level	d_szoff_level;
+   	xchar d_szoff_dnum;
+    d_level	d_szund_level;
+   	xchar d_szund_dnum;
+    d_level	d_szcon_level;
+    xchar	d_nowhere_dnum;
+    d_level	d_nowhere_level;
+
 	d_level	d_sigil_level;
 	/*Chaos Quest*/
 	xchar	d_chaos_dvariant;
@@ -276,6 +336,11 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define sacris_level		(dungeon_topology.d_sacris_level)
 
 #define nowhere_level		(dungeon_topology.d_nowhere_level)
+#define szarc_level		(dungeon_topology.d_szarc_level)
+#define szana_level		(dungeon_topology.d_szana_level)
+#define szbar_level		(dungeon_topology.d_szbar_level)
+#define szbin_level		(dungeon_topology.d_szbin_level)
+#define szcon_level		(dungeon_topology.d_szcon_level)
 
 	/*Planes*/
 #define earth_level		(dungeon_topology.d_earth_level)
@@ -326,6 +391,61 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define rlyeh_level		(dungeon_topology.d_rlyeh_level)
 	/*Spire*/
 #define spire_dnum		(dungeon_topology.d_spire_dnum)
+#define szarc_dnum		(dungeon_topology.d_szarc_dnum)
+#define szana_dnum		(dungeon_topology.d_szana_dnum)
+#define szbar_dnum		(dungeon_topology.d_szbar_dnum)
+#define szbin_dnum		(dungeon_topology.d_szbin_dnum)
+#define szcav_dnum		(dungeon_topology.d_szcav_dnum)
+#define szcav_level		(dungeon_topology.d_szcav_level)
+#define szaand_dnum		(dungeon_topology.d_szaand_dnum)
+#define szaand_level		(dungeon_topology.d_szaand_level)
+#define szethe_dnum		(dungeon_topology.d_szethe_dnum)
+#define szethe_level		(dungeon_topology.d_szethe_level)
+#define szdrow_dnum		(dungeon_topology.d_szdrow_dnum)
+#define szdrow_level		(dungeon_topology.d_szdrow_level)
+#define szdnob_dnum		(dungeon_topology.d_szdnob_dnum)
+#define szdnob_level		(dungeon_topology.d_szdnob_level)
+#define szhea_dnum		(dungeon_topology.d_szhea_dnum)
+#define szhea_level		(dungeon_topology.d_szhea_level)
+#define szacu_dnum		(dungeon_topology.d_szacu_dnum)
+#define szacu_level		(dungeon_topology.d_szacu_level)
+#define szkni_dnum		(dungeon_topology.d_szkni_dnum)
+#define szkni_level		(dungeon_topology.d_szkni_level)
+#define szmon_dnum		(dungeon_topology.d_szmon_dnum)
+#define szmon_level		(dungeon_topology.d_szmon_level)
+#define szmad_dnum		(dungeon_topology.d_szmad_dnum)
+#define szmad_level		(dungeon_topology.d_szmad_level)
+#define sznob_dnum		(dungeon_topology.d_sznob_dnum)
+#define sznob_level		(dungeon_topology.d_sznob_level)
+#define szpri_dnum		(dungeon_topology.d_szpri_dnum)
+#define szpri_level		(dungeon_topology.d_szpri_level)
+#define szpir_dnum		(dungeon_topology.d_szpir_dnum)
+#define szpir_level		(dungeon_topology.d_szpir_level)
+#define szrog_dnum		(dungeon_topology.d_szrog_dnum)
+#define szrog_level		(dungeon_topology.d_szrog_level)
+#define szran_dnum		(dungeon_topology.d_szran_dnum)
+#define szran_level		(dungeon_topology.d_szran_level)
+#define szsam_dnum		(dungeon_topology.d_szsam_dnum)
+#define szsam_level		(dungeon_topology.d_szsam_level)
+#define sztou_dnum		(dungeon_topology.d_sztou_dnum)
+#define sztou_level		(dungeon_topology.d_sztou_level)
+#define szbrd_dnum		(dungeon_topology.d_szbrd_dnum)
+#define szbrd_level		(dungeon_topology.d_szbrd_level)
+#define szval_dnum		(dungeon_topology.d_szval_dnum)
+#define szval_level		(dungeon_topology.d_szval_level)
+#define szwiz_dnum		(dungeon_topology.d_szwiz_dnum)
+#define szwiz_level		(dungeon_topology.d_szwiz_level)
+#define szjed_dnum		(dungeon_topology.d_szjed_dnum)
+#define szjed_level		(dungeon_topology.d_szjed_level)
+#define szchf_dnum		(dungeon_topology.d_szchf_dnum)
+#define szchf_level		(dungeon_topology.d_szchf_level)
+#define szfir_dnum		(dungeon_topology.d_szfir_dnum)
+#define szfir_level		(dungeon_topology.d_szfir_level)
+#define szoff_dnum		(dungeon_topology.d_szoff_dnum)
+#define szoff_level		(dungeon_topology.d_szoff_level)
+#define szund_dnum		(dungeon_topology.d_szund_dnum)
+#define szund_level		(dungeon_topology.d_szund_level)
+#define szcon_dnum		(dungeon_topology.d_szcon_dnum)
 #define sigil_level		(dungeon_topology.d_sigil_level)
 	/*Chaos Quest*/
 #define chaos_dvariant		(dungeon_topology.d_chaos_dvariant)
@@ -800,6 +920,7 @@ struct u_achieve {
         Bitfield(garnet_spear,1);        /* Used a garnet tip spear*/
         Bitfield(inked_up,1);        /* Fell tat */
         Bitfield(new_races,1);        /* Ascended a new race */
+		Bitfield(introquest,1);
 #define	ARC_QUEST		0x1L << 0
 #define	CAV_QUEST		0x1L << 1
 #define	CON_QUEST		0x1L << 2

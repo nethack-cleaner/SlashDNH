@@ -49,7 +49,6 @@ STATIC_DCL void FDECL(use_trap, (struct obj *));
 STATIC_DCL void FDECL(use_stone, (struct obj *));
 STATIC_DCL int FDECL(use_sensor, (struct obj *));
 STATIC_DCL int NDECL(sensorMenu);
-STATIC_DCL int FDECL(use_hypospray, (struct obj *));
 STATIC_DCL int FDECL(use_droven_cloak, (struct obj **));
 STATIC_DCL int FDECL(use_darkweavers_cloak, (struct obj *));
 STATIC_PTR int NDECL(set_trap);		/* occupation callback */
@@ -66,7 +65,6 @@ STATIC_DCL int FDECL(use_rift, (struct obj *));
 STATIC_DCL int FDECL(do_break_wand, (struct obj *));
 STATIC_DCL int FDECL(do_flip_coin, (struct obj *));
 STATIC_DCL void FDECL(soul_crush_consequence, (struct obj *));
-STATIC_DCL int FDECL(do_soul_coin, (struct obj *));
 STATIC_DCL boolean FDECL(figurine_location_checks,
 				(struct obj *, coord *, BOOLEAN_P));
 STATIC_DCL boolean NDECL(uhave_graystone);
@@ -1396,7 +1394,7 @@ struct obj **optr;
 	}
 
 	otmp = carrying(CANDELABRUM_OF_INVOCATION);
-	if(!otmp || obj->otyp==GNOMISH_POINTY_HAT || obj->otyp==CANDLE_OF_INVOCATION || otmp->spe == 7) {
+	if(!otmp || obj->otyp==CANDLE_OF_INVOCATION || otmp->spe == 7) {
 		use_lamp(obj);
 		return;
 	}
@@ -1484,8 +1482,7 @@ struct obj *obj;
 
 	if (obj->lamplit) {
 	    if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
-		    obj->otyp == LANTERN || obj->otyp == POT_OIL ||
-			obj->otyp == DWARVISH_HELM || obj->otyp == GNOMISH_POINTY_HAT) {
+		    obj->otyp == LANTERN || obj->otyp == POT_OIL) {
 		(void) get_obj_location(obj, &x, &y, 0);
 		if (obj->where == OBJ_MINVENT ? cansee(x,y) : !Blind)
 		    pline("%s %s out!", Yname2(obj), otense(obj, "go"));
@@ -1517,8 +1514,7 @@ struct obj *obj;
 	    if (obj->otyp == CANDELABRUM_OF_INVOCATION && obj->cursed)
 		return FALSE;
 	    if ((obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
-		 obj->otyp == LANTERN || obj->otyp == DWARVISH_HELM ||
-		 obj->otyp == GNOMISH_POINTY_HAT) && 
+		 obj->otyp == LANTERN) && 
 			obj->cursed && !rn2(2))
 		return FALSE;
 	    if (obj->where == OBJ_MINVENT ? cansee(x,y) : !Blind)
@@ -1801,8 +1797,7 @@ struct obj *obj;
 	}
 	if(obj->lamplit) {
 		if(obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
-		   obj->otyp == LANTERN ||
-		   obj->otyp == DWARVISH_HELM)
+		   obj->otyp == LANTERN)
 		    pline("%s lamp is now off.", Shk_Your(buf, obj));
 		else if(is_lightsaber(obj)) {
 		    if (obj->otyp == DOUBLE_LIGHTSABER || obj->oartifact == ART_ANNULUS) {
@@ -1829,12 +1824,11 @@ struct obj *obj;
 			|| (obj->otyp == MAGIC_LAMP && obj->spe == 0)
 		) {
 		if (obj->otyp == LANTERN || 
-			obj->otyp == DWARVISH_HELM || 
 			is_lightsaber(obj) ||
 			obj->otyp == POWER_ARMOR
 		)
 			Your("%s has run out of power.", xname(obj));
-		else pline("This %s has no %s.", xname(obj), obj->otyp != GNOMISH_POINTY_HAT ? "oil" : "wax");
+		else pline("This %s has no %s.", xname(obj), "oil");
 		return;
 	}
 	if (is_gemable_lightsaber(obj) && !obj->cobj) {
@@ -1857,7 +1851,7 @@ struct obj *obj;
 		      Tobjnam(obj, "flicker"), otense(obj, "die"));
 	} else {
 		if(obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
-				obj->otyp == LANTERN || obj->otyp == DWARVISH_HELM) {
+				obj->otyp == LANTERN) {
 		    check_unpaid(obj);
 		    pline("%s lamp is now on.", Shk_Your(buf, obj));
 		} else if (is_lightsaber(obj)) {
@@ -2082,7 +2076,7 @@ dorub()
 	    } else if (rn2(2) && !Blind)
 		You("see a puff of smoke.");
 	    else pline1(nothing_happens);
-	} else if (obj->otyp == LANTERN || obj->otyp == DWARVISH_HELM) {
+	} else if (obj->otyp == LANTERN) {
 	    /* message from Adventure */
 	    pline("Rubbing the electric lamp is not particularly rewarding.");
 	    pline("Anyway, nothing exciting happens.");
@@ -3365,397 +3359,6 @@ sensorMenu()
 		return picked;
 	}
 	return 0;
-}
-
-STATIC_OVL int
-use_hypospray(hypo)
-struct obj *hypo;
-{
-	struct obj *amp = getobj(tools, "inject");
-	int i, ii, nothing=0;
-	if(!amp) return MOVE_CANCELLED;
-	if(amp->otyp != HYPOSPRAY_AMPULE){
-		You("can't inject that!");
-		return MOVE_CANCELLED;
-	}
-    if (!getdir((char *)0)) return MOVE_CANCELLED;
-	if(u.dz < 0){
-		You("don't see a patient up there.");
-		return MOVE_CANCELLED;
-	} else if(u.dz > 0){
-		You("doubt the floor will respond to drugs.");
-		return MOVE_CANCELLED;
-	} else if(u.dx || u.dy){
-		struct monst *mtarg = m_at(u.ux+u.dx,u.uy+u.dy);
-		if(!mtarg){
-			You("don't find a patient there.");
-			return MOVE_STANDARD;
-		}
-		if(amp->spe <= 0){
-			pline("The ampule is empty!");
-			return MOVE_STANDARD;
-		}
-		if(!has_blood_mon(mtarg)){
-			pline("It would seem that the patient has no circulatory system....");
-		} else switch(amp->ovar1){
-			case POT_HEALING:
-				if (mtarg->mtyp == PM_PESTILENCE){
-					mtarg->mhp -= d(6 + 2 * bcsign(amp), 4);
-					if(mtarg->mhp <= 0) xkilled(mtarg,1);
-					break;
-				}
-				if(mtarg->mhp < mtarg->mhpmax) {
-					mtarg->mhp = min_ints(mtarg->mhpmax,mtarg->mhp+d(6 + 2 * bcsign(amp), 4));
-					if (canseemon(mtarg))
-					pline("%s looks better.", Monnam(mtarg));
-				}
-			break;
-			case POT_EXTRA_HEALING:
-				if (mtarg->mtyp == PM_PESTILENCE){
-					mtarg->mhp -= d(6 + 2 * bcsign(amp), 8);
-					if(mtarg->mhp <= 0) xkilled(mtarg,1);
-					break;
-				}
-				if(mtarg->mhp < mtarg->mhpmax) {
-					mtarg->mhp = min_ints(mtarg->mhpmax,mtarg->mhp+d(6 + 2 * bcsign(amp), 8));
-					if (canseemon(mtarg))
-					pline("%s looks much better.", Monnam(mtarg));
-				}
-			break;
-			case POT_FULL_HEALING:
-				if (mtarg->mtyp == PM_PESTILENCE){
-					if((mtarg->mhpmax > 3) && !resist(mtarg, POTION_CLASS, 0, NOTELL))
-						mtarg->mhpmax /= 2;
-					if((mtarg->mhp > 2) && !resist(mtarg, POTION_CLASS, 0, NOTELL))
-						mtarg->mhp /= 2;
-					if (mtarg->mhp > mtarg->mhpmax) mtarg->mhp = mtarg->mhpmax;
-					if(mtarg->mhp <= 0) xkilled(mtarg,1);
-					if (canseemon(mtarg))
-						pline("%s looks rather ill.", Monnam(mtarg));
-					break;
-				}
-			case POT_GAIN_ABILITY:
-			case POT_RESTORE_ABILITY:
-				if(mtarg->mhp < mtarg->mhpmax) {
-					mtarg->mhp = min(mtarg->mhpmax,mtarg->mhp+400);
-					if (canseemon(mtarg))
-					pline("%s looks sound and hale again.", Monnam(mtarg));
-				}
-			break;
-			case POT_BLINDNESS:
-				if(haseyes(mtarg->data)) {
-					register int btmp = rn1(200, 250 - 125 * bcsign(amp));
-					btmp += mtarg->mblinded;
-					mtarg->mblinded = min(btmp,127);
-					mtarg->mcansee = 0;
-				}
-			break;
-			case POT_HALLUCINATION:
-				if(!resist(mtarg, POTION_CLASS, 0, NOTELL)) 
-					mtarg->mstun = TRUE;
-			case POT_CONFUSION:
-				if(!resist(mtarg, POTION_CLASS, 0, NOTELL)) 
-					mtarg->mconf = TRUE;
-			break;
-			case POT_PARALYSIS:
-				if (mtarg->mcanmove) {
-					mtarg->mcanmove = 0;
-					mtarg->mfrozen = rn1(10, 25 - 12*bcsign(amp));
-				}
-			break;
-			case POT_SPEED:
-				mon_adjust_speed(mtarg, 1, amp);
-			break;
-			case POT_GAIN_ENERGY:
-				if(amp->cursed){
-					if (canseemon(mtarg))
-						pline("%s looks lackluster.", Monnam(mtarg));
-					set_mcan(mtarg, TRUE);
-				} else {
-					if (canseemon(mtarg))
-						pline("%s looks full of energy.", Monnam(mtarg));
-					mtarg->mspec_used = 0;
-					set_mcan(mtarg, FALSE);
-				}
-			break;
-			case POT_SLEEPING:
-				if (sleep_monst(mtarg, rn1(10, 25 - 12*bcsign(amp)), POTION_CLASS)) {
-					pline("%s falls asleep.", Monnam(mtarg));
-					slept_monst(mtarg);
-				}
-			break;
-			case POT_POLYMORPH:
-				if (canseemon(mtarg)) pline("%s suddenly mutates!", Monnam(mtarg));
-				if(!resists_poly(mtarg->data))
-					newcham(mtarg, NON_PM, FALSE, FALSE);
-			break;
-			case POT_AMNESIA:
-				if(!amp->cursed){
-					if (canseemon(mtarg))
-						pline("%s looks more tranquil.", Monnam(mtarg));
-					if(!amp->blessed){
-						untame(mtarg, 1);
-						mtarg->mferal = 0;
-					}
-					mtarg->mcrazed = 0;
-					mtarg->mdisrobe = 0;
-					mtarg->mberserk = 0;
-					mtarg->mdoubt = 0;
-				} else {
-					if (canseemon(mtarg))
-						pline("%s looks angry and confused!", Monnam(mtarg));
-					untame(mtarg, 0);
-					mtarg->mcrazed = 1;
-					mtarg->mberserk = 1;
-					mtarg->mconf = 1;
-					mtarg->mferal = 0;
-				}
-			break;
-		}
-	} else {
-		if(amp->spe <= 0){
-			pline("The ampule is empty!");
-			return MOVE_STANDARD;
-		}
-		switch(amp->ovar1){
-			case POT_GAIN_ABILITY:
-				if(amp->cursed) {
-					//poison
-				} else if (Fixed_abil) {
-					nothing++;
-				} else {      /* If blessed, increase all; if not, try up to */
-					int itmp; /* 6 times to find one which can be increased. */
-					i = -1;		/* increment to 0 */
-					for (ii = A_MAX; ii > 0; ii--) {
-					i = (amp->blessed ? i + 1 : rn2(A_MAX));
-					/* only give "your X is already as high as it can get"
-					   message on last attempt (except blessed potions) */
-					itmp = (amp->blessed || ii == 1) ? 0 : -1;
-					if (adjattrib(i, 1, itmp) && !amp->blessed)
-						break;
-					}
-				}
-			break;
-			case POT_RESTORE_ABILITY:
-				if (amp->blessed && u.ulevel < u.ulevelmax) {
-					pluslvl(FALSE);
-				}
-				if(amp->blessed && u.umorgul>0){
-					u.umorgul--;
-					if(u.umorgul)
-						You_feel("the chill of death lessen.");
-					else
-						You_feel("the chill of death fade away.");
-				}
-				if(amp->blessed && u.umummyrot){
-					u.umummyrot = 0;
-					You("stop shedding dust.");
-				}
-				if(!amp->cursed){
-					//Restore sanity if blessed or uncursed
-					if(amp->blessed)
-						change_usanity(20, FALSE);
-					else
-						change_usanity(5, FALSE);
-				}
-				if(amp->cursed) {
-					pline("Ulch!  This makes you feel mediocre!");
-					break;
-				} else {
-					int lim;
-					pline("Wow!  This makes you feel %s!",
-					  (amp->blessed) ?
-						(unfixable_trouble_count(FALSE) ? "better" : "great")
-					  : "good");
-					i = rn2(A_MAX);		/* start at a random point */
-					for (ii = 0; ii < A_MAX; ii++) {
-					lim = AMAX(i);
-					if (i == A_STR && u.uhs >= 3) --lim;	/* WEAK */
-					if (ABASE(i) < lim) {
-						ABASE(i) = lim;
-						flags.botl = 1;
-						/* only first found if not blessed */
-						if (!amp->blessed) break;
-					}
-					if(++i >= A_MAX) i = 0;
-					}
-				}
-			break;
-			case POT_BLINDNESS:
-				if(Blind) nothing++;
-				make_blinded(itimeout_incr(Blinded,
-							   rn1(200, 250 - 125 * bcsign(amp))),
-						 (boolean)!Blind);
-			break;
-			case POT_CONFUSION:
-				if(!Confusion)
-					if (Hallucination) {
-						pline("What a trippy feeling!");
-					} else pline("Huh, What?  Where am I?");
-				else nothing++;
-				make_confused(itimeout_incr(HConfusion,
-								rn1(7, 16 - 8 * bcsign(amp))),
-						  FALSE);
-			break;
-			case POT_PARALYSIS:
-				if (Free_action)
-					You("stiffen momentarily.");
-				else {
-					if (Levitation || Weightless || Is_waterlevel(&u.uz))
-					You("are motionlessly suspended.");
-#ifdef STEED
-					else if (u.usteed)
-					You("are frozen in place!");
-#endif
-					else
-					Your("%s are frozen to the %s!",
-						 makeplural(body_part(FOOT)), surface(u.ux, u.uy));
-					nomul(-(rn1(10, 25 - 12*bcsign(amp))), "frozen by a potion");
-					nomovemsg = You_can_move_again;
-					exercise(A_DEX, FALSE);
-				}
-			break;
-			case POT_SPEED:
-				if(Wounded_legs && !amp->cursed
-#ifdef STEED
-				&& !u.usteed	/* heal_legs() would heal steeds legs */
-#endif
-								) {
-					heal_legs();
-					break;
-				}
-				if (!(HFast & INTRINSIC)) {
-					if (!Fast) You("speed up.");
-					else Your("quickness feels more natural.");
-					HFast |= TIMEOUT_INF;
-				} else nothing++;
-				exercise(A_DEX, TRUE);
-			break;
-			case POT_HALLUCINATION:
-				if (Hallucination || Halluc_resistance) nothing++;
-				(void) make_hallucinated(itimeout_incr(HHallucination,
-							   rn1(200, 600 - 300 * bcsign(amp))),
-						  TRUE, 0L);
-				//Bad drugs: inflict brain damage
-				if(amp->cursed){
-					if(u.usanity > 0)
-						change_usanity(-1, FALSE);
-					if(u.uinsight > 0)
-						change_uinsight(-1);
-					exercise(A_WIS, FALSE);
-					exercise(A_INT, FALSE);
-				}
-			break;
-			case POT_HEALING:
-				You_feel("better.");
-				healup(d(6 + 2 * bcsign(amp), 4),
-					   (!amp->cursed ? 1 : 0), !!amp->blessed, !amp->cursed);
-				exercise(A_CON, TRUE);
-			break;
-			case POT_EXTRA_HEALING:
-				You_feel("much better.");
-				healup(d(6 + 2 * bcsign(amp), 8),
-					    (1+1*bcsign(amp)), !amp->cursed, TRUE);
-				(void) make_hallucinated(0L,TRUE,0L);
-				exercise(A_CON, TRUE);
-				exercise(A_STR, TRUE);
-			break;
-			case POT_GAIN_ENERGY:
-			{	register int num;
-				num = rnd(2) + 2 * amp->blessed + 1;
-				u.uenbonus += (amp->cursed) ? -num : num;
-				calc_total_maxen();
-				u.uen += (amp->cursed) ? -100 : (amp->blessed) ? 200 : 100;
-				if(u.uen > u.uenmax) u.uen = u.uenmax;
-				if(u.uen <= 0 && !Race_if(PM_INCANTIFIER)) u.uen = 0;
-				flags.botl = 1;
-				if(!amp->cursed) exercise(A_WIS, TRUE);
-				//Doing the print last causes the bottom line update to show the changed energy scores.
-				if(amp->cursed)
-					You_feel("lackluster.");
-				else
-					pline("Magical energies course through your body.");
-			}
-			break;
-			case POT_SLEEPING:
-				if(Sleep_resistance || Free_action)
-					You("yawn.");
-				else {
-					You("suddenly fall asleep!");
-					fall_asleep(-rn1(10, 25 - 12*bcsign(amp)), TRUE);
-				}
-				//Sedative
-				change_usanity(5 + 10*bcsign(amp), FALSE);
-			break;
-			case POT_FULL_HEALING:
-				You_feel("completely healed.");
-				healup(400, (2+2*bcsign(amp)), !amp->cursed, TRUE);
-				/* Restore one lost level if blessed */
-				if (amp->blessed && u.ulevel < u.ulevelmax) {
-					///* when multiple levels have been lost, drinking
-					//   multiple potions will only get half of them back */
-					// u.ulevelmax -= 1;
-					pluslvl(FALSE);
-				}
-				/* Dissolve one morgul blade shard if blessed*/
-				if(amp->blessed && u.umorgul>0){
-					u.umorgul--;
-					if(u.umorgul)
-						You_feel("the chill of death lessen.");
-					else
-						You_feel("the chill of death fade away.");
-				}
-				if(amp->blessed && u.umummyrot){
-					u.umummyrot = 0;
-					You("stop shedding dust.");
-				}
-				(void) make_hallucinated(0L,TRUE,0L);
-				exercise(A_STR, TRUE);
-				exercise(A_CON, TRUE);
-			break;
-			case POT_POLYMORPH:
-				You_feel("a little %s.", Hallucination ? "normal" : "strange");
-				if (!Unchanging) polyself(FALSE);
-			break;
-			case POT_AMNESIA:
-				forget(amp->cursed ? 25 : amp->blessed ? 0 : 10);
-				if (Hallucination)
-					pline("Hakuna matata!");
-				else
-					You_feel("your memories dissolve.");
-
-				/* Blessed amnesia makes you forget lycanthropy, sickness */
-				if (amp->blessed) {
-					if (u.ulycn >= LOW_PM && !Race_if(PM_HUMAN_WEREWOLF)) {
-					You("forget your affinity to %s!",
-							makeplural(mons[u.ulycn].mname));
-					if (youmonst.data->mtyp == u.ulycn)
-						you_unwere(FALSE);
-					u.ulycn = NON_PM;	/* cure lycanthropy */
-					}
-					make_sick(0L, (char *) 0, TRUE, SICK_ALL);
-
-					/* You feel refreshed */
-					if(Race_if(PM_INCANTIFIER)) u.uen += 50 + rnd(50);
-					else u.uhunger += 50 + rnd(50);
-					
-					newuhs(FALSE);
-				} else
-					exercise(A_WIS, FALSE);
-
-				//All amnesia causes you to forget your crisis of faith
-				if(Doubt)
-					You("forget your doubts.");
-				make_doubtful(0L, FALSE);
-			break;
-		}
-		if(nothing) {
-			You("have a %s feeling for a moment, then it passes.",
-			  Hallucination ? "normal" : "peculiar");
-		}
-	}
-	amp->spe--;
-	return MOVE_STANDARD;
 }
 
 /* Place a landmine/bear trap.  Helge Hafting */
@@ -5332,18 +4935,6 @@ use_doll(obj)
 			else pline("The little doll vanishes.");
 			useup(obj);
 		break;
-		case DOLL_OF_FULL_HEALING:
-			res = MOVE_STANDARD;
-			if((!Upolyd && u.uhp < u.uhpmax) ||
-				(Upolyd && u.mh < u.mhmax)
-			)
-				pline("Your wounds begin rapidly knitting shut.");
-			give_intrinsic(RAPID_HEALING, 5L);
-			if(!Blind)
-				pline("The %s vanishes in a flash of moonlight.", OBJ_DESCR(objects[obj->otyp]));
-			else pline("The little doll vanishes.");
-			useup(obj);
-		break;
 		case DOLL_OF_DESTRUCTION:
 			res = MOVE_STANDARD;
 			if(!Blind)
@@ -6229,301 +5820,6 @@ struct obj * obj;
 			gods_upset(u.ualign.god);
 		}
 	}
-}
-
-STATIC_OVL int
-do_soul_coin(obj)
-struct obj *obj;
-{
-	char coinbuff[50] = {0};
-	struct monst *mtmp = (struct monst *)0;
-	struct obj *otmp;
-	int x, y;
-	int tmp;
-	coord cc = {u.ux, u.uy};
-
-	if(!freehand()){
-		You("can't crush %s with no free %s!", the(xname(obj)), body_part(HAND));
-		return MOVE_CANCELLED;
-	}
-
-	/* most wages need a target, or else they abort.
-	 * Blessed wages all have the same non-targeted effect */
-	if (!obj->blessed &&
-		obj->otyp != WAGE_OF_SLOTH &&
-		obj->otyp != WAGE_OF_LUST
-		){
-		boolean needs_mon = (obj->otyp != WAGE_OF_GREED);
-		boolean needs_space = (obj->otyp == WAGE_OF_GREED);
-		/* choose target */
-		if (needs_mon)
-			pline("Pick a creature to target.");
-		else
-			pline("Pick a location to target.");
-		if(getpos(&cc, TRUE, "the target") < 0) return MOVE_CANCELLED;
-		x = cc.x;
-		y = cc.y;
-		if(distmin(u.ux, u.uy, x, y) > BOLT_LIM || !clear_path(u.ux, u.uy, x, y)){
-			pline("It can't reach there!");
-			return MOVE_CANCELLED;
-		}
-
-		if(needs_space && (closed_door(x, y) ||	IS_ROCK(levl[x][y].typ))){
-			You("can't use that there.");
-			return MOVE_CANCELLED;
-		}
-		mtmp = m_u_at(x, y);
-		if(needs_mon && (!mtmp || DEADMONSTER(mtmp))){
-			You("see no target there!");
-			return MOVE_CANCELLED;
-		}
-		if(mtmp == &youmonst){
-			Sprintf(coinbuff, "Use the %s on yourself?", obj->dknown ? OBJ_DESCR(objects[obj->otyp]) : "coin");
-			if(yn(coinbuff) == 'n')
-				return MOVE_CANCELLED;
-		}
-		else if(needs_mon && !canspotmon(mtmp)){
-			You("see no target there!");
-			return MOVE_CANCELLED;
-		}
-	}
-	/* did not abort during targeting; activate */
-	You("crush the %s in your %s.", obj->dknown ? OBJ_DESCR(objects[obj->otyp]) : "coin", body_part(HAND));
-
-	/* main effect -- does not happen with blessed wages. */
-	if (!obj->blessed) {
-		switch(obj->otyp){
-			case WAGE_OF_SLOTH:
-				tmp = obj->cursed ? 4 : 2;
-				You("blur with stolen time!");
-				HTimeStop += (long)tmp;
-				for(mtmp = fmon; mtmp; mtmp = mtmp->nmon){
-					if(is_uvuudaum(mtmp->data) && !DEADMONSTER(mtmp)){
-						mtmp->movement += NORMAL_SPEED*tmp;
-					}
-				}
-			break;
-			case WAGE_OF_LUST:
-				tmp = obj->cursed ? 99 : 9;
-
-				if(!BlowingWinds){
-					pline("Hurricane-force winds surround you!");
-				}
-				else {
-					pline("The hurricane-force winds intensify!");
-				}
-				HBlowingWinds += (long)tmp;
-			break;
-			case WAGE_OF_GLUTTONY:
-				if(inediate(mtmp->data)){
-					pline("%s %s unbothered.",
-						(mtmp == &youmonst) ? "You" : Monnam(mtmp),
-						(mtmp == &youmonst) ? "are" : "is");
-				}
-				else {
-					tmp = obj->cursed ? 2000 : 1000;
-					if(mtmp == &youmonst){
-						morehungry(tmp*get_uhungersizemod());
-					}
-					else {
-						if(mtmp->mtame && get_mx(mtmp, MX_EDOG)){
-							EDOG(mtmp)->hungrytime = max(EDOG(mtmp)->hungrytime - tmp, monstermoves - (500 + 250*obj->cursed));
-						}
-						else {
-							if(obj->cursed){
-								mtmp->mhp -= min(999, mtmp->mhpmax);
-							}
-							else {
-								mtmp->mhp -= min(99, mtmp->mhpmax/2);
-							}
-							if(mtmp->mhp <= 0){
-								pline("%s starves.", Monnam(mtmp));
-								mondied(mtmp);
-							}
-							else {
-								pline("%s is confused from hunger.", Monnam(mtmp));
-								mtmp->mconf = 1;
-							}
-						}
-					}
-				}
-			break;
-			case WAGE_OF_GREED:
-				otmp = mksobj(MASS_OF_STUFF, MKOBJ_NOINIT);
-				if (!otmp) break;  /* Shouldn't happen */
-				curse(otmp);
-
-				/* Note, blessed was handled above. */
-				if(obj->cursed){
-					projectile(&youmonst, otmp, (void *)0, HMON_PROJECTILE|HMON_FIRED, u.ux, u.uy, (x-u.ux), (y-u.uy), 0, 1, FALSE, FALSE, FALSE);
-				}
-				else if(mtmp){
-					int dmg;
-					boolean youdef = mtmp == &youmonst;
-					if(youdef)
-						pline("%s drops out of nowhere and hits you!", An(xname(otmp)));
-					else if (cansee(mtmp->mx, mtmp->my)) {
-						pline("%s is hit by %s!", Monnam(mtmp),
-										doname(otmp));
-						if (mtmp->minvis && !canspotmon(mtmp))
-						map_invisible(mtmp->mx, mtmp->my);
-					}
-
-					dmg = dmgval(otmp, mtmp, 0);
-					struct obj *helmet = youdef ? uarmh : which_armor(mtmp, W_ARMH);
-					if (helmet) {
-						if(is_hard(helmet)) {
-							if(youdef)
-								pline("Fortunately, you are wearing a hard helmet.");
-							else if (canspotmon(mtmp))
-								pline("Fortunately, %s is wearing a hard helmet.", mon_nam(mtmp));
-							else if (flags.soundok)
-								You_hear("a clanging sound.");
-							if (dmg > 2) dmg = 2;
-						}
-						else if (flags.verbose) {
-							if(youdef)
-								Your("%s does not protect you.",
-									xname(helmet));
-							else if(canspotmon(mtmp))
-								pline("%s's %s does not protect %s.",
-								Monnam(mtmp), xname(helmet),
-								mhim(mtmp));
-						}
-					}
-					if (!flooreffects(otmp, x, y, "fall")) {
-						place_object(otmp, x, y);
-						stackobj(otmp);
-						newsym(x, y);
-					}
-
-					if (Half_phys(mtmp))
-						dmg = (dmg + 1) / 2;
-					if (youdef && u.uvaul_duration)
-						dmg = (dmg + 1) / 2;
-					if(youdef)
-						losehp(dmg, "mass of falling stuff", KILLED_BY_AN);
-					else {
-						mtmp->mhp -= dmg;
-						if (mtmp->mhp <= 0)
-							xkilled(mtmp, 1);
-					}
-				}
-				else {
-					if (!flooreffects(otmp, x, y, "fall")) {
-						place_object(otmp, x, y);
-						stackobj(otmp);
-						newsym(x, y);  /* map the rock */
-					}
-				}
-			break;
-			case WAGE_OF_WRATH:
-				if(Breathless_res(mtmp)){
-					pline("%s %s unbothered.",
-						(mtmp == &youmonst) ? "You" : Monnam(mtmp),
-						(mtmp == &youmonst) ? "are" : "is");
-					water_damage(mtmp == &youmonst ? invent : mtmp->minvent, FALSE, FALSE, WD_BLOOD, mtmp);
-				}
-				else {
-					if(mtmp == &youmonst){
-						BloodDrown += obj->cursed ? 9 : 4;
-					}
-					else {
-						water_damage(mtmp->minvent, FALSE, FALSE, WD_BLOOD, mtmp);
-						if(obj->cursed){
-							//Note: 2x water damage
-							water_damage(mtmp->minvent, FALSE, FALSE, WD_BLOOD, mtmp);
-							mtmp->mbdrown = min(100, mtmp->mbdrown+9);
-						}
-						mtmp->mhp -= min(99, obj->cursed ? mtmp->mhpmax : mtmp->mhpmax/2);
-						if(mtmp->mhp <= 0){
-							pline("%s drowns in blood!", Monnam(mtmp));
-							mondied(mtmp);
-						}
-						else if(!resist(mtmp, RING_CLASS, 0, NOTELL)){
-							pline("%s is crazed with anger!", Monnam(mtmp));
-							mtmp->mberserk = 1;
-						}
-					}
-				}
-			break;
-			case WAGE_OF_ENVY:
-				if(mtmp != &youmonst && mindless_mon(mtmp)) { /* player is never mindless */
-					pline("%s is unbothered.", Monnam(mtmp));
-				}
-				if(mtmp == &youmonst){
-					if(!roll_madness(MAD_TALONS)){ /*May refuse to give up things*/
-						struct obj *otmp2;
-						int delay = 0;
-						if (*u.ushops) sellobj_state(SELL_DELIBERATE);
-						for(otmp = invent; otmp; otmp = otmp2) {
-							if(otmp == obj) {otmp2 = otmp->nobj; continue;}
-							if(obj->cursed && otmp->owornmask){
-								if(otmp->oclass == ARMOR_CLASS)
-									delay = max(delay, objects[otmp->otyp].oc_delay);
-								remove_worn_item(otmp, TRUE);
-							}
-							otmp2 = otmp->nobj;
-							drop(otmp);
-						}
-						if (*u.ushops) sellobj_state(SELL_NORMAL);
-						reset_occupations();
-						if(delay)
-							nomul(-delay, "taking off clothes");
-					}
-				}
-				else {
-					relobj_envy(mtmp,canspotmon(mtmp));
-					mtmp->menvy = TRUE;
-					if(obj->cursed){
-						mtmp->mdisrobe = TRUE;
-					}
-				}
-			break;
-			case WAGE_OF_PRIDE:
-				if(mtmp != &youmonst && mindless_mon(mtmp)){ /* player is never mindless */
-					pline("%s is unbothered.", Monnam(mtmp));
-				}
-				
-				if(mtmp == &youmonst){
-					u.uencouraged -= 9;
-					if(obj->cursed)
-						u.ustdy += 45;
-				}
-				else {
-					mtmp->encouraged -= 9;
-					if(obj->cursed){
-						mtmp->mstdy += 45;
-					}
-					if(is_minion(mtmp->data) && !(mtmp->data->geno&G_UNIQ)
-					&& (obj->cursed || !resist(mtmp, RING_CLASS, 0, NOTELL))
-					){
-						if(In_endgame(&u.uz)){
-							if(canspotmon(mtmp)){
-								pline("%s plummets through the %s!", Monnam(mtmp), surface(mtmp->mx, mtmp->my));
-							}
-							mongone(mtmp);
-						}
-						else if(!templated(mtmp)){
-							if(canspotmon(mtmp)){
-								pline("%s falls from grace!", Monnam(mtmp));
-							}
-							set_template(mtmp, FALLEN_TEMPLATE);
-						}
-					}
-				}
-			break;
-		}
-		/* if you targeted a monster, it gets angry, even if it was unaffected */
-		if (mtmp) {
-			wakeup(mtmp, TRUE);
-		}
-	}
-	/* handle B/U/C effect of wages */
-	soul_crush_consequence(obj);
-	
-	useup(obj);
-    return MOVE_STANDARD;
 }
 
 int
@@ -7620,8 +6916,7 @@ doapply()
 		Strcpy(class_list, tools);
 	if (carrying(CREAM_PIE) || carrying(EUCALYPTUS_LEAF))
 		add_class(class_list, FOOD_CLASS);
-	if (carrying(DWARVISH_HELM) || carrying(GNOMISH_POINTY_HAT) 
-		|| carrying(DROVEN_CLOAK) || carrying(POWER_ARMOR) || carrying_art(ART_AEGIS))
+	if (carrying(DROVEN_CLOAK) || carrying(POWER_ARMOR) || carrying_art(ART_AEGIS))
 		add_class(class_list, ARMOR_CLASS);
 	if(carrying_applyable_ring()){
 		add_class(class_list, RING_CLASS);
@@ -7651,8 +6946,6 @@ doapply()
 	    return do_break_wand(obj);
 	else if (obj->oclass == COIN_CLASS)
 	    return do_flip_coin(obj);
-	else if (obj->oclass == SCOIN_CLASS)
-	    return do_soul_coin(obj);
 	else if (obj->oclass == RING_CLASS || obj->oclass == AMULET_CLASS)
 	    return do_present_item(obj);
 	else if(is_knife(obj) && !(obj->oartifact==ART_PEN_OF_THE_VOID && obj->ovar1&SEAL_MARIONETTE)) 
@@ -7812,10 +7105,9 @@ doapply()
 		use_candelabrum(obj);
 		break;
 	case WAX_CANDLE:
+	case MAGIC_CANDLE:
 	case TALLOW_CANDLE:
 	case CANDLE_OF_INVOCATION:
-	case GNOMISH_POINTY_HAT:
-		use_candle(&obj);
 	break;
 	case BULLET_FABBER:
 	if(!(Role_if(PM_ANACHRONONAUT) || Role_if(PM_TOURIST))) pline("It seems inert.");
@@ -7995,7 +7287,6 @@ doapply()
  * From an idea posted to RGRN by "Dr Darth"
  * Code by Malcom Ryan
  */
-	case DWARVISH_HELM: 
 	case OIL_LAMP:
 	case MAGIC_LAMP:
 	case LANTERN:
@@ -8160,7 +7451,6 @@ doapply()
 		case DOLL_OF_CLEAVING:
 		case DOLL_OF_SATIATION:
 		case DOLL_OF_GOOD_HEALTH:
-		case DOLL_OF_FULL_HEALING:
 		case DOLL_OF_DESTRUCTION:
 		case DOLL_OF_MEMORY:
 		case DOLL_OF_BINDING:
@@ -8260,9 +7550,6 @@ doapply()
 //ifdef FIREARMS
 	case SENSOR_PACK:
 		res = use_sensor(obj);
-	break;
-	case HYPOSPRAY:
-		res = use_hypospray(obj);
 	break;
 	case RAYGUN:
 		if(obj->altmode == AD_FIRE){

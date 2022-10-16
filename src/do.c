@@ -1893,6 +1893,15 @@ deferred_goto()
 	    }
 	    if (dfr_post_msg) pline1(dfr_post_msg);
 	}
+	if (!achieve.introquest && u.uz.dlevel == 2) { //Delete path back to intro quest
+		achieve.introquest = 1;
+		struct trap *t = t_at(u.ux, u.uy);
+
+		if (t) {
+		    deltrap(t);
+		    newsym(u.ux, u.uy);
+		}
+	}
 	u.utotype = 0;		/* our caller keys off of this */
 	if (dfr_pre_msg)
 	    free((genericptr_t)dfr_pre_msg),  dfr_pre_msg = 0;
@@ -2524,19 +2533,21 @@ donull()
 		} else if(u.sealsActive&SEAL_EURYNOME && ++u.eurycounts>5) unbind(SEAL_EURYNOME,TRUE);
 	} else if(uandroid){
 		if(!Upolyd && u.uhp<u.uhpmax && u.uen > 0){
-			u.uhp += u.ulevel/6+1;
-			if(rn2(6) < u.ulevel%6)
-				u.uhp++;
-			flags.botl = 1;
-			u.uen--;
-			if(uwep && uwep->oartifact == ART_SINGING_SWORD && uwep->osinging == OSING_HEALING){
-				u.uhp++;
-			}
-			if(u.uhp > u.uhpmax) u.uhp = u.uhpmax;
-			if(u.uhp == u.uhpmax){
-				You("finish regenerating.");
-				stop_occupation();
-				occupation = 0; /*redundant failsafe? why doesn't stop_occupation work?*/
+			if (rn2(10) == 9 || u.usleep) {
+				u.uhp += u.ulevel/6+1;
+				flags.botl = 1;
+				u.uen--;
+				if(uwep && uwep->oartifact == ART_SINGING_SWORD && uwep->osinging == OSING_HEALING){
+					u.uhp++;
+				}
+				if(u.uhp > u.uhpmax) u.uhp = u.uhpmax;
+				if(u.uhp == u.uhpmax){
+					You("finish regenerating.");
+					stop_occupation();
+					occupation = 0; /*redundant failsafe? why doesn't stop_occupation work?*/
+				} else {
+					You("heal.");
+				}
 			}
 		} else if(Upolyd && u.mh<u.mhmax && u.uen > 0){
 			u.mh += u.ulevel/3+1;

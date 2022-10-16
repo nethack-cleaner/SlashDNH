@@ -37,23 +37,31 @@ GEOMETRY:center,center
 ###########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 MAP
-0-------- ------
-1|.|....|-|....|
-2|.|-..........|
-3|.||....|.....|
-4|.||....|.....|
-5|.|-----|.-----
-6|.|    |......|
-7|.-----|......|
-8|.............|
-9|..|---|......|
-0----   --------
+-------- -----------------------------------------------
+|.|....|-|.............................................|
+|.|-...................................................|
+|.||....|..............................................|
+|.||....|..............................................|
+|.|-----|..........................................-----
+|.|    |...............................................|
+|.-----|...............................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|......................................................|
+|..|---|...............................................|
+----   -------------------------------------------------
 ENDMAP
 ###########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 BRANCH:(03,01,03,01),(0,0,0,0)
 STAIR:(01,01),up
-REGION:(00,00,14,10),lit,"ordinary"
+REGION:(00,00,52,18),lit,"ordinary"
 NON_DIGGABLE:(00,00,14,10)
 NON_PASSWALL:(00,00,14,10)
 
@@ -67,14 +75,40 @@ OBJECT:'?',"earth",(01,09)
 OBJECT:'?',"earth",(02,09)
 
 #prize
-MONSTER: 'u', "Lokoban Pinata", (11,08)
+MONSTER: 'u', "Lokoban Pinata", (45,16)
+MONSTER: 'h', "Lokoban Handler", (43,14), hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
 
 # Random objects
-# OBJECT:'%',random,random
-# OBJECT:'%',random,random
-# OBJECT:'%',random,random
-# OBJECT:'%',random,random
+OBJECT:'%',random,random
+OBJECT:'*',random,random
+OBJECT:'(',random,random
+OBJECT:'"',random,random
 OBJECT:'=',random,random
 OBJECT:'/',random,random
+OBJECT:'!',random,random
+OBJECT:'!',random,random
+OBJECT:'?',random,random
+OBJECT:'?',random,random
 
 

@@ -41,6 +41,12 @@ static struct trobj Archeologist[] = {
 	{ 0, 0, 0, 0, 0 }
 };
 
+static struct trobj Jedi[] = {
+    { ROBE, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { GLOVES, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { 0, 0, 0, 0, 0 }
+};
+
 static struct trobj Anachronounbinder[] = {
 	{ QUARTERSTAFF, 3, WEAPON_CLASS, 1, 0 },
 	{ DAGGER, 0, WEAPON_CLASS, 1, 0 },
@@ -931,6 +937,24 @@ static const struct def_skill Skill_Ana[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_Jedi[] = {
+    { P_SABER, P_EXPERT },
+	{ P_LONG_SWORD,  P_EXPERT },
+    { P_CLUB, P_EXPERT },
+	{ P_QUARTERSTAFF, P_EXPERT },
+	{ P_BROAD_SWORD, P_EXPERT },
+    { P_FIREARM, P_EXPERT },
+    { P_WHIP, P_EXPERT },
+    { P_ATTACK_SPELL, P_EXPERT },
+	{ P_HEALING_SPELL, P_EXPERT },
+    { P_DIVINATION_SPELL, P_EXPERT },
+	{ P_MATTER_SPELL, P_SKILLED },
+	{ P_ENCHANTMENT_SPELL, P_BASIC },
+    { P_RIDING, P_BASIC },
+    { P_MARTIAL_ARTS, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -2554,6 +2578,9 @@ u_init()
 		u.ualign.type = A_LAWFUL;
 		break;
 	case PM_JEDI:
+		u.umartial = TRUE;
+		ini_inv(Jedi);
+		skill_init(Skill_Jedi);
 		if (Race_if(PM_DROW)) {
 			u.ualign.type = A_CHAOTIC;
 		} else {

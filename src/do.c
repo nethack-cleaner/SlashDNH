@@ -1894,6 +1894,9 @@ deferred_goto()
 	    if (dfr_post_msg) pline1(dfr_post_msg);
 	}
 	if (!achieve.introquest && u.uz.dlevel == 2) { //Delete path back to intro quest
+	    //char buf[BUFSZ];
+		//Sprintf(buf, "turns %d", moves);
+		//You(buf);
 		achieve.introquest = 1;
 		struct trap *t = t_at(u.ux, u.uy);
 

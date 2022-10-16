@@ -1,4 +1,4 @@
-/*	SCCS Id: @(#)cmd.c	3.4	2003/02/06	*/
+		/*	SCCS Id: @(#)cmd.c	3.4	2003/02/06	*/
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
@@ -194,6 +194,7 @@ static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
 STATIC_DCL char *NDECL(parse);
+static void addtech(tmpwin, ky, letter, txt, timeout);
 STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 
 #ifdef OVL1
@@ -587,8 +588,20 @@ boolean you_abilities;
 	if (you_abilities && (Role_if(PM_EXILE) || u.sealsActive || u.specialSealsActive)) {
 		add_ability('f', "Fire a spirit power", MATTK_U_SPIRITS);
 	}
-	if (you_abilities && uwep && is_lightsaber(uwep)) {	/* I can't wait until fighting forms are mainstream */
+	if (you_abilities && uwep && is_lightsaber(uwep) && !Role_if(PM_JEDI)) {	/* I can't wait until fighting forms are mainstream */
 		add_ability('F', "Pick a fighting form", MATTK_U_STYLE);
+	}
+	if (Role_if(PM_JEDI)) {
+		atleastone = TRUE;
+		if (achieve.introquest) {
+			addtech(tmpwin, MATTK_JUMP, 'j', "Force Jump", 1000);
+			addtech(tmpwin, MATTK_HEAL, 'h', "Force Heal", 1000);
+		} else {
+			anything any;
+			any.a_void = 0;		/* zero out all bits */
+			any.a_int = 0;
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "You must attune to the force", MENU_UNSELECTED);
+		}
 	}
 	if (mon_abilities && attacktype(youracedata, AT_GAZE)){
 		add_ability('g', "Gaze at something", MATTK_GAZE);
@@ -708,6 +721,17 @@ boolean you_abilities;
 	case MATTK_U_SPIRITS: return dospirit();
 	case MATTK_U_TURN_UNDEAD: return doturn();
 	case MATTK_U_STYLE: return dofightingform();
+	case MATTK_JUMP:
+		achieve.techs[MATTK_JUMP] = moves;
+		return jump(1);
+	case MATTK_HEAL:
+		achieve.techs[MATTK_HEAL] = moves;
+		u.uhp += 10 + (u.ulevel * 2);
+		if (u.uhp > u.uhpmax) {
+			u.uhp = u.uhpmax;
+		}
+		break;
+		//if(u.mh > u.mhmax) u.mh = u.mhmax;
 	case MATTK_U_MONST: return domonability();
 	case MATTK_U_ELMENTAL: return doelementalbreath();
 	case MATTK_WHISPER: return domakewhisperer();
@@ -3684,8 +3708,31 @@ end_of_input()
 }
 #endif
 
-#endif /* OVLB */
-#ifdef OVL0
+static
+void
+addtech(tmpwin, ky, letter, txt, timeout)
+	winid tmpwin;
+    int ky;
+	char letter;
+	char *txt;
+	int timeout;
+{
+	anything any;
+	any.a_void = 0;		/* zero out all bits */
+	any.a_int = ky;
+
+	if (!achieve.techs[ky] || achieve.techs[ky] + timeout < moves) {
+		add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, txt, MENU_UNSELECTED);
+	} else if (achieve.techs[ky] + (timeout - 60) < moves) {
+		char buf[BUFSZ];
+		Sprintf(buf, "%s (Soon)", txt);
+		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
+	} else {
+		char buf[BUFSZ];
+		Sprintf(buf, "%s (Cooldown)", txt);
+		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
+	}
+}
 
 char
 readchar()

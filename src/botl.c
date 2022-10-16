@@ -446,7 +446,9 @@ char *buf;
 	int ret = 1;
 
 	/* TODO:	Add in dungeon name */
-	if (Is_knox(&u.uz))
+	if(Sick || Stoned || Slimed || FaintingFits || FrozenAir || Strangled || BloodDrown || !strcmp(hu_stat[u.uhs], "Fainting") || !strcmp(hu_stat[u.uhs], "Fainted ") || !strcmp(hu_stat[u.uhs], "Starved ")) {
+		Sprintf(buf, "X");
+	} else if (Is_knox(&u.uz))
 		Sprintf(buf, "%s ", dungeons[u.uz.dnum].dname);
 	else if (In_quest(&u.uz))
 		Sprintf(buf, "Home %d ", dunlev(&u.uz));
@@ -516,14 +518,16 @@ bot2()
 	hpmax = Upolyd ? u.mhmax : u.uhpmax;
 
         if(hp < 0) hp = 0;
-        (void) describe_level(newbot2);
-        Sprintf(nb = eos(newbot2), "%c:%-2ld", oc_syms[COIN_CLASS],
+		(void) describe_level(newbot2);
+		if(!Sick && !Stoned && !Slimed && !FaintingFits && !FrozenAir && !Strangled && !BloodDrown && strcmp(hu_stat[u.uhs], "Fainting") && strcmp(hu_stat[u.uhs], "Fainted ") && strcmp(hu_stat[u.uhs], "Starved ")) {
+			Sprintf(nb = eos(newbot2), "%c:%-2ld", oc_syms[COIN_CLASS],
 #ifndef GOLDOBJ
                 u.ugold
 #else
                 money_cnt(invent)
 #endif
-		);
+			);
+		}
 
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         Strcat(nb = eos(newbot2), " HP:");
@@ -546,17 +550,21 @@ bot2()
 #else
         Sprintf(nb = eos(nb), " Pw:%d(%d)", u.uen, u.uenmax);
 #endif
-        Sprintf(nb = eos(nb), " Br:%d", u.divetimer);
+		if(!Sick && !Stoned && !Slimed && !FaintingFits && !FrozenAir && !Strangled && !BloodDrown && strcmp(hu_stat[u.uhs], "Fainting") && strcmp(hu_stat[u.uhs], "Fainted ") && strcmp(hu_stat[u.uhs], "Starved ")) {
+			Sprintf(nb = eos(nb), " Br:%d", u.divetimer);
+		}
         Sprintf(nb = eos(nb), " AC:%-2d", (u.uac + u.ustdy));
         Sprintf(nb = eos(nb), " DR:%-2d", u.udr - u.ustdy);
-	if (Upolyd)
-		Sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
+	if(!Sick && !Stoned && !Slimed && !FaintingFits && !FrozenAir && !Strangled && !BloodDrown && strcmp(hu_stat[u.uhs], "Fainting") && strcmp(hu_stat[u.uhs], "Fainted ") && strcmp(hu_stat[u.uhs], "Starved ")) {
+		if (Upolyd)
+			Sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
 #ifdef EXP_ON_BOTL
-	else if(flags.showexp)
-		Sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
+		if(flags.showexp)
+			Sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
 #endif
-	else
-		Sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
+		else
+			Sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
+	}
 
 	if(flags.time)
 	    Sprintf(nb = eos(nb), " T:%ld", iflags.mod_turncount ? moves%10 : moves);
@@ -597,6 +605,12 @@ bot2()
 #else
   Strcat(nb = eos(nb), " Conf");
 #endif
+	if (Flying) {
+		Strcat(nb = eos(nb), " Fly");
+	}
+	if (Levitation) {
+		Strcat(nb = eos(nb), " Lev");
+	}
   if(Sick) {
       if (u.usick_type & SICK_VOMITABLE)
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
@@ -609,6 +623,13 @@ bot2()
 	  add_colored_text("Ill", newbot2);
 #else
       Strcat(nb = eos(nb), " Ill");
+#endif
+  }
+  if(Stoned) {
+#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
+	  add_colored_text("STONE", newbot2);
+#else
+      Strcat(nb = eos(nb), " STONE");
 #endif
   }
   if(Blind && !StumbleBlind)

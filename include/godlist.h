@@ -463,6 +463,16 @@ GOD_V2("Osiris",         A_NEUTRAL, NEUTRAL_HOLINESS,
 GOD_V2("Seth",             A_CHAOTIC, UNHOLY_HOLINESS,
 	MINIONS(Cdemons)
 	),
+/* Gladiator */
+GOD_V2("Sulla",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Cicero",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Catilina",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
 
 /* the great terminator */
 GOD_V2((const char *)0, 0, 0, MINIONS())

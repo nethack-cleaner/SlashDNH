@@ -52,6 +52,11 @@ const struct innate {
 		     {   7, &(HFast), "quick", "slow" },
 		     {  15, &(HStealth), "stealthy", "" },
 		     {	 0, 0, 0, 0 } },
+	gla_abil[] = {  {3, &(HFast), "quick", "slow"  },
+             {  6, &(HStealth), "stealthy", "noisy"  }, /* with cat-like tread ... */
+             {  10, &(HAggravate_monster), "noisy", "quiet" },
+             {  15, &(HWarning), "sensitive", "careless" },
+             {   0, 0, 0, 0 } },
 #ifdef BARD
 	brd_abil[] = { {	5, &(HSleep_resistance), "awake", "tired" },
 		     {	 10, &(HStealth), "stealthy", "noisy" },
@@ -830,7 +835,13 @@ int oldlevel, newlevel;
 	case PM_ARCHEOLOGIST:   abil = arc_abil;	break;
 	case PM_ANACHRONOUNBINDER: abil = acu_abil;	break;
 	case PM_ANACHRONONAUT:    abil = ana_abil;	break;
-	case PM_BARBARIAN:      abil = bar_abil;	break;
+	case PM_BARBARIAN:
+		if (Race_if(PM_HUMAN)) {
+			abil = gla_abil;
+		} else {
+			abil = bar_abil;
+		}
+		break;
 #ifdef BARD
 	case PM_BARD:           abil = brd_abil;	break;
 #endif

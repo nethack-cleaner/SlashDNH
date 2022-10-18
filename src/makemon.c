@@ -13591,7 +13591,9 @@ rndmonst()
 	else minmlev = zlevel / 6;
 	/* determine the level of the strongest monster to make. */
 	maxmlev = (zlevel + u.ulevel) / 2;
-	maxmlev += 3; /* max monster level is increased by 3 */
+	if (achieve.introquest) {
+		maxmlev += 3; /* max monster level is increased by 3 */
+	}
 
 	if(u.ukinghill){ /* You have pirate quest artifact in open inventory */
 		if(rnd(100)>80){

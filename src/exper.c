@@ -331,6 +331,31 @@ acudown(){
 /* It reaplies all spirts just for kicks */
 void
 binderup(){
+	if (Role_if(PM_ANACHRONONAUT) && Race_if(PM_HALF_DRAGON)) {
+		switch(u.ulevel){
+		default:
+		case 14:
+			u.sealsKnown |= sealKey[u.sealorder[7]];
+		case 13:
+		case 12:
+		case 11:
+			u.sealsKnown |= sealKey[u.sealorder[6]];
+		case 10:
+		case 9:
+		case 8:
+			u.sealsKnown |= sealKey[u.sealorder[4]] | sealKey[u.sealorder[5]];
+		case 7:
+		case 6:
+		case 5:
+			u.sealsKnown |= sealKey[u.sealorder[2]] | sealKey[u.sealorder[3]];
+		case 4:
+		case 3:
+		case 2:
+			u.sealsKnown |= sealKey[u.sealorder[0]] | sealKey[u.sealorder[1]];
+		case 1:
+		break;
+		}
+	} else {
 	switch(u.ulevel){
 	default:
 	case 13:
@@ -360,6 +385,7 @@ binderup(){
 	case 1:
 		u.sealsKnown |= sealKey[u.sealorder[0]] | sealKey[u.sealorder[1]] | sealKey[u.sealorder[2]];
 	break;
+	}
 	}
 }
 
@@ -453,6 +479,9 @@ boolean incr;	/* true iff via incremental experience growth */
 	    reset_rndmonst(NON_PM);		/* new monster selection */
 	}
 	if(Role_if(PM_EXILE)) binderup();
+	if (Role_if(PM_ANACHRONONAUT) && Race_if(PM_HALF_DRAGON)) {
+		binderup();
+	}
 	if(Role_if(PM_ANACHRONOUNBINDER)) acuup();
 
 	/* recalculate maximums, which also caps over-max hp/pw */

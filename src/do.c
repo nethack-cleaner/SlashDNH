@@ -1897,6 +1897,7 @@ deferred_goto()
 	    //char buf[BUFSZ];
 		//Sprintf(buf, "turns %d", moves);
 		//You(buf);
+		u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor and other decisions
 		achieve.introquest = 1;
 		struct trap *t = t_at(u.ux, u.uy);
 

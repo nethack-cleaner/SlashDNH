@@ -12268,6 +12268,8 @@ char *name;	/* target alignment, or A_NONE */
 				add_oprop(otmp, OPROP_WATRW);
 			break;
 		}
+	} else if(!strcmp(name,  "The Sack of Infinite Depth")){
+	} else if(!strcmp(name,  "The Pick Axe of the Ancients")){
 	}
 	fix_object(otmp);
 	return otmp;

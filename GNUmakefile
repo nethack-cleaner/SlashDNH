@@ -195,7 +195,7 @@ QUEST_DES = Arch.des Anachrononaut.des Android.des Barb.des Bard.des Binder.des 
             HalfDragonFemaleNoble.des Healer.des Hedrow.des HedrowNoble.des Knight.des \
 			Monk.des Moria.des Madman.des Noble.des Pirate.des Priest.des Ranger.des Rogue.des	\
             Samurai.des Tourist.des Valkyrie.des Wizard.des Anachronounbinder.des Salamander.des \
-			Offic.des Firef.des Chef.des Slayer.des Jedi.des
+			Offic.des Firef.des Chef.des Slayer.des Jedi.des Gladia.des
 
 SPEC_DES = bigroom.des blacktemple.des castle.des chaos.des chaos2.des chaos3.des	\
            endgame.des gehennom.des knox.des labr.des law.des		\

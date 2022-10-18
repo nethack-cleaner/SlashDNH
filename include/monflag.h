@@ -67,6 +67,8 @@
 #define MS_TATTOO	56	/* Tattoos service */
 #define MS_SMITH	57	/* Armorsmith service */
 #define MS_PORTAL	58	/* Offer portal options */
+#define MS_ILEADER	59	/* Leader of the Intro Quest */
+#define MS_TLEADER	60	/* TRAITOR Leader of the Intro Quest */
 
 
 #define MR_FIRE			0x0001	/* 1 resists fire */

@@ -61,80 +61,76 @@ NON_PASSWALL:(00,00,14,10)
 
 MAZE:"szarc",' '
 FLAGS:noteleport,hardfloor
-GEOMETRY:center,center
+GEOMETRY:left,top
 ###########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 MAP
--------- -----------------------------------------------
-|......|-|.............................................|
-|......................................................|
-|.......|..............................................|
-|.......|..............................................|
-|.|-----|..........................................-----
-|.|    |...............................................|
-|.-----|...............................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|..|---|...............................................|
-----   -------------------------------------------------
+0,,,,,--------,,,,,,,-----....|..|,,,,,,,,..,,,T,,,,}|,,,,,,,,,,-------------
+1,T,,,|..|...|,,,,,,,|........+..S,,,T,,,,,.,,,,,,,}--,T,,,,,,,,|.....+......
+2,,,---S-|...|,,,,,,,--+--------------,,,......,,,,}|,,,,,,,T,,,|.....|......
+3,,,|....|...|,,,,,,,.....................,---..,,,}|,,,,,,,,|,,|...-+----+--
+4.,,|....|...+.,,,....,,,,,,,--------,,.,,,,,,,.,,}},,,,,,}..|,,|...|...|,...
+5..,----+-+---.....,,,,,,,,,,|......|,..,,,,,,,..,},}},,}}}}.,,,-----...|,,,.
+6,.............,,,..,,,,T,,,,|......|,.,----,,,,.....,}}}}}..,,,,,,|....|,T,.
+7,,,,..,-------,,,,.,,,,,,,,,|......|,T,|..|,,,,,,},..,,,}..,,,,,,,---+--,,,.
+8,,,..,,,,,T,,,,,,,..,,,--------++--|,,,|..|,,,,,,},,.,,...,,,,,T,,,,..,,,,..
+9,,T.,,,,,,,,,,,,,,,.,,,|....+......-----..|,T,,,,},,..,.,,,,,------,.,,,,..,
+0,,,.,,T,,,,,,,,,,,,....|....|......S...+..|,,,,,,},,,....,----....|........,
+1,,,.,,,,,,,,,T,,,,,....|....------+--------,,,,,},,,,,,,..|..|...K|.,,,,,,.,
+2,,...,,,,,,,,,,,,,,....+......|,,,.,,,,,,,,,,,,,},,,,,....+..|...--.--,,,,..
+3,......................+......|,,,...,,,,,|,,,,,,},,...,..|..S..--...--T,,,,
+4........,,,,,,,..,,,,,.--------,,,,,......|,,,T,.....,,,,,-------.....--,,,,
+5-.........,,----+--,T...,,,,,,,,----+-----|,,,,.....,,,,,,,,,,,|.......|----
+6--...--,,...|.|...|,..,.,,,,,T,,|....+....|,,,..,},..,T,,,,............+....
+7,-----,,---+-.|...|,.,,..,,------S---|....|,,..,}},,........,,,|.......|FFFF
+8,,,,,,,,|.....|...--+--,...+.........------,T.,}}}},,,.,,,,,,,,--.....--,,,,
+9,,T,,,,,|.....|.......|,.,,|...........|,,,,..}}}}}}}}..,,,,,,,T--...--T,,,,
 ENDMAP
-###########1#########2#########3#########4#########5#########6#########7#####
-#0123456789012345678901234567890123456789012345678901234567890123456789012345
-STAIR: (10,10), up
-REGION:(00,00,52,18),lit,"ordinary"
-NON_DIGGABLE:(00,00,14,10)
-NON_PASSWALL:(00,00,14,10)
 
-# Crates
-OBJECT:'(',"massive stone crate",(05,02)
-OBJECT:'(',"massive stone crate",(06,02)
-OBJECT:'(',"massive stone crate",(06,03)
-OBJECT:'(',"massive stone crate",(07,03)
-# A little help
-OBJECT:'?',"earth",(01,09)
-OBJECT:'?',"earth",(02,09)
-
-#prize
-MONSTER: 'u', "Lokoban Pinata", (45,16)
-MONSTER: 'h', "Lokoban Handler", (43,14), hostile
+# Dungeon Description
+RANDOM_PLACES:(31,00),(73,01),(41,17),(11,19),(10,02),(33,19)
+REGION:(00,00,75,19),lit,"ordinary"
+REGION:(72,18,75,19),unlit,"morgue",unfilled
+# Non diggable walls
+NON_DIGGABLE:(00,00,75,19)
+STAIR:(75,05),up
+DOOR:closed,(29,1)
+DOOR:locked,(69,1)
+DOOR:closed,(22,2)
+DOOR:locked,(68,3)
+DOOR:closed,(73,3)
+DOOR:closed,(12,4)
+DOOR:closed,(7,5)
+DOOR:locked,(9,5)
+DOOR:locked,(69,7)
+DOOR:closed,(31,8)
+DOOR:closed,(32,8)
+DOOR:closed,(28,9)
+DOOR:closed,(39,10)
+DOOR:closed,(34,11)
+DOOR:closed,(23,12)
+DOOR:closed,(58,12)
+DOOR:closed,(23,13)
+DOOR:closed,(16,15)
+DOOR:closed,(36,15)
+DOOR:locked,(37,16)
+DOOR:locked,(71,16)
+DOOR:closed,(11,17)
+DOOR:locked,(20,18)
+DOOR:locked,(27,18)
+MONSTER:'@',"Earl Carnarvon",(31,06)
+MONSTER:'@',"Colonel Dovchenko",(41,9)
 MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-
-# Random objects
-OBJECT:'%',random,random
-OBJECT:'*',random,random
-OBJECT:'(',random,random
-OBJECT:'"',random,random
-OBJECT:'=',random,random
-OBJECT:'/',random,random
-OBJECT:'!',random,random
-OBJECT:'!',random,random
-OBJECT:'?',random,random
-OBJECT:'?',random,random
-
+OBJECT:'+',random,place[0]
+OBJECT:'!',"acid",(64,10)
+OBJECT:'[',random,place[1]
+OBJECT:'(',"pick-axe",place[2],uncursed,1,"The Pick-Axe of the Ancients"
+OBJECT:'(',"sack",place[3],uncursed,0,"The Sack of Infinite Depth"
+MONSTER:'m',"small mimic",(64,01)
+MONSTER:'m',"small mimic",(67,01)
+MONSTER:'m',"small mimic",(65,02)
+MONSTER:'m',"small mimic",(64,04)

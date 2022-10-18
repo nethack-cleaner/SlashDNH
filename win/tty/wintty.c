@@ -550,8 +550,42 @@ give_up:	/* Quit */
 			    any.a_int = i+1;	/* must be non-zero */
 			    char selector = races[i].noun[0];
 			    if(!strcmp(races[i].noun,"etherealoid")) selector = 'E';	
+				char *rdisp = races[i].noun;
+				if (roles[flags.initrole].malenum==PM_BARBARIAN && !strcmp(races[i].noun,"human")) {
+					rdisp = "human (Gladiator)";
+				} else if (roles[flags.initrole].malenum==PM_EXILE && !strcmp(races[i].noun,"elf")) {
+					rdisp = "elf (Traitor)";
+				} else if (roles[flags.initrole].malenum==PM_KNIGHT && !strcmp(races[i].noun,"yuki-onna")) {
+					rdisp = "yuki-onna (Yeoman)";
+				} else if (roles[flags.initrole].malenum==PM_PRIEST && !strcmp(races[i].noun,"dwarf")) {
+					rdisp = "dwarf (Paladin)";
+				} else if (roles[flags.initrole].malenum==PM_PRIEST && !strcmp(races[i].noun,"orc")) {
+					rdisp = "dwarf (Undertaker)";
+				} else if (roles[flags.initrole].malenum==PM_PIRATE && !strcmp(races[i].noun,"elf")) {
+					rdisp = "elf (Diver)";
+				} else if (roles[flags.initrole].malenum==PM_SAMURAI && !strcmp(races[i].noun,"Drow")) {
+					rdisp = "Drow (Ninja)";
+				} else if (roles[flags.initrole].malenum==PM_TOURIST && !strcmp(races[i].noun,"clockwork automaton")) {
+					rdisp = "clockwork (Locksmith)";
+				} else if (roles[flags.initrole].malenum==PM_TOURIST && !strcmp(races[i].noun,"dwarf")) {
+					rdisp = "dwarf (Drunk)";
+				} else if (roles[flags.initrole].malenum==PM_TOURIST && !strcmp(races[i].noun,"gnome")) {
+					rdisp = "gnome (Hacker)";
+				} else if (roles[flags.initrole].malenum==PM_TOURIST && !strcmp(races[i].noun,"elf")) {
+					rdisp = "elf (Playing nethack)";
+				} else if (roles[flags.initrole].malenum==PM_BARD && !strcmp(races[i].noun,"human")) {
+					rdisp = "human (Zookeeper)";
+				} else if (roles[flags.initrole].malenum==PM_WIZARD && !strcmp(races[i].noun,"salamander")) {
+					rdisp = "salamander (Fire Mage)";
+				} else if (roles[flags.initrole].malenum==PM_WIZARD && !strcmp(races[i].noun,"yuki-onna")) {
+					rdisp = "yuki-onna (Ice Mage)";
+				} else if (roles[flags.initrole].malenum==PM_WIZARD && !strcmp(races[i].noun,"Half-dragon")) {
+					rdisp = "half dragon (Acid Mage)";
+				} else if (roles[flags.initrole].malenum==PM_WIZARD && !strcmp(races[i].noun,"orc")) {
+					rdisp = "orc (Electric Mage)";
+				}
 			    add_menu(win, NO_GLYPH, &any, selector,
-				0, ATR_NONE, races[i].noun, MENU_UNSELECTED);
+				0, ATR_NONE, rdisp, MENU_UNSELECTED);
 			}
 		    any.a_int = pick_race(flags.initrole, flags.initgend,
 					flags.initalign, PICK_RANDOM)+1;

@@ -921,6 +921,9 @@ struct u_achieve {
         Bitfield(inked_up,1);        /* Fell tat */
         Bitfield(new_races,1);        /* Ascended a new race */
 		Bitfield(introquest,1);
+		Bitfield(talkedileader,1);
+		Bitfield(talkedtleader,1);
+		Bitfield(istraitor,1);
 		Bitfield(startedgame,1);
 		int techs[100];
 #define	ARC_QUEST		0x1L << 0

@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "qtext.h"
 
 #ifdef USER_SOUNDS
 # ifdef USER_SOUNDS_REGEX
@@ -1222,6 +1223,8 @@ boolean chatting;
 		turn_stag();
 	break;
 	  }
+	case MS_ILEADER:
+	case MS_TLEADER:
 	case MS_LEADER:
 	case MS_GUARDIAN:
 asGuardian:
@@ -1259,7 +1262,59 @@ asGuardian:
 		    break;
 
 	    }
-	    quest_chat(mtmp);
+		if (ptr->msound == MS_ILEADER) {
+			if (achieve.talkedileader) {
+				boolean hasitem = FALSE;
+				struct obj *otmp;
+				for (otmp = invent; otmp; otmp = otmp->nobj) {
+					if (otmp->otyp == PICK_AXE)
+						hasitem = TRUE;
+				}
+				if (hasitem) {
+					qt_pager(QT_STARTLEADER3);
+					struct obj *obj;
+					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+				    fully_identify_obj(obj);
+					if (Role_if(PM_ARCHEOLOGIST)) {
+						obj = oname(obj, "Path of the Explorer");
+					}
+					obj->spe = abs(obj->spe);
+					addinv(obj);
+				} else
+					qt_pager(QT_STARTLEADER2);
+			} else {
+				achieve.talkedileader = TRUE;
+				qt_pager(QT_STARTLEADER1);
+			}
+		} else if (ptr->msound == MS_TLEADER) {
+			if (achieve.talkedtleader) {
+				boolean hasitem = FALSE;
+				struct obj *otmp;
+				for (otmp = invent; otmp; otmp = otmp->nobj) {
+					if (otmp->otyp == SACK)
+						hasitem = TRUE;
+				}
+				if (hasitem) {
+					qt_pager(QT_STARTTRAITOR3);
+					achieve.istraitor = TRUE;
+					if (Role_if(PM_ARCHEOLOGIST)) {
+						u.ualign.type = A_CHAOTIC;
+					}
+					struct obj *obj;
+					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+				    fully_identify_obj(obj);
+					obj = oname(obj, "Traitor's Path");
+					obj->spe = abs(obj->spe);
+					addinv(obj);
+				} else
+					qt_pager(QT_STARTTRAITOR2);
+			} else {
+				achieve.talkedtleader = TRUE;
+				qt_pager(QT_STARTTRAITOR1);
+			}
+		} else {
+			quest_chat(mtmp);
+		}
 	    break;
 	case MS_SELL: /* pitch, pay, total */
 	    shk_chat(mtmp);
@@ -3743,8 +3798,11 @@ binder_nearvoid_slots()
 		else if (u.ulevel <= 17) numSlots = 3;
 		else if (u.ulevel <= 25) numSlots = 4;
 		else numSlots = 5;
-	}
-	else {
+	} else if (Role_if(PM_ANACHRONONAUT) && Race_if(PM_HALF_DRAGON)) {
+		if (u.ulevel <= 6) numSlots = 1;
+		else if (u.ulevel <= 17) numSlots = 2;
+		else numSlots = 3;
+	} else {
 		numSlots = 1;
 	}
 	return numSlots;

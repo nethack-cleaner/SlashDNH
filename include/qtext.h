@@ -5,8 +5,7 @@
 #ifndef QTEXT_H
 #define QTEXT_H
 
-#define N_HDR	38		/* Maximum number of categories */
-				/* (i.e., num roles + 1) */
+#define N_HDR	39		/* Maximum number of categories */
 #define LEN_HDR 3		/* Maximum length of a category name */
 
 struct qtmsg {
@@ -100,6 +99,13 @@ struct	qtlists {
 #define QT_HASAMULET	91
 
 #define QT_TURNEDSTAG	100 /* offset if you turn stag on your original quest leader */
+#define QT_STARTQUEST1	200
+#define QT_STARTLEADER1	201
+#define QT_STARTTRAITOR1	202
+#define QT_STARTLEADER2	203
+#define QT_STARTTRAITOR2	204
+#define QT_STARTLEADER3	205
+#define QT_STARTTRAITOR3	206
 
 /*
  *	Message defines for common text used in maledictions.

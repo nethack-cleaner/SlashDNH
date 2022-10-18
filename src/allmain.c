@@ -8,7 +8,7 @@
 #include "hack.h"
 #include "artifact.h"
 #include "xhity.h"
-
+#include "qtext.h"
 
 #ifndef NO_SIGNAL
 #include <signal.h>
@@ -3535,6 +3535,8 @@ boolean new_game;	/* false => restoring an old game */
 	}
 	}
 	if (!achieve.startedgame) {
+		int startx = 5;
+		int starty = 2;
 		achieve.startedgame = TRUE;
 		if(Race_if(PM_ETHEREALOID)){
 			goto_level(&szethe_level, FALSE, FALSE, FALSE);
@@ -3601,6 +3603,21 @@ boolean new_game;	/* false => restoring an old game */
 		} else if (Role_if(PM_UNDEAD_SLAYER)) {
 			goto_level(&szund_level, FALSE, FALSE, FALSE);
 		}
+		u_on_newpos(startx, starty);
+		qt_pager(QT_STARTQUEST1);
+		register struct monst *mtmp, *nextmon;
+		for(mtmp = fmon; mtmp; mtmp = nextmon) {
+            nextmon = mtmp->nmon; /* trap might kill mon */
+            if (DEADMONSTER(mtmp)) continue;
+            if (mtmp->mtame) {
+            if (mtmp->mtrapped) {
+                /* no longer in previous trap (affects mintrap) */
+                mtmp->mtrapped = 0;
+                fill_pit(mtmp->mx, mtmp->my);
+            }
+            mnexto(mtmp);
+            }
+        }
 	}
 }
 

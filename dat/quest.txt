@@ -50,6 +50,16 @@
 #
 #	QT_TURNEDSTAG	100 /* offset if you turn stag on 
 #	                      your original quest leader */
+#messages go up to 226 it seems, but I started the mini quest at 200
+#   QT_STARTQUEST1	200 - entry into the starter quest
+#   QT_STARTLEADER1	201 - initial talk with starter leader
+#   QT_STARTTRAITOR1	202 - initial talk with Traitor 
+#   QT_STARTLEADER2	203 - Starter leader, 2nd time but not the mini-quest item
+#   QT_STARTTRAITOR2	204 - Traitor, 2nd time but not the mini-quest item
+#   QT_STARTLEADER3	205 - Starter leader, 2nd time but not the mini-quest item
+#   QT_STARTTRAITOR3	206 - Traitor, 2nd time but not the mini-quest item
+# 
+
 #
 #	Archeologist
 #
@@ -295,6 +305,46 @@ There you must find the altar of %d and sacrifice the
 Amulet on that altar to fulfill your destiny.
 
 "Remember, your path now should always be upwards."
+%E
+%Cc Arc 00200
+You are at a university, but which one.  The buildings are similar but this
+place is confusing.  It feels as if something is definitely wrong.  You need
+to figure out what is going wrong.
+%E
+%Cc Arc 00201
+Welcome %p!  Have you ever wanted to leave home forever and go on a never
+ending quest which is most likely to result in your death?
+I am talking about an adventure so good that songs will be written of it!
+You will never hear them because you will be dead, but they will be epic!
+To start your quest in earnest please find and return to me with a relic
+known as "The Pick-Axe of the Ancients"!
+%E
+%Cc Arc 00202
+Have you lost faith in this digging for corpes mumbo jumbo?
+I know I have and I think the two of us could take down this whole
+organization!  We could gain all the power they have been keeping from us!
+If this sounds good to you, you can turn TRAITOR and return to me with
+a relic known as "The Sack of Infinite Depth".  If you do you can 
+turn into a TRAITOR and we can rule these fools that think digging is fun.
+%E
+%Cc Arc 00203
+Have you found "The Pick Axe of the Ancients" yet?  Once you have that
+I can send you to your doom.
+%E
+%Cc Arc 00204
+Have you found "The Sack of Infinite Depth" yet?  Once you have that
+we can start to overthrow this place.
+%E
+%Cc Arc 00205
+You have it!  You are ready for the ultimate quest now.  I told you
+that you would die, but really I just wanted to be sure that you were
+truly ready.  You are ready.  As such I give you my blessing and this
+key which will allow you to enter your real quest!
+%E
+%Cc Arc 00206
+Excellent.  You have it!  We can finally throw off this tyranny.
+Together we will make a difference!  This key will help you to start
+our journey of conquest.
 %E
 
 
@@ -8685,6 +8735,301 @@ experienced before, so be prepared!
 
 "For this you were born, %s!  I am very proud of you."
 %E
+
+#
+#       Gladiator
+#
+%Cc Gla 00001
+You scan your surroundings, your life has always been about assessing
+the possibity of danger.  Off in the distance, you can %x the familiar shapes
+of %H.
+
+But why, you think, should %l be there?
+
+Suddenly, the hairs on your neck stand on end as you detect the aura of
+evil magic in the air.
+
+Without thought, you ready your weapon, and mutter under your breath:
+
+    "By %d, there will be blood spilt today."
+%E
+%Cp Gla 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Gla 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Gla 00005
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Gla 00006
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Gla 00007
+"There has been little treasure to loot, since the horde arrived."
+%E
+%Cp Gla 00008
+"The horde is mighty in numbers, but they have little courage."
+%E
+%Cp Gla 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Gla 00010
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Gla 00011
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Gla 00012
+"Times will be good again, now that the horde is vanquished."
+%E
+%Cp Gla 00013
+"You have brought our clan much honor in defeating %n."
+%E
+%Cp Gla 00014
+"You will be a worthy successor to %l."
+%E
+%Cc Gla 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Gla 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Gla 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Gla 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Gla 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cc Gla 00020
+"%pC!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Gla 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to gather a large group of cutthroats and brigands
+about him.
+
+"At about the same time, these people you once rode with `liberated' a
+potent magical talisman, %o, from a Turanian caravan.
+
+"%nC and his Black Horde swept down upon %i and defeated
+the people there, driving them out into the desert.  He has taken
+%o, and seeks to bend it to his will.  I detected the
+subtle changes in the currents of fate, and joined these people.
+Then I sent forth a summons for you.
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave the minds of
+men across the world.  You are the only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Gla 00025
+"%nC is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Gla 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Gla 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Gla 00028
+"To enter %i, you must be very stealthy.  The horde will be on
+guard."
+%E
+%Cp Gla 00029
+"Call upon %d in your time of need."
+%E
+%Cp Gla 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Gla 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Gla 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Gla 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Gla 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Gla 00035
+The scent of water comes to you in the desert breeze.  You know that
+you have located %i.
+%E
+%Cp Gla 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Gla 00040
+The hairs on the nape of your neck lift as you sense an energy in the
+very air around you.  You fight down a primordial panic that seeks to
+make you turn and run.  This is surely the lair of %n.
+%E
+%Cp Gla 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Gla 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Gla 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Gla 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Gla 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Gla 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Gla 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Gla 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Gla 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Gla 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Gla 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Gla 00066
+"Come, %c.  I shall kill you, then unleash the horde on your tribe."
+%E
+%Cp Gla 00067
+"Once you are dead, my horde shall finish off %l, and your tribe."
+%E
+%Cp Gla 00068
+"Fight, %c, or are you afraid of the mighty %n?"
+%E
+%Cp Gla 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Gla 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cc Gla 00080
+%nC falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Gla 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These people, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Gla 00082
+%l gazes reverently at %o, then back at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Gla 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Gla 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
+%Cc Gla 00095
+"You have betrayed all those who hold allegiance to %d, as you once did.
+My allegiance to %d holds fast and I cannot condone or accept what you 
+have done.
+
+Leave this place.  You shall never set foot at %H again.
+That which you seek is now lost forever, for without the Bell of Opening, 
+you will never be able to enter the place where he who has the Amulet 
+resides.
+
+Go now!  You are banished from this place.
+%E
+
+
+%Cp Gla 00100
+You receive a faint telepathic message from %l:
+Your help is urgently needed at %H!
+Look for a ...ic transporter.
+You couldn't quite make out that last message.
+%E
+%Cp Gla 00101
+You again sense %l pleading for help.
+%E
+%Cp Gla 00102
+"The silver bell which was hoarded by %n will be
+essential in locating the Amulet of Yendor."
+%E
+
 #
 #	Chef
 #

@@ -240,8 +240,15 @@ STATIC_OVL const char *
 rank()
 {
 	int i;
+	int titlenum = xlev_to_rank((int)(u.ulevel));
 	/* Find the rank */
-	for (i = xlev_to_rank((int)(u.ulevel)); i >= 0; i--) {
+	if (Role_switch == PM_BARBARIAN && Race_if(PM_HUMAN)) {
+		const char *ret[] = { "Velite", "Thraex", "Dimachaerus", "Venator", "Murmillo", "Hoplomachus", "Retiarius", "Secutor", "Centurion" };
+		if (ret[titlenum]) {
+			return ret[titlenum];
+		}
+	}
+	for (i = titlenum; i >= 0; i--) {
 	    if (flags.female && urole.rank[i].f) return (urole.rank[i].f);
 	    if (urole.rank[i].m) return (urole.rank[i].m);
 	}

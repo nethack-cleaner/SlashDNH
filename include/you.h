@@ -434,7 +434,6 @@ struct you {
 #define MATTK_JUMP 37
 #define MATTK_HEAL 38
 
-
 #define ACU_RETURN_LVL 20
 #define ACU_TELEK_LVL 15
 #define ACU_REFL_LVL 14

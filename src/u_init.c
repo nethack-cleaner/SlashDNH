@@ -33,18 +33,189 @@ static struct trobj Archeologist[] = {
 	{ FEDORA, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
-	{ PICK_AXE, 1, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ TOUCHSTONE, 0, GEM_CLASS, 1, 0 },
-	{ SACK, 0, TOOL_CLASS, 1, 0 },
 	{ TORCH, 0, TOOL_CLASS, 3, 0 },
 	{ 0, 0, 0, 0, 0 }
+};
+
+static struct trobj Gladiator[] = {
+    { SHIELD_OF_REFLECTION, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { CRAM_RATION, 0, FOOD_CLASS, 1, 1 },
+    { 0, 0, 0, 0, 0 }
+};
+
+static const struct def_skill Skill_Gla[] = {
+    /* 5lo: from Fyr's userpage on nethackwiki */
+    { P_SABER, P_SKILLED }, { P_PICK_AXE,  P_BASIC },
+    { P_UNICORN_HORN, P_EXPERT },       { P_CROSSBOW, P_BASIC },
+    { P_KNIFE, P_SKILLED },
+    { P_POLEARMS, P_SKILLED },  { P_SCIMITAR, P_SKILLED },
+    { P_FLAIL, P_SKILLED },     { P_BROAD_SWORD, P_SKILLED },
+    { P_TWO_HANDED_SWORD, P_SKILLED },      { P_MORNING_STAR, P_SKILLED },
+    { P_HAMMER, P_SKILLED },    { P_LANCE, P_SKILLED },
+    { P_WHIP, P_SKILLED },   { P_LONG_SWORD, P_EXPERT },
+    { P_SHORT_SWORD, P_EXPERT },    { P_DAGGER, P_EXPERT },
+    { P_SPEAR, P_EXPERT },  { P_TRIDENT, P_EXPERT },
+
+    { P_ATTACK_SPELL, P_EXPERT },
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },
+    { P_RIDING, P_SKILLED },
+    { P_BARE_HANDED_COMBAT, P_MASTER },
+    { P_NONE, 0 }
 };
 
 static struct trobj Jedi[] = {
     { ROBE, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
     { GLOVES, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
     { 0, 0, 0, 0, 0 }
+};
+
+static struct trobj Undeadslayer[] = {
+#define U_MINOR 1       /* silver spear or whip [Castlevania] 25/25% */
+                        /* crossbow 50% [Buffy] */
+#define U_RANGE 2       /* silver daggers or crossbow bolts */
+#define U_MISC  3       /* +1 boots [Buffy can kick] or helmet */
+#define U_ARMOR 4       /* Tshirt/leather +1 or chain mail */
+    { WOODEN_STAKE, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+    { HELMET, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { CHAIN_MAIL, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { CLOVE_OF_GARLIC, 0, FOOD_CLASS, 5, 1 },
+    { SPRIG_OF_WOLFSBANE, 0, FOOD_CLASS, 5, 1 },
+    { HOLY_WAFER, 0, FOOD_CLASS, 4, 0 },
+    { POT_WATER, 0, POTION_CLASS, 4, 1 },        /* holy water */
+    { 0, 0, 0, 0, 0 }
+};
+
+static const struct def_skill Skill_U[] = {
+/*WAC
+ * -made dagger skill expert too,  since it's a starting weapon
+ * -made spear skill Expert rather than Skilled
+ *      Slayer artifact is a spear,  after all
+ * -made crossbow skill Expert - Dracula movies
+ * -changed bare handed basic to martial arts master-Buffy the Vampire Slayer
+ * -Added whip Expert - Castlevania
+ * -made club, flail, mace, morning star, hammer, quarterstaff Skilled
+        from Expert to balance
+ * -removed Trident skill - from Skilled to Restricted
+ * -removed Lance skill - from Basic to Restricted
+ */
+    { P_DAGGER, P_EXPERT },             { P_LONG_SWORD, P_SKILLED },
+    { P_CLUB, P_SKILLED },
+    { P_MACE, P_SKILLED },              { P_MORNING_STAR, P_SKILLED },
+    { P_FLAIL, P_SKILLED },             { P_HAMMER, P_SKILLED },
+    { P_QUARTERSTAFF, P_SKILLED },      { P_POLEARMS, P_SKILLED },
+    { P_SPEAR, P_EXPERT },
+    { P_BOW, P_BASIC },                 { P_SLING, P_BASIC },
+#ifdef FIREARMS
+    { P_FIREARM, P_EXPERT },
+#endif
+    { P_CROSSBOW, P_EXPERT },           { P_DART, P_BASIC },
+    { P_SHURIKEN, P_BASIC },        { P_BOOMERANG, P_BASIC },
+    { P_WHIP, P_EXPERT },               { P_UNICORN_HORN, P_SKILLED },
+    { P_MATTER_SPELL, P_BASIC },
+/*WAC - added PROTECTION spells,  body spells as skilled, basic
+        matter spells - for the fire vs undead*/
+    { P_BARE_HANDED_COMBAT, P_GRAND_MASTER },    { P_NONE, 0 }
+};
+
+static struct trobj Chef[] = { /* 5lo: New role */
+    { KNIFE, 1, WEAPON_CLASS, 1, 1 },
+    { LEATHER_ARMOR, 1, ARMOR_CLASS, 1, 1 },
+    { DENTED_POT, 2, ARMOR_CLASS, 1, 1 },
+    { FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
+    /* Give him some herbs and spices... */
+    { SPRIG_OF_WOLFSBANE, 0, FOOD_CLASS, 1, 0 },
+    { CLOVE_OF_GARLIC, 0, FOOD_CLASS, 1, 0 },
+    { POT_WATER, UNDEF_SPE, POTION_CLASS, 2, 0 },
+    { POT_BOOZE, UNDEF_SPE, POTION_CLASS, 2, UNDEF_BLESS },
+    { CAN_OF_GREASE, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
+    { TOWEL, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
+    { TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, 1 },
+    { TIN_OPENER, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
+    { 0, 0, 0, 0, 0 }
+};
+
+static const struct def_skill Skill_Chef[] = {
+    /* 5lo: This'll be organized better later...*/
+    { P_DAGGER, P_SKILLED },        { P_KNIFE,  P_EXPERT },
+    { P_AXE, P_EXPERT },        { P_DART, P_EXPERT },
+    { P_CLUB, P_SKILLED },
+    { P_LONG_SWORD, P_BASIC },      { P_FLAIL, P_BASIC },
+    { P_SHORT_SWORD, P_SKILLED },
+    { P_HAMMER, P_EXPERT },     { P_QUARTERSTAFF, P_SKILLED },
+    { P_SABER, P_BASIC},        { P_SLING, P_SKILLED },
+    { P_SLING, P_BASIC},        { P_UNICORN_HORN, P_BASIC },
+    { P_DIVINATION_SPELL, P_SKILLED },
+    { P_BARE_HANDED_COMBAT, P_SKILLED }, {P_TWO_WEAPON_COMBAT, P_SKILLED },
+    { P_NONE, 0 }
+};
+
+static struct trobj Firefighter[] = {
+    { AXE, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+    { FIRE_HELMET, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+    { ASBESTOS_JACKET, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { POT_WATER, 0, POTION_CLASS, 5, 0 },
+    { SCR_FIRE, UNDEF_SPE, SCROLL_CLASS, 4, UNDEF_BLESS },
+    { WAN_FIRE, UNDEF_SPE, WAND_CLASS, 1, UNDEF_BLESS },
+    { 0, 0, 0, 0, 0, }
+};
+
+static const struct def_skill Skill_Fir[] = {
+    /* 5lo: Still a bit of a work in progress */
+    { P_AXE, P_EXPERT },                 { P_PICK_AXE, P_EXPERT },
+    { P_SHORT_SWORD, P_EXPERT },         { P_BROAD_SWORD, P_EXPERT },
+    { P_SCIMITAR, P_BASIC },             { P_SABER, P_SKILLED },
+    { P_MACE, P_SKILLED },               { P_MORNING_STAR, P_BASIC },
+    { P_FLAIL, P_BASIC },               { P_HAMMER, P_BASIC },
+    { P_QUARTERSTAFF, P_EXPERT },        { P_POLEARMS, P_BASIC },
+    { P_BOW, P_SKILLED },                 { P_SLING, P_SKILLED },
+    { P_CROSSBOW, P_SKILLED },            { P_DART, P_SKILLED },
+    { P_WHIP, P_BASIC },                { P_UNICORN_HORN, P_BASIC },
+
+    { P_HEALING_SPELL, P_SKILLED },
+    { P_MATTER_SPELL, P_SKILLED },
+#ifdef STEED
+    { P_RIDING, P_SKILLED },
+#endif
+    { P_TWO_WEAPON_COMBAT, P_BASIC }, { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_NONE, 0 }
+};
+
+static struct trobj Officer[] = {
+    { CLUB, 0, WEAPON_SYM, 1, UNDEF_BLESS },
+    { PISTOL, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+#define COP_BULLET 2
+    { BULLET, 0, WEAPON_CLASS, 40, 0 },
+    { LEATHER_ARMOR, 0, ARMOR_SYM, 1, UNDEF_BLESS },
+#if 0 /* 5lo: Removed as these were to simulate firearms in Nethack-- */
+    { WAN_MAGIC_MISSILE, UNDEF_SPE, WAND_SYM, 1, UNDEF_BLESS },
+    { WAN_STRIKING, UNDEF_SPE, WAND_SYM, 1, UNDEF_BLESS },
+#endif
+    { DOUGHNUT, 0, FOOD_SYM, 6, 0 },
+    { 0, 0, 0, 0, 0, }
+};
+
+static const struct def_skill Skill_Off[] = {
+    /* 5lo: Elf skills from Slash'EM 0.0.6 with modifications */
+    { P_DAGGER, P_EXPERT },             { P_KNIFE, P_SKILLED },
+    { P_SHORT_SWORD, P_EXPERT },        { P_BROAD_SWORD, P_EXPERT },
+    { P_LONG_SWORD, P_SKILLED },        { P_TWO_HANDED_SWORD, P_BASIC },
+    { P_SCIMITAR, P_SKILLED },          { P_SABER, P_SKILLED },
+    { P_QUARTERSTAFF, P_EXPERT },       { P_CLUB, P_EXPERT },
+    { P_SPEAR, P_EXPERT },
+    { P_BOW, P_EXPERT },                { P_SLING, P_BASIC },
+    { P_CROSSBOW, P_BASIC },
+#ifdef FIREARMS
+    { P_FIREARM, P_EXPERT },
+#endif
+    { P_MATTER_SPELL, P_BASIC },        { P_HEALING_SPELL, P_SKILLED },
+    { P_ENCHANTMENT_SPELL, P_EXPERT },
+#ifdef STEED
+    { P_RIDING, P_SKILLED },
+#endif
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },  { P_BARE_HANDED_COMBAT, P_SKILLED },
+    { P_NONE, 0 }
 };
 
 static struct trobj Anachronounbinder[] = {
@@ -57,6 +228,15 @@ static struct trobj Anachronounbinder[] = {
 	{ R_LYEHIAN_FACEPLATE,0,TOOL_CLASS,1,0},
 	{ 0, 0, 0, 0, 0 }
 };
+
+static struct trobj dragonAnachronounbinder[] = {
+	{ GLOVES, 0, ARMOR_CLASS, 1, 0 },
+	{ DIAMOND, 0, GEM_CLASS, 1, 0 },
+	{ FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
+	{ R_LYEHIAN_FACEPLATE,0,TOOL_CLASS,1,0},
+	{ 0, 0, 0, 0, 0 }
+};
+
 static struct trobj AcuBoots[] = {
 	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -917,6 +1097,17 @@ static const struct def_skill Skill_Acu[] = {
     { P_SPEAR, P_BASIC },
     //{ P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },{ P_TWO_HANDED_SWORD, P_SKILLED },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_dragonAcu[] = {
+    { P_DAGGER, P_EXPERT },
+    { P_QUARTERSTAFF, P_EXPERT },
+    { P_BOOMERANG, P_BASIC },
+    { P_ATTACK_SPELL, P_BASIC },	{ P_HEALING_SPELL, P_BASIC },
+    { P_DIVINATION_SPELL, P_SKILLED},	{ P_MATTER_SPELL, P_BASIC},
+    { P_SPEAR, P_BASIC },
+    { P_MARTIAL_ARTS, P_GRAND_MASTER },
     { P_NONE, 0 }
 };
 
@@ -2005,23 +2196,25 @@ u_init()
 	 * skew the results if we use rn2(2)...  --KAA
 	 */
 	case PM_ARCHEOLOGIST:
+		u.ualign.type = A_LAWFUL;
 		ini_inv(Archeologist);
 		ini_inv(Tinopener);
 		ini_inv(Lamp);
-		// else if(!rn2(10)) ini_inv(Magicmarker);
 		knows_object(SACK);
 		knows_object(TOUCHSTONE);
 		skill_init(Skill_A);
-		if (Race_if(PM_CHIROPTERAN)) {
-			u.ualign.type = A_CHAOTIC;
-		} else {
-			u.ualign.type = A_LAWFUL;
-		}
 	break;
 	case PM_ANACHRONOUNBINDER:
-		ini_inv(Anachronounbinder);
-		if(!slithy(youracedata) && humanoid(youracedata)) ini_inv(AcuBoots);
-		if(!Race_if(PM_DROW) && !Race_if(PM_INCANTIFIER)) ini_inv(AcuRobe);
+		if (Race_if(PM_HALF_DRAGON)) {
+			ini_inv(dragonAnachronounbinder);
+			u.umartial = TRUE;
+			skill_init(Skill_dragonAcu);
+		} else {
+			ini_inv(Anachronounbinder);
+			if(!slithy(youracedata) && humanoid(youracedata)) ini_inv(AcuBoots);
+			if(!Race_if(PM_DROW) && !Race_if(PM_INCANTIFIER)) ini_inv(AcuRobe);
+			skill_init(Skill_Acu);
+		}
 		knows_object(KHAKKHARA);
 		knows_object(DOUBLE_LIGHTSABER);
 		knows_object(HIGH_BOOTS);
@@ -2031,9 +2224,10 @@ u_init()
 		u.ualign.type = A_LAWFUL;
 		u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 		flags.initalign = 0; // 0 == lawful
-		skill_init(Skill_Acu);
 	break;
 	case PM_OFFICER:
+		ini_inv(Officer);
+		skill_init(Skill_Off);
 		if (Race_if(PM_VAMPIRE)) {
 			u.ualign.type = A_NEUTRAL;
 		} else {
@@ -2041,15 +2235,36 @@ u_init()
 		}
 	break;
 	case PM_UNDEAD_SLAYER:
-		if (Race_if(PM_HUMAN)) {
-			u.ualign.type = A_CHAOTIC;
+		ini_inv(Undeadslayer);
+		skill_init(Skill_U);
+
+			struct obj *obj;
+	obj = mksobj(SPEAR, NO_MKOBJ_FLAGS);
+	fully_identify_obj(obj);
+	obj->spe = abs(obj->spe);
+	set_material_gm(obj, SILVER);
+	addinv(obj);
+
+			struct obj *obj2;
+	obj2 = mksobj(DAGGER, NO_MKOBJ_FLAGS);
+	fully_identify_obj(obj2);
+	obj2->spe = abs(obj2->spe);
+	set_material_gm(obj2, SILVER);
+	addinv(obj2);
+
+		if (Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_NEUTRAL;
 		} else {
 			u.ualign.type = A_LAWFUL;
 		}
 	break;
 	case PM_ANACHRONONAUT:
 		u.veil = FALSE;
-		u.ualign.type = A_CHAOTIC;
+		if(Race_if(PM_ANDROID) || Race_if(PM_ETHEREALOID)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_CHAOTIC;
+		}
 		if(Race_if(PM_MYRKALFR) && !flags.female){
 			ini_inv(Anachrononaut_Dro);
 		} else if(Race_if(PM_MYRKALFR) && flags.female){
@@ -2142,22 +2357,33 @@ u_init()
 		
 	break;
 	case PM_BARBARIAN:
-		if (Race_if(PM_SALAMANDER) || Race_if(PM_VAMPIRE)) {
-			u.ualign.type = A_CHAOTIC;
-		} else {
+		if (Race_if(PM_HUMAN)) { //Gladiator
 			u.ualign.type = A_NEUTRAL;
+			ini_inv(Gladiator);
+			struct obj *obj;
+	obj = mksobj(SPEAR, NO_MKOBJ_FLAGS);
+	fully_identify_obj(obj);
+	obj->spe = abs(obj->spe);
+	set_material_gm(obj, SILVER);
+	addinv(obj);
+			skill_init(Skill_Gla);
+		} else {
+			if (Race_if(PM_SALAMANDER) || Race_if(PM_VAMPIRE)) {
+				u.ualign.type = A_CHAOTIC;
+			} else {
+				u.ualign.type = A_NEUTRAL;
+			}
+			u.role_variant = TWO_HANDED_SWORD;
+			if (rn2(100) >= 50) {	/* see above comment */
+				u.role_variant = BATTLE_AXE;
+			    Barbarian[B_MAJOR].trotyp = BATTLE_AXE;
+			    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
+			}
+			ini_inv(Barbarian);
+			skill_init(Skill_B);
 		}
-		u.role_variant = TWO_HANDED_SWORD;
-		if (rn2(100) >= 50) {	/* see above comment */
-			u.role_variant = BATTLE_AXE;
-		    Barbarian[B_MAJOR].trotyp = BATTLE_AXE;
-		    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
-		}
-		ini_inv(Barbarian);
-		// if(!rn2(6)) ini_inv(Lamp);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
-		skill_init(Skill_B);
 		break;
 #ifdef BARD
 	case PM_BARD:
@@ -2251,7 +2477,11 @@ u_init()
 		Cave_man[C_AMMO].trquan = rn1(11, 10);	/* 10..20 */
 		ini_inv(Cave_man);
 		skill_init(Skill_C);
-		u.ualign.type = A_LAWFUL;
+		if (Race_if(PM_ETHEREALOID)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 		break;
 #ifdef CONVICT
 	case PM_CONVICT:
@@ -2272,7 +2502,6 @@ u_init()
 		}
 		else u.uhunger = 200;
     	/* Override racial alignment */
-		u.ualign.type = A_CHAOTIC;
 		u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 		flags.initalign = 2; // 2 == chaotic
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
@@ -2336,15 +2565,16 @@ u_init()
 		}
 		break;
 	case PM_KNIGHT:
+		u.ualign.type = A_LAWFUL;
 		if(Race_if(PM_DWARF)) ini_inv(DwarfNoble);
 		else if(Race_if(PM_HALF_DRAGON)){
 			Knight[K_APPLES].trquan = rn1(9, 5);
 			Knight[K_CARROTS].trquan = 1;
 			ini_inv(Knight);
+			u.ualign.type = A_CHAOTIC;
 		} else ini_inv(Knight);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
-		u.ualign.type = A_LAWFUL;
 		/* give knights chess-like mobility
 		 * -- idea from wooledge@skybridge.scl.cwru.edu */
 		HJumping |= FROMOUTSIDE;
@@ -2452,13 +2682,16 @@ u_init()
 		knows_object(OILSKIN_CLOAK);
 		knows_object(GRAPPLING_HOOK);
 		skill_init(Skill_Pir);
-		u.ualign.type = A_CHAOTIC;
+		if (Race_if(PM_CLOCKWORK_AUTOMATON)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_CHAOTIC;
+		}
 		break;
 	case PM_PRIEST:
 		if(!(flags.female) && Race_if(PM_DROW)){
 			Priest[PRI_WEAPON].trotyp = DROVEN_GREATSWORD;
 		}
-		u.ualign.type = A_LAWFUL;
 		if(flags.female && Race_if(PM_DROW)) ini_inv(DPriest);
 		else ini_inv(Priest);
 		if(Race_if(PM_DROW)){
@@ -2472,6 +2705,10 @@ u_init()
 			ini_inv(DarkWand);
 		} else if (Race_if(PM_ELF)) {
 			u.ualign.type = A_CHAOTIC;
+		} else if (Race_if(PM_ORC)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_LAWFUL;
 		}
 		// if(!rn2(10)) ini_inv(Magicmarker);
 		// else if(!rn2(10)) ini_inv(Lamp);
@@ -2568,6 +2805,8 @@ u_init()
 		}
 		break;
 	case PM_CHEF:
+		ini_inv(Chef);
+		skill_init(Skill_Chef);
 		if (Race_if(PM_ORC)) {
 			u.ualign.type = A_CHAOTIC;
 		} else {
@@ -2575,6 +2814,8 @@ u_init()
 		}
 		break;
 	case PM_FIREFIGHTER:
+		ini_inv(Firefighter);
+		skill_init(Skill_Fir);
 		u.ualign.type = A_LAWFUL;
 		break;
 	case PM_JEDI:
@@ -2860,6 +3101,7 @@ u_init()
 	default:
 		break;
 	}
+	u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 
 	if (discover)
 		ini_inv(Wishing);
@@ -2990,6 +3232,9 @@ u_init()
 				flags.HDbreath = AD_COLD;
 				HCold_resistance |= (FROMRACE|FROMOUTSIDE);
 			}
+		} else if(Role_if(PM_WIZARD)){
+			flags.HDbreath = AD_ACID;
+			HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
 		} else if(Role_if(PM_MADMAN)){
 			if(flags.initgend){
 				flags.HDbreath = AD_RBRE;

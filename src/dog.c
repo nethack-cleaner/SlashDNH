@@ -737,6 +737,9 @@ boolean portal;
 			all_pets = TRUE;
 			break;
 		}
+	if (!achieve.introquest) { //Pets initially always follow until out of the Starter Quest
+		all_pets = TRUE;
+	}
 	for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 	    mtmp2 = mtmp->nmon;
 	    if (DEADMONSTER(mtmp)) continue;

@@ -1,0 +1,135 @@
+#	SCCS Id: @(#)sokoban.des	3.4	1999/03/15
+#	Copyright (c) 1998-1999 by Kevin Hugo
+# NetHack may be freely redistributed.  See license for details.
+#
+# In case you haven't played the game Sokoban, you'll learn
+# quickly.  This branch isn't particularly difficult, just time
+# consuming.  Some players may wish to skip this branch.
+#
+# The following actions are currently permitted without penalty:
+#   Carrying or throwing a boulder already in inventory
+#     (player or nonplayer).
+#   Teleporting boulders.
+#   Digging in the floor.
+# The following actions are permitted, but with a luck penalty:
+#   Breaking boulders.
+#   Stone-to-fleshing boulders.
+#   Creating new boulders (e.g., with a scroll of earth).
+#   Jumping.
+#   Being pulled by a thrown iron ball.
+#   Hurtling through the air from Newton's 3rd law.
+#   Squeezing past boulders when naked or as a giant.
+# These actions are not permitted:
+#   Moving diagonally between two boulders and/or walls.
+#   Pushing a boulder diagonally.
+#   Picking up boulders (player or nonplayer).
+#   Digging or walking through walls.
+#   Teleporting within levels or between levels of this branch.
+#   Using cursed potions of gain level.
+#   Escaping a pit/hole (e.g., by flying, levitation, or
+#     passing a dexterity check).
+#   Bones files are not permitted.
+# Sokoban is stupid. I hate sokoban. We lokoban now.
+
+MAZE:"sz0sarc",' '
+FLAGS:noteleport,hardfloor
+GEOMETRY:center,center
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0-------- ------
+1|......|-|....|
+2|.............|
+3|.............|
+4|.............|
+5|.........-----
+6|.|    |......|
+7|.-----|......|
+8|.............|
+9|..|---|......|
+0----   --------
+ENDMAP
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+BRANCH:(03,01,03,01),(0,0,0,0)
+STAIR: (01,01), down
+REGION:(00,00,14,10),lit,"ordinary"
+NON_DIGGABLE:(00,00,14,10)
+NON_PASSWALL:(00,00,14,10)
+
+##
+
+MAZE:"szsarc",' '
+FLAGS:noteleport,hardfloor
+GEOMETRY:left,top
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
+MAP
+0,,,,,--------,,,,,,,-----....|..|,,,,,,,,..,,,T,,,,L|,,,,,,,,,,-------------
+1,T,,,|..|...|,,,,,,,|........+..S,,,T,,,,,.,,,,,,,L--,T,,,,,,,,|.....+......
+2,,,---S-|...|,,,,,,,--+--------------,,,......,,,,L|,,,,,,,T,,,|.....|......
+3,,,|....|...|,,,,,,,.....................,---..,,,L|,,,,,,,,|,,|...-+----+--
+4.,,|....|...+.,,,....,,,,,,,--------,,.,,,,,,,.,,LL,,,,,,L..|,,|...|...|,...
+5..,----+-+---.....,,,,,,,,,,|......|,..,,,,,,,..,L,LL,,LLLL.,,,-----...|,,,.
+6,.............,,,..,,,,T,,,,|......|,.,----,,,,.....,LLLLL..,,,,,,|....|,T,.
+7,,,,..,-------,,,,.,,,,,,,,,|......|,T,|..|,,,,,,L,..,,,L..,,,,,,,---+--,,,.
+8,,,..,,,,,T,,,,,,,..,,,--------++--|,,,|..|,,,,,,L,,.,,...,,,,,T,,,,..,,,,..
+9,,T.,,,,,,,,,,,,,,,.,,,|....+......-----..|,T,,,,L,,..,.,,,,,------,.,,,,..,
+0,,,.,,T,,,,,,,,,,,,....|....|......S...+..|,,,,,,L,,,....,----....|........,
+1,,,.,,,,,,,,,T,,,,,....|....------+--------,,,,,L,,,,,,,..|..|...K|.,,,,,,.,
+2,,...,,,,,,,,,,,,,,....+......|,,,.,,,,,,,,,,,,,L,,,,,....+..|...--.--,,,,..
+3,......................+......|,,,...,,,,,|,,,,,,L,,...,..|..S..--...--T,,,,
+4........,,,,,,,..,,,,,.--------,,,,,......|,,,T,.....,,,,,-------.....--,,,,
+5-.........,,----+--,T...,,,,,,,,----+-----|,,,,.....,,,,,,,,,,,|.......|----
+6--...--,,...|.|...|,..,.,,,,,T,,|....+....|,,,..,L,..,T,,,,............+....
+7,-----,,---+-.|...|,.,,..,,------S---|....|,,..,LL,,........,,,|.......|FFFF
+8,,,,,,,,|.....|...--+--,...+.........------,T.,LLLL,,,.,,,,,,,,--.....--,,,,
+9,,T,,,,,|.....|.......|,.,,|...........|,,,,..LLLLLLLL..,,,,,,,T--...--T,,,,
+ENDMAP
+
+# Dungeon Description
+RANDOM_PLACES:(31,00),(73,01),(41,17),(11,19),(10,02),(33,19)
+REGION:(00,00,75,19),lit,"ordinary"
+REGION:(72,18,75,19),unlit,"morgue",unfilled
+# Non diggable walls
+NON_DIGGABLE:(00,00,75,19)
+STAIR:(75,05),up
+DOOR:closed,(29,1)
+DOOR:locked,(69,1)
+DOOR:closed,(22,2)
+DOOR:locked,(68,3)
+DOOR:closed,(73,3)
+DOOR:closed,(12,4)
+DOOR:closed,(7,5)
+DOOR:locked,(9,5)
+DOOR:locked,(69,7)
+DOOR:closed,(31,8)
+DOOR:closed,(32,8)
+DOOR:closed,(28,9)
+DOOR:closed,(39,10)
+DOOR:closed,(34,11)
+DOOR:closed,(23,12)
+DOOR:closed,(58,12)
+DOOR:closed,(23,13)
+DOOR:closed,(16,15)
+DOOR:closed,(36,15)
+DOOR:locked,(37,16)
+DOOR:locked,(71,16)
+DOOR:closed,(11,17)
+DOOR:locked,(20,18)
+DOOR:locked,(27,18)
+MONSTER:'@',"Earl Carnarvon",(31,06)
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+MONSTER: random, random, random, hostile
+OBJECT:'+',random,place[0]
+OBJECT:'!',"acid",(64,10)
+OBJECT:'[',random,place[1]
+OBJECT:'(',"pick-axe",place[2],uncursed,1,"The Pick-Axe of the Ancients"
+OBJECT:'(',"sack",place[3],uncursed,0
+MONSTER:'m',"small mimic",(64,01)
+MONSTER:'m',"small mimic",(67,01)
+MONSTER:'m',"small mimic",(65,02)
+MONSTER:'m',"small mimic",(64,04)

@@ -172,41 +172,6 @@ CONTAINER:'(',"chest",(17,19)
 	OBJECT:'(',"sack",contained, uncursed, 0
 	OBJECT:'(',"sack",contained, uncursed, 0
 CONTAINER:'(',"chest",(18,19)
-	OBJECT:'(',"hypospray",contained, uncursed, 0
-	OBJECT:'(',"hypospray",contained, uncursed, 0
-	OBJECT:'(',"hypospray",contained, uncursed, 0
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
-	OBJECT:'(',"hypospray ampule",contained
 CONTAINER:'(',"chest",(19,19)
 	OBJECT:'(',"bullet fabber",contained, uncursed, 0
 	OBJECT:'(',"bullet fabber",contained, uncursed, 0
@@ -705,21 +670,6 @@ OBJECT[30%]:'(',"sensor pack",random
 
 OBJECT:'(',"power pack",random
 
-OBJECT:'(',"hypospray",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-
 OBJECT:'(',"bullet fabber",random
 OBJECT:'(',"bullet fabber",random
 
@@ -970,22 +920,6 @@ OBJECT:'(',"lightsaber",random
 OBJECT:'(',"double lightsaber",random
 
 OBJECT:'(',"sensor pack",random
-
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
 
 OBJECT:random,random,random
 OBJECT:random,random,random
@@ -1313,32 +1247,12 @@ OBJECT[10%]:'[',"cloak of displacement",random
 OBJECT[10%]:'[',"Leo Nemaeus hide",random
 OBJECT[60%]:'(',"sensor pack",random
 
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-
 OBJECT:'[',"droven cloak",random
 OBJECT:'[',"droven cloak",random
 
 OBJECT:'(',"power pack",random
 
 OBJECT:')',"droven bolt",random
-
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
-OBJECT:'(',"hypospray ampule",random
 
 OBJECT:'(',"R'lyehian faceplate",random
 OBJECT:'(',"R'lyehian faceplate",random

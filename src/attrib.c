@@ -836,7 +836,7 @@ int oldlevel, newlevel;
 	case PM_ANACHRONOUNBINDER: abil = acu_abil;	break;
 	case PM_ANACHRONONAUT:    abil = ana_abil;	break;
 	case PM_BARBARIAN:
-		if (Race_if(PM_HUMAN)) {
+		if (achieve.isgladiator) {
 			abil = gla_abil;
 		} else {
 			abil = bar_abil;

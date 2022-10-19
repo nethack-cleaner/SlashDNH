@@ -1224,6 +1224,8 @@ boolean chatting;
 	break;
 	  }
 	case MS_ILEADER:
+	case MS_FRENZY_LEADER:
+	case MS_GLADIATOR_LEADER:
 	case MS_TLEADER:
 	case MS_LEADER:
 	case MS_GUARDIAN:

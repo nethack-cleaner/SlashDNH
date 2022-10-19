@@ -61,9 +61,10 @@ BRANCH:		"Starting Zone Fir" @ (2, 0) portal
 BRANCH:		"Starting Zone Off" @ (2, 0) portal
 BRANCH:		"Starting Zone Und" @ (2, 0) portal
 BRANCH:		"Starting Zone Drow" @ (2, 0) portal
-BRANCH:		"Starting Zone DNob" @ (2, 0) portal
+BRANCH:		"Starting Zone Dnob" @ (2, 0) portal
 BRANCH:		"Starting Zone Aand" @ (2, 0) portal
 BRANCH:		"Starting Zone Ethe" @ (2, 0) portal
+BRANCH:		"Starting Zone Sarc" @ (2, 0) portal
 
 RNDLEVEL:	"stor" "S" @ (5, 20) 90 7
 BRANCH: 	"The Lost Tomb" @ (5, 25)
@@ -552,7 +553,7 @@ LEVEL:		"szdrow" "none" @ (2, 0)
 #
 # Starting Zone dnob
 #
-DUNGEON:		"Starting Zone DNob" "none" (2, 0)
+DUNGEON:		"Starting Zone Dnob" "none" (2, 0)
 DESCRIPTION:    mazelike
 ALIGNMENT:      neutral
 LEVEL:		"sz0dnob" "none" @ (1, 0)
@@ -566,6 +567,15 @@ DESCRIPTION:    mazelike
 ALIGNMENT:      neutral
 LEVEL:		"sz0ethe" "none" @ (1, 0)
 LEVEL:		"szethe" "none" @ (2, 0)
+
+#
+# Starting Zone sarc
+#
+DUNGEON:		"Starting Zone Sarc" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0sarc" "none" @ (1, 0)
+LEVEL:		"szsarc" "none" @ (2, 0)
 
 #
 # Lokoban

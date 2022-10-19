@@ -177,8 +177,6 @@ E struct dgn_topology {		/* special dungeon levels for speed */
    	xchar d_szbar_dnum;
    	xchar d_szbin_dnum;
    	xchar d_szcon_dnum;
-   	xchar d_szarc_dnum;
-   	xchar d_szana_dnum;
     d_level	d_szarc_level;
     d_level	d_szana_level;
     d_level	d_szbar_level;
@@ -189,6 +187,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
    	xchar d_szaand_dnum;
     d_level	d_szethe_level;
    	xchar d_szethe_dnum;
+    d_level	d_szsarc_level;
+   	xchar d_szsarc_dnum;
     d_level	d_szdrow_level;
    	xchar d_szdrow_dnum;
     d_level	d_szdnob_level;
@@ -391,8 +391,6 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define rlyeh_level		(dungeon_topology.d_rlyeh_level)
 	/*Spire*/
 #define spire_dnum		(dungeon_topology.d_spire_dnum)
-#define szarc_dnum		(dungeon_topology.d_szarc_dnum)
-#define szana_dnum		(dungeon_topology.d_szana_dnum)
 #define szbar_dnum		(dungeon_topology.d_szbar_dnum)
 #define szbin_dnum		(dungeon_topology.d_szbin_dnum)
 #define szcav_dnum		(dungeon_topology.d_szcav_dnum)
@@ -401,6 +399,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define szaand_level		(dungeon_topology.d_szaand_level)
 #define szethe_dnum		(dungeon_topology.d_szethe_dnum)
 #define szethe_level		(dungeon_topology.d_szethe_level)
+#define szsarc_dnum		(dungeon_topology.d_szsarc_dnum)
+#define szsarc_level		(dungeon_topology.d_szsarc_level)
 #define szdrow_dnum		(dungeon_topology.d_szdrow_dnum)
 #define szdrow_level		(dungeon_topology.d_szdrow_level)
 #define szdnob_dnum		(dungeon_topology.d_szdnob_dnum)
@@ -925,6 +925,9 @@ struct u_achieve {
 		Bitfield(talkedtleader,1);
 		Bitfield(istraitor,1);
 		Bitfield(startedgame,1);
+		Bitfield(isgladiator,1);
+		Bitfield(isfrenzy,1);
+		Bitfield(isyeoman,1);
 		int techs[100];
 #define	ARC_QUEST		0x1L << 0
 #define	CAV_QUEST		0x1L << 1

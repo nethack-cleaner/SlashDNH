@@ -1,0 +1,65 @@
+		if(Race_if(PM_ETHEREALOID)){
+			goto_level(&szethe_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_ANACHRONONAUT)) {
+			if (uandroid) {
+				goto_level(&szaand_level, FALSE, FALSE, FALSE);
+			} else {
+				goto_level(&szana_level, FALSE, FALSE, FALSE);
+			}
+		} else if (Role_if(PM_ANACHRONOUNBINDER)) {
+			goto_level(&szacu_level, FALSE, FALSE, FALSE);
+		} else if (Race_if(PM_DROW)) {
+			goto_level(&szdrow_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_ARCHEOLOGIST)) {
+			goto_level(&szarc_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_BARBARIAN)) {
+			goto_level(&szbar_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_EXILE)) {
+			goto_level(&szbin_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_CAVEMAN)) {
+			goto_level(&szcav_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_CONVICT)) {
+			goto_level(&szcon_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_HEALER)) {
+			goto_level(&szhea_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_KNIGHT)) {
+			goto_level(&szkni_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_MONK)) {
+			goto_level(&szmon_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_MADMAN)) {
+			goto_level(&szmad_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_NOBLEMAN)) {
+			if (Race_if(PM_HALF_DRAGON)) {
+				goto_level(&szdnob_level, FALSE, FALSE, FALSE);
+			} else {
+				goto_level(&sznob_level, FALSE, FALSE, FALSE);
+			}
+		} else if (Role_if(PM_PRIEST)) {
+			goto_level(&szpri_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_PIRATE)) {
+			goto_level(&szpir_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_ROGUE)) {
+			goto_level(&szrog_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_RANGER)) {
+			goto_level(&szran_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_SAMURAI)) {
+			goto_level(&szsam_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_TOURIST)) {
+			goto_level(&sztou_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_BARD)) {
+			goto_level(&szbrd_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_VALKYRIE)) {
+			goto_level(&szval_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_WIZARD)) {
+			goto_level(&szwiz_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_JEDI)) {
+			goto_level(&szjed_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_CHEF)) {
+			goto_level(&szchf_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_FIREFIGHTER)) {
+			goto_level(&szfir_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_OFFICER)) {
+			goto_level(&szoff_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_UNDEAD_SLAYER)) {
+			goto_level(&szund_level, FALSE, FALSE, FALSE);
+		}

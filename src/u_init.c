@@ -2196,7 +2196,11 @@ u_init()
 	 * skew the results if we use rn2(2)...  --KAA
 	 */
 	case PM_ARCHEOLOGIST:
-		u.ualign.type = A_LAWFUL;
+		if (Race_if(PM_SALAMANDER)) {
+			u.ualign.type = A_NEUTRAL;
+		} else {
+			u.ualign.type = A_LAWFUL;
+		}
 		ini_inv(Archeologist);
 		ini_inv(Tinopener);
 		ini_inv(Lamp);
@@ -2357,31 +2361,19 @@ u_init()
 		
 	break;
 	case PM_BARBARIAN:
-		if (Race_if(PM_HUMAN)) { //Gladiator
-			u.ualign.type = A_NEUTRAL;
-			ini_inv(Gladiator);
-			struct obj *obj;
-	obj = mksobj(SPEAR, NO_MKOBJ_FLAGS);
-	fully_identify_obj(obj);
-	obj->spe = abs(obj->spe);
-	set_material_gm(obj, SILVER);
-	addinv(obj);
-			skill_init(Skill_Gla);
+		if (Race_if(PM_VAMPIRE)) {
+			u.ualign.type = A_CHAOTIC;
 		} else {
-			if (Race_if(PM_SALAMANDER) || Race_if(PM_VAMPIRE)) {
-				u.ualign.type = A_CHAOTIC;
-			} else {
-				u.ualign.type = A_NEUTRAL;
-			}
-			u.role_variant = TWO_HANDED_SWORD;
-			if (rn2(100) >= 50) {	/* see above comment */
-				u.role_variant = BATTLE_AXE;
-			    Barbarian[B_MAJOR].trotyp = BATTLE_AXE;
-			    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
-			}
-			ini_inv(Barbarian);
-			skill_init(Skill_B);
+			u.ualign.type = A_NEUTRAL;
 		}
+		u.role_variant = TWO_HANDED_SWORD;
+		if (rn2(100) >= 50) {	/* see above comment */
+			u.role_variant = BATTLE_AXE;
+		    Barbarian[B_MAJOR].trotyp = BATTLE_AXE;
+		    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
+		}
+		ini_inv(Barbarian);
+		skill_init(Skill_B);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
 		break;

@@ -194,8 +194,15 @@ minimal_enlightenment()
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 	Sprintf(buf, fmtstr, "race", racebuf);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
-	Sprintf(buf, fmtstr, "role",
-		(flags.initgend && urole.name.f) ? urole.name.f : urole.name.m);
+	char addrole[BUFSZ];
+	if (achieve.isgladiator) {
+		Sprintf(addrole, " (Gladiator)");
+	} else {
+		Sprintf(addrole, " ");
+	}
+	char showrole[BUFSZ];
+	Sprintf(showrole, "%s%s", (flags.initgend && urole.name.f) ? urole.name.f : urole.name.m, addrole);
+	Sprintf(buf, fmtstr, "role", showrole);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 	Sprintf(buf, fmtstr, "gender", genders[flags.initgend].adj);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);

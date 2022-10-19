@@ -815,6 +815,7 @@ struct level_map {
 	{ "szdrow",	&szdrow_level },
 	{ "szdnob",	&szdnob_level },
 	{ "szethe",	&szethe_level },
+	{ "szsarc",	&szsarc_level },
 	{ "",		(d_level *)0 }
 };
 
@@ -896,23 +897,178 @@ init_dungeons()		/* initialize the "dungeon" structs */
 	for (i = 0; i < n_dgns; i++) {
 	    Fread((genericptr_t)&pd.tmpdungeon[i],
 				    sizeof(struct tmpdungeon), 1, dgn_file);
+		boolean dodungeon = TRUE;
 #ifdef WIZARD
 	    if(!wizard)
 #endif
 	      if(pd.tmpdungeon[i].chance && (pd.tmpdungeon[i].chance <= rn2(100))) {
-		int j;
-
-		/* skip over any levels or branches */
-		for(j = 0; j < pd.tmpdungeon[i].levels; j++)
-		    Fread((genericptr_t)&pd.tmplevel[cl], sizeof(struct tmplevel),
-							1, dgn_file);
-
-		for(j = 0; j < pd.tmpdungeon[i].branches; j++)
-		    Fread((genericptr_t)&pd.tmpbranch[cb],
-					sizeof(struct tmpbranch), 1, dgn_file);
-		n_dgns--; i--;
-		continue;
+			dodungeon = FALSE;
 	      }
+
+		if(!Race_if(PM_ETHEREALOID)){
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Ethe")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!uandroid) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Aand")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_ANACHRONONAUT)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Ana")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_ANACHRONOUNBINDER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Acu")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Race_if(PM_DROW)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Drow")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_ARCHEOLOGIST)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Arc")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_BARBARIAN)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Bar")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_EXILE)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Bin")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_CAVEMAN)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Cav")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_CONVICT)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Con")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_HEALER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Hea")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_KNIGHT)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Kni")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_MONK)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Mon")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_MADMAN)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Mad")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_NOBLEMAN)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Nob")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_NOBLEMAN) || !Race_if(PM_HALF_DRAGON)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Dnob")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_PRIEST)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Pri")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_PIRATE)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Pir")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_ROGUE)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Rog")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_RANGER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Ran")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_SAMURAI)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Sam")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_TOURIST)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Tou")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_BARD)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Brd")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_VALKYRIE)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Val")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_WIZARD)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Wiz")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_JEDI)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Jed")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_CHEF)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Chf")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_FIREFIGHTER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Fir")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_OFFICER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Off")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_UNDEAD_SLAYER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Und")) {
+				dodungeon = FALSE;
+			}
+		}
+		if(!dodungeon) {
+			int j;
+	
+			/* skip over any levels or branches */
+			for(j = 0; j < pd.tmpdungeon[i].levels; j++)
+			    Fread((genericptr_t)&pd.tmplevel[cl], sizeof(struct tmplevel),
+								1, dgn_file);
+	
+			for(j = 0; j < pd.tmpdungeon[i].branches; j++)
+			    Fread((genericptr_t)&pd.tmpbranch[cb],
+						sizeof(struct tmpbranch), 1, dgn_file);
+			n_dgns--; i--;
+			continue;
+		}
 
 	    Strcpy(dungeons[i].dname, pd.tmpdungeon[i].name);
 	    Strcpy(dungeons[i].proto, pd.tmpdungeon[i].protoname);
@@ -1074,8 +1230,6 @@ init_dungeons()		/* initialize the "dungeon" structs */
  *	I hate hardwiring these names. :-(
  */
 	quest_dnum = dname_to_dnum("The Quest");
-	szarc_dnum = dname_to_dnum("Starting Zone Arc");
-	szana_dnum = dname_to_dnum("Starting Zone Ana");
 	neutral_dnum = dname_to_dnum("Neutral Quest");
 	rlyeh_dnum = dname_to_dnum("The Lost Cities");
 	spire_dnum = dname_to_dnum("The Spire");

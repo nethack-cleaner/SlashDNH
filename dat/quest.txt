@@ -51,13 +51,17 @@
 #	QT_TURNEDSTAG	100 /* offset if you turn stag on 
 #	                      your original quest leader */
 #messages go up to 226 it seems, but I started the mini quest at 200
+#
 #   QT_STARTQUEST1	200 - entry into the starter quest
 #   QT_STARTLEADER1	201 - initial talk with starter leader
 #   QT_STARTTRAITOR1	202 - initial talk with Traitor 
 #   QT_STARTLEADER2	203 - Starter leader, 2nd time but not the mini-quest item
 #   QT_STARTTRAITOR2	204 - Traitor, 2nd time but not the mini-quest item
-#   QT_STARTLEADER3	205 - Starter leader, 2nd time but not the mini-quest item
-#   QT_STARTTRAITOR3	206 - Traitor, 2nd time but not the mini-quest item
+#   QT_STARTLEADER3	205 - Starter leader - has the quest item!
+#   QT_STARTTRAITOR3	206 - Traitor - has the quest item!
+#   QT_GLADIATORLEADER1	300 - Gladiator leader first time
+#   QT_GLADIATORLEADER2	301 - Gladiator leader, 2nd time but no quest item
+#   QT_GLADIATORLEADER2	302 - Gladiator leader - has the quest item!
 # 
 
 #

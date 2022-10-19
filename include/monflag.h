@@ -69,6 +69,8 @@
 #define MS_PORTAL	58	/* Offer portal options */
 #define MS_ILEADER	59	/* Leader of the Intro Quest */
 #define MS_TLEADER	60	/* TRAITOR Leader of the Intro Quest */
+#define MS_FRENZY_LEADER	61	/* Frenzy option Leader of the Intro Quest */
+#define MS_GLADIATOR_LEADER	62	/* Frenzy option Leader of the Intro Quest */
 
 
 #define MR_FIRE			0x0001	/* 1 resists fire */

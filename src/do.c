@@ -1897,7 +1897,16 @@ deferred_goto()
 	    //char buf[BUFSZ];
 		//Sprintf(buf, "turns %d", moves);
 		//You(buf);
-		u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor and other decisions
+		if (achieve.istraitor) {
+			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor
+			if (u.ualign.type == A_LAWFUL) {
+				flags.initalign = 0;
+			} else if (u.ualign.type == A_NEUTRAL) {
+				flags.initalign = 1;
+			} else if (u.ualign.type == A_CHAOTIC) {
+				flags.initalign = 2;
+			}
+		}
 		achieve.introquest = 1;
 		struct trap *t = t_at(u.ux, u.uy);
 

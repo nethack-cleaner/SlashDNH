@@ -61,80 +61,57 @@ NON_PASSWALL:(00,00,14,10)
 
 MAZE:"szbar",' '
 FLAGS:noteleport,hardfloor
-GEOMETRY:center,center
-###########1#########2#########3#########4#########5#########6#########7#####
-#0123456789012345678901234567890123456789012345678901234567890123456789012345
+GEOMETRY:left,top
 MAP
--------- -----------------------------------------------
-|......|-|.............................................|
-|......................................................|
-|.......|..............................................|
-|.......|..............................................|
-|.|-----|..........................................-----
-|.|    |...............................................|
-|.-----|................P..............................|
-|.......................P..............................|
-|.......................P..............................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|..|---|...............................................|
-----   -------------------------------------------------
+ssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssssss
+sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
+sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssss
+ssssssss--------------ssssss-----ssssPPPssssssssssssssssssssssssssssssssssss
+ssssssss|............|ssssss+...|sssPPPsssssssssssssssssssssssssssssssssssss
+ssssssss|............|ssssss|...|ssssPPsssssssssssssssssssssssssssssssssssss
+ssssssss|.\..........+ssssss-----sssssssssssssssssssssssssssssssssssssssssss
+ssssssss|............|sssssssssssssssPPsssssssssssssssssssssssssssssssssssss
+ssssssss|............|sss-----sssssssPPPssssssssssssssssssssssssssssssssssss
+ssssssss--------------sss+...|ssssssPPPPPsssssssssssssssssssssssssssssssssss
+sssssssssssssssssssssssss|...|sssssssPPPssssssssssssssssssssssssssssssssssss
+sss-----ssssss-----ssssss-----ssssssssPPssssssssssssssssssssssssssssssssssss
+sss|...+ssssss|...+ss--+--sssssssssssssPPsssssssssssssssssssssssssssssssssss
+sss|...|ssssss|...|ss|...|ssssssssssssssPPssssssssssssssssssssssssssssssssss
+sss-----ssssss-----ss|...|sssssssssssssPPPPsssssssssssssssssssssssssssssssss
+sssssssssssssssssssss-----ssssssssssssPPssPPssssssssssssssssssssssssssssssss
+sssssssssssssssssssssssssssssssssssssPPsssPPssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssPPsssPPsssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssPPssssPPssssssssssssssssssssssssssssssss
 ENDMAP
-###########1#########2#########3#########4#########5#########6#########7#####
-#0123456789012345678901234567890123456789012345678901234567890123456789012345
-STAIR: (10,10), up
-REGION:(00,00,52,18),lit,"ordinary"
-NON_DIGGABLE:(00,00,14,10)
-NON_PASSWALL:(00,00,14,10)
-
-# Crates
-OBJECT:'(',"massive stone crate",(05,02)
-OBJECT:'(',"massive stone crate",(06,02)
-OBJECT:'(',"massive stone crate",(06,03)
-OBJECT:'(',"massive stone crate",(07,03)
-# A little help
-OBJECT:'?',"earth",(01,09)
-OBJECT:'?',"earth",(02,09)
-
-#prize
-MONSTER: 'u', "Lokoban Pinata", (45,16)
-MONSTER: 'h', "Lokoban Handler", (43,14), hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-
-# Random objects
-OBJECT:'%',random,random
-OBJECT:'*',random,random
-OBJECT:'(',random,random
-OBJECT:'"',random,random
-OBJECT:'=',random,random
-OBJECT:'/',random,random
-OBJECT:'!',random,random
-OBJECT:'!',random,random
-OBJECT:'?',random,random
-OBJECT:'?',random,random
-
+# Dungeon Description
+REGION:(00,00,75,19),lit,"ordinary"
+REGION:(09,05,11,05),unlit,"ordinary"
+REGION:(09,07,11,07),lit,"ordinary"
+REGION:(09,09,11,09),unlit,"ordinary"
+REGION:(13,05,20,09),lit,"ordinary"
+REGION:(29,05,31,06),lit,"ordinary"
+REGION:(26,10,28,11),lit,"ordinary"
+REGION:(04,13,06,14),lit,"ordinary"
+REGION:(15,13,17,14),lit,"ordinary"
+REGION:(22,14,24,15),lit,"ordinary"
+# Stairs
+STAIR:(09,09),down
+# Portal arrival point
+BRANCH:(62,02,62,02),(0,0,0,0)
+# Doors
+DOOR:closed,(21,07)
+DOOR:open,(07,13)
+DOOR:open,(18,13)
+DOOR:open,(23,13)
+DOOR:open,(25,10)
+DOOR:open,(28,05)
+# Elder
+MONSTER:'@',"Conan",(10,07)
+MONSTER:'@',"Maximus",(11,07)
+MONSTER:'@',"Groo the Wanderer",(12,07)
+MONSTER:'@',"Thulsa Doom",(13,07)
+# Non diggable walls
+NON_DIGGABLE:(00,00,75,19)
+# One trap to keep the ogres at bay.
+TRAP:"spiked pit",(37,07)

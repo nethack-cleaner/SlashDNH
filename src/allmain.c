@@ -3551,7 +3551,11 @@ boolean new_game;	/* false => restoring an old game */
 		} else if (Race_if(PM_DROW)) {
 			goto_level(&szdrow_level, FALSE, FALSE, FALSE);
 		} else if (Role_if(PM_ARCHEOLOGIST)) {
-			goto_level(&szarc_level, FALSE, FALSE, FALSE);
+			if (Race_if(PM_SALAMANDER)) {
+				goto_level(&szsarc_level, FALSE, FALSE, FALSE);
+			} else {
+				goto_level(&szarc_level, FALSE, FALSE, FALSE);
+			}
 		} else if (Role_if(PM_BARBARIAN)) {
 			goto_level(&szbar_level, FALSE, FALSE, FALSE);
 		} else if (Role_if(PM_EXILE)) {

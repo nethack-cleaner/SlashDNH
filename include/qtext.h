@@ -5,7 +5,7 @@
 #ifndef QTEXT_H
 #define QTEXT_H
 
-#define N_HDR	39		/* Maximum number of categories */
+#define N_HDR	42		/* Maximum number of categories */
 #define LEN_HDR 3		/* Maximum length of a category name */
 #define ROLECOUNT 39
 
@@ -177,6 +177,7 @@ struct	qtlists {
 #define QT_GHOULLEADER2	365
 #define QT_GHOULLEADER3	366
 #define QT_GHOULLEADER4	367
+#define QT_STARTCLOCKARC1 368
 
 /*
  *	Message defines for common text used in maledictions.

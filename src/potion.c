@@ -2877,13 +2877,11 @@ dodip()
 		pline_The("potions mix...");
 		/* KMH, balance patch -- acid is particularly unstable */
 		// Slashem tweak added
-		/* HARD CHANGE:  Without an alchemy smock or lab coat fails 50% of the time */
 		if (obj->cursed || obj->otyp == POT_ACID || 
 			(obj->otyp == POT_BLOOD && acidic(&mons[obj->corpsenm])) ||
 		    potion->cursed || potion->otyp == POT_ACID || 
 			(potion->otyp == POT_BLOOD && acidic(&mons[potion->corpsenm])) || 
 			!rn2(10)
-			|| ((!uarmc || uarmc->otyp != ALCHEMY_SMOCK) && rn2(2))
 		) {
 			pline("BOOM!  They explode!");
 			exercise(A_STR, FALSE);

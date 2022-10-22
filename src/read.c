@@ -152,14 +152,14 @@ doread()
 				else pline("The dual-bladed athame vibrates faintly.");
 				if(u.spiritTineA) for(j=0;j<32;j++){
 					if((u.spiritTineA >> j) == 1){
-						if(!quest_status.killed_nemesis) pline("The blade bears the seal of %s.",sealNames[j]);
-						else pline("The first blade bears the seal of %s.",sealNames[j]);
+						if(!quest_status.killed_nemesis) pline("The blade bears the seal of %s.",sealName(j));
+						else pline("The first blade bears the seal of %s.",sealName(j));
 						break;
 					}
 				}
 				if(quest_status.killed_nemesis && u.spiritTineB) for(j=0;j<32;j++){
 					if((u.spiritTineB >> j) == 1){
-						pline("The second blade bears the seal of %s.",sealNames[j]);
+						pline("The second blade bears the seal of %s.",sealName(j));
 						break;
 					}
 				}

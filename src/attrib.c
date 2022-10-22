@@ -1166,6 +1166,9 @@ calc_total_maxhp()
 	
 	if(u.uhpbonus > 0){
 		rawmax = *hprolled + ulev*conplus(ACURR(A_CON));
+		if (achieve.clockarc) {
+			rawmax += 100;
+		}
 		
 		/*Calculate Metamorphosis *before* the max bonus is determined*/
 		if(active_glyph(CLOCKWISE_METAMORPHOSIS)){
@@ -1187,6 +1190,9 @@ calc_total_maxhp()
 		*hpmax = rawmax + adjbonus + u.uhpmod;
 	} else {
 		rawmax = *hprolled + ulev*conplus(ACURR(A_CON));
+		if (achieve.clockarc) {
+			rawmax += 100;
+		}
 		
 		if(active_glyph(CLOCKWISE_METAMORPHOSIS)){
 			rawmax *= 1.3;

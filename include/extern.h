@@ -921,6 +921,7 @@ E void FDECL(del_engr_ward, (struct engr *));
 E void FDECL(rloc_engr, (struct engr *));
 E void FDECL(make_grave, (int,int,const char *));
 E boolean FDECL(allied_faction, (int,int));
+E char * FDECL(sealName, (int));
 
 /* ### enlighten.c ### */
 

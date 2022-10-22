@@ -476,7 +476,7 @@ boolean dumping;
 		Sprintf(buf, " bound to ");
 		for (i = 0; (i<=NUMINA) && (numFound < numBound); i++) {
 			if (((i<QUEST_SPIRITS) ? u.sealsActive : u.specialSealsActive) & (get_sealID(i) & ~SEAL_SPECIAL)) {
-				Strcat(buf, sealNames[i - FIRST_SEAL]);
+				Strcat(buf, sealName(i - FIRST_SEAL));
 				numFound++;
 				if(numBound==2 && numFound==1) Strcat(buf," and ");
 				else if(numBound>=3){
@@ -1486,7 +1486,7 @@ resistances_enlightenment()
 		for(i=0;i<QUEST_SPIRIT;i++){
 			if(u.spirit[i]) for(j=0;j<32;j++){
 				if((u.spirit[i] >> j) == 1){
-					Strcat(buf,sealNames[j]);
+					Strcat(buf,sealName(j));
 					numFound++;
 					if(numBound==2 && numFound==1) Strcat(buf," and ");
 					else if(numBound>=3){
@@ -1498,7 +1498,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_DAHLVER_NAR){
-			Strcat(buf, sealNames[(DAHLVER_NAR) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((DAHLVER_NAR) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1507,7 +1507,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_ACERERAK){
-			Strcat(buf, sealNames[(ACERERAK) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((ACERERAK) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1516,7 +1516,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_COUNCIL){
-			Strcat(buf, sealNames[(COUNCIL) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((COUNCIL) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1526,7 +1526,7 @@ resistances_enlightenment()
 		}
 		if(numFound < numBound && u.spirit[CROWN_SPIRIT]) for(j=0;j<32;j++){
 			if((u.spirit[CROWN_SPIRIT] >> j) == 1){
-				Strcat(buf,sealNames[j]);
+				Strcat(buf,sealName(j));
 				numFound++;
 				if(numBound==2 && numFound==1) Strcat(buf," and ");
 				else if(numBound>=3){
@@ -1537,7 +1537,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_COSMOS){
-			Strcat(buf, sealNames[(COSMOS) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((COSMOS) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1546,7 +1546,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_LIVING_CRYSTAL){
-			Strcat(buf, sealNames[(LIVING_CRYSTAL) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((LIVING_CRYSTAL) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1555,7 +1555,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_TWO_TREES){
-			Strcat(buf, sealNames[(TWO_TREES) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((TWO_TREES) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1564,7 +1564,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_MISKA){
-			Strcat(buf, sealNames[(MISKA) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((MISKA) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1573,7 +1573,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_NUDZIRATH){
-			Strcat(buf, sealNames[(NUDZIRATH) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((NUDZIRATH) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1582,7 +1582,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_ALIGNMENT_THING){
-			Strcat(buf, sealNames[(ALIGNMENT_THING) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((ALIGNMENT_THING) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1591,7 +1591,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_UNKNOWN_GOD){
-			Strcat(buf, sealNames[(UNKNOWN_GOD) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((UNKNOWN_GOD) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1600,7 +1600,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_BLACK_WEB){
-			Strcat(buf, sealNames[(BLACK_WEB) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((BLACK_WEB) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1609,7 +1609,7 @@ resistances_enlightenment()
 			}
 		}
 		if(numFound < numBound && u.specialSealsActive&SEAL_NUMINA){
-			Strcat(buf, sealNames[(NUMINA) - (FIRST_SEAL)]);
+			Strcat(buf, sealName((NUMINA) - (FIRST_SEAL)));
 			numFound++;
 			if(numBound==2 && numFound==1) Strcat(buf," and ");
 			else if(numBound>=3){
@@ -1699,13 +1699,13 @@ spirits_enlightenment()
 	putstr(en_win, 0, "");
 
 #define addseal(id) do {if(u.sealTimeout[decode_sealID(u.spirit[(id)]) - (FIRST_SEAL)] > moves)\
-	Sprintf(buf, "  %-23s (timeout:%ld)", sealNames[decode_sealID(u.spirit[(id)]) - (FIRST_SEAL)], \
+	Sprintf(buf, "  %-23s (timeout:%ld)", sealName(decode_sealID(u.spirit[(id)]) - (FIRST_SEAL)), \
 		u.sealTimeout[decode_sealID(u.spirit[(id)]) - (FIRST_SEAL)] - moves); \
 	else\
-	Sprintf(buf, "  %-23s", sealNames[decode_sealID(u.spirit[(id)]) - (FIRST_SEAL)]); \
+	Sprintf(buf, "  %-23s", sealName(decode_sealID(u.spirit[(id)]) - (FIRST_SEAL))); \
 	putstr(en_win, 0, buf); } while (0)
 #define addpen(seal) do {\
-	Sprintf(buf, "  %-23s (timeout:%ld)", sealNames[decode_sealID(seal) - (FIRST_SEAL)], \
+	Sprintf(buf, "  %-23s (timeout:%ld)", sealName(decode_sealID(seal) - (FIRST_SEAL)), \
 		u.sealTimeout[decode_sealID(seal) - (FIRST_SEAL)] - moves); \
 	putstr(en_win, 0, buf); } while (0)
 #define addempty() do {Sprintf(buf,"  (empty)"); putstr(en_win, 0, buf);} while(0)

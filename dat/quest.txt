@@ -129,6 +129,7 @@
 #   QT_GHOULLEADER2	365
 #   QT_GHOULLEADER3	366
 #   QT_GHOULLEADER4	367
+#   QT_STARTCLOCKARC1	368
 # 
 
 #
@@ -416,6 +417,15 @@ key which will allow you to enter your real quest!
 Excellent.  You have it!  We can finally throw off this tyranny.
 Together we will make a difference!  This key will help you to start
 our journey of conquest.
+%E
+%Cc Arc 00368
+You are at a university, but which one.  The buildings are similar but this
+place is confusing.  It feels as if something is definitely wrong.
+Additionally your body seems to be acting strangely.  Your clock speed is
+higher than it ever has been and you cannot control it!  You need to figure
+out a solution as soon as possible!
+
+OH NOW, NOW YOU ARE SURROUNDED!
 %E
 
 
@@ -1412,6 +1422,810 @@ speaks of you.
 
 "This is all I know, %p.  I hope it will help you."
 %E
+
+#
+#	Berserker
+#
+%Cc Bez 00001
+Warily you scan your surroundings, all of your senses alert for signs
+of possible danger.  Off in the distance, you can %x the familiar shapes
+of %H.
+
+But why, you think, should %l be there?
+
+Suddenly, the hairs on your neck stand on end as you detect the aura of
+evil magic in the air.
+
+Without thought, you ready your weapon, and mutter under your breath:
+
+    "By %d, there will be blood spilt today."
+%E
+%Cp Bez 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Bez 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Bez 00005
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Bez 00006
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Bez 00007
+"There has been little treasure to loot, since the horde arrived."
+%E
+%Cp Bez 00008
+"The horde is mighty in numbers, but they have little courage."
+%E
+%Cp Bez 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Bez 00010
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Bez 00011
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Bez 00012
+"Times will be good again, now that the horde is vanquished."
+%E
+%Cp Bez 00013
+"You have brought our clan much honor in defeating %n."
+%E
+%Cp Bez 00014
+"You will be a worthy successor to %l."
+%E
+%Cc Bez 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Bez 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Bez 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Bez 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Bez 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cc Bez 00020
+"%pC!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Bez 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to gather a large group of cutthroats and brigands
+about him.
+
+"At about the same time, these people you once rode with `liberated' a
+potent magical talisman, %o, from a Turanian caravan.
+
+"%nC and his Black Horde swept down upon %i and defeated
+the people there, driving them out into the desert.  He has taken
+%o, and seeks to bend it to his will.  I detected the
+subtle changes in the currents of fate, and joined these people.
+Then I sent forth a summons for you.
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave the minds of
+men across the world.  You are the only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Bez 00025
+"%nC is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Bez 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Bez 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Bez 00028
+"To enter %i, you must be very stealthy.  The horde will be on
+guard."
+%E
+%Cp Bez 00029
+"Call upon %d in your time of need."
+%E
+%Cp Bez 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Bez 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Bez 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Bez 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Bez 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Bez 00035
+The scent of water comes to you in the desert breeze.  You know that
+you have located %i.
+%E
+%Cp Bez 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Bez 00040
+The hairs on the nape of your neck lift as you sense an energy in the
+very air around you.  You fight down a primordial panic that seeks to
+make you turn and run.  This is surely the lair of %n.
+%E
+%Cp Bez 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Bez 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Bez 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Bez 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Bez 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Bez 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Bez 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Bez 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Bez 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Bez 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Bez 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Bez 00066
+"Come, %c.  I shall kill you, then unleash the horde on your tribe."
+%E
+%Cp Bez 00067
+"Once you are dead, my horde shall finish off %l, and your tribe."
+%E
+%Cp Bez 00068
+"Fight, %c, or are you afraid of the mighty %n?"
+%E
+%Cp Bez 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Bez 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cc Bez 00080
+%nC falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Bez 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These people, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Bez 00082
+%l gazes reverently at %o, then back at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Bez 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Bez 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
+
+#
+#	Blind Master
+#
+%Cc Bmt 00001
+Warily you scan your surroundings, all of your senses alert for signs
+of possible danger.  Off in the distance, you can %x the familiar shapes
+of %H.
+
+But why, you think, should %l be there?
+
+Suddenly, the hairs on your neck stand on end as you detect the aura of
+evil magic in the air.
+
+Without thought, you ready your weapon, and mutter under your breath:
+
+    "By %d, there will be blood spilt today."
+%E
+%Cp Bmt 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Bmt 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Bmt 00005
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Bmt 00006
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Bmt 00007
+"There has been little treasure to loot, since the horde arrived."
+%E
+%Cp Bmt 00008
+"The horde is mighty in numbers, but they have little courage."
+%E
+%Cp Bmt 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Bmt 00010
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Bmt 00011
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Bmt 00012
+"Times will be good again, now that the horde is vanquished."
+%E
+%Cp Bmt 00013
+"You have brought our clan much honor in defeating %n."
+%E
+%Cp Bmt 00014
+"You will be a worthy successor to %l."
+%E
+%Cc Bmt 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Bmt 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Bmt 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Bmt 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Bmt 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cc Bmt 00020
+"%pC!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Bmt 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to gather a large group of cutthroats and brigands
+about him.
+
+"At about the same time, these people you once rode with `liberated' a
+potent magical talisman, %o, from a Turanian caravan.
+
+"%nC and his Black Horde swept down upon %i and defeated
+the people there, driving them out into the desert.  He has taken
+%o, and seeks to bend it to his will.  I detected the
+subtle changes in the currents of fate, and joined these people.
+Then I sent forth a summons for you.
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave the minds of
+men across the world.  You are the only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Bmt 00025
+"%nC is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Bmt 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Bmt 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Bmt 00028
+"To enter %i, you must be very stealthy.  The horde will be on
+guard."
+%E
+%Cp Bmt 00029
+"Call upon %d in your time of need."
+%E
+%Cp Bmt 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Bmt 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Bmt 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Bmt 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Bmt 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Bmt 00035
+The scent of water comes to you in the desert breeze.  You know that
+you have located %i.
+%E
+%Cp Bmt 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Bmt 00040
+The hairs on the nape of your neck lift as you sense an energy in the
+very air around you.  You fight down a primordial panic that seeks to
+make you turn and run.  This is surely the lair of %n.
+%E
+%Cp Bmt 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Bmt 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Bmt 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Bmt 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Bmt 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Bmt 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Bmt 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Bmt 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Bmt 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Bmt 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Bmt 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Bmt 00066
+"Come, %c.  I shall kill you, then unleash the horde on your tribe."
+%E
+%Cp Bmt 00067
+"Once you are dead, my horde shall finish off %l, and your tribe."
+%E
+%Cp Bmt 00068
+"Fight, %c, or are you afraid of the mighty %n?"
+%E
+%Cp Bmt 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Bmt 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cc Bmt 00080
+%nC falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Bmt 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These people, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Bmt 00082
+%l gazes reverently at %o, then back at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Bmt 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Bmt 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
+
+#
+#	Role Player
+#
+%Cc Rpl 00001
+Warily you scan your surroundings, all of your senses alert for signs
+of possible danger.  Off in the distance, you can %x the familiar shapes
+of %H.
+
+But why, you think, should %l be there?
+
+Suddenly, the hairs on your neck stand on end as you detect the aura of
+evil magic in the air.
+
+Without thought, you ready your weapon, and mutter under your breath:
+
+    "By %d, there will be blood spilt today."
+%E
+%Cp Rpl 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Rpl 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Rpl 00005
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Rpl 00006
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Rpl 00007
+"There has been little treasure to loot, since the horde arrived."
+%E
+%Cp Rpl 00008
+"The horde is mighty in numbers, but they have little courage."
+%E
+%Cp Rpl 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Rpl 00010
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Rpl 00011
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Rpl 00012
+"Times will be good again, now that the horde is vanquished."
+%E
+%Cp Rpl 00013
+"You have brought our clan much honor in defeating %n."
+%E
+%Cp Rpl 00014
+"You will be a worthy successor to %l."
+%E
+%Cc Rpl 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Rpl 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Rpl 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Rpl 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Rpl 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cc Rpl 00020
+"%pC!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Rpl 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to gather a large group of cutthroats and brigands
+about him.
+
+"At about the same time, these people you once rode with `liberated' a
+potent magical talisman, %o, from a Turanian caravan.
+
+"%nC and his Black Horde swept down upon %i and defeated
+the people there, driving them out into the desert.  He has taken
+%o, and seeks to bend it to his will.  I detected the
+subtle changes in the currents of fate, and joined these people.
+Then I sent forth a summons for you.
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave the minds of
+men across the world.  You are the only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Rpl 00025
+"%nC is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Rpl 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Rpl 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Rpl 00028
+"To enter %i, you must be very stealthy.  The horde will be on
+guard."
+%E
+%Cp Rpl 00029
+"Call upon %d in your time of need."
+%E
+%Cp Rpl 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Rpl 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Rpl 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Rpl 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Rpl 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Rpl 00035
+The scent of water comes to you in the desert breeze.  You know that
+you have located %i.
+%E
+%Cp Rpl 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Rpl 00040
+The hairs on the nape of your neck lift as you sense an energy in the
+very air around you.  You fight down a primordial panic that seeks to
+make you turn and run.  This is surely the lair of %n.
+%E
+%Cp Rpl 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Rpl 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Rpl 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Rpl 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Rpl 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Rpl 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Rpl 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Rpl 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Rpl 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Rpl 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Rpl 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Rpl 00066
+"Come, %c.  I shall kill you, then unleash the horde on your tribe."
+%E
+%Cp Rpl 00067
+"Once you are dead, my horde shall finish off %l, and your tribe."
+%E
+%Cp Rpl 00068
+"Fight, %c, or are you afraid of the mighty %n?"
+%E
+%Cp Rpl 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Rpl 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cc Rpl 00080
+%nC falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Rpl 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These people, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Rpl 00082
+%l gazes reverently at %o, then back at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Rpl 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Rpl 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
+
+
+
 #
 #	Bard
 #

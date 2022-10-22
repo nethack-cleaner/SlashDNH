@@ -196,6 +196,9 @@ more_experienced(exp, rexp)
 		exp *= 1.3;
 		rexp *= 1.3;
 	}
+	if (achieve.clockarc) {
+		exp = exp / 4;
+	}
 	if(u.ulevel < u.ulevelmax){
 		//if you have lost levels to level drain, gain XP at 5x rate.
 		//if you are about to regain the last drained level, gain at least the base xp total

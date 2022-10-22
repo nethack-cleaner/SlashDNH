@@ -930,7 +930,9 @@ struct u_achieve {
 		Bitfield(isgladiator,1);
 		Bitfield(isfrenzy,1);
 		Bitfield(isyeoman,1);
+		Bitfield(clockarc,1);
 		int techs[100];
+		boolean altbind[31];
 #define	ARC_QUEST		0x1L << 0
 #define	CAV_QUEST		0x1L << 1
 #define	CON_QUEST		0x1L << 2

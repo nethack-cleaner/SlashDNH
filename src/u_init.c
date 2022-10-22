@@ -2022,7 +2022,7 @@ u_init()
 	/*Randomize spirit order*/{
 		int i,j,tmp;
 		for(i=0;i<31;i++) u.sealorder[i]=i;
-		if(!Role_if(PM_ANACHRONOUNBINDER)){
+		if(!Role_if(PM_ANACHRONOUNBINDER) && FALSE){
 			for(i=0;i<31;i++){
 				j=rn2(31);
 				tmp = u.sealorder[i];
@@ -2031,6 +2031,7 @@ u_init()
 			}
 		}
 	}
+	achieve.altbind[0] = TRUE;
 	if(Role_if(PM_EXILE)){
 		u.sealsKnown = sealKey[u.sealorder[0]] | sealKey[u.sealorder[1]] | sealKey[u.sealorder[2]];
 	}else if(Role_if(PM_ANACHRONOUNBINDER)){
@@ -2184,6 +2185,9 @@ u_init()
 			u.ualign.type = A_NEUTRAL;
 		} else {
 			u.ualign.type = A_LAWFUL;
+			if (Race_if(PM_CLOCKWORK_AUTOMATON)) {
+				achieve.clockarc = TRUE;
+			}
 		}
 		ini_inv(Archeologist);
 		ini_inv(Tinopener);

@@ -950,6 +950,53 @@ char * sealNames[] =  {
 	"Numina" /* 42 */
 };
 
+char * altsealNames[] =  {
+	"Aym", /* 0 */
+	"Amon", /* 1 */
+	"Andrealphus", /* 2 */
+	"Andromalius", /* 3 */
+	"Astaroth", /* 4 */
+	"Balam", /* 5 */
+	"Berith", /* 6 */
+	"Buer", /* 7 */
+	"Chupoclops", /* 8 */
+	"Dantalion", /* 9 */
+	"Echidna", /* 10 */
+	"Eden", /* 11 */
+	"Enki", /* 12 */
+	"Eurynome", /* 13 */
+	"Eve", /* 14 */
+	"Fafnir", /* 15 */
+	"Huginn and Muninn", /* 16 */
+	"Iris", /* 17 */
+	"Jack", /* 18 */
+	"Malphas", /* 19 */
+	"Marionette", /* 20 */
+	"Mother", /* 21 */
+	"Naberius", /* 22 */
+	"Orthos", /* 23 */
+	"Ose", /* 24 */
+	"Otiax", /* 25 */
+	"Paimon", /* 26 */
+	"Shiro", /* 27 */
+	"Simurgh", /* 28 */
+	"Tenebrous", /* 29 */
+	"Ymir", /* 30 */
+	"Dahlver-Nar", /* 31 */
+	"Acererak", /* 32 */
+	"the Council of Elements", /* 33 */
+	"Cosmos", /* 34 */
+	"Mediator", /* 35 */
+	"Telperion and Laurelin", /* 36 */
+	"Miska", /* 36 */
+	"Nudzirath", /* 37 */
+	"the Alignment Thing", /* 38 */
+	"the Unknown God", /* 39 */
+	"the Eddergud", /* 40 */
+	"Yog-Sothoth", /* 41 */
+	"Numina" /* 42 */
+};
+
 char * sealTitles[] =  {
 	", the Seizer", /* 0 */
 	", the shadow before the altar", /* 1 */
@@ -1705,7 +1752,7 @@ register int x,y;
 //					pline("%d-%d=%d", ep->ward_id, FIRST_SEAL, ((int)ep->ward_id)-((int)FIRST_SEAL));
 					if(ep->complete_wards){
 						pline("There is a seal of %s %s", 
-							sealNames[((int)ep->ward_id)-((int)FIRST_SEAL)],
+							sealName(((int)ep->ward_id)-((int)FIRST_SEAL)),
 							word);
 						if(!Role_if(PM_ANACHRONOUNBINDER) && !Role_if(PM_EXILE) && ep->ward_id < QUEST_SPIRITS){
 							long wardhere = 1L << (((int)ep->ward_id)-((int)FIRST_SEAL));
@@ -1717,17 +1764,17 @@ register int x,y;
 					}
 					else if(ep->scuffed_wards){
 						pline("There is a scuffed seal of %s %s", 
-							sealNames[((int)ep->ward_id)-((int)FIRST_SEAL)],
+							sealName(((int)ep->ward_id)-((int)FIRST_SEAL)),
 							word);
 					}
 					else if(ep->degraded_wards){
 						pline("There is a degraded seal of %s %s", 
-							sealNames[((int)ep->ward_id)-((int)FIRST_SEAL)],
+							sealName(((int)ep->ward_id)-((int)FIRST_SEAL)),
 							word);
 					}
 					else if(ep->partial_wards){
 						pline("There is a fragmentary seal of %s %s", 
-							sealNames[((int)ep->ward_id)-((int)FIRST_SEAL)],
+							sealName(((int)ep->ward_id)-((int)FIRST_SEAL)),
 							word);
 					}
 				}
@@ -3747,24 +3794,24 @@ const char * prompt;
 			if (u.sealsKnown&seal_flag){
 				if ((u.sealsActive&seal_flag) && u.sealTimeout[i] > moves){
 					Sprintf(buf, "%s (active; timeout:%ld)",
-						sealNames[i],
+						sealName(i),
 						u.sealTimeout[i] - moves
 						);
 				}
 				else if (u.sealsActive&seal_flag) {
 					Sprintf(buf, "%s (active)",
-						sealNames[i]
+						sealName(i)
 						);
 				}
 				else if (u.sealTimeout[i] > moves){
 					Sprintf(buf, "%s (timeout:%ld)",
-						sealNames[i],
+						sealName(i),
 						u.sealTimeout[i] - moves
 						);
 				}
 				else {
 					Sprintf(buf, "%s%s",
-						sealNames[i],
+						sealName(i),
 						sealTitles[i]
 						);
 				}
@@ -3781,24 +3828,24 @@ const char * prompt;
 			if (u.specialSealsKnown&seal_flag){
 				if ((u.specialSealsActive&seal_flag) && u.sealTimeout[i] > moves){
 					Sprintf(buf, "%s (active; timeout:%ld)",
-						sealNames[i],
+						sealName(i),
 						u.sealTimeout[i] - moves
 						);
 				}
 				else if (u.specialSealsActive&seal_flag) {
 					Sprintf(buf, "%s (active)",
-						sealNames[i]
+						sealName(i)
 						);
 				}
 				else if (u.sealTimeout[i] > moves){
 					Sprintf(buf, "%s (timeout:%ld)",
-						sealNames[i],
+						sealName(i),
 						u.sealTimeout[i] - moves
 						);
 				}
 				else {
 					Sprintf(buf, "%s%s",
-						sealNames[i],
+						sealName(i),
 						i == YOG_SOTHOTH ? ROLL_FROM(yogTitles) : sealTitles[i]
 						);
 				}
@@ -3813,12 +3860,12 @@ const char * prompt;
 		if (Role_if(PM_EXILE) && u.ulevel == 30){
 			if ((u.specialSealsActive&SEAL_NUMINA)){
 				Sprintf(buf, "%s (active)",
-					sealNames[NUMINA - FIRST_SEAL]
+					sealName(NUMINA - FIRST_SEAL)
 					);
 			}
 			else {
 				Sprintf(buf, "%s%s",
-					sealNames[NUMINA - FIRST_SEAL],
+					sealName(NUMINA - FIRST_SEAL),
 					sealTitles[NUMINA - FIRST_SEAL]
 					);
 			}
@@ -4533,6 +4580,16 @@ int f1,f2;
 		return (f2 == EDDER_SYMBOL);
 	}
 	else return FALSE;
+}
+
+char *
+sealName(sealNum)
+int sealNum;
+{
+	if (achieve.altbind[sealNum]) {
+		return altsealNames[sealNum];
+	}
+	return sealNames[sealNum];
 }
 
 #endif /* OVLB */

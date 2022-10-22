@@ -791,7 +791,7 @@ you_calc_movement()
 		multi = -1;
 		nomovemsg = "The crawling bugs awaken you.";
 	}
-	if(uclockwork && u.ucspeed == HIGH_CLOCKSPEED){
+	if((uclockwork && u.ucspeed == HIGH_CLOCKSPEED) || achieve.clockarc) {
 		int hungerup;
 		moveamt *= 2;
 		hungerup = 2*moveamt/NORMAL_SPEED - 1;
@@ -801,9 +801,9 @@ you_calc_movement()
 	if(uandroid && u.ucspeed == HIGH_CLOCKSPEED){
 		if (rn2(3) != 0) moveamt += NORMAL_SPEED / 2;
 	}
-	if(active_glyph(ANTI_CLOCKWISE_METAMORPHOSIS))
+	if(active_glyph(ANTI_CLOCKWISE_METAMORPHOSIS) || achieve.clockarc)
 		moveamt += 3;
-	if(u.uuur_duration)
+	if(u.uuur_duration || achieve.clockarc)
 		moveamt += 6;
 	if(uwep && is_lightsaber(uwep) && litsaber(uwep) && activeFightingForm(FFORM_SORESU)){
 		// switch(min(P_SKILL(P_SORESU), P_SKILL(weapon_type(uwep)))){
@@ -3608,7 +3608,15 @@ boolean new_game;	/* false => restoring an old game */
 			goto_level(&szund_level, FALSE, FALSE, FALSE);
 		}
 		u_on_newpos(startx, starty);
-		qt_pager(QT_STARTQUEST1);
+		if (achieve.clockarc) {
+			qt_pager(QT_STARTCLOCKARC1);
+			for (int i = 0; i < 8; i++) {
+				boolean known = create_critters(rn2(23) ? 1 : rn1(7,2),
+                        (struct permonst *)0);
+			}
+		} else {
+			qt_pager(QT_STARTQUEST1);
+		}
 		register struct monst *mtmp, *nextmon;
 		for(mtmp = fmon; mtmp; mtmp = nextmon) {
             nextmon = mtmp->nmon; /* trap might kill mon */

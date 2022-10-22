@@ -1253,7 +1253,7 @@ pick_council_seal()
 	for(i = 0; i < (QUEST_SPIRITS-FIRST_SEAL); i++){
 		seal_flag = 0x1L << i;
 		if(u.sealsKnown&seal_flag && !(u.sealsActive&seal_flag) && (u.sealsUsed&seal_flag) && u.sealTimeout[i] < moves ){
-			Sprintf(buf,	"%s%s", sealNames[i], sealTitles[i]);
+			Sprintf(buf,	"%s%s", sealName(i), sealTitles[i]);
 			any.a_int = i+FIRST_SEAL;	/* must be non-zero */
 			add_menu(tmpwin, NO_GLYPH, &any,
 				incntlet, 0, ATR_NONE, buf,
@@ -1295,7 +1295,7 @@ pick_gnosis_seal()
 	for(i = 0; i < (QUEST_SPIRITS-FIRST_SEAL); i++){
 		seal_flag = 0x1L << i;
 		if(u.sealsKnown&seal_flag && !(u.sealsActive&seal_flag) && u.sealTimeout[i] < moves){
-			Sprintf(buf,	"%s%s", sealNames[i], sealTitles[i]);
+			Sprintf(buf,	"%s%s", sealName(i), sealTitles[i]);
 			any.a_int = i+FIRST_SEAL;	/* must be non-zero */
 			add_menu(tmpwin, NO_GLYPH, &any,
 				incntlet, 0, ATR_NONE, buf,
@@ -3853,7 +3853,7 @@ spiriteffects(power, atme)
 		    int spirit_id = pick_council_seal();
 			if(spirit_id) councilspirit(spirit_id);
 			else return MOVE_CANCELLED;
-			You("re-contact %s.", sealNames[spirit_id-FIRST_SEAL]);
+			You("re-contact %s.", sealName(spirit_id-FIRST_SEAL));
 		}break;
 		case PWR_SUMMON_MONSTER:{
 			struct monst *mon;
@@ -4092,7 +4092,7 @@ spiriteffects(power, atme)
 		    int spirit_id = pick_gnosis_seal();
 			if(spirit_id) gnosisspirit(spirit_id);
 			else return MOVE_CANCELLED;
-			You("dream of %s...", sealNames[spirit_id-FIRST_SEAL]);
+			You("dream of %s...", sealName(spirit_id-FIRST_SEAL));
 		}break;
 		default:
 			pline("BANG! That's not going to kill TOO many people, is it...? (Unknown power %d.)", power);
@@ -4999,7 +4999,7 @@ int respect_timeout;
 						j++;
 						place = place << 1;
 					}
-					add_menu(tmpwin, NO_GLYPH, &anyvoid, 0, 0, ATR_BOLD, sealNames[j], MENU_UNSELECTED);
+					add_menu(tmpwin, NO_GLYPH, &anyvoid, 0, 0, ATR_BOLD, sealName(j), MENU_UNSELECTED);
 					for (i = 0; i < 52; i++){
 						if (u.spiritPOrder[i] == -1) continue;
 						if (spirit_powers[u.spiritPOrder[i]].owner == u.spirit[s]){
@@ -5128,7 +5128,7 @@ int respect_timeout;
 					if (TRUE)
 					{
 						tmpwin = create_nhwindow(NHW_TEXT);
-						Sprintf(buf, "%s %s", s_suffix(sealNames[decode_sealID(spirit_powers[p_no].owner) - FIRST_SEAL]),
+						Sprintf(buf, "%s %s", s_suffix(sealName(decode_sealID(spirit_powers[p_no].owner) - FIRST_SEAL)),
 							spirit_powers[p_no].name);
 						putstr(tmpwin, 0, buf);
 						putstr(tmpwin, 0, spirit_powers[p_no].desc);
@@ -6510,7 +6510,7 @@ doreinforce_binding()
 	
 	for(i=0;i<QUEST_SPIRIT && u.spirit[i];i++){
 		j = decode_sealID(u.spirit[i]) - FIRST_SEAL;
-		Sprintf(buf, "%s, %ld", sealNames[j], u.spiritT[i] - monstermoves);
+		Sprintf(buf, "%s, %ld", sealName(j), u.spiritT[i] - monstermoves);
 		any.a_int = i+1;	/* must be non-zero */
 		add_menu(tmpwin, NO_GLYPH, &any,
 			incntlet, 0, ATR_NONE, buf,
@@ -6520,7 +6520,7 @@ doreinforce_binding()
 	i = QUEST_SPIRIT;
 	if(u.spirit[i] && u.spiritT[i] > 0){
 		j = decode_sealID(u.spirit[i]) - FIRST_SEAL;
-		Sprintf(buf, "%s, %ld", sealNames[j], u.spiritT[i] - monstermoves);
+		Sprintf(buf, "%s, %ld", sealName(j), u.spiritT[i] - monstermoves);
 		any.a_int = i+1;	/* must be non-zero */
 		add_menu(tmpwin, NO_GLYPH, &any,
 			incntlet, 0, ATR_NONE, buf,
@@ -6530,7 +6530,7 @@ doreinforce_binding()
 	i = ALIGN_SPIRIT;
 	if(u.spirit[i] && u.spiritT[i] > 0){
 		j = decode_sealID(u.spirit[i]) - FIRST_SEAL;
-		Sprintf(buf, "%s, %ld", sealNames[j], u.spiritT[i] - monstermoves);
+		Sprintf(buf, "%s, %ld", sealName(j), u.spiritT[i] - monstermoves);
 		any.a_int = i+1;	/* must be non-zero */
 		add_menu(tmpwin, NO_GLYPH, &any,
 			incntlet, 0, ATR_NONE, buf,

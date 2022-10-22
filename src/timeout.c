@@ -390,14 +390,14 @@ boolean lifesave_forced;
 	if(spir&SEAL_SPECIAL){
 		for(i=0;i<(NUMINA-QUEST_SPIRITS);i++){
 			if(((spir&(~SEAL_SPECIAL)) >> i) == 1L){
-				Your("link with %s has %sbroken.", sealNames[i+(QUEST_SPIRITS-FIRST_SEAL)],forced?"been ":"");
+				Your("link with %s has %sbroken.", sealName(i+(QUEST_SPIRITS-FIRST_SEAL)),forced?"been ":"");
 				break;
 			}
 		}
 		if(spir&SEAL_NUMINA) Your("links with the Numina have %sbroken.",forced?"been ":"");
 	} else for(i=0;i<QUEST_SPIRITS;i++){
 		if((spir >> i) == 1L){
-			if(!Role_if(PM_ANACHRONOUNBINDER)) Your("link with %s has %sbroken.", sealNames[i],forced?"been ":"");
+			if(!Role_if(PM_ANACHRONOUNBINDER)) Your("link with %s has %sbroken.", sealName(i),forced?"been ":"");
 			break;
 		}
 	}
@@ -664,13 +664,13 @@ nh_timeout()
 				if(u.spirit[i]&SEAL_SPECIAL){
 					for(j=0;j<32;j++){
 						if(((u.spirit[i]&(~SEAL_SPECIAL)) >> j) == 1L){
-							Your("link with %s is %s.", sealNames[j+(QUEST_SPIRITS-FIRST_SEAL)], spiritFadeTerms[remaining-1]);
+							Your("link with %s is %s.", sealName(j+(QUEST_SPIRITS-FIRST_SEAL)), spiritFadeTerms[remaining-1]);
 						}
 					}
 				} else {
 					for(j=0;j<32;j++){
 						if((u.spirit[i] >> j) == 1L){
-							Your("link with %s is %s.", sealNames[j], spiritFadeTerms[remaining-1]);
+							Your("link with %s is %s.", sealName(j), spiritFadeTerms[remaining-1]);
 						}
 					}
 				}

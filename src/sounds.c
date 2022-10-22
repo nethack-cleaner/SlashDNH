@@ -1251,7 +1251,7 @@ boolean chatting;
 	case MS_LEADER:
 	case MS_GUARDIAN:
 asGuardian:
-	    if (mtmp->mpeaceful && uclockwork && !mtmp->mtame && !nohands(ptr) && !is_animal(ptr) && yn("(Ask for help winding your clockwork?)") == 'y'){
+	    if (!achieve.clockarc && mtmp->mpeaceful && uclockwork && !mtmp->mtame && !nohands(ptr) && !is_animal(ptr) && yn("(Ask for help winding your clockwork?)") == 'y'){
 			struct obj *key;
 			int turns = 0;
 			

@@ -83,7 +83,7 @@ MONSTER:'h',"hobbit",(47,03),hostile
 MONSTER:':',random,(48,03),hostile
 MONSTER:'y',random,(49,03),hostile
 MONSTER:'o',random,(50,03),hostile
-MONSTER:'u',"unicorn",(51,03),hostile
+MONSTER:'u',"black unicorn",(51,03),hostile
 
 # "WELCOME"
 MONSTER:'W',"wraith",(53,09),hostile

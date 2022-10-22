@@ -1904,6 +1904,9 @@ deferred_goto()
 				flags.initalign = 2;
 			}
 		}
+		if (achieve.clockarc) {
+			achieve.clockarc = FALSE;
+		}
 		/* remove inventory that is for the "other role choices */
 
 		int remobj1 = 0;

@@ -12268,8 +12268,8 @@ char *name;	/* target alignment, or A_NONE */
 				add_oprop(otmp, OPROP_WATRW);
 			break;
 		}
-	} else if(!strcmp(name,  "The Sack of Infinite Depth")){
-	} else if(!strcmp(name,  "The Pick Axe of the Ancients")){
+	} else if (!strcmp(name,  "The Silver Spear of the Gladiator")){
+		set_material_gm(otmp, SILVER);
 	}
 	fix_object(otmp);
 	return otmp;

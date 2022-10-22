@@ -473,6 +473,86 @@ GOD_V2("Cicero",         A_NEUTRAL, NEUTRAL_HOLINESS,
 GOD_V2("Catilina",             A_CHAOTIC, UNHOLY_HOLINESS,
 	MINIONS(Cdemons)
 	),
+/* Hacker */
+GOD_V2("Jobs",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Wozniak",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Gates",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Locksmith */
+GOD_V2("Nuada",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Dagda",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Morrigan",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Ninja */
+GOD_V2("Jiraiya",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Tsunade",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Orochimaru",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Drunk */
+GOD_V2("Fufluns",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Liber",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Ogoun",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Diver */
+GOD_V2("Tane",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Tangaroa",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Whiro",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Yeoman */
+GOD_V2("His Majesty",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("His Holiness",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("The Commons",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Zookeeper */
+GOD_V2("Balder",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Edda",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Hagen",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
+/* Undertaker */
+GOD_V2("Hel",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Pluto",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Thanatos",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
 
 /* the great terminator */
 GOD_V2((const char *)0, 0, 0, MINIONS())

@@ -66,7 +66,7 @@ struct Role roles[] = {
 	PM_SARA__THE_LAST_ORACLE, PM_TROOPER, NON_PM,
 	NON_PM, NON_PM, NON_PM, NON_PM,
 	ART_ANNULUS,
-	MA_ELF|MA_DRAGON|MA_CLOCK|MA_GNOME|MA_ETHEREAL, ROLE_MALE|ROLE_FEMALE |
+	MA_HUMAN|MA_ELF|MA_DRAGON|MA_CLOCK|MA_GNOME|MA_ETHEREAL, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_CHAOTIC,
 	/* Str Int Wis Dex Con Cha */
 	{  12, 10,  7, 10,  10,  7 },
@@ -92,7 +92,7 @@ struct Role roles[] = {
 	PM_PELIAS, PM_CHIEFTAIN, PM_THOTH_AMON,
 	PM_OGRE, PM_TROLL, S_OGRE, S_TROLL,
 	ART_HEART_OF_AHRIMAN,
-	MA_ORC|MA_ETHEREAL|MA_HUMAN|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE |
+	MA_PLANT|MA_ORC|MA_ETHEREAL|MA_HUMAN|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
 	{  16,  7,  7, 15, 16,  6 },
@@ -714,6 +714,370 @@ struct Role roles[] = {
 	{ 10, 0,  0, 4,  0, 1 },	/* Hit points */
 	{  4, 3,  2, 4,  0, 6 },12,	/* Energy */
 	0, 1, 0, 3, 10, A_INT, SPE_MAGIC_MISSILE,   -5
+},
+{	{"Gladiator", 0}, {
+	{"Velite",  0},
+	{"Thraex",        	0},
+	{"Dimachaerus",   0},
+	{"Venator",      		0},
+	{"Murmillo",     0},
+	{"Hoplomachus",      0},
+	{"Retiarius",			0},
+	{"Secutor",   	0},
+	{"Centurion",  	0} }, /* sorry Fyr, but Champion was just way too generic of a title. --Amy */
+	GOD_SULLA, GOD_CICERO, GOD_CATILINA,	/* ANCIENT ROME */
+	"Gla", "Arena Bloodworks", "Colosseum",
+	PM_GLADIATOR, NON_PM, NON_PM,
+	PM_TUTOR, PM_ATTENDANT, PM_THE_CHAMPION_OF_POMPEJI,
+	PM_WEREPANTHER, PM_MINOTAUR, S_HUMAN, S_QUADRUPED,
+	ART_IMPERIAL_TOKEN,
+	MA_ORC|MA_REPTILIAN, ROLE_MALE|ROLE_FEMALE | ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   8,  7, 7,  8,  8,  7 },
+	{  20, 15, 10, 20, 25, 10 },
+	/* Init   Lower  Higher */
+	{ 12, 0,  0, 8,  4, 0 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },12,	/* Energy */
+	10, 8, 0, 2,  9, A_INT, SPE_CAUSE_FEAR,    -4
+},
+{	{"Berserker", 0}, {
+	{"Plunderer",   "Plunderess"},
+	{"Pillager",    0},
+	{"Bandit",      0},
+	{"Brigand",     0},
+	{"Raider",      0},
+	{"Reaver",      0},
+	{"Slayer",      0},
+	{"Chieftain",   "Chieftainess"},
+	{"Conqueror",   "Conqueress"} },
+	GOD_MITRA, GOD_CROM, GOD_SET, /* Hyborian */
+	"Bez", "the Camp of the Duali Tribe", "the Duali Oasis",
+	PM_BERSERKER, NON_PM, NON_PM,
+	PM_PELIAS, PM_CHIEFTAIN, PM_THOTH_AMON,
+	PM_OGRE, PM_TROLL, S_OGRE, S_TROLL,
+	ART_HEART_OF_AHRIMAN,
+	MA_ORC|MA_ETHEREAL|MA_HUMAN|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{  16,  7,  7, 15, 16,  6 },
+	{  30,  6,  7, 20, 30,  7 },
+	/* Init   Lower  Higher */
+	{ 14, 0,  0,10,  0, 2 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
+	10, 14, 0, 0,  8, A_INT, SPE_HASTE_SELF,      -1000
+},
+{	{"Blind Master", 0}, {
+	{"Plunderer",   "Plunderess"},
+	{"Pillager",    0},
+	{"Bandit",      0},
+	{"Brigand",     0},
+	{"Raider",      0},
+	{"Reaver",      0},
+	{"Slayer",      0},
+	{"Chieftain",   "Chieftainess"},
+	{"Conqueror",   "Conqueress"} },
+	GOD_MITRA, GOD_CROM, GOD_SET, /* Hyborian */
+	"Bmt", "the Camp of the Duali Tribe", "the Duali Oasis",
+	PM_BERSERKER, NON_PM, NON_PM,
+	PM_PELIAS, PM_CHIEFTAIN, PM_THOTH_AMON,
+	PM_OGRE, PM_TROLL, S_OGRE, S_TROLL,
+	ART_HEART_OF_AHRIMAN,
+	MA_ORC|MA_ETHEREAL|MA_HUMAN|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{  16,  7,  7, 15, 16,  6 },
+	{  30,  6,  7, 20, 30,  7 },
+	/* Init   Lower  Higher */
+	{ 14, 0,  0,10,  0, 2 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
+	10, 14, 0, 0,  8, A_INT, SPE_HASTE_SELF,      -1000
+},
+{	{"Role Player", 0}, {
+	{"Plunderer",   "Plunderess"},
+	{"Pillager",    0},
+	{"Bandit",      0},
+	{"Brigand",     0},
+	{"Raider",      0},
+	{"Reaver",      0},
+	{"Slayer",      0},
+	{"Chieftain",   "Chieftainess"},
+	{"Conqueror",   "Conqueress"} },
+	GOD_MITRA, GOD_CROM, GOD_SET, /* Hyborian */
+	"Rpl", "the Camp of the Duali Tribe", "the Duali Oasis",
+	PM_BERSERKER, NON_PM, NON_PM,
+	PM_PELIAS, PM_CHIEFTAIN, PM_THOTH_AMON,
+	PM_OGRE, PM_TROLL, S_OGRE, S_TROLL,
+	ART_HEART_OF_AHRIMAN,
+	MA_ORC|MA_ETHEREAL|MA_HUMAN|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{  16,  7,  7, 15, 16,  6 },
+	{  30,  6,  7, 20, 30,  7 },
+	/* Init   Lower  Higher */
+	{ 14, 0,  0,10,  0, 2 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
+	10, 14, 0, 0,  8, A_INT, SPE_HASTE_SELF,      -1000
+},
+{	{"Yeoman", 0}, {
+	/* Landowner titles, naval ranks and positions */
+	/* We intentionally avoid Lieutenant and Captain */
+	{"Usher",          0},
+	{"Steward",        "Stewardess"},
+	{"Keeper",         0},
+	{"Marshal",        0},
+	{"Master Steward", "Master Stewardess"},
+	{"Chamberlain",    0},
+	{"Constable",      0},
+	{"Chancellor",     0},
+	{"Regent",         0} },
+	GOD_HIS_MAJESTY, GOD_HIS_HOLINESS, GOD_THE_COMMONS, /* THE THREE ESTATES */
+	"Yeo", "London", "the inner ward",
+	PM_YEOMAN, NON_PM, PM_PONY,
+	PM_CHIEF_YEOMAN_WARDER, PM_YEOMAN_WARDER, PM_COLONEL_BLOOD,
+	PM_RAVEN, PM_WEREWOLF, S_RODENT, S_DOG,
+#if 0
+	ART_REAPER, ART_SWORD_OF_JUSTICE,
+#endif
+	ART_CROWN_OF_SAINT_EDWARD,
+	MA_HUMAN|MA_ELF|MA_DRAGON|MA_CLOCK, ROLE_MALE | ROLE_LAWFUL,
+	/* Str Int Wis Dex Con Cha */
+	{  12,  7, 10, 12, 12,  7 },
+	{  20, 15, 15, 20, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 19, 0,  0, 8,  2, 0 },	/* Hit points */
+	{  3, 4,  0, 1,  0, 2 },10,	/* Energy */
+	10, 8,-2, 0,  9, A_WIS, SPE_KNOCK,     -4
+},
+{	{"Zookeeper", 0}, {
+	{"Feeder",      0},
+	{"Feeder",0},
+	{"Tamer",0},
+	{"Tamer",     0},
+	{"Trainer",   0},
+	{"Chief Tamer",   0},
+	{"Vet",0},
+	{"Zookeeper",   0},
+	{"Curator",     0} },
+	GOD_BALDER, GOD_EDDA, GOD_HAGEN, /* NORSE MYTHOLOGY */
+	"Zoo", "Yellowstone Park", "Jurassic Park",
+	PM_ZOOKEEPER, NON_PM, PM_DINGO_PUPPY,
+	PM_MASTER_ZOOKEEPER, PM_STUDENT, PM_FEARFUL_TRICERATOPS,
+	PM_CARNIVOROUS_APE, PM_JAGUAR, S_FELINE, S_DOG,
+#if 0
+	ART_LIONTAMER, ART_DIRK,
+#endif
+	ART_GOLDEN_WHISTLE_OF_NORA,
+	MA_HUMAN|MA_ELF|MA_GNOME|MA_ORC|MA_ANIMAL|MA_REPTILIAN,
+	  ROLE_MALE|ROLE_FEMALE | ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{   7, 10, 10,  7,  7,  7 },
+	{  20, 20, 20, 10, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 16, 0,  0, 8,  1, 0 },	/* Hit points */
+	{ 10, 0,  0, 1,  0, 1 },14,	/* Energy */
+	10, 5, 0, 2, 10, A_INT, SPE_CHARM_MONSTER,   -4
+},
+{	{"Paladin", 0}, {
+	{"Undefiler",    0},
+	{"Faithful",     0},
+	{"Religious One",       0},
+	{"Returned One",      0},
+	{"Sacred One",      0},
+	{"Savior",       0},
+	{"Celestial",        0},
+	{"Decomposer",   0},
+	{"Annihilator", 0} },
+	0, 0, 0,	/* randomly chosen from other roles */
+	"Pal", "Ancient Temple", "the World-Eater's domain",
+	PM_PALADIN, NON_PM, PM_PONY,
+	PM_EREC, PM_ACOLYTE, PM_ALDUIN,
+	PM_ZOMBIE, PM_WRAITH, S_ZOMBIE, S_WRAITH,
+#if 0
+	ART_SILVERSTAR, ART_DISRUPTER,
+#endif
+	ART_CUDGEL_OF_CUTHBERT,
+	MA_HUMAN|MA_DWARF|MA_DRAGON, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_LAWFUL,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  7, 10,  7,  7,  7 },
+	{  20, 10, 30, 15, 20, 5 },
+	/* Init   Lower  Higher */
+	{ 20, 0,  0, 9,  1, 0 },	/* Hit points */
+	{ 17, 3,  0, 2,  0, 2 },10,	/* Energy */
+	0, 3,-2, 2, 10, A_WIS, SPE_REMOVE_CURSE,    -4
+},
+{	{"Undertaker", 0}, {
+	{"Hearse Driver",    0},
+	{"Disposer",   0},
+	{"Grave Creator",   0},
+	{"Open Casketeer", 0},
+	{"Closed Casketeer", 0},
+	{"Dumper",   0},
+	{"Shoveler",  0},
+	{"Crematorist",  0},
+	{"Corpse Burner", 0} },
+	GOD_HEL, GOD_PLUTO, GOD_THANATOS, /* Death */
+	"Unt", "New Graveyard", "Underground Demon Lair",
+	PM_UNDERTAKER, NON_PM, PM_DEATH_DOG,
+	PM_AJELA, PM_EXTERMINATOR, PM_SEDUCER_SAINT,
+	PM_NALFESHNEE, PM_PIT_FIEND, S_DEMON, S_DEMON,
+#if 0
+	ART_BLACKSHROUD, ART_DIRK
+#endif
+	ART_PICK_OF_THE_GRAVE,
+	MA_HUMAN , ROLE_MALE|ROLE_FEMALE | ROLE_LAWFUL|ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  7, 13, 10, 13,  6 },
+	{  15, 20, 20, 15, 25, 10 },
+	/* Init   Lower  Higher */
+	{ 22, 0,  0, 8,  2, 0 },	/* Hit points */
+	{ 16, 4,  0, 1,  0, 2 },10,	/* Energy */
+	10, 8,-2, 0,  9, A_WIS, SPE_TURN_UNDEAD,     -4
+},
+{	{"Diver", 0}, {
+	{"Beachcomber",  0},
+	{"Paddler",        	0},
+	{"Snorkeler",   0},
+	{"Swimmer",      		0},
+	{"Wave-rider",     0},
+	{"Cruiser",      0},
+	{"Surfer",			0},
+	{"Spearfisher",   	0},
+	{"Torpedo",  	0} },
+	GOD_TANE, GOD_TANGAROA, GOD_WHIRO,	/* POLYNESIAN */
+	"Div", "Scuba Dock", "Melville's Sea of Doom",
+	PM_DIVER, NON_PM, NON_PM,
+	PM_JACQUES_COUSTEAU, PM_ATTENDANT, PM_MOBY_DICK,
+	PM_ELECTRIC_EEL, PM_GIANT_CRAB, S_EEL, S_EEL,
+#if 0
+	ART_POSEIDON_S_TREASURE, ART_FROSTBITE,
+#endif
+	ART_MAUI_S_FISHHOOK,
+	MA_HUMAN|MA_ELF|MA_DRAGON|MA_REPTILIAN,
+	ROLE_MALE|ROLE_FEMALE | ROLE_LAWFUL,
+	/* Str Int Wis Dex Con Cha */
+	{   8,  7, 7,  8,  8,  7 },
+	{  20, 15, 10, 20, 25, 10 },
+	/* Init   Lower  Higher */
+	{ 10, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },12,	/* Energy */
+	10, 8, 0, 2,  9, A_INT, SPE_DETECT_MONSTERS,    -4
+},
+{	{"Ninja", "Kunoichi"}, {
+	{"Kukkyu",     0},
+	{"Hakkyu",    0},
+	{"Nanakyu",       0},
+	{"Rokkyu",    0},
+	{"Gokyu",      0},
+	{"Yonkyu",     0},
+	{"Sankyu",     0},
+	{"Nikyu",     0},
+	{"Ikkyu",       0} },
+	GOD_JIRAIYA, GOD_TSUNADE, GOD_OROCHIMARU, /* FROM JIRAIYA GOKETSU MONOGATARI */
+	"Nin", "Green Plains", "Demon Orb Lair",
+	PM_NINJA, NON_PM, PM_LITTLE_DOG,
+	PM_KEN_HAYABUSA, PM_ROSHI, PM_JAQUIO,
+	PM_WOLF, PM_GIANT_BAT, S_DOG, S_BAT,
+#if 0
+	ART_NIGHTENGALE, ART_SPINESEEKER,
+#endif
+	ART_FUMA_ITTO_NO_KEN,
+	MA_HUMAN|MA_ELF|MA_VAMPIRE,
+	ROLE_MALE|ROLE_FEMALE | ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  7,  7, 15,  7,  6 },
+	{  15, 10, 10, 30, 10, 10 },
+	/* Init   Lower  Higher */
+	{ 19, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  7, 0,  0, 1,  0, 1 },11,	/* Energy */
+	10, 10, 0, 0,  8, A_INT, SPE_CONFUSE_MONSTER,    -4
+},
+{	{"Locksmith", 0}, {
+	{"Listener",     0},
+	{"Lockpicker",    0},
+	{"Lock Breaker",       0},
+	{"Lock Trickster",    0},
+	{"Safecracker",     0},
+	{"Keymaster",     0},
+	{"Slim Jim",     "Slim Jane"},
+	{"Keymaker",     0},
+	{"Supreme Locksmith",       0} },
+	GOD_NUADA, GOD_DAGDA, GOD_MORRIGAN, /* CELTIC */
+	"Loc", "Emergency Base", "Locked Room",
+	PM_LOCKSMITH, NON_PM, NON_PM,
+	PM_MASTER_OF_LOCKS, PM_THUG, PM_BURGLAR_ED,
+	PM_MUGGER, PM_LEPRECHAUN, S_HUMAN, S_HUMAN,
+#if 0
+	ART_OATHKEEPER, ART_DIRK,
+#endif
+	ART_LOCKPICK_OF_ARSENE_LUPIN,
+	MA_HUMAN|MA_GNOME|MA_CLOCK|MA_ETHEREAL, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{   7, 10,  7, 10,  7,  6 },
+	{  20, 15, 10, 30, 10, 20 },
+	/* Init   Lower  Higher */
+	{ 15, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  3, 0,  0, 1,  0, 1 },11,	/* Energy */
+	10, 8, 0, 1,  9, A_INT, SPE_KNOCK, -4
+},
+{	{"Drunk", 0}, {
+	{"Wino",     0},
+	{"Boozer",   0},
+	{"Drinker",0},
+	{"Alcoholic",0},
+	{"Slosh",    0},
+	{"Partier",   0},
+	{"Tastetester",     0},
+	{"Winetaster",    0},
+	{"Socialite",  0} },
+	GOD_FUFLUNS, GOD_LIBER, GOD_OGOUN,	/* CLASSICAL GODS OF WINE */
+	"Dru", "Brass Lantern Bar", "Moriarty's Saloon",
+	PM_DRUNK, NON_PM, NON_PM,
+	PM_ANDY_STAHL, PM_ATTENDANT, PM_COLIN_MORIARTY,
+	PM_GNOME_WARRIOR, PM_DWARF_KING, S_HUMAN, S_GNOME,
+#if 0
+	ART_CROWN_ROYAL_CLOAK, ART_DIRK,
+#endif
+	ART_GOURD_OF_INFINITY,
+	MA_HUMAN|MA_DWARF|MA_GNOME|MA_REPTILIAN|MA_FEY|MA_ANIMAL,
+	ROLE_MALE|ROLE_FEMALE | ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{   7, 10,  6,  6, 14, 10 },
+	{  15, 15,  7, 15, 30, 15 },
+	/* Init   Lower  Higher */
+	{  12, 0,  0, 8,  0, 0 },	/* Hit points */
+	{  3, 0,  0, 1,  0, 1 },10,	/* Energy */
+	0, 5, 0, 2, 10, A_INT, SPE_DETECT_FOOD,   -4
+},
+{	{"Hacker", 0}, {
+	{"Dork",    0},
+	{"Nerd",    0},
+	{"Hobbyist",    0},
+	{"Tester",    0},
+	{"Hacker",    0},
+	{"Programmer",    0},
+	{"Project Leader",    0},
+	{"Senior Developer",    0},
+	{"Kernel Maintainer",    0} }, 
+	GOD_JOBS, GOD_WOZNIAK, GOD_GATES,
+	"Hac", "university campus", "development hell",
+	PM_HACKER, NON_PM, NON_PM,
+	PM_UPPER_GRADUATE, PM_HACKER, PM_STUDENT_LEADER,
+	PM_BUG, PM_HEISENBUG, S_XAN, S_PUDDING,
+#if 0
+	ART_TESLA_S_COAT, ART_DIRK,
+#endif
+	ART_MASTER_BOOT_DISK,
+	MA_HUMAN|MA_GNOME, ROLE_MALE|ROLE_FEMALE |
+	ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{   7, 14,  6,  7,  7,  5 },
+	{  10, 20, 10, 10, 30, 10 },
+	/* Init   Lower  Higher */
+	{ 18, 0,  0, 8,  1, 0 },	/* Hit points */
+	{ 20, 4,  0, 1,  0, 2 },20,	/* Energy */
+	10, 3,-3, 2, 10, A_WIS, SPE_CURE_BLINDNESS,   -4
 },
 
 /* Array terminator */
@@ -2159,20 +2523,6 @@ int newgame;
 			mons[roles[flags.panCgod].guardnum].mflagst |= MT_HOSTILE;
 			mons[roles[flags.panCgod].guardnum].msound = MS_CUSS;
 		}
-	} else if (Role_if(PM_BARBARIAN) && Race_if(PM_HUMAN)) {
-		flags.racial_pantheon = PM_GLADIATOR;
-		urole.filecode = "Gla";
-		urole.questarti = ART_IMPERIAL_TOKEN;
-		urole.lgod = GOD_SULLA;
-		urole.ngod = GOD_CICERO;
-		urole.cgod = GOD_CATILINA;
-		urole.ldrnum = PM_TUTOR;
-		urole.guardnum = PM_ATTENDANT;
-		urole.neminum = PM_THE_CHAMPION_OF_POMPEJI;
-		urole.enemy1num = PM_WEREPANTHER;
-		urole.enemy2num = PM_MINOTAUR;
-		urole.enemy1sym = S_HUMAN;
-		urole.enemy2sym = S_QUADRUPED;
 	} else if(Race_if(PM_DROW) && (Role_if(PM_PRIEST) || Role_if(PM_ROGUE) || Role_if(PM_RANGER) || Role_if(PM_WIZARD) || Role_if(PM_NOBLEMAN))){
 		flags.racial_pantheon = PM_DROW;
 		urole.rank[0] = DrowRanks[0];

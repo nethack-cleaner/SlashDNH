@@ -194,7 +194,7 @@ static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
 STATIC_DCL char *NDECL(parse);
-static void addtech(tmpwin, ky, letter, txt, timeout);
+static void addtech(winid tmpwin, int ky, char letter, char *txt, int timeout);
 STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 
 #ifdef OVL1
@@ -2092,6 +2092,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"zap", "zap a wand", dozap, !IFBURIED},
 	{"explore_mode", "enter explore (discovery) mode (only if defined)", enter_explore_mode, IFBURIED},
 
+	{"technique", "use an inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
 	{"ability", "use an inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
 	{"adjust", "adjust inventory letters", doorganize, IFBURIED, AUTOCOMPLETE},
 	{"annotate", "annotate current dungeon level", donamelevel, IFBURIED, AUTOCOMPLETE},

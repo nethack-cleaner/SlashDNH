@@ -125,10 +125,10 @@ MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
 MONSTER: random, random, random, hostile
 OBJECT:'+',random,place[0]
-OBJECT:'!',"acid",(64,10)
-OBJECT:'[',random,place[1]
-OBJECT:'(',"pick-axe",place[2],uncursed,1,"The Pick-Axe of the Ancients"
-OBJECT:'(',"sack",place[3],uncursed,0
+OBJECT:'(',"tinning kit",place[1]
+OBJECT:'(',"pick-axe",place[2],uncursed,1
+OBJECT:'(',"magic torch",place[4],uncursed,0,"The Everburning Flame"
+OBJECT:'*',"touchstone",place[5],uncursed,0
 MONSTER:'m',"small mimic",(64,01)
 MONSTER:'m',"small mimic",(67,01)
 MONSTER:'m',"small mimic",(65,02)

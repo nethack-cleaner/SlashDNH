@@ -33,16 +33,7 @@ static struct trobj Archeologist[] = {
 	{ FEDORA, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
-	{ TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
-	{ TOUCHSTONE, 0, GEM_CLASS, 1, 0 },
-	{ TORCH, 0, TOOL_CLASS, 3, 0 },
 	{ 0, 0, 0, 0, 0 }
-};
-
-static struct trobj Gladiator[] = {
-    { SHIELD_OF_REFLECTION, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
-    { CRAM_RATION, 0, FOOD_CLASS, 1, 1 },
-    { 0, 0, 0, 0, 0 }
 };
 
 static const struct def_skill Skill_Gla[] = {
@@ -413,14 +404,9 @@ static struct trobj Anachrononaut_Mal_Clk[] = {
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Barbarian[] = {
-#define B_MAJOR	0	/* two-handed sword or battle-axe  */
-	{ TWO_HANDED_SWORD, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
-#define B_MINOR	1	/* matched with axe or short sword */
-	{ AXE, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
 	{ RING_MAIL, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ FOOD_RATION, 0, FOOD_CLASS, 1, 0 },
-	{ TORCH, 0, TOOL_CLASS, 3, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
 #ifdef BARD
@@ -2175,8 +2161,6 @@ u_init()
 	init_uhunger();
 	for (i = 0; i <= MAXSPELL; i++) spl_book[i].sp_id = NO_SPELL;
 	u.ublesscnt = 300;			/* no prayers just yet */
-	u.ualign.type = aligns[flags.initalign].value;
-	u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 	u.ulycn = NON_PM;
 
 #if defined(BSD) && !defined(POSIX_TYPES)
@@ -2365,12 +2349,6 @@ u_init()
 			u.ualign.type = A_CHAOTIC;
 		} else {
 			u.ualign.type = A_NEUTRAL;
-		}
-		u.role_variant = TWO_HANDED_SWORD;
-		if (rn2(100) >= 50) {	/* see above comment */
-			u.role_variant = BATTLE_AXE;
-		    Barbarian[B_MAJOR].trotyp = BATTLE_AXE;
-		    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
 		}
 		ini_inv(Barbarian);
 		skill_init(Skill_B);
@@ -2844,6 +2822,15 @@ u_init()
 	default:	/* impossible */
 		break;
 	}
+	if (u.ualign.type == A_LAWFUL) {
+		flags.initalign = 0;
+	} else if (u.ualign.type == A_NEUTRAL) {
+		flags.initalign = 1;
+	} else if (u.ualign.type == A_CHAOTIC) {
+		flags.initalign = 2;
+	}
+	
+	u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 
 
 	/*** Race-specific initializations ***/
@@ -3288,6 +3275,7 @@ int otyp;
      case PM_ANACHRONOUNBINDER: skills = Skill_Acu; break;
      case PM_ANACHRONONAUT:	skills = Skill_Ana; break;
      case PM_BARBARIAN:		skills = Skill_B; break;
+     case PM_GLADIATOR:		skills = Skill_Gla; break;
 #ifdef BARD
      case PM_BARD:		skills = Skill_Bard; break;
 #endif

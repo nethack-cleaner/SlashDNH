@@ -1894,10 +1894,7 @@ deferred_goto()
 	    if (dfr_post_msg) pline1(dfr_post_msg);
 	}
 	if (!achieve.introquest && u.uz.dlevel == 2) { //Delete path back to intro quest
-	    //char buf[BUFSZ];
-		//Sprintf(buf, "turns %d", moves);
-		//You(buf);
-		if (achieve.istraitor) {
+		if (achieve.istraitor || achieve.isgladiator) {
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor
 			if (u.ualign.type == A_LAWFUL) {
 				flags.initalign = 0;
@@ -1907,6 +1904,24 @@ deferred_goto()
 				flags.initalign = 2;
 			}
 		}
+		/* remove inventory that is for the "other role choices */
+
+		int remobj1 = 0;
+		int remobj2 = 0;
+		if (Role_if(PM_BARBARIAN)) {
+			remobj1 = SPEAR;
+		} else if (Role_if(PM_GLADIATOR)) {
+			remobj1 = BATTLE_AXE;
+		}
+		if (remobj1) {
+			struct obj *otmp;
+			for (otmp = invent; otmp; otmp = otmp->nobj) {
+				if (otmp->otyp == remobj1 || otmp->otyp == remobj2) {
+					obj_extract_and_unequip_self(otmp);
+				}
+			}
+		}
+
 		achieve.introquest = 1;
 		struct trap *t = t_at(u.ux, u.uy);
 

@@ -3869,6 +3869,15 @@ A("The Fire Chief Helmet",                HELMET, "Well balanced and shiny %s",
 	PROPS(), NOFLAG,
 	LEADERSHIP, (ARTI_PLUSSEV)
 ),
+A("The Gourd of Infinity", HORN_OF_PLENTY, "Magnificent flowing %s",
+	3000L, SILVER, MZ_DEFAULT, WT_SPECIAL,
+	A_LAWFUL, PM_DRUNK, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	NO_MONS(),
+	ATTK(AD_ACID, 5, 5), NOFLAG,	/*Actually Phys(5,0) if not a lightsaber*/
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	NOFLAG, NOFLAG
+),
 A("The Lightsaber Prototype",					LIGHTSABER,			"custom featured lightsaber %s",
 	3000L, SILVER, MZ_DEFAULT, WT_SPECIAL,
 	A_LAWFUL, PM_JEDI, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
@@ -3896,9 +3905,67 @@ A("The Stake of Van Helsing",        WOODEN_STAKE, "Extremely hard and sharp %s"
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
 ),
+A("The Lockpick of Arsene Lupin", LOCK_PICK, "Expertly made %s",
+    1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+    A_CHAOTIC, PM_LOCKSMITH, NON_PM, TIER_D, (ARTG_GIFT),
+    NO_MONS(),
+    ATTK(AD_PHYS, 1, 6), NOFLAG,
+    PROPS(STEALTH), NOFLAG,
+    PROPS(), NOFLAG,
+    NOINVOKE, NOFLAG
+),
+A("Maui's Fishhook",    GRAPPLING_HOOK, "Large %s with interesting engraving",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, PM_DIVER, NON_PM, TIER_D, (ARTG_GIFT),
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 6), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+),
 A("The Imperial Token", RIN_AGGRAVATE_MONSTER, "intricately Styled %s",
     1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
     A_CHAOTIC, PM_GLADIATOR, NON_PM, TIER_D, NOFLAG,
+    NO_MONS(),
+    ATTK(AD_PHYS, 1, 6), NOFLAG,
+    PROPS(STEALTH), NOFLAG,
+    PROPS(), NOFLAG,
+    NOINVOKE, NOFLAG
+),
+
+A("The Pick of the Grave",      PICK_AXE, "Sadness inducing %s",
+    1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+    A_CHAOTIC, PM_UNDERTAKER, NON_PM, TIER_D, (ARTG_GIFT),
+    NO_MONS(),
+    ATTK(AD_PHYS, 1, 6), NOFLAG,
+    PROPS(STEALTH), NOFLAG,
+    PROPS(), NOFLAG,
+    NOINVOKE, NOFLAG
+),
+
+A("The Cudgel of Cuthbert", QUARTERSTAFF, "Humbly formed %s",
+    1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+    A_CHAOTIC, PM_PALADIN, NON_PM, TIER_D, (ARTG_GIFT),
+    NO_MONS(),
+    ATTK(AD_PHYS, 1, 6), NOFLAG,
+    PROPS(STEALTH), NOFLAG,
+    PROPS(), NOFLAG,
+    NOINVOKE, NOFLAG
+),
+
+A("The Crown of Saint Edward", HELM_OF_TELEPATHY, "Confessor's %s",
+    1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+    A_CHAOTIC, PM_YEOMAN, NON_PM, TIER_D, (ARTG_GIFT),
+    NO_MONS(),
+    ATTK(AD_PHYS, 1, 6), NOFLAG,
+    PROPS(STEALTH), NOFLAG,
+    PROPS(), NOFLAG,
+    NOINVOKE, NOFLAG
+),
+
+A("The Golden Whistle of Nora",          MAGIC_WHISTLE, "Gold on gold %s",
+    1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+    A_CHAOTIC, PM_ZOOKEEPER, NON_PM, TIER_D, (ARTG_GIFT),
     NO_MONS(),
     ATTK(AD_PHYS, 1, 6), NOFLAG,
     PROPS(STEALTH), NOFLAG,
@@ -3914,6 +3981,16 @@ A("Gladius",        SHORT_SWORD, "Extremely well balanced %s",
     PROPS(STEALTH), NOFLAG,
     PROPS(), NOFLAG,
     NOINVOKE, NOFLAG
+),
+
+A("Master Boot Disk",   PACK_OF_FLOPPIES, "Main startup %s",
+    5000L, GOLD, MZ_DEFAULT, WT_SPECIAL,
+    A_NEUTRAL, PM_HACKER, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+    NO_MONS(),
+    NO_ATTK(), NOFLAG,
+    PROPS(), NOFLAG,
+    PROPS(ANTIMAGIC), NOFLAG,
+    TAMING, (ARTI_SPEAK)
 ),
 
 /*

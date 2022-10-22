@@ -1274,6 +1274,8 @@ TOOL(("doll's tear",   "milky gemstone", "gem"),/*Needs encyc entry*/
 TOOL(("holy symbol of the black mother", "tarnished triple goat-head"), /*Needs encyc entry*/
 								0,   MZ_TINY, 0, 1, 0,   0, 50,8000, SILVER, CLR_BLACK),
 TOOL(("magic marker"), 1,   MZ_TINY, 0, 1, 1,  15,  2,  50, PLASTIC, CLR_RED),
+TOOL(("pack of floppies",    "box containing little plastic cards"),
+0,   MZ_SMALL, 0, 1, 0,   0, 50,8000, SILVER, CLR_RED),
 /* traps */
 TOOL(("land mine",(char *)0),     1,  MZ_LARGE, 0, 0, 0,   0,300, 180, IRON, CLR_RED),
 TOOL(("beartrap"),     1,  MZ_LARGE, 0, 0, 0,   0,100,  60, IRON, HI_METAL),/*Needs encyc entry*/

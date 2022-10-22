@@ -61,6 +61,7 @@ static boolean FDECL(smith_offer_price, (long charge, struct monst *));
 static boolean FDECL(nurse_services,(struct monst *));
 static boolean FDECL(render_services,(struct monst *));
 static boolean FDECL(buy_dolls,(struct monst *));
+static void FDECL(changerole, (char *));
 
 static const char tools[] = { TOOL_CLASS, 0 };
 static const char models[] = { TOOL_CLASS, FOOD_CLASS, 0 };
@@ -238,6 +239,26 @@ static const char *parasitizedDroid[] = {
 	"Free me!",
 	"You must destroy me!",
 	"Why!?"
+};
+
+static const struct def_skill Skill_Gla[] = {
+    /* 5lo: from Fyr's userpage on nethackwiki */
+    { P_SABER, P_SKILLED }, { P_PICK_AXE,  P_BASIC },
+    { P_UNICORN_HORN, P_EXPERT },       { P_CROSSBOW, P_BASIC },
+    { P_KNIFE, P_SKILLED },
+    { P_POLEARMS, P_SKILLED },  { P_SCIMITAR, P_SKILLED },
+    { P_FLAIL, P_SKILLED },     { P_BROAD_SWORD, P_SKILLED },
+    { P_TWO_HANDED_SWORD, P_SKILLED },      { P_MORNING_STAR, P_SKILLED },
+    { P_HAMMER, P_SKILLED },    { P_LANCE, P_SKILLED },
+    { P_WHIP, P_SKILLED },   { P_LONG_SWORD, P_EXPERT },
+    { P_SHORT_SWORD, P_EXPERT },    { P_DAGGER, P_EXPERT },
+    { P_SPEAR, P_EXPERT },  { P_TRIDENT, P_EXPERT },
+
+    { P_ATTACK_SPELL, P_EXPERT },
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },
+    { P_RIDING, P_SKILLED },
+    { P_BARE_HANDED_COMBAT, P_MASTER },
+    { P_NONE, 0 }
 };
 
 /* this easily could be a macro, but it might overtax dumb compilers */
@@ -1293,7 +1314,7 @@ asGuardian:
 				boolean hasitem = FALSE;
 				struct obj *otmp;
 				for (otmp = invent; otmp; otmp = otmp->nobj) {
-					if (otmp->otyp == SACK)
+					if (Role_if(PM_ARCHEOLOGIST) && otmp->otyp == SACK)
 						hasitem = TRUE;
 				}
 				if (hasitem) {
@@ -1313,6 +1334,29 @@ asGuardian:
 			} else {
 				achieve.talkedtleader = TRUE;
 				qt_pager(QT_STARTTRAITOR1);
+			}
+		} else if (ptr->msound == MS_GLADIATOR_LEADER) {
+			if (achieve.talkedgladiatorleader) {
+				boolean hasitem = FALSE;
+				struct obj *otmp;
+				for (otmp = invent; otmp; otmp = otmp->nobj) {
+					if (otmp->otyp == SPEAR)
+						hasitem = TRUE;
+				}
+				if (hasitem) {
+					qt_pager(QT_GLADIATORLEADER3);
+					changerole("Gladiator");
+					struct obj *obj;
+					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+				    fully_identify_obj(obj);
+					obj = oname(obj, "Gladiator's Path");
+					obj->spe = abs(obj->spe);
+					addinv(obj);
+				} else
+					qt_pager(QT_GLADIATORLEADER2);
+			} else {
+				achieve.talkedgladiatorleader = TRUE;
+				qt_pager(QT_GLADIATORLEADER1);
 			}
 		} else {
 			quest_chat(mtmp);
@@ -6973,6 +7017,23 @@ doblessmenu()
 		return picked;
 	}
 	return 0;
+}
+
+static void
+changerole(role)
+char *role;
+{
+	int i;
+	for (i = 0; i < ROLECOUNT; i++) {
+		if (!strcmp(roles[i].name.m, role)) {
+			flags.initrole = i;
+			urole = roles[i];
+		}
+	}
+	if (!strcmp(role, "Gladiator")) {
+		achieve.isgladiator = TRUE;
+		skill_init(Skill_Gla);
+	}
 }
 
 int

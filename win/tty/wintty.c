@@ -445,6 +445,7 @@ give_up:	/* Quit */
 		start_menu(win);
 		any.a_void = 0;         /* zero out all bits */
 		for (i = 0; roles[i].name.m; i++) {
+			if (i < 26) {
 		    if (ok_role(i, flags.initrace, flags.initgend,
 							flags.initalign)) {
 			any.a_int = i+1;	/* must be non-zero */
@@ -479,6 +480,7 @@ give_up:	/* Quit */
 			    0, ATR_NONE, an(rolenamebuf), MENU_UNSELECTED);
 			lastch = thisch;
 		    }
+			}
 		}
 		any.a_int = pick_role(flags.initrace, flags.initgend,
 				    flags.initalign, PICK_RANDOM)+1;

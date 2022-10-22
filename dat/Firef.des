@@ -73,8 +73,8 @@ MONSTER: 'E',"fire elemental",(39,04),hostile
 MONSTER: 'E',"fire elemental",(48,09),hostile
 MONSTER: 'E',"fire elemental",(48,10),hostile
 MONSTER: 'E',"fire elemental",(48,11),hostile
-MONSTER: 'E',"greater fire elemental",(35,16),hostile
-MONSTER: 'E',"greater fire elemental",(36,17),hostile
+MONSTER: 'E',"fire elemental",(35,16),hostile
+MONSTER: 'E',"fire elemental",(36,17),hostile
 MONSTER: ':',"salamander",(37,17),hostile
 MONSTER: ':',"salamander",(38,17),hostile
 MONSTER: ':',"salamander",(39,16),hostile
@@ -163,9 +163,9 @@ MONSTER:'E',"fire elemental",(41,11),hostile
 MONSTER:'E',"fire elemental",(42,11),hostile
 MONSTER:'E',"fire elemental",(43,11),hostile
 MONSTER:'E',"fire elemental",(44,11),hostile
-MONSTER:'E',"greater fire elemental",(45,11),hostile
-MONSTER:'E',"greater fire elemental",(41,12),hostile
-MONSTER:'E',"greater fire elemental",(42,12),hostile
+MONSTER:'E',"fire elemental",(45,11),hostile
+MONSTER:'E',"fire elemental",(41,12),hostile
+MONSTER:'E',"fire elemental",(42,12),hostile
 MONSTER:':',"salamander",(43,12),hostile
 MONSTER:':',"salamander",(44,12),hostile
 MONSTER:':',"salamander",random,hostile
@@ -268,10 +268,10 @@ MONSTER:'E',"fire elemental",(02,02),hostile
 MONSTER:'E',"fire elemental",(71,02),hostile
 MONSTER:'E',"fire elemental",(02,16),hostile
 MONSTER:'E',"fire elemental",(71,16),hostile
-MONSTER:'E',"greater fire elemental",random,hostile
-MONSTER:'E',"greater fire elemental",random,hostile
-MONSTER:'E',"greater fire elemental",random,hostile
-MONSTER:'E',"greater fire elemental",random,hostile
+MONSTER:'E',"fire elemental",random,hostile
+MONSTER:'E',"fire elemental",random,hostile
+MONSTER:'E',"fire elemental",random,hostile
+MONSTER:'E',"fire elemental",random,hostile
 MONSTER:'E',random,random,hostile
 MONSTER:'E',random,random,hostile
 MONSTER:':',"salamander",(03,02),hostile
@@ -319,7 +319,7 @@ MONSTER: 'E', "fire elemental", random, hostile
 MONSTER: 'E', "fire elemental", random, hostile
 MONSTER: 'E', "fire elemental", random, hostile
 MONSTER: 'E', "fire elemental", random, hostile
-MONSTER: 'E', "greater fire elemental", random, hostile
+MONSTER: 'E', "fire elemental", random, hostile
 MONSTER: 'E', random, random, hostile
 MONSTER: ':', "salamander", random, hostile
 

@@ -62,29 +62,32 @@ NON_PASSWALL:(00,00,14,10)
 MAZE:"szbar",' '
 FLAGS:noteleport,hardfloor
 GEOMETRY:left,top
+###########1#########2#########3#########4#########5#########6#########7#####
+#0123456789012345678901234567890123456789012345678901234567890123456789012345
 MAP
-ssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssssss
-sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
-sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
-ssssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssss
-ssssssss--------------ssssss-----ssssPPPssssssssssssssssssssssssssssssssssss
-ssssssss|............|ssssss+...|sssPPPsssssssssssssssssssssssssssssssssssss
-ssssssss|............|ssssss|...|ssssPPsssssssssssssssssssssssssssssssssssss
-ssssssss|.\..........+ssssss-----sssssssssssssssssssssssssssssssssssssssssss
-ssssssss|............|sssssssssssssssPPsssssssssssssssssssssssssssssssssssss
-ssssssss|............|sss-----sssssssPPPssssssssssssssssssssssssssssssssssss
-ssssssss--------------sss+...|ssssssPPPPPsssssssssssssssssssssssssssssssssss
-sssssssssssssssssssssssss|...|sssssssPPPssssssssssssssssssssssssssssssssssss
-sss-----ssssss-----ssssss-----ssssssssPPssssssssssssssssssssssssssssssssssss
-sss|...+ssssss|...+ss--+--sssssssssssssPPsssssssssssssssssssssssssssssssssss
-sss|...|ssssss|...|ss|...|ssssssssssssssPPssssssssssssssssssssssssssssssssss
-sss-----ssssss-----ss|...|sssssssssssssPPPPsssssssssssssssssssssssssssssssss
-sssssssssssssssssssss-----ssssssssssssPPssPPssssssssssssssssssssssssssssssss
-sssssssssssssssssssssssssssssssssssssPPsssPPssssssssssssssssssssssssssssssss
-ssssssssssssssssssssssssssssssssssssPPsssPPsssssssssssssssssssssssssssssssss
-ssssssssssssssssssssssssssssssssssssPPssssPPssssssssssssssssssssssssssssssss
+0ssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssssss
+1sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
+2sssssssssssssssssssssssssssssssssssPPsssssssssssssssssssssssssssssssssssssss
+3ssssssssssssssssssssssssssssssssssssPPssssssssssssssssssssssssssssssssssssss
+4ssssssss--------------ssssss-----ssssPPPssssssssssssssssssssssssssssssssssss
+5ssssssss|............|ssssss+...|sssPPPsssssssssssssssssssssssssssssssssssss
+6ssssssss|............|ssssss|...|ssssPPsssssssssssssssssssssssssssssssssssss
+7ssssssss|.\..........+ssssss-----sssssssssssssssssssssssssssssssssssssssssss
+8ssssssss|............|sssssssssssssssPPsssssssssssssssssssssssssssssssssssss
+9ssssssss|............|sss-----sssssssPPPssssssssssssssssssssssssssssssssssss
+0ssssssss--------------sss+...|ssssssPPPPPsssssssssssssssssssssssssssssssssss
+1sssssssssssssssssssssssss|...|sssssssPPPssssssssssssssssssssssssssssssssssss
+2sss-----ssssss-----ssssss-----ssssssssPPssssssssssssssssssssssssssssssssssss
+3sss|...+ssssss|...+ss--+--sssssssssssssPPsssssssssssssssssssssssssssssssssss
+4sss|...|ssssss|...|ss|...|ssssssssssssssPPssssssssssssssssssssssssssssssssss
+5sss-----ssssss-----ss|...|sssssssssssssPPPPsssssssssssssssssssssssssssssssss
+6sssssssssssssssssssss-----ssssssssssssPPssPPssssssssssssssssssssssssssssssss
+7sssssssssssssssssssssssssssssssssssssPPsssPPssssssssssssssssssssssssssssssss
+8ssssssssssssssssssssssssssssssssssssPPsssPPsssssssssssssssssssssssssssssssss
+9ssssssssssssssssssssssssssssssssssssPPssssPPssssssssssssssssssssssssssssssss
 ENDMAP
 # Dungeon Description
+RANDOM_PLACES:(04,13),(22,14),(26,10),(29,05)
 REGION:(00,00,75,19),lit,"ordinary"
 REGION:(09,05,11,05),unlit,"ordinary"
 REGION:(09,07,11,07),lit,"ordinary"
@@ -96,9 +99,7 @@ REGION:(04,13,06,14),lit,"ordinary"
 REGION:(15,13,17,14),lit,"ordinary"
 REGION:(22,14,24,15),lit,"ordinary"
 # Stairs
-STAIR:(09,09),down
-# Portal arrival point
-BRANCH:(62,02,62,02),(0,0,0,0)
+STAIR:(75,05),up
 # Doors
 DOOR:closed,(21,07)
 DOOR:open,(07,13)
@@ -113,5 +114,9 @@ MONSTER:'@',"Groo the Wanderer",(12,07)
 MONSTER:'@',"Thulsa Doom",(13,07)
 # Non diggable walls
 NON_DIGGABLE:(00,00,75,19)
+OBJECT:')',"spear",place[0],uncursed,1,"The Silver Spear of the Gladiator"
+OBJECT:')',"battle-axe",place[1],uncursed,0,"The Battle-Axe of the Ancients"
+OBJECT:')',"axe",place[2],uncursed,0
+OBJECT:'(',"torch",place[3],uncursed,0
 # One trap to keep the ogres at bay.
 TRAP:"spiked pit",(37,07)

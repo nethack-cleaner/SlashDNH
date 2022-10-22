@@ -125,7 +125,6 @@ load_qtlist()
 	    	qt_list.chrace = construct_qtlist(qt_offsets[i]);
 #endif
 	}
-
 	if (!qt_list.common || !qt_list.chrole)
 	    impossible("load_qtlist: cannot load quest text.");
 #ifdef DEBUG

@@ -923,6 +923,8 @@ struct u_achieve {
 		Bitfield(introquest,1);
 		Bitfield(talkedileader,1);
 		Bitfield(talkedtleader,1);
+		Bitfield(talkedgladiatorleader,1);
+		Bitfield(talkedfrenzyleader,1);
 		Bitfield(istraitor,1);
 		Bitfield(startedgame,1);
 		Bitfield(isgladiator,1);

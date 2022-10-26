@@ -1354,6 +1354,26 @@ A("The Wallet of Perseus",			BAG_OF_HOLDING,			(const char *)0,
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
 	),
+
+A("Simon the Caddy",			BOX,			(const char *)0,
+	10000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NONE, NON_PM, NON_PM, TIER_B, NOFLAG,
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+	),
+
+A("Girdle of Storm Giant Strength",			BELT_OF_ENHANCED_STRENGTH,			(const char *)0,
+	10000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NONE, NON_PM, NON_PM, TIER_B, NOFLAG,
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+	),
 /*
  *	The artifacts for the quest dungeon, all self-willed.
  */

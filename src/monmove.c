@@ -3313,7 +3313,7 @@ struct monst *mtmp;
 		    typ != ANDROID_VISOR && 
 			typ != TOWEL && typ != R_LYEHIAN_FACEPLATE &&
 		    typ != WHISTLE && typ != MAGIC_WHISTLE &&
-		    typ != MAGIC_MARKER && typ != TIN_OPENER &&
+		    typ != MAGIC_MARKER &&
 		    typ != SKELETON_KEY && typ != UNIVERSAL_KEY &&
 			typ != LOCK_PICK
 		) return FALSE;

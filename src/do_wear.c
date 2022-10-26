@@ -1228,6 +1228,40 @@ struct obj *obj;
 }
 
 void
+belt_on(otmp)
+register struct obj *otmp;
+{
+	setworn(otmp, W_BELTWORN);
+	on_msg(otmp);
+}
+
+void
+belt_off(otmp)
+register struct obj *otmp;
+{
+	takeoff_mask &= ~W_BELTWORN;
+	setworn((struct obj *)0, otmp->owornmask);
+	off_msg(otmp);
+}
+
+void
+bracer_on(otmp)
+register struct obj *otmp;
+{
+	setworn(otmp, W_BRACERWORN);
+	on_msg(otmp);
+}
+
+void
+bracer_off(otmp)
+register struct obj *otmp;
+{
+	takeoff_mask &= ~W_BRACERWORN;
+	setworn((struct obj *)0, otmp->owornmask);
+	off_msg(otmp);
+}
+
+void
 Blindf_on(otmp)
 register struct obj *otmp;
 {

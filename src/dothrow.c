@@ -8,11 +8,13 @@
 
 #include "xhity.h"
 
-extern void NDECL(autoquiver);
+extern void FDECL(autoquiver, (boolean));
 extern int FDECL(gem_accept, (struct monst *, struct obj *));
 extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
 extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
 STATIC_DCL boolean FDECL(mhurtle_step, (genericptr_t,int,int));
+STATIC_PTR int FDECL(hout_container,(struct obj *));
+static NEARDATA struct obj *hcurrent_container;
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
 
 
@@ -237,9 +239,10 @@ int shots, shotlimit;
 /* KMH -- Automatically fill quiver */
 /* Suggested by Jeffrey Bay <jbay@convex.hp.com> */
 void
-autoquiver()
+autoquiver(magicquiver)
+boolean magicquiver;
 {
-	struct obj *otmp, *oammo = 0, *omissile = 0, *omisc = 0, *altammo = 0;
+	struct obj *otmp, *oammo = 0, *omissile = 0, *omisc = 0, *altammo = 0, *mquiver = 0;
 
 	if (uquiver)
 	    return;
@@ -284,18 +287,34 @@ autoquiver()
 		    omissile = otmp;
 		else
 		    omisc = otmp;
+		} else if (otmp->otyp == MAGIC_QUIVER) {
+			mquiver = otmp;
 	    }
 	}
 
 	/* Pick the best choice */
-	if (oammo)
+	if (oammo) {
 	    setuqwep(oammo);
-	else if (omissile)
+	} else if (omissile) {
 	    setuqwep(omissile);
-	else if (altammo)
+	} else if (altammo) {
 	    setuqwep(altammo);
-	else if (omisc)
+	} else if (omisc) {
 	    setuqwep(omisc);
+	} else if (mquiver && !magicquiver) {
+		struct obj *contents;
+		for(contents=mquiver->cobj; contents; contents=contents->nobj) {
+			if (is_ammo(contents) && ammo_and_launcher(contents, uwep)) {
+				if (contents->quan >= 10) {
+					contents = splitobj(contents, 10);
+				}
+				hcurrent_container = mquiver;
+				hout_container(contents);
+				autoquiver(TRUE);
+				break;
+			}
+		}
+	}
 
 	return;
 }
@@ -988,6 +1007,98 @@ struct obj *obj;
 		default:
 			return 0;
 	}
+}
+
+/* Returns: -1 to stop, 1 item was removed, 0 item was not removed. */
+STATIC_PTR int
+hout_container(obj)
+register struct obj *obj;
+{
+	register struct obj *otmp;
+	boolean is_gold = (obj->oclass == COIN_CLASS);
+	int res, loadlev;
+	long count;
+
+	if (!hcurrent_container) {
+		impossible("<out> no current_container?");
+		return -1;
+	} else if (is_gold) {
+		obj->owt = weight(obj);
+	}
+
+	if(obj->oartifact && !touch_artifact(obj, &youmonst, FALSE)) return 0;
+	// if(obj->oartifact && obj->oartifact == ART_PEN_OF_THE_VOID && !Role_if(PM_EXILE)) u.sealsKnown |= obj->ovar1;
+	/*Handle the pen of the void here*/
+	if(obj && obj->oartifact == ART_PEN_OF_THE_VOID){
+		if(obj->ovar1 && !Role_if(PM_EXILE)){
+			long oldseals = u.sealsKnown;
+			u.sealsKnown |= obj->ovar1;
+			if(oldseals != u.sealsKnown) You("learned new seals.");
+		}
+		obj->ovar1 = u.spiritTineA|u.spiritTineB;
+		if(u.voidChime){
+			int i;
+			for(i=0; i<u.sealCounts; i++){
+				obj->ovar1 |= u.spirit[i];
+			}
+		}
+	}
+	
+	if (obj->otyp == CORPSE) {
+	    if ( (touch_petrifies(&mons[obj->corpsenm])) && !uarmg
+		 && !Stone_resistance) {
+		if (poly_when_stoned(youracedata) && polymon(PM_STONE_GOLEM))
+		    display_nhwindow(WIN_MESSAGE, FALSE);
+		else {
+		    char kbuf[BUFSZ];
+
+		    Strcpy(kbuf, an(corpse_xname(obj, TRUE)));
+		    pline("Touching %s is a fatal mistake.", kbuf);
+		    instapetrify(kbuf);
+		    return -1;
+		}
+	    }
+	}
+
+	count = obj->quan;
+
+	if (obj->quan != count && obj->otyp != LOADSTONE)
+	    obj = splitobj(obj, count);
+
+	/* Remove the object from the list. */
+	obj_extract_self(obj);
+	hcurrent_container->owt = weight(hcurrent_container);
+
+	if(!obj->unpaid && 
+		!carried(hcurrent_container) && 
+		costly_spot(hcurrent_container->ox, hcurrent_container->oy)
+	) {
+		obj->ox = hcurrent_container->ox;
+		obj->oy = hcurrent_container->oy;
+		addtobill(obj, FALSE, FALSE, FALSE);
+	}
+	if(obj->shopOwned && !(obj->unpaid)){ /* shop stock is outside shop */
+		if(obj->sknown && !(obj->ostolen) ) obj->sknown = FALSE; /*don't automatically know that you found a stolen item.*/
+		obj->ostolen = TRUE; /* object was apparently stolen by someone (not necessarily the player) */
+	}
+	if (is_pick(obj) && !obj->unpaid && *u.ushops && shop_keeper(*u.ushops))
+		verbalize("You sneaky cad! Get out of here with that pick!");
+
+	otmp = addinv(obj);
+	loadlev = near_capacity();
+	prinv(loadlev ?
+	      (loadlev < MOD_ENCUMBER ?
+	       "You have a little trouble removing" :
+	       "You have much trouble removing") : (char *)0,
+	      otmp, count);
+
+	if (is_gold) {
+#ifndef GOLDOBJ
+		dealloc_obj(obj);
+#endif
+		bot();	/* update character's gold piece count immediately */
+	}
+	return 1;
 }
 
 void

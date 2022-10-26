@@ -3611,8 +3611,7 @@ boolean new_game;	/* false => restoring an old game */
 		if (achieve.clockarc) {
 			qt_pager(QT_STARTCLOCKARC1);
 			for (int i = 0; i < 8; i++) {
-				boolean known = create_critters(rn2(23) ? 1 : rn1(7,2),
-                        (struct permonst *)0);
+				makemon((struct permonst *)0, u.ux, u.uy, MM_ANGRY);
 			}
 		} else {
 			qt_pager(QT_STARTQUEST1);

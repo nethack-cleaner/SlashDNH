@@ -84,6 +84,7 @@ E void FDECL(salve_effect, (struct obj *));
 
 E boolean FDECL(CountsAgainstGifts, (int));
 E boolean FDECL(offerable_artifact, (struct obj *));
+E boolean FDECL(belttype, (char *));
 E void NDECL(init_artifacts);
 E void NDECL(make_singing_sword_nameable);
 E void NDECL(hack_artifacts);
@@ -594,6 +595,10 @@ E void FDECL(Ring_off, (struct obj *));
 E void FDECL(Ring_gone, (struct obj *));
 E void FDECL(Blindf_on, (struct obj *));
 E void FDECL(Blindf_off, (struct obj *));
+E void FDECL(belt_on, (struct obj *));
+E void FDECL(belt_off, (struct obj *));
+E void FDECL(bracer_on, (struct obj *));
+E void FDECL(bracer_off, (struct obj *));
 E int NDECL(dotakeoff);
 E int NDECL(doremring);
 E int FDECL(cursed, (struct obj *));
@@ -922,6 +927,7 @@ E void FDECL(rloc_engr, (struct engr *));
 E void FDECL(make_grave, (int,int,const char *));
 E boolean FDECL(allied_faction, (int,int));
 E char * FDECL(sealName, (int));
+E char * FDECL(sealTitle, (int));
 
 /* ### enlighten.c ### */
 

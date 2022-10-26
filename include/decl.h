@@ -706,8 +706,8 @@ E NEARDATA struct obj *invent,
 #ifdef TOURIST
 	*uarmu,				/* under-wear, so to speak */
 #endif
-	*uskin, *uamul, *uleft, *uright, *ublindf,
-	*uwep, *uswapwep, *uquiver;
+	*uskin, *uamul, *uleft, *uright, *ubeltworn, *ublindf,
+	*uwep, *uswapwep, *uquiver, *ubracerworn;
 
 /* Needs to update, so it's redefined each time whenever it's used */
 #define ARMOR_SLOTS { uarm, uarmc, uarmf, uarmh, uarmg, uarms, uarmu }

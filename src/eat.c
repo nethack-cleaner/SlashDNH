@@ -1734,9 +1734,6 @@ start_tin(otmp)		/* called when starting to open a tin */
 		case GRAPPLING_HOOK:
 			if(uwep->oartifact != ART_HELPING_HAND) goto no_opener;
 			//else fall through
-		case TIN_OPENER:
-			tmp = 1;
-			break;
 		case DAGGER:
 		case ELVEN_DAGGER:
 		case ORCISH_DAGGER:

@@ -123,7 +123,6 @@ static struct trobj Chef[] = { /* 5lo: New role */
     { CAN_OF_GREASE, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
     { TOWEL, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
     { TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, 1 },
-    { TIN_OPENER, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
     { 0, 0, 0, 0, 0 }
 };
 
@@ -382,7 +381,6 @@ static struct trobj Anachrononaut_Elf[] = {
 	{ POWER_PACK, 0, TOOL_CLASS, 10, 0 },
 	{ LEMBAS_WAFER, 0, FOOD_CLASS, 3, 0 },
 	{ TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, 0 },
-	{ TIN_OPENER, UNDEF_SPE, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Anachrononaut_Fem_Clk[] = {
@@ -857,10 +855,6 @@ static struct trobj DrovenHelm[] = {
 };
 static struct trobj DrovenCloak[] = {
 	{ DROVEN_CLOAK, 0, ARMOR_CLASS, 1, 0 },
-	{ 0, 0, 0, 0, 0 }
-};
-static struct trobj Tinopener[] = {
-	{ TIN_OPENER, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Magicmarker[] = {
@@ -2031,7 +2025,9 @@ u_init()
 			}
 		}
 	}
-	achieve.altbind[0] = TRUE;
+	for (int i = 0; i < 31; i++) {
+		achieve.altbind[i] = TRUE;
+	}
 	if(Role_if(PM_EXILE)){
 		u.sealsKnown = sealKey[u.sealorder[0]] | sealKey[u.sealorder[1]] | sealKey[u.sealorder[2]];
 	}else if(Role_if(PM_ANACHRONOUNBINDER)){
@@ -2190,7 +2186,6 @@ u_init()
 			}
 		}
 		ini_inv(Archeologist);
-		ini_inv(Tinopener);
 		ini_inv(Lamp);
 		knows_object(SACK);
 		knows_object(TOUCHSTONE);
@@ -3689,7 +3684,7 @@ register struct trobj *trop;
 		}
 
 		if (obj->oclass == WEAPON_CLASS || is_weptool(obj) ||
-			otyp == TIN_OPENER || otyp == BELL || otyp == FLINT || otyp == ROCK) {
+			otyp == BELL || otyp == FLINT || otyp == ROCK) {
 		    if (is_ammo(obj) || is_missile(obj)) {
 				if (!uquiver) setuqwep(obj);
 		    } else if (!uwep) setuwep(obj);

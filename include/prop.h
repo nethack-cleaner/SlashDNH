@@ -171,6 +171,8 @@ struct prop {
 #	define W_CHAIN	    0x00400000L /* Punishment chain */
 #	define W_SPIRIT		0x00800000L	/* Bound spirit */
 #	define W_GLYPH		0x01000000L	/* Active thought-glyph */
+#	define W_BELTWORN	0x02000000L	/* Active thought-glyph */
+#	define W_BRACERWORN	0x04000000L	/* Active thought-glyph */
 #	define W_SKIN		I_SPECIAL	/* merged into skin */
 #	define W_WORN	     (W_ARMOR | W_AMUL | W_RING | W_TOOL)
 

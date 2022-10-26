@@ -2428,12 +2428,17 @@ donamelevel()
 
 	if (!(mptr = find_mapseen(&u.uz))) return MOVE_CANCELLED;
 
-	Sprintf(qbuf,"What do you want to call this dungeon level? ");
+	if (mptr->custom) {
+		Sprintf(qbuf, "Currently known as: '%s', Replace it with?", mptr->custom);
+	} else {
+		Sprintf(qbuf,"What do you want to call this dungeon level? ");
+	}
 	getlin(qbuf, nbuf);
 
 	if (index(nbuf, '\033')) return MOVE_CANCELLED;
 
 	len = strlen(nbuf) + 1;
+	if (len < 3) return MOVE_CANCELLED; //Minimum 2 character annotation
 	if (mptr->custom) {
 		free((genericptr_t)mptr->custom);
 		mptr->custom = (char *)0;
@@ -2651,8 +2656,16 @@ STATIC_OVL boolean
 interest_mapseen(mptr)
 mapseen *mptr;
 {
+	branch *br = dungeon_branch("The Quest");
+	d_level *curlevel = &mptr->lev;
+	d_level *qtlevel = &br->end1;
+    d_level *mylevel = &u.uz;
+
 	return ((on_level(&u.uz, &mptr->lev) || (!mptr->feat.forgot)) && (
 		INTEREST(mptr->feat) ||
+		curlevel->dlevel == mylevel->dlevel ||
+		Is_oracle_level(&mptr->lev) ||
+		curlevel->dlevel == qtlevel->dlevel ||
 		(Is_hell1(&mptr->lev)) || 
 		(Is_hell2(&mptr->lev)) || 
 		(Is_hell3(&mptr->lev)) || 
@@ -3056,10 +3069,26 @@ boolean printdun;
 
 	if (mptr->feat.forgot) return;
 
+	branch *br = dungeon_branch("The Quest");
+	d_level *curlevel = &mptr->lev;
+	d_level *qtlevel = &br->end1;
+
+	if (Is_oracle_level(&mptr->lev)) {
+		buf[0] = 0;
+		Sprintf(eos(buf), "      Oracle of Delphi");
+		putstr(win, 0, buf);
+	}
+	if (!mptr->br && curlevel->dlevel == qtlevel->dlevel) {
+		buf[0] = 0;
+		Sprintf(eos(buf), "      Portal to Quest");
+		putstr(win, 0, buf);
+	}
+
 	if (INTEREST(mptr->feat)) {
 		buf[0] = 0;
 		
 		i = 0; /* interest counter */
+
 
 		/* List interests in an order vaguely corresponding to
 		 * how important they are.

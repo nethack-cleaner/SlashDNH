@@ -2413,6 +2413,11 @@ register struct obj *obj;
 			}
 			makewish(0);	// does not allow artifact wishes
 		break;
+		case WAN_IDENTIFY:
+			known = TRUE;
+			pline("This is a wand of identify.");
+			identify_pack(1);
+		break;
 		case WAN_ENLIGHTENMENT:
 			known = TRUE;
 			You_feel("self-knowledgeable...");

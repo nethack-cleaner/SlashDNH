@@ -2766,6 +2766,10 @@ weight_cap()
 {
 	long carrcap = 0, maxcap = MAX_CARR_CAP;
 
+	if (belttype("enhanced strength")) {
+		maxcap += 100;
+	}
+
 	carrcap = 25*(ACURRSTR + ACURR(A_CON)) + 50;
 	
 	struct permonst *mdat = youracedata;
@@ -3016,6 +3020,16 @@ end_all_items()
 {
 	all_items(FALSE, NULL, TRUE);
 	return;
+}
+
+boolean
+belttype(typ)
+char *typ;
+{
+	if (!strcmp(typ, "enhanced strength") && ubeltworn && ubeltworn->otyp == BELT_OF_ENHANCED_STRENGTH) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /* finds all items, specify where you want them from */

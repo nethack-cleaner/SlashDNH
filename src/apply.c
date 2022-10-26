@@ -6,6 +6,7 @@
 #include "hack.h"
 #include "artifact.h"
 #include "xhity.h"
+#include "decl.h"
 #ifdef OVLB
 
 static const char tools[] = { COIN_CLASS, CHAIN_CLASS, SCOIN_CLASS, TOOL_CLASS, WEAPON_CLASS, WAND_CLASS, 0 };
@@ -6989,6 +6990,36 @@ doapply()
 	case CREAM_PIE:
 		res = use_cream_pie(obj);
 		break;
+	case BELT_OF_SWIFTNESS:
+	case BELT_OF_ENHANCED_STRENGTH:
+	case BELT_OF_DURABILITY:
+	case BELT_OF_SECURITY:
+	case BELT_OF_SHADOWS:
+	case MONKEY_STYLE_BELT:
+	case CRANE_STYLE_BELT:
+	case DRAGON_STYLE_BELT:
+	case CHEETAH_STYLE_BELT:
+	case KENSAI_STYLE_BELT:
+		if (obj == ubeltworn) {
+		    if (!cursed(obj)) belt_off(obj);
+		} else if (ubeltworn){
+			You("are already wearing a belt");
+		} else
+		    belt_on(obj);
+		break;
+	case ARMBANDS_OF_ARCHERY:
+	case ARMBANDS_OF_DEFENSE:
+	case ARMBANDS_OF_UNLIMITED_WISHES:
+	case GAUNTLETS_OF_SKILL_AT_ARMS:
+	case LONGARM_ARMBANDS:
+	case SPELLGUARD_ARMBANDS:
+		if (obj == ubracerworn) {
+		    if (!cursed(obj)) bracer_off(obj);
+		} else if (ubracerworn){
+			You("are already wearing a pair of bracers");
+		} else
+		    bracer_on(obj);
+		break;
 	case FORCE_SWORD:
 		res = use_force_sword(obj);
 		break;
@@ -7012,6 +7043,8 @@ doapply()
 	case SACK:
 	case SARCOPHAGUS:
 	case BAG_OF_HOLDING:
+	case MAGIC_QUIVER:
+	case PORTABLE_MAGIC_BOOKSHELF:
 	case OILSKIN_SACK:
 		res = use_container(obj, 1);
 		goto xit2; /* obj may have been destroyed */
@@ -7329,18 +7362,6 @@ doapply()
 	case MAGIC_MARKER:
 		res = dowrite(obj);
 	break;
-	case TIN_OPENER:
-		if(!carrying(TIN)) {
-			You("have no tin to open.");
-			goto xit;
-		}
-		You("cannot open a tin without eating or discarding its contents.");
-		if(flags.verbose)
-			pline("In order to eat, use the 'e' command.");
-		if(obj != uwep)
-    pline("Opening the tin will be much easier if you wield the tin opener.");
-		goto xit;
-
 	case FIGURINE:
 		res = use_figurine(&obj);
 	break;

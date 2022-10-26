@@ -2264,7 +2264,7 @@ weapon:
 				Sprintf(eos(buf), " (%s)", obj->corpsenm != NON_PM ? mons[obj->corpsenm].mname : "blank");
 			if (obj->owornmask & (W_TOOL /* blindfold */
 #ifdef STEED
-				| W_SADDLE
+				| W_SADDLE | W_BELTWORN | W_BRACERWORN
 #endif
 				)) {
 				Strcat(buf, (obj == uskin) ? " (embedded in your skin)" :
@@ -3665,7 +3665,6 @@ struct alt_spellings {
 #endif
 	{ "lembas", LEMBAS_WAFER },
 	{ "can", TIN },
-	{ "can opener", TIN_OPENER },
 	{ "kelp", KELP_FROND },
 	{ "eucalyptus", EUCALYPTUS_LEAF },
 	{ "grapple", GRAPPLING_HOOK },

@@ -14,6 +14,8 @@ STATIC_DCL int FDECL(calc_range, (struct monst *, struct obj *, struct obj *, in
 STATIC_DCL int FDECL(uthrow, (struct obj *, struct obj *, int, boolean));
 STATIC_DCL boolean FDECL(misthrow, (struct monst *, struct obj *, struct obj *, boolean, int *, int *, int *));
 STATIC_DCL struct obj * FDECL(blaster_ammo, (struct obj *));
+STATIC_PTR int FDECL(hout_container,(struct obj *));
+static NEARDATA struct obj *hcurrent_container;
 
 /* grab some functions from dothrow.c */
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
@@ -21,7 +23,7 @@ extern int FDECL(gem_accept, (struct monst *, struct obj *));
 extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
 extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
 extern void FDECL(breakobj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P, BOOLEAN_P));
-extern void NDECL(autoquiver);
+extern void FDECL(autoquiver, (boolean));
 
 /* some damn global variables because passing these as parameters would be a lot to add for something so rarely used.
  * The player threw an object, these save what the player's state was just prior to throwing so it can be restored */
@@ -1907,8 +1909,31 @@ int shotlimit;
 		check_oprop(ammo, OPROP_RETRW) ||
 		(arti_returning(ammo) && objects[ammo->otyp].oc_merge) ||
 		(launcher && is_blaster(launcher))
-		))
+		)) {
+		// Check for magic quiver
+		int remainder = multishot - ammo->quan;
 		multishot = (int)ammo->quan;
+		struct obj *otmp;
+
+		for (otmp = invent; otmp; otmp = otmp->nobj) {
+			if (otmp->otyp == MAGIC_QUIVER) {
+				struct obj *contents;
+				for(contents=otmp->cobj; contents; contents=contents->nobj) {
+					if (contents->invlet == ammo->invlet) {
+						if (contents->quan > remainder) {
+							contents = splitobj(contents, remainder);
+						} else if (contents->quan < remainder) {
+							break;
+						}
+						multishot += remainder;
+						hcurrent_container = otmp;
+					    hout_container(contents);
+						break;
+					}
+				}
+               }
+           }
+	}
 
 	/* Blasters limit multishot to charge */
 	if (launcher && is_blaster(launcher) &&
@@ -2356,7 +2381,7 @@ dofire()
 					return(dothrow());
 			}
 			else {
-				autoquiver();
+				autoquiver(FALSE);
 				if (!uquiver) {
 					You("have nothing appropriate for your quiver!");
 					return(dothrow());
@@ -2570,6 +2595,7 @@ boolean forcedestroy;
 	}
 	else if (multishot > 1 || shotlimit > 0) {
 		/* "You shoot N arrows." or "You throw N daggers." */
+
 		if (ammo->quan > 1) {
 			You("%s %d %s.",
 				m_shot.s ? "shoot" : "throw",
@@ -3551,6 +3577,98 @@ boolean forcedestroy;
 	m_shot.o = STRANGE_OBJECT;
 	m_shot.s = FALSE;
 	return result;
+}
+
+/* Returns: -1 to stop, 1 item was removed, 0 item was not removed. */
+STATIC_PTR int
+hout_container(obj)
+register struct obj *obj;
+{
+	register struct obj *otmp;
+	boolean is_gold = (obj->oclass == COIN_CLASS);
+	int res, loadlev;
+	long count;
+
+	if (!hcurrent_container) {
+		impossible("<out> no current_container?");
+		return -1;
+	} else if (is_gold) {
+		obj->owt = weight(obj);
+	}
+
+	if(obj->oartifact && !touch_artifact(obj, &youmonst, FALSE)) return 0;
+	// if(obj->oartifact && obj->oartifact == ART_PEN_OF_THE_VOID && !Role_if(PM_EXILE)) u.sealsKnown |= obj->ovar1;
+	/*Handle the pen of the void here*/
+	if(obj && obj->oartifact == ART_PEN_OF_THE_VOID){
+		if(obj->ovar1 && !Role_if(PM_EXILE)){
+			long oldseals = u.sealsKnown;
+			u.sealsKnown |= obj->ovar1;
+			if(oldseals != u.sealsKnown) You("learned new seals.");
+		}
+		obj->ovar1 = u.spiritTineA|u.spiritTineB;
+		if(u.voidChime){
+			int i;
+			for(i=0; i<u.sealCounts; i++){
+				obj->ovar1 |= u.spirit[i];
+			}
+		}
+	}
+	
+	if (obj->otyp == CORPSE) {
+	    if ( (touch_petrifies(&mons[obj->corpsenm])) && !uarmg
+		 && !Stone_resistance) {
+		if (poly_when_stoned(youracedata) && polymon(PM_STONE_GOLEM))
+		    display_nhwindow(WIN_MESSAGE, FALSE);
+		else {
+		    char kbuf[BUFSZ];
+
+		    Strcpy(kbuf, an(corpse_xname(obj, TRUE)));
+		    pline("Touching %s is a fatal mistake.", kbuf);
+		    instapetrify(kbuf);
+		    return -1;
+		}
+	    }
+	}
+
+	count = obj->quan;
+
+	if (obj->quan != count && obj->otyp != LOADSTONE)
+	    obj = splitobj(obj, count);
+
+	/* Remove the object from the list. */
+	obj_extract_self(obj);
+	hcurrent_container->owt = weight(hcurrent_container);
+
+	if(!obj->unpaid && 
+		!carried(hcurrent_container) && 
+		costly_spot(hcurrent_container->ox, hcurrent_container->oy)
+	) {
+		obj->ox = hcurrent_container->ox;
+		obj->oy = hcurrent_container->oy;
+		addtobill(obj, FALSE, FALSE, FALSE);
+	}
+	if(obj->shopOwned && !(obj->unpaid)){ /* shop stock is outside shop */
+		if(obj->sknown && !(obj->ostolen) ) obj->sknown = FALSE; /*don't automatically know that you found a stolen item.*/
+		obj->ostolen = TRUE; /* object was apparently stolen by someone (not necessarily the player) */
+	}
+	if (is_pick(obj) && !obj->unpaid && *u.ushops && shop_keeper(*u.ushops))
+		verbalize("You sneaky cad! Get out of here with that pick!");
+
+	otmp = addinv(obj);
+	loadlev = near_capacity();
+	prinv(loadlev ?
+	      (loadlev < MOD_ENCUMBER ?
+	       "You have a little trouble removing" :
+	       "You have much trouble removing") : (char *)0,
+	      otmp, count);
+
+	if (is_gold) {
+#ifndef GOLDOBJ
+		dealloc_obj(obj);
+#endif
+		bot();	/* update character's gold piece count immediately */
+	}
+	return 1;
 }
 
 /* return_ammo()

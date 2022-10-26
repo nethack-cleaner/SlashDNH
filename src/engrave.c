@@ -952,36 +952,36 @@ char * sealNames[] =  {
 
 char * altsealNames[] =  {
 	"Aym", /* 0 */
-	"Amon", /* 1 */
-	"Andrealphus", /* 2 */
-	"Andromalius", /* 3 */
-	"Astaroth", /* 4 */
-	"Balam", /* 5 */
-	"Berith", /* 6 */
-	"Buer", /* 7 */
-	"Chupoclops", /* 8 */
-	"Dantalion", /* 9 */
-	"Echidna", /* 10 */
-	"Eden", /* 11 */
-	"Enki", /* 12 */
-	"Eurynome", /* 13 */
-	"Eve", /* 14 */
-	"Fafnir", /* 15 */
-	"Huginn and Muninn", /* 16 */
-	"Iris", /* 17 */
-	"Jack", /* 18 */
-	"Malphas", /* 19 */
-	"Marionette", /* 20 */
-	"Mother", /* 21 */
-	"Naberius", /* 22 */
-	"Orthos", /* 23 */
-	"Ose", /* 24 */
-	"Otiax", /* 25 */
-	"Paimon", /* 26 */
-	"Shiro", /* 27 */
-	"Simurgh", /* 28 */
-	"Tenebrous", /* 29 */
-	"Ymir", /* 30 */
+	"Leraje", /* 1 */
+	"Ronove", /* 2 */
+	"Forge", /* 3 */
+	"Gwyneth", /* 4 */
+	"Haagenti", /* 5 */
+	"Savnok", /* 6 */
+	"Focalor", /* 7 */
+	"Karsus", /* 8 */
+	"Primus", /* 9 */
+	"Agares", /* 10 */
+	"Andras", /* 11 */
+	"Arete", /* 12 */
+	"Belashyrra", /* 13 */
+	"Diabolus", /* 14 */
+	"Dyrrn", /* 15 */
+	"Kas", /* 16 */
+	"Geryon", /* 17 */
+	"Desharis", /* 18 */
+	"Gestalt", /* 19 */
+	"Haures", /* 20 */
+	"Ipos", /* 21 */
+	"Shax", /* 22 */
+	"Vanus", /* 23 */
+	"Zagan", /* 24 */
+	"Zceryll", /* 25 */
+	"Ansitif", /* 26 */
+	"Eligor", /* 27 */
+	"Marchosias", /* 28 */
+	"Abysm", /* 29 */
+	"Ashardalon", /* 30 */
 	"Dahlver-Nar", /* 31 */
 	"Acererak", /* 32 */
 	"the Council of Elements", /* 33 */
@@ -995,6 +995,53 @@ char * altsealNames[] =  {
 	"the Eddergud", /* 40 */
 	"Yog-Sothoth", /* 41 */
 	"Numina" /* 42 */
+};
+
+char * altsealTitles[] =  {
+	", Queen Avarice", /* 0 */
+	", the Green Betrayer", /* 1 */
+	", the Iron Maiden", /* 2 */
+	", the Becoming God", /* 3 */
+	", the Black Lady", /* 4 */
+	", the Horned Bride", /* 5 */
+	", the Twice Forsaken", /* 6 */
+	", Prince of Tears", /* 7 */
+	", Hubris in the Blood", /* 8 */
+	", the One and the Prime", /* 9 */
+	", Truth Betrayed", /* 10 */
+	", the Gray Knight", /* 11 */
+	", the Dream Made Flesh", /* 12 */
+	", the Lord of Eyes", /* 13 */
+	", the Infiltraitor", /* 14 */
+	", The Corrupter and Corrupted", /* 15 */
+	", the Bloody Handed", /* 16 */
+	", the Deposed Lord", /* 17 */
+	" the Sprawling Soul", /* 18 */
+	", the Triad", /* 19 */
+	", the Mad Duke", /* 20 */
+	", Prince of Fools", /* 21 */
+	", the Devoured Maelstrom", /* 22 */
+	", the Reviled One", /* 23 */
+	", Duke of Disappointment", /* 24 */
+	", the Star Spawn", /* 25 */
+	", the Befouler", /* 26 */
+	", Dragon's Slayer", /* 27 */
+	", King of Killers", /* 28 */
+	", the Schismed", /* 29 */
+	", Pyre of the Three", /* 30 */
+	", the first Binder", /* 31 */
+	", the Demi-Lich", /* 32 */
+	"", /* 33 */
+	", goddess of crystal", /* 34 */
+	", shard of the Living Gate", /* 35 */
+	", the Two Trees", /* 36 */
+	" the wolf-spider", /* 36 */
+	", the mirrored destroyer", /* 37 */
+	"", /* 38 */
+	"", /* 39 */
+	", The Black Web Entity", /* 40 */
+	", the Key and the Gate", /* 41 Also see yog yogTitles */
+	", The Whispering Multitude" /* 42 */
 };
 
 char * sealTitles[] =  {
@@ -3812,7 +3859,7 @@ const char * prompt;
 				else {
 					Sprintf(buf, "%s%s",
 						sealName(i),
-						sealTitles[i]
+						sealTitle(i)
 						);
 				}
 				any.a_int = (i + FIRST_SEAL);	/* must be non-zero */
@@ -3846,7 +3893,7 @@ const char * prompt;
 				else {
 					Sprintf(buf, "%s%s",
 						sealName(i),
-						i == YOG_SOTHOTH ? ROLL_FROM(yogTitles) : sealTitles[i]
+						i == YOG_SOTHOTH ? ROLL_FROM(yogTitles) : sealTitle(i)
 						);
 				}
 				any.a_int = (i + FIRST_SEAL);	/* must be non-zero */
@@ -3866,7 +3913,7 @@ const char * prompt;
 			else {
 				Sprintf(buf, "%s%s",
 					sealName(NUMINA - FIRST_SEAL),
-					sealTitles[NUMINA - FIRST_SEAL]
+					sealTitle(NUMINA - FIRST_SEAL)
 					);
 			}
 			any.a_int = NUMINA;	/* must be non-zero */
@@ -4590,6 +4637,16 @@ int sealNum;
 		return altsealNames[sealNum];
 	}
 	return sealNames[sealNum];
+}
+
+char *
+sealTitle(sealNum)
+int sealNum;
+{
+	if (achieve.altbind[sealNum]) {
+		return altsealTitles[sealNum];
+	}
+	return sealTitles[sealNum];
 }
 
 #endif /* OVLB */

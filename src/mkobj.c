@@ -1976,8 +1976,6 @@ struct obj* obj;
 		return wood_materials;
 	case SKELETON_KEY:
 	case LOCK_PICK:
-	case TIN_OPENER:
-		return metal_materials;
 	case BELL:
 	case BUGLE:
 	case LANTERN:
@@ -2529,6 +2527,8 @@ register struct obj *obj;
 	if ((Is_container(obj) && obj->otyp != MAGIC_CHEST) || obj->otyp == STATUE) {
 		struct obj *contents;
 		register int cwt = 0;
+		register int cwtreduce = 0;
+		register int cwtbig = 0;
 
 		if (obj->otyp == STATUE && obj->corpsenm >= LOW_PM)
 		    wt = (int)obj->quan *
@@ -2538,8 +2538,21 @@ register struct obj *obj;
 		    wt = (int)obj->quan *
 			 ((int)mons[obj->corpsenm].cwt * 1 / 2);
 
-		for(contents=obj->cobj; contents; contents=contents->nobj)
-			cwt += weight(contents);
+		for(contents=obj->cobj; contents; contents=contents->nobj) {
+			if (obj->otyp == BAG_OF_HOLDING) {
+				cwtreduce += weight(contents);
+			} else if (obj->otyp == PORTABLE_MAGIC_BOOKSHELF && contents->oclass == SPBOOK_CLASS) {
+				cwtreduce += weight(contents);
+			} else if (obj->oartifact == ART_SIMON_THE_CADDY && (contents->oclass == SCROLL_CLASS || contents->oclass == POTION_CLASS)) {
+				cwtreduce += weight(contents);
+			} else if (obj->otyp == MAGIC_QUIVER && is_ammo(contents)) {
+				cwtreduce += weight(contents);
+			} else if (obj->otyp == MAGIC_QUIVER || obj->otyp == PORTABLE_MAGIC_BOOKSHELF || obj->oartifact == ART_SIMON_THE_CADDY) {
+				cwtbig += weight(contents);
+			} else {
+				cwt += weight(contents);
+			}
+		}
 		/*
 		 *  The weight of bags of holding is calculated as the weight
 		 *  of the bag plus the weight of the bag's contents modified
@@ -2559,12 +2572,12 @@ register struct obj *obj;
 		 *	   cursed (not supposed to happen), it will be treated
 		 *	   as cursed.
 		 */
-		if (obj->oartifact == ART_WALLET_OF_PERSEUS)
-			cwt = obj->cursed ? (cwt * 4) : (1 + (cwt / (obj->blessed ? 6 : 3)));
+		if (obj->oartifact == ART_WALLET_OF_PERSEUS || obj->oartifact == ART_SIMON_THE_CADDY || obj->otyp == PORTABLE_MAGIC_BOOKSHELF || obj->otyp == MAGIC_QUIVER)
+			cwtreduce = obj->cursed ? (cwtreduce * 4) : (1 + (cwtreduce / (obj->blessed ? 6 : 3)));
 		else if (obj->otyp == BAG_OF_HOLDING)
-		    cwt = obj->cursed ? (cwt * 2) : (1 + (cwt / (obj->blessed ? 4 : 2)));
+		    cwtreduce = obj->cursed ? (cwtreduce * 2) : (1 + (cwtreduce / (obj->blessed ? 4 : 2)));
 
-		return wt + cwt;
+		return wt + cwt + cwtreduce + (cwtbig * 10);
 	}
 	if (obj->otyp == CORPSE && obj->corpsenm >= LOW_PM) {
 		long long_wt = obj->quan * (long) mons[obj->corpsenm].cwt;

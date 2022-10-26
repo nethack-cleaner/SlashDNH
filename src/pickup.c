@@ -3432,6 +3432,9 @@ ask_again2:
 	} else {
 	    pline("%s", emptymsg);		/* <whatever> is empty. */
 	}
+	if (current_container->oartifact == ART_SIMON_THE_CADDY) {
+		used = FALSE;
+	}
 
 #ifndef GOLDOBJ
 	if (!invent && u.ugold == 0) {

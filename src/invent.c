@@ -2366,10 +2366,7 @@ struct obj *obj;
 			"Drop this item", MENU_UNSELECTED);
 	/* e: eat item; eat.c provides is_edible to check */
 	any.a_void = (genericptr_t)doeat;
-	if (obj->otyp == TIN && uwep && uwep->otyp == TIN_OPENER)
-		add_menu(win, NO_GLYPH, &any, 'e', 0, ATR_NONE,
-				"Open and eat this tin with your tin opener", MENU_UNSELECTED);
-	else if (obj->otyp == TIN)
+	if (obj->otyp == TIN)
 		add_menu(win, NO_GLYPH, &any, 'e', 0, ATR_NONE,
 				"Open and eat this tin", MENU_UNSELECTED);
 	else if (is_edible(obj))
@@ -2504,9 +2501,6 @@ struct obj *obj;
 	else if (obj->oclass == WEAPON_CLASS || is_weptool(obj))
 		add_menu(win, NO_GLYPH, &any, 'w', 0, ATR_NONE,
 				"Wield this as your weapon", MENU_UNSELECTED);
-	else if (obj->otyp == TIN_OPENER)
-		add_menu(win, NO_GLYPH, &any, 'w', 0, ATR_NONE,
-				"Hold the tin opener to open tins", MENU_UNSELECTED);
 	else
 		add_menu(win, NO_GLYPH, &any, 'w', 0, ATR_NONE,
 				"Hold this item in your hands", MENU_UNSELECTED);

@@ -59,6 +59,11 @@ struct u_event {
 	Bitfield(ukilled_illurien,1);	/*23 Harassment */
 	Bitfield(ukilled_dagon,1);		/*24 Returns */
 	Bitfield(ukilled_hydra,1);		/*25 Returns */
+	Bitfield(passed_hell1_level,1);
+	Bitfield(passed_hell2_level,1);
+	Bitfield(passed_abyss1_level,1);
+	Bitfield(passed_abyss2_level,1);
+	Bitfield(passed_abyss3_level,1);
 	Bitfield(sum_entered,1);		/*26 entered Sum-of-All */
 	Bitfield(uaxus_foe,1);			/*27 enemy of the modrons */
 	Bitfield(utook_castle, 2);		/*29 sat on the castle throne, used artifact wish */

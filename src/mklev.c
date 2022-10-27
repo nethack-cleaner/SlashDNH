@@ -1185,7 +1185,6 @@ makelevel()
 				rooms[nroom].hx = -1;
 		}
 	}
-
     {
 	register int u_depth = depth(&u.uz);
 

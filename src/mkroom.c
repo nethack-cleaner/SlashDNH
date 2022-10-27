@@ -476,8 +476,6 @@ mklolthvaultitem()
 		type = lolth_weapons[rn2(SIZE(lolth_weapons))];
 		sobj = TRUE;
 	}
-	else if(rn2(2))
-		type = SCOIN_CLASS;
 	else if(rn2(2)){
 		type = misc_hell_vault[rn2(SIZE(misc_hell_vault))];
 		otmp = mksobj(type, NO_MKOBJ_FLAGS);
@@ -574,8 +572,6 @@ int vn;
 		type = ARMOR_CLASS;
 	else if(rn2(2))
 		type = WEAPON_CLASS;
-	else if(!rn2(3))
-		type = SCOIN_CLASS;
 	else if(rn2(2)){
 		type = get_vault_misc(vn);
 		otmp = mksobj(type, NO_MKOBJ_FLAGS);

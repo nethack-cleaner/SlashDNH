@@ -2691,8 +2691,6 @@ struct obj *obj;
 			return likes_magic(ptr);
 		case BED_CLASS:
 			return is_mercenary(ptr) && obj->otyp == BEDROLL;
-		case SCOIN_CLASS:
-			return likes_gold(ptr) || likes_magic(ptr);
 	}
 	return FALSE;
 }

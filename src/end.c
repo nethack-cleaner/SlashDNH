@@ -1285,6 +1285,40 @@ die:
 
 	if (strcmp(flags.end_disclose, "none") && how != PANICKED) {
 		disclose(how, taken);
+		if (achieve.wishmade[0] > 0) {
+			dump ("", "");
+			dump ("", "WISHES MADE");
+			for (int i = 0; i < 100; i++) {
+				if (achieve.wishmade[i] > 0) {
+					char wmade[BUFSZ];
+					if (i == 0) {
+						Sprintf(wmade, "First wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes1);
+					} else if (i == 1) {
+						Sprintf(wmade, "Second wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes2);
+					} else if (i == 2) {
+						Sprintf(wmade, "Third wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes3);
+					} else if (i == 3) {
+						Sprintf(wmade, "Forth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes4);
+					} else if (i == 4) {
+						Sprintf(wmade, "Fifth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes5);
+					} else if (i == 5) {
+						Sprintf(wmade, "Sixth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes6);
+					} else if (i == 5) {
+						Sprintf(wmade, "Seventh wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes7);
+					} else if (i == 5) {
+						Sprintf(wmade, "Eigth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes8);
+					} else if (i == 5) {
+						Sprintf(wmade, "Ninth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes9);
+					} else if (i == 5) {
+						Sprintf(wmade, "Tenth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes10);
+					} else {
+						Sprintf(wmade, "Wish made on turn %d", achieve.wishmade[i]);
+					}
+					dump ("", wmade);
+				}
+			}
+			dump ("", "");
+		}
 #if defined(DUMP_LOG) && defined(DUMPMSGS)
 		if (lastmsg >= 0) {
 		  dump ("", "Latest messages");

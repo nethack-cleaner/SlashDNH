@@ -2345,9 +2345,6 @@ struct obj *obj;
 	else if (is_lightsaber(obj) && obj->oartifact != ART_INFINITY_S_MIRRORED_ARC && obj->otyp != KAMEREL_VAJRA)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Ignite or deactivate this lightsaber", MENU_UNSELECTED);
-	else if (obj->oclass == SCOIN_CLASS)
-		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
-				"Crush this soul coin", MENU_UNSELECTED);
 	else if ((obj->otyp == VITAL_SOULSTONE || obj->otyp == SPIRITUAL_SOULSTONE) && objects[obj->otyp].oc_name_known)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Crush this soulstone", MENU_UNSELECTED);

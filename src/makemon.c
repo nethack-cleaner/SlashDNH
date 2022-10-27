@@ -13253,6 +13253,10 @@ int faction;
 //			pline("%d\n",mtmp->mhpmax);
 		break;
 	}
+	//Apply Level Wide Templates
+	//if (on_level(&u.uz, &abyss3_level)) { //demogorgon/lamastu/dagon
+	//}
+	//end: Apply Level Wide Templates
 	if (mtmp->mtemplate == ZOMBIFIED && (mmflags & MM_BIGGROUP)) {
 		/* zombies get a group, with size dependent on how nasty the monster is for the current floor */
 		int groupsz = max(2, min(12, 3*level_difficulty()/(monstr[ptr->mtyp]+2)));
@@ -13882,7 +13886,13 @@ rndmonst()
 	    minmlev = zlevel / 6;
 	    /* determine the level of the strongest monster to make. */
 	    maxmlev = (zlevel + u.ulevel) / 2;
-		maxmlev += 3;
+		if (achieve.introquest) {
+			maxmlev += 3; /* max monster level is increased by 3 */
+		}
+		if (achieve.clockarc) {
+			minmlev += 1;
+			maxmlev += 3;
+		}
 	    elemlevel = In_endgame(&u.uz) && !Is_astralevel(&u.uz);
 
 /*

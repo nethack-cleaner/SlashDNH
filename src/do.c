@@ -1932,6 +1932,7 @@ deferred_goto()
 		    deltrap(t);
 		    newsym(u.ux, u.uy);
 		}
+		livelog_write_string("Solved the starter quest");
 	}
 	u.utotype = 0;		/* our caller keys off of this */
 	if (dfr_pre_msg)

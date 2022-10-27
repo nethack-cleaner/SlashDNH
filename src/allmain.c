@@ -805,6 +805,8 @@ you_calc_movement()
 		moveamt += 3;
 	if(u.uuur_duration || achieve.clockarc)
 		moveamt += 6;
+	//Apply level wide templates
+	//end: Apply level wide templates
 	if(uwep && is_lightsaber(uwep) && litsaber(uwep) && activeFightingForm(FFORM_SORESU)){
 		// switch(min(P_SKILL(P_SORESU), P_SKILL(weapon_type(uwep)))){
 			// case P_BASIC:       moveamt = max(moveamt-6,1); break;
@@ -1074,6 +1076,14 @@ you_regen_hp()
 		}
 		else {
 			perX += vmod;
+		}
+	}
+	if (on_level(&u.uz, &abyss3_level)) {
+		if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
+		} else {
+			if (*hp > 4) {
+				*hp -= 4;
+			}
 		}
 	}
 

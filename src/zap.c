@@ -2418,6 +2418,17 @@ register struct obj *obj;
 			pline("This is a wand of identify.");
 			identify_pack(1);
 		break;
+		case WAN_MAGIC_MAPPING:
+			known = TRUE;
+			pline("This is a wand of magic mapping.");
+			if (level.flags.nommap) {
+            Your("%s spins as %s blocks the spell!", body_part(HEAD), something);
+            make_confused(HConfusion + rnd(30), FALSE);
+            break;
+        }
+        pline("A map coalesces in your mind!");
+        do_mapping();
+		break;
 		case WAN_ENLIGHTENMENT:
 			known = TRUE;
 			You_feel("self-knowledgeable...");
@@ -5600,11 +5611,31 @@ retry:
 		if (!otmp) return TRUE;	/* for safety; should never happen */
 	}
 
-	/* KMH, conduct */
-	u.uconduct.wishes++;
-
 	if (otmp != &zeroobj) {
-
+		if (u.uconduct.wishes == 0)
+			Sprintf(achieve.wishes1, buf);
+		else if (u.uconduct.wishes == 1)
+			Sprintf(achieve.wishes2, buf);
+		else if (u.uconduct.wishes == 2)
+			Sprintf(achieve.wishes3, buf);
+		else if (u.uconduct.wishes == 3)
+			Sprintf(achieve.wishes4, buf);
+		else if (u.uconduct.wishes == 3)
+			Sprintf(achieve.wishes4, buf);
+		else if (u.uconduct.wishes == 4)
+			Sprintf(achieve.wishes5, buf);
+		else if (u.uconduct.wishes == 5)
+			Sprintf(achieve.wishes6, buf);
+		else if (u.uconduct.wishes == 6)
+			Sprintf(achieve.wishes7, buf);
+		else if (u.uconduct.wishes == 7)
+			Sprintf(achieve.wishes8, buf);
+		else if (u.uconduct.wishes == 8)
+			Sprintf(achieve.wishes9, buf);
+		else if (u.uconduct.wishes == 9)
+			Sprintf(achieve.wishes10, buf);
+		achieve.wishmade[u.uconduct.wishes] = moves;
+		
 	    if (!flags.debug) {
 			char llog[BUFSZ+20];
 			Sprintf(llog, "wished for \"%s\"", mungspaces(bufcpy));
@@ -5626,6 +5657,9 @@ retry:
 				       (const char *)0);
 	    u.ublesscnt += rn1(100,50);  /* the gods take notice */
 	}
+
+	/* KMH, conduct */
+	u.uconduct.wishes++;
 	return TRUE;
 }
 

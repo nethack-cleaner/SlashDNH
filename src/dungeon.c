@@ -1574,6 +1574,13 @@ d_level *lev;
     if (In_endgame(lev) || In_sokoban(lev) || In_void(lev) ||
 			(Is_wiz1_level(lev) && In_W_tower(x, y, lev)))
 	return FALSE;
+	d_level *aby = &abyss3_level;
+	d_level *mby = &u.uz;
+	if (mby->dnum == aby->dnum) {
+		if (!u.uevent.passed_hell1_level || !u.uevent.passed_hell2_level || !u.uevent.passed_abyss1_level || !u.uevent.passed_abyss2_level || !u.uevent.passed_abyss3_level) {
+			return FALSE;
+		}
+	}
     return (boolean)(lev->dlevel > 1 ||
 		(dungeons[lev->dnum].entry_lev == 1 && ledger_no(lev) != 1 &&
 		 sstairs.sx && sstairs.up));

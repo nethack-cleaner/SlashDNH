@@ -9,8 +9,8 @@
 #include "decl.h"
 #ifdef OVLB
 
-static const char tools[] = { COIN_CLASS, CHAIN_CLASS, SCOIN_CLASS, TOOL_CLASS, WEAPON_CLASS, WAND_CLASS, 0 };
-static const char tools_too[] = { COIN_CLASS, ALL_CLASSES, SCOIN_CLASS, TOOL_CLASS, POTION_CLASS,
+static const char tools[] = { COIN_CLASS, CHAIN_CLASS, TOOL_CLASS, WEAPON_CLASS, WAND_CLASS, 0 };
+static const char tools_too[] = { COIN_CLASS, ALL_CLASSES, TOOL_CLASS, POTION_CLASS,
 				  WEAPON_CLASS, WAND_CLASS, GEM_CLASS, CHAIN_CLASS, 0 };
 static const char apply_armor[] = { ARMOR_CLASS, 0 };
 static const char apply_corpse[] = { FOOD_CLASS, 0 };
@@ -7010,7 +7010,8 @@ doapply()
 	case ARMBANDS_OF_ARCHERY:
 	case ARMBANDS_OF_DEFENSE:
 	case ARMBANDS_OF_UNLIMITED_WISHES:
-	case GAUNTLETS_OF_SKILL_AT_ARMS:
+	case ARMBANDS_OF_SKILL_AT_ARMS:
+	case REFLECTIVE_ARMBANDS:
 	case LONGARM_ARMBANDS:
 	case SPELLGUARD_ARMBANDS:
 		if (obj == ubracerworn) {
@@ -7141,7 +7142,8 @@ doapply()
 	case MAGIC_CANDLE:
 	case TALLOW_CANDLE:
 	case CANDLE_OF_INVOCATION:
-	break;
+		use_candle(&obj);
+		break;
 	case BULLET_FABBER:
 	if(!(Role_if(PM_ANACHRONONAUT) || Role_if(PM_TOURIST))) pline("It seems inert.");
 	else {

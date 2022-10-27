@@ -546,6 +546,7 @@ struct levelflags {
 	int		goldkamcount_peace;	/* number of peaceful gold kamerel 'above' level */
 	int		sp_lev_nroom;	/* number of rooms on the level as defined by the special level generator */
 	/* Several flags that give hints about what's on the level */
+	int leveltemplate;
 	Bitfield(has_shop, 1);
 	Bitfield(has_vault, 1);
 	Bitfield(has_zoo, 1);

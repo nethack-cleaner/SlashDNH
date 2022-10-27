@@ -932,6 +932,17 @@ struct u_achieve {
 		Bitfield(isyeoman,1);
 		Bitfield(clockarc,1);
 		int techs[100];
+		char wishes1[BUFSZ];
+		char wishes2[BUFSZ];
+		char wishes3[BUFSZ];
+		char wishes4[BUFSZ];
+		char wishes5[BUFSZ];
+		char wishes6[BUFSZ];
+		char wishes7[BUFSZ];
+		char wishes8[BUFSZ];
+		char wishes9[BUFSZ];
+		char wishes10[BUFSZ];
+		int wishmade[100];
 		boolean altbind[31];
 #define	ARC_QUEST		0x1L << 0
 #define	CAV_QUEST		0x1L << 1

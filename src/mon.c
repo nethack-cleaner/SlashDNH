@@ -4515,6 +4515,22 @@ register struct monst *mtmp;
 	if(tmp == PM_FATHER_DAGON){
 		u.uevent.ukilled_dagon = 1;
 	}
+	if (tmp == PM_JUIBLEX || tmp == PM_ZUGGTMOY || tmp == PM_BAPHOMET || tmp == PM_PALE_NIGHT || tmp == PM_KOSTCHTCHIE) {
+        u.uevent.passed_abyss1_level = TRUE;
+	}
+	if (tmp == PM_MALCANTHET || tmp == PM_GRAZ_ZT || tmp == PM_ORCUS || tmp == PM_AVATAR_OF_LOLTH) {
+        u.uevent.passed_abyss2_level = TRUE;
+	}
+	if (tmp == PM_DEMOGORGON || tmp == PM_DAGON || tmp == PM_LAMASHTU) {
+        u.uevent.passed_abyss3_level = TRUE;
+    }
+	if (tmp == PM_BAEL || tmp == PM_DISPATER || tmp == PM_MAMMON || tmp == PM_BELIAL) {
+        u.uevent.passed_hell1_level = TRUE;
+	}
+	if (tmp == PM_LEVIATHAN || tmp == PM_MOTHER_LILITH || tmp == PM_BAALZEBUB || tmp == PM_MEPHISTOPHELES) {
+		u.uevent.passed_hell2_level = TRUE;
+	}
+
 	if(tmp == PM_MOTHER_HYDRA){
 		u.uevent.ukilled_hydra = 1;
 	}
@@ -5349,6 +5365,22 @@ register struct monst *mdef;
 #ifndef GOLDOBJ
 	mdef->mgold = 0L;
 #endif
+	int tmp = monsndx(mdef->data);
+	if (tmp == PM_JUIBLEX || tmp == PM_ZUGGTMOY || tmp == PM_BAPHOMET || tmp == PM_PALE_NIGHT || tmp == PM_KOSTCHTCHIE) {
+        u.uevent.passed_abyss1_level = TRUE;
+	}
+	if (tmp == PM_MALCANTHET || tmp == PM_GRAZ_ZT || tmp == PM_ORCUS || tmp == PM_AVATAR_OF_LOLTH) {
+        u.uevent.passed_abyss2_level = TRUE;
+	}
+	if (tmp == PM_DEMOGORGON || tmp == PM_DAGON || tmp == PM_LAMASHTU) {
+        u.uevent.passed_abyss3_level = TRUE;
+    }
+	if (tmp == PM_BAEL || tmp == PM_DISPATER || tmp == PM_MAMMON || tmp == PM_BELIAL) {
+        u.uevent.passed_hell1_level = TRUE;
+	}
+	if (tmp == PM_LEVIATHAN || tmp == PM_MOTHER_LILITH || tmp == PM_BAALZEBUB || tmp == PM_MEPHISTOPHELES) {
+		u.uevent.passed_hell2_level = TRUE;
+	}
 	m_detach(mdef, mdef->data);
 }
 

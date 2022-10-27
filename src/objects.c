@@ -1195,7 +1195,7 @@ TOOL(("magic lamp", "lamp"),               0,  MZ_SMALL, 0, 1, 0,  13, 20,  50, 
 /* other tools */
 #ifdef TOURIST
 TOOL(("expensive camera"),
-				                1,  MZ_SMALL, 0, 0, 1,  13, 12, 200, PLASTIC, CLR_BLACK),
+				                1,  MZ_SMALL, 0, 0, 1,  5, 12, 200, PLASTIC, CLR_BLACK),
 TOOL(("mirror", "looking glass"), 0,   MZ_TINY, 0, 0, 0,  45, 13,  10, GLASS, HI_SILVER),
 #else
 TOOL(("mirror", "looking glass"), 0,   MZ_TINY, 0, 0, 0,  60, 13,  10, GLASS, HI_SILVER),
@@ -1228,24 +1228,20 @@ TOOL(("the beginning"),    1,   MZ_TINY, 0, 0, 0,  0,  2,  20, CLOTH, CLR_GRAY),
 TOOL(("android visor", "black blindfold", "blindfold"), /*Needs encyc entry*/
 								0,   MZ_TINY, 0, 0, 0,   0,  2,  40, CLOTH, CLR_BLACK),
 TOOL(("towel"),        1,   MZ_TINY, 0, 0, 0,  45,  2,  50, CLOTH, CLR_MAGENTA),
-#ifdef STEED
-TOOL(("saddle"),       1,  MZ_LARGE, 0, 0, 0,   5,200, 150, LEATHER, HI_LEATHER),
-TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  30, 12,  20, LEATHER, HI_LEATHER),
-#else
-TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  35, 12,  20, LEATHER, HI_LEATHER),
-#endif
+TOOL(("saddle"),       1,  MZ_LARGE, 0, 0, 0,   10,200, 150, LEATHER, HI_LEATHER),
+TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  5, 12,  20, LEATHER, HI_LEATHER),
 /*Needs encyc entry*/
-TOOL(("stethoscope"),  1,  MZ_SMALL, 0, 0, 0,  25,  4,  75, IRON, HI_METAL),
+TOOL(("stethoscope"),  1,  MZ_SMALL, 0, 0, 0,  27,  4,  75, IRON, HI_METAL),
 TOOL(("tinning kit"),  1, MZ_MEDIUM, 0, 0, 1,  15,100,  30, IRON, HI_METAL),
 TOOL(("bullet fabber", "white box with a yellow fiddly bit", "fiddly box"),/*Needs tile*/ /*Needs encyc entry*/
 								0, MZ_MEDIUM, 0, 1, 0,   0, 20,  30, PLASTIC, CLR_WHITE),
-TOOL(("upgrade kit"),  1, MZ_MEDIUM, 0, 0, 0,  40,100,  30, COPPER, HI_COPPER),/*Needs encyc entry*//*Needs tile*/
+TOOL(("upgrade kit"),  1, MZ_MEDIUM, 0, 0, 0,  45,100,  30, COPPER, HI_COPPER),/*Needs encyc entry*//*Needs tile*/
 TOOL(("power pack", "little white cube", "little cube"), /*Needs encyc entry*//*Needs tile*/
 								0,   MZ_TINY, 1, 1, 0,   0,  1,  300, PLASTIC, CLR_WHITE),
 TOOL(("trephination kit"),  /*Needs encyc entry*/
 								1, MZ_MEDIUM, 0, 0, 1,   4, 10,  30, METAL, HI_METAL),/*Needs encyc entry*//*Needs tile*/
 TOOL(("can of grease"),1,  MZ_SMALL, 0, 0, 1,  15, 15,  20, IRON, HI_METAL),
-TOOL(("figurine"),     1,  MZ_SMALL, 0, 1, 0,  20, 50,  80, MINERAL, HI_MINERAL),
+TOOL(("figurine"),     1,  MZ_SMALL, 0, 1, 0,  18, 50,  80, MINERAL, HI_MINERAL),
 TOOL(("crystal skull"),1,  MZ_SMALL, 0, 1, 0,   0, 118, 800, GLASS, HI_GLASS),
 /*Keep in sync with doll mvar flags*/
 TOOL(("effigy",   (char *)0),     1,   MZ_TINY, 1, 1, 0,  20,  5,  80, LEATHER, HI_LEATHER),
@@ -1277,22 +1273,23 @@ TOOL(("holy symbol of the black mother", "tarnished triple goat-head"), /*Needs 
 TOOL(("magic marker"), 1,   MZ_TINY, 0, 1, 1,  15,  2,  50, PLASTIC, CLR_RED),
 TOOL(("pack of floppies",    "box containing little plastic cards"),
 0,   MZ_SMALL, 0, 1, 0,   0, 50,8000, SILVER, CLR_RED),
-TOOL(("belt of swiftness", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  10,  20,  50, LEATHER, CLR_BROWN),
+TOOL(("belt of swiftness", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  12,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("belt of enhanced strength", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  12,  20,  50, LEATHER, CLR_BROWN),
-TOOL(("belt of durability", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  11,  20,  50, LEATHER, CLR_BROWN),
-TOOL(("belt of security", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  6,  20,  50, LEATHER, CLR_BROWN),
+TOOL(("belt of durability", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  12,  20,  50, LEATHER, CLR_BROWN),
+TOOL(("belt of security", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("belt of shadows", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  6,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("monkey style belt", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("crane style belt", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("dragon style belt", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("cheetah style belt", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
 TOOL(("kensai style belt", "belt"), 0,   MZ_MEDIUM, 0, 1, 0,  1,  20,  50, LEATHER, CLR_BROWN),
-TOOL(("armbands of archery", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  8,  20,  50, SILVER, HI_SILVER),
-TOOL(("armbands of defense", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  4,  20,  50, SILVER, HI_SILVER),
-TOOL(("armbands of unlimited wishes", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  2,  20,  50, SILVER, HI_SILVER),
-TOOL(("gauntlets of skill at arms", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  2,  20,  50, SILVER, HI_SILVER),
+TOOL(("armbands of archery", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  20,  20,  50, SILVER, HI_SILVER),
+TOOL(("armbands of defense", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  10,  20,  50, SILVER, HI_SILVER),
+TOOL(("armbands of unlimited wishes", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  5,  20,  50, SILVER, HI_SILVER),
+TOOL(("armbands of skill at arms", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  2,  20,  50, SILVER, HI_SILVER),
 TOOL(("longarm armbands", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  2,  20,  50, SILVER, HI_SILVER),
 TOOL(("spellguard armbands", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  2,  20,  50, LEATHER, CLR_RED),
+TOOL(("reflective armbands", "armbands"), 0,   MZ_SMALL, 0, 1, 0,  4,  20,  50, SILVER, HI_SILVER, O_POWER(REFLECTING)),
 /* traps */
 TOOL(("land mine",(char *)0),     1,  MZ_LARGE, 0, 0, 0,   0,300, 180, IRON, CLR_RED),
 TOOL(("beartrap"),     1,  MZ_LARGE, 0, 0, 0,   0,100,  60, IRON, HI_METAL),/*Needs encyc entry*/
@@ -1668,7 +1665,7 @@ SPELL(("secrets", "ragged leather"),      P_NONE,                  0, 7, 1, 0,  
 #define WAND(names,prob,cost,mgc,dir,metal,color,...) OBJECT( \
 		DEF_BLINDNAME(names, "wand"), BITS(0,0,1,0,mgc,1,0,0,MZ_TINY,0,0,dir,0,P_NONE,metal,0), {0}, \
 		WAND_CLASS, prob, 0, 7, cost, {0}, {0}, 0, 0, 0, 30, color, __VA_ARGS__)
-WAND(("light",          "glass"),         90, 100, 1, NODIR,     GLASS,       CLR_WHITE),/*Needs tile?*/
+WAND(("light",          "glass"),         88, 100, 1, NODIR,     GLASS,       CLR_WHITE),/*Needs tile?*/
 WAND(("darkness",       "obsidian"),      10, 100, 1, NODIR,     OBSIDIAN_MT, CLR_BLACK),/*Needs tile*/
 WAND(("wishing",        "dragon-bone"),    0, 500, 1, NODIR,     DRAGON_HIDE, CLR_WHITE, O_NOWISH(1)),	/* wizmode only */
 WAND(("secret door detection", "balsa"),  50, 150, 1, NODIR,	   WOOD,        HI_WOOD),
@@ -1694,8 +1691,8 @@ WAND(("cold",           "short"),         40, 175, 1, RAY,       IRON,        HI
 WAND(("sleep",          "runed"),         50, 175, 1, RAY,       IRON,        HI_METAL),
 WAND(("death",          "long"),           5, 500, 1, RAY,       IRON,        HI_METAL),
 WAND(("lightning",      "curved"),        40, 175, 1, RAY,       IRON,        HI_METAL),
-WAND(("identify",        "pine"),         10, 150, 1, NODIR,     WOOD,        HI_WOOD),
-WAND(((char *)0,        "forked"),         0, 150, 1, 0,         WOOD,        HI_WOOD),
+WAND(("identify",       "pine"),         10, 150, 1, NODIR,     WOOD,        HI_WOOD),
+WAND(("magic mapping",  "forked"),         2, 150, 1, NODIR,         WOOD,        HI_WOOD),
 WAND(((char *)0,        "spiked"),         0, 150, 1, 0,         IRON,        HI_METAL),
 WAND(((char *)0,        "jeweled"),        0, 150, 1, 0,         IRON,        HI_MINERAL),
 #undef WAND

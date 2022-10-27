@@ -1118,6 +1118,7 @@ level_tele()
 	}
 
 	/* calls done(ESCAPED) if newlevel==0 */
+	//pline("depth %d how deep %d", challenge_level.dnum, dungeons[u.uz.dnum].depth_start + dunlevs_in_dungeon(&u.uz));
 	if (escape_by_flying) {
 	    You("%s.", escape_by_flying);
 	    newlevel.dnum = 0;		/* specify main dungeon */
@@ -1136,6 +1137,23 @@ level_tele()
 	    /* if invocation did not yet occur, teleporting into
 	     * the last level of Gehennom is forbidden.
 	     */
+		d_level *aby3 = &abyss3_level;
+		d_level *aby2 = &abyss2_level;
+		d_level *aby1 = &abyss1_level;
+		d_level *hell2 = &hell2_level;
+		d_level *hell1 = &hell1_level;
+
+		if (!u.uevent.passed_abyss3_level && newlev >= (dungeons[u.uz.dnum].depth_start + aby3->dlevel)) {
+			find_hell(&newlevel);
+		} else if (!u.uevent.passed_abyss2_level && newlev >= (dungeons[u.uz.dnum].depth_start + aby2->dlevel)) {
+			find_hell(&newlevel);
+		} else if (!u.uevent.passed_abyss1_level && newlev >= (dungeons[u.uz.dnum].depth_start + aby1->dlevel)) {
+			find_hell(&newlevel);
+		} else if (!u.uevent.passed_hell2_level && newlev >= (dungeons[u.uz.dnum].depth_start + hell2->dlevel)) {
+			find_hell(&newlevel);
+		} else if (!u.uevent.passed_hell1_level && newlev >= (dungeons[u.uz.dnum].depth_start + hell1->dlevel)) {
+			find_hell(&newlevel);
+		} else {
 #ifdef WIZARD
 	    if (!(wizard)) {
 #endif
@@ -1165,6 +1183,7 @@ level_tele()
 	    if (!(wizard && force_dest))
 #endif
 	    get_level(&newlevel, newlev);
+		}
 	}
 	schedule_goto(&newlevel, FALSE, FALSE, 0, (char *)0, (char *)0);
 	/* in case player just read a scroll and is about to be asked to

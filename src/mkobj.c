@@ -264,8 +264,11 @@ char oclass;
 int mkflags;
 {
 	int tprob, i, prob = rnd(1000);
+	boolean wasrandom = FALSE;
+	int wasprob = prob;
 
 	if(oclass == RANDOM_CLASS) {
+		wasrandom = TRUE;
 		const struct icp *iprobs =
 #ifdef REINCARNATION
 				    (Is_rogue_level(&u.uz)) ?
@@ -283,8 +286,13 @@ int mkflags;
 	i = bases[(int)oclass];
 	while((prob -= objects[i].oc_prob) > 0) i++;
 
-	if(objects[i].oc_class != oclass || !OBJ_NAME(objects[i]))
-		panic("probtype error, oclass=%d i=%d", (int) oclass, i);
+	if(objects[i].oc_class != oclass || !OBJ_NAME(objects[i])) {
+		if (wasrandom) {
+			panic("random probtype error, oclass=%d i=%d", (int) oclass, i);
+		} else {
+			panic("fixed probtype error, oclass=%d i=%d wasprob %d isprob %d", (int) oclass, i, wasprob, prob);
+		}
+	}
 
 	return(mksobj(i, mkflags));
 }
@@ -1345,9 +1353,13 @@ int mkflags;
 
 			break;
 		case WAND_CLASS:
-			if (otmp->otyp == WAN_WISHING) otmp->spe = rnd(3); else
-				otmp->spe = rn1(5,
-				(objects[otmp->otyp].oc_dir == NODIR) ? 11 : 4);
+			if (otmp->otyp == WAN_WISHING) {
+				otmp->spe = rnd(3);
+			} else if (otmp->otyp == WAN_MAGIC_MAPPING) {
+				otmp->spe = rnd(2);
+			} else {
+				otmp->spe = rn1(5, (objects[otmp->otyp].oc_dir == NODIR) ? 11 : 4);
+			}
 			blessorcurse(otmp, 17);
 			if (otmp->otyp == WAN_WISHING)
 				otmp->recharged = 1;
@@ -1457,7 +1469,6 @@ int mkflags;
 		case COIN_CLASS:
 		case BED_CLASS:
 		case TILE_CLASS:
-		case SCOIN_CLASS:
 			break;	/* do nothing */
 		default:
 			impossible("impossible mkobj %d, sym '%c'.", otmp->otyp,

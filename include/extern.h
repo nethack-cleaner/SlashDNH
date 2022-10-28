@@ -84,7 +84,6 @@ E void FDECL(salve_effect, (struct obj *));
 
 E boolean FDECL(CountsAgainstGifts, (int));
 E boolean FDECL(offerable_artifact, (struct obj *));
-E boolean FDECL(belttype, (char *));
 E void NDECL(init_artifacts);
 E void NDECL(make_singing_sword_nameable);
 E void NDECL(hack_artifacts);

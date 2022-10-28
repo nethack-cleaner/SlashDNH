@@ -5730,7 +5730,18 @@ typfnd:
 		else {
 			/* they get the artifact */
 			if(!wizwish){
-				u.uconduct.wisharti++;	/* KMH, conduct */
+				boolean paidforwish = FALSE;
+				if (ubracerworn) {
+					struct obj *otmp = ubracerworn;
+					if (otmp->otyp == ARMBANDS_OF_UNLIMITED_WISHES) {
+						paidforwish = TRUE;
+						pline("Your bracers turn to mist paying the cost for your wish");
+						useup(ubracerworn);
+					}
+				}
+				if (!paidforwish) {
+					u.uconduct.wisharti++;	/* KMH, conduct */
+				}
 
 				/* characters other than priests also have their god's likelyhood to grant artifacts decreased */
 				if(!Role_if(PM_PRIEST))

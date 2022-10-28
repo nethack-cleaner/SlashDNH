@@ -2016,7 +2016,7 @@ u_init()
 	/*Randomize spirit order*/{
 		int i,j,tmp;
 		for(i=0;i<31;i++) u.sealorder[i]=i;
-		if(!Role_if(PM_ANACHRONOUNBINDER) && FALSE){
+		if(!Role_if(PM_ANACHRONOUNBINDER)){
 			for(i=0;i<31;i++){
 				j=rn2(31);
 				tmp = u.sealorder[i];
@@ -2025,8 +2025,12 @@ u_init()
 			}
 		}
 	}
-	for (int i = 0; i < 31; i++) {
-		achieve.altbind[i] = TRUE;
+	if(!Role_if(PM_ANACHRONOUNBINDER)){
+		for (int i = 0; i < 1; i++) {
+			if (rn2(3) == 2) { //33% of alternate binding
+				achieve.altbind[i] = TRUE;
+			}
+		}
 	}
 	if(Role_if(PM_EXILE)){
 		u.sealsKnown = sealKey[u.sealorder[0]] | sealKey[u.sealorder[1]] | sealKey[u.sealorder[2]];

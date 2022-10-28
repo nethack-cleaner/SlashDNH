@@ -239,7 +239,7 @@ struct monst * mdef;
 			}
 		}
 
-		if (!DEADMONSTER(mdef) && u.sealsActive&SEAL_AHAZU){
+		if (!DEADMONSTER(mdef) && u.sealsActive&SEAL_AHAZU && !achieve.altbind[AHAZU - FIRST_SEAL]){
 			if ((*hp(mdef) < .1*(*hpmax(mdef))) && !(is_rider(pd) || pd->msound == MS_NEMESIS)){
 #define MAXVALUE 24
 				int value = min(monstr[monsndx(pd)] + 1, MAXVALUE);
@@ -1497,6 +1497,10 @@ boolean fresh;
 #define PASV_ECHIDNA	9
 #define PASV_FAFNIR		10
 #define PASV_EDEN		11
+#define PASV_AYM		12
+#define PASV_AYM_HALO	13
+#define ATTK_AYM_HALO	14
+
 	static struct attack spiritattack[] =
 	{
 		{ AT_BUTT, AD_PHYS, 1, 9 },
@@ -1510,7 +1514,10 @@ boolean fresh;
 		{ AT_NONE, AD_SHDW, 4, 8 },
 		{ AT_NONE, AD_ACID, 1, 1 },	/* actually 1d(spiritDsize) */
 		{ AT_NONE, AD_FIRE, 1, 1 }, /* actually 1d(spiritDsize) */
-		{ AT_NONE, AD_SLVR, 1, 20 }
+		{ AT_NONE, AD_SLVR, 1, 20 },
+		{ AT_NONE, AD_FIRE, 1, 3 },
+		{ AT_NONE, AD_FIRE, 2, 6 },
+		{ AT_CLAW, AD_FIRE, 1, 6 }
 	};
 	int i;					/* loop counter */
 	static int indexnum;	/* which attack index to return -- kept between calls of this function */
@@ -1597,6 +1604,14 @@ boolean fresh;
 			return &spiritattack[ATTK_OTIAX];
 		}
 	}
+	if (u.sealsActive&SEAL_AHAZU && achieve.altbind[AHAZU - FIRST_SEAL])
+	{
+		if (++curindex == indexnum) {
+			if (achieve.halooffire > moves) {
+				return &spiritattack[ATTK_AYM_HALO];
+			}
+		}
+	}
 	/* Passives! */
 	if (u.specialSealsActive&SEAL_BLACK_WEB && u.spiritPColdowns[PWR_WEAVE_BLACK_WEB] > moves + 20)
 	{
@@ -1608,6 +1623,16 @@ boolean fresh;
 		spiritattack[PASV_ECHIDNA].damd = spiritDsize();
 		if (++curindex == indexnum)
 			return &spiritattack[PASV_ECHIDNA];
+	}
+	if (u.sealsActive&SEAL_AHAZU && achieve.altbind[AHAZU - FIRST_SEAL])
+	{
+		if (++curindex == indexnum) {
+			if (achieve.halooffire > moves) {
+				return &spiritattack[PASV_AYM];
+			} else {
+				return &spiritattack[PASV_AYM_HALO];
+			}
+		}
 	}
 	if (u.sealsActive&SEAL_FAFNIR)
 	{
@@ -3651,7 +3676,7 @@ int *shield_margin;
 				wepn_acc += weapon_hit_bonus(weapon, wtype);
 		}
 		/* monk accuracy bonus/penalty (player-only) (melee) */
-		if (youagr && melee && Role_if(PM_MONK) && !Upolyd) {
+		if (youagr && melee && (Role_if(PM_MONK) || Role_if(PM_JEDI)) && !Upolyd) {
 			static boolean armmessage = TRUE;
 			static boolean urmmessage = TRUE;
 			boolean resunderwear = uarmu && uarmu->otyp == VICTORIAN_UNDERWEAR;
@@ -3670,7 +3695,7 @@ int *shield_margin;
 					Your("underwear is rather restrictive...");
 					urmmessage = FALSE;
 				}
-				wepn_acc -= 20; /*flat -20 for monks in armor*/
+				wepn_acc -= 20; /*flat -20 for monks and jedi in armor*/
 			}
 			else {
 				if (!armmessage) armmessage = TRUE;
@@ -11270,7 +11295,7 @@ int vis;
 	case AD_DRLI:
 		/* Demogorgon's gaze is special, of course*/
 		if (youdef && pa->mtyp == PM_DEMOGORGON){
-			if (!Drain_resistance || !rn2(3)){
+			if (!Drain_resistance) { //Drain resistance now works
 				You("meet the gaze of Hethradiah, right head of Demogorgon!");
 				You("feel a primal darkness fall upon your soul!");
 				losexp("primal darkness", FALSE, !rn2(3), FALSE);
@@ -15129,11 +15154,14 @@ int vis;						/* True if action is at all visible to the player */
 		}
 		if ((attackmask & ~(resistmask)) == 0L && !(otmp && spec_applies(otmp, mdef, TRUE)) && (subtotl > 0)) {
 			/* damage reduced by 75% */
-			subtotl /= 4;
-			resisted_attack_type = TRUE;
-			/* can only reduce damage to 1 */
-			if (subtotl < 1)
-				subtotl = 1;
+			if (achieve.trueshotaura > moves) { //Ignore resistances
+			} else {
+				subtotl /= 4;
+				resisted_attack_type = TRUE;
+				/* can only reduce damage to 1 */
+				if (subtotl < 1)
+					subtotl = 1;
+			}
 		}
 		else if (subtotl > 0 && vulnerable_mask(resistmask) && !(attackmask & EXPLOSION) && (attackmask & ~(resistmask)) != 0L) {
 			/* 2x damage for attacking a vulnerability */
@@ -15155,6 +15183,9 @@ int vis;						/* True if action is at all visible to the player */
 	/* thalassophobic players can deal greatly reduced damage to sea creatures */
 	if (youagr && is_aquatic(pd) && roll_madness(MAD_THALASSOPHOBIA)){
 		subtotl = (subtotl + 9)/10;
+	}
+	if (achieve.agressivestrike && !youdef) {
+		subtotl += 1 + rn2(20);
 	}
 
 	/* deep dwellers resist attacks, but have a 1/10 chance of being slain outright */

@@ -5901,6 +5901,11 @@ xkilled(mtmp, dest)
 	/* KMH, conduct */
 	u.uconduct.killer++;
 	if(mtmp->mtyp == PM_CROW && u.sealsActive&SEAL_MALPHAS) unbind(SEAL_MALPHAS,TRUE);
+	if (mtmp->mtyp == PM_DWARF || mtmp->mtyp == PM_DWARF_LORD || mtmp->mtyp == PM_DWARF_CLERIC || mtmp->mtyp == PM_DWARF_QUEEN || mtmp->mtyp == PM_DWARF_KING || mtmp->mtyp == PM_CLOCKWORK_DWARF || mtmp->mtyp == PM_DWARF_WARRIOR) {
+		if (achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU) {
+			unbind(sealKey[AHAZU - FIRST_SEAL],TRUE);
+		}
+	}
 
 	if(uwep && check_oprop(uwep, OPROP_WRTHW)){
 		struct obj *otmp = uwep;

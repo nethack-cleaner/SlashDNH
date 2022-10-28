@@ -3919,40 +3919,70 @@ int tx,ty;
 		if(u.sealTimeout[AHAZU-FIRST_SEAL] < moves){
 			struct trap *t=t_at(tx,ty);
 			//Ahazu requires that his seal be drawn in a pit.
-			if(t && t->ttyp == PIT){
-				pline("The walls of the pit are lifted swiftly away, revealing a vast starry expanse beneath the world.");
-				if(Role_if(PM_ANACHRONOUNBINDER)){
-					pline("Ahazu, the seizer, greets you with open mouth.");			
-					summon_spirit(SEAL_AHAZU,AHAZU,PM_AHAZU,tx,ty);
-					return MOVE_INSTANT;
-				}
-				if(u.sealCounts < numSlots){
-					pline("A voice whispers from below:");
-					pline("\"All shall feed the shattered night.\"");
-					bindspirit(ep->ward_id);
-					u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
-				}
-				else if(uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && (!u.spiritTineA || (!u.spiritTineB && quest_status.killed_nemesis && Role_if(PM_EXILE)))){
-					pline("A voice whispers from below:");
-					pline("\"All shall feed the shattered night.\"");
-					uwep->ovar1 |= SEAL_AHAZU;
-					if(!u.spiritTineA){ 
-						u.spiritTineA = SEAL_AHAZU;
-						u.spiritTineTA= moves + bindingPeriod;
+			if (achieve.altbind[AHAZU-FIRST_SEAL]) { //Aym
+				if (uwep && uwep->otyp == PICK_AXE) {
+					pline("You dig through the binding as your dwarven ancestors once did.");
+					if(u.sealCounts < numSlots){
+						pline("A voice whispers from below:");
+						pline("Your body heats up with a firey aura.");
+						pline("\"All hail the Queen of Avarice.\"");
+						bindspirit(ep->ward_id);
+						u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
+					}
+					else if(uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && (!u.spiritTineA || (!u.spiritTineB && quest_status.killed_nemesis && Role_if(PM_EXILE)))){
+						pline("A voice whispers from below:");
+						pline("\"All hail the Queen of Avarice.\"");
+						uwep->ovar1 |= SEAL_AHAZU;
+						if(!u.spiritTineA){
+							u.spiritTineA = SEAL_AHAZU;
+							u.spiritTineTA= moves + bindingPeriod;
+						}
+						else{
+							u.spiritTineB = SEAL_AHAZU;
+							u.spiritTineTB= moves + bindingPeriod;
+						}
+						u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
 					}
 					else{
-						u.spiritTineB = SEAL_AHAZU;
-						u.spiritTineTB= moves + bindingPeriod;
+						pline("A voice whispers from below, but you don't catch what it says.");
 					}
-					u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
+				} else{
+					pline("Thoughts of your dwarven ancestors whisper through your mind.");
 				}
-				else{
-					pline("A voice whispers from below, but you don't catch what it says.");
-					// u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod/10;
+			} else {
+				if(t && t->ttyp == PIT) {
+					pline("The walls of the pit are lifted swiftly away, revealing a vast starry expanse beneath the world.");
+					if(Role_if(PM_ANACHRONOUNBINDER)){
+						pline("Ahazu, the seizer, greets you with open mouth.");			
+						summon_spirit(SEAL_AHAZU,AHAZU,PM_AHAZU,tx,ty);
+						return MOVE_INSTANT;
+					}
+					if(u.sealCounts < numSlots){
+						pline("A voice whispers from below:");
+						pline("\"All shall feed the shattered night.\"");
+						bindspirit(ep->ward_id);
+						u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
+					}
+					else if(uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && (!u.spiritTineA || (!u.spiritTineB && quest_status.killed_nemesis && Role_if(PM_EXILE)))){
+						pline("A voice whispers from below:");
+						pline("\"All shall feed the shattered night.\"");
+						uwep->ovar1 |= SEAL_AHAZU;
+						if(!u.spiritTineA){ 
+							u.spiritTineA = SEAL_AHAZU;
+							u.spiritTineTA= moves + bindingPeriod;
+						}
+						else{
+							u.spiritTineB = SEAL_AHAZU;
+							u.spiritTineTB= moves + bindingPeriod;
+						}
+						u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod;
+					}
+					else{
+						pline("A voice whispers from below, but you don't catch what it says.");
+					}
+				} else{
+					pline("Thoughts of falling and of narrow skies come unbidden into your mind.");
 				}
-			} else{
-				pline("Thoughts of falling and of narrow skies come unbidden into your mind.");
-				// u.sealTimeout[AHAZU-FIRST_SEAL] = moves + bindingPeriod/10;
 			}
 		} else pline("You can't feel the spirit.");
 	}break;
@@ -6086,6 +6116,9 @@ int floorID;
 	switch (floorID)
 	{
 	case AHAZU:
+		if (achieve.altbind[AHAZU-FIRST_SEAL]) { //Aym
+			propchain[i++] = FIRE_RES;
+		}
 		break;
 	case AMON:
 		propchain[i++] = EXTRAMISSION;
@@ -6234,7 +6267,11 @@ int floorID;
 	switch (floorID)
 	{
 	case AHAZU:
-		skillchain[i++] = P_FLAIL;
+		if (achieve.altbind[AHAZU-FIRST_SEAL]) { //Aym
+			skillchain[i++] = P_PICK_AXE;
+		} else {
+			skillchain[i++] = P_FLAIL;
+		}
 		break;
 	case AMON:
 		skillchain[i++] = P_CLERIC_SPELL;
@@ -6689,6 +6726,20 @@ boolean inc_penalties;
 		else if(uswapwep && uswapwep->oartifact == ART_INFINITY_S_MIRRORED_ARC)
 			maxskill = min(P_EXPERT, P_SKILL(weapon_type(uswapwep)));
 	}
+	if (ubracerworn) {
+		if (p_skill == P_CROSSBOW || p_skill == P_BOW) {
+			struct obj *otmp = ubracerworn;
+			if (otmp->otyp == ARMBANDS_OF_ARCHERY) {
+				maxskill = max(P_EXPERT, maxskill); 
+			}
+		}
+		if (p_skill == P_LONG_SWORD || p_skill == P_BOW || p_skill == P_SABER) {
+			struct obj *otmp = ubracerworn;
+			if (otmp->otyp == ARMBANDS_OF_SKILL_AT_ARMS) {
+				maxskill = max(P_EXPERT, maxskill); 
+			}
+		}
+	}
 	
 	if(inc_penalties && u.umadness&MAD_FORMICATION && !BlockableClearThoughts && maxskill > P_UNSKILLED){
 		int delta = (Insanity)/20;
@@ -6728,6 +6779,14 @@ boolean inc_penalties;
 		}
 	} else if(spiritSkill(p_skill)){
 		curskill += 1;
+	}
+	if (ubracerworn) {
+		if (p_skill == P_CROSSBOW || p_skill == P_BOW) {
+			struct obj *otmp = ubracerworn;
+			if (otmp->otyp == ARMBANDS_OF_ARCHERY) {
+				curskill += 1;
+			}
+		}
 	}
 	
 	// if(roleSkill(p_skill)){

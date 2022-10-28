@@ -931,7 +931,17 @@ struct u_achieve {
 		Bitfield(isfrenzy,1);
 		Bitfield(isyeoman,1);
 		Bitfield(clockarc,1);
-		int techs[100];
+		Bitfield(lightsaberpro,1);
+		Bitfield(demogorgonmet,1);
+		Bitfield(lamashtumet,1);
+		int demonproperty1h;
+		int demonproperty2h;
+		int demonproperty3h;
+		int demonproperty1e;
+		int demonproperty2e;
+		int demonproperty3e;
+		int halooffire;
+		int techs[1000];
 		char wishes1[BUFSZ];
 		char wishes2[BUFSZ];
 		char wishes3[BUFSZ];
@@ -942,8 +952,23 @@ struct u_achieve {
 		char wishes8[BUFSZ];
 		char wishes9[BUFSZ];
 		char wishes10[BUFSZ];
-		int wishmade[100];
+		int wishmade[10];
 		boolean altbind[31];
+		int swiftness;
+		int dodge;
+		int swiftdefense;
+		int anthaul;
+		int unstoppable;
+		int shrugoff;
+		int beltontime;
+		int bracerontime;
+		int shadowwalk;
+		int shadowstep;
+		int trueshotaura;
+		int arrowbarrage;
+		int rescuemission;
+		int patientdefense;
+		int agressivestrike;
 #define	ARC_QUEST		0x1L << 0
 #define	CAV_QUEST		0x1L << 1
 #define	CON_QUEST		0x1L << 2

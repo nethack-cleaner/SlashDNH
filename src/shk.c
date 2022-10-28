@@ -5924,7 +5924,8 @@ struct monst *mon;
 {
 	int count=countFarSigns(mon);
 	if(couldsee(mon->mx, mon->my) && !is_blind(mon)){
-		if(u.sealsActive&SEAL_AHAZU && !(ublindf && (ublindf->otyp==MASK || ublindf->otyp==R_LYEHIAN_FACEPLATE))) count++;
+		if(!achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU && !(ublindf && (ublindf->otyp==MASK || ublindf->otyp==R_LYEHIAN_FACEPLATE))) count++;
+		if(achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU && !Invis && !uarmg) count++;
 		// if(u.sealsActive&SEAL_AMON && !Invis && !(uarmh && is_metallic(uarmh))) count ++;
 		if(u.sealsActive&SEAL_ANDREALPHUS && !Invis && (dimness(u.ux, u.uy) <= 0)) count++;
 		if(u.sealsActive&SEAL_ANDROMALIUS && !NoBInvis 

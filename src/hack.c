@@ -2766,7 +2766,7 @@ weight_cap()
 {
 	long carrcap = 0, maxcap = MAX_CARR_CAP;
 
-	if (belttype("enhanced strength")) {
+	if (ubeltworn && ubeltworn->otyp == BELT_OF_ENHANCED_STRENGTH) {
 		maxcap += 100;
 	}
 
@@ -2830,6 +2830,9 @@ weight_cap()
 	}
 	if(u.usteed && P_SKILL(P_RIDING) > P_UNSKILLED){
 		carrcap += 100 * (P_SKILL(P_RIDING) - P_UNSKILLED);
+	}
+	if (ubeltworn && ubeltworn->oartifact == ART_GIRDLE_OF_GIANT_STRENGTH) {
+		carrcap += 100;
 	}
 	
 	carrcap += u.ucarinc;
@@ -2897,6 +2900,10 @@ inv_weight()
 			wt -= 2*otmp->owt;
 		if(uarm && uarm == otmp && otmp->otyp == POWER_ARMOR && otmp->lamplit)
 			wt -= otmp->owt + 100;
+		if(achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU && uarm && uarm == otmp && (otmp->otyp == PLATE_MAIL || otmp->otyp == HIGH_ELVEN_PLATE || otmp->otyp == DROVEN_PLATE_MAIL || otmp->otyp == NOBLE_S_DRESS || otmp->otyp == CONSORT_S_SUIT || otmp->otyp == GENTLEMAN_S_SUIT || otmp->otyp == GENTLEWOMAN_S_DRESS || otmp->otyp == CRYSTAL_PLATE_MAIL || otmp->otyp == ARCHAIC_PLATE_MAIL || otmp->otyp == HARMONIUM_PLATE || otmp->otyp == HARMONIUM_SCALE_MAIL || otmp->otyp == PLASTEEL_ARMOR || otmp->otyp == SPLINT_MAIL || otmp->otyp == BARNACLE_ARMOR || otmp->otyp == BANDED_MAIL || otmp->otyp == CHAIN_MAIL || otmp->otyp == DROVEN_CHAIN_MAIL || otmp->otyp == ORCISH_CHAIN_MAIL || otmp->otyp == SCALE_MAIL || otmp->otyp == RING_MAIL || otmp->otyp == ORCISH_RING_MAIL || otmp->otyp == LIVING_ARMOR))
+			wt -= otmp->owt;
+		if (moves < achieve.anthaul) //Extreme carrying ability
+			wt = wt / 6;
 		
 		if(u.uleadamulet && (otmp->otyp == AMULET_OF_YENDOR || otmp->otyp == FAKE_AMULET_OF_YENDOR))
 			wt += 24*otmp->owt; /* Same as loadstone by default. Only affects fake amulets in open inventory */
@@ -3020,16 +3027,6 @@ end_all_items()
 {
 	all_items(FALSE, NULL, TRUE);
 	return;
-}
-
-boolean
-belttype(typ)
-char *typ;
-{
-	if (!strcmp(typ, "enhanced strength") && ubeltworn && ubeltworn->otyp == BELT_OF_ENHANCED_STRENGTH) {
-		return TRUE;
-	}
-	return FALSE;
 }
 
 /* finds all items, specify where you want them from */

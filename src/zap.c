@@ -5542,6 +5542,13 @@ allow_artwish()
 
 	n -= u.uconduct.wisharti;	// how many artifacts the player has wished for
 
+	if (ubracerworn) {
+		struct obj *otmp = ubracerworn;
+		if (otmp->otyp == ARMBANDS_OF_UNLIMITED_WISHES) {
+			return WISH_ARTALLOW;
+		}
+	}
+
 	return ((n > 0) ? WISH_ARTALLOW : 0);
 }
 
@@ -5611,6 +5618,9 @@ retry:
 		if (!otmp) return TRUE;	/* for safety; should never happen */
 	}
 
+	if (u.uconduct.wishes > 9 && !wizard) {
+		pline("You don't seem to be able make any more wishes");
+	} else {
 	if (otmp != &zeroobj) {
 		if (u.uconduct.wishes == 0)
 			Sprintf(achieve.wishes1, buf);
@@ -5656,6 +5666,7 @@ retry:
 						   "slip" : "drop")),
 				       (const char *)0);
 	    u.ublesscnt += rn1(100,50);  /* the gods take notice */
+	}
 	}
 
 	/* KMH, conduct */

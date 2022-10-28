@@ -1418,7 +1418,10 @@ healup(nhp, nxtra, curesick, cureblind)
 			hpmax = &u.uhpmax;
 		}
 		*hp += nhp;
-		if (*hp > *hpmax){
+		if (*hp > *hpmax) {
+			if (achieve.lamashtumet && !u.uevent.passed_abyss3_level) {
+				nxtra = 0;
+			}
 			if(u.uhpmod < 0){
 				if(u.uhpmod + nxtra > 0){
 					nxtra += u.uhpmod;

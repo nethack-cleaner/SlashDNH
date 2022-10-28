@@ -1043,8 +1043,17 @@ int how;
 			else {
 				remove_oprop(uamul, OPROP_LIFE);
 			}
-		}
-		else if((otmp = find_equip_life_oprop())){
+		} else if (ubeltworn && ubeltworn->otyp == BELT_OF_SECURITY) {
+			Your("belt %s!",
+				  !Blind ? "begins to glow" : "feels warm");
+			if (how == CHOKING) You("vomit ...");
+			if (how == DISINTEGRATED) You("reconstitute!");
+			else if (how == OVERWOUND) You("reassemble!");
+			else You_feel("much better!");
+
+			lsvd = LSVD_MISC;
+			if (ubeltworn) useup(ubeltworn);
+		} else if((otmp = find_equip_life_oprop())){
 			Your("%s %s!",
 				  xname(otmp),
 				  !Blind ? "begins to glow" : "feels warm");

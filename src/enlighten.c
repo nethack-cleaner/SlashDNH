@@ -1828,6 +1828,15 @@ signs_enlightenment()
 	}
 	
 	// if(u.sealsActive&SEAL_AHAZU && !(ublindf && ublindf->otyp==MASK));
+	if (achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU) {
+		if (!Invis) {
+			if (uarmg) {
+				putstr(en_win, 0, "You gloves cover the brand on your left hand.");
+			} else {
+				putstr(en_win, 0, "A star-shaped brand on the palm of your left hand.");
+			}
+		}
+	}
 	if(u.sealsActive&SEAL_AMON && !Invis){
 //		if(!(uarmh && is_metallic(uarmh))){
 		putstr(en_win, 0, "You have a pair of large ram's horns.");
@@ -2361,7 +2370,7 @@ signs_mirror()
 #undef STRIPGLYPH
 #undef PUNCTUTATION
 	
-	if(u.sealsActive&SEAL_AHAZU && !NoBInvis){
+	if(!achieve.altbind[AHAZU - FIRST_SEAL] && u.sealsActive&SEAL_AHAZU && !NoBInvis){
 		if(!(ublindf && (ublindf->otyp==MASK || ublindf->otyp == R_LYEHIAN_FACEPLATE))){
 			putstr(en_win, 0, "There is a starry void in your throat.");
 			message = TRUE;

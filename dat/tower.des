@@ -246,20 +246,20 @@ MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'V',random,random, hostile
+MONSTER:'V',random,random, hostile
 
 
 # Grounds and entrance to Vlad's tower
@@ -308,20 +308,20 @@ MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'V',random,random, hostile
+MONSTER:'V',random,random, hostile
 
 
 # Grounds and entrance to Vlad's tower
@@ -370,20 +370,20 @@ MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
 MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'V',random,random, hostile
+MONSTER:'V',random,random, hostile
 
 
 # Grounds and entrance to Vlad's tower
@@ -429,20 +429,20 @@ BRANCH:(73,10,73,10),(00,00,00,00)
 LADDER:(03,11),up
 
 MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
-MONSTER:'Z',random,random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',"winged pseudodragon",random, hostile
+MONSTER:'D',random,random, hostile
+MONSTER:'D',random,random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'C',"drider",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"byakhee",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'B',"raven",random, hostile
+MONSTER:'V',random,random, hostile
+MONSTER:'V',random,random, hostile
+MONSTER:'V',random,random, hostile

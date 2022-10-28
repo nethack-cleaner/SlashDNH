@@ -1012,7 +1012,7 @@ struct Role roles[] = {
 #endif
 	ART_LOCKPICK_OF_ARSENE_LUPIN,
 	MA_HUMAN|MA_GNOME|MA_CLOCK|MA_ETHEREAL, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_NEUTRAL,
+	  ROLE_LAWFUL,
 	/* Str Int Wis Dex Con Cha */
 	{   7, 10,  7, 10,  7,  6 },
 	{  20, 15, 10, 30, 10, 20 },

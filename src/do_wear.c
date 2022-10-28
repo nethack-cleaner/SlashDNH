@@ -2477,6 +2477,28 @@ base_uac()
             uac -= (reduce + 14);
         }
     }
+	if (moves < achieve.dodge) {
+		uac -= 10;
+	}
+	if (moves < achieve.unstoppable) {
+		uac -= 20;
+	}
+	if (moves < achieve.rescuemission) {
+		uac -= 2;
+	}
+	if (moves < achieve.patientdefense) {
+		uac -= 10;
+	}
+	if (moves < achieve.agressivestrike) {
+		uac += 10;
+	}
+	if (ubracerworn && !uarm) {
+		struct obj *otmp = ubracerworn;
+		if (otmp->otyp == ARMBANDS_OF_DEFENSE) {
+			uac -= 2;
+		}
+	}
+
 	if(u.utats & TAT_BULWARK) uac -= 1;
 	uac -= u.uacinc;
 	uac -= u.spiritAC;
@@ -2664,6 +2686,33 @@ int base_udr()
 		}
 	}
 	if (HProtection & INTRINSIC) udr += (u.ublessed)/2;
+	if (moves < achieve.swiftdefense) {
+		udr += 4;
+	}
+	if (moves < achieve.unstoppable) {
+		udr += 30;
+	}
+	if (moves < achieve.rescuemission) {
+		udr += 2;
+	}
+	if (moves < achieve.patientdefense) {
+		udr += 6;
+	}
+	if (moves < achieve.agressivestrike) {
+		udr -= 6;
+	}
+	if (ubracerworn && !uarm) {
+		struct obj *otmp = ubracerworn;
+		if (otmp->otyp == ARMBANDS_OF_DEFENSE) {
+			udr += 2;
+		}
+	}
+	if (moves < achieve.shrugoff) {
+		udr += 8;
+	}
+	if (ubeltworn && ubeltworn->otyp == BELT_OF_DURABILITY) {
+		udr++;
+	}
 	if(u.edenshield > moves) udr += 7;
 
 	if(u.umadness&MAD_NUDIST && !BlockableClearThoughts && NightmareAware_Sanity < 100){

@@ -127,7 +127,7 @@ STATIC_PTR int NDECL(timed_occupation);
 STATIC_PTR int NDECL(doextcmd);
 STATIC_PTR int NDECL(doability);
 STATIC_PTR int NDECL(domonability);
-STATIC_PTR int FDECL(ability_menu, (boolean, boolean));
+STATIC_PTR int FDECL(ability_menu, (boolean, boolean, boolean));
 STATIC_PTR int NDECL(domountattk);
 STATIC_PTR int NDECL(doMysticForm);
 STATIC_PTR int NDECL(dofightingform);
@@ -170,6 +170,9 @@ STATIC_DCL void FDECL(magic_chest_obj_chain, (winid, const char *, long *, long 
 STATIC_DCL void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
 STATIC_DCL void FDECL(mon_chain, (winid, const char *, struct monst *, long *, long *));
 STATIC_DCL void FDECL(contained, (winid, const char *, long *, long *));
+STATIC_DCL int FDECL(letcount, (char));
+STATIC_DCL char FDECL(getletter, (int));
+STATIC_DCL char FDECL(freeletter, (boolean[], char));
 STATIC_PTR int NDECL(wiz_show_stats);
 #  ifdef PORT_DEBUG
 STATIC_DCL int NDECL(wiz_port_debug);
@@ -194,7 +197,7 @@ static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
 STATIC_DCL char *NDECL(parse);
-static void addtech(winid tmpwin, int ky, char letter, char *txt, int timeout);
+static int addtech(winid tmpwin, int ky, char letter, char *txt, int timeout, int othertimeout, int energycost);
 STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 
 #ifdef OVL1
@@ -499,20 +502,27 @@ extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
 STATIC_PTR int
 doability()
 {
-	return ability_menu(iflags.quick_m_abilities, TRUE);
+	return ability_menu(iflags.quick_m_abilities, TRUE, FALSE);
+}
+
+STATIC_PTR int
+dotechnique()
+{
+	return ability_menu(iflags.quick_m_abilities, TRUE, TRUE);
 }
 
 /* #monster command - use special monster abilities while polymorphed */
 STATIC_PTR int
 domonability()
 {
-	return ability_menu(TRUE, FALSE);
+	return ability_menu(TRUE, FALSE, FALSE);
 }
 
 STATIC_PTR int
-ability_menu(mon_abilities, you_abilities)
+ability_menu(mon_abilities, you_abilities, techniqueonly)
 boolean mon_abilities;
 boolean you_abilities;
+boolean techniqueonly;
 {
 	winid tmpwin;
 	int n, how;
@@ -525,7 +535,10 @@ boolean you_abilities;
 	tmpwin = create_nhwindow(NHW_MENU);
 	start_menu(tmpwin);
 	any.a_void = 0;		/* zero out all bits */
-	
+	boolean lettertaken[53];
+	for (int i = 0; i <= 52; i++) {
+		lettertaken[i] = FALSE;
+	}
 
 #define add_ability(letter, string, value) \
 	do { \
@@ -533,8 +546,13 @@ boolean you_abilities;
 	add_menu(tmpwin, NO_GLYPH, &any, (letter), 0, ATR_NONE, buf, MENU_UNSELECTED); \
 	} while (0)
 
-	Sprintf(buf, "Abilities");
+	if (techniqueonly) {
+		Sprintf(buf, "Techniques");
+	} else {
+		Sprintf(buf, "Abilities");
+	}
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_BOLD, buf, MENU_UNSELECTED);
+	if (!techniqueonly) {
 	if (mon_abilities && uarm && uarms &&
 		Is_dragon_armor(uarm) && Is_dragon_shield(uarms) && 
 		(Dragon_armor_matches_mtyp(uarm, Dragon_armor_to_pm(uarms)->mtyp)
@@ -561,41 +579,161 @@ boolean you_abilities;
 		}
 		if (!armormatch) {
 			add_ability('a', "Use your armor's breath weapon", MATTK_DSCALE);
+			lettertaken[letcount('a')] = TRUE;
 		}
 	}
 	if (mon_abilities && (is_were(youracedata) || gates_in_help(youracedata))){
 		/* shared letter; assumes a polyform will only be one or the other */
 		add_ability('A', "Summon aid", MATTK_SUMM);
+		lettertaken[letcount('A')] = TRUE;
 	}
 	if (mon_abilities && (can_breathe(youmonst.data) || Race_if(PM_HALF_DRAGON))){
 		add_ability('b', "Use your breath weapon", MATTK_BREATH);
+		lettertaken[letcount('b')] = TRUE;
 	}
 	if (mon_abilities && (Upolyd && can_breathe(youmonst.data) && Race_if(PM_HALF_DRAGON))){
 		add_ability('B', "Use your halfdragon breath weapon", MATTK_HBREATH);
+		lettertaken[letcount('B')] = TRUE;
 	}
 	if (mon_abilities && uclockwork){
 		add_ability('c', "Adjust your clockspeed", MATTK_CLOCK);
+		lettertaken[letcount('c')] = TRUE;
 	}
 	if (mon_abilities && uandroid){
 		add_ability('d', "Use Android abilities", MATTK_DROID);
+		lettertaken[letcount('d')] = TRUE;
 	}
 	if (mon_abilities && (Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_TELEK_LVL)){
 		add_ability('e', "Use telekinesis", MATTK_TELEK);
+		lettertaken[letcount('e')] = TRUE;
 	}
 	if (you_abilities && Race_if(PM_HALF_DRAGON) && Role_if(PM_BARD) && u.ulevel >= 14) {
 		add_ability('E', "Sing an Elemental into being", MATTK_U_ELMENTAL);
+		lettertaken[letcount('E')] = TRUE;
 	}
 	if (you_abilities && (Role_if(PM_EXILE) || u.sealsActive || u.specialSealsActive)) {
 		add_ability('f', "Fire a spirit power", MATTK_U_SPIRITS);
+		lettertaken[letcount('f')] = TRUE;
 	}
 	if (you_abilities && uwep && is_lightsaber(uwep) && !Role_if(PM_JEDI)) {	/* I can't wait until fighting forms are mainstream */
 		add_ability('F', "Pick a fighting form", MATTK_U_STYLE);
+		lettertaken[letcount('F')] = TRUE;
 	}
+	if (mon_abilities && attacktype(youracedata, AT_GAZE)){
+		add_ability('g', "Gaze at something", MATTK_GAZE);
+		lettertaken[letcount('g')] = TRUE;
+	}
+	if (mon_abilities && is_hider(youracedata)){
+		add_ability('h', "Hide", MATTK_HIDE);
+		lettertaken[letcount('h')] = TRUE;
+	}
+	if (mon_abilities && youracedata->mtyp == PM_TOVE){
+		add_ability('H', "Bore a hole", MATTK_HOLE);
+		lettertaken[letcount('H')] = TRUE;
+	}
+	if (mon_abilities && is_drow(youracedata)){
+		add_ability('i', "Invoke the darkness", MATTK_DARK);
+		lettertaken[letcount('i')] = TRUE;
+	}
+	if (mon_abilities && Race_if(PM_ETHEREALOID) && Is_nowhere(&u.uz)){
+		add_ability('i', "Phase in", MATTK_PHASE_IN);
+		lettertaken[letcount('i')] = TRUE;
+	}
+	if (mon_abilities && youracedata->mlet == S_NYMPH){
+		add_ability('I', "Remove an iron ball", MATTK_REMV);
+		lettertaken[letcount('I')] = TRUE;
+	}
+	if (mon_abilities && youracedata->mtyp == PM_SALAMANDER  && levl[u.ux][u.uy].typ == LAVAPOOL){
+		add_ability('l', "Splash Lava", MATTK_SPIT);
+		lettertaken[letcount('l')] = TRUE;
+	}
+	if (mon_abilities && youracedata->mtyp == PM_SALAMANDER &&  levl[u.ux][u.uy].typ != LAVAPOOL){
+		add_ability('L', "Secrete Lava", MATTK_LAVA);
+		lettertaken[letcount('L')] = TRUE;
+	}
+	if (mon_abilities && (is_mind_flayer(youracedata) || Role_if(PM_MADMAN) || Role_if(PM_ANACHRONOUNBINDER)) && !Catapsi){
+		add_ability('m', "Emit a mind blast", MATTK_MIND);
+		lettertaken[letcount('m')] = TRUE;
+	}
+	if (you_abilities && !mon_abilities){
+		add_ability('M', "Use a monstrous ability", MATTK_U_MONST);
+		lettertaken[letcount('M')] = TRUE;
+	}
+	if (mon_abilities && (Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_CRAZE_LVL)){
+		add_ability('n', "Psionically torture a monster", MATTK_CRAZE);
+		lettertaken[letcount('n')] = TRUE;
+	}
+	if (mon_abilities && Race_if(PM_ETHEREALOID) && !Is_nowhere(&u.uz)){
+		add_ability('o', "Phase out", MATTK_PHASE_OUT);
+		lettertaken[letcount('o')] = TRUE;
+	}
+	if (you_abilities && (u.ufirst_light || u.ufirst_sky || u.ufirst_life || u.ufirst_know)){
+		add_ability('p', "Speak a word of power", MATTK_U_WORD);
+		lettertaken[letcount('p')] = TRUE;
+	}
+	if (mon_abilities && (Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_PULSE_LVL)){
+		add_ability('P', "Emit a directional psion pulse", MATTK_PULSE);
+		lettertaken[letcount('P')] = TRUE;
+	}
+	if (mon_abilities && (attacktype(youracedata, AT_LNCK) || attacktype(youracedata, AT_LRCH))){
+		add_ability('r', "Make a reach attack", MATTK_REACH);
+		lettertaken[letcount('r')] = TRUE;
+	}
+	if (mon_abilities && u.umonnum == PM_GREMLIN){
+		add_ability('R', "Replicate yourself", MATTK_REPL);
+		lettertaken[letcount('R')] = TRUE;
+	}
+	if (mon_abilities && attacktype(youracedata, AT_SPIT)){
+		add_ability('s', "Spit", MATTK_SPIT);
+		lettertaken[letcount('s')] = TRUE;
+	}
+	if (mon_abilities && (youracedata->msound == MS_SHRIEK || youracedata->msound == MS_SHOG)){ //player can't speak elder thing.
+		add_ability('S', "Shriek", MATTK_SHRIEK);
+		lettertaken[letcount('S')] = TRUE;
+	}
+	if (mon_abilities && youracedata->msound == MS_JUBJUB){
+		add_ability('S', "Scream", MATTK_SCREAM);
+		lettertaken[letcount('S')] = TRUE;
+	}
+	if (mon_abilities && attacktype(youracedata, AT_TNKR)){
+		add_ability('t', "Tinker", MATTK_TNKR);
+		lettertaken[letcount('t')] = TRUE;
+	}
+	if (you_abilities && (Role_if(PM_PRIEST) || Role_if(PM_KNIGHT) || Race_if(PM_VAMPIRE) || (Role_if(PM_NOBLEMAN) && Race_if(PM_ELF)))) {
+		add_ability('T', "Turn undead", MATTK_U_TURN_UNDEAD);
+		lettertaken[letcount('T')] = TRUE;
+	}
+	if (mon_abilities && is_unicorn(youracedata)){
+		add_ability('u', "Use your unicorn horn", MATTK_UHORN);
+		lettertaken[letcount('u')] = TRUE;
+	}
+	if (mon_abilities && is_vampire(youracedata) && u.ulevel > 1){
+		add_ability('V', "Raise a vampiric minion", MATTK_VAMP);
+		lettertaken[letcount('V')] = TRUE;
+	}
+	if (mon_abilities && webmaker(youracedata)){
+		add_ability('w', "Spin a web", MATTK_WEBS);
+		lettertaken[letcount('w')] = TRUE;
+	}
+	if (Role_if(PM_MADMAN) && u.whisperturn < moves && !Catapsi && !DimensionalLock){
+		add_ability('W', "Call your whisperer", MATTK_WHISPER);
+		lettertaken[letcount('W')] = TRUE;
+	}
+	if (you_abilities && spellid(0) != NO_SPELL) {
+		add_ability('z', "Cast spells", MATTK_U_SPELLS);
+		lettertaken[letcount('z')] = TRUE;
+	}
+	if (mon_abilities && attacktype(youracedata, AT_MAGC)){
+		add_ability('Z', "Cast a monster spell", MATTK_MAGIC);
+		lettertaken[letcount('Z')] = TRUE;
+	}
+	}
+
 	if (Role_if(PM_JEDI)) {
 		atleastone = TRUE;
 		if (achieve.introquest) {
-			addtech(tmpwin, MATTK_JUMP, 'j', "Force Jump", 1000);
-			addtech(tmpwin, MATTK_HEAL, 'h', "Force Heal", 1000);
+			lettertaken[addtech(tmpwin, MATTK_JUMP, freeletter(lettertaken, 'j'), "Force Jump", 1000, 0, 20)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_HEAL, 'h', "Force Heal", 1000, 0, 20)] = TRUE;
 		} else {
 			anything any;
 			any.a_void = 0;		/* zero out all bits */
@@ -603,87 +741,50 @@ boolean you_abilities;
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "You must attune to the force", MENU_UNSELECTED);
 		}
 	}
-	if (mon_abilities && attacktype(youracedata, AT_GAZE)){
-		add_ability('g', "Gaze at something", MATTK_GAZE);
+	// check for item based techniques
+
+	struct obj *otmp;
+	for (otmp = invent; otmp; otmp = otmp->nobj) {
+		if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_SWIFTNESS && objects[otmp->otyp].oc_name_known) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_SWIFTNESS, freeletter(lettertaken, 's'), "Swiftness", 1000, achieve.beltontime + 100, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_DODGE, freeletter(lettertaken, 'd'), "Dodge", 1000, achieve.beltontime + 100, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_SWIFTDEFENSE, freeletter(lettertaken, 's'), "Swift Defense", 1000, achieve.beltontime + 100, 0)] = TRUE;
+		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_ENHANCED_STRENGTH && objects[otmp->otyp].oc_name_known) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_ANTHAUL, freeletter(lettertaken, 'a'), "Ant Haul", 1000, achieve.beltontime + 100, 0)] = TRUE;
+		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_DURABILITY && objects[otmp->otyp].oc_name_known) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_UNSTOPPABLE, freeletter(lettertaken, 'u'), "Unstoppable", 1000, achieve.beltontime + 100, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_SHRUGOFF, freeletter(lettertaken, 'b'), "Shrug of blows", 1000, achieve.beltontime + 100, 0)] = TRUE;
+		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_SHADOWS && objects[otmp->otyp].oc_name_known) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_SHADOWWALK, freeletter(lettertaken, 'w'), "Shadow Walk", 1000, achieve.beltontime + 100, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_SHADOWSTEP, freeletter(lettertaken, 's'), "Shadow Step", 1000, achieve.beltontime + 100, 0)] = TRUE;
+		} else if (ubracerworn && otmp == ubracerworn && otmp->otyp == ARMBANDS_OF_ARCHERY && objects[otmp->otyp].oc_name_known) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_TRUESHOTAURA, freeletter(lettertaken, 't'), "Trueshot Aura", 1000, achieve.bracerontime + 100, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_BARRAGE, freeletter(lettertaken, 'b'), "Barrage", 1000, achieve.bracerontime + 100, 0)] = TRUE;
+		} else if (uarmh && otmp == uarmh && otmp->oartifact == ART_FIRE_CHIEF_HELMET) {
+			atleastone = TRUE;
+			if (achieve.istraitor && Role_if(PM_FIREFIGHTER)) {
+				lettertaken[addtech(tmpwin, MATTK_RESCUEMISSION, freeletter(lettertaken, 'r'), "Rescue Me", 1000, 0, 0)] = TRUE;
+				lettertaken[addtech(tmpwin, MATTK_FIREASSAULT, freeletter(lettertaken, 'w'), "Fire Assault", 1000, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_RESCUEMISSION, freeletter(lettertaken, 'r'), "Rescue Mission", 1000, 0, 0)] = TRUE;
+				lettertaken[addtech(tmpwin, MATTK_WATERASSAULT, freeletter(lettertaken, 'w'), "Water Assault", 1000, 0, 0)] = TRUE;
+			}
+		} else if (uwep && otmp == uwep && (otmp->oartifact == ART_LIGHTSABER_PROTOTYPE || otmp->oartifact == ART_DARKSABER)) {
+			atleastone = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_FORCETELEPORT, freeletter(lettertaken, 't'), "Force Teleport", 1000, 0, 25)] = TRUE;
+			if (otmp->oartifact == ART_LIGHTSABER_PROTOTYPE) {
+				lettertaken[addtech(tmpwin, MATTK_PATIENTDEFENSE, freeletter(lettertaken, 'p'), "Patient Defense", 1000, 0, 50)] = TRUE;
+			} else if (otmp->oartifact == ART_DARKSABER) {
+				lettertaken[addtech(tmpwin, MATTK_AGRESSIVESTRIKE, freeletter(lettertaken, 'a'), "Agressive Strikes", 1000, 0, 50)] = TRUE;
+			}
+		}
 	}
-	if (mon_abilities && is_hider(youracedata)){
-		add_ability('h', "Hide", MATTK_HIDE);
-	}
-	if (mon_abilities && youracedata->mtyp == PM_TOVE){
-		add_ability('H', "Bore a hole", MATTK_HOLE);
-	}
-	if (mon_abilities && is_drow(youracedata)){
-		add_ability('i', "Invoke the darkness", MATTK_DARK);
-	}
-	if (mon_abilities && Race_if(PM_ETHEREALOID) && Is_nowhere(&u.uz)){
-		add_ability('i', "Phase in", MATTK_PHASE_IN);
-	}
-	if (mon_abilities && youracedata->mlet == S_NYMPH){
-		add_ability('I', "Remove an iron ball", MATTK_REMV);
-	}
-	if (mon_abilities && youracedata->mtyp == PM_SALAMANDER  && levl[u.ux][u.uy].typ == LAVAPOOL){
-		add_ability('l', "Splash Lava", MATTK_SPIT);
-	}
-	if (mon_abilities && youracedata->mtyp == PM_SALAMANDER &&  levl[u.ux][u.uy].typ != LAVAPOOL){
-		add_ability('L', "Secrete Lava", MATTK_LAVA);
-	}
-	if (mon_abilities && (is_mind_flayer(youracedata) || Role_if(PM_MADMAN) || Role_if(PM_ANACHRONOUNBINDER)) && !Catapsi){
-		add_ability('m', "Emit a mind blast", MATTK_MIND);
-	}
-	if (you_abilities && !mon_abilities){
-		add_ability('M', "Use a monstrous ability", MATTK_U_MONST);
-	}
-	if (mon_abilities && (Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_CRAZE_LVL)){
-		add_ability('n', "Psionically torture a monster", MATTK_CRAZE);
-	}
-	if (mon_abilities && Race_if(PM_ETHEREALOID) && !Is_nowhere(&u.uz)){
-		add_ability('o', "Phase out", MATTK_PHASE_OUT);
-	}
-	if (you_abilities && (u.ufirst_light || u.ufirst_sky || u.ufirst_life || u.ufirst_know)){
-		add_ability('p', "Speak a word of power", MATTK_U_WORD);
-	}
-	if (mon_abilities && (Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_PULSE_LVL)){
-		add_ability('P', "Emit a directional psion pulse", MATTK_PULSE);
-	}
-	if (mon_abilities && (attacktype(youracedata, AT_LNCK) || attacktype(youracedata, AT_LRCH))){
-		add_ability('r', "Make a reach attack", MATTK_REACH);
-	}
-	if (mon_abilities && u.umonnum == PM_GREMLIN){
-		add_ability('R', "Replicate yourself", MATTK_REPL);
-	}
-	if (mon_abilities && attacktype(youracedata, AT_SPIT)){
-		add_ability('s', "Spit", MATTK_SPIT);
-	}
-	if (mon_abilities && (youracedata->msound == MS_SHRIEK || youracedata->msound == MS_SHOG)){ //player can't speak elder thing.
-		add_ability('S', "Shriek", MATTK_SHRIEK);
-	}
-	if (mon_abilities && youracedata->msound == MS_JUBJUB){
-		add_ability('S', "Scream", MATTK_SCREAM);
-	}
-	if (mon_abilities && attacktype(youracedata, AT_TNKR)){
-		add_ability('t', "Tinker", MATTK_TNKR);
-	}
-	if (you_abilities && (Role_if(PM_PRIEST) || Role_if(PM_KNIGHT) || Race_if(PM_VAMPIRE) || (Role_if(PM_NOBLEMAN) && Race_if(PM_ELF)))) {
-		add_ability('T', "Turn undead", MATTK_U_TURN_UNDEAD);
-	}
-	if (mon_abilities && is_unicorn(youracedata)){
-		add_ability('u', "Use your unicorn horn", MATTK_UHORN);
-	}
-	if (mon_abilities && is_vampire(youracedata) && u.ulevel > 1){
-		add_ability('V', "Raise a vampiric minion", MATTK_VAMP);
-	}
-	if (mon_abilities && webmaker(youracedata)){
-		add_ability('w', "Spin a web", MATTK_WEBS);
-	}
-	if (Role_if(PM_MADMAN) && u.whisperturn < moves && !Catapsi && !DimensionalLock){
-		add_ability('W', "Call your whisperer", MATTK_WHISPER);
-	}
-	if (you_abilities && spellid(0) != NO_SPELL) {
-		add_ability('z', "Cast spells", MATTK_U_SPELLS);
-	}
-	if (mon_abilities && attacktype(youracedata, AT_MAGC)){
-		add_ability('Z', "Cast a monster spell", MATTK_MAGIC);
-	}
+	// end: check for item based techniques
 
 #undef add_ability
 
@@ -722,13 +823,131 @@ boolean you_abilities;
 	case MATTK_U_TURN_UNDEAD: return doturn();
 	case MATTK_U_STYLE: return dofightingform();
 	case MATTK_JUMP:
+		if (achieve.techs[MATTK_JUMP] + 1000 > moves) {
+			losepw(20);
+		}
 		achieve.techs[MATTK_JUMP] = moves;
 		return jump(1);
 	case MATTK_HEAL:
+		if (achieve.techs[MATTK_HEAL] + 1000 > moves) {
+			losepw(20);
+		}
 		achieve.techs[MATTK_HEAL] = moves;
 		u.uhp += 10 + (u.ulevel * 2);
+		if (u.ulevel > 17) {
+			u.uhp += 10 + (u.ulevel * 2);
+		}
 		if (u.uhp > u.uhpmax) {
 			u.uhp = u.uhpmax;
+		}
+		break;
+	case MATTK_FORCETELEPORT:
+		if (achieve.techs[MATTK_FORCETELEPORT] + 1000 > moves) {
+			losepw(25);
+		}
+		achieve.techs[MATTK_FORCETELEPORT] = moves;
+		tele();
+		break;
+	case MATTK_PATIENTDEFENSE:
+		if (achieve.techs[MATTK_PATIENTDEFENSE] + 1000 > moves) {
+			losepw(50);
+		}
+		achieve.techs[MATTK_PATIENTDEFENSE] = moves;
+		achieve.patientdefense = moves + 30;
+		break;
+	case MATTK_AGRESSIVESTRIKE:
+		if (achieve.techs[MATTK_AGRESSIVESTRIKE] + 1000 > moves) {
+			losepw(50);
+		}
+		achieve.techs[MATTK_AGRESSIVESTRIKE] = moves;
+		achieve.agressivestrike = moves + 20;
+		break;
+	case MATTK_SWIFTNESS:
+		achieve.techs[MATTK_SWIFTNESS] = moves;
+	    pline("You are moving exceptionally fast!");
+		achieve.swiftness = moves + 25;
+		break;
+	case MATTK_DODGE:
+		achieve.techs[MATTK_DODGE] = moves;
+	    pline("You are dodging amazingly well");
+		achieve.dodge = moves + 25;
+		find_ac();
+		break;
+	case MATTK_SWIFTDEFENSE:
+		achieve.techs[MATTK_SWIFTDEFENSE] = moves;
+	    pline("You are rolling with every attack");
+		achieve.swiftdefense = moves + 25;
+		find_ac();
+		break;
+	case MATTK_ANTHAUL:
+		achieve.techs[MATTK_ANTHAUL] = moves;
+	    pline("You feel like a giant ant, carrying anything should be a breeze!");
+		achieve.anthaul = moves + 100;
+		if (ubracerworn) {
+			struct obj *otmp = ubracerworn;
+			if (otmp->oartifact == ART_GIRDLE_OF_GIANT_STRENGTH) {
+				achieve.anthaul = moves + 150;
+			}
+		}
+		break;
+	case MATTK_UNSTOPPABLE:
+		achieve.techs[MATTK_UNSTOPPABLE] = moves + 2500;
+		pline("Now nothing can stop me!  I'm unstoppable");
+		achieve.unstoppable = moves + 4;
+		break;
+	case MATTK_SHRUGOFF:
+		achieve.techs[MATTK_SHRUGOFF] = moves;
+		pline("Go ahead and hit me, I'll just shrug it off");
+		achieve.shrugoff = moves + 25;
+		break;
+	case MATTK_SHADOWWALK:
+		achieve.techs[MATTK_SHADOWWALK] = moves;
+		pline("You merge into the world of shadows, moving so quickly everything else seems frozen.");
+		achieve.shadowwalk = moves + 10;
+		if (achieve.shadowstep > moves) {
+			achieve.shadowstep = moves - 1;
+		}
+		break;
+	case MATTK_SHADOWSTEP:
+		achieve.techs[MATTK_SHADOWSTEP] = moves;
+		pline("You merge into the world of shadows, you can slip through microscopic openings");
+		achieve.shadowstep = moves + 10;
+		if (achieve.shadowwalk > moves) {
+			achieve.shadowwalk = moves - 1;
+		}
+		break;
+	case MATTK_TRUESHOTAURA:
+		achieve.techs[MATTK_TRUESHOTAURA] = moves + 1500;
+		pline("My weapons sink deep into anything.");
+		achieve.trueshotaura = moves + 25;
+		break;
+	case MATTK_BARRAGE:
+		achieve.techs[MATTK_BARRAGE] = moves;
+		pline("Now I am shooting faster than ever before.");
+		achieve.arrowbarrage = moves + 15;
+		break;
+	case MATTK_RESCUEMISSION:
+		achieve.techs[MATTK_RESCUEMISSION] = moves;
+		achieve.rescuemission = moves + 15;
+		break;
+	case MATTK_WATERASSAULT:
+		achieve.techs[MATTK_WATERASSAULT] = moves;
+		for (int i = 0; i <= rn2(5); i++) {
+			struct monst *mon = makemon(&mons[PM_WATER_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
+			if(mon) {
+				initedog(mon);
+				mark_mon_as_summoned(mon, &youmonst, 20, 0);
+			}
+		}
+		break;
+	case MATTK_FIREASSAULT:
+		achieve.techs[MATTK_FIREASSAULT] = moves;
+		for (int i = 0; i <= rn2(5); i++) {
+			struct monst *mon = makemon(&mons[PM_FIRE_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
+			if(mon) {
+				initedog(mon);
+				mark_mon_as_summoned(mon, &youmonst, 20, 0);
+			}
 		}
 		break;
 		//if(u.mh > u.mhmax) u.mh = u.mhmax;
@@ -2092,8 +2311,8 @@ struct ext_func_tab extcmdlist[] = {
 	{"zap", "zap a wand", dozap, !IFBURIED},
 	{"explore_mode", "enter explore (discovery) mode (only if defined)", enter_explore_mode, IFBURIED},
 
-	{"technique", "use an inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
-	{"ability", "use an inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
+	{"technique", "use a technique", dotechnique, IFBURIED, AUTOCOMPLETE},
+	{"ability", "use a technique or inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
 	{"adjust", "adjust inventory letters", doorganize, IFBURIED, AUTOCOMPLETE},
 	{"annotate", "annotate current dungeon level", donamelevel, IFBURIED, AUTOCOMPLETE},
 	{"chat", "talk to someone", dotalk, IFBURIED, AUTOCOMPLETE},	/* converse? */
@@ -3710,29 +3929,54 @@ end_of_input()
 #endif
 
 static
-void
-addtech(tmpwin, ky, letter, txt, timeout)
+int
+addtech(tmpwin, ky, letter, txt, timeout, othertimeout, energycost)
 	winid tmpwin;
     int ky;
 	char letter;
 	char *txt;
 	int timeout;
+	int othertimeout;
+	int energycost;
 {
 	anything any;
 	any.a_void = 0;		/* zero out all bits */
 	any.a_int = ky;
-
-	if (!achieve.techs[ky] || achieve.techs[ky] + timeout < moves) {
-		add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, txt, MENU_UNSELECTED);
-	} else if (achieve.techs[ky] + (timeout - 60) < moves) {
-		char buf[BUFSZ];
-		Sprintf(buf, "%s (Soon)", txt);
-		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
-	} else {
-		char buf[BUFSZ];
-		Sprintf(buf, "%s (Cooldown)", txt);
-		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
+	
+	if (achieve.lightsaberpro && timeout >= 1000) {
+		timeout -= 500;
 	}
+
+	if (othertimeout > moves) {
+		char buf[BUFSZ];
+		Sprintf(buf, "%s (Waiting to attune)", txt);
+		add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+	} else if (!achieve.techs[ky] || achieve.techs[ky] + timeout < moves) {
+		add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, txt, MENU_UNSELECTED);
+	} else {
+		if (energycost > 1 && u.uen >= energycost) {
+			char buf[BUFSZ];
+			Sprintf(buf, "%s (Use %d energy)", txt, energycost);
+			add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		} else if (achieve.techs[ky] + (timeout - 60) < moves) {
+			char buf[BUFSZ];
+			Sprintf(buf, "%s (Soon)", txt);
+			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		} else if (achieve.techs[ky] + (timeout - 400) < moves) {
+			char buf[BUFSZ];
+			Sprintf(buf, "%s (Half Cooldown)", txt);
+			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		} else if (achieve.techs[ky] + (timeout - 1500) < moves) {
+			char buf[BUFSZ];
+			Sprintf(buf, "%s (Cooldown)", txt);
+			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		} else {
+			char buf[BUFSZ];
+			Sprintf(buf, "%s (Long Cooldown)", txt);
+			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		}
+	}
+	return letcount(letter);
 }
 
 char
@@ -3806,6 +4050,249 @@ dotravel()
 	cmd[0] = CMD_TRAVEL;
 	readchar_queue = cmd;
 	return MOVE_INSTANT;
+}
+
+int
+letcount(letter)
+char letter;
+{
+	if (letter == 'a') {
+		return 1;
+	} else if (letter == 'b') {
+		return 2;
+	} else if (letter == 'c') {
+		return 3;
+	} else if (letter == 'd') {
+		return 4;
+	} else if (letter == 'e') {
+		return 5;
+	} else if (letter == 'f') {
+		return 6;
+	} else if (letter == 'g') {
+		return 7;
+	} else if (letter == 'h') {
+		return 8;
+	} else if (letter == 'i') {
+		return 9;
+	} else if (letter == 'j') {
+		return 10;
+	} else if (letter == 'k') {
+		return 11;
+	} else if (letter == 'l') {
+		return 12;
+	} else if (letter == 'm') {
+		return 13;
+	} else if (letter == 'n') {
+		return 14;
+	} else if (letter == 'o') {
+		return 15;
+	} else if (letter == 'p') {
+		return 16;
+	} else if (letter == 'q') {
+		return 17;
+	} else if (letter == 'r') {
+		return 18;
+	} else if (letter == 's') {
+		return 19;
+	} else if (letter == 't') {
+		return 20;
+	} else if (letter == 'u') {
+		return 21;
+	} else if (letter == 'v') {
+		return 22;
+	} else if (letter == 'w') {
+		return 23;
+	} else if (letter == 'x') {
+		return 24;
+	} else if (letter == 'y') {
+		return 25;
+	} else if (letter == 'z') {
+		return 26;
+	} else if (letter == 'A') {
+		return 1 + 26;
+	} else if (letter == 'B') {
+		return 2 + 26;
+	} else if (letter == 'C') {
+		return 3 + 26;
+	} else if (letter == 'D') {
+		return 4 + 26;
+	} else if (letter == 'E') {
+		return 5 + 26;
+	} else if (letter == 'F') {
+		return 6 + 26;
+	} else if (letter == 'G') {
+		return 7 + 26;
+	} else if (letter == 'H') {
+		return 8 + 26;
+	} else if (letter == 'I') {
+		return 9 + 26;
+	} else if (letter == 'J') {
+		return 10 + 26;
+	} else if (letter == 'K') {
+		return 11 + 26;
+	} else if (letter == 'L') {
+		return 12 + 26;
+	} else if (letter == 'M') {
+		return 13 + 26;
+	} else if (letter == 'N') {
+		return 14 + 26;
+	} else if (letter == 'O') {
+		return 15 + 26;
+	} else if (letter == 'P') {
+		return 16 + 26;
+	} else if (letter == 'Q') {
+		return 17 + 26;
+	} else if (letter == 'R') {
+		return 18 + 26;
+	} else if (letter == 'S') {
+		return 19 + 26;
+	} else if (letter == 'T') {
+		return 20 + 26;
+	} else if (letter == 'U') {
+		return 21 + 26;
+	} else if (letter == 'V') {
+		return 22 + 26;
+	} else if (letter == 'W') {
+		return 23 + 26;
+	} else if (letter == 'X') {
+		return 24 + 26;
+	} else if (letter == 'Y') {
+		return 25 + 26;
+	} else if (letter == 'Z') {
+		return 26 + 26;
+	}
+	return 1;
+}
+
+char getletter(num)
+int num;
+{
+	if (num == 1) {
+		return 'a';
+	} else if (num == 2) {
+		return 'b';
+	} else if (num == 3) {
+		return 'c';
+	} else if (num == 4) {
+		return 'd';
+	} else if (num == 5) {
+		return 'e';
+	} else if (num == 6) {
+		return 'f';
+	} else if (num == 7) {
+		return 'g';
+	} else if (num == 8) {
+		return 'h';
+	} else if (num == 9) {
+		return 'i';
+	} else if (num == 10) {
+		return 'j';
+	} else if (num == 11) {
+		return 'k';
+	} else if (num == 12) {
+		return 'l';
+	} else if (num == 13) {
+		return 'm';
+	} else if (num == 14) {
+		return 'n';
+	} else if (num == 15) {
+		return 'o';
+	} else if (num == 16) {
+		return 'p';
+	} else if (num == 17) {
+		return 'q';
+	} else if (num == 18) {
+		return 'r';
+	} else if (num == 19) {
+		return 's';
+	} else if (num == 20) {
+		return 't';
+	} else if (num == 21) {
+		return 'u';
+	} else if (num == 22) {
+		return 'v';
+	} else if (num == 23) {
+		return 'w';
+	} else if (num == 24) {
+		return 'x';
+	} else if (num == 25) {
+		return 'y';
+	} else if (num == 26) {
+		return 'z';
+	} else if (num == 1 + 26) {
+		return 'A';
+	} else if (num == 2 + 26) {
+		return 'B';
+	} else if (num == 3 + 26) {
+		return 'C';
+	} else if (num == 4 + 26) {
+		return 'D';
+	} else if (num == 5 + 26) {
+		return 'E';
+	} else if (num == 6 + 26) {
+		return 'F';
+	} else if (num == 7 + 26) {
+		return 'G';
+	} else if (num == 8 + 26) {
+		return 'H';
+	} else if (num == 9 + 26) {
+		return 'I';
+	} else if (num == 10 + 26) {
+		return 'J';
+	} else if (num == 11 + 26) {
+		return 'K';
+	} else if (num == 12 + 26) {
+		return 'L';
+	} else if (num == 13 + 26) {
+		return 'M';
+	} else if (num == 14 + 26) {
+		return 'N';
+	} else if (num == 15 + 26) {
+		return 'O';
+	} else if (num == 16 + 26) {
+		return 'P';
+	} else if (num == 17 + 26) {
+		return 'Q';
+	} else if (num == 18 + 26) {
+		return 'R';
+	} else if (num == 19 + 26) {
+		return 'S';
+	} else if (num == 20 + 26) {
+		return 'T';
+	} else if (num == 21 + 26) {
+		return 'U';
+	} else if (num == 22 + 26) {
+		return 'V';
+	} else if (num == 23 + 26) {
+		return 'W';
+	} else if (num == 24 + 26) {
+		return 'X';
+	} else if (num == 25 + 26) {
+		return 'Y';
+	} else if (num == 26 + 26) {
+		return 'Z';
+	}
+	return 'a';
+}
+
+char
+freeletter(lettertaken, best)
+boolean lettertaken[];
+char best;
+{
+	int ltc = letcount(best);
+	if (!lettertaken[ltc]) {
+		return best;
+	} else if (!lettertaken[letcount(toupper(best))]) {
+		return toupper(best);
+	} else {
+		for (int i = 1; i <= 52; i++) {
+			if (!lettertaken[i]) {
+				return getletter(i);
+			}
+		}
+	}
+	return 'a';
 }
 
 #ifdef PORT_DEBUG

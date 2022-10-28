@@ -13176,12 +13176,14 @@ int faction;
 				mtmp->mhpmax = 2*mtmp->mhpmax;
 				mtmp->mhp = mtmp->mhpmax;
 				pline("Demogorgon, Prince of Demons, is near!");
+				achieve.demogorgonmet = TRUE;
 				com_pager(200);
 			}
 			else if(mndx == PM_LAMASHTU){
 				mtmp->mhpmax = 2*mtmp->mhpmax;
 				mtmp->mhp = mtmp->mhpmax;
 				pline("Lamashtu, the Demon Queen, is near!");
+				achieve.lamashtumet = TRUE;
 				com_pager(201);
 			}
 			else if(mndx == PM_DURIN_S_BANE){
@@ -13595,6 +13597,14 @@ rndmonst()
 		minmlev += 1;
 		maxmlev += 3; /* max monster level is increased by 3 */
 	}
+	if (u.uz.dnum == tower_dnum) {
+		if (minmlev < 10) {
+			maxmlev += (10 - minmlev);
+			minmlev += (10 - minmlev);
+		}
+		minmlev += 1;
+		maxmlev += 3;
+	}
 
 	if(u.ukinghill){ /* You have pirate quest artifact in open inventory */
 		if(rnd(100)>80){
@@ -13890,6 +13900,14 @@ rndmonst()
 			maxmlev += 3; /* max monster level is increased by 3 */
 		}
 		if (achieve.clockarc) {
+			minmlev += 1;
+			maxmlev += 3;
+		}
+		if (u.uz.dnum == tower_dnum) {
+			if (minmlev < 10) {
+				maxmlev += (10 - minmlev);
+				minmlev += (10 - minmlev);
+			}
 			minmlev += 1;
 			maxmlev += 3;
 		}

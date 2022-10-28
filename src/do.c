@@ -1893,7 +1893,7 @@ deferred_goto()
 	    }
 	    if (dfr_post_msg) pline1(dfr_post_msg);
 	}
-	if (!achieve.introquest && u.uz.dlevel == 2) { //Delete path back to intro quest
+	if (!achieve.introquest) { //Delete path back to intro quest
 		if (achieve.istraitor || achieve.isgladiator) {
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor
 			if (u.ualign.type == A_LAWFUL) {

@@ -1873,6 +1873,12 @@ int shotlimit;
 		if (launcher->oartifact == ART_WRATHFUL_SPIDER) multishot += rn2(8);
 		else if (launcher->oartifact == ART_ROGUE_GEAR_SPIRITS) multishot = 2;
 	}
+	if (ubracerworn) {
+        struct obj *otmp = ubracerworn;
+        if (otmp->otyp == ARMBANDS_OF_ARCHERY) {
+			multishot++;
+        }
+    }
 
 	/* limit multishot by shotlimit */
 	if (shotlimit > 0 && multishot > shotlimit)
@@ -1943,6 +1949,9 @@ int shotlimit;
 	/* minimum multishot of 1*/
 	if (multishot < 1)
 		multishot = 1;
+	if (achieve.arrowbarrage > moves) {
+		multishot += 5;
+	}
 
 	return multishot;
 }

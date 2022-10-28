@@ -535,7 +535,7 @@
 
 #define HPasses_walls		u.uprops[PASSES_WALLS].intrinsic
 #define EPasses_walls		u.uprops[PASSES_WALLS].extrinsic
-#define Passes_walls		(HPasses_walls || EPasses_walls || \
+#define Passes_walls		(HPasses_walls || EPasses_walls || achieve.shadowstep > moves || \
 				 (uclockwork && u.phasengn)|| species_passes_walls(youracedata))
 #ifdef CONVICT
 # define Phasing            u.uprops[PASSES_WALLS].intrinsic

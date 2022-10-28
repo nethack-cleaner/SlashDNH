@@ -1858,6 +1858,10 @@ struct obj *obj;
 		} else if (is_lightsaber(obj)) {
 			obj->lamplit = 1; //Make yname print out the color of the lightsaber
 		    You("ignite %s.", yname(obj));
+			if ((obj->oartifact == ART_DARKSABER || obj->oartifact == ART_LIGHTSABER_PROTOTYPE) && !achieve.lightsaberpro) {
+				achieve.lightsaberpro = TRUE;
+				pline("As you ignite the mythic weapon for the first time you feel filled with the force as never before!");
+			}
 			obj->lamplit = 0;
 		    unweapon = FALSE;
 		} else if (obj->otyp == POWER_ARMOR){
@@ -6995,31 +6999,69 @@ doapply()
 	case BELT_OF_DURABILITY:
 	case BELT_OF_SECURITY:
 	case BELT_OF_SHADOWS:
-	case MONKEY_STYLE_BELT:
-	case CRANE_STYLE_BELT:
-	case DRAGON_STYLE_BELT:
-	case CHEETAH_STYLE_BELT:
-	case KENSAI_STYLE_BELT:
-		if (obj == ubeltworn) {
-		    if (!cursed(obj)) belt_off(obj);
+		if (Race_if(PM_ETHEREALOID)) {
+			You("cannot wear this belt");
+		} else if (youracedata->msize != obj->objsize) {
+			You("cannot fit this belt");
+		} else if (obj == ubeltworn) {
+		    if (!cursed(obj)) { 
+				belt_off(obj);
+				if (obj->otyp == BELT_OF_ENHANCED_STRENGTH) {
+					int old_attrib = ACURR(A_STR);
+					ABON(A_STR) -= 1;
+					if (ACURR(A_STR) != old_attrib ||
+	            (objects[obj->otyp].oc_name_known &&
+	                old_attrib != 25 && old_attrib != 3)) {
+						flags.botl = 1;
+					}
+				}
+			}
 		} else if (ubeltworn){
 			You("are already wearing a belt");
-		} else
+		} else {
 		    belt_on(obj);
+			achieve.beltontime = moves;
+			if (obj->otyp == BELT_OF_ENHANCED_STRENGTH) {
+				int old_attrib = ACURR(A_STR);
+				ABON(A_STR) += 1;
+				if (ACURR(A_STR) != old_attrib ||
+            (objects[obj->otyp].oc_name_known &&
+                old_attrib != 25 && old_attrib != 3)) {
+					flags.botl = 1;
+				}
+			}
+		}
 		break;
 	case ARMBANDS_OF_ARCHERY:
 	case ARMBANDS_OF_DEFENSE:
 	case ARMBANDS_OF_UNLIMITED_WISHES:
 	case ARMBANDS_OF_SKILL_AT_ARMS:
 	case REFLECTIVE_ARMBANDS:
-	case LONGARM_ARMBANDS:
-	case SPELLGUARD_ARMBANDS:
-		if (obj == ubracerworn) {
+		if (Race_if(PM_ETHEREALOID)) {
+			You("cannot wear these armbands");
+		} else if (youracedata->msize != obj->objsize) {
+			You("cannot fit these armbands");
+		} else if (obj == ubracerworn) {
 		    if (!cursed(obj)) bracer_off(obj);
 		} else if (ubracerworn){
-			You("are already wearing a pair of bracers");
-		} else
+			You("are already wearing a pair of armbands");
+		} else {
 		    bracer_on(obj);
+			achieve.bracerontime = moves;
+			if (obj->otyp == ARMBANDS_OF_ARCHERY) {
+				unrestrict_weapon_skill(P_CROSSBOW);
+				unrestrict_weapon_skill(P_BOW);
+			} else if (obj->otyp == ARMBANDS_OF_SKILL_AT_ARMS) {
+				unrestrict_weapon_skill(P_LONG_SWORD);
+				unrestrict_weapon_skill(P_SABER);
+				unrestrict_weapon_skill(P_BOW);
+			} else if (obj->otyp == ARMBANDS_OF_UNLIMITED_WISHES) {
+				You("feel as if you could wish for anything!");
+				if (!objects[obj->otyp].oc_name_known) {
+					makeknown(obj->otyp);
+				}
+			}
+		}
 		break;
 	case FORCE_SWORD:
 		res = use_force_sword(obj);

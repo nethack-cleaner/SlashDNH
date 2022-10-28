@@ -1146,11 +1146,8 @@ int curse_bless;
 	    if (is_cursed) {
 		stripspe(obj);
 	    } else {
-		int lim = (obj->otyp == WAN_WISHING) ? 3 :
+		int lim = (obj->otyp == WAN_WISHING || obj->otyp == WAN_MAGIC_MAPPING) ? 3 :
 			(objects[obj->otyp].oc_dir != NODIR) ? 8 : 15;
-		if (obj->otyp == WAN_MAGIC_MAPPING) {
-			lim = 2;
-		}
 
 		n = (lim == 3) ? 3 : rn1(5, lim + 1 - 5);
 		if (!is_blessed) n = rnd(n);

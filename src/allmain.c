@@ -550,7 +550,7 @@ boolean affect_game_state;
 
 			/* these only apply if you didn't attack this action */
 			if (!u.uattked) {
-				if(uwep && uwep->oartifact == ART_TENSA_ZANGETSU){
+				if((uwep && uwep->oartifact == ART_TENSA_ZANGETSU) || achieve.shadowwalk > moves){
 					MOVECOST(NORMAL_SPEED/12);
 				} else if(uwep && uwep->oartifact == ART_SODE_NO_SHIRAYUKI){
 					MOVECOST(NORMAL_SPEED/4);
@@ -580,6 +580,9 @@ boolean affect_game_state;
 
 		case MOVE_ATTACKED:
 			current_cost = NORMAL_SPEED;
+			if (achieve.shadowwalk > moves) {
+				achieve.shadowwalk = moves - 1;
+			}
 
 			/* some weapons are faster */
 			/*  Note: Fire brand is a fast weapon, and works with frost brand in the main hand */
@@ -803,8 +806,11 @@ you_calc_movement()
 	}
 	if(active_glyph(ANTI_CLOCKWISE_METAMORPHOSIS) || achieve.clockarc)
 		moveamt += 3;
-	if(u.uuur_duration || achieve.clockarc)
+	if(u.uuur_duration || achieve.clockarc || moves < achieve.swiftness || moves < achieve.agressivestrike)
 		moveamt += 6;
+	if (achieve.patientdefense > moves) {
+		moveamt = max(moveamt-2,1);
+	}
 	//Apply level wide templates
 	//end: Apply level wide templates
 	if(uwep && is_lightsaber(uwep) && litsaber(uwep) && activeFightingForm(FFORM_SORESU)){
@@ -1078,12 +1084,20 @@ you_regen_hp()
 			perX += vmod;
 		}
 	}
-	if (on_level(&u.uz, &abyss3_level)) {
-		if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
-		} else {
-			if (*hp > 4) {
-				*hp -= 4;
+	if (!u.uevent.passed_abyss3_level) {
+		if (*hp > 10) {
+			if (achieve.demogorgonmet) {
+				perX = (-1) * HEALCYCLE;
 			}
+			if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
+			} else if (Is_dagon_level(&u.uz)) {
+				perX = (-4) * HEALCYCLE;
+			}
+		}
+	}
+	if (achieve.rescuemission > moves) {
+		if ((*hp) < ((*hpmax) + 9)) {
+			*hp += 10;
 		}
 	}
 

@@ -41,6 +41,7 @@ STATIC_DCL int FDECL(spellhunger, (int));
 STATIC_DCL int FDECL(isqrt, (int));
 STATIC_DCL boolean FDECL(run_maintained_spell, (int));
 STATIC_DCL boolean FDECL(can_maintain_spell, (int));
+STATIC_DCL char * FDECL(spiritPowerText, (int, char *));
 
 long FDECL(doreadstudy, (const char *));
 
@@ -1232,6 +1233,155 @@ static const struct spirit_power spirit_powers[NUMBER_POWERS] = {
 	"Use Gnostic Premonition despite having spirits bound." }
 };
 
+static const struct spirit_power altspirit_powers[NUMBER_POWERS] = {
+	{ SEAL_AHAZU, "Halo of Fire",
+	"You shroud yourself in a wreath of flame. Any opponent that strikes you in melee takes fire damage, unless it is using a reach weapon. You can also deal fire damage with each melee attack you make." },
+	{ SEAL_AMON, "Fire Breath",
+	"Breathe a ray of fire, much like a red dragon." },
+	{ SEAL_ANDREALPHUS, "Transdimensional Ray",
+	"Fire a beam that passes through walls, teleports struck monsters, and deals damage to them." },
+	{ SEAL_ANDREALPHUS, "Teleport",
+	"You teleport, with no hunger cost." },
+	{ SEAL_ANDROMALIUS, "Jester's Mirth",
+	"Immobilize a single adjacent monster with laughter. They will be vulnerable to sneak attacks while immobilized." },
+	{ SEAL_ANDROMALIUS, "Thief's Instincts",
+	"Detect hidden doors and traps." },
+	{ SEAL_ASTAROTH, "Astaroth's Assembly",
+	"Project a beam up to 5 spaces in the chosen direction. A electrical explosion centers on the first target struck. The further away the target, the less damage dealt. You gain increased AC in inverse proportion to the damage dealt." },
+	{ SEAL_ASTAROTH, "Astaroth's Shards",
+	"Fire a barrage of shuriken along random ranks. You take a little damage." },
+	{ SEAL_BALAM, "Icy Glare",
+	"Deal ice damage to the first target in the indicated direction, and half damage to all targets in a ~90 degree wedge centered on the chosen direction. Blinds you for 5 turns." },
+	{ SEAL_BALAM, "Balam's Anointing",
+	"Make a touch attack against a single adjacent creature and deals cold damage. A target with a head and without thick skin may be killed outright. A target with a head, eyes, and thick skin instead takes double damage and is blinded." },
+	{ SEAL_BERITH, "Blood Mercenary",
+	"Fire a beam dealing non-elemental damage in a chosen direction. You lose gold equal to the total damage dealt by this attack." },
+	{ SEAL_BERITH, "Sow Discord",
+	"Monsters on the level attack each other for a handful of turns." },
+	{ SEAL_BUER, "Gift of Healing",
+	"Heal single adjacent target. May also be used to heal yourself." },
+	{ SEAL_BUER, "Gift of Health",
+	"Clear most status ailments from single adjacent target. May also be used to remove status ailments from yourself." },
+	{ SEAL_CHUPOCLOPS, "Throw webbing",
+	"Throw a ball of webbing in a chosen direction." },
+	{ SEAL_DANTALION, "Thought Travel",
+	"Teleport to chosen creature you can sense telepathically." },
+	{ SEAL_DANTALION, "Dread of Dantalion",
+	"Cause all monsters in line-of-sight to flee from you." },
+	{ SEAL_SHIRO, "Earth Swallow",
+	"Create a pit in target adjacent square, then throw a boulder into the pit." },
+	{ SEAL_ECHIDNA, "Echidna's Venom",
+	"Spit acid in the chosen direction." },
+	{ SEAL_ECHIDNA, "Sing Lullaby",
+	"Attempt to tame chosen adjacent monster. Monsters must not be mindless and must be an animal or monstrous." },
+	{ SEAL_EDEN, "Purifying Blast",
+	"A powerful multi-hit attack. Deals damage with a large knockback, followed by a fireball. The blast must be charged, rendering you temporarily immobile. While immobile, you have improved AC." },
+	{ SEAL_EDEN, "Recall to Eden",
+	"Attempt to remove an adjacent monster from the game. Probability of success is based on your relative HP totals. You will recover some HP if the attack succeeds, but you will not gain XP for the kill, and much of the monster's inventory will disappear with it." },
+	{ SEAL_EDEN, "Stargate",
+	"Branchport. Drains your energy. This must be charged, rendering you temporarily immobile. While immobile, you have improved AC." },
+	{ SEAL_ENKI, "Walk among Thresholds",
+	"Teleport to a chosen doorway." },
+	{ SEAL_ENKI, "Geyser",
+	"Blast an adjacent monster with a geyser from the abzu, dealing damage and wetting their inventory." },
+	{ SEAL_EURYNOME, "Vengeance",
+	"Damage all adjacent creatures that have damaged you with their attacks." },
+	{ SEAL_EURYNOME, "Shape the Wind",
+	"Create a number of temporary pets. These pets vanish after five turns." },
+	{ SEAL_EVE, "Thorns and Stones",
+	"You create a small stack of ammunition for your currently wielded ranged weapon, and take a small amount of damage." },
+	{ SEAL_EVE, "Barrage",
+	"Fire a large number of projectiles." },
+	{ SEAL_FAFNIR, "Breathe Poison",
+	"Create a stinking cloud centered at the chosen location." },
+	{ SEAL_FAFNIR, "Ruinous Strike",
+	"You dig out and untraps target adjacent square, or moderately damages target adjacent nonliving creature, or destroys target adjacent golem." },
+	{ SEAL_HUGINN_MUNINN, "Raven's Talons",
+	"Permanently blinds single adjacent target, while dealing damage. Deals less damage against a blind or sightless target." },
+	{ SEAL_IRIS, "Horrid Wilting",
+	"You suck moisture out of a single adjacent target, healing yourself for a like amount. Nonliving and anhydrous creatures are immune to this attack." },
+	{ SEAL_IRIS, "Horrid Rainbow",
+	"You turn animals, humanoids, and humans near you (as turn undead)." },
+	{ SEAL_JACK, "Refill Lantern",
+	"Add some fuel to a wielded oil lamp or lightsaber." },
+	{ SEAL_JACK, "Hellfire",
+	"Create a moderately-damaging explosion of fire centered on the chosen square. Requires you to wield a lit potion of oil, oil lamp, or lightsaber." },
+	{ SEAL_MALPHAS, "Call Murder",
+	"Summon a tame crow. The crow's level is based on your level." },
+	{ SEAL_MARIONETTE, "Root Shout",
+	"Fire a moderately damaging beam of force in the chosen direction. The beam digs through walls." },
+	{ SEAL_MARIONETTE, "Yank Wires",
+	"You flings yourself in the chosen direction." },
+	{ SEAL_MOTHER, "Disgusted Gaze",
+	"One chosen target is struck by lightning, and nearby targets may be paralyzed. You must not be wearing gloves or a mummy wrapping." },
+	{ SEAL_NABERIUS, "Bloody Tongue",
+	"Cause a chosen single adjacent monster to flee." },
+	{ SEAL_NABERIUS, "Silver Tongue",
+	"Tame a chosen single adjacent monster." },
+	{ SEAL_ORTHOS, "Exhalation of the Rift",
+	"You exhale a damaging line of wind in the chosen direction, knocked creatures back. The line is wide; monsters on the edge take reduced damage." },
+	{ SEAL_OSE,				"Querient Thoughts",		
+	"You release a blast of psychic static that damages all telepathic monsters on the level, and may damage other monsters." },
+	{ SEAL_OSE,				"Great Leap",				
+	"You level teleport, at the cost of hunger." },
+	{ SEAL_OTIAX,			"Open",						
+	"Open a door in any solid surface, regardless of whether there was actually a door there. This damages monsters, with a chance to instantly kill them by releasing their innards." },
+	{ SEAL_PAIMON,			"Read Spell",				
+	"Cast a spell from a wielded spellbook." },
+	{ SEAL_PAIMON,			"Book Telepathy",			
+	"Detect spellbooks on the current level." },
+	{ SEAL_SIMURGH,			"Unite the Earth and Sky",	
+	"Create a tree or fills a pit with water in the chosen adjacent square." },
+	{ SEAL_SIMURGH,			"Hook in the Sky",			
+	"You rise through the ceiling." },
+	{ SEAL_SIMURGH,			"Enlightenment",			
+	"You benefit from enlightenment." },
+	{ SEAL_TENEBROUS,		"Damning Darkness",			
+	"Damage all non-undead, non-demonic, non-drain resistant creatures standing near you. Creatures in a lit square are more heavily damaged. Makes the surrounding squares dark." },
+	{ SEAL_TENEBROUS,		"Touch of the Void",		
+	"Make a touch attack to drain levels from target adjacent creature." },
+	{ SEAL_TENEBROUS,		"Echoes of the Last Word",	
+	"Remove target adjacent non-unique life-drain resistant, non-genocidable, or demonic creature from the game. Teleports target adjacent unique life-drain resistant, non-genocidable, or demonic creature to a random dungeon level." },
+	{ SEAL_YMIR,			"Poison Gaze",				
+	"Deal damage to a single target creature with a poison-elemental gaze attack." },
+	{ SEAL_YMIR,			"Gap Step",					
+	"You begin levitating." },
+	{ SEAL_SPECIAL|SEAL_DAHLVER_NAR,		"Moan",						
+	"You frighten, confuse, and/or drive nearby creatures insane." },
+	{ SEAL_SPECIAL|SEAL_ACERERAK,			"Swallow Soul",				
+	"You suck out and consume the soul of one adjacent living creature that doesn't resist draining and is of lower level than you. This will repair one lost level, or heal you." },
+	{ SEAL_SPECIAL|SEAL_COUNCIL,			"Embassy of Elements",		
+	"Bind any spirit of the near void you have previously contacted, without needing a binding ritual." },
+	{ SEAL_SPECIAL|SEAL_COSMOS,				"Crystal Memories",			
+	"Summon a dead unique monster to aid you for 5 turns." },
+	{ SEAL_SPECIAL|SEAL_LIVING_CRYSTAL,		"Pseudonatural Surge",		
+	"Attack everything around yourself with tentacles." },
+	{ SEAL_SPECIAL|SEAL_TWO_TREES,			"Silver dew of Telperion",	
+	"Deal damage to an adjacent monster, greatly increased to those vulnerable to silver. Friendly creatures are healed, instead." },
+	{ SEAL_SPECIAL|SEAL_TWO_TREES,			"Golden dew of Laurelin",	
+	"Deal damage to an adjacent monster, greatly increased to those vulnerable to holy. Friendly creatures are invigorated, instead." },
+	{ SEAL_SPECIAL|SEAL_NUDZIRATH,			"Mirror Shatter",			
+	"Shatter a wielded mirror, dealing damage and shattering other mirrors in that direction." },
+	{ /*SEAL_SPECIAL|SEAL_NUDZIRATH*/0L,			"Mirror Walk",				
+	"ERROR 404: description not found." },
+	{ SEAL_SPECIAL|SEAL_ALIGNMENT_THING,	"Flowing Forms",			
+	"Zap a beam of polymorph in a specified direction." },
+	{ SEAL_SPECIAL|SEAL_UNKNOWN_GOD,		"Phase step",				
+	"You can briefly walk through walls." },
+	{ SEAL_SPECIAL|SEAL_BLACK_WEB,			"Black Bolt",				
+	"Fire a powerful bolt of shadow. This bolt poisons, ignores armor, and ensnares creatures hit in a web." },
+	{ SEAL_SPECIAL|SEAL_BLACK_WEB,			"Weave a Black Web",		
+	"Make additional shadowblade attacks to everything around you for a few turns." },
+	{ SEAL_SPECIAL|SEAL_NUMINA,				"Identify",					
+	"Identify your inventory." },
+	{ SEAL_SPECIAL|SEAL_NUMINA,				"Clairvoyance",				
+	"Map the local area." },
+	{ SEAL_SPECIAL|SEAL_NUMINA,				"Find Path",				
+	"Detect nearby magic portals." },
+	{ SEAL_SPECIAL|SEAL_NUMINA,				"Gnosis Premonition",		
+	"Use Gnostic Premonition despite having spirits bound." }
+};
+
 int
 pick_council_seal()
 {
@@ -2132,40 +2282,45 @@ spiriteffects(power, atme)
 	boolean reveal_invis = FALSE;
 	switch(power){
 		case PWR_ABDUCTION:{
-			struct monst *mon;
-			if (!getdir((char *)0) || !(u.dx || u.dy)) return MOVE_CANCELLED;
-			if(isok(u.ux+u.dx, u.uy+u.dy)) {
-				mon = m_at(u.ux+u.dx, u.uy+u.dy);
-				if(!mon){
+			if (achieve.altbind[AHAZU - FIRST_SEAL]) {
+				achieve.halooffire = moves + 15;
+				You("Your firey glow increases greatly! There is a visible halo of fire over your entire body");
+			} else {
+				struct monst *mon;
+				if (!getdir((char *)0) || !(u.dx || u.dy)) return MOVE_CANCELLED;
+				if(isok(u.ux+u.dx, u.uy+u.dy)) {
+					mon = m_at(u.ux+u.dx, u.uy+u.dy);
+					if(!mon){
+						pline("There is no target there.");
+						break;
+					}
+					if(mon->uhurtm && (mon->data->geno&G_GENO || mon->mhp < .1*mon->mhpmax) && !(is_rider(mon->data) || mon->data->msound == MS_NEMESIS)){
+	#define MAXVALUE 24
+						extern const int monstr[];
+						int value = min(monstr[monsndx(mon->data)] + 1,MAXVALUE);
+						Your("shadow flows under %s, swallowing %s up!",mon_nam(mon),mhim(mon));
+						cprefx(monsndx(mon->data), TRUE, TRUE);
+						cpostfx(monsndx(mon->data), FALSE, TRUE, FALSE);
+						if(godlist[u.ualign.god].anger) {
+							godlist[u.ualign.god].anger -= ((value * (u.ualign.type == A_CHAOTIC ? 2 : 3)) / MAXVALUE);
+							if(godlist[u.ualign.god].anger < 0) godlist[u.ualign.god].anger = 0;
+						} else if(u.ualign.record < 0) {
+							if(value > MAXVALUE) value = MAXVALUE;
+							if(value > -u.ualign.record) value = -u.ualign.record;
+							adjalign(value);
+						} else if (u.ublesscnt > 0) {
+							u.ublesscnt -=
+							((value * (u.ualign.type == A_CHAOTIC ? 500 : 300)) / MAXVALUE);
+							if(u.ublesscnt < 0) u.ublesscnt = 0;
+						}
+						mongone(mon);
+					} else {
+						Your("shadow flows under %s, but nothing happens.",mon_nam(mon));
+					}
+				} else {
 					pline("There is no target there.");
 					break;
 				}
-				if(mon->uhurtm && (mon->data->geno&G_GENO || mon->mhp < .1*mon->mhpmax) && !(is_rider(mon->data) || mon->data->msound == MS_NEMESIS)){
-#define MAXVALUE 24
-					extern const int monstr[];
-					int value = min(monstr[monsndx(mon->data)] + 1,MAXVALUE);
-					Your("shadow flows under %s, swallowing %s up!",mon_nam(mon),mhim(mon));
-					cprefx(monsndx(mon->data), TRUE, TRUE);
-					cpostfx(monsndx(mon->data), FALSE, TRUE, FALSE);
-					if(godlist[u.ualign.god].anger) {
-						godlist[u.ualign.god].anger -= ((value * (u.ualign.type == A_CHAOTIC ? 2 : 3)) / MAXVALUE);
-						if(godlist[u.ualign.god].anger < 0) godlist[u.ualign.god].anger = 0;
-					} else if(u.ualign.record < 0) {
-						if(value > MAXVALUE) value = MAXVALUE;
-						if(value > -u.ualign.record) value = -u.ualign.record;
-						adjalign(value);
-					} else if (u.ublesscnt > 0) {
-						u.ublesscnt -=
-						((value * (u.ualign.type == A_CHAOTIC ? 500 : 300)) / MAXVALUE);
-						if(u.ublesscnt < 0) u.ublesscnt = 0;
-					}
-					mongone(mon);
-				} else {
-					Your("shadow flows under %s, but nothing happens.",mon_nam(mon));
-				}
-			} else {
-				pline("There is no target there.");
-				break;
 			}
 		}break;
 		case PWR_FIRE_BREATH:{
@@ -5004,14 +5159,14 @@ int respect_timeout;
 						if (u.spiritPOrder[i] == -1) continue;
 						if (spirit_powers[u.spiritPOrder[i]].owner == u.spirit[s]){
 							if (action != SPELLMENU_CAST || u.spiritPColdowns[u.spiritPOrder[i]] < monstermoves || !respect_timeout){
-								Sprintf1(buf, spirit_powers[u.spiritPOrder[i]].name);
+								Sprintf1(buf, spiritPowerText(u.spiritPOrder[i], "name"));
 								any.a_int = u.spiritPOrder[i] + 1;	/* must be non-zero */
 								add_menu(tmpwin, NO_GLYPH, &any,
 									i < 26 ? 'a' + (char)i : 'A' + (char)(i - 26),
 									0, ATR_NONE, buf, MENU_UNSELECTED);
 							}
 							else {
-								Sprintf(buf, " %2ld %s", u.spiritPColdowns[u.spiritPOrder[i]] - monstermoves + 1, spirit_powers[u.spiritPOrder[i]].name);
+								Sprintf(buf, " %2ld %s", u.spiritPColdowns[u.spiritPOrder[i]] - monstermoves + 1, spiritPowerText(u.spiritPOrder[i], "name"));
 								add_menu(tmpwin, NO_GLYPH, &anyvoid, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 							}
 							p++;
@@ -5030,14 +5185,14 @@ int respect_timeout;
 					(spirit_powers[u.spiritPOrder[i]].owner & u.specialSealsActive & ~SEAL_SPECIAL)))
 					){
 					if (action != SPELLMENU_CAST || u.spiritPColdowns[u.spiritPOrder[i]] < monstermoves || !respect_timeout){
-						Sprintf1(buf, spirit_powers[u.spiritPOrder[i]].name);
+						Sprintf1(buf, spiritPowerText(u.spiritPOrder[i], "name"));
 						any.a_int = u.spiritPOrder[i] + 1;	/* must be non-zero */
 						add_menu(tmpwin, NO_GLYPH, &any,
 							i < 26 ? 'a' + (char)i : 'A' + (char)(i - 26),
 							0, ATR_NONE, buf, MENU_UNSELECTED);
 					}
 					else {
-						Sprintf(buf, " %2ld %s", u.spiritPColdowns[u.spiritPOrder[i]] - monstermoves + 1, spirit_powers[u.spiritPOrder[i]].name);
+						Sprintf(buf, " %2ld %s", u.spiritPColdowns[u.spiritPOrder[i]] - monstermoves + 1, spiritPowerText(u.spiritPOrder[i], "name"));
 						add_menu(tmpwin, NO_GLYPH, &anyvoid, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 					}
 					p++;
@@ -5129,9 +5284,9 @@ int respect_timeout;
 					{
 						tmpwin = create_nhwindow(NHW_TEXT);
 						Sprintf(buf, "%s %s", s_suffix(sealName(decode_sealID(spirit_powers[p_no].owner) - FIRST_SEAL)),
-							spirit_powers[p_no].name);
+							spiritPowerText(p_no, "name"));
 						putstr(tmpwin, 0, buf);
-						putstr(tmpwin, 0, spirit_powers[p_no].desc);
+						putstr(tmpwin, 0, spiritPowerText(p_no, "desc"));
 						display_nhwindow(tmpwin, FALSE);
 						destroy_nhwindow(tmpwin);
 					}
@@ -6324,7 +6479,6 @@ const char *prompt;
 	return 0;
 }
 
-
 void
 set_spirit_powers(spirits_seal)
 	long spirits_seal;
@@ -6483,6 +6637,29 @@ doreinforce_spell()
 		return TRUE;
 	}
 	return FALSE;
+}
+
+char *
+spiritPowerText(powerNum, nameordesc)
+int powerNum;
+char *nameordesc;
+{
+	int sealNum;
+	if (powerNum == 0) {
+		sealNum = AHAZU - FIRST_SEAL;
+	}
+    if (achieve.altbind[sealNum]) {
+		if (!strcmp(nameordesc, "name")) {
+			return (char *) altspirit_powers[powerNum].name;
+		} else {
+			return (char *) altspirit_powers[powerNum].desc;
+		}
+    }
+	if (!strcmp(nameordesc, "name")) {
+		return (char *) spirit_powers[powerNum].name;
+	} else {
+		return (char *) spirit_powers[powerNum].desc;
+	}
 }
 
 boolean

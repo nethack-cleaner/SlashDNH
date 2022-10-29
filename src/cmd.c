@@ -729,6 +729,10 @@ boolean techniqueonly;
 	}
 	}
 
+	if (achieve.demonproperty1h == 3 || achieve.demonproperty2h == 3 || achieve.demonproperty2h == 3) {
+		atleastone = TRUE;
+		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Hell's curse prevents you from using techniques", MENU_UNSELECTED);
+	} else {
 	if (Role_if(PM_JEDI)) {
 		atleastone = TRUE;
 		if (achieve.introquest) {
@@ -783,6 +787,7 @@ boolean techniqueonly;
 				lettertaken[addtech(tmpwin, MATTK_AGRESSIVESTRIKE, freeletter(lettertaken, 'a'), "Agressive Strikes", 1000, 0, 50)] = TRUE;
 			}
 		}
+	}
 	}
 	// end: check for item based techniques
 
@@ -3941,7 +3946,6 @@ addtech(tmpwin, ky, letter, txt, timeout, othertimeout, energycost)
 {
 	anything any;
 	any.a_void = 0;		/* zero out all bits */
-	any.a_int = ky;
 	
 	if (achieve.lightsaberpro && timeout >= 1000) {
 		timeout -= 500;
@@ -3950,30 +3954,32 @@ addtech(tmpwin, ky, letter, txt, timeout, othertimeout, energycost)
 	if (othertimeout > moves) {
 		char buf[BUFSZ];
 		Sprintf(buf, "%s (Waiting to attune)", txt);
-		add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 	} else if (!achieve.techs[ky] || achieve.techs[ky] + timeout < moves) {
+		any.a_int = ky;
 		add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, txt, MENU_UNSELECTED);
 	} else {
 		if (energycost > 1 && u.uen >= energycost) {
 			char buf[BUFSZ];
 			Sprintf(buf, "%s (Use %d energy)", txt, energycost);
+			any.a_int = ky;
 			add_menu(tmpwin, NO_GLYPH, &any, letter, 0, ATR_NONE, buf, MENU_UNSELECTED);
 		} else if (achieve.techs[ky] + (timeout - 60) < moves) {
 			char buf[BUFSZ];
 			Sprintf(buf, "%s (Soon)", txt);
-			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 		} else if (achieve.techs[ky] + (timeout - 400) < moves) {
 			char buf[BUFSZ];
 			Sprintf(buf, "%s (Half Cooldown)", txt);
-			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 		} else if (achieve.techs[ky] + (timeout - 1500) < moves) {
 			char buf[BUFSZ];
 			Sprintf(buf, "%s (Cooldown)", txt);
-			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 		} else {
 			char buf[BUFSZ];
 			Sprintf(buf, "%s (Long Cooldown)", txt);
-			add_menu(tmpwin, NO_GLYPH, &any, -1, 0, ATR_NONE, buf, MENU_UNSELECTED);
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 		}
 	}
 	return letcount(letter);

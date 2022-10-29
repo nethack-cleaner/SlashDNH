@@ -1815,7 +1815,7 @@ int vis;
 	char buf[BUFSZ];
 	/* monster displacement */
 	if (!youdef &&
-		mon_resistance(mdef, DISPLACED) &&
+		(mon_resistance(mdef, DISPLACED) || achieve.demonproperty1h == 6 || achieve.demonproperty2h == 6 || achieve.demonproperty3h == 6) &&
 		!(weapon && check_oprop(weapon, OPROP_SFLMW)) &&
 		!(youagr && u.ustuck && u.ustuck == mdef) &&
 		!(youagr && u.uswallow) &&

@@ -513,6 +513,41 @@ boolean dumping;
 			enl_msg(prebuf, "can", "could", buf);
 		}
 	}
+	/* demon problems */
+	if (!u.uevent.passed_abyss3_level) {
+		if (Is_dagon_level(&u.uz)) {
+			you_have("Dagon's aura, making you lose 4hp/turn");
+		} else if (achieve.demogorgonmet) {
+			you_have("Demogorgon's aura, making you lose 1hp/turn");
+		} else if (achieve.lamashtumet) {
+			you_have("Lamashtu's aura, making you lose 1hp/turn");
+		}
+	}
+	if (achieve.demonproperty1h > 0 && achieve.demonproperty1h < 100) {
+		if (achieve.demonproperty1e > 0 && achieve.demonproperty1e < 100) {
+			Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty1e]);
+			you_have(buf);
+		}
+		Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty1h + 10]);
+		you_have(buf);
+	}
+	if (achieve.demonproperty2h > 0 && achieve.demonproperty2h < 100) {
+		if (achieve.demonproperty2e > 0 && achieve.demonproperty2e < 100) {
+			Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty2e]);
+			you_have(buf);
+		}
+		Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty2h + 10]);
+		you_have(buf);
+	}
+	if (achieve.demonproperty3h > 0 && achieve.demonproperty3h < 100) {
+		if (achieve.demonproperty3e > 0 && achieve.demonproperty3e < 100) {
+			Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty3e]);
+			you_have(buf);
+		}
+		Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty3h + 10]);
+		you_have(buf);
+	}
+	/* end: demon problems */
 
 	/*** Resistances to troubles ***/
 	if (Acid_resistance) you_are("acid resistant");

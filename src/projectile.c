@@ -1873,7 +1873,7 @@ int shotlimit;
 		if (launcher->oartifact == ART_WRATHFUL_SPIDER) multishot += rn2(8);
 		else if (launcher->oartifact == ART_ROGUE_GEAR_SPIRITS) multishot = 2;
 	}
-	if (ubracerworn) {
+	if (launcher && (launcher->otyp == BOW || launcher->otyp == CROSSBOW) && ubracerworn) {
         struct obj *otmp = ubracerworn;
         if (otmp->otyp == ARMBANDS_OF_ARCHERY) {
 			multishot++;

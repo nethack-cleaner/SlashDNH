@@ -902,6 +902,26 @@ const char * haluWard[] =  {
 	"an 'a' encircled by its own tail" /* meta */
 };
 
+char * demonProps[] =  {
+"None", //0
+"Potions heal only half as many points", //1
+"You become Confused periodically", //2
+"Reduced carrying capacity", //3
+"You become Sickened periodically", //4
+"AC is 5 worse", //5
+"Natural regeneration is 1/4th", //6
+"", //7
+"", //8
+"", //9
+"", //10
+"Speed reduced by 2", //11
+"Severe casting failure penalty", //12
+"Cannot use techniques", //13
+"Lose 3 sanity periodically", //14
+"DR reduced by 5", //15
+"All enemies have displacement", //16
+};
+
 //There is a seal of ? inscribed here.
 char * sealNames[] =  {
 	"Ahazu", /* 0 */
@@ -1589,11 +1609,8 @@ register xchar x,y,strt_cnt;
 	xchar cnt;
 
 	/* Headstones are indelible */
-	if(ep && ep->engr_type != HEADSTONE){
-	    if(ep->engr_txt[0] && (ep->engr_type != BURN 
-			|| is_ice(x,y) 
-			|| levl[x][y].typ == SAND)
-		) {
+	if(ep){
+	    if(ep->engr_txt[0]) {
 			if(ep->engr_type != DUST && ep->engr_type != ENGR_BLOOD) {
 				cnt = rn2(1 + 50/(strt_cnt+1)) ? 0 : 1;
 			}
@@ -1602,10 +1619,7 @@ register xchar x,y,strt_cnt;
 			while(ep->engr_txt[0] == ' ')
 				ep->engr_txt++;
 		}
-	    if(ep->ward_id && (ep->ward_type != BURN 
-			|| is_ice(x,y)
-			|| levl[x][y].typ == SAND
-		)) {
+	    if(ep->ward_id) {
 			if(ep->ward_type != DUST && ep->ward_type != ENGR_BLOOD) {
 				cnt = rn2(1 + 50/(strt_cnt+1)) ? 0 : 1;
 			}

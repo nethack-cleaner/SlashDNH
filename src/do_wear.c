@@ -2483,6 +2483,9 @@ base_uac()
 	if (moves < achieve.unstoppable) {
 		uac -= 20;
 	}
+	if (achieve.demonproperty1e == 5 || achieve.demonproperty2e == 5 || achieve.demonproperty3e == 5) {
+		uac -= 5;
+	}
 	if (moves < achieve.rescuemission) {
 		uac -= 2;
 	}
@@ -2691,6 +2694,9 @@ int base_udr()
 	}
 	if (moves < achieve.unstoppable) {
 		udr += 30;
+	}
+	if (achieve.demonproperty1h == 5 || achieve.demonproperty2h == 5 || achieve.demonproperty3h == 5) {
+		udr -= 5;
 	}
 	if (moves < achieve.rescuemission) {
 		udr += 2;

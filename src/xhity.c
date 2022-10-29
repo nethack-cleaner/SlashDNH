@@ -358,6 +358,10 @@ int tary;
 	/* set notonhead */
 	notonhead = (tarx != x(mdef) || tary != y(mdef));
 
+	if (youagr && ward_at(u.ux, u.uy) > 0) {
+        u_wipe_engr(5);
+	}
+
 	/*
 	* Since some characters attack multiple times in one turn,
 	* allow user to specify a count prefix for 'F' to limit

@@ -811,6 +811,9 @@ you_calc_movement()
 	if (achieve.patientdefense > moves) {
 		moveamt = max(moveamt-2,1);
 	}
+	if (achieve.demonproperty1h == 1 || achieve.demonproperty2h == 1 || achieve.demonproperty3h == 1) {
+		moveamt = max(moveamt-2,1);
+	}
 	//Apply level wide templates
 	//end: Apply level wide templates
 	if(uwep && is_lightsaber(uwep) && litsaber(uwep) && activeFightingForm(FFORM_SORESU)){
@@ -1084,9 +1087,29 @@ you_regen_hp()
 			perX += vmod;
 		}
 	}
+	if (achieve.lastpropcheck < moves) {
+		achieve.lastpropcheck = moves;
+		if (achieve.demonproperty1e == 2 || achieve.demonproperty2e == 2 || achieve.demonproperty3e == 2) { // confusion
+			if(rn2(50) > 48 && !Confusion) {
+				You_feel("somewhat dizzy.");
+				make_confused(itimeout_incr(HConfusion, rnd(50)+1), FALSE);
+			}
+		}
+		if (achieve.demonproperty1e == 4 || achieve.demonproperty2e == 4 || achieve.demonproperty3e == 4) { // sickness
+			if (rn2(50) > 48 && !Sick) {
+				make_sick((long)rn1(ACURR(A_CON), 20), "hell's curse", TRUE, SICK_NONVOMITABLE);
+			}
+		}
+		if (achieve.demonproperty1h == 4 || achieve.demonproperty2h == 4 || achieve.demonproperty3h == 4) { // lose 3 sanity
+			if (rn2(50) > 48) {
+				You_feel("a little more insane");
+				change_usanity(-3, TRUE);
+			}
+		}
+	}
 	if (!u.uevent.passed_abyss3_level) {
 		if (*hp > 10) {
-			if (achieve.demogorgonmet) {
+			if (achieve.demogorgonmet || achieve.lamashtumet) {
 				perX = (-1) * HEALCYCLE;
 			}
 			if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
@@ -1098,6 +1121,13 @@ you_regen_hp()
 	if (achieve.rescuemission > moves) {
 		if ((*hp) < ((*hpmax) + 9)) {
 			*hp += 10;
+		}
+	}
+	if (achieve.demonproperty1e == 6 || achieve.demonproperty2e == 6 || achieve.demonproperty3e == 6) {
+		if (perX > 0) {
+			perX = perX / 2;
+		} else if (perX < -5) {
+			perX -= 5;
 		}
 	}
 

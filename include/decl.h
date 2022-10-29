@@ -934,12 +934,16 @@ struct u_achieve {
 		Bitfield(lightsaberpro,1);
 		Bitfield(demogorgonmet,1);
 		Bitfield(lamashtumet,1);
+		int lastpropcheck;
 		int demonproperty1h;
 		int demonproperty2h;
 		int demonproperty3h;
 		int demonproperty1e;
 		int demonproperty2e;
 		int demonproperty3e;
+		int demonproperty1w;
+		int demonproperty2w;
+		int demonproperty3w;
 		int halooffire;
 		int techs[1000];
 		char wishes1[BUFSZ];

@@ -2834,6 +2834,9 @@ weight_cap()
 	if (ubeltworn && ubeltworn->oartifact == ART_GIRDLE_OF_GIANT_STRENGTH) {
 		carrcap += 100;
 	}
+	if (achieve.demonproperty1e == 3 || achieve.demonproperty2e == 3 || achieve.demonproperty3e == 3) {
+		carrcap -= 100;
+	}
 	
 	carrcap += u.ucarinc;
 	if(u.sealsActive&SEAL_FAFNIR) carrcap *= 1+((double) u.ulevel)/100;

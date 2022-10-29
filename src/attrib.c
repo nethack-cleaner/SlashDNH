@@ -1373,7 +1373,7 @@ boolean check;
 	if(discover || wizard)
 		pline("Sanity change: %d + %d", u.usanity, delta);
 	u.usanity += delta;
-	if(!u.umadness && u.usanity < 50)
+	if((!u.umadness && achieve.demonproperty1h != 4 && achieve.demonproperty2h != 4 && achieve.demonproperty3h != 4) && u.usanity < 50)
 		u.usanity = 50;
 	else if(u.usanity < 0)
 		u.usanity = 0;

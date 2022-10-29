@@ -1409,6 +1409,9 @@ healup(nhp, nxtra, curesick, cureblind)
     }
 	if(active_glyph(RADIANCE))
 		nhp *= 1.3;
+	if (achieve.demonproperty1e == 1 || achieve.demonproperty2e == 1 || achieve.demonproperty3e == 1) {
+		nhp = nhp / 2;
+	}
 	if (nhp) {
 		if (Upolyd) {
 			hp = &u.mh;
@@ -1419,8 +1422,8 @@ healup(nhp, nxtra, curesick, cureblind)
 		}
 		*hp += nhp;
 		if (*hp > *hpmax) {
-			if (achieve.lamashtumet && !u.uevent.passed_abyss3_level) {
-				nxtra = 0;
+			if (achieve.demonproperty1e == 1 || achieve.demonproperty2e == 1 || achieve.demonproperty3e == 1) {
+				nxtra = nxtra / 2;
 			}
 			if(u.uhpmod < 0){
 				if(u.uhpmod + nxtra > 0){

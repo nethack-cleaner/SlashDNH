@@ -6305,6 +6305,15 @@ int spell;
 		chance = min(100, chance);
 		if(dist < 100) chance -= 100-dist;
 	}
+	if (chance >= 10) {
+		if (achieve.demonproperty1h == 2 || achieve.demonproperty2h == 2 || achieve.demonproperty2h == 2) {
+			if (chance > 100) {
+				chance = 95;
+			} else {
+				chance -= 10;
+			}
+		}
+	}
 	
 	//Panic can be overcome by Naen
 	if(Panicking && spell_skilltype(spellid(spell)) != P_ESCAPE_SPELL && !emergency_spell(spell)){

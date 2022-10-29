@@ -14,6 +14,7 @@ STATIC_DCL void FDECL(trycall, (struct obj *));
 # endif /* OVLB */
 STATIC_DCL void FDECL(dosinkring, (struct obj *));
 #endif /* SINKS */
+STATIC_DCL void FDECL(demonAssign, (int));
 
 STATIC_PTR int NDECL(wipeoff);
 
@@ -1188,6 +1189,46 @@ register xchar x, y;
 */
 
 void
+demonAssign(hellCode)
+int hellCode;
+{
+	if (!achieve.demonproperty1h || (!achieve.demonproperty2h && achieve.demonproperty1w != hellCode) || (!achieve.demonproperty3h && achieve.demonproperty1w != hellCode && achieve.demonproperty2w != hellCode)) {
+		if (!achieve.demonproperty1h) {
+			achieve.demonproperty1w = hellCode;
+			achieve.demonproperty1e = 1 + rn2(5);
+			achieve.demonproperty1h = 1 + rn2(5);
+		} else if (!achieve.demonproperty2h) {
+			achieve.demonproperty2w = hellCode;
+			while (!achieve.demonproperty2e || achieve.demonproperty1e == achieve.demonproperty2e || ((achieve.demonproperty1e - 100) == achieve.demonproperty2e)) {
+				achieve.demonproperty2e = 1 + rn2(5);
+			}
+			while (!achieve.demonproperty2h || achieve.demonproperty1h == achieve.demonproperty2h || ((achieve.demonproperty1h - 100) == achieve.demonproperty2h)) {
+				achieve.demonproperty2h = 1 + rn2(5);
+			}
+		} else if (!achieve.demonproperty3h) {
+			achieve.demonproperty3w = hellCode;
+			while (!achieve.demonproperty3e || achieve.demonproperty1e == achieve.demonproperty3e || ((achieve.demonproperty1e - 100) == achieve.demonproperty3e) || achieve.demonproperty2e == achieve.demonproperty3e || ((achieve.demonproperty2e - 100) == achieve.demonproperty3e)) {
+				achieve.demonproperty3e = 1 + rn2(5);
+			}
+			while (!achieve.demonproperty3h || achieve.demonproperty1h == achieve.demonproperty3h || ((achieve.demonproperty1h - 100) == achieve.demonproperty3h) || achieve.demonproperty2h == achieve.demonproperty3h || ((achieve.demonproperty2h - 100) == achieve.demonproperty3h)) {
+				achieve.demonproperty3h = 1 + rn2(5);
+			}
+		}
+		if (achieve.demonproperty1h == 6 || achieve.demonproperty2h == 6 || achieve.demonproperty3h == 6) {
+			if (achieve.demonproperty1e > 0 && achieve.demonproperty1e < 100) {
+				achieve.demonproperty1e += 1000;
+			}
+			if (achieve.demonproperty2e > 0 && achieve.demonproperty2e < 100) {
+				achieve.demonproperty2e += 1000;
+			}
+			if (achieve.demonproperty3e > 0 && achieve.demonproperty3e < 100) {
+				achieve.demonproperty3e += 1000;
+			}
+		}
+	}
+}
+
+void
 goto_level(newlevel, at_stairs, falling, portal)
 d_level *newlevel;
 boolean at_stairs, falling;
@@ -1207,6 +1248,22 @@ int portal;
 	if(Is_nowhere(&u.uz) && !flags.phasing) return;
 	if(In_adventure_branch(&u.uz) && In_tower(newlevel)) up = TRUE;
 	if(In_adventure_branch(newlevel) && In_tower(&u.uz)) up = FALSE;
+
+	if (on_level(newlevel, &hell1_level)) {
+		demonAssign(1);
+	}
+	if (on_level(newlevel, &hell2_level)) {
+		demonAssign(2);
+	}
+	if (on_level(newlevel, &abyss1_level)) {
+		demonAssign(3);
+	}
+	if (on_level(newlevel, &abyss2_level)) {
+		demonAssign(4);
+	}
+	if (on_level(newlevel, &abyss3_level)) {
+		demonAssign(5);
+	}
 
 	if (dunlev(newlevel) > dunlevs_in_dungeon(newlevel))
 		newlevel->dlevel = dunlevs_in_dungeon(newlevel);

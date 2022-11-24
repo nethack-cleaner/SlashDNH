@@ -3312,6 +3312,8 @@ int *shield_margin;
 			} else warnpanic = 0L;
 		}
 	}
+	if(weapon && weapon->otyp == PSIONIC_PULSE)
+		wepn_acc += 1000;
 	/* other attacker-related accuracy bonuses */
 	if (magr) {
 		/* Small monsters are more accurate */
@@ -3588,7 +3590,7 @@ int *shield_margin;
 			wepn_acc += hitval(weapon, mdef, magr);
 			/* Houchou always hits when thrown */
 			if (weapon->oartifact == ART_HOUCHOU && thrown)
-				wepn_acc += 1000;
+				wepn_acc += 1000;	
 
 			/* -4 accuracy per weapon size too large (not for thrown objects) */
 			if (!thrown){
@@ -11391,7 +11393,7 @@ int vis;
 			pline("%s attacks you with a beam of reflected light!", Monnam(magr));
 			stop_occupation();
 
-			if (canseemon(magr) && !resists_blnd(&youmonst)) {
+			if (canseemon(magr) && !resists_blnd(&youmonst) && !Reflecting) {
 				You("are blinded by %s beam!", s_suffix(mon_nam(magr)));
 				make_blinded((long)dmg, FALSE);
 			}
@@ -13758,7 +13760,7 @@ int vis;						/* True if action is at all visible to the player */
 					adjalign(5);
 				}
 			}
-			else if ((u.ualign.type == A_LAWFUL) && !Race_if(PM_ORC) &&
+			else if ((u.ualign.type == A_LAWFUL) && !Race_if(PM_ORC) && !Role_if(PM_ANACHRONOUNBINDER) &&
 				!((Race_if(PM_DROW) && !flags.initgend &&
 						(Role_if(PM_PRIEST) || Role_if(PM_ROGUE) || Role_if(PM_RANGER) || Role_if(PM_WIZARD)))
 				  || ((Race_if(PM_HUMAN) || Race_if(PM_INHERITOR) || Race_if(PM_INCANTIFIER) || Race_if(PM_HALF_DRAGON)) && (Pantheon_if(PM_RANGER) || Role_if(PM_RANGER)))

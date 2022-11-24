@@ -1251,18 +1251,33 @@ int portal;
 
 	if (on_level(newlevel, &hell1_level)) {
 		demonAssign(1);
+		if (!achieve.dphell1 || achieve.dphell1 < 1) {
+			achieve.dphell1 = 1 + rn2(7);
+		}
 	}
 	if (on_level(newlevel, &hell2_level)) {
 		demonAssign(2);
+		if (!achieve.dphell2 || achieve.dphell2 < 1) {
+			achieve.dphell2 = 1 + rn2(7);
+		}
 	}
 	if (on_level(newlevel, &abyss1_level)) {
 		demonAssign(3);
+		if (!achieve.dpabyss1 || achieve.dpabyss1 < 1) {
+			achieve.dpabyss1 = 1 + rn2(7);
+		}
 	}
 	if (on_level(newlevel, &abyss2_level)) {
 		demonAssign(4);
+		if (!achieve.dpabyss2 || achieve.dpabyss2 < 1) {
+			achieve.dpabyss2 = 1 + rn2(7);
+		}
 	}
 	if (on_level(newlevel, &abyss3_level)) {
 		demonAssign(5);
+		if (!achieve.dpabyss3 || achieve.dpabyss3 < 1) {
+			achieve.dpabyss3 = 1 + rn2(7);
+		}
 	}
 
 	if (dunlev(newlevel) > dunlevs_in_dungeon(newlevel))

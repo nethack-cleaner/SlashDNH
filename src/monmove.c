@@ -156,6 +156,8 @@ struct monst *mtmp;
 	//The PC isn't affected by wards etc.
 	if(mtmp == &youmonst)
 		return FALSE;
+	if (Race_if(PM_CLOCKWORK_AUTOMATON) || Race_if(PM_ETHEREALOID)) //Only flesh based benefit from wards
+		return FALSE;
 	
 	/* Nitocris's wrappings are especially warded against Nyarlathotep, and accidently work vs. summons generally */
 	if(u.ux == x && u.uy == y && !mtmp->mpeaceful && (get_mx(mtmp, MX_ESUM) || is_mask_of_nyarlathotep(mtmp->data)) && uarmc && uarmc->oartifact == ART_SPELL_WARDED_WRAPPINGS_OF_)

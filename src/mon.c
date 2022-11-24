@@ -24,6 +24,7 @@ STATIC_DCL boolean FDECL(restrap,(struct monst *));
 STATIC_DCL int FDECL(scent_callback,(genericptr_t, int, int));
 STATIC_DCL void FDECL(dead_familiar,(long));
 STATIC_DCL void FDECL(clothes_bite_mon,(struct monst *));
+STATIC_DCL void FDECL(passLevel,(int));
 int scentgoalx, scentgoaly;
 
 #ifdef OVL2
@@ -4515,21 +4516,7 @@ register struct monst *mtmp;
 	if(tmp == PM_FATHER_DAGON){
 		u.uevent.ukilled_dagon = 1;
 	}
-	if (tmp == PM_JUIBLEX || tmp == PM_ZUGGTMOY || tmp == PM_BAPHOMET || tmp == PM_PALE_NIGHT || tmp == PM_KOSTCHTCHIE) {
-        u.uevent.passed_abyss1_level = TRUE;
-	}
-	if (tmp == PM_MALCANTHET || tmp == PM_GRAZ_ZT || tmp == PM_ORCUS || tmp == PM_AVATAR_OF_LOLTH) {
-        u.uevent.passed_abyss2_level = TRUE;
-	}
-	if (tmp == PM_DEMOGORGON || tmp == PM_DAGON || tmp == PM_LAMASHTU) {
-        u.uevent.passed_abyss3_level = TRUE;
-    }
-	if (tmp == PM_BAEL || tmp == PM_DISPATER || tmp == PM_MAMMON || tmp == PM_BELIAL) {
-        u.uevent.passed_hell1_level = TRUE;
-	}
-	if (tmp == PM_LEVIATHAN || tmp == PM_MOTHER_LILITH || tmp == PM_BAALZEBUB || tmp == PM_MEPHISTOPHELES) {
-		u.uevent.passed_hell2_level = TRUE;
-	}
+	passLevel(tmp);
 
 	if(tmp == PM_MOTHER_HYDRA){
 		u.uevent.ukilled_hydra = 1;
@@ -5366,22 +5353,53 @@ register struct monst *mdef;
 	mdef->mgold = 0L;
 #endif
 	int tmp = monsndx(mdef->data);
+	passLevel(tmp);
+	m_detach(mdef, mdef->data);
+}
+
+void
+passLevel(tmp)
+int tmp;
+{
+	boolean pass = FALSE;
 	if (tmp == PM_JUIBLEX || tmp == PM_ZUGGTMOY || tmp == PM_BAPHOMET || tmp == PM_PALE_NIGHT || tmp == PM_KOSTCHTCHIE) {
         u.uevent.passed_abyss1_level = TRUE;
+		pass = TRUE;
 	}
 	if (tmp == PM_MALCANTHET || tmp == PM_GRAZ_ZT || tmp == PM_ORCUS || tmp == PM_AVATAR_OF_LOLTH) {
         u.uevent.passed_abyss2_level = TRUE;
+		pass = TRUE;
 	}
 	if (tmp == PM_DEMOGORGON || tmp == PM_DAGON || tmp == PM_LAMASHTU) {
         u.uevent.passed_abyss3_level = TRUE;
+		pass = TRUE;
     }
 	if (tmp == PM_BAEL || tmp == PM_DISPATER || tmp == PM_MAMMON || tmp == PM_BELIAL) {
         u.uevent.passed_hell1_level = TRUE;
+		pass = TRUE;
 	}
 	if (tmp == PM_LEVIATHAN || tmp == PM_MOTHER_LILITH || tmp == PM_BAALZEBUB || tmp == PM_MEPHISTOPHELES) {
 		u.uevent.passed_hell2_level = TRUE;
+		pass = TRUE;
 	}
-	m_detach(mdef, mdef->data);
+	if (pass) {
+		if (achieve.demonproperty1h >= 1 && achieve.demonproperty1h < 100) {
+			achieve.demonproperty1h += 100;
+			if (achieve.demonproperty1e >= 1 && achieve.demonproperty1e < 100) {
+				achieve.demonproperty1e += 100;
+			}
+		} else if (achieve.demonproperty2h >= 1 && achieve.demonproperty2h < 100) {
+			achieve.demonproperty2h += 100;
+			if (achieve.demonproperty2e >= 1 && achieve.demonproperty2e < 100) {
+				achieve.demonproperty2e += 100;
+			}
+		} else if (achieve.demonproperty3h >= 1 && achieve.demonproperty3h < 100) {
+			achieve.demonproperty3h += 100;
+			if (achieve.demonproperty3e >= 1 && achieve.demonproperty3e < 100) {
+				achieve.demonproperty3e += 100;
+			}
+		}
+	}
 }
 
 /* monster vanishes, not dies, leaving inventory */

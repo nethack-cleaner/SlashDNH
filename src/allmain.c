@@ -811,8 +811,20 @@ you_calc_movement()
 	if (achieve.patientdefense > moves) {
 		moveamt = max(moveamt-2,1);
 	}
-	if (achieve.demonproperty1h == 1 || achieve.demonproperty2h == 1 || achieve.demonproperty3h == 1) {
-		moveamt = max(moveamt-2,1);
+	boolean bigout = FALSE;
+	if (onhellzone(8)) {
+		if (u.uhp * 2 >= u.uhpmax) {
+			moveamt = max(moveamt-5,1);
+			bigout = TRUE;
+		}
+	}
+	if (!bigout) {
+		if (achieve.demonproperty1h == 1 || achieve.demonproperty2h == 1 || achieve.demonproperty3h == 1) {
+			moveamt = max(moveamt-2,1);
+		}
+		if (onhellzone(2)) {
+			moveamt = max(moveamt-2,1);
+		}
 	}
 	//Apply level wide templates
 	//end: Apply level wide templates
@@ -1087,6 +1099,21 @@ you_regen_hp()
 			perX += vmod;
 		}
 	}
+	if (onhellzone(7)) { //This negates the degeneration by the primary abyss lord
+		if ((*hp) < (*hpmax)) {
+			perX = (-10) * HEALCYCLE;
+		}
+	} else if (!u.uevent.passed_abyss3_level) {
+		if (*hp > 10) {
+			if (achieve.demogorgonmet || achieve.lamashtumet) {
+				perX = (-1) * HEALCYCLE;
+			}
+			if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
+			} else if (Is_dagon_level(&u.uz)) {
+				perX = (-8) * HEALCYCLE;
+			}
+		}
+	}
 	if (achieve.lastpropcheck < moves) {
 		achieve.lastpropcheck = moves;
 		if (achieve.demonproperty1e == 2 || achieve.demonproperty2e == 2 || achieve.demonproperty3e == 2) { // confusion
@@ -1106,15 +1133,53 @@ you_regen_hp()
 				change_usanity(-3, TRUE);
 			}
 		}
-	}
-	if (!u.uevent.passed_abyss3_level) {
-		if (*hp > 10) {
-			if (achieve.demogorgonmet || achieve.lamashtumet) {
-				perX = (-1) * HEALCYCLE;
+		if (onhellzone(5) && rn2(10) > 9) {
+			make_hallucinated(HHallucination + 200,FALSE,0L);
+		}
+		if (onhellzone(6) && rn2(10) > 9) {
+			int energy = rn2(5);
+			int dmg = 0;
+			if (energy == 0) { //Physical
+				pline("Thousands of tiny rocks spew forth beneath you");
+				if (Acid_res(&youmonst)) {
+					pline("It feels mildly uncomfortable.");
+				} else {
+					dmg = d(8, 6);
+					if (Half_phys(&youmonst))
+						dmg = dmg / 2;
+				}
+			} else if (energy == 1) { //Acid
+				pline("An acid geyser errupts beneath you");
+				if (Acid_res(&youmonst)) {
+					pline("It feels mildly uncomfortable.");
+				} else {
+					dmg = d(8, 6);
+				}
+			} else if (energy == 2) { //Fire
+				pline("A lava geyser errupts beneath you");
+				if (Fire_res(&youmonst)) {
+					pline("It feels mildly uncomfortable.");
+				} else {
+					dmg = d(8, 6);
+				}
+			} else if (energy == 3) { //Lightning
+				pline("A surge of electricity errupts beneath you");
+				if (Shock_res(&youmonst)) {
+					pline("It feels mildly uncomfortable.");
+				} else {
+					dmg = d(8, 6);
+				}
+			} else if (energy == 3) { //Cold
+				pline("An erruption of frigid air errupts beneath you");
+				if (Cold_res(&youmonst)) {
+					pline("It feels mildly uncomfortable.");
+				} else {
+					dmg = d(8, 6);
+				}
 			}
-			if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
-			} else if (Is_dagon_level(&u.uz)) {
-				perX = (-4) * HEALCYCLE;
+			if (dmg) {
+				dmg = dmg * 2;
+				perX -= (dmg * HEALCYCLE);
 			}
 		}
 	}

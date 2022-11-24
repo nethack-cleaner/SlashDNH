@@ -1,6 +1,7 @@
 local.mk
 
 src/notdnethack
+src/slashdnh
 util/recover
 util/makedefs
 util/dlb
@@ -45,4 +46,5 @@ dat/*.lev
 
 .DS_STORE
 notdnethackdir
+slashdnhdir
 mat

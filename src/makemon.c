@@ -13255,10 +13255,10 @@ int faction;
 //			pline("%d\n",mtmp->mhpmax);
 		break;
 	}
-	//Apply Level Wide Templates
-	//if (on_level(&u.uz, &abyss3_level)) { //demogorgon/lamastu/dagon
-	//}
-	//end: Apply Level Wide Templates
+	if (onhellzone(1)) {
+		mtmp->mhpmax = 1.25 * mtmp->mhpmax;
+		mtmp->mhp = mtmp->mhpmax;
+    }
 	if (mtmp->mtemplate == ZOMBIFIED && (mmflags & MM_BIGGROUP)) {
 		/* zombies get a group, with size dependent on how nasty the monster is for the current floor */
 		int groupsz = max(2, min(12, 3*level_difficulty()/(monstr[ptr->mtyp]+2)));

@@ -1577,7 +1577,7 @@ d_level *lev;
 	d_level *aby = &abyss3_level;
 	d_level *mby = &u.uz;
 	if (mby->dnum == aby->dnum) {
-		if (!u.uevent.passed_hell1_level || !u.uevent.passed_hell2_level || !u.uevent.passed_abyss1_level || !u.uevent.passed_abyss2_level || !u.uevent.passed_abyss3_level) {
+		if (achieve.get_amulet && (!u.uevent.passed_hell1_level || !u.uevent.passed_hell2_level || !u.uevent.passed_abyss1_level || !u.uevent.passed_abyss2_level || !u.uevent.passed_abyss3_level)) {
 			return FALSE;
 		}
 	}

@@ -516,7 +516,7 @@ boolean dumping;
 	/* demon problems */
 	if (!u.uevent.passed_abyss3_level) {
 		if (Is_dagon_level(&u.uz)) {
-			you_have("Dagon's aura, making you lose 4hp/turn");
+			you_have("Dagon's aura, making you lose 8hp/turn");
 		} else if (achieve.demogorgonmet) {
 			you_have("Demogorgon's aura, making you lose 1hp/turn");
 		} else if (achieve.lamashtumet) {
@@ -546,6 +546,12 @@ boolean dumping;
 		}
 		Sprintf(buf, "Hell curse: %s", demonProps[achieve.demonproperty3h + 10]);
 		you_have(buf);
+	}
+	for (int j = 1; j <= 8; j++) {
+		if (onhellzone(j)) {
+			Sprintf(buf, "Hell Lair: %s", demonProps[j + 20]);
+			you_have(buf);
+		}
 	}
 	/* end: demon problems */
 

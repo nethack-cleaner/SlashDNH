@@ -113,6 +113,7 @@ E void FDECL(artifact_exists, (struct obj *,const char *,BOOLEAN_P));
 E struct obj * FDECL(mksartifact, (int));
 E void FDECL(get_art_property_list, (int *, int, BOOLEAN_P));
 E int NDECL(nartifact_exist);
+E boolean FDECL(onhellzone, (int));
 E boolean FDECL(arti_gen_prop, (struct obj *, unsigned long));
 E boolean FDECL(arti_worn_prop, (struct obj *, unsigned long));
 E boolean FDECL(arti_carry_prop, (struct obj *, unsigned long));

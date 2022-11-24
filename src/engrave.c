@@ -904,7 +904,7 @@ const char * haluWard[] =  {
 
 char * demonProps[] =  {
 "None", //0
-"Potions heal only half as many points", //1
+"Potions heal only half as many points", //1 minor lingering hell curses
 "You become Confused periodically", //2
 "Reduced carrying capacity", //3
 "You become Sickened periodically", //4
@@ -914,12 +914,26 @@ char * demonProps[] =  {
 "", //8
 "", //9
 "", //10
-"Speed reduced by 2", //11
+"Speed reduced by 2", //11 Major lingering hell curses
 "Severe casting failure penalty", //12
 "Cannot use techniques", //13
 "Lose 3 sanity periodically", //14
 "DR reduced by 5", //15
 "All enemies have displacement", //16
+"", //17
+"", //18
+"", //19
+"", //20
+"Monsters spawn with 25% more hit points", //21 Hell lair effects
+"Monsters are all faster", //22
+"Monsters can target you more easily", //23
+"Monsters penetrate your armor more easily", //24
+"Frequently hallucinate", //25
+"Random elemental geysers spawn under you frequently", //26
+"When you are you fully healed you bleed severely", //27
+"While you are above 50% hp, you are very slow", //28
+"", //29
+"", //30
 };
 
 //There is a seal of ? inscribed here.

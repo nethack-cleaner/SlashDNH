@@ -2872,9 +2872,21 @@ dodip()
 	    return MOVE_STANDARD;
 	} else if(obj->oclass == POTION_CLASS && (obj->otyp != potion->otyp || (obj->otyp == POT_BLOOD && obj->corpsenm != potion->corpsenm))) {
 		/* Mixing potions is dangerous... */
+		
 		if (obj->quan > 5 || potion->quan > 5) {
-            pline("You have difficulty handling a stack of potions that large, try five or fewer.");
-            return(1);
+			boolean alc = FALSE;
+			struct obj *otmp;
+			for (otmp = invent; otmp; otmp = otmp->nobj) {
+				if (otmp->otyp == ALCHEMY_SMOCK && otmp->owornmask) {
+					alc = TRUE;
+				}
+			}
+			if (!alc) {
+				pline("You have difficulty handling a stack of potions that large, try five or fewer.");
+				return(1);
+			} else {
+				pline("You feel like a proper scientist");
+			}
         }
 		if (obj->otyp == POT_BLOOD) {
             pline("Dipping doesn't seem to alter the contents.");

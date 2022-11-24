@@ -944,6 +944,11 @@ struct u_achieve {
 		int demonproperty1w;
 		int demonproperty2w;
 		int demonproperty3w;
+		int dphell1;
+		int dphell2;
+		int dpabyss1;
+		int dpabyss2;
+		int dpabyss3;
 		int halooffire;
 		int techs[1000];
 		char wishes1[BUFSZ];

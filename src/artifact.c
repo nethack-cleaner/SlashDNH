@@ -1990,6 +1990,28 @@ nartifact_exist()
 #ifdef OVL0
 
 boolean
+onhellzone(checklevel)
+int checklevel;
+{
+if (!u.uevent.passed_hell1_level && on_level(&u.uz, &hell1_level) && achieve.dphell1 == checklevel) {
+    return TRUE;
+}
+if (!u.uevent.passed_hell2_level && on_level(&u.uz, &hell2_level) && achieve.dphell2 == checklevel) {
+    return TRUE;
+}
+if (!u.uevent.passed_abyss1_level && on_level(&u.uz, &abyss1_level) && achieve.dpabyss1 == checklevel) {
+    return TRUE;
+}
+if (!u.uevent.passed_abyss2_level && on_level(&u.uz, &abyss2_level) && achieve.dpabyss2 == checklevel) {
+    return TRUE;
+}
+if (!u.uevent.passed_abyss3_level && on_level(&u.uz, &abyss3_level) && achieve.dpabyss3 == checklevel) {
+    return TRUE;
+}
+return FALSE;
+}
+
+boolean
 arti_gen_prop(otmp, flag)
 struct obj *otmp;
 unsigned long flag;

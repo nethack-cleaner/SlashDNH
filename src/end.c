@@ -1319,14 +1319,18 @@ die:
 						Sprintf(wmade, "Fifth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes5);
 					} else if (i == 5) {
 						Sprintf(wmade, "Sixth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes6);
-					} else if (i == 5) {
+					} else if (i == 6) {
 						Sprintf(wmade, "Seventh wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes7);
-					} else if (i == 5) {
-						Sprintf(wmade, "Eigth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes8);
-					} else if (i == 5) {
+					} else if (i == 7) {
+						Sprintf(wmade, "Eighth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes8);
+					} else if (i == 8) {
 						Sprintf(wmade, "Ninth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes9);
-					} else if (i == 5) {
+					} else if (i == 9) {
 						Sprintf(wmade, "Tenth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes10);
+					} else if (i == 10) {
+						Sprintf(wmade, "Eleventh wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes11);
+					} else if (i == 11) {
+						Sprintf(wmade, "Twelth wish made on turn %d for %s", achieve.wishmade[i], achieve.wishes12);
 					} else {
 						Sprintf(wmade, "Wish made on turn %d", achieve.wishmade[i]);
 					}

@@ -21,7 +21,6 @@ RNDLEVEL:	"villag" "O" @ (4, 0) 4
 BRANCH:		"The Ice Caves" @ (4, 0) portal
 BRANCH:		"The Dismal Swamp" @ (4, 0) portal
 BRANCH:		"The Black Forest" @ (4, 0) portal
-BRANCH:		"The Archipelago" @ (4, 0) portal
 %REINCARNATION LEVEL:		"rogue" "R" @ (15, 4)
 BRANCH:		"Nowhere" @ (4, 0) portal
 LEVEL:		"oracle" "O" @ (5, 5)
@@ -70,6 +69,11 @@ RNDLEVEL:	"stor" "S" @ (5, 20) 90 7
 BRANCH: 	"The Lost Tomb" @ (5, 25)
 BRANCH:	"The Sunless Sea" @ (5, 25)
 BRANCH: 	"The Temple of Moloch" @ (5, 25)
+BRANCH:		"The Archipelago" @ (5, 25)
+BRANCH:		"The Giant Caverns" @ (5, 25)
+BRANCH:		"Grund's Stronghold" @ (5, 25)
+BRANCH:		"Nightmare's Domain" @ (5, 25)
+BRANCH:		"Vecna's Domain" @ (5, 25)
 
 BRANCH:		"The Void" @ (10, 25) no_down 
 RNDLEVEL:	"chall" "none" @ (-5, 4) 6

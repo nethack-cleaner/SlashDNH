@@ -31,110 +31,82 @@
 #   Bones files are not permitted.
 # Sokoban is stupid. I hate sokoban. We lokoban now.
 
-MAZE:"sz0pri",' '
+MAZE: "szpri",' '
 FLAGS:noteleport,hardfloor
 GEOMETRY:center,center
-###########1#########2#########3#########4#########5#########6#########7#####
+##########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 MAP
-0-------- ------
-1|......|-|....|
-2|.............|
-3|.............|
-4|.......P.....|
-5|.........-----
-6|.|    |......|
-7|.-----|......|
-8|.............|
-9|..|---|......|
-0----   --------
+...........TTTTT.................................
+...........T...T...TTT..............................
+..----TTTTTTTT.T..TTWT...........................
+..|..|TTTTTTTT.T..T.PT......---------............
+..|..|TTTT.....TTTT.WWWTTTTT|.......|............
+---|.|TTTT.TT.TTT.T..TWWWTTT|.-----.|............
+|....|TTTT.TT.T......T.TWTTT|.|...|.|............
+...........T..T..T..TT.TWTTT|.|.....|............
+|....|TTTTTT.TTT.....T.TWTTT|.|...|.|............
+---|.|.T............TTTTWTTT|.-----.||............
+..|..|.T.TTTTTTTT.T.....W............|............
+..|..|.T.T......TTTTTTT.WTTT|.-----.||............
+..----.TTT......TT....T.WTTT|.|...|.|............
+....................TTT.WWTT|.|.....|............
+....................T...TWTT|.|...|.|............
+....................TTTTTWTT|.-----.|............
+............................|.......|............
+............................---------............
+....................................................
 ENDMAP
-###########1#########2#########3#########4#########5#########6#########7#####
+##########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
-BRANCH:(03,01,03,01),(0,0,0,0)
-STAIR: (01,01), down
-REGION:(00,00,14,10),lit,"ordinary"
-NON_DIGGABLE:(00,00,14,10)
-NON_PASSWALL:(00,00,14,10)
+REGION:(00,00,35,17),lit,"ordinary"
+#MESSAGE:506,(45,10)
+#MESSAGE:507,(33,13)
+#MESSAGE:508,(33,07)
+#MESSAGE:510,(45,10)
+#MONSTER:'@',"Arch Priest",(03,03),peaceful
+#MONSTER:'@',"Undertaker [nd]",(11,03),peaceful
+#MONSTER:'@',"Paladin Leader[nd]",(06,17),peaceful
+#MONSTER:'@',"Perrin the Pedantic[nd]",(32,06),peaceful
+#OBJECT:'+',"Manual of Dissection[nd]",(31,13)
+OBJECT:'%',"corpse",(31,10)
+OBJECT:'%',"corpse",(32,10)
+STAIR:(36,10), down
 
 ##
 
-MAZE:"szpri",' '
+MAZE: "sz0pri",' '
 FLAGS:noteleport,hardfloor
 GEOMETRY:center,center
-###########1#########2#########3#########4#########5#########6#########7#####
+##########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 MAP
--------- -----------------------------------------------
-|......|-|.............................................|
-|......................................................|
-|.......|..............................................|
-|.......|..............................................|
-|.|-----|..........................................-----
-|.|    |...............................................|
-|.-----|................P..............................|
-|.......................P..............................|
-|.......................PPP............................|
-|......................P...............................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|......................................................|
-|..|---|...............................................|
-----   -------------------------------------------------
+....................................-------------
+....................................|..F.F..|...|
+....................................|..F.F..|...|
+...................................||F.F.F.F|...|
+...................................|............|
+...................................||F.F.F.F|...|
+....................................|F.F.F..|...|
+....................................|-------|...|
+............................................-----
+.............
+.............
+.............
+.............
+.............
+.............
+.............
 ENDMAP
-###########1#########2#########3#########4#########5#########6#########7#####
+##########1#########2#########3#########4#########5#########6#########7#####
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
-STAIR: (10,10), up
-REGION:(00,00,52,18),lit,"ordinary"
-NON_DIGGABLE:(00,00,14,10)
-NON_PASSWALL:(00,00,14,10)
-
-# Crates
-OBJECT:'(',"massive stone crate",(05,02)
-OBJECT:'(',"massive stone crate",(06,02)
-OBJECT:'(',"massive stone crate",(06,03)
-OBJECT:'(',"massive stone crate",(07,03)
-# A little help
-OBJECT:'?',"earth",(01,09)
-OBJECT:'?',"earth",(02,09)
-
-#prize
-MONSTER: 'u', "Lokoban Pinata", (45,16)
-MONSTER: 'h', "Lokoban Handler", (43,14), hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-MONSTER: random, random, random, hostile
-
-# Random objects
-OBJECT:'%',random,random
-OBJECT:'*',random,random
-OBJECT:'(',random,random
-OBJECT:'"',random,random
-OBJECT:'=',random,random
-OBJECT:'/',random,random
-OBJECT:'!',random,random
-OBJECT:'!',random,random
-OBJECT:'?',random,random
-OBJECT:'?',random,random
-
+#REGION:(00,00,19,49),lit,"ordinary"
+#MESSAGE:509,(36,10)
+#MONSTER:'@',"Sand Person [nd]",(38,07),peaceful
+#MONSTER:'B',"raven",(40,12),peaceful
+#MONSTER:'g',"winged gargoyle",(40,08),peaceful
+#MONSTER:'h',"mind flayer",(42,08),peaceful
+#MONSTER:'s',"giant spider",(38,12),peaceful
+#MONSTER:'u',"gray unicorn',(42,12),peaceful
+#OBJECT:'(',"bronze vessel",place[0]
+STAIR:(36,10), up

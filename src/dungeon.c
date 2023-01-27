@@ -1241,6 +1241,7 @@ init_dungeons()		/* initialize the "dungeon" structs */
 	blackforest_dnum = dname_to_dnum("The Black Forest");
 	dismalswamp_dnum = dname_to_dnum("The Dismal Swamp");
 	archipelago_dnum = dname_to_dnum("The Archipelago");
+	giants_dnum = dname_to_dnum("The Giant Caverns");
 	tower_dnum = dname_to_dnum("Vlad's Tower");
 	tomb_dnum = dname_to_dnum("The Lost Tomb");
 	sea_dnum = dname_to_dnum("The Sunless Sea");

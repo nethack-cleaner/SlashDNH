@@ -624,6 +624,7 @@ CONTAINER:'(',"chest",(39,10)
 OBJECT[25%]:'(',"magic lamp",contained,cursed,0
 OBJECT:'!',"oil",contained
 # Ruins of a library
+OBJECT:'(',"magic marker",random
 OBJECT[50%]:'?',"blank paper",(37,10) [skipcheck]
 OBJECT[50%]:'+',"blank paper",(37,10) [skipcheck]
 OBJECT[50%]:'?',"blank paper",(41,11) [skipcheck]
@@ -768,6 +769,7 @@ MONSTER:'g',"nightgaunt",(42,09),asleep
 MONSTER[75%]:'g',"nightgaunt",(38,09),asleep
 MONSTER[50%]:'g',"nightgaunt",(40,11),asleep
 # Ruins of a library
+OBJECT:'(',"magic marker",random
 OBJECT[50%]:'?',"blank paper",(37,10) [skipcheck]
 OBJECT[50%]:'+',"blank paper",(37,10) [skipcheck]
 OBJECT[50%]:'?',"blank paper",(41,11) [skipcheck]

@@ -5618,7 +5618,7 @@ retry:
 		if (!otmp) return TRUE;	/* for safety; should never happen */
 	}
 
-	if (u.uconduct.wishes > 9 && !wizard) {
+	if (u.uconduct.wishes > 11 && !wizard) {
 		pline("You don't seem to be able make any more wishes");
 	} else {
 	if (otmp != &zeroobj) {
@@ -5644,6 +5644,10 @@ retry:
 			Sprintf(achieve.wishes9, buf);
 		else if (u.uconduct.wishes == 9)
 			Sprintf(achieve.wishes10, buf);
+		else if (u.uconduct.wishes == 10)
+			Sprintf(achieve.wishes11, buf);
+		else if (u.uconduct.wishes == 11)
+			Sprintf(achieve.wishes12, buf);
 		achieve.wishmade[u.uconduct.wishes] = moves;
 		
 	    if (!flags.debug) {

@@ -887,6 +887,7 @@ you_regen_hp()
 	int * hpmax;
 	int * hp;
 	boolean blockRegen = FALSE;
+	boolean oddregen = FALSE;
 
 	// set hp, maxhp pointers
 	hp    = (Upolyd) ? (&u.mh)    : (&u.uhp);
@@ -899,8 +900,24 @@ you_regen_hp()
 		/* you also do not lose health (e.g. from being a fish out of water) */
 		return;
 	}
+
+	if (onhellzone(7)) { //This negates the degeneration by the primary abyss lord
+		if ((*hp) < (*hpmax)) {
+			oddregen = TRUE;
+		}
+	} else if (!u.uevent.passed_abyss3_level) {
+		if (*hp > 10) {
+			if (achieve.demogorgonmet || achieve.lamashtumet) {
+				oddregen = TRUE;
+			}
+			if (Is_demogorgon_level(&u.uz) || Is_lamashtu_level(&u.uz)) {
+			} else if (Is_dagon_level(&u.uz)) {
+				oddregen = TRUE;
+			}
+		}
+	}
 	//Etherealoids do not regen this way
-	if(Race_if(PM_ETHEREALOID)){
+	if(Race_if(PM_ETHEREALOID) && !oddregen){
 		return;
 	}
 
@@ -928,7 +945,7 @@ you_regen_hp()
 	
 	//Androids regenerate from active Hoon, but not from other sources unless dormant
 	// Notably, no bonus from passive Hoon
-	if(uandroid && !u.usleep)
+	if(uandroid && !u.usleep && !oddregen)
 		return;
 	
 	// Previously used hoons

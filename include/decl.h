@@ -164,6 +164,7 @@ E struct dgn_topology {		/* special dungeon levels for speed */
     xchar	d_dismalswamp_dnum;
     	/*Archipelago*/
     xchar	d_archipelago_dnum;
+    xchar	d_giants_dnum;
 	/*Quest Levels*/
 	xchar	d_quest_dnum;
     d_level	d_qstart_level, d_qlocate_level, d_nemesis_level;
@@ -370,6 +371,7 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define dismalswamp_dnum		(dungeon_topology.d_dismalswamp_dnum)
 	/*Archipelago*/
 #define archipelago_dnum		(dungeon_topology.d_archipelago_dnum)
+#define giants_dnum		(dungeon_topology.d_giants_dnum)
 	/*Quest Levels*/
 #define quest_dnum		(dungeon_topology.d_quest_dnum)
 #define qstart_level		(dungeon_topology.d_qstart_level)
@@ -961,6 +963,8 @@ struct u_achieve {
 		char wishes8[BUFSZ];
 		char wishes9[BUFSZ];
 		char wishes10[BUFSZ];
+		char wishes11[BUFSZ];
+		char wishes12[BUFSZ];
 		int wishmade[10];
 		boolean altbind[31];
 		int swiftness;

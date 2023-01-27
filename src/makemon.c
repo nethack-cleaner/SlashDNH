@@ -13592,6 +13592,10 @@ rndmonst()
 	if (achieve.introquest) {
 		maxmlev += 3; /* max monster level is increased by 3 */
 	}
+	if (In_archipelago(&u.uz)) {
+		minmlev += 2;
+		maxmlev += 6;
+	}
 	if (achieve.clockarc) {
 		minmlev += 1;
 		maxmlev += 3; /* max monster level is increased by 3 */

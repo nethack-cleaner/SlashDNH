@@ -1186,7 +1186,7 @@ TOOL(("tallow candle", "candle"),          0,   MZ_TINY, 1, 0, 0,  10,  2,  10, 
 TOOL(("wax candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   8,  2,  20, WAX,     CLR_WHITE),
 TOOL(("magic candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   6,  2,  20, WAX,     CLR_WHITE),
 TOOL(("candle of invocation", "runed candle"), /*Needs encyc entry*/
-                                         0,   MZ_TINY, 0, 1, 0,  0,  2,  50, WAX,     CLR_ORANGE, O_NOWISH(1)),
+                                         0,   MZ_TINY, 0, 1, 0,  0,  2,  50, WAX,     CLR_ORANGE),
 TOOL(("lantern"),               1,  MZ_SMALL, 0, 0, 0,  18, 30,  12, COPPER,  CLR_YELLOW, O_MATSPEC(IDED|UNIDED)),
 TOOL(("oil lamp", "lamp"),                 0,  MZ_SMALL, 0, 0, 0,  28, 20,  10, COPPER,  CLR_YELLOW),
 TOOL(("magic lamp", "lamp"),               0,  MZ_SMALL, 0, 1, 0,  13, 20,  50, COPPER,  CLR_YELLOW, O_NOWISH(1)),

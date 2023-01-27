@@ -2903,11 +2903,6 @@ const char *prompt;
 	add_menu(tmpwin, NO_GLYPH, &any,
 		's', 0, ATR_NONE, buf,
 		MENU_UNSELECTED);
-	Sprintf(buf, "The Archipelago");
-	any.a_int = ARCHIPELAGO;	
-	add_menu(tmpwin, NO_GLYPH, &any,
-		'a', 0, ATR_NONE, buf,
-		MENU_UNSELECTED);
 	end_menu(tmpwin, prompt);
 	how = PICK_ONE;
 	n = select_menu(tmpwin, how, &selected);

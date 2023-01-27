@@ -8,7 +8,7 @@
 #	dialogue must have at least these entries.
 #
 #	QT_FIRSTTIME	 1
-#	QT_NEXTTIME	 2
+#	QT_NEXTTIME		 2
 #	QT_OTHERTIME	 3
 #
 #	QT_GUARDTALK	 5	/* 5 random things guards say before quest */
@@ -50,8 +50,13 @@
 #
 #	QT_TURNEDSTAG	100 /* offset if you turn stag on 
 #	                      your original quest leader */
-#messages go up to 226 it seems, but I started the mini quest at 200
-#
+#	QT_FIRSTPERRIN	101
+#	QT_NOITEMPERRIN	102
+#	QT_ITEMPERRIN	103
+#	QT_LOCMNGR		104
+#	QT_LOCWRKSHP	105
+#	QT_LOCWRKSHPMOD	106
+#	QT_LOCSPP
 #   QT_STARTQUEST1	200 - entry into the starter quest
 #   QT_STARTLEADER1	201 - initial talk with starter leader
 #   QT_STARTTRAITOR1	202 - initial talk with Traitor 
@@ -65,10 +70,10 @@
 #   QT_GLADIATORLEADER2	301 - Gladiator leader, 2nd time but no quest item
 #   QT_GLADIATORLEADER3	302 - Gladiator leader - has the quest item!
 #   QT_GLADIATORLEADER4	303
-#   QT_SALAMANDERLEADER1	304
-#   QT_SALAMANDERLEADER2	305
-#   QT_SALAMANDERLEADER3	306
-#   QT_SALAMANDERLEADER4	307
+#   QT_SALAMANDERLEADER1 304
+#   QT_SALAMANDERLEADER2 305
+#   QT_SALAMANDERLEADER3 306
+#   QT_SALAMANDERLEADER4 307
 #   QT_BERSERKERLEADER1	308
 #   QT_BERSERKERLEADER2	309
 #   QT_BERSERKERLEADER3	310
@@ -77,18 +82,18 @@
 #   QT_BLINDLEADER2	313
 #   QT_BLINDLEADER3	314
 #   QT_BLINDLEADER4	315
-#   QT_PACIFISTLEADER1	316
-#   QT_PACIFISTLEADER2	317
-#   QT_PACIFISTLEADER3	318
-#   QT_PACIFISTLEADER4	319
-#   QT_YEOMANLEADER1	320
-#   QT_YEOMANLEADER2	321
-#   QT_YEOMANLEADER3	322
-#   QT_YEOMANLEADER4	323
-#   QT_PALADINLEADER1	324
-#   QT_PALADINLEADER2	325
-#   QT_PALADINLEADER3	326
-#   QT_PALADINLEADER4	327
+#   QT_PACIFISTLEADER1 316
+#   QT_PACIFISTLEADER2 317
+#   QT_PACIFISTLEADER3 318
+#   QT_PACIFISTLEADER4 319
+#   QT_YEOMANLEADER1 320
+#   QT_YEOMANLEADER2 321
+#   QT_YEOMANLEADER3 322
+#   QT_YEOMANLEADER4 323
+#   QT_PALADINLEADER1 324
+#   QT_PALADINLEADER2 325
+#   QT_PALADINLEADER3 326
+#   QT_PALADINLEADER4 327
 #   QT_UNDERTAKERLEADER1	328
 #   QT_UNDERTAKERLEADER2	329
 #   QT_UNDERTAKERLEADER3	330
@@ -130,7 +135,6 @@
 #   QT_GHOULLEADER3	366
 #   QT_GHOULLEADER4	367
 #   QT_STARTCLOCKARC1	368
-# 
 
 #
 #	Archeologist
@@ -427,8 +431,6 @@ out a solution as soon as possible!
 
 OH NOW, NOW YOU ARE SURROUNDED!
 %E
-
-
 #
 #      Anachronounbinder
 #
@@ -661,6 +663,24 @@ the high altar of the void."
 
 "From there you must travel through The Gate to The Far Void
 and use the Amulet of Yendor to free her from banishment."
+%E
+%Cc Acu 00200
+%E
+%Cc Acu 00201
+%E
+%Cc Acu 00202
+%E
+%Cc Acu 00203
+%E
+%Cc Acu 00204
+%E
+%Cc Acu 00205
+%E
+%Cc Acu 00206
+%E
+%Cc Acu 00207
+%E
+%Cc Acu 00208
 %E
 
 #
@@ -962,6 +982,24 @@ to Annul the High Altar of Ilsensine and eject her from
 this universe before she can consume the heavens and the
 earth."
 %E
+%Cc Ana 00200
+%E
+%Cc Ana 00201
+%E
+%Cc Ana 00202
+%E
+%Cc Ana 00203
+%E
+%Cc Ana 00204
+%E
+%Cc Ana 00205
+%E
+%Cc Ana 00206
+%E
+%Cc Ana 00207
+%E
+%Cc Ana 00208
+%E
 #
 #	Android Anachrononaut
 #
@@ -1155,6 +1193,24 @@ UNUSED
 %E
 %Cc And 00091
 UNUSED
+%E
+%Cc And 00200
+%E
+%Cc And 00201
+%E
+%Cc And 00202
+%E
+%Cc And 00203
+%E
+%Cc And 00204
+%E
+%Cc And 00205
+%E
+%Cc And 00206
+%E
+%Cc And 00207
+%E
+%Cc And 00208
 %E
 #
 #	Barbarian
@@ -1422,7 +1478,48 @@ speaks of you.
 
 "This is all I know, %p.  I hope it will help you."
 %E
-
+%Cc Bar 00200
+%E
+%Cc Bar 00201
+%E
+%Cc Bar 00202
+%E
+%Cc Bar 00203
+%E
+%Cc Bar 00204
+%E
+%Cc Bar 00205
+%E
+%Cc Bar 00206
+%E
+%Cc Bar 00207
+%E
+%Cc Bar 00208
+%E
+%Cc Bar 00300
+%E
+%Cc Bar 00301
+%E
+%Cc Bar 00302
+%E
+%Cc Bar 00303
+%E
+%Cc Bar 00308
+%E
+%Cc Bar 00309
+%E
+%Cc Bar 00310
+%E
+%Cc Bar 00311
+%E
+%Cc Bar 00356
+%E
+%Cc Bar 00357
+%E
+%Cc Bar 00358
+%E
+%Cc Bar 00359
+%E
 #
 #	Berserker
 #
@@ -2487,8 +2584,25 @@ in defeating the Wizard of Yendor and his minions, it would be you.
 the Amulet on the altar of %d.  Along the way you shall pass through the
 four elemental planes.  These planes are like nothing you have ever
 experienced before, so be prepared!
-
 "For this you were born, %s!  I am very proud of you."
+%E
+%Cc Brd 00200
+%E
+%Cc Brd 00201
+%E
+%Cc Brd 00202
+%E
+%Cc Brd 00203
+%E
+%Cc Brd 00204
+%E
+%Cc Brd 00205
+%E
+%Cc Brd 00206
+%E
+%Cc Brd 00207
+%E
+%Cc Brd 00208
 %E
 #
 #	Binder
@@ -2729,6 +2843,24 @@ You pick %o back up.
 %E
 %Cc Bin 00091
 ...
+%E
+%Cc Bin 00200
+%E
+%Cc Bin 00201
+%E
+%Cc Bin 00202
+%E
+%Cc Bin 00203
+%E
+%Cc Bin 00204
+%E
+%Cc Bin 00205
+%E
+%Cc Bin 00206
+%E
+%Cc Bin 00207
+%E
+%Cc Bin 00208
 %E
 #
 #	Cave(wo)man
@@ -2983,6 +3115,24 @@ take you into the Astral Planes, where the Great Temple of %d
 casts its influence throughout our world.
 
 "Sacrifice the Amulet on the altar.  Thus shall %d become supreme!"
+%E
+%Cc Cav 00200
+%E
+%Cc Cav 00201
+%E
+%Cc Cav 00202
+%E
+%Cc Cav 00203
+%E
+%Cc Cav 00204
+%E
+%Cc Cav 00205
+%E
+%Cc Cav 00206
+%E
+%Cc Cav 00207
+%E
+%Cc Cav 00208
 %E
 #
 #	Convict
@@ -3279,6 +3429,24 @@ and in doing so have made all of us proud.
 the Amulet up to the Great Temple of %d, on
 the Astral plane.  There you must offer the Amulet
 to %d."
+%E
+%Cc Con 00200
+%E
+%Cc Con 00201
+%E
+%Cc Con 00202
+%E
+%Cc Con 00203
+%E
+%Cc Con 00204
+%E
+%Cc Con 00205
+%E
+%Cc Con 00206
+%E
+%Cc Con 00207
+%E
+%Cc Con 00208
 %E
 #
 #	Drow general quest
@@ -3817,6 +3985,24 @@ the Astral Plane, where the high altar of Eilistraee resides.
 When you reach the temple, sacrifice the Amulet to %d.
 
 "Thus will you fulfill your destiny."
+%E
+%Cc Dro 00200
+%E
+%Cc Dro 00201
+%E
+%Cc Dro 00202
+%E
+%Cc Dro 00203
+%E
+%Cc Dro 00204
+%E
+%Cc Dro 00205
+%E
+%Cc Dro 00206
+%E
+%Cc Dro 00207
+%E
+%Cc Dro 00208
 %E
 #
 #	Dwarf Noble A - Erebor
@@ -5055,6 +5241,24 @@ absence, yes?  How fare you upon your quest for the Amulet?"
 to the Astral, and there return the Amulet to %d.  Go forth and
 may our prayers be as a wind upon your back."
 %E
+%Cc Hea 00200
+%E
+%Cc Hea 00201
+%E
+%Cc Hea 00202
+%E
+%Cc Hea 00203
+%E
+%Cc Hea 00204
+%E
+%Cc Hea 00205
+%E
+%Cc Hea 00206
+%E
+%Cc Hea 00207
+%E
+%Cc Hea 00208
+%E
 #
 #	Hedrow general quest
 #
@@ -5894,6 +6098,32 @@ the Planes of the Elements, to achieve this goal.
 
 "Go with %d, %p."
 %E
+%Cc Kni 00200
+%E
+%Cc Kni 00201
+%E
+%Cc Kni 00202
+%E
+%Cc Kni 00203
+%E
+%Cc Kni 00204
+%E
+%Cc Kni 00205
+%E
+%Cc Kni 00206
+%E
+%Cc Kni 00207
+%E
+%Cc Kni 00208
+%E
+%Cc Kni 00320
+%E
+%Cc Kni 00321
+%E
+%Cc Kni 00322
+%E
+%Cc Kni 00323
+%E
 #
 #       Monk
 #
@@ -6145,6 +6375,32 @@ your succeess, you must not delay.  Proceed to the surface and through
 the elementals to the plane of the gods. Give the Amulet to %d
 when you find his temple.  I suspect that I shall never see you again
 in this life, but I hope to at %ds feet."
+%E
+%Cc Mon 00200
+%E
+%Cc Mon 00201
+%E
+%Cc Mon 00202
+%E
+%Cc Mon 00203
+%E
+%Cc Mon 00204
+%E
+%Cc Mon 00205
+%E
+%Cc Mon 00206
+%E
+%Cc Mon 00207
+%E
+%Cc Mon 00208
+%E
+%Cc Mon 00369
+%E
+%Cc Mon 00370
+%E
+%Cc Mon 00371
+%E
+%Cc Mon 00372
 %E
 #
 #	Madman
@@ -6409,6 +6665,24 @@ UNUSED
 %Cc Mad 00091
 UNUSED
 %E
+%Cc Mad 00200
+%E
+%Cc Mad 00201
+%E
+%Cc Mad 00202
+%E
+%Cc Mad 00203
+%E
+%Cc Mad 00204
+%E
+%Cc Mad 00205
+%E
+%Cc Mad 00206
+%E
+%Cc Mad 00207
+%E
+%Cc Mad 00208
+%E
 #
 #	Drow Noble quest
 #
@@ -6647,6 +6921,24 @@ the Astral Plane, where the High Altar of %d resides.
 When you reach the temple, sacrifice the Amulet to %d.
 
 "Thus will you fulfill your destiny."
+%E
+%Cc Ndr 00200
+%E
+%Cc Ndr 00201
+%E
+%Cc Ndr 00202
+%E
+%Cc Ndr 00203
+%E
+%Cc Ndr 00204
+%E
+%Cc Ndr 00205
+%E
+%Cc Ndr 00206
+%E
+%Cc Ndr 00207
+%E
+%Cc Ndr 00208
 %E
 #
 #	Hedrow Noble quest
@@ -7187,6 +7479,24 @@ of trumps.
 
 "You have one task remaining. It begins where you entered."
 %E
+%Cc Nob 00200
+%E
+%Cc Nob 00201
+%E
+%Cc Nob 00202
+%E
+%Cc Nob 00203
+%E
+%Cc Nob 00204
+%E
+%Cc Nob 00205
+%E
+%Cc Nob 00206
+%E
+%Cc Nob 00207
+%E
+%Cc Nob 00208
+%E
 #
 #	Pirate
 #
@@ -7424,6 +7734,32 @@ the greatest %S of the Breathren of the Coast!
 
 "Now ye must travel to the astral sea, and offer the Amulet on the
 High Altar of %d!"
+%E
+%Cc Pir 00200
+%E
+%Cc Pir 00201
+%E
+%Cc Pir 00202
+%E
+%Cc Pir 00203
+%E
+%Cc Pir 00204
+%E
+%Cc Pir 00205
+%E
+%Cc Pir 00206
+%E
+%Cc Pir 00207
+%E
+%Cc Pir 00208
+%E
+%Cc Pir 00332
+%E
+%Cc Pir 00333
+%E
+%Cc Pir 00334
+%E
+%Cc Pir 00335
 %E
 #
 #	Priest
@@ -7672,6 +8008,157 @@ you must take the amulet, and sacrifice it on %ds altar on
 the Astral Plane.  I suspect that I shall never see you again in this
 life, but I hope to at %ds feet."
 %E
+%Cc Pri 00200
+High Priest:  "My son, you have mastered the skills needed to advance into
+the priesthood, but you have failed again and again at those acts of virtue
+that would show the wisdom required before I may call you forth into the 
+fullness of our mandate.
+
+There is but one chance left I can offer you.   Go hence to the abode of
+the wise old sage Perrin the Pendantic.   Learn from him what you can, and
+then perhaps you may demonstrate the wisdom needed that you be called forth
+into the fulness of the priesthood."
+%E
+%Cc Pri 00201
+"Leave me.   Do not return unless you can prove yourself."
+%E
+%Cc Pri 00202
+"I see, my child, that you have learnt through experience that wisdom you
+could not learn through education.   Thank the gods.   Have you brought the
+sacred herb to prove yourself?"
+
+Present the bronze vessel to the High Priest?
+%E
+%Cc Pri 00203
+High Priest:  "You have done well, my child.   The spirits have spoken to
+me.   You have been called into the priesthood.  Join us."  
+
+You begin to prepare for the ritual.
+%E
+%Cc Pri 00204
+High Priest:  "I should have sent someone wiser than you.   You are a bad
+person, and a worse priest.   I deject you from our community!   Go forth
+and pray we never meet again."
+
+You leave the Abbey and enter into the profession of Traitor.
+%E
+%Cc Pri 00205
+%E
+%Cc Pri 00206
+%E
+%Cc Pri 00207
+%E
+%Cc Pri 00208
+%E
+%Cc Pri 00324
+Paladin:   "I can see, Sir, that you have some natural talent in the arts
+of war.   Will you let me take you on and train you more fully in the
+studies of the paladin?"
+%E
+%Cc Pri 00325
+You accept his offer to learn the life of a paladin.   You begin to prepare
+for the ritual.
+%E
+%Cc Pri 00326
+Paladin:  "Very well.   Return to me if you change your mind."
+%E
+%Cc Pri 00327
+%E
+%Cc Pri 00328
+Undertaker:   "Only the seriousest of students of the Art ever approaches
+this difficult work.   Please, allow me to guide you into the art of the
+Undertaker."
+
+Will you join him?
+%E
+%Cc Pri 00329
+You accept his offer to learn the art of the undertaker.   You begin to
+prepare yourself for the journey. 
+%E
+%Cc Pri 00330
+Undertaker:  "Very well.   Return to me if you change your mind."
+%E
+%Cc Pri 00331
+%E
+#	First talk to Perrin
+%Cp Pri 00500
+Perrin:  "Young man!  Young man!  
+
+"I see you are a Brother.    Thank the gods.   Aid me!  
+
+"I was struck down with a darkness when I cleared away the evil from nearby
+farmlands.   I can not rise!   
+
+"I can only be cured through use of the sacred moly.   There is in my
+pantry a bronze vessel.   Please bring it back to me, that a healing may be
+done.
+
+"There are dangers..."
+%E
+#	Talk to Perrin Again Without Retrieving the Vessel
+%Cp Pri 00501
+"Bring me--!" cries the hermit before slumping over again unconscious.
+%E
+#	Talk to Perrin After Retrieving the Vessel
+%Cp Pri 00502
+Perrin roughly instructs you in the compounding of the necessary medicine.
+You understand based on your studies of the healing arts from your time in
+the abbey.
+
+You compound the drug and treat him successfully.
+
+Perrin recovers with shocking speed and thanks you vehemently.
+
+Perrin:  "Dear Acolyte, you have saved my life!  You have shown that you
+have the force of mind and strength of moral character that is needed in
+what makes a priest.   If the high priest has any doubts, bring back to him
+this vessel containing the remains of the rare herb you have used to heal
+me, and tell him the miracle you have wrought!"
+%E
+#	Location "Menagerie"
+%Cp Pri 00503
+You see a Sand Person imprisonned in this cell.
+
+"Help!   Help!   Release me!"   he says.
+
+[If the Sand Person is released, he will take a weapon from somewhere in
+the room and attack.]
+%E
+#	Location "Workshop"
+%Cp Pri 00504
+The partially dismembered corpses of two Sand People are seen here.   
+
+There is a book open on a work surface of some kind.
+%E
+#	Location "Manual of Dissection in the Workshop"
+%Cp Pri 00505
+It appears to be the renowned Manual of Puissant Dissection.   You examine
+the text and find your information in this fascinating subject grossly
+expanded.
+%E
+#	Location "The Prize in Perrin's Pantry"
+%Cp Pri 00506
+You see an ornate bronze vessel, stinking heavily of moly.   You recognise
+the foul smell from the studies in herbalism required in your training at
+the abbey.
+%E
+#	Workshop
+%Cp Pri 00507
+The partially dismembered corpses of two Sand People rest on a table here.
+There is a book open on a little stand.
+%E
+#	Perrin's Room
+%Cp Pri 00508
+Amidst a jumble of arcana and ancient texts that are impossible to read, you see the Hermit, Perrin the Pendantic, lying weak and frail on a raised pallet.
+%E
+#	The Menagerie
+%Cp Pri 00509
+This room is lined with cells or cages.   Most contain peculiar, dangerous animals.   These are sealed with impossible locks.   In the open between the cells is a pile of several rusty edged weapons.   You see a Sand Person imprisoned in one of the cells.
+%E
+#	Description
+%Cp Pri 00510
+Walls of this room are lined with little shelves containing a variety of special things.   The greater part of it seem to be dedicated to holding different kinds of marmelade.   Toward the back is a single lone shelf containing but a single ornate bronze vessel.
+%E
 #
 #	Ranger
 #
@@ -7696,7 +8183,8 @@ are to enter %H.
 "%nC continues to threaten the grove.  But we hold fast."
 %E
 %Cp Ran 00007
-"%lC is growing weak, and the defense of the grove has claimed many of our best."
+"%lC is growing weak, and the defense of the grove has claimed many of our
+best."
 %E
 %Cp Ran 00008
 "Remember %i is hard to enter.  Beware the
@@ -7709,7 +8197,8 @@ distraction of leatherwings."
 "%pC!  I have not seen you in many moons.  How do you fare?"
 %E
 %Cp Ran 00011
-"Birdsong has returned to the grove, surely this means you have defeated %n."
+"Birdsong has returned to the grove, surely this means you have defeated
+%n."
 %E
 %Cp Ran 00012
 "%lC seemed happier."
@@ -7931,6 +8420,24 @@ the Astral Plane, where the primary circle of %d resides.
 When you reach the temple, sacrifice the Amulet to %d.
 
 "Thus will you fulfill your destiny."
+%E
+%Cc Ran 00200
+%E
+%Cc Ran 00201
+%E
+%Cc Ran 00202
+%E
+%Cc Ran 00203
+%E
+%Cc Ran 00204
+%E
+%Cc Ran 00205
+%E
+%Cc Ran 00206
+%E
+%Cc Ran 00207
+%E
+%Cc Ran 00208
 %E
 #
 #	Gnome Ranger
@@ -8173,6 +8680,24 @@ take you into the AsTral Planes, where the Great Temple of
 
 "SacriFice the AmuLet on the alTar.  Thus shall %d become supReme!"
 %E
+%Cc Gnr 00200
+%E
+%Cc Gnr 00201
+%E
+%Cc Gnr 00202
+%E
+%Cc Gnr 00203
+%E
+%Cc Gnr 00204
+%E
+%Cc Gnr 00205
+%E
+%Cc Gnr 00206
+%E
+%Cc Gnr 00207
+%E
+%Cc Gnr 00208
+%E
 #
 #	Rogue (with apologies to all Norsk speakers -dean)
 #
@@ -8414,6 +8939,24 @@ is yours for the asking."
 trinket you've got there up to the Astral Plane.  From there, %d will
 show you what to do with it.  Once that's done, we will be invincible!"
 %E
+%Cc Rog 00200
+%E
+%Cc Rog 00201
+%E
+%Cc Rog 00202
+%E
+%Cc Rog 00203
+%E
+%Cc Rog 00204
+%E
+%Cc Rog 00205
+%E
+%Cc Rog 00206
+%E
+%Cc Rog 00207
+%E
+%Cc Rog 00208
+%E
 #
 #	Salamander Rogue/Convict
 #
@@ -8612,6 +9155,24 @@ can set us all truly free!"
 %Cc Sal 00091
 "Head to the Astral Plane with the amulet and offer it to 
 %d so we can be truly free."
+%E
+%Cc Sal 00200
+%E
+%Cc Sal 00201
+%E
+%Cc Sal 00202
+%E
+%Cc Sal 00203
+%E
+%Cc Sal 00204
+%E
+%Cc Sal 00205
+%E
+%Cc Sal 00206
+%E
+%Cc Sal 00207
+%E
+%Cc Sal 00208
 %E
 #
 #	Samurai
@@ -8870,6 +9431,32 @@ for saki and stories when you have finished.
 
 "Go now, and may our prayers be a wind at your back."
 %E
+%Cc Sam 00200
+%E
+%Cc Sam 00201
+%E
+%Cc Sam 00202
+%E
+%Cc Sam 00203
+%E
+%Cc Sam 00204
+%E
+%Cc Sam 00205
+%E
+%Cc Sam 00206
+%E
+%Cc Sam 00207
+%E
+%Cc Sam 00208
+%E
+%Cc Sam 00336
+%E
+%Cc Sam 00337
+%E
+%Cc Sam 00338
+%E
+%Cc Sam 00339
+%E
 #
 #	Tourist
 #
@@ -9120,6 +9707,56 @@ our oral history foretells for you.  Forever more, though, your name shall
 be spoken by the %gP with awe.  You are truly an inspiration to your
 %sp!"
 %E
+%Cc Tou 00200
+%E
+%Cc Tou 00201
+%E
+%Cc Tou 00202
+%E
+%Cc Tou 00203
+%E
+%Cc Tou 00204
+%E
+%Cc Tou 00205
+%E
+%Cc Tou 00206
+%E
+%Cc Tou 00207
+%E
+%Cc Tou 00208
+%E
+%Cc Tou 00340
+%E
+%Cc Tou 00341
+%E
+%Cc Tou 00342
+%E
+%Cc Tou 00343
+%E
+%Cc Tou 00344
+%E
+%Cc Tou 00345
+%E
+%Cc Tou 00346
+%E
+%Cc Tou 00347
+%E
+%Cc Tou 00348
+%E
+%Cc Tou 00349
+%E
+%Cc Tou 00350
+%E
+%Cc Tou 00351
+%E
+%Cc Tou 00352
+%E
+%Cc Tou 00353
+%E
+%Cc Tou 00354
+%E
+%Cc Tou 00355
+%E
 #
 #	Valkyrie
 #
@@ -9362,6 +9999,24 @@ Plane.  There you must offer the Amulet to %d.
 
 "Go now, my %S.  I cannot tell you your fate, as the power of the
 Amulet interferes with mine.  I hope for your success."
+%E
+%Cc Val 00200
+%E
+%Cc Val 00201
+%E
+%Cc Val 00202
+%E
+%Cc Val 00203
+%E
+%Cc Val 00204
+%E
+%Cc Val 00205
+%E
+%Cc Val 00206
+%E
+%Cc Val 00207
+%E
+%Cc Val 00208
 %E
 #
 #	Wizard
@@ -9620,7 +10275,24 @@ experienced before, so be prepared!
 
 "For this you were born, %s!  I am very proud of you."
 %E
-
+%Cc Wiz 00200
+%E
+%Cc Wiz 00201
+%E
+%Cc Wiz 00202
+%E
+%Cc Wiz 00203
+%E
+%Cc Wiz 00204
+%E
+%Cc Wiz 00205
+%E
+%Cc Wiz 00206
+%E
+%Cc Wiz 00207
+%E
+%Cc Wiz 00208
+%E
 #
 #       Gladiator
 #
@@ -10188,7 +10860,24 @@ You again sense %l pleading for help.
 "The silver bell which was hoarded by %n will be
 essential in locating the Amulet of Yendor."
 %E
-
+%Cc Chf 00200
+%E
+%Cc Chf 00201
+%E
+%Cc Chf 00202
+%E
+%Cc Chf 00203
+%E
+%Cc Chf 00204
+%E
+%Cc Chf 00205
+%E
+%Cc Chf 00206
+%E
+%Cc Chf 00207
+%E
+%Cc Chf 00208
+%E
 #
 #       Officer
 #
@@ -10465,7 +11154,36 @@ You again sense %l pleading for help.
 "The silver bell which was hoarded by %n will be
 essential in locating the Amulet of Yendor."
 %E
-
+%Cc Off 00200
+%E
+%Cc Off 00201
+%E
+%Cc Off 00202
+%E
+%Cc Off 00203
+%E
+%Cc Off 00204
+%E
+%Cc Off 00205
+%E
+%Cc Off 00206
+%E
+%Cc Off 00207
+%E
+%Cc Off 00208
+%E
+%Cc Off 00373
+%E
+%Cc Off 00374
+%E
+%Cc Off 00375
+%E
+%Cc Off 00376
+%E
+%Cc Off 00377
+%E
+%Cc Off 00378
+%E
 #
 #       Undead Slayer
 #
@@ -10732,7 +11450,32 @@ You again sense %l pleading for help.
 "The silver bell which was hoarded by %n will be
 essential in locating the Amulet of Yendor."
 %E
-
+%Cc Und 00200
+%E
+%Cc Und 00201
+%E
+%Cc Und 00202
+%E
+%Cc Und 00203
+%E
+%Cc Und 00204
+%E
+%Cc Und 00205
+%E
+%Cc Und 00206
+%E
+%Cc Und 00207
+%E
+%Cc Und 00208
+%E
+%Cc Und 00364
+%E
+%Cc Und 00365
+%E
+%Cc Und 00366
+%E
+%Cc Und 00367
+%E
 #
 #       Jedi
 #
@@ -10990,7 +11733,32 @@ You again sense %l pleading for help.
 "You can't use the force if you don't get what %n had!
 It should be a metallic object."
 %E
-
+%Cc Jed 00200
+%E
+%Cc Jed 00201
+%E
+%Cc Jed 00202
+%E
+%Cc Jed 00203
+%E
+%Cc Jed 00204
+%E
+%Cc Jed 00205
+%E
+%Cc Jed 00206
+%E
+%Cc Jed 00207
+%E
+%Cc Jed 00208
+%E
+%Cc Jed 00360
+%E
+%Cc Jed 00361
+%E
+%Cc Jed 00362
+%E
+%Cc Jed 00363
+%E
 #
 #	Firefighter
 #
@@ -11273,6 +12041,24 @@ You again sense %l pleading for help.
 %Cp Fir 00102
 "The silver bell which was hoarded by %n will be
 essential in locating the Amulet of Yendor."
+%E
+%Cc Fir 00200
+%E
+%Cc Fir 00201
+%E
+%Cc Fir 00202
+%E
+%Cc Fir 00203
+%E
+%Cc Fir 00204
+%E
+%Cc Fir 00205
+%E
+%Cc Fir 00206
+%E
+%Cc Fir 00207
+%E
+%Cc Fir 00208
 %E
 
 #

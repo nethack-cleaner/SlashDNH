@@ -2357,6 +2357,9 @@ u_init()
 		skill_init(Skill_B);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
+		achieve.hasrage = TRUE;
+		achieve.maxrage = 8;
+		achieve.currentrage = 8;
 		break;
 #ifdef BARD
 	case PM_BARD:
@@ -2455,6 +2458,9 @@ u_init()
 		} else {
 			u.ualign.type = A_LAWFUL;
 		}
+		achieve.hasrage = TRUE;
+		achieve.maxrage = 8;
+		achieve.currentrage = 8;
 		break;
 #ifdef CONVICT
 	case PM_CONVICT:
@@ -2479,6 +2485,9 @@ u_init()
 		flags.initalign = 2; // 2 == chaotic
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Convicts are pariahs of their race */
+		achieve.hasrage = TRUE;
+		achieve.maxrage = 8;
+		achieve.currentrage = 8;
         break;
 #endif	/* CONVICT */
 	case PM_MADMAN:
@@ -2520,6 +2529,9 @@ u_init()
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Madmen are pariahs of their race */
 		u.ualign.type = A_CHAOTIC;
+		achieve.hasrage = TRUE;
+		achieve.maxrage = 8;
+		achieve.currentrage = 8;
         break;
 	case PM_HEALER:
 #ifndef GOLDOBJ

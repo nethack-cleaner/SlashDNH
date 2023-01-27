@@ -72,7 +72,6 @@ BRANCH: 	"The Temple of Moloch" @ (5, 25)
 BRANCH:		"The Archipelago" @ (5, 25)
 BRANCH:		"The Giant Caverns" @ (5, 25)
 BRANCH:		"Grund's Stronghold" @ (5, 25)
-BRANCH:		"Nightmare's Domain" @ (5, 25)
 BRANCH:		"Vecna's Domain" @ (5, 25)
 
 BRANCH:		"The Void" @ (10, 25) no_down 
@@ -301,6 +300,30 @@ DUNGEON:	"The Quest" "Q" (5, 2)
 LEVEL:	"x-strt" "none" @ (1, 1)
 LEVEL:	"x-loca" "L" @ (3, 1)
 LEVEL:	"x-goal" "none" @ (-1, 0)
+
+#
+# Vecna's Domain
+#
+DUNGEON:		"Vecna's Domain" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      chaotic
+LEVEL:		"lich" "none" @ (1, 0)
+
+#
+# The Giant Caverns
+#
+DUNGEON:		"The Giant Caverns" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      chaotic
+LEVEL:		"cav2fill" "none" @ (1, 0)
+
+#
+# Grund's Stronghold
+#
+DUNGEON:		"Grund's Stronghold" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      chaotic
+LEVEL:		"grund-1" "none" @ (1, 0)
 
 #
 # Starting Zone Arc

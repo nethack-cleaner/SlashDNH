@@ -801,14 +801,20 @@ you_calc_movement()
 		if(u.slowclock < hungerup) morehungry(hungerup-u.slowclock);
 		else if(!TimeStop && !(moves%(u.slowclock - hungerup + 1))) morehungry(1);
 	}
+	if (achieve.berserkerrage || achieve.berserkerrageend > 0) {
+		int hungerup;
+		moveamt *= 2;
+		hungerup = 2*moveamt/NORMAL_SPEED - 1;
+		morehungry(hungerup);
+	}
 	if(uandroid && u.ucspeed == HIGH_CLOCKSPEED){
 		if (rn2(3) != 0) moveamt += NORMAL_SPEED / 2;
 	}
 	if(active_glyph(ANTI_CLOCKWISE_METAMORPHOSIS) || achieve.clockarc)
 		moveamt += 3;
-	if(u.uuur_duration || achieve.clockarc || moves < achieve.swiftness || moves < achieve.agressivestrike)
+	if(u.uuur_duration || achieve.clockarc || moves < achieve.swiftness || moves < achieve.agressivestrike || achieve.berserkerrage)
 		moveamt += 6;
-	if (achieve.patientdefense > moves) {
+	if (achieve.patientdefense > moves || achieve.berserkerrageend > 0) {
 		moveamt = max(moveamt-2,1);
 	}
 	boolean bigout = FALSE;
@@ -916,10 +922,6 @@ you_regen_hp()
 			}
 		}
 	}
-	//Etherealoids do not regen this way
-	if(Race_if(PM_ETHEREALOID) && !oddregen){
-		return;
-	}
 
 	// Sanity check
 	if (Upolyd && (*hp < 1))
@@ -927,26 +929,103 @@ you_regen_hp()
 
 	//Androids regenerate from active Hoon and healing doll, 
 	////but not from other sources unless dormant
-	if(u.uhoon_duration && (*hp) < (*hpmax)){
-		flags.botl = 1;
-		
-		(*hp) += 10;
-
-		if ((*hp) > (*hpmax))
-			(*hp) = (*hpmax);
-	}
-	if(RapidHealing && (*hp) < (*hpmax)){
-		//1/5th max hp
-		(*hp) += (*hpmax)/5+1;
-		
-		if ((*hp) > (*hpmax))
-			(*hp) = (*hpmax);
+	if (Race_if(PM_ETHEREALOID)) {
+		if(u.uhoon_duration && (*hp) < (*hpmax)){
+			flags.botl = 1;
+			
+			(*hp) += 10;
+	
+			if ((*hp) > (*hpmax))
+				(*hp) = (*hpmax);
+		}
+		if(RapidHealing && (*hp) < (*hpmax)){
+			//1/5th max hp
+			(*hp) += (*hpmax)/5+1;
+			
+			if ((*hp) > (*hpmax))
+				(*hp) = (*hpmax);
+		}
 	}
 	
 	//Androids regenerate from active Hoon, but not from other sources unless dormant
 	// Notably, no bonus from passive Hoon
-	if(uandroid && !u.usleep && !oddregen)
+	if (!oddregen && ((uandroid && !u.usleep) || Race_if(PM_ETHEREALOID))) {
+		if (achieve.lastpropcheck < moves) {
+			achieve.lastpropcheck = moves;
+			if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
+				achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
+			}
+			if (achieve.berserkerrageend > 0) {
+				achieve.berserkerrageend--;
+			}
+			if (achieve.demonproperty1e == 2 || achieve.demonproperty2e == 2 || achieve.demonproperty3e == 2) { // confusion
+				if(rn2(50) > 48 && !Confusion) {
+					You_feel("somewhat dizzy.");
+					make_confused(itimeout_incr(HConfusion, rnd(50)+1), FALSE);
+				}
+			}
+			if (achieve.demonproperty1e == 4 || achieve.demonproperty2e == 4 || achieve.demonproperty3e == 4) { // sickness
+				if (rn2(50) > 48 && !Sick) {
+					make_sick((long)rn1(ACURR(A_CON), 20), "hell's curse", TRUE, SICK_NONVOMITABLE);
+				}
+			}
+			if (achieve.demonproperty1h == 4 || achieve.demonproperty2h == 4 || achieve.demonproperty3h == 4) { // lose 3 sanity
+				if (rn2(50) > 48) {
+					You_feel("a little more insane");
+					change_usanity(-3, TRUE);
+				}
+			}
+			if (onhellzone(5) && rn2(10) > 9) {
+				make_hallucinated(HHallucination + 200,FALSE,0L);
+			}
+			if (onhellzone(6) && rn2(10) > 9) {
+				int energy = rn2(5);
+				int dmg = 0;
+				if (energy == 0) { //Physical
+					pline("Thousands of tiny rocks spew forth beneath you");
+					if (Acid_res(&youmonst)) {
+						pline("It feels mildly uncomfortable.");
+					} else {
+						dmg = d(8, 6);
+						if (Half_phys(&youmonst))
+							dmg = dmg / 2;
+					}
+				} else if (energy == 1) { //Acid
+					pline("An acid geyser errupts beneath you");
+					if (Acid_res(&youmonst)) {
+						pline("It feels mildly uncomfortable.");
+					} else {
+						dmg = d(8, 6);
+					}
+				} else if (energy == 2) { //Fire
+					pline("A lava geyser errupts beneath you");
+					if (Fire_res(&youmonst)) {
+						pline("It feels mildly uncomfortable.");
+					} else {
+						dmg = d(8, 6);
+					}
+				} else if (energy == 3) { //Lightning
+					pline("A surge of electricity errupts beneath you");
+					if (Shock_res(&youmonst)) {
+						pline("It feels mildly uncomfortable.");
+					} else {
+						dmg = d(8, 6);
+					}
+				} else if (energy == 3) { //Cold
+					pline("An erruption of frigid air errupts beneath you");
+					if (Cold_res(&youmonst)) {
+						pline("It feels mildly uncomfortable.");
+					} else {
+						dmg = d(8, 6);
+					}
+				}
+				if (dmg) {
+					*hp -= dmg;
+				}
+			}
+		}
 		return;
+	}
 	
 	// Previously used hoons
 	perX += u.uhoon;
@@ -1133,6 +1212,12 @@ you_regen_hp()
 	}
 	if (achieve.lastpropcheck < moves) {
 		achieve.lastpropcheck = moves;
+		if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
+			achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
+		}
+		if (achieve.berserkerrageend > 0) {
+			achieve.berserkerrageend--;
+		}
 		if (achieve.demonproperty1e == 2 || achieve.demonproperty2e == 2 || achieve.demonproperty3e == 2) { // confusion
 			if(rn2(50) > 48 && !Confusion) {
 				You_feel("somewhat dizzy.");
@@ -1221,6 +1306,17 @@ you_regen_hp()
 		flags.botl = 1;
 
 		// modify by 1/HEALCYCLEth of perX per turn:
+		if (perX > 0 && achieve.idontcareaboutpain) {
+			achieve.dontcarepain += perX;
+			if (achieve.dontcarepain >= HEALCYCLE) {
+				achieve.dontcarepain = 0;
+				achieve.currentrage++;
+				if (achieve.currentrage > achieve.maxrage) {
+					achieve.currentrage = achieve.maxrage;
+				}
+			}
+			perX = 0;
+		}
 		*hp += perX / HEALCYCLE;
 		// Now deal with any remainder
 		if (((moves)*(abs(perX) % HEALCYCLE)) / HEALCYCLE >((moves - 1)*(abs(perX) % HEALCYCLE)) / HEALCYCLE)

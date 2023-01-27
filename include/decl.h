@@ -936,7 +936,18 @@ struct u_achieve {
 		Bitfield(lightsaberpro,1);
 		Bitfield(demogorgonmet,1);
 		Bitfield(lamashtumet,1);
+		Bitfield(hasrage,1);
+		Bitfield(rageattacking,1);
+		Bitfield(drinkrage,1);
+		Bitfield(idontcareaboutpain,1);
+		Bitfield(berserkerrage,1);
 		int lastpropcheck;
+		int berserkerrageused;
+		int berserkerrageend;
+		int dontcarepain;
+		int damagetaken;
+		int maxrage;
+		int currentrage;
 		int demonproperty1h;
 		int demonproperty2h;
 		int demonproperty3h;

@@ -2893,6 +2893,55 @@ int dmg;				/* damage to deal */
 	const char * oldkiller = killer;
 	killer = 0;
 
+	if (youagr) {
+		if (achieve.rageattacking) {
+			pline("Your rage enhances your attack!");
+			if (achieve.currentrage > 0) {	
+				int addto = 2;
+				if (u.ulevel > 9) {
+					addto += 3;
+					if (u.ulevel > 14) {
+						addto += 4;
+					}
+				}
+				if (achieve.berserkerrage) {
+					addto = addto * 2;
+					if (rn2(10) == 1) {
+						addto = addto * 2;
+						pline("You summon your rage for a massive blow!");
+					}
+				}
+				dmg += addto;
+				if (!achieve.drinkrage || rn2(3) == 1 || achieve.berserkerrage) {
+					achieve.currentrage--;
+					if (achieve.berserkerrage) {
+						achieve.berserkerrageused++;
+						if (achieve.berserkerrageused > (achieve.maxrage * 2)) {
+							achieve.berserkerrage = FALSE;
+							morehungry(400);
+							achieve.berserkerrageend = achieve.maxrage;
+						}
+					}
+				}
+			}
+			if (achieve.currentrage < 1) {	
+				achieve.rageattacking = FALSE;
+			}
+		}
+	}
+	if (youdef) {
+		if (achieve.drinkrage) {
+			pline("You drink in the pain of the attack!");
+			dmg += 4;
+			if (u.ulevel > 9) {
+				dmg += 4;
+				if (u.ulevel > 14) {
+					dmg += 4;
+				}
+			}
+		}
+	}
+
 	/* if defender is already dead, avoid re-killing them; just note that they are dead */
 	if (*hp(mdef) < 1) {
 		return (MM_HIT|MM_DEF_DIED);
@@ -2908,6 +2957,22 @@ int dmg;				/* damage to deal */
 
 	/* mhitu */
 	if (youdef) {
+		achieve.damagetaken += dmg;
+		if (achieve.hasrage && dmg > 2) {
+			int addto = 1;
+			if (achieve.drinkrage) {
+				addto++;
+			}
+			achieve.currentrage += addto;
+			if (dmg > 10) {
+				achieve.currentrage += addto;
+			}
+			if (achieve.currentrage > achieve.maxrage) {
+				achieve.currentrage = achieve.maxrage;
+			}
+		} else if (achieve.drinkrage) {
+			achieve.currentrage++; //even low damage enrages you
+		}
 		stop_occupation();
 		flags.botl = 1;
 		if (dmg > 0 && magr)

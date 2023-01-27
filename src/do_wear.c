@@ -2700,6 +2700,9 @@ int base_udr()
 	if (moves < achieve.unstoppable) {
 		udr += 30;
 	}
+	if (achieve.berserkerrage) {
+		udr += 2;
+	}
 	if (achieve.demonproperty1h == 5 || achieve.demonproperty2h == 5 || achieve.demonproperty3h == 5) {
 		udr -= 5;
 	}

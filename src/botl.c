@@ -639,6 +639,16 @@ bot2()
       Strcat(nb = eos(nb), " STONE");
 #endif
   }
+	if (achieve.hasrage) {
+		Sprintf(nb = eos(nb), " Rage: %d/%d", achieve.currentrage, achieve.maxrage);
+	}
+	if (u.ulycn && u.ulycn != NON_PM) {
+#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
+	  add_colored_text("Lyc", newbot2);
+#else
+      Strcat(nb = eos(nb), " Lyc");
+#endif
+	}
   if(Blind && !StumbleBlind)
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
       add_colored_text("Blind", newbot2);

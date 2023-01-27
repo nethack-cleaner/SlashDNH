@@ -732,8 +732,37 @@ boolean techniqueonly;
 	if (achieve.demonproperty1h == 3 || achieve.demonproperty2h == 3 || achieve.demonproperty2h == 3) {
 		atleastone = TRUE;
 		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Hell's curse prevents you from using techniques", MENU_UNSELECTED);
+	} else if (achieve.berserkerrage) {
+		atleastone = TRUE;
+		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your berserk rage prevents you from using techniques", MENU_UNSELECTED);
 	} else {
-	if (Role_if(PM_JEDI)) {
+	if (Role_if(PM_ARCHEOLOGIST)) {
+		atleastone = TRUE;
+		if (u.ulevel > 3) {
+			lettertaken[addtech(tmpwin, MATTK_IDENTIFY, freeletter(lettertaken, 'r'), "Research", 3000, 0, 0)] = TRUE;
+		} else {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your research has not yet born fruit.", MENU_UNSELECTED);
+		}
+	} else if (Role_if(PM_BERSERKER)) {
+		atleastone = TRUE;
+		if (u.ulevel < 15) {
+			if (achieve.drinkrage) {
+				lettertaken[addtech(tmpwin, MATTK_DRINKRAGE, freeletter(lettertaken, 's'), "Stop drinking in the rage", 10, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_DRINKRAGE, freeletter(lettertaken, 'd'), "Drink in the rage", 10, 0, 0)] = TRUE;
+			}
+			if (achieve.idontcareaboutpain) {
+				lettertaken[addtech(tmpwin, MATTK_IDONTPAIN, freeletter(lettertaken, 'i'), "I want to care about pain again", 10, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_IDONTPAIN, freeletter(lettertaken, 'i'), "I don't care about pain", 10, 0, 0)] = TRUE;
+			}
+		} else {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "You have learned to always be angry!", MENU_UNSELECTED);
+		}
+		if (achieve.drinkrage && achieve.idontcareaboutpain) {
+			lettertaken[addtech(tmpwin, MATTK_BERSERKERRAGE, freeletter(lettertaken, 'b'), "Enter a berserker rage!", 10, 0, 0)] = TRUE;
+		}
+	} else if (Role_if(PM_JEDI)) {
 		atleastone = TRUE;
 		if (achieve.introquest) {
 			lettertaken[addtech(tmpwin, MATTK_JUMP, freeletter(lettertaken, 'j'), "Force Jump", 1000, 0, 20)] = TRUE;
@@ -743,6 +772,14 @@ boolean techniqueonly;
 			any.a_void = 0;		/* zero out all bits */
 			any.a_int = 0;
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "You must attune to the force", MENU_UNSELECTED);
+		}
+	}
+	if (achieve.currentrage > 0 && Role_if(PM_BERSERKER)) {
+		atleastone = TRUE;
+		if (achieve.rageattacking) {
+			lettertaken[addtech(tmpwin, MATTK_RAGE_ATTACK, freeletter(lettertaken, 'r'), "Stop using rage in your attacks", 10, 0, 0)] = TRUE;
+		} else {
+			lettertaken[addtech(tmpwin, MATTK_RAGE_ATTACK, freeletter(lettertaken, 'r'), "Use rage into attacks", 10, 0, 0)] = TRUE;
 		}
 	}
 	// check for item based techniques
@@ -831,13 +868,13 @@ boolean techniqueonly;
 		if (achieve.techs[MATTK_JUMP] + 1000 > moves) {
 			losepw(20);
 		}
-		achieve.techs[MATTK_JUMP] = moves;
+		achieve.techs[picked] = moves;
 		return jump(1);
 	case MATTK_HEAL:
 		if (achieve.techs[MATTK_HEAL] + 1000 > moves) {
 			losepw(20);
 		}
-		achieve.techs[MATTK_HEAL] = moves;
+		achieve.techs[picked] = moves;
 		u.uhp += 10 + (u.ulevel * 2);
 		if (u.ulevel > 17) {
 			u.uhp += 10 + (u.ulevel * 2);
@@ -850,108 +887,134 @@ boolean techniqueonly;
 		if (achieve.techs[MATTK_FORCETELEPORT] + 1000 > moves) {
 			losepw(25);
 		}
-		achieve.techs[MATTK_FORCETELEPORT] = moves;
+		achieve.techs[picked] = moves;
 		tele();
 		break;
 	case MATTK_PATIENTDEFENSE:
 		if (achieve.techs[MATTK_PATIENTDEFENSE] + 1000 > moves) {
 			losepw(50);
 		}
-		achieve.techs[MATTK_PATIENTDEFENSE] = moves;
+		achieve.techs[picked] = moves;
 		achieve.patientdefense = moves + 30;
 		break;
 	case MATTK_AGRESSIVESTRIKE:
 		if (achieve.techs[MATTK_AGRESSIVESTRIKE] + 1000 > moves) {
 			losepw(50);
 		}
-		achieve.techs[MATTK_AGRESSIVESTRIKE] = moves;
+		achieve.techs[picked] = moves;
 		achieve.agressivestrike = moves + 20;
 		break;
-	case MATTK_SWIFTNESS:
-		achieve.techs[MATTK_SWIFTNESS] = moves;
-	    pline("You are moving exceptionally fast!");
-		achieve.swiftness = moves + 25;
-		break;
-	case MATTK_DODGE:
-		achieve.techs[MATTK_DODGE] = moves;
-	    pline("You are dodging amazingly well");
-		achieve.dodge = moves + 25;
-		find_ac();
-		break;
-	case MATTK_SWIFTDEFENSE:
-		achieve.techs[MATTK_SWIFTDEFENSE] = moves;
-	    pline("You are rolling with every attack");
-		achieve.swiftdefense = moves + 25;
-		find_ac();
-		break;
-	case MATTK_ANTHAUL:
-		achieve.techs[MATTK_ANTHAUL] = moves;
-	    pline("You feel like a giant ant, carrying anything should be a breeze!");
-		achieve.anthaul = moves + 100;
-		if (ubracerworn) {
-			struct obj *otmp = ubracerworn;
-			if (otmp->oartifact == ART_GIRDLE_OF_GIANT_STRENGTH) {
-				achieve.anthaul = moves + 150;
-			}
-		}
-		break;
-	case MATTK_UNSTOPPABLE:
-		achieve.techs[MATTK_UNSTOPPABLE] = moves + 2500;
-		pline("Now nothing can stop me!  I'm unstoppable");
-		achieve.unstoppable = moves + 4;
-		break;
-	case MATTK_SHRUGOFF:
-		achieve.techs[MATTK_SHRUGOFF] = moves;
-		pline("Go ahead and hit me, I'll just shrug it off");
-		achieve.shrugoff = moves + 25;
-		break;
-	case MATTK_SHADOWWALK:
-		achieve.techs[MATTK_SHADOWWALK] = moves;
-		pline("You merge into the world of shadows, moving so quickly everything else seems frozen.");
-		achieve.shadowwalk = moves + 10;
-		if (achieve.shadowstep > moves) {
-			achieve.shadowstep = moves - 1;
-		}
-		break;
-	case MATTK_SHADOWSTEP:
-		achieve.techs[MATTK_SHADOWSTEP] = moves;
-		pline("You merge into the world of shadows, you can slip through microscopic openings");
-		achieve.shadowstep = moves + 10;
-		if (achieve.shadowwalk > moves) {
-			achieve.shadowwalk = moves - 1;
-		}
-		break;
 	case MATTK_TRUESHOTAURA:
-		achieve.techs[MATTK_TRUESHOTAURA] = moves + 1500;
+		achieve.techs[picked] = moves + 1500;
 		pline("My weapons sink deep into anything.");
 		achieve.trueshotaura = moves + 25;
 		break;
+	case MATTK_RAGE_ATTACK:
+	case MATTK_IDENTIFY:
+	case MATTK_DRINKRAGE:
+	case MATTK_DODGE:
+	case MATTK_SWIFTNESS:
+	case MATTK_SWIFTDEFENSE:
+	case MATTK_ANTHAUL:
+	case MATTK_UNSTOPPABLE:
+	case MATTK_SHRUGOFF:
+	case MATTK_SHADOWWALK:
+	case MATTK_SHADOWSTEP:
 	case MATTK_BARRAGE:
-		achieve.techs[MATTK_BARRAGE] = moves;
-		pline("Now I am shooting faster than ever before.");
-		achieve.arrowbarrage = moves + 15;
-		break;
 	case MATTK_RESCUEMISSION:
-		achieve.techs[MATTK_RESCUEMISSION] = moves;
-		achieve.rescuemission = moves + 15;
-		break;
 	case MATTK_WATERASSAULT:
-		achieve.techs[MATTK_WATERASSAULT] = moves;
-		for (int i = 0; i <= rn2(5); i++) {
-			struct monst *mon = makemon(&mons[PM_WATER_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
-			if(mon) {
-				initedog(mon);
-				mark_mon_as_summoned(mon, &youmonst, 20, 0);
-			}
-		}
-		break;
+	case MATTK_IDONTPAIN:
+	case MATTK_BERSERKERRAGE:
 	case MATTK_FIREASSAULT:
-		achieve.techs[MATTK_FIREASSAULT] = moves;
-		for (int i = 0; i <= rn2(5); i++) {
-			struct monst *mon = makemon(&mons[PM_FIRE_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
-			if(mon) {
-				initedog(mon);
-				mark_mon_as_summoned(mon, &youmonst, 20, 0);
+		achieve.techs[picked] = moves;
+		if (picked == MATTK_IDENTIFY) {
+			identify_pack(1);
+			pline("Your constant research has paid off!");
+		} else if (picked == MATTK_DRINKRAGE) {
+			if (achieve.drinkrage) {
+				pline("You stopping drinking in the rage!");
+			} else {
+				pline("You drink in the rage with each attack you take!");
+			}
+			achieve.drinkrage = !achieve.drinkrage;
+		} else if (picked == MATTK_BERSERKERRAGE) {
+			achieve.berserkerrage = TRUE;
+			achieve.rageattacking = TRUE;
+			achieve.berserkerrageend = FALSE;
+			achieve.berserkerrageused = 0;
+			pline("You fly into a berserker rage!");
+		} else if (picked == MATTK_IDONTPAIN) {
+			if (achieve.idontcareaboutpain) {
+				pline("You realize you really do care about pain");
+			} else {
+				pline("You don't care about pain!");
+			}
+			achieve.idontcareaboutpain = !achieve.idontcareaboutpain;
+		} else if (picked == MATTK_RAGE_ATTACK) {
+			if (achieve.rageattacking) {
+				pline("You stop using your rage in your attacks!");
+			} else {
+				pline("You channel your rage into your attacks!");
+			}
+			achieve.rageattacking = !achieve.rageattacking;
+		} else if (picked == MATTK_SWIFTNESS) {
+			pline("You are moving exceptionally fast!");
+			achieve.swiftness = moves + 25;
+		} else if (picked == MATTK_DODGE) {
+			pline("You are dodging amazingly well");
+			achieve.dodge = moves + 25;
+			find_ac();
+		} else if (picked == MATTK_SWIFTDEFENSE) {
+			pline("You are rolling with every attack");
+			achieve.swiftdefense = moves + 25;
+			find_ac();
+		} else if (picked == MATTK_ANTHAUL) {
+			pline("You feel like a giant ant, carrying anything should be a breeze!");
+			achieve.anthaul = moves + 100;
+			if (ubracerworn) {
+				struct obj *otmp = ubracerworn;
+				if (otmp->oartifact == ART_GIRDLE_OF_GIANT_STRENGTH) {
+					achieve.anthaul = moves + 150;
+				}
+			}
+		} else if (picked == MATTK_UNSTOPPABLE) {
+			pline("Now nothing can stop me!  I'm unstoppable");
+			achieve.unstoppable = moves + 4;
+		} else if (picked == MATTK_SHRUGOFF) {
+			pline("Go ahead and hit me, I'll just shrug it off");
+			achieve.shrugoff = moves + 25;
+		} else if (picked == MATTK_SHADOWWALK) {
+			pline("You merge into the world of shadows, moving so quickly everything else seems frozen.");
+			achieve.shadowwalk = moves + 10;
+			if (achieve.shadowstep > moves) {
+				achieve.shadowstep = moves - 1;
+			}
+		} else if (picked == MATTK_SHADOWSTEP) {
+			pline("You merge into the world of shadows, you can slip through microscopic openings");
+			achieve.shadowstep = moves + 10;
+			if (achieve.shadowwalk > moves) {
+				achieve.shadowwalk = moves - 1;
+			}
+		} else if (picked == MATTK_BARRAGE) {
+			pline("Now I am shooting faster than ever before.");
+			achieve.arrowbarrage = moves + 15;
+		} else if (picked == MATTK_RESCUEMISSION) {
+			achieve.rescuemission = moves + 15;
+		} else if (picked == MATTK_WATERASSAULT) {
+			for (int i = 0; i <= rn2(5); i++) {
+				struct monst *mon = makemon(&mons[PM_WATER_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
+				if(mon) {
+					initedog(mon);
+					mark_mon_as_summoned(mon, &youmonst, 20, 0);
+				}
+			}
+		} else if (picked == MATTK_FIREASSAULT) {
+			for (int i = 0; i <= rn2(5); i++) {
+				struct monst *mon = makemon(&mons[PM_FIRE_ELEMENTAL], u.ux, u.uy, MM_EDOG|MM_ADJACENTOK|MM_NOCOUNTBIRTH|MM_ESUM);
+				if(mon) {
+					initedog(mon);
+					mark_mon_as_summoned(mon, &youmonst, 20, 0);
+				}
 			}
 		}
 		break;

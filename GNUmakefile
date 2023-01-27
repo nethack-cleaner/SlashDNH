@@ -210,7 +210,7 @@ SPEC_DES = bigroom.des blacktemple.des castle.des chaos.des chaos2.des chaos3.de
 	   szpri.des szpir.des szrog.des szran.des szsam.des sztou.des \
 	   szbrd.des szval.des szwiz.des szaand.des szdrow.des szdnob.des \
 	   szjed.des szethe.des szchf.des szfir.des szoff.des szund.des \
-	   szsarc.des giants.des grund.des nightmar.des lich.des
+	   szsarc.des giants.des grund.des lich.des
 
 ALL_TAG = $(QUEST_DES:%.des=dat/%.tag) $(SPEC_DES:%.des=dat/%.tag)
 

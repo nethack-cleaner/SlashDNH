@@ -72,7 +72,7 @@ MAP
 4ssssssss--------------ssssss-----ssssPPPssssssssssssssssssssssssssssssssssss
 5ssssssss|............|ssssss+...|sssPPPsssssssssssssssssssssssssssssssssssss
 6ssssssss|............|ssssss|...|ssssPPsssssssssssssssssssssssssssssssssssss
-7ssssssss|.\..........+ssssss-----sssssssssssssssssssssssssssssssssssssssssss
+7ssssssss|............+ssssss-----sssssssssssssssssssssssssssssssssssssssssss
 8ssssssss|............|sssssssssssssssPPsssssssssssssssssssssssssssssssssssss
 9ssssssss|............|sss-----sssssssPPPssssssssssssssssssssssssssssssssssss
 0ssssssss--------------sss+...|ssssssPPPPPsssssssssssssssssssssssssssssssssss
@@ -111,12 +111,16 @@ DOOR:open,(28,05)
 MONSTER:'@',"Conan",(10,07)
 MONSTER:'@',"Maximus",(11,07)
 MONSTER:'@',"Groo the Wanderer",(12,07)
-MONSTER:'@',"Thulsa Doom",(13,07)
 # Non diggable walls
 NON_DIGGABLE:(00,00,75,19)
 OBJECT:')',"spear",place[0],uncursed,1,"The Silver Spear of the Gladiator"
 OBJECT:')',"battle-axe",place[1],uncursed,0,"The Battle-Axe of the Ancients"
-OBJECT:')',"axe",place[2],uncursed,0
-OBJECT:'(',"torch",place[3],uncursed,0
+OBJECT:')',"katana",place[2],uncursed,0,"Blade Cuisinart"
+OBJECT:')',"dagger",place[3],uncursed,0,"Night dagger of Delnik"
 # One trap to keep the ogres at bay.
 TRAP:"spiked pit",(37,07)
+MONSTER:'O',"ogre",(40,08),hostile
+MONSTER:'O',"ogre",(41,06),hostile
+MONSTER:'o',"orc",random,hostile
+MONSTER:'o',"orc",random,hostile
+MONSTER:'o',"orc",random,hostile

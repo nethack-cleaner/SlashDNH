@@ -64,76 +64,63 @@
 #   QT_STARTTRAITOR2	204 - Traitor, 2nd time but not the mini-quest item
 #   QT_STARTLEADER3	205 - Starter leader - has the quest item!
 #   QT_STARTTRAITOR3	206 - Traitor - has the quest item!
-#   QT_STARTLEADER4	207 - Starter leader - after delivery
-#   QT_STARTTRAITOR4	208 - Traitor - after delivery
+#   QT_STARTLEADER4	409 - Starter leader - after delivery
+#   QT_STARTTRAITOR4	410 - after delivery
+#   QT_BERSERKERLEADER4	411 - after delivery
+#   QT_GLADIATORLEADER4	412 - after delivery
+#   QT_OTHERCHOICE	209 - One of the other choices after you chose something
+#		The choice is set to the id type of the monster type that you aligned with.
 #   QT_GLADIATORLEADER1	300 - Gladiator leader first time
 #   QT_GLADIATORLEADER2	301 - Gladiator leader, 2nd time but no quest item
 #   QT_GLADIATORLEADER3	302 - Gladiator leader - has the quest item!
-#   QT_GLADIATORLEADER4	303
-#   QT_SALAMANDERLEADER1 304
-#   QT_SALAMANDERLEADER2 305
-#   QT_SALAMANDERLEADER3 306
-#   QT_SALAMANDERLEADER4 307
-#   QT_BERSERKERLEADER1	308
-#   QT_BERSERKERLEADER2	309
-#   QT_BERSERKERLEADER3	310
-#   QT_BERSERKERLEADER4	311
-#   QT_BLINDLEADER1	312
-#   QT_BLINDLEADER2	313
-#   QT_BLINDLEADER3	314
-#   QT_BLINDLEADER4	315
-#   QT_PACIFISTLEADER1 316
-#   QT_PACIFISTLEADER2 317
-#   QT_PACIFISTLEADER3 318
-#   QT_PACIFISTLEADER4 319
-#   QT_YEOMANLEADER1 320
-#   QT_YEOMANLEADER2 321
-#   QT_YEOMANLEADER3 322
-#   QT_YEOMANLEADER4 323
-#   QT_PALADINLEADER1 324
-#   QT_PALADINLEADER2 325
-#   QT_PALADINLEADER3 326
-#   QT_PALADINLEADER4 327
-#   QT_UNDERTAKERLEADER1	328
-#   QT_UNDERTAKERLEADER2	329
-#   QT_UNDERTAKERLEADER3	330
-#   QT_UNDERTAKERLEADER4	331
-#   QT_DIVERLEADER1	332
-#   QT_DIVERLEADER2	333
-#   QT_DIVERLEADER3	334
-#   QT_DIVERLEADER4	335
-#   QT_NINJALEADER1	336
-#   QT_NINJALEADER2	337
-#   QT_NINJALEADER3	338
-#   QT_NINJALEADER4	339
-#   QT_LOCKSMITHLEADER1	340
-#   QT_LOCKSMITHLEADER2	341
-#   QT_LOCKSMITHLEADER3	342
-#   QT_LOCKSMITHLEADER4	343
-#   QT_DRUNKLEADER1	344
-#   QT_DRUNKLEADER2	345
-#   QT_DRUNKLEADER3	346
-#   QT_DRUNKLEADER4	347
-#   QT_HACKERLEADER1	348
-#   QT_HACKERLEADER2	349
-#   QT_HACKERLEADER3	350
-#   QT_HACKERLEADER4	351
-#   QT_ROLEPLAYERLEADER1	352
-#   QT_ROLEPLAYERLEADER2	353
-#   QT_ROLEPLAYERLEADER3	354
-#   QT_ROLEPLAYERLEADER4	355
-#   QT_ZOOLEADER1	356
-#   QT_ZOOLEADER2	357
-#   QT_ZOOLEADER3	358
-#   QT_ZOOLEADER4	359
-#   QT_SACRIFICELEADER1	360
-#   QT_SACRIFICELEADER2	361
-#   QT_SACRIFICELEADER3	362
-#   QT_SACRIFICELEADER4	363
-#   QT_GHOULLEADER1	364
-#   QT_GHOULLEADER2	365
-#   QT_GHOULLEADER3	366
-#   QT_GHOULLEADER4	367
+#   QT_SALAMANDERLEADER1 303
+#   QT_SALAMANDERLEADER2 304
+#   QT_SALAMANDERLEADER3 305
+#   QT_BERSERKERLEADER1	306
+#   QT_BERSERKERLEADER2	307
+#   QT_BERSERKERLEADER3	308
+#   QT_BLINDLEADER1	309
+#   QT_BLINDLEADER2	310
+#   QT_BLINDLEADER3	311
+#   QT_PACIFISTLEADER1 312
+#   QT_PACIFISTLEADER2 313
+#   QT_PACIFISTLEADER3 314
+#   QT_YEOMANLEADER1 315
+#   QT_YEOMANLEADER2 316
+#   QT_YEOMANLEADER3 317
+#   QT_PALADINLEADER1 318
+#   QT_PALADINLEADER2 319
+#   QT_PALADINLEADER3 320
+#   QT_UNDERTAKERLEADER1	321
+#   QT_UNDERTAKERLEADER2	322
+#   QT_UNDERTAKERLEADER3	323
+#   QT_DIVERLEADER1	324
+#   QT_DIVERLEADER2	325
+#   QT_DIVERLEADER3	326
+#   QT_NINJALEADER1	327
+#   QT_NINJALEADER2	328
+#   QT_NINJALEADER3	329
+#   QT_LOCKSMITHLEADER1	330
+#   QT_LOCKSMITHLEADER2	331
+#   QT_LOCKSMITHLEADER3	332
+#   QT_DRUNKLEADER1	333
+#   QT_DRUNKLEADER2	334
+#   QT_DRUNKLEADER3	335
+#   QT_HACKERLEADER1	336
+#   QT_HACKERLEADER2	337
+#   QT_HACKERLEADER3	338
+#   QT_ROLEPLAYERLEADER1	339
+#   QT_ROLEPLAYERLEADER2	340
+#   QT_ROLEPLAYERLEADER3	341
+#   QT_ZOOLEADER1	342
+#   QT_ZOOLEADER2	343
+#   QT_ZOOLEADER3	344
+#   QT_SACRIFICELEADER1	345
+#   QT_SACRIFICELEADER2	346
+#   QT_SACRIFICELEADER3	347
+#   QT_GHOULLEADER1	348
+#   QT_GHOULLEADER2	349
+#   QT_GHOULLEADER3	350
 #   QT_STARTCLOCKARC1	368
 
 #
@@ -1479,38 +1466,74 @@ speaks of you.
 "This is all I know, %p.  I hope it will help you."
 %E
 %Cc Bar 00200
+Back in my village.  It seems to be filled with unreast, the former
+peaceful agression is no longer there.  I must figure out what is
+going on and then continue with my true quest.
 %E
 %Cc Bar 00201
+Greetings Barbarian, I am Conan and if you want to continue with the
+path of the barbarian please collect your battle axe and return to me.
 %E
 %Cc Bar 00202
+Hey, are you as tired of these untrained barbarians as I am?
+I have a better way and we can turn this whole thing upside down.
+If you want to betray the barbarians and lead the next generation
+to a better way, bring me a simple dagger.  A weapon that barbarians
+have long forgotton in their quest for bigger and bigger blades.
+But the simple dagger will change the history of this clan!
 %E
 %Cc Bar 00203
+%p, I told you that I want to see you swing your axe.  Don't return
+to me without it.
 %E
 %Cc Bar 00204
+Hey, don't blow my cover.  Either bring me a dagger or move on.
 %E
 %Cc Bar 00205
+So you have chosen the path of the true Savage Warrior!  I am glad
+to see you following in the footstpes of our ancestors!  Take this
+token as it will aid you in your journey.
 %E
 %Cc Bar 00206
+Well well well, it seems my rebellion has just picked up some
+amazing steam!  Take this token, you will need it later to
+gain passage.
 %E
-%Cc Bar 00207
-%E
-%Cc Bar 00208
+%Cc Bar 00209
+You chose unwisely, leave my presence at once!
 %E
 %Cc Bar 00300
+Greetings Barbarian, I am Maximum and I lead the bold few that are
+willing to fight for their honor in the arena.  If you would like
+to join me the rewards are great, but honestly, it is not for the
+faint of heart because the risks are even greater.  But should
+you succeed your name will live forever!  If you want to chose
+this dangerous and rewarding life please bring me the 
+Silver Spear of the Gladiator.
 %E
 %Cc Bar 00301
+I don't have time to stop my training to just chit chat.
+If you want to join our fighting force bring my the 
+Silver Spear.  Begone until then.
 %E
 %Cc Bar 00302
-%E
-%Cc Bar 00303
+%p, I did not think you had what it took to join us.  In fact
+I have just lost a bet with my brother.  But alas, it is one
+I am glad to lose!  Take this token as should be of
+benefit to your quest ahead!
 %E
 %Cc Bar 00308
+I am Groo the Wanderer and if you aren't a mendicant you can
+can join me as a Berserker.  The most powerful that anyone
+can be!  If so, bring me a Katana similar to one of mine.
 %E
 %Cc Bar 00309
+Hold on, let me slay some more.  Come back when you have
+something to show me.
 %E
 %Cc Bar 00310
-%E
-%Cc Bar 00311
+Ah, that's a mighty fine blade you have there!  Take
+this token, it will help your journey!
 %E
 %Cc Bar 00356
 %E
@@ -1519,6 +1542,23 @@ speaks of you.
 %Cc Bar 00358
 %E
 %Cc Bar 00359
+%E
+%Cc Bar 00409
+Welcome %p, I recommend you go on your jouney.
+%E
+%Cc Bar 00410
+Go quickly, there are many enemies here.  You cannot continue to
+trust them.
+%E
+%Cc Bar 00411
+How goes the slaying?  Mine's going very well, you
+better keep your distance least I accidentally slay
+you as well.
+%E
+%Cc Bar 00412
+How goes your early battle %p?  I need to get down to the
+arena and bet on you.  I have a lot of confidence in the
+abilities I have seen so far!
 %E
 #
 #	Berserker

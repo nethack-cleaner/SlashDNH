@@ -930,6 +930,7 @@ struct u_achieve {
 		Bitfield(istraitor,1);
 		Bitfield(startedgame,1);
 		Bitfield(isgladiator,1);
+		Bitfield(isberseker,1);
 		Bitfield(isfrenzy,1);
 		Bitfield(isyeoman,1);
 		Bitfield(clockarc,1);
@@ -941,6 +942,7 @@ struct u_achieve {
 		Bitfield(drinkrage,1);
 		Bitfield(idontcareaboutpain,1);
 		Bitfield(berserkerrage,1);
+		int chosenapath;
 		int lastpropcheck;
 		int berserkerrageused;
 		int berserkerrageend;

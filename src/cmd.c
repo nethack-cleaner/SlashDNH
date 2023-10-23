@@ -530,7 +530,6 @@ boolean techniqueonly;
 	char incntlet = 'a';
 	menu_item *selected;
 	anything any;
-	boolean atleastone = FALSE;
 	
 	tmpwin = create_nhwindow(NHW_MENU);
 	start_menu(tmpwin);
@@ -542,7 +541,7 @@ boolean techniqueonly;
 
 #define add_ability(letter, string, value) \
 	do { \
-	Sprintf(buf, (string)); any.a_int = (value); atleastone = TRUE; \
+	Sprintf(buf, (string)); any.a_int = (value); \
 	add_menu(tmpwin, NO_GLYPH, &any, (letter), 0, ATR_NONE, buf, MENU_UNSELECTED); \
 	} while (0)
 
@@ -730,21 +729,26 @@ boolean techniqueonly;
 	}
 
 	if (achieve.demonproperty1h == 3 || achieve.demonproperty2h == 3 || achieve.demonproperty2h == 3) {
-		atleastone = TRUE;
 		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Hell's curse prevents you from using techniques", MENU_UNSELECTED);
 	} else if (achieve.berserkerrage) {
-		atleastone = TRUE;
 		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your berserk rage prevents you from using techniques", MENU_UNSELECTED);
 	} else {
 	if (Role_if(PM_ARCHEOLOGIST)) {
-		atleastone = TRUE;
 		if (u.ulevel > 3) {
 			lettertaken[addtech(tmpwin, MATTK_IDENTIFY, freeletter(lettertaken, 'r'), "Research", 3000, 0, 0)] = TRUE;
 		} else {
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your research has not yet born fruit.", MENU_UNSELECTED);
 		}
+	} else if (Role_if(PM_ROLE_PLAYER)) {
+		if (u.ulevel < 4) {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "At early", MENU_UNSELECTED);
+		} else {
+			if (u.ualign.type == A_LAWFUL) {
+			} else if (u.ualign.type == A_NEUTRAL) {
+			} else if (u.ualign.type == A_CHAOTIC) {
+			}
+		}
 	} else if (Role_if(PM_BERSERKER)) {
-		atleastone = TRUE;
 		if (u.ulevel < 15) {
 			if (achieve.drinkrage) {
 				lettertaken[addtech(tmpwin, MATTK_DRINKRAGE, freeletter(lettertaken, 's'), "Stop drinking in the rage", 10, 0, 0)] = TRUE;
@@ -763,7 +767,6 @@ boolean techniqueonly;
 			lettertaken[addtech(tmpwin, MATTK_BERSERKERRAGE, freeletter(lettertaken, 'b'), "Enter a berserker rage!", 10, 0, 0)] = TRUE;
 		}
 	} else if (Role_if(PM_JEDI)) {
-		atleastone = TRUE;
 		if (achieve.introquest) {
 			lettertaken[addtech(tmpwin, MATTK_JUMP, freeletter(lettertaken, 'j'), "Force Jump", 1000, 0, 20)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_HEAL, 'h', "Force Heal", 1000, 0, 20)] = TRUE;
@@ -775,7 +778,6 @@ boolean techniqueonly;
 		}
 	}
 	if (achieve.currentrage > 0 && Role_if(PM_BERSERKER)) {
-		atleastone = TRUE;
 		if (achieve.rageattacking) {
 			lettertaken[addtech(tmpwin, MATTK_RAGE_ATTACK, freeletter(lettertaken, 'r'), "Stop using rage in your attacks", 10, 0, 0)] = TRUE;
 		} else {
@@ -787,27 +789,21 @@ boolean techniqueonly;
 	struct obj *otmp;
 	for (otmp = invent; otmp; otmp = otmp->nobj) {
 		if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_SWIFTNESS && objects[otmp->otyp].oc_name_known) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_SWIFTNESS, freeletter(lettertaken, 's'), "Swiftness", 1000, achieve.beltontime + 100, 0)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_DODGE, freeletter(lettertaken, 'd'), "Dodge", 1000, achieve.beltontime + 100, 0)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_SWIFTDEFENSE, freeletter(lettertaken, 's'), "Swift Defense", 1000, achieve.beltontime + 100, 0)] = TRUE;
 		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_ENHANCED_STRENGTH && objects[otmp->otyp].oc_name_known) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_ANTHAUL, freeletter(lettertaken, 'a'), "Ant Haul", 1000, achieve.beltontime + 100, 0)] = TRUE;
 		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_DURABILITY && objects[otmp->otyp].oc_name_known) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_UNSTOPPABLE, freeletter(lettertaken, 'u'), "Unstoppable", 1000, achieve.beltontime + 100, 0)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_SHRUGOFF, freeletter(lettertaken, 'b'), "Shrug of blows", 1000, achieve.beltontime + 100, 0)] = TRUE;
 		} else if (ubeltworn && otmp == ubeltworn && otmp->otyp == BELT_OF_SHADOWS && objects[otmp->otyp].oc_name_known) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_SHADOWWALK, freeletter(lettertaken, 'w'), "Shadow Walk", 1000, achieve.beltontime + 100, 0)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_SHADOWSTEP, freeletter(lettertaken, 's'), "Shadow Step", 1000, achieve.beltontime + 100, 0)] = TRUE;
 		} else if (ubracerworn && otmp == ubracerworn && otmp->otyp == ARMBANDS_OF_ARCHERY && objects[otmp->otyp].oc_name_known) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_TRUESHOTAURA, freeletter(lettertaken, 't'), "Trueshot Aura", 1000, achieve.bracerontime + 100, 0)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_BARRAGE, freeletter(lettertaken, 'b'), "Barrage", 1000, achieve.bracerontime + 100, 0)] = TRUE;
 		} else if (uarmh && otmp == uarmh && otmp->oartifact == ART_FIRE_CHIEF_HELMET) {
-			atleastone = TRUE;
 			if (achieve.istraitor && Role_if(PM_FIREFIGHTER)) {
 				lettertaken[addtech(tmpwin, MATTK_RESCUEMISSION, freeletter(lettertaken, 'r'), "Rescue Me", 1000, 0, 0)] = TRUE;
 				lettertaken[addtech(tmpwin, MATTK_FIREASSAULT, freeletter(lettertaken, 'w'), "Fire Assault", 1000, 0, 0)] = TRUE;
@@ -816,7 +812,6 @@ boolean techniqueonly;
 				lettertaken[addtech(tmpwin, MATTK_WATERASSAULT, freeletter(lettertaken, 'w'), "Water Assault", 1000, 0, 0)] = TRUE;
 			}
 		} else if (uwep && otmp == uwep && (otmp->oartifact == ART_LIGHTSABER_PROTOTYPE || otmp->oartifact == ART_DARKSABER)) {
-			atleastone = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_FORCETELEPORT, freeletter(lettertaken, 't'), "Force Teleport", 1000, 0, 25)] = TRUE;
 			if (otmp->oartifact == ART_LIGHTSABER_PROTOTYPE) {
 				lettertaken[addtech(tmpwin, MATTK_PATIENTDEFENSE, freeletter(lettertaken, 'p'), "Patient Defense", 1000, 0, 50)] = TRUE;
@@ -829,18 +824,6 @@ boolean techniqueonly;
 	// end: check for item based techniques
 
 #undef add_ability
-
-	if(!atleastone){
-		if (!you_abilities) {
-			if (Upolyd) pline("Any special ability you may have is purely reflexive.");
-			else You("don't have a special ability in your normal form!");
-		}
-		else {
-			pline("You are extraordinary mundane.");
-		}
-		destroy_nhwindow(tmpwin);
-		return MOVE_CANCELLED;
-	}
 	
 	if (mon_abilities && you_abilities)
 		Strcpy(buf, "Choose which ability to use");

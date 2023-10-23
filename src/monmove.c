@@ -516,7 +516,7 @@ struct monst *mtmp;
 			is_lminion(mtmp) || mtmp->mtyp == PM_ANGEL ||
 			mtmp->mtyp == PM_MAANZECORIAN ||
 			is_rider(mtmp->data)) return FALSE;
-	return mtmp->mtyp == PM_CERBERUS || is_undead(mtmp->data);
+	return is_undead(mtmp->data);
 }
 
 boolean

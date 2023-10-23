@@ -1983,16 +1983,33 @@ deferred_goto()
 
 		int remobj1 = 0;
 		int remobj2 = 0;
+		int remobj3 = 0;
 		if (Role_if(PM_BARBARIAN)) {
-			remobj1 = SPEAR;
+			if (achieve.istraitor) {
+				remobj1 = SPEAR;
+				remobj2 = KATANA;
+				remobj3 = BATTLE_AXE;
+			} else {
+				remobj1 = SPEAR;
+				remobj2 = KATANA;
+				remobj3 = DAGGER;
+			}
 		} else if (Role_if(PM_GLADIATOR)) {
 			remobj1 = BATTLE_AXE;
+			remobj2 = KATANA;
+			remobj3 = DAGGER;
+		} else if (Role_if(PM_BERSERKER)) {
+			remobj1 = BATTLE_AXE;
+			remobj2 = SPEAR;
+			remobj3 = DAGGER;
 		}
 		if (remobj1) {
-			struct obj *otmp;
-			for (otmp = invent; otmp; otmp = otmp->nobj) {
-				if (otmp->otyp == remobj1 || otmp->otyp == remobj2) {
-					obj_extract_and_unequip_self(otmp);
+			for (int i = 0; i < 4; i++) {
+				struct obj *otmp;
+				for (otmp = invent; otmp; otmp = otmp->nobj) {
+					if (otmp->otyp == remobj1 || (remobj2 > 0 && otmp->otyp == remobj2) || (remobj3 > 0 && otmp->otyp == remobj3)) {
+						obj_extract_and_unequip_self(otmp);
+					}
 				}
 			}
 		}

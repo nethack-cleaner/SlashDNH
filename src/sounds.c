@@ -1285,21 +1285,46 @@ asGuardian:
 		    break;
 
 	    }
+		if (ptr->msound == MS_ILEADER || ptr->msound == MS_TLEADER || ptr->msound == MS_GLADIATOR_LEADER || ptr->msound == MS_FRENZY_LEADER) {
+			boolean hasitemmain = FALSE;
+			boolean hasitemtraitor = FALSE;
+			boolean hasitemalt1 = FALSE;
+			boolean hasitemalt2 = FALSE;
+			boolean hastoken = FALSE;
+			struct obj *otmp;
+			for (otmp = invent; otmp; otmp = otmp->nobj) {
+				if ((Role_if(PM_ARCHEOLOGIST) && otmp->otyp == PICK_AXE) || (Role_if(PM_BARBARIAN) && otmp->otyp == BATTLE_AXE)) {
+					hasitemmain = TRUE;
+				} else if (Role_if(PM_BARBARIAN) && otmp->otyp == SPEAR) {
+					hasitemalt1 = TRUE;
+				} else if (Role_if(PM_BARBARIAN) && otmp->otyp == KATANA) {
+					hasitemalt2 = TRUE;
+				} else if ((Role_if(PM_ARCHEOLOGIST) && otmp->otyp == SACK) || (Role_if(PM_BARBARIAN) && otmp->otyp == DAGGER)) {
+					hasitemtraitor = TRUE;
+				} else if (otmp->otyp == THE_BEGINNING) {
+					hastoken = TRUE;
+				}
+			}
+
+		if (achieve.chosenapath > 0) {
+			if (achieve.chosenapath == ptr->msound) {
+				qt_pager(ptr->msound + 400 - 50);
+			} else {
+				qt_pager(QT_OTHERCHOICE);
+			}
+		} else {
 		if (ptr->msound == MS_ILEADER) {
 			if (achieve.talkedileader) {
-				boolean hasitem = FALSE;
-				struct obj *otmp;
-				for (otmp = invent; otmp; otmp = otmp->nobj) {
-					if (otmp->otyp == PICK_AXE)
-						hasitem = TRUE;
-				}
-				if (hasitem) {
+				if (hasitemmain) {
 					qt_pager(QT_STARTLEADER3);
+					achieve.chosenapath = MS_ILEADER;
 					struct obj *obj;
 					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
 				    fully_identify_obj(obj);
 					if (Role_if(PM_ARCHEOLOGIST)) {
 						obj = oname(obj, "Path of the Explorer");
+					} else if (Role_if(PM_BARBARIAN)) {
+						obj = oname(obj, "Path of the Savage Warrior");
 					}
 					obj->spe = abs(obj->spe);
 					addinv(obj);
@@ -1311,18 +1336,13 @@ asGuardian:
 			}
 		} else if (ptr->msound == MS_TLEADER) {
 			if (achieve.talkedtleader) {
-				boolean hasitem = FALSE;
-				struct obj *otmp;
-				for (otmp = invent; otmp; otmp = otmp->nobj) {
-					if (Role_if(PM_ARCHEOLOGIST) && otmp->otyp == SACK)
-						hasitem = TRUE;
-				}
-				if (hasitem) {
+				if (hasitemtraitor) {
 					qt_pager(QT_STARTTRAITOR3);
 					achieve.istraitor = TRUE;
-					if (Role_if(PM_ARCHEOLOGIST)) {
+					if (Role_if(PM_ARCHEOLOGIST) || Role_if(PM_BARBARIAN)) {
 						u.ualign.type = A_CHAOTIC;
 					}
+					achieve.chosenapath = MS_TLEADER;
 					struct obj *obj;
 					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
 				    fully_identify_obj(obj);
@@ -1337,14 +1357,9 @@ asGuardian:
 			}
 		} else if (ptr->msound == MS_GLADIATOR_LEADER) {
 			if (achieve.talkedgladiatorleader) {
-				boolean hasitem = FALSE;
-				struct obj *otmp;
-				for (otmp = invent; otmp; otmp = otmp->nobj) {
-					if (otmp->otyp == SPEAR)
-						hasitem = TRUE;
-				}
-				if (hasitem) {
+				if (hasitemalt1) {
 					qt_pager(QT_GLADIATORLEADER3);
+					achieve.chosenapath = MS_GLADIATOR_LEADER;
 					changerole("Gladiator");
 					struct obj *obj;
 					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
@@ -1358,6 +1373,26 @@ asGuardian:
 				achieve.talkedgladiatorleader = TRUE;
 				qt_pager(QT_GLADIATORLEADER1);
 			}
+		} else if (ptr->msound == MS_FRENZY_LEADER) {
+			if (achieve.talkedfrenzyleader) {
+				if (hasitemalt2) {
+					qt_pager(QT_BERSERKERLEADER3);
+					achieve.chosenapath = MS_FRENZY_LEADER;
+					changerole("Berserker");
+					struct obj *obj;
+					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+				    fully_identify_obj(obj);
+					obj = oname(obj, "Journey of the Berserker");
+					obj->spe = abs(obj->spe);
+					addinv(obj);
+				} else
+					qt_pager(QT_BERSERKERLEADER2);
+			} else {
+				achieve.talkedfrenzyleader = TRUE;
+				qt_pager(QT_BERSERKERLEADER1);
+			}
+		}
+		}
 		} else {
 			quest_chat(mtmp);
 		}
@@ -7087,6 +7122,9 @@ char *role;
 	if (!strcmp(role, "Gladiator")) {
 		achieve.isgladiator = TRUE;
 		skill_init(Skill_Gla);
+	} else if (!strcmp(role, "Berseker")) {
+		achieve.isberseker = TRUE;
+		//skill_init(Skill_Berserker);
 	}
 }
 

@@ -3581,7 +3581,7 @@ int floorID;
 	case CIRCLE_OF_ACHERON:
 		strcpy(name, " Circle of Acheron");
 		strcpy(strokes, " 2");
-		strcpy(warded, " All undead, Cerberus");
+		strcpy(warded, " All undead");
 		strcpy(reinforce, " 4-fold");
 		strcpy(secondary, " Protects against the `touch of death\' monster spell.");
 		break;

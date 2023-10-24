@@ -257,12 +257,12 @@ struct Role roles[] = {
 	ART_STAFF_OF_AESCULAPIUS,
 	MA_HUMAN|MA_GNOME|MA_PLANT|MA_VAMPIRE, ROLE_MALE|ROLE_FEMALE | ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
-	{   7,  7, 13,  7, 11, 16 },
-	{  15, 20, 20, 15, 25, 5 },
+	{   7, 13, 11,  7, 11, 16 },
+	{   5, 30, 20, 15, 25, 5 },
 	/* Init   Lower  Higher */
 	{ 11, 0,  0, 8,  1, 0 },	/* Hit points */
 	{  1, 4,  1, 2,  0, 3 },20,	/* Energy */
-	10, 3,-3, 2, 10, A_WIS, SPE_FULL_HEALING,   -14
+	10, 3,-3, 2, 10, A_INT, SPE_FULL_HEALING,   -14
 },
 {	{"Illithanachronounbinder", 		 0}, {
 	{"Exorcist",        0},
@@ -351,7 +351,7 @@ struct Role roles[] = {
 	{"Student of Winds",  0},
 	{"Student of Fire",   0},
 	{"Master",            0} },
-	GOD_SHAN_LAI_CHING, GOD_CHIH_SUNG_TZU, GOD_HUAN_TI, /* Chinese */
+	GOD_PRINCE_NEZHA, GOD_LAOZI, GOD_THE_HUNSHI_SIHOU, /* Chinese */
 	"Mon", "the Monastery of Chan-Sune",
 	  "the Monastery of the Earth-Lord",
 	PM_MONK, NON_PM, NON_PM,
@@ -382,7 +382,8 @@ struct Role roles[] = {
 	"Mad", "Archer Asylum", "the ground floor",
 	PM_MADMAN, PM_MADWOMAN, NON_PM,
 	PM_CASSILDA_THE_IRON_MAIDEN, PM_PATIENT, PM_DOCTOR_ARCHER,
-	PM_ENORMOUS_RAT, PM_CONTAMINATED_PATIENT, S_RODENT, S_BAT,
+	PM_ENORMOUS_RAT, PM_CONTAMINATED_PATIENT, S_RODENT, S_WORM,
+	//Switches to PM_LARGE_CAT, PM_CONTAMINATED_PATIENT, S_WORM, S_BAT from locate level onwards
 	ART_STAR_OF_HYPERNOTUS,
 	MA_DWARF|MA_ELF, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_CHAOTIC,
@@ -392,7 +393,7 @@ struct Role roles[] = {
 	/* Init   Lower  Higher */
 	{ 12, 0,  0, 8,  0, 1 },	/* Hit points */
 	{  4, 3,  0, 1,  2, 4 },14,	/* Energy */
-	10, 8,-2, 2, 20, A_CHA, SPE_CONFUSE_MONSTER, -24
+	0, 3,-2, 2, 10, A_CHA, SPE_CONFUSE_MONSTER, -24
 },
 	// "The Silver Fire", "_The Fury", "The Shadow",	/* Sorta-eberron */
 	// "_The Inheritor", "_The Dawnflower", "_The Everbloom",	/* Sorta-glorion */
@@ -1303,7 +1304,7 @@ const struct Race races[] = {
 	NIGHTVISION3,
 	SPE_REMOVE_CURSE, -10
 },
-{	"etherealoid", "etherealoidic", "etherealoid-kind", "Eth",
+{	"Etherealoid", "etherealoidic", "etherealoid-kind", "Eth",
 	{0,0},
 	PM_ETHEREALOID, NON_PM, NON_PM, NON_PM,
 	ROLE_MALE|ROLE_FEMALE | ROLE_NEUTRAL,
@@ -1314,7 +1315,8 @@ const struct Race races[] = {
 	/* Init   Lower  Higher */
 	{  2, 0,  3, 0,  3, 0 },	/* Hit points */
 	{  2, 0,  2, 0,  2, 0 },	/* Energy */
-	NORMALNIGHTVIS
+	NORMALNIGHTVIS,
+	SPE_HASTE_SELF, -10
 },
 {	"gnome", "gnomish", "gnomehood", "Gno",
 	{0, 0},
@@ -1384,7 +1386,8 @@ const struct Race races[] = {
 	/* Init   Lower  Higher */
 	{  2, 0,  2, 0,  0, 2 },	/* Hit points */
 	{  1, 0,  1, 0,  1, 0 },	/* Energy */
-	NORMALNIGHTVIS
+	NORMALNIGHTVIS, 
+	SPE_FIREBALL, -10
 },
 {	"treant", "treantic", "treant-kind", "Ent",
 	{0, 0},
@@ -1398,7 +1401,7 @@ const struct Race races[] = {
 	{  5, 0,  0, 4,  3, 0 },	/* Hit points */
 	{  1, 0,  1, 0,  1, 0 },	/* Energy */
 	NIGHTVISION2,
-	0, 0
+	SPE_RESTORE_ABILITY, -10
 },
 {	"vampire", "vampiric", "vampirehood", "Vam",
 	{"vampire", "vampiress"},
@@ -1421,9 +1424,9 @@ const struct Race races[] = {
 	MA_FEY, 0, MA_ELF,
 	/*    Str     Int Wis Dex Con Cha */
 	{      3,      3,  3,  3,  3,  3 },
-	{     16,     18, 18, 20, 14, 20 },
+	{     16,     18, 18, 20, 16, 20 },
 	/* Init   Lower  Higher */
-	{  2, 0,  1, 0,  0, 1 },	/* Hit points */
+	{  2, 0,  1, 1,  0, 1 },	/* Hit points */
 	{  2, 0,  3, 0,  3, 0 },	/* Energy */
 	NORMALNIGHTVIS,
 	SPE_CHARM_MONSTER, -15
@@ -1472,7 +1475,7 @@ struct Race android =
 	MA_CLOCK, 0, MA_ORC,
 	/*  Str    Int Wis Dex Con Cha */
 	{    3,     3,  3,  3,  3,  3 },
-	{   20,    18, 16, 22, 22, 18 },
+	{   STR19(20),    18, 16, 22, 22, 18 },
 	/* Init   Lower  Higher */
 	{  2, 0,  1, 3,  1, 0 },	/* Hit points */
 	{  1, 0,  1, 0,  1, 0 },	/* Energy */
@@ -1495,6 +1498,45 @@ const struct Align aligns[] = {
 	{"evil",	"unaligned",	"Una",	0,		A_NONE},
 	{"void",	"non-aligned",	"Non",	0,		A_VOID}
 };
+
+
+
+const struct Species species[] = {
+	{"none", 0, NONE_SPECIES},
+	{"ash", ENT_ASH, ENT_SPECIES},
+	{"beech", ENT_BEECH, ENT_SPECIES},
+	{"bluegum", ENT_BLUEGUM, ENT_SPECIES},
+	{"cedar", ENT_CEDAR, ENT_SPECIES},
+	{"chestnut", ENT_CHESTNUT, ENT_SPECIES},
+	{"cypress", ENT_CYPRESS, ENT_SPECIES},
+	{"dogwood", ENT_DOGWOOD, ENT_SPECIES},
+	{"elder", ENT_ELDER, ENT_SPECIES},
+	{"elm", ENT_ELM, ENT_SPECIES},
+	{"fir", ENT_FIR, ENT_SPECIES},
+	{"ginkgo", ENT_GINKGO, ENT_SPECIES},
+	{"larch", ENT_LARCH, ENT_SPECIES},
+	{"locust", ENT_LOCUST, ENT_SPECIES},
+	{"magnolia", ENT_MAGNOLIA, ENT_SPECIES},
+	{"maple", ENT_MAPLE, ENT_SPECIES},
+	{"mimosa", ENT_MIMOSA, ENT_SPECIES},
+	{"methuselah", ENT_METHUSELAH, ENT_SPECIES},
+	{"oak", ENT_OAK, ENT_SPECIES},
+	{"poplar", ENT_POPLAR, ENT_SPECIES},
+	{"redwood", ENT_REDWOOD, ENT_SPECIES},
+	{"spruce", ENT_SPRUCE, ENT_SPECIES},
+	{"willow", ENT_WILLOW, ENT_SPECIES},
+	{"yew", ENT_YEW, ENT_SPECIES},
+	{"white", AD_COLD, DRAGON_SPECIES},
+	{"red", AD_FIRE, DRAGON_SPECIES},
+	{"orange", AD_SLEE, DRAGON_SPECIES},
+	{"blue", AD_ELEC, DRAGON_SPECIES},
+	{"green", AD_DRST, DRAGON_SPECIES},
+	{"yellow", AD_ACID, DRAGON_SPECIES},
+	{"gray", AD_MAGM, DRAGON_SPECIES},
+	{"shimmering", AD_RBRE, DRAGON_SPECIES},
+	{"black", AD_DISN, DRAGON_SPECIES}
+};
+
 
 STATIC_DCL char * FDECL(promptsep, (char *, int));
 STATIC_DCL int FDECL(role_gendercount, (int));
@@ -1768,6 +1810,90 @@ str2align(str)
 		return i;
 	    /* Or the filecode? */
 	    if (!strcmpi(str, aligns[i].filecode))
+		return i;
+	}
+	if ((len == 1 && (*str == '*' || *str == '@')) ||
+		!strncmpi(str, randomstr, len))
+	    return ROLE_RANDOM;
+
+	/* Couldn't find anything appropriate */
+	return ROLE_NONE;
+}
+
+boolean
+validspecies(rolenum, racenum, gendnum, speciesnum)
+	int rolenum, racenum, gendnum, speciesnum;
+{
+	if (speciesnum < 0 || speciesnum >= ROLE_SPECIES)
+		return FALSE; 
+	if(races[racenum].malenum == PM_ENT){
+		return species[speciesnum].type == ENT_SPECIES;
+	} else if(races[racenum].malenum == PM_HALF_DRAGON){
+		if(species[speciesnum].type != DRAGON_SPECIES)
+			return FALSE;	
+		int breath_type = species[speciesnum].value;
+		if(roles[rolenum].malenum == PM_NOBLEMAN){
+			if(genders[gendnum].allow == ROLE_FEMALE) 
+				return breath_type == AD_MAGM || breath_type == AD_COLD;
+		}
+		if(roles[rolenum].malenum == PM_MADMAN){
+			if(genders[gendnum].allow == ROLE_FEMALE)
+				return breath_type == AD_RBRE;
+			else
+				return breath_type == AD_FIRE;
+		}
+		if(roles[rolenum].malenum == PM_ANACHRONONAUT){
+			return breath_type == AD_DISN;
+		}
+		return breath_type == AD_COLD ||
+			breath_type == AD_FIRE ||
+			breath_type == AD_SLEE ||
+			breath_type == AD_ELEC ||
+			breath_type == AD_DRST ||
+			breath_type == AD_ACID;
+	}
+	return FALSE;
+
+}
+
+
+int
+randspecies(rolenum, racenum, gendnum)
+	int rolenum, racenum, gendnum;
+{
+	int i, n = 0;
+
+	/* Count the number of valid species */
+	for (i = 0; i < ROLE_SPECIES; i++){
+		n += validspecies(rolenum, racenum, gendnum, i);
+	}
+	/* Pick a random species */
+	if (n) n = rn2(n);
+	for (i = 0; i < ROLE_SPECIES; i++){
+		if(!validspecies(rolenum,racenum,gendnum,i)) continue;
+	    	if (n) n--;
+	    	else return (i);
+	}
+	/* This role/race has no permitted species so use the none option */
+	return 0;
+}
+
+
+int
+str2species(str)
+	char *str;
+{
+	int i, len;
+
+	/* Is str valid? */
+	if (!str || !str[0])
+	    return ROLE_NONE;
+
+	/* Match as much of str as is provided */
+	len = strlen(str);
+	for (i = 0; i < ROLE_SPECIES; i++) {
+	    /* Does it match the adjective? */
+	    if (!strncmpi(str, species[i].name, len))
 		return i;
 	}
 	if ((len == 1 && (*str == '*' || *str == '@')) ||
@@ -2080,6 +2206,31 @@ int rolenum, racenum, gendnum, pickhow;
 		return i;
 	    else
 		aligns_ok--;
+	}
+    }
+    return ROLE_NONE;
+}
+
+int
+pick_species(rolenum, racenum, gendnum, pickhow)
+int rolenum, racenum, gendnum, pickhow;
+{
+    int i;
+    int species_ok = 0;
+
+    for (i = 0; i < ROLE_ALIGNS; i++) {
+	if (validspecies(rolenum, racenum, gendnum, i))
+	    species_ok++;
+    }
+    if (species_ok == 0 || (species_ok > 1 && pickhow == PICK_RIGID))
+	return ROLE_NONE;
+    species_ok = rn2(species_ok);
+    for (i = 0; i < ROLE_SPECIES; i++) {
+	if (validspecies(rolenum, racenum, gendnum, i)) {
+	    if (species_ok == 0)
+		return i;
+	    else
+		species_ok--;
 	}
     }
     return ROLE_NONE;
@@ -2443,6 +2594,8 @@ int newgame;
 	/* Check for a valid race */
 	if (!validrace(flags.initrole, flags.initrace) && newgame)
 	    flags.initrace = randrace(flags.initrole);
+	if(newgame)
+		flags.altrace = NON_PM;
 
 	/* Check for a valid gender.  If new game, check both initgend
 	 * and female.  On restore, assume flags.female is correct. */
@@ -2476,6 +2629,8 @@ int newgame;
 			}
 		}
 	}
+	if(flags.altrace != NON_PM)
+		urace.malenum = flags.altrace;
 	else if(Humanoid_half_dragon(urole.malenum)){
 		urace.attrmax[A_DEX] = 18;
 	}
@@ -2566,7 +2721,7 @@ int newgame;
 				}
 				if(flags.stag == 0){
 					
-					urole.homebase = "Erelhei-Cinlu";
+					urole.homebase = "Menzoberranzan";
 					urole.intermed = "the drider caves";
 					urole.questarti = ART_SILVER_STARLIGHT;
 					
@@ -2580,7 +2735,7 @@ int newgame;
 					urole.enemy2sym = S_LAW_ANGEL;
 				} else {					
 					urole.homebase = "the Grove of Eilistraee";
-					urole.intermed = "Erelhei-Cinlu";
+					urole.intermed = "Menzoberranzan";
 					urole.questarti = ART_TENTACLE_ROD;
 					
 					urole.ldrnum = PM_SEYLL_AUZKOVYN;
@@ -2647,6 +2802,27 @@ int newgame;
 					urole.enemy2sym = S_ZOMBIE;
 				}
 			}
+		}
+	} else if(Race_if(PM_DROW) && Role_if(PM_HEALER)){
+		urole.filecode = "Dhl";
+		urole.lgod = GOD_ILMATER;
+		urole.ngod = GOD_PEN_A;
+		urole.cgod = GOD_GHAUNADAUR;
+
+		urole.homebase = "Ceiling District";/*Menzoberranzan*/
+		urole.intermed = "Floor District";
+		urole.questarti = ART_ESSCOOAHLIPBOOURRR; /*Steals items and stores them weightlessly, but can only be accessed via #invoke. Deals bonus damage with repeated hits.*/
+		
+		urole.ldrnum = PM_SHUUSHAR_THE_ENLIGHTENED;
+		urole.guardnum = PM_ALLIANCE_VANGUARD; /*Also drow commoners*/
+		urole.neminum = PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH; /*Chuul/drow grab and steal magic items. Demogorgon cultists? Madness causes victims to imagine different natural attacks for themselves*/
+		
+		urole.enemy1num = PM_DUERGAR;
+		urole.enemy2num = PM_KUO_TOA;
+		urole.enemy1sym = S_HUMANOID;
+		urole.enemy2sym = S_HUMANOID;
+		for(int i = 0; i<6; i++){
+			dungeons[quest_dnum].connect_side[i] = !rn2(3) ? CONNECT_LEFT : rn2(2) ? CONNECT_CENT : CONNECT_RGHT;
 		}
 	} else if((Race_if(PM_ELF) || Pantheon_if(PM_ELF)) && (Role_if(PM_RANGER) || Role_if(PM_WIZARD) || Role_if(PM_NOBLEMAN))){
 		flags.racial_pantheon = PM_ELF;
@@ -2921,17 +3097,17 @@ int newgame;
 		if (urole.guardnum != NON_PM) {
 			mons[urole.guardnum].mflagst |= (MT_PEACEFUL);
 			mons[urole.guardnum].mflagst &= ~(MT_WAITFORU|MT_COVETOUS);
-			mons[urole.guardnum].msound = MS_GUARDIAN;
 		}
 		if(Race_if(PM_DROW) && (Role_if(PM_PRIEST) || Role_if(PM_ROGUE) || Role_if(PM_RANGER) || Role_if(PM_WIZARD))){
-			mons[PM_HEDROW_MASTER_WIZARD].msound = MS_GUARDIAN;
+			mons[PM_HEDROW_MASTER_WIZARD].msound = MS_GUARDIAN; /*:( :(*/
 		}
 	}
 
 	/* Fix up the quest nemesis */
-	if (urole.neminum != NON_PM && 
-		!(Race_if(PM_DWARF) && (Role_if(PM_KNIGHT) || Role_if(PM_NOBLEMAN))) && 
-		!(Race_if(PM_DROW) && Role_if(PM_NOBLEMAN) && flags.initgend)
+	if (urole.neminum != NON_PM
+		 && !(Race_if(PM_DWARF) && (Role_if(PM_KNIGHT) || Role_if(PM_NOBLEMAN)))
+		 && !(Race_if(PM_DROW) && Role_if(PM_NOBLEMAN) && flags.initgend)
+		 && !(urole.neminum == PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH)
 	) {
 	    mons[urole.neminum].msound = MS_NEMESIS;
 	    mons[urole.neminum].mflagst &= ~(MT_PEACEFUL);
@@ -3040,6 +3216,22 @@ Goodbye()
 
 #ifdef RECORD_ACHIEVE
 void
+add_imp_record(prop)
+long prop;
+{
+	int i, count = 0;
+	achieve.iea_flags |= prop;
+	for(i=0; i<64; i++){
+		if(achieve.iea_flags & (0x1L<<i)){
+			count++;
+		}
+	}
+	if(count >= 15){
+		achieve.trophies |= IEA_UPGRADES;
+	}
+}
+
+void
 give_quest_trophy()
 {
 	if(urole.neminum == PM_MINION_OF_HUHETOTL)
@@ -3084,6 +3276,12 @@ give_quest_trophy()
 		achieve.trophies |= GNO_RAN_QUEST;
 	else if(urole.neminum == PM_DOCTOR_ARCHER)
 		achieve.trophies |= MAD_QUEST;
+	else if(urole.neminum == PM_MASTER_KAEN)
+		achieve.trophies |= MONK_QUEST;
+	else if(urole.neminum == PM_CYCLOPS)
+		achieve.trophies |= HEA_QUEST;
+	else if(urole.neminum == PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH)
+		achieve.trophies |= DRO_HEA_QUEST;
 	
 	if(quest_status.second_thoughts)
 		achieve.trophies |= SECOND_THOUGHTS;
@@ -3107,6 +3305,8 @@ give_ascension_trophy()
 		achieve.trophies |= HALF_ASC;
 	else if(Race_if(PM_YUKI_ONNA))
 		achieve.trophies |= YUKI_ASC;
+	if(Race_if(PM_SALAMANDER) || Race_if(PM_ETHEREALOID) || Race_if(PM_ENT))
+		achieve.new_races = 1;
 	int i;
 	int keys = 0;
 	for(i = 0; i<9; i++){
@@ -3207,6 +3407,7 @@ int hv_id;
 		case VN_APOCALYPSE:
 		case VN_HARROWER:
 		case VN_MAD_ANGEL:
+		case VN_JRT:
 			give_angel_vault_trophy();
 		case VN_N_PIT_FIEND:
 			give_devil_vault_trophy();

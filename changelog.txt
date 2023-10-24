@@ -42,7 +42,7 @@ Salamander race
 	Requires special snakeleg body armour
 	Cannot wear boots or even kick things
 	Unlock a salamander attack routine at lvl 10
-	Spear multishot bonus
+	Special spell fireball
 	Cannot eat monsters that are too close to amphibians without
 		cannibalism penalty
 	Lava balls burn down any door within heat range of impact
@@ -112,6 +112,7 @@ Etherealoid race
 	XP lvl is effectively gained at half the rate
 	50% of the time killing a monster will heal you for a 1/8 of the xp it
 	would have provided, or 5 hp if that is larger
+	Special spell haste self
 Ent race
 	Lawful/neutral
 	Stat caps
@@ -122,6 +123,7 @@ Ent race
 	HUGE
 	Better hp growth than dwarves
 	Base speed 10
+	Start with an extra -3 ac and 3 DR for each slot
 	Have a random species which determines the additional properties they get
 	Special Properties
 		Ancient Body	
@@ -163,6 +165,25 @@ Ent race
 			+1 DR in every slot
 		Methuselah
 			Spell boost intrinsic
+		Redwood
+			8 speed but effectively another two sizes larger
+	Special spell restore ability
+
+Yuki-Onna changes
+	Increase hp gain SLIGHTLY
+	Move max con from 14 to 16 to make it miserable but more reasonable
+	Fix nymph handling to act more like vanilla and not scale weight for nymphs but instead to always give 1000 carry cap.
+	Added a snow cloud form that can be switched back and forth from at will
+		Blocked by protection from shape changers
+		Cannot wear armor or hold weapons or use hands
+		Gets a cold touch, engulf, and the same cold passive as base form
+		Movement only turns are done at (NORMAL_SPEED/((xlvl/10)+1)) (1-9, normal, 10-19 6, 20-29 4, 30 3)
+		Gets (xlvl/6)+1 DR in each slot and and extra -xlvl AC
+		Regenerates
+		Has catsight
+		Resists cold, sleep, poison, and sickness
+		Is human size but since it is an odd body the carry cap can be 25% higher
+	
 Monk changes
 	Can set attack styles with #style
 		Surge punch 
@@ -383,7 +404,7 @@ Dungeon Changes
 					$30000
 				Blasphemous shapes
 					grants intrinsic polymorphitis
-					must have u.regifted be 5, 
+					must have u.regifted be at least 1,  (donated an arti to an unknown god priest)
 					$8000
 				Willow
 					small curse resistance chance (1/20),
@@ -395,8 +416,20 @@ Dungeon Changes
 					$4000
 				Spearhead
 					teaches flintknapping
-					avaialble only for non caveman salamanders
+					available only for non caveman salamanders
 					$10000
+				Crystal Orb
+					Extreme Focus. Confusion misdirection chance acts as if another 30 booze have been consumed.
+					available after killing Chaos
+					$6000
+				Hyphen
+					+1 bonus for all syllables as if one of each has been read
+					available after killing an aspect of the Silence
+					$6000
+				Flaming Whip
+					Immunity to sliming
+					Available after killing Lungorthin
+					$6000
 	Chaos 1 changes
 		Upgrade several of the fixed loot items
 			The leather helm on the first level is now anarachic
@@ -407,8 +440,7 @@ Dungeon Changes
 		Add death eye boss to chaos catacombs
 			Pretty mean and has death gaze
 			Drops an artifact "The eye of death"
-				Grants slotless stone res, free action, and half spell damage
-				Invoke for beholder eye invoke effect
+				Grants slotless stone res, and half spell damage
 		Black knights are replaced with monsters instead of player monsters
 			Have a chance to generate with anarchic on some of their gear
 			Fixed difficulty instead of variable like player monsters
@@ -428,10 +460,11 @@ Dungeon Changes
 				Ait Crystal - Shocking, 2x lightning damage
 				Earth Crystal - Flaying
 				Black Crystal - Sparkling, 2x magic damage
-	Add Nenya to Grue level elvenking item pile
-		Waterproof + water walking when worn
-		Detect orcs when carried
-		Random silver ring base item
+	Law quest changes
+		Hide a dye savant posing as a statue in the arcward level
+			Will recolor any non stackable item for free
+			Sings songs, can be wished for, can be tamed
+
 General changes
 	Red dragon scale based armor now grants flying.
 	Upgrade kits now work on tools.

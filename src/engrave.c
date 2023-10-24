@@ -351,6 +351,7 @@ static const char *haluMesg[] = {
 	"Do not call up any that you can not put down.", /*HP Lovecraft*/
 		"That is not dead, that can eternal lie,",
 		"for with strange aeons even death may die.",
+		"After summer is winter, after winter summer.",
 	"All the world will be your enemy, Prince With A Thousand Enemies...", /*Watership Down*/
 		"...and when they catch you they will kill you...",
 		"but first they must catch you.",
@@ -449,6 +450,10 @@ static const char *haluMesg[] = {
 		"Your true face... What kind of... face is it? I wonder... The face under the mask... Is that... your true face?",
 		"You've met with a terrible fate, haven't you?",
 	"So I really am just a failure!", /*Breath of the Wild*/
+
+	"This land is peaceful, its inhabitants kind.", /* Dark Souls */
+	"Long may the sun shine!", /* Dark Souls 3 */
+
 	"Why are you sad?", /*Blood-C*/
 	"Only accurate information has practical application.", /* not sure where this originated, possibly Aron Ra?*/
 	"We will come for you again  When you are alone  In the dark  Without your sword", /*Jake Wyatt's Necropolis*/
@@ -712,6 +717,9 @@ const char * haluWard[] =  {
 
 	/* Eddergud holy symbol */
 	"an obsidian spiderweb",
+	
+	/* Y-cult holy symbol */
+	"a Y with curled tips",
 	
 	/* Footprint */
 	"a footprint",
@@ -2431,7 +2439,7 @@ int mode;
 
 	    case WEAPON_CLASS:
 		if (otmp->oartifact == ART_PEN_OF_THE_VOID &&
-				mvitals[PM_ACERERAK].died > 0 && (otmp->ovar1 & SEAL_ANDREALPHUS)
+				mvitals[PM_ACERERAK].died > 0 && (otmp->ovar1_seals & SEAL_ANDREALPHUS)
 		) {
 			type = BURN;
 		} else if (is_blade(otmp)) {
@@ -2444,8 +2452,8 @@ int mode;
 		    else
 				Your("%s too dull for engraving.", aobjnam(otmp,"are"));
 		} else if(otmp->otyp == RAYGUN){
-			if(otmp->altmode == AD_DISN && otmp->ovar1 >= 15){
-				otmp->ovar1 -= 15;
+			if(otmp->altmode == AD_DISN && otmp->ovar1_charges >= 15){
+				otmp->ovar1_charges -= 15;
 				if (dighole(FALSE)){
 					Your("raygun disintegrated the floor!");
 					if(!resists_blnd(&youmonst)) {
@@ -2465,8 +2473,8 @@ int mode;
 					if(levl[u.ux][u.uy].typ == GRASS)
 						levl[u.ux][u.uy].typ = SOIL;
 				}
-			} else if(otmp->altmode == AD_DEAD && otmp->ovar1 >= 10){
-				otmp->ovar1 -= 10;
+			} else if(otmp->altmode == AD_DEAD && otmp->ovar1_charges >= 10){
+				otmp->ovar1_charges -= 10;
 				ptext = TRUE;
 				if (!Blind) {
 					if(levl[u.ux][u.uy].typ == GRASS){
@@ -2477,8 +2485,8 @@ int mode;
 						   "The bugs on the %s stop moving!",
 						   surface(u.ux, u.uy));
 				}
-			} else if(otmp->altmode == AD_FIRE && otmp->ovar1 >= 2){
-				otmp->ovar1 -= 2;
+			} else if(otmp->altmode == AD_FIRE && otmp->ovar1_charges >= 2){
+				otmp->ovar1_charges -= 2;
 				ptext = TRUE;
 				type  = BURN;
 				Strcpy(post_engr_text,
@@ -2486,8 +2494,8 @@ int mode;
 						"A heat ray shoots from the raygun.");
 				if(levl[u.ux][u.uy].typ == GRASS)
 					levl[u.ux][u.uy].typ = SOIL;
-			} else if(otmp->ovar1 >= 1){
-				otmp->ovar1 -= 1;
+			} else if(otmp->ovar1_charges >= 1){
+				otmp->ovar1_charges -= 1;
 				ptext = TRUE;
 				if (!Blind) {
 				   Sprintf(post_engr_text,
@@ -3135,7 +3143,7 @@ int mode;
 	} else if(mode == WARD_MODE){
 		if (len > maxelen) {
 			int perc = (len*100)/maxelen;
-			if (multi) nomovemsg =	"Unfortunatly, you can't complete the ward.";
+			if (multi) nomovemsg =	"Unfortunately, you can't complete the ward.";
 			else You("can't complete the ward.");
 		} else perc = 100;
 		
@@ -3199,7 +3207,7 @@ int mode;
 		if (len > maxelen) {
 			perc = (len*100)/maxelen;
 			
-			if (multi) nomovemsg =	"Unfortunatly, you can't complete the seal.";
+			if (multi) nomovemsg =	"Unfortunately, you can't complete the seal.";
 			else You("can't complete the seal.");
 		} else perc = 100;
 		if (oep && oep->ward_id){
@@ -3489,7 +3497,7 @@ int describe;
 				MENU_UNSELECTED);
 			incntlet = (incntlet != 'z') ? (incntlet + 1) : 'A';
 		}
-		if (uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && uwep->ovar1&SEAL_ANDREALPHUS){
+		if (uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && uwep->ovar1_seals&SEAL_ANDREALPHUS){
 			Sprintf(buf, "Hypergeometric transit solution");
 			any.a_int = ANDREALPHUS_TRANSIT;	/* must be non-zero */
 			add_menu(tmpwin, NO_GLYPH, &any,
@@ -3497,7 +3505,7 @@ int describe;
 				MENU_UNSELECTED);
 			incntlet = (incntlet != 'z') ? (incntlet + 1) : 'A';
 		}
-		if (uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && uwep->ovar1&SEAL_ANDREALPHUS){
+		if (uwep && uwep->oartifact == ART_PEN_OF_THE_VOID && uwep->ovar1_seals&SEAL_ANDREALPHUS){
 			Sprintf(buf, "Hypergeometric stabilization solution");
 			any.a_int = ANDREALPHUS_STABILIZE;	/* must be non-zero */
 			add_menu(tmpwin, NO_GLYPH, &any,
@@ -3610,18 +3618,18 @@ int floorID;
 	case ELDER_SIGN:
 		strcpy(name, " Elder Sign");
 		strcpy(strokes, " 6, 12, 8, 8, 8, 8");
-		strcpy(warded, " 1-fold: b, j, m, p, w, y, P, U, ;, mind flayer");
-		strcpy(warded2,"         deep one, deeper one, byakhee, nightgaunt");
-		strcpy(warded3," 6-fold: deepest one, master mind flayer");
+		strcpy(warded, " 1-fold: many weaker blobby, aquatic, and eldritch monsters");
+		strcpy(warded2," 6-fold: many stronger blobby, aquatic, and eldritch monsters");
+		strcpy(warded3,"         Check the pokedex for specific guidance.");
 		strcpy(reinforce, " 6-fold");
 		strcpy(secondary, " Wards against more monsters at maximum reinforcement.");
 		break;
 	case ELDER_ELEMENTAL_EYE:
 		strcpy(name, " Elder Elemental Eye");
 		strcpy(strokes, " 5");
-		strcpy(warded, " 1-fold: spheres, v, E, F, X");
-		strcpy(warded2," 4-fold: y, D, N, undead, metroids");
-		strcpy(warded3," 7-fold: A, K, i, &, autons");
+		strcpy(warded, " 1-fold: elemental and fungoid creatures");
+		strcpy(warded2," 4-fold: dragons, undead, and energetic creatures");
+		strcpy(warded3," 7-fold: planar creatures (see pokedex for specific guidance)");
 		strcpy(reinforce, " 7-fold");
 		strcpy(secondary, " Wards against more monsters as it is reinforced.");
 		break;
@@ -4197,7 +4205,9 @@ static const char *epitaphs[] = {
 	"Did you see him passing by?", /* Dark Souls 3 */
 		"The world began without knowledge, and without knowledge will it end.",
 		"Fear not the dark, my friend. And let the feast begin.",
-	
+
+	"Let the winds lift you, to a higher place.", /* Elden Ring */
+
 	"For every hero commemorated, a thousand martyrs die unmourned and unremembered.", /*Warhammer 40k*/
 	
 	"FIQ:  One step from divinity.",
@@ -4645,14 +4655,40 @@ int f1,f2;
 		f1 = f2;
 		f2 = tmp;
 	}
+	/*Ruling houses*/
 	if(f1 >= FIRST_HOUSE && f1 <= LAST_HOUSE){
-		return (f2 >= FIRST_TOWER && f2 <= LAST_TOWER) || (f2 == LOLTH_SYMBOL || f2 == PEN_A_SYMBOL);
-	} else if(f1 >= FIRST_FALLEN_HOUSE && f1 <= LAST_FALLEN_HOUSE){
-		return (f2 >= FIRST_TOWER && f2 <= LAST_TOWER) || (f2 == KIARANSALEE_SYMBOL || f2 == PEN_A_SYMBOL);
-	} else if(f1 >= FIRST_TOWER && f1 <= LAST_TOWER){
-		return (f2 >= FIRST_GODDESS && f2 <= LAST_GODDESS) || f2 == XAXOX;
-	} else if(f1 == XAXOX){
+		/*with elite towers, lolth, and pen'a*/
+		return (f2 >= FIRST_TOWER && f2 <= LAST_TOWER) || f2 == LOLTH_SYMBOL || (f2 == PEN_A_SYMBOL && urole.neminum != PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) || f2 == GHAUNADAUR_SYMBOL;
+	} 
+	/*Fallen houses*/
+	else if(f1 >= FIRST_FALLEN_HOUSE && f1 <= LAST_FALLEN_HOUSE){
+		/*with elite towers, kiaransalee, and pen'a*/
+		return (f2 >= FIRST_TOWER && f2 <= LAST_TOWER) || f2 == KIARANSALEE_SYMBOL || f2 == PEN_A_SYMBOL || f2 == GHAUNADAUR_SYMBOL;
+	}
+	/*Elite towers*/
+	else if(f1 >= FIRST_TOWER && f1 <= LAST_TOWER){
+		/*with all goddesses (except eilistraee) and tower xaxox*/
+		return f2 == LOLTH_SYMBOL || f2 == KIARANSALEE_SYMBOL || (f2 == PEN_A_SYMBOL && urole.neminum != PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) || f2 == VER_TAS_SYMBOL || f2 == XAXOX || f2 == GHAUNADAUR_SYMBOL;
+	}
+	/*Tower xaxox*/
+	else if(f1 == XAXOX){
+		/*also with the eddergud*/
 		return (f2 == EDDER_SYMBOL);
+	}
+	else if(f1 == LOLTH_SYMBOL){
+		return f2 == KIARANSALEE_SYMBOL || (f2 == PEN_A_SYMBOL && urole.neminum != PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) || f2 == VER_TAS_SYMBOL || f2 == GHAUNADAUR_SYMBOL;
+	}
+	else if(f1 == KIARANSALEE_SYMBOL){
+		return f2 == PEN_A_SYMBOL || f2 == GHAUNADAUR_SYMBOL;
+	}
+	else if(f1 == PEN_A_SYMBOL){
+		return (f2 == VER_TAS_SYMBOL && urole.neminum != PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) || f2 == EILISTRAEE_SYMBOL || f2 == GHAUNADAUR_SYMBOL || f2 == LOST_HOUSE;
+	}
+	else if(f1 == VER_TAS_SYMBOL){
+		return f2 == GHAUNADAUR_SYMBOL;
+	}
+	else if(f1 == GHAUNADAUR_SYMBOL){
+		return f2 == LOST_HOUSE;
 	}
 	else return FALSE;
 }

@@ -732,6 +732,77 @@ give_up:	/* Quit */
 		flags.initalign = k;
 	    }
 	}
+	/* Select a species, if necessary */
+	/* force compatibility with role/race/gender/align */
+	if (flags.initspecies < 0 || !validspecies(flags.initrole, flags.initrace,
+							flags.initgend, flags.initspecies)) {
+	    /* pre-selected species not valid */
+	    if (pick4u == 'y' || flags.initspecies == ROLE_RANDOM || flags.randomall
+		) {
+		flags.initspecies = pick_species(flags.initrole, flags.initrace,
+							flags.initgend, PICK_RANDOM);
+		if (flags.initspecies < 0) {
+		    tty_putstr(BASE_WINDOW, 0, "Incompatible species!");
+		    flags.initspecies = randspecies(flags.initrole, flags.initrace, flags.initgend);
+		}
+	    } else {	/* pick4u == 'n' */
+		/* Count the number of valid species */
+		n = 0;	/* number valid */
+		k = 0;	/* valid species */
+		for (i = 0; i < ROLE_SPECIES; i++) {
+		    if (validspecies(flags.initrole, flags.initrace, flags.initgend,
+							i)) {
+			n++;
+			k = i;
+		    }
+		}
+		if (n == 0) {
+		    for (i = 0; i < ROLE_SPECIES; i++) {
+			if (validspecies(flags.initrole, flags.initrace, flags.initgend, i)) {
+			    n++;
+			    k = i;
+			}
+		    }
+		}
+
+		/* Permit the user to pick, if there is more than one */
+		if (n > 1) {
+		    tty_clear_nhwindow(BASE_WINDOW);
+		    tty_putstr(BASE_WINDOW, 0, "Choosing Species");
+		    win = create_nhwindow(NHW_MENU);
+		    start_menu(win);
+		    any.a_void = 0;         /* zero out all bits */
+		    int valid_count = 0;
+		    for (i = 0; i < ROLE_SPECIES; i++)
+			if (validspecies(flags.initrole, flags.initrace,
+							flags.initgend, i)) {
+			    any.a_int = i+1;
+			    add_menu(win, NO_GLYPH, &any, 'a' + valid_count,
+				 0, ATR_NONE, species[i].name, MENU_UNSELECTED);
+			    valid_count++;
+			}
+		    any.a_int = pick_species(flags.initrole, flags.initrace,
+					    flags.initgend, PICK_RANDOM)+1;
+		    if (any.a_int == 0)	/* must be non-zero */
+			any.a_int = randspecies(flags.initrole, flags.initrace, flags.initgend)+1;
+		    add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
+				    "Random", MENU_UNSELECTED);
+		    any.a_int = i+1;	/* must be non-zero */
+		    add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
+				    "Quit", MENU_UNSELECTED);
+		    Sprintf(pbuf, "Pick the species of your %s", plbuf);
+		    end_menu(win, pbuf);
+		    n = select_menu(win, PICK_ONE, &selected);
+		    destroy_nhwindow(win);
+		    if (n != 1 || selected[0].item.a_int == any.a_int)
+			goto give_up;		/* Selected quit */
+
+		    k = selected[0].item.a_int - 1;
+		    free((genericptr_t) selected),	selected = 0;
+		}
+		flags.initspecies = k;
+	    }
+	}
 	/* Success! */
 	in_character_selection = FALSE;
 	tty_display_nhwindow(BASE_WINDOW, FALSE);
@@ -919,7 +990,7 @@ tty_create_nhwindow(type)
 	newwin->maxcol = newwin->cols = 0;
 	break;
     case NHW_STATUS:
-	/* status window, 2 lines long, full width, bottom of screen */
+	/* status window, 3 lines long, full width, bottom of screen */
 	newwin->offx = 0;
 #if defined(USE_TILES) && defined(MSDOS)
 	if (iflags.grmode) {
@@ -927,7 +998,7 @@ tty_create_nhwindow(type)
 	} else
 #endif
 	newwin->offy = min((int)ttyDisplay->rows-2, ROWNO+1);
-	newwin->rows = newwin->maxrow = 2;
+	newwin->rows = newwin->maxrow = 3;
 	newwin->cols = newwin->maxcol = min(ttyDisplay->cols, MAXCO);
 	break;
     case NHW_MAP:
@@ -1359,9 +1430,9 @@ struct WinDesc *cw;
 		    if (curr->glyph != NO_GLYPH && iflags.use_menu_glyphs) {
 			int glyph_color = NO_COLOR;
 			glyph_t character;
-			unsigned special; /* unused */
+			unsigned bgcolor; /* unused */
 			/* map glyph to character and color */
-			mapglyph(curr->glyph, &character, &glyph_color, &special, 0, 0);
+			mapglyph(curr->glyph, &character, &glyph_color, &bgcolor, 0, 0);
 
 			print_vt_code(AVTC_GLYPH_START, glyph2tile[curr->glyph]);
 			if (glyph_color != NO_COLOR) term_start_color(glyph_color);
@@ -2603,7 +2674,7 @@ tty_print_glyph(window, x, y, glyph)
     glyph_t ch;
     boolean reverse_on = FALSE;
     int	    color, bgcolor=NO_COLOR;
-    unsigned special;
+    unsigned bgcolor_ret;
     
 #ifdef CLIPPING
     if(clipping) {
@@ -2612,7 +2683,7 @@ tty_print_glyph(window, x, y, glyph)
     }
 #endif
     /* map glyph to character and color */
-    mapglyph(glyph, &ch, &color, &special, x, y);
+    mapglyph(glyph, &ch, &color, &bgcolor_ret, x, y);
 
     print_vt_code(AVTC_SELECT_WINDOW, window);
 
@@ -2640,36 +2711,10 @@ tty_print_glyph(window, x, y, glyph)
 
     /* must be after color check; term_end_color may turn off inverse too */
 #ifdef TEXTCOLOR
-    if (special) {
-//		if(iflags.use_inverse){
-//			term_start_attr(ATR_INVERSE);
-//			reverse_on = TRUE;
-//		} else if (special & MG_PET) {
-		if ((special & MG_PET) && iflags.hilite_pet) {
-			term_start_bgcolor(CLR_BLUE);
-			bgcolor = CLR_BLUE;
-		} else if ((special & MG_STAIRS) && iflags.hilite_hidden_stairs && (window == NHW_MAP)){
-		    term_start_bgcolor(CLR_RED);
-			bgcolor = CLR_RED;
-		} else if ((special & MG_PEACE) && iflags.hilite_peaceful) {
-			term_start_bgcolor(CLR_BROWN);
-			bgcolor = CLR_BROWN;
-		} else if ((special & MG_ZOMBIE)) {
-			if(iflags.hilite_zombies){
-				term_start_bgcolor(CLR_GREEN);
-				bgcolor = CLR_GREEN;
-			}
-			if(iflags.zombie_z){
-				ch = 'Z';
-			}
-		} else if ((special & MG_DETECT) && iflags.hilite_detected) {
-			term_start_bgcolor(CLR_MAGENTA);
-			bgcolor = CLR_MAGENTA;
-		} else if ((special & MG_OBJPILE) && iflags.hilite_obj_piles && (window == NHW_MAP)){
-		    term_start_bgcolor(CLR_BLUE);
-			bgcolor = CLR_BLUE;
-		}
-    }
+    if (bgcolor_ret != NO_COLOR) {
+		bgcolor = bgcolor_ret;
+		term_start_bgcolor(bgcolor);
+	}
 #endif
 
     if (color == bgcolor && color != NO_COLOR) {
@@ -2711,7 +2756,7 @@ tty_print_glyph(window, x, y, glyph)
     print_vt_code(AVTC_GLYPH_END, -1);
 
 #ifdef TEXTCOLOR
-    if (!reverse_on && (special)) {
+    if (!reverse_on && (bgcolor != NO_COLOR)) {
 	term_end_color();
 	ttyDisplay->color = NO_COLOR;
     }

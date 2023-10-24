@@ -20,6 +20,24 @@ const char * const enc_stat[] = {
 	"Overloaded"
 };
 
+const char * const enc_stat_abbrev1[] = {
+	"",
+	"Burden",
+	"Stress",
+	"Strain",
+	"Overtax",
+	"Overload"
+};
+
+const char * const enc_stat_abbrev2[] = {
+	"",
+	"Brd",
+	"Strs",
+	"Strn",
+	"Ovtx",
+	"Ovld"
+};
+
 STATIC_DCL void NDECL(bot1);
 STATIC_DCL void NDECL(bot2);
 #endif /* OVL0 */
@@ -109,7 +127,7 @@ void
 apply_color_option(color_option, newbot2, statusline)
      struct color_option color_option;
      const char *newbot2;
-     int statusline; /* apply color on this statusline: 1 or 2 */
+     int statusline; /* apply color on this statusline: 1, 2, or 3 */
 {
     if (!iflags.use_status_colors || !iflags.use_color) return;
     curs(WIN_STATUS, 1, statusline-1);
@@ -304,7 +322,6 @@ max_rank_sz()
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 #ifdef SCORE_ON_BOTL
 long
@@ -490,10 +507,10 @@ char *buf;
 			if(In_mordor_forest(&u.uz)) Sprintf(buf, "Forest %d ", dunlev(&u.uz));
 			else if(Is_ford_level(&u.uz)) Sprintf(buf, "Ford ");
 			else if(In_mordor_fields(&u.uz)) Sprintf(buf, "Field ");
-			else if(In_mordor_buildings(&u.uz)) Sprintf(buf, "Fortress %d", dunlev(&u.uz)-5);
+			else if(In_mordor_buildings(&u.uz)) Sprintf(buf, "Fortress %d ", dunlev(&u.uz)-5);
 			else if(Is_spider_cave(&u.uz)) Sprintf(buf, "Spider ");
-			else if(In_mordor_depths(&u.uz)) Sprintf(buf, "Cracks %d", dunlev(&u.uz)-8);
-			else if(In_mordor_borehole(&u.uz)) Sprintf(buf, "Bore %d", dunlev(&u.uz)-11);
+			else if(In_mordor_depths(&u.uz)) Sprintf(buf, "Cracks %d ", dunlev(&u.uz)-8);
+			else if(In_mordor_borehole(&u.uz)) Sprintf(buf, "Bore %d ", dunlev(&u.uz)-11);
 		}
 	} else {
 		/* ports with more room may expand this one */
@@ -503,17 +520,86 @@ char *buf;
 	return ret;
 }
 
-#ifdef DUMP_LOG
-void bot2str(newbot2)
-char* newbot2;
-#else
-STATIC_OVL void
-bot2()
-#endif
+void
+do_statuseffects(char *newbot2, boolean terminal_output, int abbrev, int statusline)
 {
-#ifndef DUMP_LOG
-	char  newbot2[MAXCO];
+  register char *nb = eos(newbot2);
+  int cap = near_capacity();
+  boolean first = statusline == 3; /* first text shown on line */
+#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
+#define status_effect(str1, str2, str3)                                 \
+  (add_colored_text((str1),                                             \
+                    abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1), \
+                    newbot2, terminal_output, statusline, first),       \
+   first = FALSE)
+#else
+#define status_effect(str1, str2, str3)                                 \
+  (Snprintf(nb = eos(nb), MAXCO - strlen(newbot2),                      \
+            first ? "%s" : " %s",                                       \
+            abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1)),      \
+   first = FALSE)
 #endif
+/** Delayed instadeaths **/
+  if(Stoned || Golded)
+    status_effect("Stone", "Ston", "Sto");
+  if(Slimed)
+    status_effect("Slime", "Slim", "Slm");
+  if(FrozenAir || Strangled || BloodDrown)
+    status_effect("Sufct", "Sfct", "Sfc");
+  if(Sick) {
+    if (u.usick_type & SICK_VOMITABLE)
+      status_effect("FoodPois", "Fpois", "Poi");
+    if (u.usick_type & SICK_NONVOMITABLE)
+      status_effect("Ill", "Ill", "Ill");
+  }
+/** Hunger **/
+  if(u.uhs != NOT_HUNGRY) {
+    if(uclockwork)
+      status_effect(ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], ca_hu_stat[u.uhs]);
+    else
+      status_effect(hu_stat[u.uhs], hu_stat[u.uhs], hu_stat[u.uhs]);
+  }
+/** Encumbrance **/
+  if(cap > UNENCUMBERED)
+    status_effect(enc_stat[cap], enc_stat_abbrev1[cap], enc_stat_abbrev2[cap]);
+/** Other status effects **/
+  if(Invulnerable)
+    status_effect("Invl", "Invl", "In");
+  if(Blind && !StumbleBlind)
+    status_effect("Blind", "Blnd", "Bl");
+  if(Stunned && !StaggerShock)
+    status_effect("Stun", "Stun", "St");
+  if(Confusion && !StumbleBlind)
+    status_effect("Conf", "Cnf", "Cf");
+  if(Hallucination)
+    status_effect("Hallu", "Hal", "Hl");
+/** Insanity messages **/
+  if(Panicking)
+    status_effect("Panic", "Pnc", "Pnc");
+  if(StumbleBlind)
+    status_effect("Stmblng", "Stmbl", "Stm");
+  if(StaggerShock)
+    status_effect("Stggrng", "Stggr", "Stg");
+  if(Babble)
+    status_effect("Babble", "Babl", "Bbl");
+  if(Screaming)
+    status_effect("Scream", "Scrm", "Scr");
+  if(FaintingFits)
+    status_effect("Faint", "Fnt", "Fnt");
+/** Less important **/
+  if(Levitation)
+    status_effect("Lev", "Lev", "Lv");
+  /* flying and levitation are mutually exclusive */
+  if(Flying && !Levitation)
+    status_effect("Fly", "Fly", "Fl");
+  if(u.usteed)
+    status_effect("Ride", "Rid", "Rd");
+#undef status_effect
+}
+
+void
+bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
+{
 	register char *nb;
 	int hp, hpmax;
 	int cap = near_capacity();
@@ -582,7 +668,6 @@ bot2()
                                          (currenttime % 3600) / 60);
   }
 #endif
-
 	if(uclockwork){
 		if(strcmp(ca_hu_stat[u.uhs], "        ")) {
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
@@ -725,15 +810,49 @@ bot2()
 #endif
 #ifdef DUMP_LOG
 }
+
 STATIC_OVL void
 bot2()
 {
 	char newbot2[MAXCO];
-	bot2str(newbot2);
+	int abbrev = 0;
+	for (;;) {
+		bot2str(newbot2, FALSE, abbrev, FALSE);
+		if (abbrev >= 2 || strlen(newbot2) < min(MAXCO-1, CO))
+			break;
+		abbrev++;
+	}
+	bot2str(newbot2, TRUE, abbrev, FALSE);
 	int save_botlx = flags.botlx;
-#endif
 	curs(WIN_STATUS, 1, 1);
 	putstr(WIN_STATUS, 0, newbot2);
+	flags.botlx = save_botlx;
+}
+
+void
+bot3str(char *newbot3, boolean terminal_output, int abbrev)
+{
+	newbot3[0] = '\0';      /* so eos() works */
+	do_statuseffects(newbot3, terminal_output, abbrev, 3);
+}
+
+void
+bot3()
+{
+	char newbot3[MAXCO];
+	int abbrev = 0;
+	if (LI <= ROWNO+3 || iflags.statuslines <= 2)
+		return;
+	for (;;) {
+		bot3str(newbot3, FALSE, abbrev);
+		if (abbrev >= 2 || strlen(newbot3) < min(MAXCO-1, CO))
+			break;
+		abbrev++;
+	}
+	bot3str(newbot3, TRUE, abbrev);
+	int save_botlx = flags.botlx;
+	curs(WIN_STATUS, 1, 2);
+	putstr(WIN_STATUS, 0, newbot3);
 	flags.botlx = save_botlx;
 }
 
@@ -746,6 +865,7 @@ bot()
 	}
 	bot1();
 	bot2();
+	bot3();
 	flags.botl = flags.botlx = 0;
 }
 
@@ -754,6 +874,7 @@ force_bot()
 {
 	bot1();
 	bot2();
+	bot3();
 	flags.botl = flags.botlx = 0;
 	return MOVE_CANCELLED;
 }

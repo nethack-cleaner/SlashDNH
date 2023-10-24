@@ -8,7 +8,10 @@
 
 extern const int monstr[];
 
-/* mon summons a monster */
+/* mon summons a monster 
+ * 
+ * if mon is null, treat as if as being summoned by a far-off Wizard of Yendor
+ */
 void
 msummon(mon, ptr)
 struct monst *mon;		/* mon to attribute summons to */
@@ -45,7 +48,9 @@ struct permonst * ptr;	/* summon as though you were <X> */
 		gnum = (ptr->maligntyp==A_NONE) ? GOD_MOLOCH : align_to_god(sgn(ptr->maligntyp));
 	}
 
-	if(ptr->mtyp == PM_SHAKTARI) {
+	if (!mon) {
+		/* if no mon, skip all these special cases which might query mon */;
+	} else if(ptr->mtyp == PM_SHAKTARI) {
 	    dtype = PM_MARILITH;
 		cnt = d(1,6);
 	} else if(ptr->mtyp == PM_BAALPHEGOR && rn2(4)) {
@@ -57,16 +62,16 @@ struct permonst * ptr;	/* summon as though you were <X> */
 	} else if (is_dprince(ptr) || (ptr->mtyp == PM_WIZARD_OF_YENDOR)) {
 	    dtype = (!rn2(20)) ? dprince(ptr, atyp) :
 				 (!rn2(4)) ? dlord(ptr, atyp) : ndemon(atyp);
-	    cnt = (!rn2(4) && is_ndemon(&mons[dtype])) ? 2 : 1;
+	    cnt = (!rn2(4) && is_normal_demon(&mons[dtype])) ? 2 : 1;
 	} else if (is_dlord(ptr)) {
 	    dtype = (!rn2(50)) ? dprince(ptr, atyp) :
 				 (!rn2(20)) ? dlord(ptr, atyp) : ndemon(atyp);
-	    cnt = (!rn2(4) && is_ndemon(&mons[dtype])) ? 2 : 1;
-	} else if (is_ndemon(ptr)) {
+	    cnt = (!rn2(4) && is_normal_demon(&mons[dtype])) ? 2 : 1;
+	} else if (is_normal_demon(ptr)) {
 	    dtype = (!rn2(20) && Inhell) ? dlord(ptr, atyp) :
 				 ((mons[monsndx(ptr)].geno & G_UNIQ) || !rn2(6)) ? ndemon(atyp) : monsndx(ptr);
 	    cnt = 1;
-	} else if (is_lminion(mon)) {
+	} else if (mon && is_lminion(mon)) {
 		if(is_keter(mon->data)){
 			if(mon->mtyp == PM_MALKUTH_SEPHIRAH && rn2(8)) return;
 			dtype = PM_MALKUTH_SEPHIRAH;
@@ -76,11 +81,11 @@ struct permonst * ptr;	/* summon as though you were <X> */
 				 (is_lord(ptr) || (mons[monsndx(ptr)].geno & G_UNIQ) || !rn2(6)) ? lminion() : monsndx(ptr);
 			cnt = (!rn2(4) && !is_lord(&mons[dtype])) ? 2 : 1;
 		}
-	} else if (is_nminion(mon) && In_endgame(&u.uz)) {
+	} else if (mon && is_nminion(mon) && In_endgame(&u.uz)) {
 	    dtype = (is_lord(ptr) && !rn2(20)) ? nlord() :
 		     (is_lord(ptr) || (mons[monsndx(ptr)].geno & G_UNIQ) || !rn2(6)) ? nminion() : monsndx(ptr);
 	    cnt = (!rn2(4) && !is_lord(&mons[dtype])) ? 2 : 1;
-	} else if (is_cminion(mon) && In_endgame(&u.uz)) {
+	} else if (mon && is_cminion(mon) && In_endgame(&u.uz)) {
 	    dtype = (is_lord(ptr) && !rn2(20)) ? clord() : cminion();
 	    cnt = (!rn2(4) && !is_lord(&mons[dtype])) ? 2 : 1;
 	} else if (ptr->mtyp == PM_ANGEL) {
@@ -110,7 +115,7 @@ struct permonst * ptr;	/* summon as though you were <X> */
 		int mmflags = ((mons[dtype].geno & G_UNIQ) ? NO_MM_FLAGS : MM_ESUM|MM_NOCOUNTBIRTH);
 		mtmp = makemon(&mons[dtype], u.ux, u.uy, mmflags);
 	    if (mtmp) {
-		    	if (mmflags&MM_ESUM)
+			if (mmflags&MM_ESUM)
 				mark_mon_as_summoned(mtmp, mon, ESUMMON_PERMANENT, 0);
 			
 			if (dtype == PM_ANGEL) {
@@ -118,7 +123,7 @@ struct permonst * ptr;	/* summon as though you were <X> */
 				add_mx(mtmp, MX_EMIN);
 				EMIN(mtmp)->min_align = atyp;
 				EMIN(mtmp)->godnum = gnum;
-				if(mon->isminion) mtmp->isminion = TRUE;
+				if(mon && mon->isminion) mtmp->isminion = TRUE;
 				mtmp->mpeaceful = mon && mon->mpeaceful;
 			}
 
@@ -141,8 +146,8 @@ struct permonst * ptr;	/* summon as though you were <X> */
 			if (mon && mon->mfaction){
 				set_faction(mtmp, mon->mfaction);
 			}
-			if(mon && !is_lord(mtmp->data) && !is_prince(mtmp->data)){
-				mtmp->mpeaceful = mon->mpeaceful;
+			if(!is_lord(mtmp->data) && !is_prince(mtmp->data)){
+				mtmp->mpeaceful = mon && mon->mpeaceful;
 				set_malign(mtmp);
 			}
 	    }
@@ -678,7 +683,7 @@ aligntyp atyp;
 	
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_DEMON, G_NOHELL|G_HELL);
-	    if (ptr && is_ndemon(ptr) &&
+	    if (ptr && is_normal_demon(ptr) &&
 		    (atyp == A_NONE || sgn(ptr->maligntyp) == sgn(atyp)))
 		return(monsndx(ptr));
 	}

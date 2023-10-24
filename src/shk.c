@@ -1073,6 +1073,7 @@ register struct obj *obj, *merge;
 #endif
 		}
 	}
+	interrupt_multishot(obj, merge);
 
 	if (donning(obj)) cancel_don();
 	
@@ -1953,11 +1954,13 @@ shk_other_services()
 			add_menu(tmpwin, NO_GLYPH, &any , 'p', 0, ATR_NONE,
 				"Poison", MENU_UNSELECTED);
 	}
-  
   	/* Armor-works */
 	if ((ESHK(shkp)->services & (SHK_SPECIAL_A|SHK_SPECIAL_B))
 			 &&(ESHK(shkp)->shoptype == ARMORSHOP
 			   || ESHK(shkp)->shoptype == CERAMICSHOP
+			   || ESHK(shkp)->shoptype == SANDWALKER
+			   || ESHK(shkp)->shoptype == NAIADSHOP
+			   || ESHK(shkp)->shoptype == PETSHOP
 			   )
 	) {
 		any.a_int = 5;
@@ -3463,13 +3466,13 @@ boolean shk_buying, shk_selling;
 		long denominator = materials[objects[obj->otyp].oc_material].cost;
 
 		/* items made of specific gems use that as their material cost mod */
-		if (obj->obj_material == GEMSTONE && obj->ovar1 && obj->oclass != GEM_CLASS && !obj_type_uses_ovar1(obj) && !obj_art_uses_ovar1(obj))
+		if (obj->obj_material == GEMSTONE && obj->sub_material && obj->oclass != GEM_CLASS)
 		{
 			/* costs more if the gem type is expensive */
-			if (objects[obj->ovar1].oc_cost >= 500)
-				numerator += min(4000, objects[obj->ovar1].oc_cost) / 10;	// 100 to 500
+			if (objects[obj->sub_material].oc_cost >= 500)
+				numerator += min(4000, objects[obj->sub_material].oc_cost) / 10;	// 100 to 500
 
-			if (!objects[obj->ovar1].oc_name_known) {
+			if (!objects[obj->sub_material].oc_name_known) {
 				if (shk_buying)
 					/* shopkeepers insist your gem armor is fluorite or equally inexpensive and you don't know otherwise */
 					numerator = materials[obj->obj_material].cost;	// 100
@@ -3859,9 +3862,7 @@ register struct monst *shkp;
 
 	if((udist = distu(omx,omy)) < 3 &&
 		((shkp->mtyp != PM_GRID_BUG && shkp->mtyp != PM_BEBELITH) || (omx==u.ux || omy==u.uy)) &&
-		((shkp->mtyp != PM_CLOCKWORK_SOLDIER && shkp->mtyp != PM_CLOCKWORK_DWARF && 
-		   shkp->mtyp != PM_FABERGE_SPHERE && shkp->mtyp != PM_FIREWORK_CART && 
-		   shkp->mtyp != PM_JUGGERNAUT && shkp->mtyp != PM_ID_JUGGERNAUT) ||
+		(!is_vectored_mtyp(shkp->mtyp) ||
 			(omx + xdir[(int)shkp->mvar_vector] == u.ux && 
 			   omy + ydir[(int)shkp->mvar_vector] == u.uy 
 			)
@@ -5106,8 +5107,8 @@ shk_appraisal(slang, shkp)
 	/* Convert damage to ascii */
 
 	struct weapon_dice wdice[2];
-	(void)dmgval_core(&wdice[0], FALSE, obj, obj->otyp);	// small dice
-	(void)dmgval_core(&wdice[1], TRUE, obj, obj->otyp);		// large dice
+	(void)dmgval_core(&wdice[0], FALSE, obj, obj->otyp, &youmonst);	// small dice
+	(void)dmgval_core(&wdice[1], TRUE, obj, obj->otyp, &youmonst);		// large dice
 
 	Sprintf(buf, "Damage: ");
 
@@ -5201,7 +5202,11 @@ struct monst *shkp;
 
     /* Check if you asked for a non weapon tool to be improved */
     if (obj->oclass == TOOL_CLASS && !is_weptool(obj))
-	pline("%s grins greedily...", mon_nam(shkp));
+		pline("%s grins greedily...", mon_nam(shkp));
+	
+	/* Check if you asked for a non-poisonable weapon to be poisoned */
+	if (!is_poisonable(obj) && !(ESHK(shkp)->services & (SHK_SPECIAL_A|SHK_SPECIAL_B)))
+		pline("%s grins greedily...", mon_nam(shkp));
 
 	any.a_void = 0;         /* zero out all bits */
 	tmpwin = create_nhwindow(NHW_MENU);
@@ -5343,7 +5348,7 @@ struct monst *shkp;
 			obj->spe++;
 		break;
 		case 3:
-			verbalize("Just imagine what poisoned %s can do!", xname(obj));
+			verbalize("Just imagine what your poisoned %s can do!", xname(obj));
 
 			charge = 90;
 			charge+= 10 * obj->quan;
@@ -5354,10 +5359,15 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_BASIC) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_BASIC;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_BASIC;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 		case 4:
-			verbalize("Just imagine what drugged %s can do!", xname(obj));
+			verbalize("Just imagine what your drugged %s can do!", xname(obj));
 
 			charge = 45;
 			charge += 5 * obj->quan;
@@ -5368,10 +5378,15 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_SLEEP) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_SLEEP;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_SLEEP;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 		case 5:
-			verbalize("Just imagine what stained %s can do!", xname(obj));
+			verbalize("Just imagine what your stained %s can do!", xname(obj));
 
 			charge = 45;
 			charge += 5 * obj->quan;
@@ -5382,10 +5397,15 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_BLIND) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_BLIND;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_BLIND;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 		case 6:
-			verbalize("Just imagine what envenomed %s can do!", xname(obj));
+			verbalize("Just imagine what your envenomed %s can do!", xname(obj));
 
 			charge = 90;
 			charge+= 10 * obj->quan;
@@ -5396,10 +5416,15 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_PARAL) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_PARAL;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_PARAL;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 		case 7:
-			verbalize("Just imagine what filth-crusted %s can do!", xname(obj));
+			verbalize("Just imagine what your filth-crusted %s can do!", xname(obj));
 
 			charge = 900;
 			charge+= 100 * obj->quan;
@@ -5410,10 +5435,15 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_FILTH) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_FILTH;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_FILTH;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 		case 8:
-			verbalize("Just imagine what acid-coated %s can do!", xname(obj));
+			verbalize("Just imagine what your acid-coated %s can do!", xname(obj));
 
 			charge = 90;
 			charge+= 10 * obj->quan;
@@ -5424,7 +5454,12 @@ struct monst *shkp;
 				if(obj->opoisoned == OPOISON_ACID) obj->opoisonchrgs += 2;
 				else obj->opoisonchrgs = 1;
 			}
-			obj->opoisoned = OPOISON_ACID;
+			else if (is_poisonable(obj))
+				obj->opoisoned = OPOISON_ACID;
+			else {
+				verbalize("All done!");
+				// steals your money
+			}
 		break;
 
 		default:
@@ -5479,15 +5514,15 @@ shk_armor_works(slang, shkp)
 				 verbalize("They'll call you the man of stainless steel!");
 
 			/* Costs more the more rusty it is (oeroded 0-3) */
-			charge = 300 * (obj->oeroded+1);
-			if (obj->oeroded > 2) verbalize("Yikes!  This thing's a mess!");
+			charge = 300 * (obj->oeroded + obj->oeroded2 + 1);
+			if ((obj->oeroded + obj->oeroded2) > 2) verbalize("Yikes!  This thing's a mess!");
 
 			/* Artifacts cost more to deal with */
 			/* KMH -- Avoid floating-point */
 			if (obj->oartifact) charge = charge * 3 / 2;
 			
 			/* Smooth out the charge a bit */
-			shk_smooth_charge(&charge, 100, 1000);
+			shk_smooth_charge(&charge, 100, 2000);
 
 			if (shk_offer_price(slang, charge, shkp) == FALSE) return;
 
@@ -5498,6 +5533,7 @@ shk_armor_works(slang, shkp)
 				You("mistake your %s for a pot and...", xname(obj));
 
 			obj->oeroded = 0;
+			obj->oeroded2 = 0;
 			obj->rknown = TRUE;
 			obj->oerodeproof = TRUE;
 			break;
@@ -5931,7 +5967,7 @@ struct monst *mon;
 		if(u.sealsActive&SEAL_ANDROMALIUS && !NoBInvis 
 		  && !((levl[u.ux][u.uy].lit == 0 && (dimness(u.ux, u.uy) <= 0)) //dark square
 			 || (ublindf && (ublindf->otyp==MASK || ublindf->otyp==R_LYEHIAN_FACEPLATE)) //face-covering mask
-			 || (uarmh && (uarmh->otyp==PLASTEEL_HELM || uarmh->otyp==PONTIFF_S_CROWN || uarmh->otyp==FACELESS_HELM)) //OPAQUE face-covering helm (visored should also work)
+			 || (uarmh && (uarmh->otyp==PLASTEEL_HELM || uarmh->otyp==PONTIFF_S_CROWN || uarmh->otyp==FACELESS_HELM || uarmh->otyp==IMPERIAL_ELVEN_HELM)) //OPAQUE face-covering helm (visored should also work)
 			 || (uarmc && (uarmc->otyp==WHITE_FACELESS_ROBE || uarmc->otyp==BLACK_FACELESS_ROBE || uarmc->otyp==SMOKY_VIOLET_FACELESS_ROBE))//face-covering robe
 		  )
 		) count++; 

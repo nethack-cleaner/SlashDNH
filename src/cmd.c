@@ -598,6 +598,9 @@ boolean techniqueonly;
 		add_ability('c', "Adjust your clockspeed", MATTK_CLOCK);
 		lettertaken[letcount('c')] = TRUE;
 	}
+	if (mon_abilities && (Race_if(PM_YUKI_ONNA) || Race_if(PM_SNOW_CLOUD)) && !Upolyd){
+		add_ability('C', "Shift Form", MATTK_YUKI);
+	}
 	if (mon_abilities && uandroid){
 		add_ability('d', "Use Android abilities", MATTK_DROID);
 		lettertaken[letcount('d')] = TRUE;
@@ -1158,6 +1161,34 @@ boolean techniqueonly;
 		flags.phasing = FALSE;
 		return MOVE_INSTANT;
 	break;
+	case MATTK_YUKI:
+		if(Protection_from_shape_changers){
+			pline("Something is blocking you from changing shape.");
+			return MOVE_CANCELLED;
+		}
+		if(urace.malenum == PM_YUKI_ONNA){
+			You("disperse into a cloud of snow.");
+			urace.malenum = PM_SNOW_CLOUD;
+			flags.altrace = PM_SNOW_CLOUD;
+			newsym(u.ux,u.uy);
+			upermonst = mons[PM_SNOW_CLOUD];
+			set_uasmon();
+			float_up();
+			break_armor();
+			drop_weapon(1);
+		} else if (urace.malenum == PM_SNOW_CLOUD){
+			You("solidify.");
+			urace.malenum = PM_YUKI_ONNA;
+			flags.altrace = NON_PM;
+			newsym(u.ux,u.uy);
+			upermonst = mons[PM_YUKI_ONNA];
+			set_uasmon();
+			if(!Levitation && !u.ustuck &&
+			   (is_pool(u.ux,u.uy, TRUE) || is_lava(u.ux,u.uy)))
+				spoteffects(TRUE);
+		}
+		return MOVE_INSTANT;
+		break;
 	}
 	return MOVE_CANCELLED;
 }
@@ -1889,7 +1920,7 @@ wiz_map()
 STATIC_PTR int
 wiz_genesis()
 {
-	if (wizard)	(void) create_particular(-1, -1, TRUE, 0, 0, 0);
+	if (wizard)	(void) create_particular(u.ux, u.uy, -1, -1, TRUE, 0, 0, 0, (char *)0);
 	else		pline("Unavailable command '^G'.");
 	return MOVE_CANCELLED;
 }
@@ -3767,8 +3798,11 @@ const char *msg;
 void
 confdir()
 {
-	register int x;
-	if(u.udrunken >= 3 && rn2(u.udrunken/3 + 1))
+	int x;
+	int drunken_value = u.udrunken;
+	if(u.utats & TAT_CRYSTAL_ORB)
+		drunken_value += 30;	
+	if(drunken_value >= 3 && rn2(drunken_value/3 + 1))
 		return;
 	x = (u.umonnum == PM_GRID_BUG || u.umonnum == PM_BEBELITH) ? 2*rn2(4) : rn2(8);
 	u.dx = xdir[x];

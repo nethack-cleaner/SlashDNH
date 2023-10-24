@@ -996,39 +996,28 @@ boolean ghostly;
 	    }
 
 	    br = Is_branchlev(&u.uz);
-	    if (br && u.uz.dlevel == 1) {
-		d_level ltmp;
+	    if (br //&& u.uz.dlevel == 1
+			) {
+			d_level * ltmp = branchlev_other_end(br, &u.uz);
 
-		if (on_level(&u.uz, &br->end1))
-		    assign_level(&ltmp, &br->end2);
-		else
-		    assign_level(&ltmp, &br->end1);
-
-		switch(br->type) {
-		case BR_STAIR:
-		case BR_NO_END1:
-		case BR_NO_END2: /* OK to assign to sstairs if it's not used */
-		    assign_level(&sstairs.tolev, &ltmp);
-		    break;		
-		case BR_PORTAL: /* max of 1 portal per level */
-		    {
-			register struct trap *ttmp;
-			for(ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
-			    if (ttmp->ttyp == MAGIC_PORTAL)
+			switch(br->type) {
+			case BR_STAIR:
+			case BR_NO_END1:
+			case BR_NO_END2: /* OK to assign to sstairs if it's not used */
+				assign_level(&sstairs.tolev, ltmp);
+				break;		
+			case BR_PORTAL:
+				{
+				register struct trap *ttmp;
+				/* find the portal on the level that links to the correct dungeon, we will correct which dlevel it goes to */
+				for(ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
+					if (ttmp->ttyp == MAGIC_PORTAL && ttmp->dst.dnum == ltmp->dnum)
+					break;
+				if (!ttmp) panic("getlev: need portal but none found");
+				assign_level(&ttmp->dst, ltmp);
+				}
 				break;
-			if (!ttmp) panic("getlev: need portal but none found");
-			assign_level(&ttmp->dst, &ltmp);
-		    }
-		    break;
-		}
-	    } else if (!br) {
-		/* Remove any dangling portals. */
-		register struct trap *ttmp;
-		for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
-		    if (ttmp->ttyp == MAGIC_PORTAL) {
-			deltrap(ttmp);
-			break; /* max of 1 portal/level */
-		    }
+			}
 	    }
 	}
 
@@ -1042,19 +1031,20 @@ boolean ghostly;
 	    register struct monst *mtmp2;
 
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
-		mtmp2 = mtmp->nmon;
-		if (ghostly) {
-			/* reset peaceful/malign relative to new character */
-			if(!mtmp->isshk)
-				/* shopkeepers will reset based on name */
-				mtmp->mpeaceful = peace_minded(mtmp->data);
-			set_malign(mtmp);
-		} else if (monstermoves > omoves)
-			mon_catchup_elapsed_time(mtmp, monstermoves - omoves);
+			mtmp2 = mtmp->nmon;
+			if (ghostly) {
+				/* reset peaceful/malign relative to new character */
+				if(!mtmp->isshk)
+					/* shopkeepers will reset based on name */
+					mtmp->mpeaceful = peace_minded(mtmp->data);
+				set_malign(mtmp);
+			} else if (monstermoves > omoves){
+				mon_catchup_elapsed_time(mtmp, monstermoves - omoves);
 
-			/* update shape-changers in case protection against
-			   them is different now than when the level was saved */
-			restore_cham(mtmp);
+				/* update shape-changers in case protection against
+				   them is different now than when the level was saved */
+				restore_cham(mtmp);
+			}
 	    }
 		//Note: in case there's a bones file or other fail.
 		if(u.silver_flame_z.dnum == u.uz.dnum && u.silver_flame_z.dlevel == u.uz.dlevel

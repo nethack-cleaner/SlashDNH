@@ -189,7 +189,7 @@ PROJECTILE(("crossbow bolt"),
 		1, 55, 1, 2,  0, IRON,   -P_CROSSBOW, HI_METAL),
 PROJECTILE(("droven bolt", "crossbow bolt"), /*Needs encyc entry*/
 		DMG(D(9), F(1)), DMG(D(6), F(1)),
-		0,  0, 1, 2,  2, OBSIDIAN_MT, -P_CROSSBOW, CLR_BLACK, O_MATSPEC(UNIDED)),
+		0,  0, 1, 2,  8, OBSIDIAN_MT, -P_CROSSBOW, CLR_BLACK, O_MATSPEC(UNIDED)),
 
 WEAPON(("dart"),
 	DMG(D(3)), DMG(D(2)),
@@ -233,6 +233,9 @@ WEAPON(("javelin", "throwing spear"),
 WEAPON(("trident"), /*Needs encyc entry*/
 	DMG(D(8), F(1)), DMG(D(3, 6)),
 	1, 0,  MZ_LARGE,  8, 25,  5,  0, P,   P_TRIDENT, IRON, FALSE, HI_METAL),
+WEAPON(("pincer staff", "claw-ended staff"), /*Needs encyc entry*/
+	DMG(D(6), F(2)), DMG(D(2, 6), F(1)),
+	0, 0,  MZ_HUGE,  0, 25, 800,  0, P,   P_TRIDENT, SHELL_MAT, FALSE, CLR_BRIGHT_MAGENTA),
 
 /* blades */
 WEAPON(("dagger"),
@@ -390,7 +393,7 @@ WEAPON(("katana", "samurai sword"),
 /* special swords set up for artifacts and future weapons*/
 WEAPON(("vibroblade", "gray short sword", "short sword"), /*Needs encyc entry*//*Needs tile*/
 	DMG(D(6)), DMG(D(8)),
-	1, 0,  MZ_SMALL,  0,  5,1000, 0, P,   P_SHORT_SWORD, PLASTIC, FALSE, CLR_GRAY, O_MAGIC(1)),
+	0, 0,  MZ_SMALL,  0,  5,1000, 0, P,   P_SHORT_SWORD, PLASTIC, FALSE, CLR_GRAY, O_MAGIC(1)),
 WEAPON(("tsurugi", "long samurai sword"),
 	DMG(D(16)), DMG(D(8), D(2,6)),
 	0, 0,   MZ_HUGE,  0, 60,500,  2, S,   P_TWO_HANDED_SWORD, METAL, FALSE, HI_METAL),
@@ -528,7 +531,7 @@ WEAPON(("macuahuitl", "obsidian-edged club"), /*Needs encyc entry*/
 	0, 0, MZ_MEDIUM,  0, 40, 10,  0, B|S, P_CLUB, WOOD, FALSE, HI_WOOD),
 WEAPON(("breaking wheel", "wagon wheel"), /*Needs encyc entry*/
 	DMG(D(6)), DMG(D(3)),
-	0, 0, MZ_HUGE,  1, 150,  500,  0, B,   P_NONE, WOOD, FALSE, HI_WOOD),
+	0, 0, MZ_HUGE,    1, 150,  500,  0, B,   P_NONE, WOOD, FALSE, HI_WOOD),
 WEAPON(("quarterstaff", "staff"),
 	DMG(D(6)), DMG(D(6)),
 	0, 0,   MZ_HUGE,  9, 40,  5,  0, B,   P_QUARTERSTAFF, WOOD, FALSE, HI_WOOD),
@@ -593,8 +596,9 @@ GUN(("handgun", "unfamiliar handgun"),                0,   MZ_SMALL, 0,  12,  10
 GUN(("gun", "unfamiliar gun"),                        0,  MZ_MEDIUM, 0,  25,  250, 10,  3, -1, WP_BULLET, IRON, P_FIREARM, HI_METAL, O_NOWISH(1)),/*Needs tile*/
 GUN(("long gun", "unfamiliar long gun"),              0,    MZ_HUGE, 0,  30,  150, 22, -1,  1, WP_BULLET, IRON, P_FIREARM, HI_METAL, O_NOWISH(1)),/*Needs tile*/
 GUN(("heavy gun", "unfamiliar heavy gun"),            0,    MZ_HUGE, 0, 100, 2000, 20,  8, -4, WP_BULLET, IRON, P_FIREARM, HI_METAL, O_NOWISH(1)),/*Needs tile*/
-GUN(("hand blaster", "hard black handmirror", "hard handmirror"), 0,  MZ_MEDIUM, 0,   2, 1000, 10,  1,  0,WP_BLASTER, PLASTIC, P_FIREARM, CLR_BLACK, O_MAGIC(1)), /*Needs tile*/
-GUN(("arm blaster",  "hard white bracer", "hard bracer"),         0,   MZ_LARGE, 0,   8, 4500, 15,  6,  0,WP_BLASTER, PLASTIC, P_FIREARM, CLR_WHITE, O_MAGIC(1)), /*Needs tile*/
+GUN(("hand blaster", "hard black handmirror", "hard handmirror"), 0,  MZ_MEDIUM, 0,   2, 1000, 10,  1, -5,WP_BLASTER, PLASTIC, P_FIREARM, CLR_BLACK, O_MAGIC(1)), /*Needs tile*/
+GUN(("arm blaster",  "hard white bracer", "hard bracer"),         0,   MZ_LARGE, 0,   8, 4500, 15,  6, -5,WP_BLASTER, PLASTIC, P_FIREARM, CLR_WHITE, O_MAGIC(1)), /*Needs tile*/
+GUN(("carcosan sting", "curved dagger"),              0,   MZ_SMALL, 0,  10, 5000,  8, 1, 0, WP_BLASTER, GOLD, P_FIREARM, HI_GOLD, O_MATSPEC(NIDED)), /*Needs tile*/
  /*Needs encyc entry*/
 GUN(("mass-shadow pistol",  "rectangular device"),                0,  MZ_MEDIUM, 0,   4, 4500, 10,  1,  0,WP_BLASTER, PLASTIC, P_FIREARM, CLR_GRAY, O_MAGIC(1)), /*Needs tile*/
 GUN(("cutting laser","hard tan lozenge", "hard lozenge"),         0,   MZ_SMALL, 0,   1, 1000,  3, -1,  3,WP_BLASTER, PLASTIC, P_FIREARM, CLR_YELLOW, O_MAGIC(1)), /*Needs tile*/
@@ -632,6 +636,9 @@ BULLET(("heavy blaster bolt", "scarlet bolt", "bolt"),
 BULLET(("psionic pulse", (char *)0, "pulse"),
 	DMG(D(3, 3), F(4)), DMG(D(3, 3), F(4)),
 	0,    MZ_TINY, 0,  1,   0, 0, WP_GENERIC,   E,   METAL, P_NONE, CLR_BRIGHT_BLUE),/*Needs tile*/
+BULLET(("carcosan bolt", "golden bolt", "bolt"),
+	DMG(D(1, 5), F(5)), DMG(D(1, 5), F(5)),
+	0,    MZ_TINY, 0,  1,   0, 0, WP_BLASTER,   E|P,   METAL, -P_FIREARM, CLR_YELLOW),/*Needs tile*/
 BULLET(("laser beam", "green bolt", "bolt"),
 	DMG(D(3, 1), F(10)), DMG(D(3, 1), F(10)),
 	0,    MZ_TINY, 0,  1,   0, 0, WP_BLASTER,   E|S, METAL, -P_FIREARM, CLR_BRIGHT_GREEN),/*Needs tile*/
@@ -722,6 +729,8 @@ HELM(("elven helm", "runed helm"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 1, 10,   5, 9, 3, 0, WOOD, HI_WOOD),
 HELM(("high-elven helm", "runed helm"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 1, 15,   5, 8, 4, 0, MITHRIL, HI_MITHRIL, O_MATSPEC(UNIDED)),
+HELM(("imperial elven helm", "runed faceless helm"), /*Needs encyc entry*//*Needs tile*/
+		0, 0,  0, 0, 30, 900, 8, 4, 2, WOOD, CLR_BRIGHT_GREEN),
 HELM(("droven helm", "spider-shaped helm"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 1, 20,   5, 8, 4, 0, SHADOWSTEEL, CLR_BLACK),
 HELM(("plasteel helm", "white skull helm", "skull helm"), /*Needs encyc entry*//*Needs tile*/
@@ -733,7 +742,7 @@ HELM(("pontiff's crown", "filigreed faceless helm"), /*Needs encyc entry*//*Need
 HELM(("shemagh", "headscarf"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 0, 5,   5, 10, 0, 0, CLOTH, CLR_WHITE, O_MATSPEC(UNIDED)),
 HELM(("faceless helm"), /*Needs encyc entry*//*Needs tile*/
-		1, 0,  0, 2, 90, 300, 8, 5, 0, BONE, CLR_GRAY, O_MATSPEC(IDED)),
+		1, 0,  0, 2, 30, 300, 8, 5, 0, BONE, CLR_GRAY, O_MATSPEC(IDED)),
 
 /* With shuffled appearances... */
 HELM(("helmet", "plumed helmet"), /* circlet */
@@ -793,8 +802,12 @@ DRGN_SCALES(("yellow dragon scales"),     1, 500, 9, 2, CLR_YELLOW,    O_POWER(A
 
 SUIT(("plate mail"), /*Needs encyc entry*/
 	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 44,  5, 225,  600,  4, 6, 3, IRON, HI_METAL),
+SUIT(("lantern plate mail", "glass-set plate mail"),
+	0, 0,   MZ_HUGE,  ARMSZ_HEAVY,  0,  5, 225,  650,  5, 6, 3, IRON, HI_METAL),
 SUIT(("high-elven plate", "runed plate mail"), /*Needs encyc entry*/
 	0, 0,   MZ_HUGE, ARMSZ_MEDIUM,  0,  5, 110, 1200,  3, 7, 3, MITHRIL, HI_MITHRIL),
+SUIT(("imperial elven armor", "runed plate mail"), /*Needs encyc entry*/
+	0, 0,   MZ_HUGE, ARMSZ_HEAVY,  0,  5, 110, 9000,  4, 6, 3, WOOD, CLR_BRIGHT_GREEN),
 SUIT(("droven plate mail", "crested black plate", "crested plate mail"), /*Needs encyc entry*/
 	0, 0,   MZ_HUGE, ARMSZ_MEDIUM,  0,  5,  85, 2000,  3, 7, 3, SHADOWSTEEL, CLR_BLACK),
 SUIT(("elven toga"), /*Needs encyc entry*//*Needs tile*/
@@ -817,11 +830,13 @@ SUIT(("archaic plate mail"),
 	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 35,  5, 200,  400,  5, 5, 3, COPPER, HI_COPPER),
 #endif
 SUIT(("harmonium plate", "red-lacquered bladed armor", "bladed armor"),
-	0, 0,   MZ_HUGE,  ARMSZ_HEAVY,  0,  5, 225,    1,  4, 6, 3, METAL, CLR_RED),
+	0, 0,   MZ_HUGE,  ARMSZ_HEAVY,  0,  5, 225,    1,  5, 6, 3, METAL, CLR_RED),
 SUIT(("harmonium scale mail", "red-lacquered spiked scale mail", "spiked scale mail"),
 	0, 0,  MZ_LARGE, ARMSZ_MEDIUM,  0,  5, 125,    1,  8, 3, 1, METAL, CLR_RED),
 SUIT(("power armor", "strange metal armor", "armored suit"), /*Needs encyc entry*//*Needs tile*/
 	0, 0,   MZ_HUGE, ARMSZ_HEAVY, 0,  3, 500,  5000,  7, 3, 3, METAL, CLR_MAGENTA),
+SUIT(("eilistran armor", "clockwork plate armor"),
+	0, 1,  MZ_HUGE,  ARMSZ_HEAVY,  	0,  5, 250, 2000, 5, 5, 2, SILVER, HI_SILVER, O_POWER(FLYING)),
 SUIT(("plasteel armor", "hard white armor", "armor"), /*Needs encyc entry*//*Needs tile*/
 	0, 0,   MZ_HUGE, ARMSZ_MEDIUM,  0,  5, 100,  500,  5, 5, 3, PLASTIC, CLR_WHITE),
 // ARMOR(("force armor", "gemstone-adorned clothing"),	/* out of date structure -- rewrite if adding */
@@ -906,7 +921,7 @@ CLOAK(("prayer-warded wrapping"),
 CLOAK(("elven cloak", "faded pall"),
 		0, 1,	7, 0, 10, 60,  9, 0, 3, CLOTH, CLR_BLACK, O_POWER(STEALTH)),
 CLOAK(("droven cloak", "cobwebbed cloak"), /*Needs encyc entry*/
-		0, 1,	1, 0, 10, 60,  10, 0, 3, CLOTH, CLR_GRAY),
+		0, 1,	1, 0, 10, 60,  10, 0, 3, CLOTH, CLR_GRAY, O_DRSLOT(HEAD_DR|CLOAK_DR)),
 CLOAK(("orcish cloak", "coarse mantelet"),
 		0, 0,	8, 0, 10, 40, 10, 0, 2, CLOTH, CLR_BLACK),
 CLOAK(("dwarvish cloak", "hooded cloak"),
@@ -990,17 +1005,21 @@ SHIELD(("stone dragon shield"),
 GLOVES(("crystal gauntlets", "gauntlets"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 2, 20, 400, 8, 4, 0, GLASS, HI_GLASS, O_MATSPEC(UNIDED)),
 GLOVES(("gauntlets"), /*Needs encyc entry*//*Needs tile*/
-		1, 0,  4, 2, 25, 10, 8, 4, 0, IRON, HI_METAL, O_MATSPEC(IDED|UNIDED)),
+		1, 0,  4, 2, 25, 10, 8, 4, 1, IRON, HI_METAL, O_MATSPEC(IDED|UNIDED)),
 GLOVES(("knuckle dusters","spikey rings"), /*Needs encyc entry*//*Needs tile*/
 		1, 0, 0, 2, 10, 250, 8, 2, 0, IRON, HI_METAL),
 GLOVES(("archaic gauntlets"), /*Needs encyc entry*//*Needs tile*/
 		1, 0,  0, 2, 25, 10, 8, 3, 0, COPPER, HI_COPPER),
 GLOVES(("long gloves"),
 		1, 0,  0, 1,  5,  8, 10, 2, 1, CLOTH, CLR_WHITE),
+GLOVES(("hand wraps"),
+		1, 0,  0, 1,  1,  1, 10, 0, 1, CLOTH, CLR_WHITE),
 GLOVES(("harmonium gauntlets", "red-lacquered hooked gauntlets", "hooked gauntlets"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 2, 40,  1, 9, 4, 0, METAL, CLR_RED),
 GLOVES(("high-elven gauntlets", "runed gauntlets"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 2, 15, 50, 8, 4, 0, MITHRIL, HI_MITHRIL),
+GLOVES(("imperial elven gauntlets", "runed gauntlets"), /*Needs encyc entry*//*Needs tile*/
+		0, 0,  0, 2, 15,900, 8, 4, 1, WOOD, CLR_BRIGHT_GREEN),
 GLOVES(("plasteel gauntlets", "hard white gauntlets", "gauntlets"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,  0, 2, 15, 50,  8, 3, 0, PLASTIC, CLR_WHITE),
 GLOVES(("gloves", "old gloves"),
@@ -1035,6 +1054,10 @@ BOOTS(("high boots", "jackboots"),
 		0, 0,  15, 2, 20, 12, 10, 2, 0, LEATHER, HI_LEATHER),
 BOOTS(("heeled boots", "tall boots"),
 		1, 0,   0, 2, 20, 12, 10, 2, 0, LEATHER, CLR_BLACK),
+BOOTS(("imperial elven boots", "runed armored boots"),
+		0, 0,   0, 2, 25,900,  8, 3, 1, WOOD, CLR_BRIGHT_GREEN, O_POWER(STEALTH)),
+BOOTS(("wind and fire wheels", "bladed disks"),
+		0, 0,   0, 2, 25,900, 10, 0, 0, IRON, HI_METAL),
 BOOTS(("crystal boots", "boots"), /*Needs encyc entry*//*Needs tile*/
 		0, 0,   0, 2, 60,300,  8, 4, 0, GLASS, HI_GLASS, O_MATSPEC(UNIDED)),
 /* With shuffled appearances... */
@@ -1066,7 +1089,7 @@ BOOTS(("flying boots", "snow boots"),
 		DEF_BLINDNAME(names, "ring"), \
 		BITS(0,0,spec,0,mgc,spec,0,0,MZ_TINY,0,HARDGEM(mohs),0,0,P_NONE,metal,0), \
 		power, RING_CLASS, 0, 0, 3, cost, {0}, {0}, 0, 0, 0, 15, color,__VA_ARGS__ )
-RING(("wishes", "black"),                {0},                  500, 1, 1, 4, PLATINUM, CLR_BLACK, O_NOWISH(1)),
+RING(("wishes", "black"),                {0},                  500, 1, 1, 4, FIRMAMENT, CLR_BLACK, O_NOWISH(1)),
 RING(("adornment", "wooden"),            {ADORNED},           100, 1, 1, 2, WOOD, HI_WOOD),
 RING(("gain strength", "granite"),       {0},                  150, 1, 1, 7, MINERAL, HI_MINERAL),
 RING(("gain constitution", "opal"),      {0},                  150, 1, 1, 7, GEMSTONE,  CLR_WHITE),
@@ -1105,18 +1128,20 @@ RING(("protection from shape changers", "black signet"), {PROT_FROM_SHAPE_CHANGE
 		AMULET_CLASS, prob, 0, 20, 150, {0}, {0}, 0, 0, 0, 20, HI_METAL, __VA_ARGS__ )
 
 AMULET(("amulet of drain resistance",  "warped"),     {DRAIN_RES},         60),
-AMULET(("amulet of ESP",               "circular"),   {TELEPAT},          130),
+AMULET(("amulet of ESP",               "circular"),   {TELEPAT},          100),
 AMULET(("amulet of life saving",       "spherical"),  {LIFESAVED},         70),
-AMULET(("amulet of strangulation",     "oval"),       {STRANGLED},        100),
-AMULET(("amulet of restful sleep",     "triangular"), {SLEEPING},         100),
-AMULET(("amulet versus poison",        "pyramidal"),  {POISON_RES},       130),
+AMULET(("amulet of strangulation",     "oval"),       {STRANGLED},         90),
+AMULET(("amulet of restful sleep",     "triangular"), {SLEEPING},          90),
+AMULET(("amulet versus poison",        "pyramidal"),  {POISON_RES},       100),
 AMULET(("amulet versus sickness",      "teardrop"),   {SICK_RES},          25),
-AMULET(("amulet of change",            "square"),     {0},                110),
+AMULET(("amulet of change",            "square"),     {0},                100),
 AMULET(("amulet versus curses",        "convex"),     {0},                 55),/*Needs tile*/
 AMULET(("amulet of unchanging",        "concave"),    {UNCHANGING},        45),
 AMULET(("amulet of nullify magic",     "pentagonal"), {NULLMAGIC},         45),/*Needs tile*/
 AMULET(("amulet of reflection",        "hexagonal"),  {REFLECTING},        70),
 AMULET(("amulet of magical breathing", "octagonal"),  {MAGICAL_BREATHING}, 60),
+AMULET(("amulet of wound closure", 	   "cardioid"),   {REGENERATION},      30),/*Needs tile*/
+AMULET(("amulet versus evil eyes", 	   "oblong"),     {GAZE_RES},          60),/*Needs tile*/
 
 AMULET(("cheap plastic imitation of the Amulet of Yendor", "Amulet of Yendor"), {0}, 0,
 	O_USKWN(1), O_MAGIC(0), O_MAT(PLASTIC), O_COST(20), O_NUT(1)),
@@ -1323,16 +1348,16 @@ WEPTOOL(("seismic hammer", "dull metallic hammer"),/*Needs encyc entry*/
  * Torches work as clubs
  */
 WEPTOOL(("torch"),/*Needs encyc entry*/
-	DMG(D(6)), DMG(D(3)),
+	DMG(D(3)), DMG(D(2)),
 	1,  MZ_SMALL, 0, 0, 15, 10,   5,  0, B,   P_CLUB, WOOD, HI_WOOD),
 WEPTOOL(("magic torch", "torch"),/*Needs encyc entry*/
-	DMG(D(8)), DMG(D(4)),
+	DMG(D(6)), DMG(D(3)),
 	0,  MZ_SMALL, 1, 0,  0, 10, 500,  1, B,   P_CLUB, BONE, CLR_WHITE, O_MATSPEC(UNIDED)),
 WEPTOOL(("shadowlander's torch", "black torch", "torch"),/*Needs encyc entry*/
-	DMG(D(6)), DMG(D(3)),
+	DMG(D(3)), DMG(D(2)),
 	0,  MZ_SMALL, 0, 0, 10, 10,  50,  0, B,   P_CLUB, WOOD, CLR_BLACK),
 WEPTOOL(("sunrod", "rod"),/*Needs encyc entry*/
-	DMG(D(6)), DMG(D(3)),
+	DMG(D(3)), DMG(D(2)),
 	1,  MZ_SMALL, 0, 0,  5, 20,  50,  0, B,   P_MACE, GOLD, HI_GOLD, O_MATSPEC(UNIDED)),
 /* 
  * Lightsabers get 3x dice when lit, and go down to 1d2 damage when unlit
@@ -1627,7 +1652,7 @@ SPELL(("invisibility",    "dark brown"),  P_ESCAPE_SPELL,			25, 4, 1, NODIR,    
 SPELL(("detect treasure", "gray"),        P_DIVINATION_SPELL,  	20, 4, 1, NODIR,     CLR_GRAY),
 SPELL(("remove curse",    "wrinkled"),    P_CLERIC_SPELL,			25, 3, 1, NODIR,     HI_PAPER),
 SPELL(("magic mapping",   "dusty"),       P_DIVINATION_SPELL,  	18, 5, 1, NODIR,     HI_PAPER),
-SPELL(("identify",        "bronze"),      P_DIVINATION_SPELL,  	20, 3, 1, NODIR,     HI_COPPER),
+SPELL(("identify",        "bronze"),      P_DIVINATION_SPELL,  	20, 6, 1, NODIR,     HI_COPPER),
 // SPELL(("turn undead",     "copper"),      P_CLERIC_SPELL,		16, 6, 1, IMMEDIATE, HI_COPPER),
 SPELL(("create monster",  "turquoise"),   P_CLERIC_SPELL,			16, 6, 1, NODIR,     CLR_BRIGHT_CYAN),
 SPELL(("polymorph",       "silver"),      P_MATTER_SPELL,			10, 7, 1, IMMEDIATE, HI_SILVER),
@@ -1851,7 +1876,7 @@ CHAINCORPSE(("lifeless doll"),   750, WOOD, CLR_BRIGHT_MAGENTA), /*Needs encyc e
 	CHAIN(names,DMG(D(4)),DMG(D(4)),200,120,0,0,dtyp,mat,color,O_MERGE(0),__VA_ARGS__)
 
 CHAINROPE(("rope of entangling"),   B, VEGGY, CLR_BROWN),	/*Needs encyc entry*/
-CHAINROPE(("iron bands"),           B, IRON,  HI_METAL),	/*Needs encyc entry*/
+CHAINROPE(("bands"),           		B, IRON,  HI_METAL, O_MATSPEC(IDED|UNIDED)),	/*Needs encyc entry*/
 CHAINROPE(("razor wire"),           S, METAL, HI_METAL),	/*Needs encyc entry*/
 CHAINROPE(("shackles"),             B, IRON,  HI_METAL),	/*Needs encyc entry*/
 

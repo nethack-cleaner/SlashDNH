@@ -276,6 +276,7 @@ struct artifact {
 	unsigned long mflagsg;	/* Monster Game mechanics and bookkeeping boolean bitflags */
 	unsigned long mflagsa;	/* Monster rAce boolean bitflags */
 	unsigned long mflagsv;	/* Monster Vision boolean bitflags */
+	unsigned long mflagsw;	/* Monster Warded boolean bitflags */
 
 	/* Offense */
 	int adtyp;				/* damage type */
@@ -284,7 +285,7 @@ struct artifact {
 	unsigned long aflags;	/* offensive artifact properties */
 
 	/* Worn */
-#define MAXARTPROP 8
+#define MAXARTPROP 10
 	uchar wprops[MAXARTPROP];	/* properties granted while wielded/worn */
 	unsigned long wflags;		/* special effect while wielding/wearing*/
 	/* Carried */
@@ -308,6 +309,8 @@ struct artinstance{
 #define PlagueDuration avar1
 #define IMAlitness avar1
 #define LeagueMod avar1
+#define Esscoo_mid avar1
+#define uconstel_pets avar1
 	long avar2;
 #define SnSd2 avar2
 #define RoSPflights avar2
@@ -410,64 +413,70 @@ extern struct artifact * artilist;
 #define RINGED_ARMOR    (LAST_PROP+81)
 #define BLOODLETTER     (LAST_PROP+82)
 #define SEVEN_LEAGUE_STEP   (LAST_PROP+83)
-#define RAND_SCROLL     (LAST_PROP+84)
-#define ILLITHID     (LAST_PROP+85)
-#define SMOKE_MIRROR     (LAST_PROP+86)
-#define CAPTURE_REFLECTION  (LAST_PROP+87)
-#define DETESTATION  	(LAST_PROP+88)
-#define INVULNERABILITY	(LAST_PROP+89)
-#define IBITE_ARM		(LAST_PROP+90)
+#define CAPTURE_REFLECTION  (LAST_PROP+84)
+#define DETESTATION  	(LAST_PROP+85)
+#define INVULNERABILITY	(LAST_PROP+86)
+#define IBITE_ARM		(LAST_PROP+87)
+#define LOOT_SELF		(LAST_PROP+88)
+#define IMPERIAL_RING	(LAST_PROP+89)
+#define SNARE_WEAPONS	(LAST_PROP+90)
+#define CHANGE_SIZE		(LAST_PROP+91)
+#define WAVES_DARKNESS	(LAST_PROP+92)
+#define RAND_SCROLL     (LAST_PROP+93)
+#define ILLITHID     (LAST_PROP+94)
+#define SMOKE_MIRROR     (LAST_PROP+95)
 
 
 #define MASTERY_ARTIFACT_LEVEL 20
 
-#define has_named_mastery_artifact() (\
-            art_already_exists(ART_TRUSTY_ADVENTURER_S_WHIP) ||\
-            art_already_exists(ART_LOG_OF_THE_CURATOR) ||\
-            art_already_exists(ART_FORCE_PIKE_OF_THE_RED_GUAR) ||\
-            art_already_exists(ART_GAUNTLETS_OF_THE_BERSERKER) ||\
-            art_already_exists(ART_DECLARATION_OF_THE_APOSTAT) ||\
-            art_already_exists(ART_SOUL_LENS) ||\
-            art_already_exists(ART_SEAL_OF_THE_SPIRITS) ||\
-            art_already_exists(ART_TORCH_OF_ORIGINS) ||\
-            art_already_exists(ART_STRIPED_SHIRT_OF_THE_MURDE) ||\
-            art_already_exists(ART_STRIPED_SHIRT_OF_THE_THIEF) ||\
-            art_already_exists(ART_STRIPED_SHIRT_OF_THE_FALSE) ||\
-            art_already_exists(ART_SCALPEL_OF_LIFE_AND_DEATH) ||\
-            art_already_exists(ART_GAUNTLETS_OF_THE_HEALING_H) ||\
-            art_already_exists(ART_RING_OF_HYGIENE_S_DISCIPLE) ||\
-            art_already_exists(ART_COPE_OF_THE_ELDRITCH_KNIGH) ||\
-            art_already_exists(ART_SHIELD_OF_THE_PALADIN) ||\
-            art_already_exists(ART_BOOZE_OF_THE_DRUNKEN_MASTE) ||\
-            art_already_exists(ART_WRAPPINGS_OF_THE_SACRED_FI) ||\
-            art_already_exists(ART_KHAKKHARA_OF_THE_MONKEY) ||\
-            art_already_exists(ART_MARK_OF_THE_RIGHTFUL_SCION) ||\
-            art_already_exists(ART_GAUNTLETS_OF_THE_DIVINE_DI) ||\
-            art_already_exists(ART_MACE_OF_THE_EVANGELIST) ||\
-            art_already_exists(ART_DART_OF_THE_ASSASSIN) ||\
-            art_already_exists(ART_SWORD_OF_THE_KLEPTOMANIAC) ||\
-            art_already_exists(ART_HELM_OF_THE_ARCANE_ARCHER) ||\
-            art_already_exists(ART_FIGURINE_OF_PYGMALION) ||\
-            art_already_exists(ART_FIGURINE_OF_GALATEA) ||\
-            art_already_exists(ART_HELM_OF_THE_NINJA) ||\
-            art_already_exists(ART_TOWEL_OF_THE_INTERSTELLAR_) ||\
-            art_already_exists(ART_ENCYCLOPEDIA_GALACTICA) ||\
-            art_already_exists(ART_TWIG_OF_YGGDRASIL) ||\
-            art_already_exists(ART_SADDLE_OF_BRYNHILDR) ||\
-            art_already_exists(ART_STAFF_OF_WILD_MAGIC) ||\
-            art_already_exists(ART_ROBE_OF_THE_ARCHMAGI) ||\
-            art_already_exists(ART_FORGE_HAMMER_OF_THE_ARTIFI) ||\
-            art_already_exists(ART_LOMYA) ||\
-            art_already_exists(ART_BULWARK_OF_THE_DWARVEN_DEF) ||\
-            art_already_exists(ART_LOMYA) ||\
-            art_already_exists(ART_NARYA) ||\
-            art_already_exists(ART_NENYA) ||\
-            art_already_exists(ART_VILYA) ||\
-            art_already_exists(ART_HAT_OF_THE_GIANT_KILLER) ||\
-            art_already_exists(ART_PRISMATIC_DRAGON_PLATE) ||\
-            art_already_exists(ART_FOOTPRINTS_IN_THE_LABYRINT) ||\
-            art_already_exists(ART_TRAPPINGS_OF_THE_GRAVE)\
-)
+/*This would break if a mastery artifact was found in bones and should just be a flag. */
+// #define has_named_mastery_artifact() (\
+            // art_already_exists(ART_TRUSTY_ADVENTURER_S_WHIP) ||\
+            // art_already_exists(ART_LOG_OF_THE_CURATOR) ||\
+            // art_already_exists(ART_FORCE_PIKE_OF_THE_RED_GUAR) ||\
+            // art_already_exists(ART_GAUNTLETS_OF_THE_BERSERKER) ||\
+            // art_already_exists(ART_DECLARATION_OF_THE_APOSTAT) ||\
+            // art_already_exists(ART_SOUL_LENS) ||\
+            // art_already_exists(ART_SEAL_OF_THE_SPIRITS) ||\
+            // art_already_exists(ART_TORCH_OF_ORIGINS) ||\
+            // art_already_exists(ART_STRIPED_SHIRT_OF_THE_MURDE) ||\
+            // art_already_exists(ART_STRIPED_SHIRT_OF_THE_THIEF) ||\
+            // art_already_exists(ART_STRIPED_SHIRT_OF_THE_FALSE) ||\
+            // art_already_exists(ART_SCALPEL_OF_LIFE_AND_DEATH) ||\
+            // art_already_exists(ART_GAUNTLETS_OF_THE_HEALING_H) ||\
+            // art_already_exists(ART_RING_OF_HYGIENE_S_DISCIPLE) ||\
+            // art_already_exists(ART_COPE_OF_THE_ELDRITCH_KNIGH) ||\
+            // art_already_exists(ART_SHIELD_OF_THE_PALADIN) ||\
+            // art_already_exists(ART_BOOZE_OF_THE_DRUNKEN_MASTE) ||\
+            // art_already_exists(ART_WRAPPINGS_OF_THE_SACRED_FI) ||\
+            // art_already_exists(ART_KHAKKHARA_OF_THE_MONKEY) ||\
+            // art_already_exists(ART_MARK_OF_THE_RIGHTFUL_SCION) ||\
+            // art_already_exists(ART_GAUNTLETS_OF_THE_DIVINE_DI) ||\
+            // art_already_exists(ART_MACE_OF_THE_EVANGELIST) ||\
+            // art_already_exists(ART_DART_OF_THE_ASSASSIN) ||\
+            // art_already_exists(ART_SWORD_OF_THE_KLEPTOMANIAC) ||\
+            // art_already_exists(ART_HELM_OF_THE_ARCANE_ARCHER) ||\
+            // art_already_exists(ART_FIGURINE_OF_PYGMALION) ||\
+            // art_already_exists(ART_FIGURINE_OF_GALATEA) ||\
+            // art_already_exists(ART_HELM_OF_THE_NINJA) ||\
+            // art_already_exists(ART_TOWEL_OF_THE_INTERSTELLAR_) ||\
+            // art_already_exists(ART_ENCYCLOPEDIA_GALACTICA) ||\
+            // art_already_exists(ART_TWIG_OF_YGGDRASIL) ||\
+            // art_already_exists(ART_SADDLE_OF_BRYNHILDR) ||\
+            // art_already_exists(ART_STAFF_OF_WILD_MAGIC) ||\
+            // art_already_exists(ART_ROBE_OF_THE_ARCHMAGI) ||\
+            // art_already_exists(ART_FORGE_HAMMER_OF_THE_ARTIFI) ||\
+            // art_already_exists(ART_LOMYA) ||\
+            // art_already_exists(ART_BULWARK_OF_THE_DWARVEN_DEF) ||\
+            // art_already_exists(ART_LOMYA) ||\
+            // art_already_exists(ART_NARYA) ||\
+            // art_already_exists(ART_NENYA) ||\
+            // art_already_exists(ART_VILYA) ||\
+            // art_already_exists(ART_HAT_OF_THE_GIANT_KILLER) ||\
+            // art_already_exists(ART_PRISMATIC_DRAGON_PLATE) ||\
+            // art_already_exists(ART_FOOTPRINTS_IN_THE_LABYRINT) ||\
+            // art_already_exists(ART_TRAPPINGS_OF_THE_GRAVE)\
+// )
 
 #define is_nameable_artifact(a) (\
 			(a->gflags & ARTG_NAME) != 0\
@@ -487,7 +496,7 @@ extern struct artifact * artilist;
 /* artifact has no specific material or size, eg "silver Grimtooth" */
 #define is_malleable_artifact(a) (is_nameable_artifact((a)) || (a) == &artilist[ART_EXCALIBUR] || (a) == &artilist[ART_GUNGNIR] || (a) == &artilist[ART_DIRGE])
 
-#define is_living_artifact(obj) ((obj)->oartifact == ART_TENTACLE_ROD || (obj)->oartifact == ART_DRAGONHEAD_SHIELD || (obj)->oartifact == ART_CRUCIFIX_OF_THE_MAD_KING || (obj)->oartifact == ART_RITUAL_RINGED_SPEAR || (obj)->oartifact == ART_RINGED_BRASS_ARMOR || (obj)->oartifact == ART_IBITE_ARM)
+#define is_living_artifact(obj) ((obj)->oartifact == ART_TENTACLE_ROD || (obj)->oartifact == ART_DRAGONHEAD_SHIELD || (obj)->oartifact == ART_CRUCIFIX_OF_THE_MAD_KING || (obj)->oartifact == ART_RITUAL_RINGED_SPEAR || (obj)->oartifact == ART_RINGED_BRASS_ARMOR || (obj)->oartifact == ART_IBITE_ARM || (obj)->oartifact == ART_ESSCOOAHLIPBOOURRR || (obj)->oartifact == ART_CROWN_OF_THE_PERCIPIENT || (obj)->oartifact == ART_FALLINGSTAR_MANDIBLES)
 #define is_bloodthirsty_artifact(obj) (arti_is_prop(obj, ARTI_BLOODTHRST) && roll_generic_flat_madness(FALSE))
 
 #define is_mastery_artifact_nameable(a) (\
@@ -623,6 +632,7 @@ extern struct artifact * artilist;
                 ((m) == ART_FIRE_BRAND && (u.brand_otyp == STRANGE_OBJECT || u.brand_otyp == GAUNTLETS)) ||\
                 ((m) == ART_FROST_BRAND && (u.brand_otyp == STRANGE_OBJECT || u.brand_otyp == GAUNTLETS)) ||\
                 (m) == ART_STORMHELM ||\
+                (m) == ART_WRAPPINGS_OF_THE_SACRED_FI ||\
                 (m) == ART_APOTHEOSIS_VEIL ||\
                 (m) == ART_HELM_OF_UNDEATH ||\
                 (m) == ART_HELPING_HAND ||\
@@ -637,6 +647,7 @@ extern struct artifact * artilist;
                 (m) == ART_RING_OF_THROR ||\
                 (m) == ART_MARAUDER_S_MAP\
             )
+#define is_eth_safe_artifact(m) (objects[artilist[m].otyp].oc_class != ARMOR_CLASS)
 
 #define double_bonus_damage_artifact(m) (\
 	(m) == ART_LIMITED_MOON ||\

@@ -660,7 +660,7 @@ E char misc_cmds[];
 
 E NEARDATA schar tbx, tby;		/* set in mthrowu.c */
 
-E NEARDATA struct multishot { int n, i; short o; boolean s; } m_shot;
+E NEARDATA struct multishot { int n, i; short o; boolean s; struct obj * x;} m_shot;
 
 E NEARDATA struct dig_info {		/* apply.c, hack.c */
 	int	effort;
@@ -743,8 +743,9 @@ E NEARDATA struct permonst upermonst;	/* init'd in decl.c,
 					 */
 
 E NEARDATA struct mvitals {
-	uchar	born;
-	uchar	died;
+	uchar	born; /*How many of this monster have been created in a way that respects extinction*/
+	uchar	died; /*How many of this monster have died of any cause*/
+	uchar	killed; /*How many of this monster have died at the PC's hands*/
 	long long mvflags;
 	int	san_lost;
 	int	insight_gained;
@@ -909,6 +910,7 @@ struct u_achieve {
 		Bitfield(killed_asmodeus,1);		/* Bragging rights */
 		Bitfield(killed_demogorgon,1);		/* Bragging rights */
 		unsigned long long	trophies;	/* Flags for Junethack trophies */
+		unsigned long iea_flags;	/* IEA flags for Junethack trophy */
 	Bitfield(get_kroo,1);        /* ring of kroo get*/
 	Bitfield(get_raggo,1);        /* raggo's rock get*/
         Bitfield(get_gilly,1);        /* gillystone get*/
@@ -1044,7 +1046,11 @@ struct u_achieve {
 #define	DEVIL_VAULT	0x1L << 46
 #define	DEMON_VAULT	0x1L << 47
 #define	BOKRUG_QUEST	0x1L << 48
-#define ACHIEVE_NUMBER	60
+#define	HEA_QUEST		0x1L << 49
+#define	DRO_HEA_QUEST	0x1L << 50
+#define	MONK_QUEST		0x1L << 51
+#define	IEA_UPGRADES	0x1L << 52
+#define ACHIEVE_NUMBER	64
 };
 
 E struct u_achieve achieve;

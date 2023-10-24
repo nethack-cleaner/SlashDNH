@@ -1211,9 +1211,9 @@ MAP
 2...........-F+-................|-------------------+------------------------
 3...........F..|...FFFF...FFFF....|#####|       |T.....T|                   |
 4..........F-..--.--..--.--..--..--#####--      |.{.T.{.|                   |
-5..........|....|.|....|.|....|..|###|###|      |T.....T|                   |
-6..........F....|-|....|-|....|..+##---##|      |.{.T.{.|                   |
-7..........|....+#+....+#+....|..|###|###|      |T.....T|                   |
+5..........|....|.|....|.|....|..|###|###|--    |T.....T|                   |
+6..........F....|-|....|-|....|..+##---##S.|    |.{.T.{.|                   |
+7..........|....+#+....+#+....|..|###|###|--    |T.....T|                   |
 8..........--..-----..-----..--..--#####--      |.{.T.{.|                   |
 9---------------------------------|#####|------------------------------------
 0----------------------------------------------------------------------------
@@ -1261,6 +1261,9 @@ DOOR:closed,(24,17)
 
 DOOR:closed,(32,16)
 DOOR:locked,(51,12)
+
+TRAP:"statue", (41,16)
+OBJECT:'`',"statue",(41,16),uncursed,"dye savant",1
 
 MONSTER:'@',"sergeant",(12,04)
 MONSTER:'@',"soldier",(12,04)
@@ -1718,7 +1721,7 @@ CONTAINER:'`',"statue",(1,15),uncursed,"Tulani Eladrin",17
 OBJECT:'[',"elven toga",contained,blessed,+0
 OBJECT:'[',"cloak of magic resistance",contained,blessed,+0
 OBJECT:'[',"elven boots",contained,blessed,+0
-OBJECT:'[',"high-elven helm",contained,blessed,+0
+OBJECT:'[',"crystal helm",contained,blessed,+0
 OBJECT:'[',"high-elven gauntlets",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
@@ -1730,7 +1733,7 @@ CONTAINER:'`',"statue",(1,17),uncursed,"Tulani Eladrin",17
 OBJECT:'[',"elven toga",contained,blessed,+0
 OBJECT:'[',"cloak of magic resistance",contained,blessed,+0
 OBJECT:'[',"elven boots",contained,blessed,+0
-OBJECT:'[',"high-elven helm",contained,blessed,+0
+OBJECT:'[',"crystal helm",contained,blessed,+0
 OBJECT:'[',"high-elven gauntlets",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
@@ -2129,7 +2132,7 @@ CONTAINER:'`',"statue",(1,15),uncursed,"Tulani Eladrin",17
 OBJECT:'[',"elven toga",contained,blessed,+0
 OBJECT:'[',"cloak of magic resistance",contained,blessed,+0
 OBJECT:'[',"elven boots",contained,blessed,+0
-OBJECT:'[',"high-elven helm",contained,blessed,+0
+OBJECT:'[',"crystal helm",contained,blessed,+0
 OBJECT:'[',"high-elven gauntlets",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
@@ -2141,7 +2144,7 @@ CONTAINER:'`',"statue",(1,17),uncursed,"Tulani Eladrin",17
 OBJECT:'[',"elven toga",contained,blessed,+0
 OBJECT:'[',"cloak of magic resistance",contained,blessed,+0
 OBJECT:'[',"elven boots",contained,blessed,+0
-OBJECT:'[',"high-elven helm",contained,blessed,+0
+OBJECT:'[',"crystal helm",contained,blessed,+0
 OBJECT:'[',"high-elven gauntlets",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0
 OBJECT:'!',"full healing",contained,blessed,+0

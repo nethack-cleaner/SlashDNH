@@ -731,7 +731,7 @@ int mode;
 		Your("body is too large to fit through.");
 	    return FALSE;
 	}
-	if(uarm && uarm->otyp == POWER_ARMOR){
+	if(uarm && uarm->otyp == POWER_ARMOR && !(u.sealsActive&SEAL_ANDREALPHUS)){
 	    if (mode == DO_MOVE)
 		Your("power armor is too bulky to fit through.");
 	    return FALSE;
@@ -1043,6 +1043,32 @@ domove()
 	    return;
 	}
 	
+	if(u.uentangled_oid){
+		//Any movement attempt (whether true move or bump attack) tries to break the entangling item.
+		if(!ubreak_entanglement()){
+			if(u.uentangled_otyp == RAZOR_WIRE){
+				int dmg = d(1,6);
+				int beat;
+				if(hates_silver(youracedata) && entangle_material(&youmonst, SILVER))
+					dmg += rnd(20);
+				if(hates_iron(youracedata) && (entangle_material(&youmonst, IRON) || entangle_material(&youmonst, GREEN_STEEL)))
+					dmg += rnd(u.ulevel);
+				if(hates_unholy(youracedata) && entangle_material(&youmonst, GREEN_STEEL))
+					dmg += d(2,9);
+				beat = entangle_beatitude(&youmonst, -1);
+				if(hates_unholy(youracedata) && beat)
+					dmg += beat == 2 ? d(2,9) : rnd(9);
+				beat = entangle_beatitude(&youmonst, 0);
+				if(hates_unblessed(youracedata) && beat)
+					dmg += beat == 2 ? d(2,8) : rnd(8);
+				beat = entangle_beatitude(&youmonst, 1);
+				if(hates_holy(youracedata) && beat)
+					dmg += beat == 2 ? rnd(20) : rnd(4);
+				losehp(dmg, "being sliced to ribbons by razor wire", KILLED_BY);
+			}
+		}
+	}
+	
 	if(u.uswallow) {
 		if(u.spiritPColdowns[PWR_PHASE_STEP] >= moves+20){
 			You("pass right through %s!", mon_nam(u.ustuck));
@@ -1127,6 +1153,7 @@ domove()
 		}
 		if(!isok(x, y)) {
 			nomul(0, NULL);
+			flags.move |= MOVE_CANCELLED;
 			return;
 		}
 		if (((trap = t_at(x, y)) && trap->tseen) ||
@@ -1327,6 +1354,10 @@ domove()
 				if(!(result&(MM_AGR_DIED|MM_AGR_STOP)) && u.uinsight >= 20 && otmp && rakuyo_prop(otmp)){
 					result |= hit_with_rblood(&youmonst, otmp, x, y, 0, attk);
 				}
+				/* Dancers hit additional targets */
+				if(!(result&(MM_AGR_DIED|MM_AGR_STOP)) && is_dancer(&youmonst)){
+					result |= hit_with_dance(&youmonst, otmp, x, y, 0, attk);
+				}
 				
 				attk = mon_get_attacktype(&youmonst, AT_XWEP, &attkbuff);
 				otmp = uswapwep;
@@ -1365,6 +1396,17 @@ domove()
 		You("are rooted %s.",
 		    Levitation || Weightless || Is_waterlevel(&u.uz) ?
 		    "in place" : "to the ground");
+		nomul(0, NULL);
+		return;
+	}
+	if(u.uentangled_oid && !u.usteed){
+		You("struggle against your bindings!");
+		nomul(0, NULL);
+		return;
+	}
+	if(u.usteed && u.usteed->entangled_oid){
+		pline("Your steed struggles against its bindings!");
+		flags.move |= MOVE_CANCELLED;
 		nomul(0, NULL);
 		return;
 	}
@@ -1648,18 +1690,32 @@ domove()
 	    if (mtmp->m_ap_type) seemimic(mtmp);
 
 	    if (mtmp->mtrapped &&
-		    (trap = t_at(mtmp->mx, mtmp->my)) != 0 &&
-		    (trap->ttyp == PIT || trap->ttyp == SPIKED_PIT) &&
-		    boulder_at(trap->tx, trap->ty)) {
-		/* can't swap places with pet pinned in a pit by a boulder */
-		u.ux = u.ux0,  u.uy = u.uy0;	/* didn't move after all */
+		    (trap = t_at(mtmp->mx, mtmp->my)) != 0 && ((
+				(trap->ttyp == PIT || trap->ttyp == SPIKED_PIT) &&
+				boulder_at(trap->tx, trap->ty)
+			) || (
+				(trap->ttyp == VIVI_TRAP)
+			)
+		)) {
+			/* can't swap places with pet pinned in a pit by a boulder, or one stuck in an essence trap */
+			u.ux = u.ux0,  u.uy = u.uy0;	/* didn't move after all */
 	    } else if (u.ux0 != x && u.uy0 != y &&
 		       bad_rock(mtmp, x, u.uy0) &&
 		       bad_rock(mtmp, u.ux0, y) &&
-		       (bigmonst(mtmp->data) || (curr_mon_load(mtmp) > 600))) {
-		/* can't swap places when pet won't fit thru the opening */
-		u.ux = u.ux0,  u.uy = u.uy0;	/* didn't move after all */
-		You("stop.  %s won't fit through.", upstart(y_monnam(mtmp)));
+		       (bigmonst(mtmp->data) || (curr_mon_load(mtmp) > 600))
+		){
+			/* can't swap places when pet won't fit thru the opening */
+			u.ux = u.ux0,  u.uy = u.uy0;	/* didn't move after all */
+			You("stop.  %s won't fit through.", upstart(y_monnam(mtmp)));
+	    } else if (mtmp->mpeaceful && !mtmp->mtame
+		    && (!goodpos(u.ux0, u.uy0, mtmp, 0)
+			|| t_at(u.ux0, u.uy0) != NULL
+			|| mtmp->m_id == quest_status.leader_m_id)
+		) {
+			u.ux = u.ux0, u.uy = u.uy0; /* didn't move after all */
+			You("stop. %s doesn't want to swap places.",
+				upstart(y_monnam(mtmp)));
+
 	    } else if (mtmp->mpeaceful && !mtmp->mtame
 		    && (!goodpos(u.ux0, u.uy0, mtmp, 0)
 			|| t_at(u.ux0, u.uy0) != NULL
@@ -1922,6 +1978,17 @@ stillinwater:;
 			zap_over_floor(u.ux, u.uy, AD_COLD, WAND_CLASS, FALSE, NULL);
 		}
 	}
+	if(!Levitation && !Flying && In_quest(&u.uz) && urole.neminum == PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH && levl[u.ux][u.uy].typ == AIR){
+		if(on_level(&u.uz, &qstart_level) && !ok_to_quest()){
+			pline("A mysterious force prevents you from falling.");
+		} else {
+			struct d_level target_level;
+			target_level.dnum = u.uz.dnum;
+			target_level.dlevel = qlocate_level.dlevel+1;
+			int dist = qlocate_level.dlevel+1 - u.uz.dlevel;
+			schedule_goto(&target_level, FALSE, TRUE, FALSE, "You plummet through the cavern air!", "You slam into the rocky floor!", d(dist*5,6), 0);
+		}
+	}
 	check_special_room(FALSE);
 #ifdef SINKS
 	if(IS_SINK(levl[u.ux][u.uy].typ) && Levitation)
@@ -1952,8 +2019,7 @@ stillinwater:;
 			    pline("Its blow glances off your helmet.");
 				if(((mtmp->m_lev) - 8) > 0){
 				    dmg = d((mtmp->m_lev) - 5,3);
-				    if(Half_physical_damage) dmg = (dmg+1) / 2;
-					if(u.uvaul_duration) dmg = (dmg + 1) / 2;
+					dmg = reduce_dmg(&youmonst,dmg,TRUE,FALSE);
 				    mdamageu(mtmp, dmg);
 				}
 			}
@@ -1962,8 +2028,7 @@ stillinwater:;
 			    pline("Its blow glances off your head.");
 				if(((mtmp->m_lev) - 8) > 0){
 				    dmg = d((mtmp->m_lev) - 5,3);
-				    if(Half_physical_damage) dmg = (dmg+1) / 2;
-					if(u.uvaul_duration) dmg = (dmg + 1) / 2;
+					dmg = reduce_dmg(&youmonst,dmg,TRUE,FALSE);
 				    mdamageu(mtmp, dmg);
 				}
 			} else if (u.uac + 3 <= rnd(20))
@@ -1974,8 +2039,7 @@ stillinwater:;
 			    You("are hit by %s!",
 				x_monnam(mtmp, ARTICLE_A, "falling", 0, TRUE));
 			    dmg = d(mtmp->m_lev,6);
-			    if(Half_physical_damage) dmg = (dmg+1) / 2;
-				if(u.uvaul_duration) dmg = (dmg + 1) / 2;
+				dmg = reduce_dmg(&youmonst,dmg,TRUE,FALSE);
 			    mdamageu(mtmp, dmg);
 			}
 			break;
@@ -2014,7 +2078,7 @@ void sigilfloat()
 	}
 	schedule_goto(&spire_level, FALSE, FALSE, 0,
 		      "You fall from the spire! A mysterious force pads your landing.",
-		      (char *)0);
+		      (char *)0, 0, 0);
 
 }
 
@@ -2802,8 +2866,10 @@ weight_cap()
 		maxcap = 2*maxcap/3 + u.ulevel*maxcap/30;
 	}
 	/* consistent with can_carry() in mon.c */
-	if (mdat->mlet == S_NYMPH)
+	if (mdat->mlet == S_NYMPH){
 		carrcap = max(carrcap, MAX_CARR_CAP);
+		maxcap = max(maxcap, MAX_CARR_CAP);
+	}
 	else if (!mdat->cwt)
 		carrcap = (carrcap * (long)mdat->msize) / MZ_HUMAN;
 	else if (!strongmonst(mdat)

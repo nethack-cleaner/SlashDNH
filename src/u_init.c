@@ -21,6 +21,7 @@ STATIC_DCL boolean FDECL(restricted_spell_discipline, (int));
 #define UNDEF_TYP	0
 #define UNDEF_SPE	'\177'
 #define UNDEF_BLESS	2
+#define OBJ_CURSED	3
 
 /*
  *	Initial inventory for the various roles.
@@ -538,6 +539,47 @@ static struct trobj Healer[] = {
 	{ EUCALYPTUS_LEAF, 0, FOOD_CLASS, 5, 1 },
 	{ 0, 0, 0, 0, 0 }
 };
+
+static struct trobj Healer_Drow[] = {
+	{ SCALPEL, 0, WEAPON_CLASS, 1, 1 },
+	{ KHAKKHARA, 0, WEAPON_CLASS, 1, 1 },
+	{ GLOVES, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ BLINDFOLD, 0, ARMOR_CLASS, 1, OBJ_CURSED },
+	{ HEALER_UNIFORM, 1, ARMOR_CLASS, 1, 1 },
+	{ DROVEN_CLOAK, 1, ARMOR_CLASS, 1, 1 },
+	{ SHOES, 1, ARMOR_CLASS, 1, 1 },
+	{ STETHOSCOPE, 0, TOOL_CLASS, 1, 0 },
+	/* always blessed, so it's guaranteed readable */
+	{ SPE_HEALING, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_DETECT_FOOD, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_CLAIRVOYANCE, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_STONE_TO_FLESH, 0, SPBOOK_CLASS, 1, 1 },
+	{ SLIME_MOLD, UNDEF_SPE, FOOD_CLASS, 5, 0 },
+	{ LEMBAS_WAFER, UNDEF_SPE, FOOD_CLASS, 1, 0 },
+	{ EUCALYPTUS_LEAF, 0, FOOD_CLASS, 5, 1 },
+	{ 0, 0, 0, 0, 0 }
+};
+
+static struct trobj Healer_Hedrow[] = {
+	{ SCALPEL, 0, WEAPON_CLASS, 1, 1 },
+	{ QUARTERSTAFF, 0, WEAPON_CLASS, 1, 1 },
+	{ GLOVES, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ BLINDFOLD, 0, ARMOR_CLASS, 1, OBJ_CURSED },
+	{ HEALER_UNIFORM, 1, ARMOR_CLASS, 1, 1 },
+	{ DROVEN_CLOAK, 1, ARMOR_CLASS, 1, 1 },
+	{ SHOES, 1, ARMOR_CLASS, 1, 1 },
+	{ STETHOSCOPE, 0, TOOL_CLASS, 1, 0 },
+	/* always blessed, so it's guaranteed readable */
+	{ SPE_HEALING, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_DETECT_FOOD, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_CLAIRVOYANCE, 0, SPBOOK_CLASS, 1, 1 },
+	{ SPE_STONE_TO_FLESH, 0, SPBOOK_CLASS, 1, 1 },
+	{ SLIME_MOLD, UNDEF_SPE, FOOD_CLASS, 5, 0 },
+	{ LEMBAS_WAFER, UNDEF_SPE, FOOD_CLASS, 1, 0 },
+	{ EUCALYPTUS_LEAF, 0, FOOD_CLASS, 5, 1 },
+	{ 0, 0, 0, 0, 0 }
+};
+
 static struct trobj Knight[] = {
 	{ LONG_SWORD, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
 	{ LANCE, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
@@ -574,6 +616,15 @@ static struct trobj Madman[] = {
 	{ STRAITJACKET, 0, ARMOR_CLASS, 1, 0 },
 	{ BLINDFOLD, 0, TOOL_CLASS, 1, 0 },
 	{ POT_BOOZE, 0, POTION_CLASS, 2, 0 },
+	{ 0, 0, 0, 0, 0 }
+};
+static struct trobj Ironmask[] = {
+	{ FACELESS_HELM, 0, ARMOR_CLASS, 1, OBJ_CURSED },
+	{ RIN_SLOW_DIGESTION, 0, RING_CLASS, 1, OBJ_CURSED },
+	{ 0, 0, 0, 0, 0 }
+};
+static struct trobj ProtShapeChangers[] = {
+	{ RIN_PROTECTION_FROM_SHAPE_CHAN, 0, RING_CLASS, 1, OBJ_CURSED },
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Noble[] = {
@@ -1341,6 +1392,48 @@ static const struct def_skill Skill_H[] = {
     { P_HEALING_SPELL, P_EXPERT },
     { P_WAND_POWER, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_BEAST_MASTERY, P_EXPERT },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_Dro_M_H[] = {
+    { P_DAGGER, P_SKILLED },		{ P_KNIFE, P_EXPERT },
+    { P_SHORT_SWORD, P_SKILLED },	{ P_SCIMITAR, P_BASIC },
+    { P_SABER, P_BASIC },		{ P_CLUB, P_SKILLED },
+    { P_MACE, P_BASIC },		{ P_QUARTERSTAFF, P_EXPERT },
+    { P_POLEARMS, P_BASIC },		{ P_SPEAR, P_BASIC },
+	{ P_HARVEST, P_EXPERT },	{ P_TRIDENT, P_BASIC },
+    { P_SLING, P_SKILLED },		{ P_DART, P_EXPERT },
+    { P_SHURIKEN, P_SKILLED },		{ P_UNICORN_HORN, P_EXPERT },
+    { P_ATTACK_SPELL, P_EXPERT },	{ P_HEALING_SPELL, P_EXPERT },
+    { P_DIVINATION_SPELL, P_EXPERT },	{ P_ENCHANTMENT_SPELL, P_SKILLED },
+    { P_CLERIC_SPELL, P_BASIC },	{ P_ESCAPE_SPELL, P_SKILLED },
+    { P_MATTER_SPELL, P_SKILLED },
+    { P_WAND_POWER, P_BASIC },
+    { P_BARE_HANDED_COMBAT, P_BASIC },
+#ifdef STEED
+    { P_RIDING, P_BASIC },
+#endif
+    { P_BEAST_MASTERY, P_EXPERT },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_Dro_F_H[] = {
+    { P_DAGGER, P_SKILLED },		{ P_KNIFE, P_EXPERT },
+    { P_WHIP, P_SKILLED },	{ P_SCIMITAR, P_BASIC },
+    { P_SABER, P_BASIC },		{ P_CLUB, P_SKILLED },
+    { P_MACE, P_BASIC },		{ P_QUARTERSTAFF, P_EXPERT },
+    { P_POLEARMS, P_BASIC },		{ P_SPEAR, P_BASIC },
+	{ P_HARVEST, P_EXPERT },	{ P_TRIDENT, P_BASIC },
+    { P_SLING, P_SKILLED },		{ P_DART, P_EXPERT },
+    { P_SHURIKEN, P_SKILLED },		{ P_UNICORN_HORN, P_EXPERT },
+    { P_HEALING_SPELL, P_EXPERT },	{ P_DIVINATION_SPELL, P_EXPERT },
+    { P_CLERIC_SPELL, P_EXPERT },
+    { P_WAND_POWER, P_BASIC },
+    { P_BARE_HANDED_COMBAT, P_BASIC },
+#ifdef STEED
+    { P_RIDING, P_BASIC },
+#endif
     { P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
 };
@@ -2324,6 +2417,14 @@ u_init()
 		knows_object(DOUBLE_LIGHTSABER);
 		knows_object(POWER_ARMOR);
 		knows_object(KNUCKLE_DUSTERS);
+		knows_object(ETHERBLADE);
+		knows_object(FLAMETHROWER);
+		//Anas are trained in this I guess. Damaged armor can be found in the quest and it's useless if the PC doesn't know how to fix it.
+		u.uiearepairs = TRUE;
+		knows_object(IMPERIAL_ELVEN_BOOTS);
+		knows_object(IMPERIAL_ELVEN_ARMOR);
+		knows_object(IMPERIAL_ELVEN_GAUNTLETS);
+		knows_object(IMPERIAL_ELVEN_HELM);
 		if(Race_if(PM_DWARF)){
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 			flags.initalign = 2; // 2 == chaotic
@@ -2494,6 +2595,12 @@ u_init()
 		u.veil = FALSE;
 		u.umaniac = TRUE;
         ini_inv(Madman);
+		if(Race_if(PM_VAMPIRE)){
+			ini_inv(Ironmask);
+		}
+		if(Race_if(PM_YUKI_ONNA)){
+			ini_inv(ProtShapeChangers);
+		}
         knows_object(SKELETON_KEY);
         knows_object(POT_BOOZE);
         knows_object(POT_SLEEPING);
@@ -2534,13 +2641,52 @@ u_init()
 		achieve.currentrage = 8;
         break;
 	case PM_HEALER:
+		if(Race_if(PM_DROW)){
+			if(flags.initgend){
 #ifndef GOLDOBJ
-		u.ugold = u.ugold0 = rn1(1000, 1001);
+				// u.ugold = u.ugold0 = rn1(500, 501);
+				// u.ugold = u.ugold0 = rn1(100, 101);
+				u.ugold = u.ugold0 = 0;
 #else
-		u.umoney0 = rn1(1000, 1001);
+				// u.umoney0 = rn1(500, 5001);
+				// u.umoney0 = rn1(100, 1001);
+				u.umoney0 = 0;
 #endif
-		ini_inv(Healer);
-		ini_inv(Lamp);
+				Blinded |= TIMEOUT_INF;
+				// HTelepat |= FROMOUTSIDE;
+				ini_inv(Healer_Drow);
+				initialforgotspell(SPE_DRAIN_LIFE);
+				initialforgotspell(SPE_CREATE_FAMILIAR);
+				initialforgotpriestspells(2);
+				skill_init(Skill_Dro_F_H);
+			}
+			else {
+#ifndef GOLDOBJ
+				// u.ugold = u.ugold0 = rn1(100, 101);
+				u.ugold = u.ugold0 = 0;
+#else
+				// u.umoney0 = rn1(100, 101);
+				u.umoney0 = 0;
+#endif
+				Blinded |= TIMEOUT_INF;
+				// HTelepat |= FROMOUTSIDE;
+				ini_inv(Healer_Hedrow);
+				initialforgotspell(SPE_FORCE_BOLT);
+				initialforgotwizardspells(3);
+				skill_init(Skill_Dro_M_H);
+			}
+			knows_object(POT_HEALING);
+			knows_object(POT_EXTRA_HEALING);
+		} else {
+#ifndef GOLDOBJ
+			u.ugold = u.ugold0 = rn1(1000, 1001);
+#else
+			u.umoney0 = rn1(1000, 1001);
+#endif
+			ini_inv(Healer);
+			ini_inv(Lamp);
+			skill_init(Skill_H);
+		}
 		knows_object(POT_FULL_HEALING);
 		skill_init(Skill_H);
 		if (Race_if(PM_VAMPIRE)) {
@@ -2894,6 +3040,11 @@ u_init()
 			HTelepat |= FROMOUTSIDE;
 			skill_add(Skill_Elf_Ana);
 		}
+		if(Role_if(PM_ELF)){
+			u.ualign.type = A_NEUTRAL;
+			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
+			flags.initalign = 1; // 1 == neutral
+		}
 	    /* Elves can recognize all elvish objects */
 		if(!Role_if(PM_MADMAN)){ /*Madmen have been amnesticized*/
 			knows_object(ELVEN_SHORT_SWORD);
@@ -2936,6 +3087,11 @@ u_init()
 			}
 		} else if(Role_if(PM_ANACHRONONAUT)){
 			u.umartial = TRUE;
+		} else if(Role_if(PM_HEALER)){
+			u.ualign.type = A_NEUTRAL;
+			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
+			flags.initalign = 1; // 1 == neutral
+			change_luck(-10);
 		} else if(!Role_if(PM_EXILE) && !Role_if(PM_CONVICT)){
 			if(!Role_if(PM_MADMAN))
 				ini_inv(DrovenCloak);
@@ -2963,7 +3119,10 @@ u_init()
 			knows_object(find_signet_ring());
 		}
 		
-		if(Role_if(PM_ANACHRONONAUT)) u.uhouse = LAST_BASTION_SYMBOL;
+		if(Role_if(PM_ANACHRONONAUT))
+			u.uhouse = LAST_BASTION_SYMBOL;
+		else if(Role_if(PM_HEALER))
+			u.uhouse = PEN_A_SYMBOL;
 		else u.uhouse = !(Role_if(PM_EXILE) || (Role_if(PM_NOBLEMAN) && !flags.initgend) || Role_if(PM_CONVICT) || Role_if(PM_MADMAN) || Role_if(PM_PIRATE)) ?
 				rn2(LAST_HOUSE+1-FIRST_HOUSE)+FIRST_HOUSE :
 				rn2(LAST_FALLEN_HOUSE+1-FIRST_FALLEN_HOUSE)+FIRST_FALLEN_HOUSE;
@@ -3218,51 +3377,51 @@ u_init()
 	dungeon_topology.eprecursor_typ = rnd(8);
 	if(Race_if(PM_HALF_DRAGON)){
 		if(Role_if(PM_NOBLEMAN) && flags.initgend){
-			if (rn2(2)) {
-				flags.HDbreath = AD_MAGM;
-				HAntimagic |= (FROMRACE|FROMOUTSIDE);
-			}
-			else {
-				flags.HDbreath = AD_COLD;
-				HCold_resistance |= (FROMRACE|FROMOUTSIDE);
-			}
+            if (rn2(2)) {
+                flags.HDbreath = AD_MAGM;
+                HAntimagic |= (FROMRACE|FROMOUTSIDE);
+            }
+            else {
+                flags.HDbreath = AD_COLD;
+                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
+            }
 		} else if(Role_if(PM_WIZARD)){
 			flags.HDbreath = AD_ACID;
 			HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
 		} else if(Role_if(PM_MADMAN)){
 			if(flags.initgend){
-				flags.HDbreath = AD_RBRE;
-			}
-			else {
-				flags.HDbreath = AD_FIRE;
-				HFire_resistance |= (FROMRACE|FROMOUTSIDE);
-			}
+                flags.HDbreath = AD_RBRE;
+            }
+            else {
+                flags.HDbreath = AD_FIRE;
+                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
+            }
 		} else switch(rnd(6)){
-			case 1:
-				flags.HDbreath = AD_COLD;
-				HCold_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-			case 2:
-				flags.HDbreath = AD_FIRE;
-				HFire_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-			case 3:
-				flags.HDbreath = AD_SLEE;
-				HSleep_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-			case 4:
-				flags.HDbreath = AD_ELEC;
-				HShock_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-			case 5:
-				flags.HDbreath = AD_DRST;
-				HPoison_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-			case 6:
-				flags.HDbreath = AD_ACID;
-				HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
-			break;
-		}
+            case 1:
+                flags.HDbreath = AD_COLD;
+                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 2:
+                flags.HDbreath = AD_FIRE;
+                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 3:
+                flags.HDbreath = AD_SLEE;
+                HSleep_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 4:
+                flags.HDbreath = AD_ELEC;
+                HShock_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 5:
+                flags.HDbreath = AD_DRST;
+                HPoison_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 6:
+                flags.HDbreath = AD_ACID;
+                HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+        }
 	}
 	if(Race_if(PM_ENT)){
 		set_ent_species();
@@ -3354,17 +3513,33 @@ register struct trobj *trop;
 
 			if(obj->otyp == POT_BLOOD) 
 				obj->corpsenm = PM_HUMAN;
-			if(obj->oclass == WEAPON_CLASS || obj->oclass == ARMOR_CLASS)
+			if(obj->oclass == WEAPON_CLASS || obj->oclass == ARMOR_CLASS || obj->otyp == SUNGLASSES || is_weptool(obj))
 				set_obj_size(obj, youracedata->msize);
 			if(obj->oclass == ARMOR_CLASS){
-				if(is_suit(obj)) obj->bodytypeflag = (youracedata->mflagsb&MB_BODYTYPEMASK);
-				else if(is_helmet(obj)) obj->bodytypeflag = (youracedata->mflagsb&MB_HEADMODIMASK);
-				else if(is_shirt(obj)) obj->bodytypeflag = (youracedata->mflagsb&MB_HUMANOID && !Race_if(PM_SALAMANDER)) ? MB_HUMANOID : (youracedata->mflagsb&MB_BODYTYPEMASK);
+				set_obj_shape(obj, youracedata->mflagsb);
 			}
 			if(obj->otyp == BULLWHIP && Race_if(PM_DROW) && flags.initgend){
 				obj->otyp = VIPERWHIP;
 				set_material_gm(obj, SILVER);
-				obj->ovar1 = 1;
+				obj->ovar1_heads = 1;
+			}
+			if(Role_if(PM_HEALER) && Race_if(PM_DROW)){
+				if(obj->otyp == SCALPEL){
+					set_material_gm(obj, OBSIDIAN_MT);
+				}
+				else if(obj->otyp == BLINDFOLD){
+					obj->obj_color = CLR_BRIGHT_BLUE;
+				}
+				else if(obj->otyp == HEALER_UNIFORM){
+					obj->obj_color = CLR_WHITE;
+				}
+				else if(obj->otyp == SHOES){
+					set_material_gm(obj, CLOTH);
+					obj->obj_color = CLR_BLUE;
+				}
+				else if(obj->otyp == DROVEN_CLOAK){
+					obj->obj_color = CLR_BLUE;
+				}
 			}
 			if(obj->otyp == SLIME_MOLD && Race_if(PM_DROW)){
 				obj->spe = fruitadd("mushroom cake");
@@ -3403,11 +3578,20 @@ register struct trobj *trop;
 			if(obj->otyp == GAUNTLETS && Role_if(PM_ANACHRONONAUT)){
 				set_material_gm(obj, COPPER);
 			}
+			if((obj->otyp == HELMET || obj->otyp == ARMORED_BOOTS) && Role_if(PM_ANACHRONONAUT) && Race_if(PM_HALF_DRAGON)){
+				set_material_gm(obj, COPPER);
+			}
+			if((obj->otyp == HELMET || obj->otyp == POWER_ARMOR || obj->otyp == KNUCKLE_DUSTERS) && Role_if(PM_ANACHRONONAUT) && Race_if(PM_GNOME)){
+				set_material_gm(obj, MITHRIL);
+			}
 			if(obj->otyp == GAUNTLETS && Race_if(PM_CHIROPTERAN)){
 				set_material_gm(obj, LEATHER);
 			}
 			if(obj->otyp == SEISMIC_HAMMER && Role_if(PM_ANACHRONONAUT) && Race_if(PM_DWARF)){
 				set_material_gm(obj, MITHRIL);
+			}
+			if(obj->otyp == FACELESS_HELM && Role_if(PM_MADMAN)){
+				set_material_gm(obj, IRON);
 			}
 			
 			/* Don't start with +0 or negative rings */
@@ -3620,7 +3804,11 @@ register struct trobj *trop;
 			}
 			if (trop->trspe != UNDEF_SPE)
 			    obj->spe = trop->trspe;
-			if (trop->trbless != UNDEF_BLESS)
+			if (trop->trbless == OBJ_CURSED){
+			    obj->blessed = 0;
+			    obj->cursed = 1;
+			}
+			else if (trop->trbless != UNDEF_BLESS)
 			    obj->blessed = trop->trbless;
 			
 			if(hates_holy(youracedata)){
@@ -3651,6 +3839,11 @@ register struct trobj *trop;
 					obj->obj_color = CLR_WHITE;
 				}
 			}
+			if(Role_if(PM_HEALER) && Race_if(PM_DROW)){
+				if(obj->oclass == SPBOOK_CLASS){
+					add_oprop(obj, OPROP_TACTB);
+				}
+			}
 #ifdef GOLDOBJ
 		}
 #endif
@@ -3667,8 +3860,16 @@ register struct trobj *trop;
 		if(obj->otyp == AMULET_OF_NULLIFY_MAGIC && (Role_if(PM_ANACHRONONAUT) || Role_if(PM_MADMAN)) && !uamul){
 			setworn(obj, W_AMUL);
 		}
+
+		if(obj->oclass == RING_CLASS && Role_if(PM_MADMAN) && !uright){
+			setworn(obj, W_RINGR);
+		}
 		
 		if(obj->otyp == MASK && !ublindf){
+			setworn(obj, W_TOOL);
+		}
+		
+		if(obj->otyp == BLINDFOLD && obj->cursed && !ublindf){
 			setworn(obj, W_TOOL);
 		}
 		

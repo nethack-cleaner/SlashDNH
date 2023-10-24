@@ -41,6 +41,7 @@ ENDMAP
 #0         1         2         3         4         5         6         7     
 
 CONTAINER:'(',"chest",(16,01)
+	OBJECT[50%]:')',"flamethrower",contained, uncursed, 0	
 	OBJECT[50%]:')',"hand blaster",contained, uncursed, 0
 	OBJECT[50%]:')',"hand blaster",contained, uncursed, 0
 	OBJECT[50%]:')',"hand blaster",contained, uncursed, 0
@@ -462,11 +463,15 @@ MONSTER:'h',"mind flayer",random
 MONSTER:'h',"mind flayer",random
 MONSTER:'h',"mind flayer",random
 
-MONSTER:'w',"long worm",random
-MONSTER:'w',"long worm",random
-MONSTER:'w',"long worm",random
-MONSTER:'w',"long worm",random
-MONSTER:'w',"long worm",random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
 
 MONSTER:'{',"razorvine",random
 MONSTER:'{',"razorvine",random
@@ -475,6 +480,15 @@ MONSTER:'{',"razorvine",random
 MONSTER:'{',"razorvine",random
 MONSTER:'{',"razorvine",random
 MONSTER:'{',"razorvine",random
+
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
+MONSTER:'#',"cranium rodent of unusual size",random
 
 OBJECT:'[',"plasteel helm",random
 OBJECT:'[',"plasteel helm",random
@@ -646,6 +660,8 @@ OBJECT:'[',"plasteel armor",random
 OBJECT:'[',"plasteel armor",random
 OBJECT:'[',"plasteel armor",random
 OBJECT:'[',"plasteel armor",random
+
+OBJECT:'[',"power armor",random
 
 OBJECT:'[',"plasteel gauntlets",random
 OBJECT:'[',"plasteel gauntlets",random
@@ -876,6 +892,12 @@ MONSTER: '\'', "semblance", random
 MONSTER: '\'', "semblance", random
 MONSTER: '\'', "semblance", random
 MONSTER: '\'', "semblance", random
+
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+MONSTER: '#', "psurlon long worm", random
+
+MONSTER: '#', "psurlon purple worm", random
 
 # MONSTER: 'U', "umber hulk", random
 # MONSTER: 'U', "umber hulk", random

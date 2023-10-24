@@ -25,7 +25,6 @@ STATIC_DCL void NDECL(recalc_wt);
 STATIC_DCL struct obj *FDECL(touchfood, (struct obj *));
 STATIC_DCL void NDECL(do_reset_eat);
 STATIC_DCL void FDECL(done_eating, (BOOLEAN_P));
-STATIC_DCL int FDECL(intrinsic_possible, (int,struct permonst *));
 STATIC_DCL void FDECL(givit, (int,struct permonst *,SHORT_P,BOOLEAN_P));
 STATIC_DCL void FDECL(start_tin, (struct obj *));
 STATIC_DCL int FDECL(eatcorpse, (struct obj *));
@@ -66,22 +65,22 @@ STATIC_OVL boolean force_save_hs = FALSE;
 
 const char *hu_stat[] = {
 	"Satiated",
-	"        ",
-	"Hungry  ",
-	"Weak    ",
+	"",
+	"Hungry",
+	"Weak",
 	"Fainting",
-	"Fainted ",
-	"Starved "
+	"Fainted",
+	"Starved"
 };
 
 const char *ca_hu_stat[] = {
 	"OvrWound",
-	"        ",
-	"Waning  ",
-	"Unwound ",
+	"",
+	"Waning",
+	"Unwound",
 	"Slipping",
-	"Slipped ",
-	"Stopped "
+	"Slipped",
+	"Stopped"
 };
 
 #endif /* OVLB */
@@ -106,15 +105,11 @@ register struct obj *obj;
 		if(obj->oclass == ARMOR_CLASS) return TRUE;
 		if(obj->oclass == TOOL_CLASS && is_weptool(obj)) return TRUE;
 	}
-	if(obj->oclass == SCROLL_CLASS && obj->otyp != SCR_BLANK_PAPER && obj->otyp != SCR_GOLD_SCROLL_OF_LAW && 
-#ifdef MAIL
-		obj->otyp != SCR_MAIL && 
-#endif
-		!obj->oartifact) return TRUE;
-	if(obj->oclass == SPBOOK_CLASS && obj->otyp != SPE_BLANK_PAPER && !obj->oartifact) return TRUE;
-	if(obj->oclass == AMULET_CLASS && obj->spe >= 0 && !obj->oartifact) return TRUE;
-	if(obj->oclass == RING_CLASS && obj->spe >= 0 && !obj->oartifact) return TRUE;
-	if(obj->oclass == WAND_CLASS && obj->spe > 0 && obj->otyp != WAN_NOTHING) return TRUE;
+	if(obj->oclass == SCROLL_CLASS && objects[obj->otyp].oc_magic && !obj->oartifact) return TRUE;
+	if(obj->oclass == SPBOOK_CLASS && objects[obj->otyp].oc_magic && !obj->oartifact) return TRUE;
+	if(obj->oclass == AMULET_CLASS && obj->spe >= 0 && objects[obj->otyp].oc_magic && !obj->oartifact) return TRUE;
+	if(obj->oclass == RING_CLASS && obj->spe >= 0 && objects[obj->otyp].oc_magic && !obj->oartifact) return TRUE;
+	if(obj->oclass == WAND_CLASS && obj->spe > 0 && objects[obj->otyp].oc_magic) return TRUE;
 	if(obj->otyp == CORPSE && (obj->corpsenm == PM_AOA || obj->corpsenm == PM_AOA_DROPLET || obj->corpsenm == PM_NEWT)) return TRUE;
 	if(obj->otyp == TIN && (!obj->known || obj->corpsenm == PM_AOA || obj->corpsenm == PM_AOA_DROPLET || obj->corpsenm == PM_NEWT)) return TRUE;
 	
@@ -214,6 +209,7 @@ register struct obj *obj;
 		    as engulfed items, but poly'd player can't do that] */
 	    !Has_contents(obj))
 		return TRUE;
+	if(obj->otyp == FEATHER) return FALSE;
 
 	/* a sheaf of straw is VEGGY, but only edible for herbivorous animals */
 	if ((obj->otyp == ROPE_OF_ENTANGLING || obj->otyp == SHEAF_OF_HAY || obj->otyp == SEDGE_HAT) 
@@ -861,7 +857,7 @@ fix_petrification()
  */
 
 /* intrinsic_possible() returns TRUE iff a monster can give an intrinsic. */
-STATIC_OVL int
+int
 intrinsic_possible(type, ptr)
 int type;
 register struct permonst *ptr;
@@ -869,7 +865,7 @@ register struct permonst *ptr;
 	switch (type) {
 	    case FIRE_RES:
 			if (ptr->mconveys & MR_FIRE) {
-				//debugpline("can get fire resistance");
+				debugpline("can get fire resistance");
 				return(TRUE);
 			} else  return(FALSE);
 	    case SLEEP_RES:
@@ -2750,12 +2746,12 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 		return MOVE_CANCELLED;
 	}
 
-	if (uarmh && FacelessHelm(uarmh)){
+	if (uarmh && FacelessHelm(uarmh) && ((uarmh->cursed && !Weldproof) || !freehand())){
 		pline("The %s covers your whole face.", xname(uarmh));
 		display_nhwindow(WIN_MESSAGE, TRUE);    /* --More-- */
 		return MOVE_CANCELLED;
 	}
-	if (uarmc && FacelessCloak(uarmc)){
+	if (uarmc && FacelessCloak(uarmc) && ((uarmc->cursed && !Weldproof) || !freehand())){
 		pline("The %s covers your whole face.", xname(uarmc));
 		display_nhwindow(WIN_MESSAGE, TRUE);    /* --More-- */
 		return MOVE_CANCELLED;
@@ -2864,18 +2860,20 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 				}
 			}
 		}
-		/*These cases destroy the object, rescue its contents*/
-		while((obj2 = otmp->cobj)){
-			obj_extract_self(obj2);
-			/* Compartmentalize tip() */
-			if(carried(otmp)){
-				sellobj_state(SELL_DONTSELL);
-				dropy(obj2);
-				sellobj_state(SELL_NORMAL);
-			}
-			else {
-				place_object(obj2, u.ux, u.uy);
-				stackobj(obj2);
+		if(!is_tipped_spear(otmp)){
+			/*These cases destroy the object, rescue its contents*/
+			while((obj2 = otmp->cobj)){
+				obj_extract_self(obj2);
+				/* Compartmentalize tip() */
+				if(carried(otmp)){
+					sellobj_state(SELL_DONTSELL);
+					dropy(obj2);
+					sellobj_state(SELL_NORMAL);
+				}
+				else {
+					place_object(obj2, u.ux, u.uy);
+					stackobj(obj2);
+				}
 			}
 		}
 		switch(otmp->oclass){
@@ -2949,8 +2947,9 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 				You("drain the ink from the %s.", xname(otmp));
 				costly_cancel(otmp);
 	    	    otmp->otyp = SCR_BLANK_PAPER;
+				remove_oprop(otmp, OPROP_TACTB);
 	    	    otmp->spe = 0;
-	    	    otmp->ovar1 = 0;
+	    	    otmp->oward = 0;
 				lesshungry(5*INC_BASE_NUTRITION);
 				flags.botl = 1;
 			break;
@@ -2965,6 +2964,7 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 	    	    if(otmp->spestudied > MAX_SPELL_STUDY){
 					otmp->otyp = SPE_BLANK_PAPER;
 					otmp->obj_color = objects[SPE_BLANK_PAPER].oc_color;
+					remove_oprop(otmp, OPROP_TACTB);
 				}
 				lesshungry(5*INC_BASE_NUTRITION);
 				flags.botl = 1;
@@ -3696,8 +3696,13 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 						u.uen += engain;
 					} else u.uhunger += 50 + rnd(50);
 					newuhs(FALSE);
-				} else
+				} else {
+					if(Role_if(PM_MADMAN)){
+						You_feel("ashamed of wiping your own memory.");
+						u.hod += otmp->cursed ? 5 : 2;
+					}
 					exercise(A_WIS, FALSE);
+				}
 			}
 			if((otmp->opoisoned & OPOISON_ACID) && !Acid_resistance){
 				You("have a very bad case of stomach acid."); /* not body_part() */

@@ -14,8 +14,6 @@
 
 #ifdef OVLB
 STATIC_DCL void FDECL(polyman, (const char *,const char *));
-STATIC_DCL void NDECL(break_armor);
-STATIC_DCL void FDECL(drop_weapon,(int));
 STATIC_DCL void NDECL(uunstick);
 STATIC_DCL int FDECL(armor_to_dragon,(int));
 STATIC_DCL void NDECL(newman);
@@ -694,15 +692,15 @@ int	mntmp;
 	return(1);
 }
 
-STATIC_OVL void
+void
 break_armor()
 {
     register struct obj *otmp;
-
+#define special_armor(a) (a->oartifact || is_imperial_elven_armor(a))
 	if ((otmp = uarm) != 0) {
 		if(!arm_size_fits(youracedata,otmp) || !arm_match(youracedata,otmp) || is_whirly(youracedata) || noncorporeal(youracedata)){
 			if (donning(otmp)) cancel_don();
-			if(otmp->oartifact || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)){
+			if(special_armor(otmp) || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)){
 				Your("armor falls around you!");
 				(void) Armor_gone();
 				dropx(otmp);
@@ -716,10 +714,10 @@ break_armor()
 	}
 	if ((otmp = uarmc) != 0) {
 		if(abs(otmp->objsize - youracedata->msize) > 1
-				|| !shirt_match(youracedata,otmp) || is_whirly(youracedata) || noncorporeal(youracedata)
+				 || is_whirly(youracedata) || noncorporeal(youracedata)
 		){
 			if (donning(otmp)) cancel_don();
-			if(otmp->oartifact || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)) {
+			if(special_armor(otmp) || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)) {
 				Your("%s falls off!", cloak_simple_name(otmp));
 				(void) Cloak_off();
 				dropx(otmp);
@@ -735,7 +733,7 @@ break_armor()
 				|| !shirt_match(youracedata,otmp) || is_whirly(youracedata) || noncorporeal(youracedata)
 		){
 			if (donning(otmp)) cancel_don();
-			if(otmp->oartifact || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)) {
+			if(special_armor(otmp) || otmp->objsize > youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)) {
 				Your("shirt falls off!");
 				(void) Shirt_off();
 		// setworn((struct obj *)0, otmp->owornmask & W_ARMU);
@@ -748,8 +746,13 @@ break_armor()
 		}
     }
 	if ((otmp = uarmh) != 0){
-		if((!is_flimsy(otmp) && otmp->otyp != find_gcirclet() && (otmp->objsize != youracedata->msize || has_horns(youracedata) || !has_head_mon(&youmonst) || !helm_match(youracedata,otmp)))
-			|| is_whirly(youracedata) || noncorporeal(youracedata)
+		boolean hat = is_hat(otmp);
+		if((!helm_match(youracedata, uarmh) && !hat)
+			|| (!has_head_mon(&youmonst) && !hat)
+			|| !helm_size_fits(youracedata, uarmh)
+			|| (has_horns(youracedata) && !(otmp->otyp == find_gcirclet() || is_flimsy(otmp)))
+			|| is_whirly(youracedata)
+			|| noncorporeal(youracedata)
 		) {
 			if (donning(otmp)) cancel_don();
 			Your("helmet falls to the %s!", surface(u.ux, u.uy));
@@ -759,12 +762,17 @@ break_armor()
 			char hornbuf[BUFSZ], yourbuf[BUFSZ];
 			/* Future possiblities: This could damage/destroy helmet */
 			Sprintf(hornbuf, "horn%s", plur(num_horns(youracedata)));
-			Your("%s %s through %s %s.", hornbuf, vtense(hornbuf, "pierce"),
+			Your("%s %s through %s %s.", hornbuf, vtense(hornbuf, uarmh->otyp == find_gcirclet() ? "pass" : "pierce"),
 				 shk_your(yourbuf, otmp), xname(otmp));
 		}
     }
 	if ((otmp = uarmg) != 0) {
-		if(nogloves(youracedata) || nolimbs(youracedata) || otmp->objsize != youracedata->msize || is_whirly(youracedata) || noncorporeal(youracedata)){
+		if(nogloves(youracedata) 
+			|| nolimbs(youracedata) 
+			|| youracedata->msize != otmp->objsize
+			|| is_whirly(youracedata)
+			|| noncorporeal(youracedata)
+		){
 			if (donning(otmp)) cancel_don();
 			/* Drop weapon along with gloves */
 			You("drop your gloves%s!", uwep ? " and weapon" : "");
@@ -782,7 +790,12 @@ break_armor()
 		}
 	}
 	if ((otmp = uarmf) != 0) {
-		if(noboots(youracedata) || !humanoid(youracedata) || youracedata->msize != otmp->objsize || is_whirly(youracedata) || noncorporeal(youracedata)){
+		if(noboots(youracedata)
+			|| (!humanoid(youracedata) && !can_wear_boots(youracedata))
+			|| !boots_size_fits(youracedata, otmp)
+			|| is_whirly(youracedata)
+			|| noncorporeal(youracedata)
+		){
 			if (donning(otmp)) cancel_don();
 			if (is_whirly(youracedata))
 				Your("boots fall away!");
@@ -794,7 +807,7 @@ break_armor()
 	}
 }
 
-STATIC_OVL void
+void
 drop_weapon(alone)
 int alone;
 {
@@ -895,6 +908,7 @@ struct permonst *mdat;
 		case AD_SLEE: mtyp = PM_ORANGE_DRAGON; break;
 		case AD_ACID: mtyp = PM_YELLOW_DRAGON; break;
 		case AD_RBRE: mtyp = PM_SHIMMERING_DRAGON; break;
+		case AD_DISN: mtyp = PM_BLACK_DRAGON; break;
 		default:
 			impossible("bad HDbreath %d", flags.HDbreath);
 			return MOVE_CANCELLED;
@@ -2052,7 +2066,7 @@ int part;
 		"spine",		"toe",		"hair", 		"blood",
 		"lung",			"nose", 	"stomach",		"heart",
 		"skin",			"flesh",	"beat",			"bones",
-		"ear", 			"ears",		"creak",	"crack"},
+		"ear", 			"ears",		"creak",		"crack"},
 	*uvuudaum_parts[] = { 
 		"arm",			"eye",		"headspike",	"finger",
 		"fingertip",	"hand",		"hand",			"handed", 
@@ -2099,14 +2113,14 @@ int part;
 		"cap",			"ventral limb",		"addled",		"stalk",
 		"chassis",		"needle-tip",		"spores",		"oil",
 		"gear",			"gill",				"hyphal network","eternal core",
-		"metal skin",	"brass structure",	"tick",			"armature",
+		"armor",		"brass structure",	"tick",			"armature",
 		"phonoreceptor horn","phonoreceptor horn","creak",	"bend"},
 	*jelly_parts[] = {
 		"pseudopod",		"dark spot",		"front",		"pseudopod extension",
 		"pseudopod extremity","pseudopod root", "grasp", 		"grasped", 
 		"cerebral area",	"lower pseudopod",	"viscous",		"middle",
-		"centriole",		"pseudopod extremity","ripples",	"juices",
-		"tiny cilia",		"sensor",			"stomach",		"cytoskeletal structure",
+		"centriole",		"pseudopod extremity","ripples",	"plasm",
+		"tiny cilia",		"chemosensor",		"vacuoles",		"cytoskeletal structure",
 		"membrane",			"cortex",			"shift",		"cytoskeletal filaments",
 		"membrane",			"membrane",			"creak",		"crack" },
 	*animal_parts[] = {
@@ -2116,7 +2130,7 @@ int part;
 		"spine", 			"rear claw tip",	"fur", 			"blood", 
 		"lung", 			"nose", 			"stomach",		"heart",
 		"skin",				"flesh",			"beat",			"bones",
-		"ear",				"ears",				"creak",			"crack" },
+		"ear",				"ears",				"creak",		"crack" },
 	*insect_parts[] = { 
 		"forelimb",			"compound eye",		"face",			"foreclaw",
 		"claw tip",			"rear claw", 		"foreclaw", 	"clawed", 
@@ -2161,7 +2175,7 @@ int part;
 		"mycelium", 		"visual area", 		"front", 					"hypha",
 		"hypha", 			"root", 			"strand", 					"stranded",
 		"cap area",			"rhizome", 			"sporulated", 				"stalk", 
-		"root", 			"rhizome tip",		"spores", 					"juices", 
+		"root", 			"rhizome tip",		"spores", 					"juice", 
 		"gill", 			"gill", 			"interior",					"hyphal network",
 		"cuticle",			"flesh",			"...it doesn't sound like much","hyphae",
 		"tympanic area",	"tympanic area",	"stretch",					"tear" },
@@ -2257,10 +2271,18 @@ int part;
 		"arm",				"eye",				"face",			"finger",
 		"fingertip",		"serpentine lower body","hand",		"handed", 
 		"head",				"rear region",		"light headed",	"neck",
-		"spine",			"tail-tip",			"scales",		"blood",
+		"spine",			"tail-tip",			"hair",			"blood",
 		"lung",				"nose", 			"stomach",		"heart",
 		"scales",			"flesh",			"beat",			"bones",
 		"ear",				"ears",				"creak",		"crack" },
+	*dracae_parts[] = {
+		"arm",				"eye",				"face",			"finger",
+		"claw tip",			"gooey proleg",		"hand",			"handed", 
+		"head",				"gooey caterpilloid lower body","light headed",	"neck",
+		"notochord",		"tentacle-tip",		"tendrils",		"sol",
+		"spongiform jelly",	"chemopores", 		"vacuoles",		"heart",
+		"mucous membrane",	"protoplasm",		"beat",			"cytoskeletal filaments",
+		"tympanic membrane","tympanic membranes","creak",		"crack" },
 	*centauroid_parts[] = {
 		"arm", 				"eye", 				"face", 		"finger",
 		"fingertip", 		"hoof", 			"hand", 		"handed",
@@ -2361,6 +2383,8 @@ int part;
 	    return android_parts[part];
 	if (mptr->mtyp == PM_UVUUDAUM)
 	    return uvuudaum_parts[part];
+	if (mptr->mtyp == PM_DRACAE_ELADRIN)
+	    return dracae_parts[part];
 
 	//S-based part lists
 	if (mptr->mlet == S_PLANT)

@@ -68,12 +68,13 @@ struct u_event {
 	Bitfield(uaxus_foe,1);			/*27 enemy of the modrons */
 	Bitfield(utook_castle, 2);		/*29 sat on the castle throne, used artifact wish */
 	Bitfield(uunknowngod, 2);		/*31 given five artifacts to the priests of the unknown god, used artifact wish */
+	Bitfield(uconstellation, 2);	/*33 has earned the star emperor ring wish, used artifact wish */
 #define ARTWISH_EARNED	1
 #define ARTWISH_SPENT	2
-	Bitfield(ascended,1);			/*32 has offered the Amulet */
-	Bitfield(knoxmade,1);			/*33 Portal to Ludios has been made in the main dungeon, teleport ok */
+	Bitfield(ascended,1);			/*34 has offered the Amulet */
+	Bitfield(knoxmade,1);			/*35 Portal to Ludios has been made in the main dungeon, teleport ok */
 	
-	Bitfield(padding,10);			/*43 reseve another bitfield in event. */
+	Bitfield(padding,10);			/*45 reseve another bitfield in event. */
 };
 
 /* KMH, conduct --
@@ -169,6 +170,8 @@ extern struct Role roles[];	/* table of available roles */
 extern struct Role urole;
 #define Role_if(X)	(urole.malenum == (X))
 #define Pantheon_if(X)	(flags.racial_pantheon != 0 ? flags.racial_pantheon == (X) : roles[flags.pantheon].malenum == (X))
+#define God_if(X)	(u.ualign.god == (X))
+#define Holiness_if(X)	(gholiness(u.ualign.god) == (X))
 #define Role_switch	(urole.malenum)
 /* also used to see if you're allowed to eat cats and dogs */
 #define CANNIBAL_ALLOWED() (Role_if(PM_CAVEMAN) || Race_if(PM_ORC) || \
@@ -290,6 +293,18 @@ struct Align {
 
 extern const struct Align aligns[];	/* table of available alignments */
 
+struct Species {
+	const char *name;
+	int value;
+	int type;
+};
+
+extern const struct Species species[];	/* table of available species */
+
+#define ROLE_SPECIES	32	/* number of permitted player species */
+#define NONE_SPECIES 0
+#define ENT_SPECIES 1
+#define DRAGON_SPECIES 2
 
 /*** Information about the player ***/
 struct you {
@@ -436,29 +451,30 @@ struct you {
 #define MATTK_LAVA	    34
 #define MATTK_PHASE_OUT 35
 #define MATTK_PHASE_IN 36
-#define MATTK_JUMP 37
-#define MATTK_HEAL 38
-#define MATTK_SWIFTNESS 39
-#define MATTK_DODGE 40
-#define MATTK_SWIFTDEFENSE 41
-#define MATTK_ANTHAUL 42
-#define MATTK_UNSTOPPABLE 43
-#define MATTK_SHRUGOFF 44
-#define MATTK_SHADOWWALK 45
-#define MATTK_SHADOWSTEP 46
-#define MATTK_TRUESHOTAURA 47
-#define MATTK_BARRAGE 48
-#define MATTK_RESCUEMISSION 49
-#define MATTK_FIREASSAULT 50
-#define MATTK_WATERASSAULT 51
-#define MATTK_FORCETELEPORT 52
-#define MATTK_PATIENTDEFENSE 53
-#define MATTK_AGRESSIVESTRIKE 54
-#define MATTK_IDENTIFY 55
-#define MATTK_RAGE_ATTACK 56
-#define MATTK_DRINKRAGE 57
-#define MATTK_IDONTPAIN 58
-#define MATTK_BERSERKERRAGE 59
+#define MATTK_YUKI 37
+#define MATTK_JUMP 38
+#define MATTK_HEAL 39
+#define MATTK_SWIFTNESS 40
+#define MATTK_DODGE 41
+#define MATTK_SWIFTDEFENSE 42
+#define MATTK_ANTHAUL 43
+#define MATTK_UNSTOPPABLE 44
+#define MATTK_SHRUGOFF 45
+#define MATTK_SHADOWWALK 46
+#define MATTK_SHADOWSTEP 47
+#define MATTK_TRUESHOTAURA 48
+#define MATTK_BARRAGE 49
+#define MATTK_RESCUEMISSION 50
+#define MATTK_FIREASSAULT 51
+#define MATTK_WATERASSAULT 52
+#define MATTK_FORCETELEPORT 53
+#define MATTK_PATIENTDEFENSE 54
+#define MATTK_AGRESSIVESTRIKE 55
+#define MATTK_IDENTIFY 56
+#define MATTK_RAGE_ATTACK 57
+#define MATTK_DRINKRAGE 58
+#define MATTK_IDONTPAIN 59
+#define MATTK_BERSERKERRAGE 60
 
 #define ACU_RETURN_LVL 20
 #define ACU_TELEK_LVL 15
@@ -544,7 +560,8 @@ struct you {
 #define RITUAL_DONE		(RITUAL_CHAOS|RITUAL_NEUTRAL|RITUAL_LAW)
 #define HI_RITUAL_DONE	(RITUAL_HI_CHAOS|RITUAL_HI_NEUTRAL|RITUAL_HI_LAW)
 	Bitfield(peaceful_pets,1);	/* pets don't attack peaceful monsters */
-	/* 12 free bits */
+	Bitfield(uiearepairs,1);	/* Knows how to repair Imperial Elven Armor */
+	/* 11 free bits */
 	
 	int oonaenergy;				/* Record the energy type used by Oona in your game. (Worm that Walks switches?) */
 	int brand_otyp;				/* Record the otyp of Fire and Frost Brand in this game */
@@ -651,12 +668,13 @@ struct you {
 #define DISMAL_SWAMP	4
 #define ARCHIPELAGO	5
 	int 	uencouraged;/* to record the buff from tame encouragement songs */
-	int		uentangled; /* to record the otyp of an item entangling you */
+	int		uentangled_otyp; /* to record the otyp of an item entangling you */
+	long	uentangled_oid; /* to record the oid of the item entangling you */
 	long int spawnedGold; /* to record total amount of gold spawned in a game */
 		int	utats; /*Used to store Fell's tattoo information*/
-#define TAT_HOURGLASS	0x0001
-#define TAT_FALCHION	0x0002
-#define TAT_KESTREL	0x0004
+#define TAT_HOURGLASS	0x0001 
+#define TAT_FALCHION	0x0002 
+#define TAT_KESTREL	0x0004 
 #define TAT_BULWARK	0x0008
 #define TAT_FOUNTAIN	0x0010
 #define TAT_CROESUS	0x0020
@@ -664,7 +682,10 @@ struct you {
 #define TAT_WILLOW	0x0080
 #define TAT_HAMMER	0x0100
 #define TAT_SPEARHEAD	0x0200
-#define NUM_TATS	10
+#define TAT_CRYSTAL_ORB	0x0400
+#define TAT_HYPHEN	0x0800
+#define TAT_FLAMING_WHIP 0x1000
+#define NUM_TATS	13
 	int 	usanity;	/* to record level of sanity */
 	unsigned long long int 	umadness;	/* to afflictions */
 #define	MAD_DELUSIONS		0x0000000000000001L
@@ -700,7 +721,9 @@ struct you {
 #define	MAD_TOO_BIG			0x0000000040000000L
 #define	MAD_APOSTASY		0x0000000080000000L
 #define	MAD_ROTTING			0x0000000100000000L
-#define	LAST_MADNESS		MAD_ROTTING
+#define	MAD_REACHER			0x0000000200000000L
+#define	MAD_SCORPIONS		0x0000000400000000L
+#define	LAST_MADNESS		MAD_SCORPIONS
 	int 	uinsight;	/* to record level of insight */
 	/*Insight rate calculation: 40: "high insight" 300: "Approximate per-turn WoYendor intervention rate" 5: "total number of harmful effects" */
 #define INSIGHT_RATE (40*300*5)

@@ -32,7 +32,10 @@ STATIC_DCL void NDECL(mkminorspire);
 STATIC_DCL void NDECL(mkfishingvillage);
 STATIC_DCL void NDECL(mkpluhomestead);
 STATIC_DCL void FDECL(mkpluroom, (int));
-STATIC_DCL void FDECL(mkelfhut, (int));
+STATIC_DCL void FDECL(mkelfhut, (int, int, int));
+STATIC_DCL void FDECL(mkdrowshanty, (int));
+STATIC_DCL void FDECL(mkorccave, (int));
+STATIC_DCL void FDECL(mkshantyorcave, (int, boolean, int));
 STATIC_DCL void FDECL(mkwraithclearing, (int));
 STATIC_DCL void NDECL(mkstonepillars);
 STATIC_DCL void FDECL(mkmordorfossil, (int));
@@ -68,6 +71,7 @@ STATIC_DCL void NDECL(mkisland);
 STATIC_DCL void NDECL(mkriver);
 STATIC_DCL void NDECL(mkneuriver);
 STATIC_DCL void NDECL(mkforest12river);
+STATIC_DCL void FDECL(mkneucell, (int,int,struct obj *,int,int));
 STATIC_DCL void FDECL(liquify, (int,int,int));
 STATIC_DCL void FDECL(neuliquify, (int, int, int));
 STATIC_DCL void FDECL(chaliquify, (int, int, int));
@@ -97,7 +101,7 @@ STATIC_OVL int
 int_sqrt(num)
 int num;
 {
-	return((boolean)( sqrt(num) ));
+	return((int)( sqrt(num) ));
 }
 
 /* Returns true if room has both an X and Y size of at least x. */
@@ -433,6 +437,20 @@ mkmivaultitem(container)
 		  !(objects[otmp->otyp].oc_magic || otmp->oartifact));
 		if(!Is_container(otmp)) add_to_container(container, otmp);
 	}
+}
+
+struct obj *
+mkjewel()
+{
+	int tries = 500;
+	struct obj *otmp = 0;
+	do{
+		if (otmp) {
+			dealloc_obj(otmp);	/* discard it */
+		}
+		otmp = mkobj(GEM_CLASS, FALSE);
+	} while (tries-- > 0 && (otmp->otyp < MAGICITE_CRYSTAL || otmp->otyp > JADE));
+	return otmp;
 }
 
 struct obj *
@@ -1403,8 +1421,11 @@ mklolthcell()
 								mpickobj(warden, obj);
 							}
 						}
-						(void)mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
-						mon->entangled = SHACKLES;
+						obj = mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
+						if(obj){
+							mon->entangled_otyp = SHACKLES;
+							mon->entangled_oid = obj->o_id;
+						}
 					}
 				}
 			}
@@ -2503,13 +2524,13 @@ mkfishinghut(left)
 				}
 				if(!rn2(9)) mksobj_at(POT_BOOZE, x+1, y+1, NO_MKOBJ_FLAGS);
 				if(!rn2(9)) mksobj_at(CRAM_RATION, x+1, y+1, NO_MKOBJ_FLAGS);
-				if(!rn2(100)){
+				if(!rn2(20)){
 					otmp = mkobj(AMULET_CLASS, TRUE);
 					set_material_gm(otmp, GOLD);
 					otmp->owt = weight(otmp);
 					place_object(otmp, x+i, y+j);
 				}
-				if(!rn2(100)){
+				if(!rn2(40)){
 					otmp = mksobj(find_gcirclet(), NO_MKOBJ_FLAGS);
 					set_material_gm(otmp, GOLD);
 					otmp->owt = weight(otmp);
@@ -2521,8 +2542,6 @@ mkfishinghut(left)
 		for(i = 1+rn2(3);i>0;i--){
 			makemon(&mons[PM_DEEP_ONE], x+rnd(2), y+rnd(2), MM_ADJACENTOK);
 		}
-		
-		wallification(x, y, x+3, y+3);
 		
 		pathto = rn2(pathto);
 		if(left){
@@ -2660,8 +2679,6 @@ mkpluhomestead()
 		for(;i>0;i--){
 			makemon(&mons[PM_PLUMACH_RILMANI], x+rnd(3), y+rnd(3), MM_ADJACENTOK);
 		}
-		
-		wallification(x, y, x+4, y+4);
 		
 		pathto = rn2(pathto);
 		if(isok(x+2,y-1) && levl[x+2][y-1].typ == GRASS && !(pathto--))
@@ -2876,7 +2893,7 @@ mktowntree()
 			for(j=0;j<3;j++){
 				if(!isok(x+i,y+j) || t_at(x+i, y+j)
 					|| *in_rooms(x+i, y+j, BARRACKS) || *in_rooms(x+i, y+j, SHOPBASE) || *in_rooms(x+i, y+j, COURT)
-					|| !(levl[x+i][y+j].typ == ROOM))
+					|| !(levl[x+i][y+j].typ == ROOM || levl[x+i][y+j].typ == GRASS))
 					okspot = FALSE;
 			}
 		if(okspot){
@@ -2885,6 +2902,8 @@ mktowntree()
 		levl[x+1][y+1].typ = TREE;
 		levl[x+1][y+1].looted = 0;
 		if(m_at(x+1, y+1)) rloc(m_at(x+1, y+1), TRUE);
+		while(level.objects[x+1][y+1])
+			rloco(level.objects[x+1][y+1]);
 	}
 }
 
@@ -3033,7 +3052,9 @@ int width;
 
 STATIC_OVL
 void
-mkelfhut(left)
+mkelfhut(background, foreground, left)
+int background;
+int foreground;
 int left;
 {
 	int x,y,tries=0;
@@ -3052,18 +3073,18 @@ int left;
 		accessible = FALSE;
 		for(i=0;i<4;i++)
 			for(j=0;j<4;j++){
-				if(!isok(x+i,y+j) || t_at(x+i, y+j) || !(levl[x+i][y+j].typ == TREE || IS_WALL(levl[x+i][y+j].typ)))
+				if(!isok(x+i,y+j) || t_at(x+i, y+j) || !(levl[x+i][y+j].typ == background || IS_WALL(levl[x+i][y+j].typ)))
 					okspot = FALSE;
 			}
 		pathto = 0;
-		if(isok(x+1,y-1) && (levl[x+1][y-1].typ == SOIL || levl[x+1][y-1].typ == ROOM)) pathto++;
-		if(isok(x+2,y-1) && (levl[x+2][y-1].typ == SOIL || levl[x+2][y-1].typ == ROOM)) pathto++;
-		if(isok(x+1,y+4) && (levl[x+1][y+4].typ == SOIL || levl[x+1][y+4].typ == ROOM)) pathto++;
-		if(isok(x+2,y+4) && (levl[x+2][y+4].typ == SOIL || levl[x+2][y+4].typ == ROOM)) pathto++;
-		if(isok(x+4,y+1) && (levl[x+4][y+1].typ == SOIL || levl[x+4][y+1].typ == ROOM)) pathto++;
-		if(isok(x+4,y+2) && (levl[x+4][y+2].typ == SOIL || levl[x+4][y+2].typ == ROOM)) pathto++;
-		if(isok(x-1,y+1) && (levl[x-1][y+1].typ == SOIL || levl[x-1][y+1].typ == ROOM)) pathto++;
-		if(isok(x-1,y+2) && (levl[x-1][y+2].typ == SOIL || levl[x-1][y+2].typ == ROOM)) pathto++;
+		if(isok(x+1,y-1) && (levl[x+1][y-1].typ == foreground || levl[x+1][y-1].typ == ROOM)) pathto++;
+		if(isok(x+2,y-1) && (levl[x+2][y-1].typ == foreground || levl[x+2][y-1].typ == ROOM)) pathto++;
+		if(isok(x+1,y+4) && (levl[x+1][y+4].typ == foreground || levl[x+1][y+4].typ == ROOM)) pathto++;
+		if(isok(x+2,y+4) && (levl[x+2][y+4].typ == foreground || levl[x+2][y+4].typ == ROOM)) pathto++;
+		if(isok(x+4,y+1) && (levl[x+4][y+1].typ == foreground || levl[x+4][y+1].typ == ROOM)) pathto++;
+		if(isok(x+4,y+2) && (levl[x+4][y+2].typ == foreground || levl[x+4][y+2].typ == ROOM)) pathto++;
+		if(isok(x-1,y+1) && (levl[x-1][y+1].typ == foreground || levl[x-1][y+1].typ == ROOM)) pathto++;
+		if(isok(x-1,y+2) && (levl[x-1][y+2].typ == foreground || levl[x-1][y+2].typ == ROOM)) pathto++;
 		if(pathto) accessible = TRUE;
 		if(okspot && accessible){
 			good = TRUE;
@@ -3091,22 +3112,474 @@ int left;
 		// wallification(x, y, x+3, y+3);//Can be adjacent, do wallification after all huts placed
 		
 		pathto = rn2(pathto);
-		if(isok(x+1,y-1) && (levl[x+1][y-1].typ == SOIL || levl[x+1][y-1].typ == ROOM) && !(pathto--))
+		if(isok(x+1,y-1) && (levl[x+1][y-1].typ == foreground || levl[x+1][y-1].typ == ROOM) && !(pathto--))
 			levl[x+1][y+0].typ = DOOR, levl[x+1][y+0].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x+2,y-1) && (levl[x+2][y-1].typ == SOIL || levl[x+2][y-1].typ == ROOM) && !(pathto--))
+		if(isok(x+2,y-1) && (levl[x+2][y-1].typ == foreground || levl[x+2][y-1].typ == ROOM) && !(pathto--))
 			levl[x+2][y+0].typ = DOOR, levl[x+2][y+0].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x+1,y+4) && (levl[x+1][y+4].typ == SOIL || levl[x+1][y+4].typ == ROOM) && !(pathto--))
+		if(isok(x+1,y+4) && (levl[x+1][y+4].typ == foreground || levl[x+1][y+4].typ == ROOM) && !(pathto--))
 			levl[x+1][y+3].typ = DOOR, levl[x+1][y+3].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x+2,y+4) && (levl[x+2][y+4].typ == SOIL || levl[x+2][y+4].typ == ROOM) && !(pathto--))
+		if(isok(x+2,y+4) && (levl[x+2][y+4].typ == foreground || levl[x+2][y+4].typ == ROOM) && !(pathto--))
 			levl[x+2][y+3].typ = DOOR, levl[x+2][y+3].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x+4,y+1) && (levl[x+4][y+1].typ == SOIL || levl[x+4][y+1].typ == ROOM) && !(pathto--))
+		if(isok(x+4,y+1) && (levl[x+4][y+1].typ == foreground || levl[x+4][y+1].typ == ROOM) && !(pathto--))
 			levl[x+3][y+1].typ = DOOR, levl[x+3][y+1].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x+4,y+2) && (levl[x+4][y+2].typ == SOIL || levl[x+4][y+2].typ == ROOM) && !(pathto--))
+		if(isok(x+4,y+2) && (levl[x+4][y+2].typ == foreground || levl[x+4][y+2].typ == ROOM) && !(pathto--))
 			levl[x+3][y+2].typ = DOOR, levl[x+3][y+2].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x-1,y+1) && (levl[x-1][y+1].typ == SOIL || levl[x-1][y+1].typ == ROOM) && !(pathto--))
+		if(isok(x-1,y+1) && (levl[x-1][y+1].typ == foreground || levl[x-1][y+1].typ == ROOM) && !(pathto--))
 			levl[x+0][y+1].typ = DOOR, levl[x+0][y+1].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
-		if(isok(x-1,y+2) && (levl[x-1][y+2].typ == SOIL || levl[x-1][y+2].typ == ROOM) && !(pathto--))
+		if(isok(x-1,y+2) && (levl[x-1][y+2].typ == foreground || levl[x-1][y+2].typ == ROOM) && !(pathto--))
 			levl[x+0][y+2].typ = DOOR, levl[x+0][y+2].doormask = rn2(3) ? D_CLOSED : D_LOCKED;
+	}
+}
+
+STATIC_OVL
+void
+mkelffountain()
+{
+	int x,y,tries=0;
+	int i,j;
+	boolean good=FALSE, okspot;
+	while(!good && tries < 1500){
+		do {
+			x = rn2(COLNO-2)+1;
+			y = rn2(ROWNO-3);
+		} while(x >= 28 && x <= 46 && y >= 5 && y <= 15);
+		tries++;
+		okspot = TRUE;
+		for(i=0;i<5;i++)
+			for(j=0;j<3;j++){
+				if(!isok(x+i,y+j) || t_at(x+i, y+j)
+					|| !(levl[x+i][y+j].typ == GRASS))
+					okspot = FALSE;
+			}
+		if(okspot){
+			good = TRUE;
+		} else continue;
+		for(i=1;i<4;i++){
+			for(j=0;j<3;j++){
+				levl[x+i][y+j].typ = VWALL;
+				if(m_at(x+i, y+j)) rloc(m_at(x+i, y+j), TRUE);
+			}
+		}
+		levl[x+2][y+1].typ = FOUNTAIN;
+		levl[x+2][y+1].blessedftn = 1;
+		levl[x+2][y+0].typ = DOOR;
+		levl[x+1][y+1].typ = DOOR;
+		levl[x+2][y+2].typ = DOOR;
+		levl[x+3][y+1].typ = DOOR;
+		level.flags.nfountains++;
+	}
+}
+
+STATIC_OVL
+void
+orc_cave_spawn_at(x, y, w)
+int x, y, w;
+{
+	struct monst *mon;
+	struct obj *obj;
+	int chance = rn2(100);
+	if(chance >= 80){
+		makemon(&mons[PM_MORDOR_ORC], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 70){
+		makemon(&mons[PM_OGRE], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 60){
+		makemon(&mons[PM_TROLL], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 50){
+		makemon(&mons[PM_ORC_SHAMAN], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 40){
+		makemon(&mons[PM_MORDOR_ORC_ELITE], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 20){
+		makemon(&mons[PM_WARG], x, y, NO_MM_FLAGS);
+	}
+	else if(chance >= 5){
+		mon = prisoner(PM_NECROMANCER, x, y);
+		if(mon){
+			while((obj = mon->minvent)){
+				obj_extract_and_unequip_self(obj);
+				place_object(obj, x, y);
+				rloco(obj);
+			}
+			obj = mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
+			if(obj){
+				mon->entangled_otyp = SHACKLES;
+				mon->entangled_oid = obj->o_id;
+			}
+		}
+	}
+	else {
+		obj = mksobj_at(STATUE, x, y, NO_MKOBJ_FLAGS);
+		if(obj){
+			obj->corpsenm = PM_ANGBAND_ORC;
+			fix_object(obj);
+		}
+	}
+}
+
+STATIC_OVL
+void
+drow_shanty_spawn_at(x, y, w)
+int x, y, w;
+{
+	struct monst *mon;
+	int mtyp = 0;
+	switch(rn2(8)){
+		case 0:
+			mon = makemon(&mons[PM_HOUSELESS_DROW], x, y, NO_MM_FLAGS);
+			if(mon && !rn2(3))
+				set_template(mon, PLAGUE_TEMPLATE);
+		break;
+		case 1:
+			if(rn2(3))
+				mtyp = PM_Y_CULTIST;
+			else if(rn2(3))
+				mtyp = PM_Y_CULTIST_FIGHTER;
+			else if(rn2(3))
+				mtyp = PM_Y_CULTIST_WIZARD;
+			else{
+				switch(rn2(8)){
+					case 0:
+						mtyp = PM_Y_CULTIST_MATRON;
+					break;
+					case 1:
+						mtyp = PM_Y_CULTIST_PATRON;
+					break;
+					case 2:
+						mtyp = PM_INVIDIAK;
+					break;
+					case 3:
+						mtyp = PM_VROCK;
+					break;
+					case 4:
+						mtyp = PM_MARILITH;
+					break;
+					case 5:
+						mtyp = PM_LILITU;
+					break;
+					case 6:
+						mtyp = PM_NALFESHNEE;
+					break;
+					case 7:
+						mtyp = PM_DAUGHTER_OF_BEDLAM;
+					break;
+				}
+			}
+		break;
+		//Risen zombie
+		case 2:
+			if(rn2(3))
+				mtyp = PM_HOUSELESS_DROW;
+			else if(rn2(3))
+				mtyp = PM_HEDROW_WARRIOR;
+			else if(rn2(3))
+				mtyp = PM_DROW_CAPTAIN;
+			else{
+				switch(rn2(6)){
+					case 0:
+						mtyp = PM_DROW_MATRON;
+					break;
+					case 1:
+						mtyp = PM_HEDROW_WIZARD;
+					break;
+					case 2:
+						mtyp = PM_HEDROW_BLADEMASTER;
+					break;
+					case 3:
+						mtyp = PM_DRIDER;
+					break;
+					case 4:
+						mtyp = PM_SPROW;
+					break;
+					case 5:
+						mtyp = PM_ELF;
+					break;
+				}
+			}
+			mon = makemon_full(&mons[mtyp], x, y, NO_MM_FLAGS, ZOMBIFIED, -1);
+			if(mon){
+				set_faction(mon, 0);
+				mon->mpeaceful = 0;
+				set_malign(mon);
+			}
+		break;
+		//Spore zombie
+		case 3:
+			if(rn2(3))
+				mtyp = PM_HOUSELESS_DROW;
+			else if(rn2(3))
+				mtyp = PM_HEDROW_WARRIOR;
+			else if(rn2(3))
+				mtyp = PM_DROW_CAPTAIN;
+			else{
+				switch(rn2(6)){
+					case 0:
+						mtyp = PM_DROW_MATRON;
+					break;
+					case 1:
+						mtyp = PM_HEDROW_WIZARD;
+					break;
+					case 2:
+						mtyp = PM_HEDROW_BLADEMASTER;
+					break;
+					case 3:
+						mtyp = PM_DRIDER;
+					break;
+					case 4:
+						mtyp = PM_SPROW;
+					break;
+					case 5:
+						mtyp = PM_ELF;
+					break;
+				}
+			}
+			mon = makemon_full(&mons[mtyp], x, y, NO_MM_FLAGS, rn2(20) ? SPORE_ZOMBIE : CORDYCEPS, -1);
+			if(mon){
+				set_faction(mon, 0);
+				mon->mpeaceful = 0;
+				set_malign(mon);
+			}
+		break;
+		case 4:
+			mon = makemon(&mons[PM_KUO_TOA], x, y, MM_ADJACENTOK);
+			if(w > 3){
+				mon = makemon(&mons[PM_KUO_TOA], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_KUO_TOA], x, y, MM_ADJACENTOK);
+			}
+			if(w > 4){
+				mon = makemon(&mons[PM_KUO_TOA], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_KUO_TOA_WHIP], x, y, MM_ADJACENTOK);
+			}
+		break;
+		case 5:
+			mon = makemon(&mons[PM_DUERGAR_STONEGUARD], x, y, MM_ADJACENTOK);
+			if(w>3){
+				mon = makemon(&mons[PM_DUERGAR], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_DUERGAR_STONEGUARD], x, y, MM_ADJACENTOK);
+			}
+			if(w>4){
+				mon = makemon(&mons[PM_DUERGAR_STONEGUARD], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_DUERGAR_STONEGUARD], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_DUERGAR_STONEGUARD], x, y, MM_ADJACENTOK);
+				mon = makemon(&mons[PM_DUERGAR_DEBILITATOR], x, y, MM_ADJACENTOK);
+			}
+		break;
+		case 6:
+		case 7:
+			if(rn2(3))
+				mtyp = PM_HOUSELESS_DROW;
+			else if(rn2(3))
+				mtyp = PM_HEDROW_WARRIOR;
+			else if(rn2(3))
+				mtyp = PM_DROW_CAPTAIN;
+			else{
+				switch(rn2(6)){
+					case 0:
+						mtyp = PM_DROW_MATRON;
+					break;
+					case 1:
+						mtyp = PM_HEDROW_WIZARD;
+					break;
+					case 2:
+						mtyp = PM_HEDROW_BLADEMASTER;
+					break;
+					case 3:
+						mtyp = PM_DRIDER;
+					break;
+					case 4:
+						mtyp = PM_SPROW;
+					break;
+					case 5:
+						mtyp = PM_ELF;
+					break;
+				}
+			}
+			mon = makemon(&mons[mtyp], x, y, NO_MM_FLAGS);
+			if(mon){
+				set_faction(mon, 0);
+				if(!rn2(3)){
+					set_template(mon, PLAGUE_TEMPLATE);
+					mon->mpeaceful = TRUE;
+					set_malign(mon);
+				}
+				else {
+					mon->mpeaceful = FALSE;
+					set_malign(mon);
+					switch(rn2(10)){
+						case 0:
+						mon->mcrazed = TRUE;
+						break;
+						case 1:
+						mon->mcannibal = TRUE;
+						break;
+						case 2:
+						mon->mgluttony = TRUE;
+						break;
+						case 3:
+						mon->mrage = TRUE;
+						break;
+						case 4:
+						mon->margent = TRUE;
+						break;
+						case 5:
+						mon->msuicide = TRUE;
+						break;
+						case 6:
+						mon->mnudist = TRUE;
+						break;
+						case 7:
+						mon->mparanoid = TRUE;
+						break;
+						case 8:
+						mon->mforgetful = TRUE;
+						break;
+						case 9:
+						mon->mapostasy = TRUE;
+						break;
+					}
+				}
+			}
+		break;
+	}
+}
+
+STATIC_OVL
+void
+mkdrowshanty(width)
+int width;
+{
+	mkshantyorcave(PM_DROW, TRUE, width);
+}
+
+void
+mkorccave(width)
+int width;
+{
+	mkshantyorcave(PM_ORC, FALSE, width);
+}
+
+STATIC_OVL
+void
+mkshantyorcave(spawntype, doors, width)
+int spawntype;
+boolean doors;
+int width;
+{
+	int x,y,tries=0;
+	int i,j, pathto = 0;
+	boolean good=FALSE, okspot, accessible;
+	while(!good && tries < 500){
+		x = rn2(COLNO-2)+1;
+		y = rn2(ROWNO-2);
+		tries++;
+		okspot = TRUE;
+		accessible = FALSE;
+		for(i=-2;i<width+2 && okspot;i++)
+			for(j=-2;j<width+2 && okspot;j++){
+				if(isok(x+i,y+j) && levl[x+i][y+j].typ == IRONBARS)
+					okspot = FALSE;
+			}
+		for(i=0;i<width && okspot;i++)
+			for(j=0;j<width && okspot;j++){
+				if(!isok(x+i,y+j) || t_at(x+i, y+j))
+					okspot = FALSE;
+				// || (levl[x+i][y+j].typ == ROOM && qstart_level.dnum == u.uz.dnum && qlocate_level.dlevel == (u.uz.dlevel-1) && (!i || !j || i == width-1 || j == width-1)))
+				else if(!(levl[x+i][y+j].typ == STONE || levl[x+i][y+j].typ == SOIL || IS_WALL(levl[x+i][y+j].typ)))
+					okspot = FALSE;
+			}
+		pathto = 0;
+
+		j = y-1;
+		for(i = x+1; i < (x+width-1); i++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM)) pathto++;
+
+		j = y+width;
+		for(i = x+1; i < (x+width-1); i++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM)) pathto++;
+
+		i = x+width;
+		for(j = y+1; j < (y+width-1); j++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM)) pathto++;
+
+		i = x-1;
+		for(j = y+1; j < (y+width-1); j++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM)) pathto++;
+
+		if(pathto) accessible = TRUE;
+		if(okspot && accessible){
+			good = TRUE;
+		} else continue;
+		
+		for(i=0;i<width;i++){
+			for(j=0;j<width;j++){
+				levl[x+i][y+j].typ = HWALL;
+				if(m_at(x+i, y+j)) rloc(m_at(x+i, y+j), TRUE);
+			}
+		}
+		for(i=1;i<width-1;i++){
+			for(j=1;j<width-1;j++){
+				levl[x+i][y+j].typ = ROOM;
+				if(!rn2(20)) mkobj_at(RANDOM_CLASS, x+i, y+j, NO_MKOBJ_FLAGS);
+				if(!rn2(5)){
+					if(spawntype == PM_DROW)
+						drow_shanty_spawn_at(x+i, y+j, width);
+					if(spawntype == PM_ORC)
+						orc_cave_spawn_at(x+i, y+j, width);
+				}
+			}
+		}
+		
+		pathto = rn2(pathto);
+		boolean left, right, top, bottom;
+		left = right= top = bottom = FALSE;
+		int d;
+		
+		j = y-1;
+		d = y+0;
+		for(i = x+1; i < (x+width-1); i++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM) && (!(pathto--) || !rn2(3)) && !top){
+				if(doors){
+					levl[i][d].typ = DOOR, levl[i][d].doormask = rn2(3) ? D_NODOOR : rn2(3) ? D_CLOSED : D_LOCKED;
+				}
+				else levl[i][d].typ = ROOM;
+				top = TRUE;
+			}
+
+		j = y+width;
+		d = y+width-1;
+		for(i = x+1; i < (x+width-1); i++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM) && (!(pathto--) || !rn2(3)) && !bottom){
+				if(doors){
+					levl[i][d].typ = DOOR, levl[i][d].doormask = rn2(3) ? D_NODOOR : rn2(3) ? D_CLOSED : D_LOCKED;
+				}
+				else levl[i][d].typ = ROOM;
+				bottom = TRUE;
+			}
+
+		i = x+width;
+		d = x+width-1;
+		for(j = y+1; j < (y+width-1); j++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM) && (!(pathto--) || !rn2(3)) && !right){
+				if(doors){
+					levl[d][j].typ = DOOR, levl[d][j].doormask = rn2(3) ? D_NODOOR : rn2(3) ? D_CLOSED : D_LOCKED;
+				}
+				else levl[d][j].typ = ROOM;
+				right = TRUE;
+			}
+
+		i = x-1;
+		d = x+0;
+		for(j = y+1; j < (y+width-1); j++)
+			if(isok(i,j) && (levl[i][j].typ == SOIL || levl[i][j].typ == CORR || levl[i][j].typ == ROOM) && (!(pathto--) || !rn2(3)) && !left){
+				if(doors){
+					levl[d][j].typ = DOOR, levl[d][j].doormask = rn2(3) ? D_NODOOR : rn2(3) ? D_CLOSED : D_LOCKED;
+				}
+				else levl[d][j].typ = ROOM;
+				left = TRUE;
+			}
 	}
 }
 
@@ -3437,12 +3910,12 @@ mkpluvillage()
 		if(okspot && accessible){
 			good = TRUE;
 			//Clear village green
-			for(i=sizebig1;i<(sizetot-sizebig2);i++) 
+			for(i=sizebig1;i<(sizetot-sizebig2)+1;i++) 
 				for(j=1;j<10;j++){
 					levl[x+i][y+j].typ = HWALL;
 					if(m_at(x+i, y+j)) rloc(m_at(x+i, y+j), TRUE);
 				}
-			for(i=sizebig1;i<(sizetot-sizebig2);i++) 
+			for(i=sizebig1;i<(sizetot-sizebig2)+1;i++) 
 				for(j=1;j<10;j++){
 					levl[x+i][y+j].typ = GRASS;
 					levl[x+i][y+j].lit = 1;
@@ -3475,7 +3948,7 @@ mkpluvillage()
 			levl[x][y+3].typ = TLCORNER;
 			levl[x][y+3].lit = 1;
 			
-			switch(rn2(7)){
+			switch(rn2(8)){
 				case 0: //Random store
 					for(i=1;i<sizebig1;i++){
 						for(j=1+3;j<4+3;j++){
@@ -3562,6 +4035,24 @@ mkpluvillage()
 						  nroom+ROOMOFFSET, TRUE, TRUE);
 					add_room(x+1, y+4, x+sizebig1-2, y+6, TRUE, OROOM, TRUE);
 				break;
+				case 7:{//prison
+					struct obj *chest;
+					for(i=1;i<sizebig1;i++){
+						for(j=1+3;j<4+3;j++){
+							levl[x+i][y+j].typ = ROOM;
+							levl[x+i][y+j].lit = 1;
+						}
+					}
+					chest = mksobj_at(CHEST, x+1,y+5, NO_MKOBJ_FLAGS);
+					makemon(&mons[PM_CUPRILACH_RILMANI], x+1,y+5, MM_ADJACENTOK|MM_NOCOUNTBIRTH);
+					for(i=1;i<sizebig1;i+=2){
+						mkneucell(x+i,y+3,chest,0,1);
+						mkneucell(x+i,y+7,chest,0,-1);
+					}
+					flood_fill_rm(x+1, y+5,
+						  nroom+ROOMOFFSET, TRUE, TRUE);
+					add_room(x+1, y+4, x+sizebig1-2, y+6, TRUE, OROOM, TRUE);
+				}break;
 			}
 			add_door(x+sizebig1,y+5,&rooms[roomtypb]);
 			fill_room(&rooms[roomtypb], FALSE);
@@ -3656,8 +4147,7 @@ mkpluvillage()
 			levl[x+sizetot+1-sizebig2][y+3].typ = TLCORNER;
 			levl[x+sizetot+1-sizebig2][y+3].lit = 1;		
 			
-			// switch(rn2(6)){
-			switch(rn2(7)){
+			switch(rn2(8)){
 				case 0: //Shop
 					for(i=sizetot+1-sizebig2+1;i<sizetot+1;i++){
 						for(j=1+3;j<4+3;j++){
@@ -3745,6 +4235,24 @@ mkpluvillage()
 						  nroom+ROOMOFFSET, TRUE, TRUE);
 					add_room(x+sizetot+1-sizebig2+1, y+4, x+sizetot+1-1, y+6, TRUE, OROOM, TRUE);
 				break;
+				case 7:{//prison
+					struct obj *chest;
+					for(i=sizetot+1-sizebig2+1;i<sizetot+1;i++){
+						for(j=1+3;j<4+3;j++){
+							levl[x+i][y+j].typ = ROOM;
+							levl[x+i][y+j].lit = 1;
+						}
+					}
+					chest = mksobj_at(CHEST, x+sizetot,y+5, NO_MKOBJ_FLAGS);
+					makemon(&mons[PM_CUPRILACH_RILMANI], x+1,y+5, MM_ADJACENTOK|MM_NOCOUNTBIRTH);
+					for(i=sizetot;i>=sizetot+1-sizebig2+1;i-=2){
+						mkneucell(x+i,y+3,chest,0,1);
+						mkneucell(x+i,y+7,chest,0,-1);
+					}
+					flood_fill_rm(x+sizetot-1, y+5,
+						  nroom+ROOMOFFSET, TRUE, TRUE);
+					add_room(x+1, y+4, x+sizebig1-2, y+6, TRUE, OROOM, TRUE);
+				}break;
 			}
 			add_door(x+sizetot+1-sizebig2,y+5,&rooms[roomtypb]);
 			fill_room(&rooms[roomtypb], FALSE);
@@ -3939,9 +4447,6 @@ mkferrufort()
 			for(i=5;i<wallrange-5;i++)
 				for(j=5;j<wallrange-5;j++)
 					levl[x+i][y+j].typ = GRASS;
-			
-			//Make the walls look pretty
-			wallification(x, y, x+wallrange-1, y+wallrange-1);
 			
 			//place outer door
 			if(rn2(2)){
@@ -5182,18 +5687,57 @@ place_lolth_vaults()
 }
 
 void
+place_elfquest_forest_features()
+{
+	if(Is_qhome(&u.uz)){
+		int i = d(1,4);
+		for(; i > 0; i--)
+			mkelfhut(TREE, GRASS, 0);
+		// i = rn2(3) ? 1 : d(1,3);
+		i = 1;
+		for(; i > 0; i--)
+			mkelffountain();
+		wallification(1,0,COLNO-1,ROWNO-1);
+	}
+	else if(u.uz.dlevel < qlocate_level.dlevel){
+		int i = rn2(4) + rn2(4);
+		for(; i > 0; i--)
+			mkelfhut(TREE, GRASS, 0);
+		for(i=rn1(20,20); i > 0; i--)
+			mktowntree();
+		wallification(1,0,COLNO-1,ROWNO-1);
+		i = 4 + d(4,4);
+		for(; i > 0; i--)
+			mkwraithclearing(0);
+	}
+	else if(u.uz.dlevel > qlocate_level.dlevel && !Is_nemesis(&u.uz)){
+		int i;
+		int j;
+		for(i = d(8,4); i > 0; i--)
+			mkorccave(3);
+		for(j = 0; j < 6; j++){
+			for(i = d(1,4); i > 0; i--)
+				mkorccave(4);
+			for(i = d(5,2); i > 0; i--)
+				mkorccave(3);
+		}
+		wallification(1,0,COLNO-1,ROWNO-1);
+	}
+}
+
+void
 place_chaos_forest_features()
 {
 	if(In_mordor_forest(&u.uz)){
 		int i = 6 + d(2,6);
 		mkforest12river();
 		for(; i > 0; i--)
-			mkelfhut(0);
+			mkelfhut(TREE, SOIL, 0);
 		wallification(1,0,COLNO-1,ROWNO-1);
 	} else if(Is_ford_level(&u.uz)){
 		int i = 3 + d(2,3);
 		for(; i > 0; i--)
-			mkelfhut(1);
+			mkelfhut(TREE, SOIL, 1);
 		i = 1 + d(3,4);
 		for(; i > 0; i--)
 			mkwraithclearing(1);
@@ -5221,6 +5765,36 @@ place_chaos_forest_features()
 		for(;i>0;i--)
 			mkmordorfossil(STONE);
 	}
+}
+
+void
+place_drow_healer_features()
+{
+	int i;
+	int j = 12;
+	while(j-->0){
+		for(i = d(2,8); i > 0; i--)
+			mkdrowshanty(4);
+		if(!(qlocate_level.dlevel == (u.uz.dlevel-1))){
+			for(i = d(1,4); i > 0; i--)
+				mkdrowshanty(5);
+			for(i = d(1,4); i > 0; i--)
+				mkdrowshanty(3);
+		}
+		else for(i = d(2,4); i > 0; i--)
+			mkdrowshanty(3);
+	}
+	if(qlocate_level.dlevel == (u.uz.dlevel-1)){
+		for (i = 1; i<COLNO; i++){
+			for (j = 0; j<ROWNO; j++){
+				if (levl[i][j].typ == MOAT){
+					levl[i][j].typ = VWALL;
+					levl[i][j].wall_info |= W_NONDIGGABLE;
+				}
+			}
+		}
+	}
+	wallification(1,0,COLNO-1,ROWNO-1);
 }
 
 void
@@ -5264,6 +5838,7 @@ place_neutral_features()
 		for(; n > 0; n--)
 			mkpluhomestead();
 	} 
+	wallification(1, 0, COLNO - 1, ROWNO - 1);
 }
 
 void
@@ -5314,7 +5889,7 @@ place_law_features()
 {
 	int n;
 	if(Is_path(&u.uz)){
-		int cutoff = rn2(9);
+		int cutoff = (on_level(&path3_level,&u.uz) && is_june()) ? min_ints(3, rn2(9)): rn2(9);
 		for(n = 4; n > 0; n--)
 			mkaph(cutoff >= n);
 		if(!rn2(10)){
@@ -5625,7 +6200,7 @@ int sx,sy;
 	int i,j;
 	for(i=sx-1;i<sx+2;i++)
 		for(j=sy-1;j<sy+2;j++){
-			if(!isok(i,j) || !(IS_ROCK(levl[i][j].typ) || IS_WALL(levl[i][j].typ))){
+			if(!isok(i,j) || !(IS_ROCK(levl[i][j].typ) || IS_WALL(levl[i][j].typ)) || t_at(i,j)){
 				return FALSE;
 			}
 		}
@@ -5793,6 +6368,27 @@ int sx,sy;
 								};
 			mtyp = ROLL_FROM(prisoners);
 		}break;
+		case PM_AURUMACH_RILMANI:{
+			int prisoners[] = {
+									//Non-true-neutral outsiders
+									PM_JUSTICE_ARCHON, PM_SHIELD_ARCHON, PM_SWORD_ARCHON,
+									PM_ARCADIAN_AVENGER, PM_PORO_AULON,
+									PM_MOVANIC_DEVA, PM_MONADIC_DEVA, PM_ASTRAL_DEVA,
+									PM_LILLEND, 
+									PM_COURE_ELADRIN, PM_NOVIERE_ELADRIN, PM_BRALANI_ELADRIN, PM_FIRRE_ELADRIN, PM_SHIERE_ELADRIN, 
+									PM_FORMIAN_CRUSHER, 
+									PM_HORNED_DEVIL, PM_ERINYS, PM_BARBED_DEVIL, PM_BONE_DEVIL, PM_ICE_DEVIL,
+									PM_SUCCUBUS, PM_INCUBUS, PM_VROCK, PM_DAUGHTER_OF_BEDLAM, PM_UNEARTHLY_DROW, PM_LILITU, PM_NALFESHNEE, PM_MARILITH,
+
+									//Non-neutral adventurers
+									PM_ARCHEOLOGIST, PM_ARCHEOLOGIST, PM_BARBARIAN, PM_BARBARIAN, PM_BARD, PM_BARD,
+									PM_KNIGHT, PM_KNIGHT, PM_MADMAN, PM_MADWOMAN, PM_PIRATE, PM_PIRATE,
+									PM_NOBLEMAN, PM_NOBLEWOMAN, PM_RANGER, PM_RANGER, PM_ROGUE, PM_ROGUE,
+									PM_VALKYRIE, PM_VALKYRIE, PM_SAMURAI, PM_SAMURAI,
+									PM_DEMINYMPH
+								};
+			mtyp = ROLL_FROM(prisoners);
+		}break;
 		case PM_OGRE_KING:{
 			int prisoners[] = {
 									PM_ELF_LORD, PM_ELF_LADY, PM_ELVENKING, PM_ELVENQUEEN,
@@ -5868,6 +6464,23 @@ int sx,sy;
 								};
 			mtyp = ROLL_FROM(prisoners);
 		}break;
+		case PM_Y_CULTIST_PATRON:{
+			int prisoners[] = {
+				PM_GREEN_ELF, PM_GREEN_ELF, PM_GREY_ELF, PM_GREY_ELF, PM_ELF_LORD, PM_ELF_LADY,
+				PM_HEDROW_WARRIOR, PM_HEDROW_WIZARD, PM_DROW_CAPTAIN, PM_DROW_CAPTAIN, PM_DROW_MATRON,
+				PM_HEDROW_WARRIOR, PM_HEDROW_WIZARD, PM_DROW_CAPTAIN, PM_DROW_CAPTAIN, PM_DROW_MATRON,
+				PM_DROW, PM_DROW, PM_DROW, PM_DROW, PM_DROW,
+				PM_DRIDER, PM_PRIESTESS_OF_GHAUNADAUR, PM_STJARNA_ALFR,
+				PM_PEN_A_MENDICANT, PM_PEN_A_MENDICANT, PM_MENDICANT_DRIDER, PM_MENDICANT_SPROW,
+				PM_DWARF, PM_DWARF, PM_DWARF_CLERIC, PM_DWARF_LORD,
+				PM_DWARF, PM_DWARF, PM_DWARF_CLERIC, PM_DWARF_LORD,
+				PM_NOBLEMAN, PM_NOBLEWOMAN, PM_RANGER, PM_RANGER, PM_ROGUE, PM_WIZARD, PM_KNIGHT, PM_KNIGHT,
+				PM_HOBBIT, PM_GNOME, PM_ALLIANCE_VANGUARD, PM_ALLIANCE_VANGUARD,
+				PM_UNEARTHLY_DROW, PM_UNEARTHLY_DROW, PM_LILITU, PM_MARILITH,
+				PM_DEMINYMPH
+			};
+			mtyp = ROLL_FROM(prisoners);
+		}break;
 		case PM_AVATAR_OF_LOLTH:{
 			int prisoners[] = {
 				PM_WOODLAND_ELF, PM_GREEN_ELF, PM_GREY_ELF, PM_GREY_ELF, PM_ELF_LORD, PM_ELVENKING,
@@ -5888,6 +6501,27 @@ int sx,sy;
 				PM_LILLEND, PM_ANGEL, PM_ALEAX,
 				PM_COURE_ELADRIN, PM_NOVIERE_ELADRIN, PM_BRALANI_ELADRIN, PM_FIRRE_ELADRIN, PM_SHIERE_ELADRIN, PM_GHAELE_ELADRIN, 
 				PM_TULANI_ELADRIN, PM_GAE_ELADRIN, PM_BRIGHID_ELADRIN, PM_UISCERRE_ELADRIN, PM_CAILLEA_ELADRIN, PM_KUKER
+			};
+			mtyp = ROLL_FROM(prisoners);
+		}break;
+		case PM_NECROMANCER:{
+			int prisoners[] = {
+				PM_GNOME, PM_GNOME, PM_GNOME, PM_GNOME, PM_GNOME_LORD, PM_GNOME_LADY, PM_TINKER_GNOME, PM_GNOMISH_WIZARD,
+				PM_GREEN_ELF, PM_GREEN_ELF, PM_GREY_ELF, PM_GREY_ELF, PM_ELF_LORD, PM_ELF_LADY,
+				PM_HEDROW_WARRIOR, PM_HEDROW_WARRIOR, PM_DROW_CAPTAIN, PM_DROW_CAPTAIN, PM_DROW_MATRON,
+				PM_HOBBIT, PM_HOBBIT, PM_HOBBIT, PM_HOBBIT,
+				PM_DWARF, PM_DWARF, PM_DWARF_CLERIC, PM_DWARF_LORD,
+				PM_DEMINYMPH,
+				PM_GNOME, PM_GNOME, PM_GNOME, PM_GNOME, PM_GNOME_LORD, PM_GNOME_LADY, PM_TINKER_GNOME, PM_GNOMISH_WIZARD,
+				PM_GREEN_ELF, PM_GREEN_ELF, PM_GREY_ELF, PM_GREY_ELF, PM_ELF_LORD, PM_ELF_LADY,
+				PM_HEDROW_WARRIOR, PM_HEDROW_WARRIOR, PM_DROW_CAPTAIN, PM_DROW_CAPTAIN, PM_DROW_MATRON,
+				PM_HOBBIT, PM_HOBBIT, PM_HOBBIT, PM_HOBBIT,
+				PM_DWARF, PM_DWARF, PM_DWARF_CLERIC, PM_DWARF_LORD,
+				PM_DEMINYMPH,
+				PM_JUSTICE_ARCHON, PM_SWORD_ARCHON, PM_SHIELD_ARCHON,
+				PM_MOVANIC_DEVA, PM_MONADIC_DEVA, PM_ASTRAL_DEVA,
+				PM_LILLEND,
+				PM_COURE_ELADRIN, PM_NOVIERE_ELADRIN, PM_BRALANI_ELADRIN, PM_FIRRE_ELADRIN, PM_SHIERE_ELADRIN, PM_GHAELE_ELADRIN
 			};
 			mtyp = ROLL_FROM(prisoners);
 		}break;
@@ -5918,7 +6552,12 @@ int sx,sy;
 	}
 	if(mtyp != NON_PM){
 		int equipLevel = ((kingtype == PM_TITAN || kingtype == PM_EMBRACED_DROWESS || kingtype == PM_AVATAR_OF_LOLTH || kingtype == PM_DEEPEST_ONE || kingtype == PM_ORC_OF_THE_AGES_OF_STARS) ? MM_GOODEQUIP : 0);
-		mon = makemon(&mons[mtyp], sx, sy, NO_MM_FLAGS|equipLevel);
+		if(is_mplayer(&mons[mtyp])){
+			mon = mk_mplayer(&mons[mtyp], sx, sy, NO_MM_FLAGS|equipLevel);
+		}
+		else {
+			mon = makemon(&mons[mtyp], sx, sy, NO_MM_FLAGS|equipLevel);
+		}
 		if(mon){
 			if(mon->mtyp == PM_SURYA_DEVA){
 				struct monst *blade;
@@ -5941,6 +6580,9 @@ int sx,sy;
 			if(kingtype == PM_VAMPIRE_LADY){
 				mon->female = FALSE;
 				set_template(mon, VAMPIRIC);
+			}
+			if(kingtype == PM_EMBRACED_DROWESS){
+				set_mcan(mon, TRUE);
 			}
 			if(polyps){
 				mon->ispolyp = TRUE;
@@ -5986,8 +6628,69 @@ int dx,dy;
 			obj_extract_self(obj);
 			add_to_container(chest, obj);
 		}
-		(void)mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
-		mon->entangled = SHACKLES;
+		obj = mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
+		if(obj){
+			mon->entangled_otyp = SHACKLES;
+			mon->entangled_oid = obj->o_id;
+		}
+	}
+}
+
+STATIC_OVL void
+mkneucell(sx, sy, chest, dx, dy)
+int sx,sy;
+struct obj *chest;
+int dx,dy;
+{
+	struct monst *mon;
+	struct obj *obj;
+	int i;
+	int j;
+	for(i = sx-1; i < sx+2; i++){
+		for(j = sy-1; j < sy+2; j++){
+			if(!isok(i,j))
+				return;
+		}
+	}
+	for(i = sx-1; i < sx+2; i++){
+		for(j = sy-1; j < sy+2; j++){
+			levl[i][j].typ = VWALL;
+			levl[i][j].lit = FALSE;
+			block_point(i,j);
+			if(m_at(i, j)) rloc(m_at(i, j), TRUE);
+		}
+	}
+	levl[sx][sy].typ = CORR;
+	unblock_point(sx,sy);
+
+	levl[sx-dx][sy-dy].typ = IRONBARS;
+	unblock_point(sx-dx,sy-dy);
+
+	levl[sx+dx][sy+dy].typ = DOOR;
+	levl[sx+dx][sy+dy].doormask = D_LOCKED;
+
+	mon = prisoner(PM_AURUMACH_RILMANI, sx, sy);
+	if(mon){
+		for(obj = mon->minvent; obj; obj = mon->minvent){
+			mon->misc_worn_check &= ~obj->owornmask;
+			update_mon_intrinsics(mon, obj, FALSE, FALSE);
+			if (obj->owornmask & W_WEP){
+				setmnotwielded(mon,obj);
+				MON_NOWEP(mon);
+			}
+			if (obj->owornmask & W_SWAPWEP){
+				setmnotwielded(mon,obj);
+				MON_NOSWEP(mon);
+			}
+			obj->owornmask = 0L;
+			obj_extract_self(obj);
+			add_to_container(chest, obj);
+		}
+		obj = mongets(mon, SHACKLES, NO_MKOBJ_FLAGS);
+		if(obj){
+			mon->entangled_otyp = SHACKLES;
+			mon->entangled_oid = obj->o_id;
+		}
 	}
 }
 
@@ -6072,7 +6775,7 @@ struct mkroom *sroom;
 				mon = makemon(&mons[ctype], tx, ty, NO_MM_FLAGS|MM_NOCOUNTBIRTH);
 			if(mon) {
 				mon->msleeping = 1;
-				if(ctype == PM_DROW_MATRON || ctype == PM_EMBRACED_DROWESS){
+				if(ctype == PM_DROW_MATRON || ctype == PM_EMBRACED_DROWESS || ctype == PM_Y_CULTIST_PATRON){
 					set_curhouse(mon->mfaction);
 				}
 			}
@@ -6101,16 +6804,20 @@ struct mkroom *sroom;
 				PM_DROW_MATRON,
 				PM_EMBRACED_DROWESS
 			};
-			
-			do ctype = kingnums[rn2(SIZE(kingnums))];
-			while((tooweak(ctype, minmlev) || toostrong(ctype,maxmlev)) && tries++ < 40);
+			if(In_quest(&u.uz) && Role_if(PM_HEALER) && Race_if(PM_DROW)){
+				ctype = !rn2(3) ? PM_DROW_MATRON : rn2(2) ? PM_Y_CULTIST_PATRON : PM_EMBRACED_DROWESS;
+			}
+			else {
+				do ctype = kingnums[rn2(SIZE(kingnums))];
+				while((tooweak(ctype, minmlev) || toostrong(ctype,maxmlev)) && tries++ < 40);
+			}
 			if(tries < 40){
 				mon = makemon(&mons[ctype], tx, ty, NO_MM_FLAGS|MM_NOCOUNTBIRTH);
 				if(mon) {
 					mon->msleeping = 1;
 					if (type==COURT) {
 						//Set curhouse to coordinate equipment
-						if(ctype == PM_DROW_MATRON || ctype == PM_EMBRACED_DROWESS){
+						if(ctype == PM_DROW_MATRON || ctype == PM_EMBRACED_DROWESS || ctype == PM_Y_CULTIST_PATRON){
 							set_curhouse(mon->mfaction);
 						}
 						//Note: court monsters are always part of rodney's forces.
@@ -6148,7 +6855,8 @@ struct mkroom *sroom;
 	    for(sy = sroom->ly; sy <= sroom->hy; sy++) {
 		if(type == COURT){
 			if(ctype == PM_KOBOLD_LORD || ctype == PM_VAMPIRE_LORD || ctype == PM_VAMPIRE_LADY || ctype == PM_DROW_MATRON ||
-				ctype == PM_EMBRACED_DROWESS || ctype == PM_DEEPEST_ONE || ctype == PM_ORC_OF_THE_AGES_OF_STARS
+				ctype == PM_EMBRACED_DROWESS || ctype == PM_Y_CULTIST_PATRON ||
+				ctype == PM_DEEPEST_ONE || ctype == PM_ORC_OF_THE_AGES_OF_STARS
 			){
 				levl[tx][ty].lit = 0;
 				sroom->rlit = 0;
@@ -6396,7 +7104,7 @@ struct mkroom *sroom;
 		  level.flags.has_court = 1;
 
 		  sy = sroom->ly -2;
-		  for(sx = sroom->lx+1; sx <= sroom->hx-1; sx++){
+		  if(!In_outlands(&u.uz)) for(sx = sroom->lx+1; sx <= sroom->hx-1; sx++){
 			if(!isok(sx, sy))
 				break;//Won't get any less off the map.
 			if(cell_spot(sx, sy) && rn2(4)){
@@ -7393,6 +8101,8 @@ mksgardenstatueat(x,y)
 	t = t_at(x, y);
 	if(!t || t->ttyp == STATUE_TRAP){
 		otmp = mksobj_at(STATUE, x, y, MKOBJ_ARTIF);
+		otmp->corpsenm = rndshape((void *) 0); //Allows for mildly out of depth monsters
+		fix_object(otmp);
 		if(otmp){
 			if(t && t->ttyp != MAGIC_PORTAL)
 				deltrap(t);
@@ -7412,6 +8122,7 @@ mksgarden()
 {
 	register struct mkroom *sroom;
 	register int x, y;
+	struct obj *otmp;
 	for(sroom = &rooms[level.flags.sp_lev_nroom]; ; sroom++){
 		if(sroom->hx < 0) return;  /* from mkshop: Signifies out of rooms? */
 		if(sroom - rooms >= nroom) {
@@ -7435,12 +8146,16 @@ mksgarden()
 	}
 	
 	for(x = sroom->lx+1; x <= sroom->hx-1; x++) {
-		mksobj_at(FIGURINE, x, sroom->hy-1, MKOBJ_ARTIF);
-		mksobj_at(FIGURINE, x, sroom->ly+1, MKOBJ_ARTIF);
+		otmp = mksobj_at(FIGURINE, x, sroom->hy-1, MKOBJ_ARTIF);
+		otmp->corpsenm = rndshape((void *) 0); //Allows for mildly out of depth monsters
+		otmp = mksobj_at(FIGURINE, x, sroom->ly+1, MKOBJ_ARTIF);
+		otmp->corpsenm = rndshape((void *) 0); //Allows for mildly out of depth monsters
 	}
 	for(y = (sroom->ly)+2; y <= (sroom->hy)-2; y++) {
-		mksobj_at(FIGURINE, sroom->hx-1, y, MKOBJ_ARTIF);
-		mksobj_at(FIGURINE, sroom->lx+1, y, MKOBJ_ARTIF);
+		otmp = mksobj_at(FIGURINE, sroom->hx-1, y, MKOBJ_ARTIF);
+		otmp->corpsenm = rndshape((void *) 0); //Allows for mildly out of depth monsters
+		otmp = mksobj_at(FIGURINE, sroom->lx+1, y, MKOBJ_ARTIF);
+		otmp->corpsenm = rndshape((void *) 0); //Allows for mildly out of depth monsters
 	}
 }
 
@@ -7916,6 +8631,30 @@ courtmon(kingnum)
 				return &mons[PM_CAVE_LIZARD];
 			if(i> 5)
 				return &mons[PM_LARGE_CAVE_LIZARD];
+			if(i> 0)
+				return &mons[PM_QUASIT];
+		break;
+		
+		case PM_Y_CULTIST_PATRON:
+			i = rnd(100);
+			if(i>90)
+				return &mons[PM_LILITU];
+			if(i>80)
+				return &mons[PM_Y_CULTIST_WIZARD];
+			if(i>45)
+				return &mons[PM_Y_CULTIST_FIGHTER];
+			if(i>40)
+				return &mons[PM_Y_CULTIST];
+			if(i>30)
+				return &mons[PM_Y_CULTIST_MATRON];
+			if(i>25)
+				return &mons[PM_CHUUL];
+			if(i>15)
+				return &mons[PM_KUO_TOA];
+			if(i>10)
+				return &mons[PM_KUO_TOA_WHIP];
+			if(i> 5)
+				return &mons[PM_VROCK];
 			if(i> 0)
 				return &mons[PM_QUASIT];
 		break;

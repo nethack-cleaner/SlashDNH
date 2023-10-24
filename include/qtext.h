@@ -5,9 +5,9 @@
 #ifndef QTEXT_H
 #define QTEXT_H
 
-#define N_HDR	42		/* Maximum number of categories */
+#define N_HDR	43		/* Maximum number of categories */
 #define LEN_HDR 3		/* Maximum length of a category name */
-#define ROLECOUNT 39
+#define ROLECOUNT 40
 
 struct qtmsg {
 	int	msgnum;

@@ -387,57 +387,29 @@ curses_init_nhcolors()
 #ifdef TEXTCOLOR
     if (has_colors()) {
         use_default_colors();
-        init_pair(1, COLOR_BLACK, -1);
-        init_pair(2, COLOR_RED, -1);
-        init_pair(3, COLOR_GREEN, -1);
-        init_pair(4, COLOR_YELLOW, -1);
-        init_pair(5, COLOR_BLUE, -1);
-        init_pair(6, COLOR_MAGENTA, -1);
-        init_pair(7, COLOR_CYAN, -1);
-        init_pair(8, -1, -1);
-
-        {
-            int i;
-
-            int clr_remap[16] = {
-                COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
-                COLOR_BLUE,
-                COLOR_MAGENTA, COLOR_CYAN, -1, COLOR_WHITE,
-                COLOR_RED + 8, COLOR_GREEN + 8, COLOR_YELLOW + 8,
-                COLOR_BLUE + 8,
-                COLOR_MAGENTA + 8, COLOR_CYAN + 8, COLOR_WHITE + 8
-            };
-
-            for (i = 0; i < (COLORS >= 16 ? 16 : 8); i++) {
-                init_pair(17 + (i * 2) + 0, clr_remap[i], COLOR_RED);
-                init_pair(17 + (i * 2) + 1, clr_remap[i], COLOR_BLUE);
-            }
-
-            boolean hicolor = FALSE;
-            if (COLORS >= 16)
-                hicolor = TRUE;
-
-            /* Work around the crazy definitions above for more background colors... */
-            for (i = 0; i < (COLORS >= 16 ? 16 : 8); i++) {
-                init_pair((hicolor ? 49 : 9) + i, clr_remap[i], COLOR_GREEN);
-                init_pair((hicolor ? 65 : 33) + i, clr_remap[i], COLOR_YELLOW);
-                init_pair((hicolor ? 81 : 41) + i, clr_remap[i], COLOR_MAGENTA);
-                init_pair((hicolor ? 97 : 49) + i, clr_remap[i], COLOR_CYAN);
-                init_pair((hicolor ? 113 : 57) + i, clr_remap[i], COLOR_WHITE);
-            }
-        }
-
-
-        if (COLORS >= 16) {
-            init_pair(9, COLOR_WHITE, -1);
-            init_pair(10, COLOR_RED + 8, -1);
-            init_pair(11, COLOR_GREEN + 8, -1);
-            init_pair(12, COLOR_YELLOW + 8, -1);
-            init_pair(13, COLOR_BLUE + 8, -1);
-            init_pair(14, COLOR_MAGENTA + 8, -1);
-            init_pair(15, COLOR_CYAN + 8, -1);
-            init_pair(16, COLOR_WHITE + 8, -1);
-        }
+		int i, j;
+		int cnum = COLORS >= 16 ? 16 : 8;
+		int clr_remap[16] = {
+			COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
+			COLOR_BLUE,
+			COLOR_MAGENTA, COLOR_CYAN, -1, COLOR_WHITE,
+			COLOR_RED + 8, COLOR_GREEN + 8, COLOR_YELLOW + 8,
+			COLOR_BLUE + 8,
+			COLOR_MAGENTA + 8, COLOR_CYAN + 8, COLOR_WHITE + 8
+		};
+		/* standard colors */
+		for (i=0; i < cnum; i++) {
+			init_pair(i+1, clr_remap[i], -1);
+		}
+		/* with backgrounds */
+		for (i=0; i < cnum; i++) {
+			for (j=0; j < cnum; j++) {
+				if (i != j)
+					init_pair(j + i*cnum + cnum + 1, clr_remap[j], clr_remap[i]);
+				else
+					init_pair(j + i*cnum + cnum + 1, COLOR_BLACK, clr_remap[j]);
+			}
+		}
 
         if (can_change_color()) {
             /* Preserve initial terminal colors */
@@ -667,7 +639,7 @@ curses_choose_character()
         if (n > 1)
             sel =
                 curses_character_dialog(choices,
-                                        "Choose one of the following roles:");
+                                        "Choose one of the following roles:", FALSE);
         else
             sel = 0;
         if (sel >= 0)
@@ -728,7 +700,7 @@ curses_choose_character()
             if (n > 1)
                 sel =
                     curses_character_dialog(choices,
-                                            "Choose one of the following races:");
+                                            "Choose one of the following races:", FALSE);
             else
                 sel = 0;
             if (sel >= 0)
@@ -787,7 +759,7 @@ curses_choose_character()
             if (n > 1)
                 sel =
                     curses_character_dialog(choices,
-                                            "Choose one of the following genders:");
+                                            "Choose one of the following genders:", FALSE);
             else
                 sel = 0;
             if (sel >= 0)
@@ -846,7 +818,7 @@ curses_choose_character()
             if (n > 1)
                 sel =
                     curses_character_dialog(choices,
-                                            "Choose one of the following alignments:");
+                                            "Choose one of the following alignments:", FALSE);
             else
                 sel = 0;
             if (sel >= 0)
@@ -867,13 +839,70 @@ curses_choose_character()
             flags.initalign = sel;
         }
     }
+
+    /* Select a species, if necessary */
+    /* force compatibility with role/race/gender */
+    if (flags.initspecies < 0 ||
+        !validspecies(flags.initrole, flags.initrace, flags.initgend, flags.initspecies)) {
+        if (flags.initspecies == ROLE_RANDOM || flags.randomall){
+            flags.initspecies = pick_species(flags.initrole, flags.initrace,
+                                         flags.initgend, PICK_RANDOM);
+            if (flags.initspecies < 0)
+                flags.initspecies = randspecies(flags.initrole, flags.initrace, flags.initgend);
+        } else {
+            /* Count the number of valid species */
+            n = 0;              /* number valid */
+            for (i = 0; i < ROLE_SPECIES; i++) {
+                if (validspecies(flags.initrole, flags.initrace, flags.initgend, i))
+                    n++;
+            }
+            if (n == 0) {
+                for (i = 0; i < ROLE_SPECIES; i++)
+                    if (validspecies(flags.initrole, flags.initrace, flags.initgend, i))
+                        n++;
+            }
+
+            choices = (const char **) alloc(sizeof (char *) * (n + 1));
+            pickmap = (int *) alloc(sizeof (int) * (n + 1));
+            for (n = 0, i = 0; i < ROLE_SPECIES; i++) {
+                if (validspecies(flags.initrole, flags.initrace, flags.initgend, i)) {
+                    choices[n] = species[i].name;
+                    pickmap[n++] = i;
+                }
+            }
+            choices[n] = (const char *) 0;
+            /* Permit the user to pick, if there is more than one */
+            if (n > 1)
+                sel =
+                    curses_character_dialog(choices,
+                                            "Choose one of the following species:", TRUE);
+            else
+                sel = 0;
+            if (sel >= 0)
+                sel = pickmap[sel];
+            else if (sel == ROLE_NONE) {        /* Quit */
+                clearlocks();
+                curses_bail(0);
+            }
+            flags.initspecies = sel;
+            free(choices);
+            free(pickmap);
+        }
+        if (flags.initspecies == ROLE_RANDOM) {
+            sel = pick_species(flags.initrole, flags.initrace,
+                             flags.initgend, PICK_RANDOM);
+            if (sel < 0)
+                sel = randspecies(flags.initrole, flags.initrace, flags.initgend);
+            flags.initspecies = sel;
+        }
+    }
 }
 
 
 /* Prompt user for character race, role, alignment, or gender */
 
 int
-curses_character_dialog(const char **choices, const char *prompt)
+curses_character_dialog(const char **choices, const char *prompt, boolean inorder)
 {
     int count, count2, ret, curletter;
     char used_letters[52];
@@ -886,11 +915,13 @@ curses_character_dialog(const char **choices, const char *prompt)
 
     for (count = 0; choices[count]; count++) {
         curletter = tolower(choices[count][0]);
-        for (count2 = 0; count2 < count; count2++) {
-            if (curletter == used_letters[count2]) {
-                curletter = toupper(curletter);
-            }
-        }
+	if(!inorder){
+		for (count2 = 0; count2 < count; count2++) {
+		    if (curletter == used_letters[count2]) {
+			curletter = toupper(curletter);
+		    }
+		}
+	} else curletter = 'a' + count;
 
         identifier.a_int = (count + 1); /* Must be non-zero */
         curses_add_menu(wid, NO_GLYPH, &identifier, curletter, 0,

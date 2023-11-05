@@ -1867,6 +1867,14 @@ misc_levelport:
 	else
 	    onquest();
 	assign_level(&u.uz0, &u.uz); /* reset u.uz0 */
+	if (!achieve.introquestsolved && achieve.chosenapath && !achieve.introlevel2) {
+		achieve.introlevel2 = TRUE;
+		if (Role_if(PM_ROLE_PLAYER)) {
+			if (Race_if(PM_VAMPIRE)) {
+				makemon(&mons[PM_ELDER_BRAIN], 33, 18, MM_ADJACENTSTRICT | NO_MINVENT);
+			}
+		}
+	}
 
 #ifdef INSURANCE
 	save_currentstate();
@@ -2082,16 +2090,14 @@ deferred_goto()
 			dfr_post_san = 0;
 		}
 	}
-	if (!achieve.introquest) { //Delete path back to intro quest
-		if (achieve.istraitor || achieve.isgladiator) {
-			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor
-			if (u.ualign.type == A_LAWFUL) {
-				flags.initalign = 0;
-			} else if (u.ualign.type == A_NEUTRAL) {
-				flags.initalign = 1;
-			} else if (u.ualign.type == A_CHAOTIC) {
-				flags.initalign = 2;
-			}
+	if (!achieve.introquestsolved) { //Delete path back to intro quest
+		u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type); // Re set the starting alignment based on Traitor
+		if (u.ualign.type == A_LAWFUL) {
+			flags.initalign = 0;
+		} else if (u.ualign.type == A_NEUTRAL) {
+			flags.initalign = 1;
+		} else if (u.ualign.type == A_CHAOTIC) {
+			flags.initalign = 2;
 		}
 		if (achieve.clockarc) {
 			achieve.clockarc = FALSE;
@@ -2131,7 +2137,7 @@ deferred_goto()
 			}
 		}
 
-		achieve.introquest = 1;
+		achieve.introquestsolved = TRUE;
 		struct trap *t = t_at(u.ux, u.uy);
 
 		if (t) {

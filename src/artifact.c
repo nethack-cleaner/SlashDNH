@@ -3232,7 +3232,7 @@ int * truedmgptr;
 	/* The black arrow deals 4x damage + 108, and overkills Smaug */
 	if (otmp->oartifact == ART_BLACK_ARROW) {
 		if (goodpointers) {
-			*plusdmgptr += basedmg * 3 + 108;
+			*plusdmgptr += basedmg * 3 + 148;
 			if (mon->mtyp == PM_SMAUG)
 				*truedmgptr += mon->mhpmax;
 		}
@@ -12994,8 +12994,6 @@ do_passive_attacks()
 		dosnake(&youmonst);
 	if(is_tailslap_mtyp(youracedata))
 		dotailslap(&youmonst);
-	if(uring_art(ART_STAR_EMPEROR_S_RING))
-		dostarblades(&youmonst);
 	//Note: The player never gets Eladrin vines, starblades, or storms
 	
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon){

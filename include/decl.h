@@ -234,6 +234,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
    	xchar d_szoff_dnum;
     d_level	d_szund_level;
    	xchar d_szund_dnum;
+    d_level	d_szrpl_level;
+   	xchar d_szrpl_dnum;
     d_level	d_szcon_level;
     xchar	d_nowhere_dnum;
     d_level	d_nowhere_level;
@@ -447,6 +449,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define szoff_level		(dungeon_topology.d_szoff_level)
 #define szund_dnum		(dungeon_topology.d_szund_dnum)
 #define szund_level		(dungeon_topology.d_szund_level)
+#define szrpl_dnum		(dungeon_topology.d_szrpl_dnum)
+#define szrpl_level		(dungeon_topology.d_szrpl_level)
 #define szcon_dnum		(dungeon_topology.d_szcon_dnum)
 #define sigil_level		(dungeon_topology.d_sigil_level)
 	/*Chaos Quest*/
@@ -924,7 +928,9 @@ struct u_achieve {
         Bitfield(garnet_spear,1);        /* Used a garnet tip spear*/
         Bitfield(inked_up,1);        /* Fell tat */
         Bitfield(new_races,1);        /* Ascended a new race */
-		Bitfield(introquest,1);
+		Bitfield(introquestsolved,1);
+		Bitfield(introlevel2,1);
+		Bitfield(introboss,1);
 		Bitfield(talkedileader,1);
 		Bitfield(talkedtleader,1);
 		Bitfield(talkedgladiatorleader,1);
@@ -939,19 +945,33 @@ struct u_achieve {
 		Bitfield(lightsaberpro,1);
 		Bitfield(demogorgonmet,1);
 		Bitfield(lamashtumet,1);
-		Bitfield(hasrage,1);
 		Bitfield(rageattacking,1);
 		Bitfield(drinkrage,1);
+		Bitfield(rewardintro,1);
 		Bitfield(idontcareaboutpain,1);
 		Bitfield(berserkerrage,1);
+		Bitfield(fireform,1);
+		Bitfield(steadysteps,1);
+		Bitfield(deathstrike,1);
+		Bitfield(classdead,1);
+		int haseaten;
+		int currentstagger;
+		int currentchi;
+		int maxchi;
+		int currentrage;
+		int maxrage;
+		int currentchug;
+		int currentendurance;
+		int maxendurance;
+		int roleplaystart;
+		int unlimitedwishes;
+		int pathwayprogress;
 		int chosenapath;
 		int lastpropcheck;
 		int berserkerrageused;
 		int berserkerrageend;
 		int dontcarepain;
 		int damagetaken;
-		int maxrage;
-		int currentrage;
 		int demonproperty1h;
 		int demonproperty2h;
 		int demonproperty3h;

@@ -60,6 +60,7 @@ BRANCH:     "Starting Zone Chf" @ (2, 0) portal
 BRANCH:     "Starting Zone Fir" @ (2, 0) portal
 BRANCH:     "Starting Zone Off" @ (2, 0) portal
 BRANCH:     "Starting Zone Und" @ (2, 0) portal
+BRANCH:     "Starting Zone Rpl" @ (2, 0) portal
 BRANCH:     "Starting Zone Drow" @ (2, 0) portal
 BRANCH:     "Starting Zone Dnob" @ (2, 0) portal
 BRANCH:     "Starting Zone Aand" @ (2, 0) portal
@@ -590,6 +591,15 @@ DESCRIPTION:    mazelike
 ALIGNMENT:      neutral
 LEVEL:		"sz0und" "none" @ (1, 0)
 LEVEL:		"szund" "none" @ (2, 0)
+
+#
+# Starting Zone rpl
+#
+DUNGEON:		"Starting Zone Rpl" "none" (2, 0)
+DESCRIPTION:    mazelike
+ALIGNMENT:      neutral
+LEVEL:		"sz0rpl" "none" @ (1, 0)
+LEVEL:		"szrpl" "none" @ (2, 0)
 
 #
 # Starting Zone aand

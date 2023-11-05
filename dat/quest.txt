@@ -66,62 +66,25 @@
 #   QT_STARTTRAITOR3	206 - Traitor - has the quest item!
 #   QT_STARTLEADER4	409 - Starter leader - after delivery
 #   QT_STARTTRAITOR4	410 - after delivery
-#   QT_BERSERKERLEADER4	411 - after delivery
 #   QT_GLADIATORLEADER4	412 - after delivery
 #   QT_OTHERCHOICE	209 - One of the other choices after you chose something
-#		The choice is set to the id type of the monster type that you aligned with.
+#	The choice is set to the id type of the monster type that you aligned with.
 #   QT_GLADIATORLEADER1	300 - Gladiator leader first time
 #   QT_GLADIATORLEADER2	301 - Gladiator leader, 2nd time but no quest item
 #   QT_GLADIATORLEADER3	302 - Gladiator leader - has the quest item!
-#   QT_SALAMANDERLEADER1 303
-#   QT_SALAMANDERLEADER2 304
-#   QT_SALAMANDERLEADER3 305
-#   QT_BERSERKERLEADER1	306
-#   QT_BERSERKERLEADER2	307
-#   QT_BERSERKERLEADER3	308
-#   QT_BLINDLEADER1	309
-#   QT_BLINDLEADER2	310
-#   QT_BLINDLEADER3	311
-#   QT_PACIFISTLEADER1 312
-#   QT_PACIFISTLEADER2 313
-#   QT_PACIFISTLEADER3 314
-#   QT_YEOMANLEADER1 315
-#   QT_YEOMANLEADER2 316
-#   QT_YEOMANLEADER3 317
-#   QT_PALADINLEADER1 318
-#   QT_PALADINLEADER2 319
-#   QT_PALADINLEADER3 320
-#   QT_UNDERTAKERLEADER1	321
-#   QT_UNDERTAKERLEADER2	322
-#   QT_UNDERTAKERLEADER3	323
-#   QT_DIVERLEADER1	324
-#   QT_DIVERLEADER2	325
-#   QT_DIVERLEADER3	326
-#   QT_NINJALEADER1	327
-#   QT_NINJALEADER2	328
-#   QT_NINJALEADER3	329
-#   QT_LOCKSMITHLEADER1	330
-#   QT_LOCKSMITHLEADER2	331
-#   QT_LOCKSMITHLEADER3	332
-#   QT_DRUNKLEADER1	333
-#   QT_DRUNKLEADER2	334
-#   QT_DRUNKLEADER3	335
-#   QT_HACKERLEADER1	336
-#   QT_HACKERLEADER2	337
-#   QT_HACKERLEADER3	338
-#   QT_ROLEPLAYERLEADER1	339
-#   QT_ROLEPLAYERLEADER2	340
-#   QT_ROLEPLAYERLEADER3	341
-#   QT_ZOOLEADER1	342
-#   QT_ZOOLEADER2	343
-#   QT_ZOOLEADER3	344
-#   QT_SACRIFICELEADER1	345
-#   QT_SACRIFICELEADER2	346
-#   QT_SACRIFICELEADER3	347
-#   QT_GHOULLEADER1	348
-#   QT_GHOULLEADER2	349
-#   QT_GHOULLEADER3	350
+#   QT_BERSERKERLEADER1 306 - Berserker leader first time
+#   QT_BERSERKERLEADER2 307 - Berserker leader, 2nd time but no quest item
+#   QT_BERSERKERLEADER3 308 - Berserker leader - has the quest item!
+#   QT_BERSERKERLEADER5 309 - Berserker leader - violated code early
+#   QT_BERSERKERLEADER6 310 - Berserker leader - your race doesn't allow this
+#   QT_BERSERKERLEADER4	411 - Berserker leader after delivery
 #   QT_STARTCLOCKARC1	368
+#   QT_ALTQUESTLEADER	413 Killing the intro quest nemesis
+#   QT_ALTQUESTAWARD	414 The award after killing the intro nemesis
+#   QT_ALTQUESTMISS	415 Missing something for reward for killing intro nemesis
+#	Role player 'Monte Hall' is slated as a QT_BERSERKERLEADER1
+#	Role player 'Diablo Immortal' is slated as a QT_GLADIATORLEADER1
+#	Monk 'Moe Szyslak' is slated as a QT_BERSERKERLEADER1
 
 #
 #	Archeologist
@@ -1522,16 +1485,16 @@ I have just lost a bet with my brother.  But alas, it is one
 I am glad to lose!  Take this token as should be of
 benefit to your quest ahead!
 %E
-%Cc Bar 00308
+%Cc Bar 00306
 I am Groo the Wanderer and if you aren't a mendicant you can
 can join me as a Berserker.  The most powerful that anyone
 can be!  If so, bring me a Katana similar to one of mine.
 %E
-%Cc Bar 00309
+%Cc Bar 00307
 Hold on, let me slay some more.  Come back when you have
 something to show me.
 %E
-%Cc Bar 00310
+%Cc Bar 00308
 Ah, that's a mighty fine blade you have there!  Take
 this token, it will help your journey!
 %E
@@ -1826,7 +1789,272 @@ speaks of you.
 
 "This is all I know, %p.  I hope it will help you."
 %E
+#
+#	Drunken Master
+#
+%Cc Drm 00001
+Warily you scan your surroundings, all of your senses alert for signs
+of possible danger.  Off in the distance, you can %x the familiar shapes
+of %H.
 
+But why, you think, should %l be there?
+
+Suddenly, the hairs on your neck stand on end as you detect the aura of
+evil magic in the air.
+
+Without thought, you ready your weapon, and mutter under your breath:
+
+    "By %d, there will be blood spilt today."
+%E
+%Cp Drm 00002
+Once again, you near %H.  You know that %l
+will be waiting.
+%E
+%Cp Drm 00003
+Again, and you think possibly for the last time, you approach
+%H.
+%E
+%Cp Drm 00005
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Drm 00006
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Drm 00007
+"There has been little treasure to loot, since the horde arrived."
+%E
+%Cp Drm 00008
+"The horde is mighty in numbers, but they have little courage."
+%E
+%Cp Drm 00009
+"%lC is a strange one, but he has helped defend us."
+%E
+%Cp Drm 00010
+"The battles here have been good -- our enemies' blood soaks the soil!"
+%E
+%Cp Drm 00011
+"Remember that glory is crushing your enemies beneath your feet!"
+%E
+%Cp Drm 00012
+"Times will be good again, now that the horde is vanquished."
+%E
+%Cp Drm 00013
+"You have brought our clan much honor in defeating %n."
+%E
+%Cp Drm 00014
+"You will be a worthy successor to %l."
+%E
+%Cc Drm 00015
+"Ah, %p.  You have returned at last.  The world is in dire
+need of your help.  There is a great quest you must undertake.
+
+"But first, I must see if you are ready to take on such a challenge."
+%E
+%Cp Drm 00016
+"%p, you are back.  Are you ready now for the challenge?"
+%E
+%Cp Drm 00017
+"Again, you stand before me, %p.  Surely you have prepared yourself."
+%E
+%Cc Drm 00018
+"Pah!  You have betrayed the gods, %p.  You will never attain
+the glory which you aspire to.  Your failure to follow the true path has
+closed this future to you.
+
+"I will protect these people as best I can, but soon %n will overcome
+me and destroy all who once called you %s.  Now begone!"
+%E
+%Cc Drm 00019
+"%p, I fear that you are as yet too inexperienced to face
+%n.  Only %Ra with the help of %d could ever hope to
+defeat him."
+%E
+%Cc Drm 00020
+"%pC!  You have wandered from the path of the %a!
+If you attempt to overcome %n in this state, he will surely
+enslave your soul.  Your only hope, and ours, lies in your purification.
+Go forth, and return when you feel ready."
+%E
+%Cc Drm 00021
+"The world is in great need of your assistance, %p.
+
+"About six months ago, I learned that a mysterious sorcerer, known
+as %n, had begun to gather a large group of cutthroats and brigands
+about him.
+
+"At about the same time, these people you once rode with `liberated' a
+potent magical talisman, %o, from a Turanian caravan.
+
+"%nC and his Black Horde swept down upon %i and defeated
+the people there, driving them out into the desert.  He has taken
+%o, and seeks to bend it to his will.  I detected the
+subtle changes in the currents of fate, and joined these people.
+Then I sent forth a summons for you.
+
+"If %n can bend %o to his will, he will become
+almost indestructible.  He will then be able to enslave the minds of
+men across the world.  You are the only hope.  The gods smile upon you,
+and with %d behind you, you alone can defeat %n.
+
+"You must go to %i.  From there, you can track down
+%n, defeat him, and return %o to us.  Only
+then will the world be safe."
+%E
+%Cp Drm 00025
+"%nC is strong in the dark arts, but not immune to cold steel."
+%E
+%Cp Drm 00026
+"Remember that %n is a great sorcerer.  He lived in the time
+of Atlantis."
+%E
+%Cp Drm 00027
+"If you fail, %p, I will not be able to protect these people long."
+%E
+%Cp Drm 00028
+"To enter %i, you must be very stealthy.  The horde will be on
+guard."
+%E
+%Cp Drm 00029
+"Call upon %d in your time of need."
+%E
+%Cp Drm 00030
+"May %d protect you, and guide your steps."
+%E
+%Cp Drm 00031
+"If you can lay hands upon %o, carry it for good fortune."
+%E
+%Cp Drm 00032
+"I cannot stand against %ns sorcery.  But %d will help you."
+%E
+%Cp Drm 00033
+"Do not fear %n.  I know you can defeat him."
+%E
+%Cp Drm 00034
+"You have a great road to travel, %p, but only after you defeat
+%n."
+%E
+%Cc Drm 00035
+The scent of water comes to you in the desert breeze.  You know that
+you have located %i.
+%E
+%Cp Drm 00036
+Yet again you have a chance to infiltrate %i.
+%E
+%Cc Drm 00040
+The hairs on the nape of your neck lift as you sense an energy in the
+very air around you.  You fight down a primordial panic that seeks to
+make you turn and run.  This is surely the lair of %n.
+%E
+%Cp Drm 00041
+Yet again you feel the air around you heavy with malevolent magical energy.
+%E
+%Cc Drm 00050
+"So.  This is what that second rate sorcerer %l sends to do his bidding.
+I have slain many before you.  You shall give me little sport.
+
+"Prepare to die, %c."
+%E
+%Cp Drm 00051
+"I have wasted too much time on you already.  Now, you shall die."
+%E
+%Cp Drm 00052
+"You return yet again, %c!  Are you prepared for death now?"
+%E
+%Cp Drm 00053
+"I shall have %o back, you pitiful excuse for %ca.
+And your life as well."
+%E
+%Cp Drm 00060
+"My pets will dine on your carcass tonight!"
+%E
+%Cp Drm 00061
+"You are a sorry excuse for %ra."
+%E
+%Cp Drm 00062
+"Run while you can, %c.  My next spell will be your last."
+%E
+%Cp Drm 00063
+"I shall use your very skin to bind my next grimoire."
+%E
+%Cp Drm 00064
+"%d cannot protect you now.  Here, you die."
+%E
+%Cp Drm 00065
+"Your %a nature makes you weak.  You cannot defeat me."
+%E
+%Cp Drm 00066
+"Come, %c.  I shall kill you, then unleash the horde on your tribe."
+%E
+%Cp Drm 00067
+"Once you are dead, my horde shall finish off %l, and your tribe."
+%E
+%Cp Drm 00068
+"Fight, %c, or are you afraid of the mighty %n?"
+%E
+%Cp Drm 00069
+"You have failed, %c.  Now, my victory is complete."
+%E
+%Cc Drm 00070
+As you pick up %o, you feel the power of it
+flowing through your hands.  It seems to be in two or more places
+at once, even though you are holding it.
+%E
+%Cc Drm 00080
+%nC falls to the ground, and utters a last curse at you.  Then his
+body fades slowly, seemingly dispersing into the air around you.  You
+slowly become aware that the overpowering aura of magic in the air has
+begun to fade.
+%E
+%Cc Drm 00081
+When %l sees %o, he smiles, and says:
+
+    Well done, %p.  You have saved the world from certain doom.
+    What, now, should be done with %o?
+
+    These people, brave as they are, cannot hope to guard it from
+    other sorcerers who will detect it, as surely as %n did.
+
+    Take %o with you, %p.  It will guard you in
+    your adventures, and you can best guard it.  You embark on a
+    quest far greater than you realize.
+
+    Remember me, %p, and return when you have triumphed.  I
+    will tell you then of what you must do.  You will understand when the
+    time comes.
+%E
+%Cc Drm 00082
+%l gazes reverently at %o, then back at you.
+
+"You are its keeper now, and the time has come to resume your search
+for the Amulet.  %Z await your return through the
+magic portal which brought you here."
+%E
+%Cp Drm 00090
+"Tell us, %p, have you fared well on your great quest?"
+%E
+%Cc Drm 00091
+"This is wondrous, %p.  I feared that you could not possibly
+succeed in your quest, but here you are in possession of the Amulet
+of Yendor!
+
+"I have studied the texts of the magi constantly since you left.  In
+the Book of Skelos, I found this:
+
+    %d will cause a child to be sent into the world.  This child is to
+    be made strong by trial of battle and magic, for %d has willed it so.
+    It is said that the child of %d will recover the Amulet of Yendor
+    that was stolen from the Creator at the beginning of time.
+
+"As you now possess the amulet, %p, I suspect that the Book
+speaks of you.
+
+    The child of %d will take the Amulet, and travel to the Astral
+    Plane, where the Great Temple of %d is to be found.  The Amulet
+    will be sacrificed to %d, there on His altar.  Then the child will
+    stand by %d as champion of all %cP for eternity.
+
+"This is all I know, %p.  I hope it will help you."
+%E
 #
 #	Blind Master
 #
@@ -2305,10 +2533,10 @@ flowing through your hands.  It seems to be in two or more places
 at once, even though you are holding it.
 %E
 %Cc Rpl 00080
-%nC falls to the ground, and utters a last curse at you.  Then his
-body fades slowly, seemingly dispersing into the air around you.  You
-slowly become aware that the overpowering aura of magic in the air has
-begun to fade.
+Your nemesis has fallen?  But that doesn't make sense, the game
+has just begun?
+I need to return to my GM and ask about this, surely there is
+a reward!
 %E
 %Cc Rpl 00081
 When %l sees %o, he smiles, and says:
@@ -2360,8 +2588,65 @@ speaks of you.
 
 "This is all I know, %p.  I hope it will help you."
 %E
+%Cc Rpl 00200
+You are ready to start your game.  Unfortunately all your friends bailed
+and so you will have to "solo" this one.  Fortunately your Game Master
+has shown up but he's in a really weird mood and wants instead of letting
+you choose anything you want he said that how you traverse this initial
+maze will decide a lot of how powerful he lets you be and what challenges
+he puts in front of you!
 
-
+Take the key in front of you.  It will open 3 artifact doors only.  So
+choose wisely!
+%E
+%Cc Rpl 00300
+As your GM today, I need to pay my rent and I think you need to ascend!
+I'll tell you what, you pay me, I will give you some boosts.
+We don't need to tell anyone else, so just keep it hush hush!
+%E
+%Cc Rpl 00301
+I don't want to waste my time being your GM unless I get paid, "friend".
+So give me your initial items and we can get started.
+%E
+%Cc Rpl 00306
+As your GM today, I feel like running some power gaming!
+Give me your long sword, boots, helmet, armor, buckler, and gloves
+and I will exchange them for the beginning of your true power!
+%E
+%Cc Rpl 00307
+I can't start you on your way to true power without getting your
+initial items!
+%E
+%Cc Rpl 00308
+Now you are on your way to true power!  Oh we are going to have
+a lot of fun today.  I'm feeling like testing the limits of
+power gaming with you today!
+I have made your key work one more time.  Open the door behind me
+for your starting POWER GEAR!
+After you have your gear find and defeat your nemsis.
+You will need to use your gear to its fullest.  Be careful!
+%E
+%Cc Rpl 00411
+Let's get this game going, stop talking to me and start adventuring.
+%E
+%Cc Rpl 00413
+Your nemesis has fallen?  But that doesn't make sense, the game
+has just begun?
+I need to return to my GM and see what the deal is.  Maybe
+he didn't prepare a long enough game for today?
+But probably he will have some nice rewards for me!
+%E
+%Cc Rpl 00414
+Nice, that Elder Brain was really anoying to have around, killing
+people with telepathy all the time!
+Let's get this power train kicked up!
+I think these items will really get you slaying non stop!
+%E
+%Cc Rpl 00415
+I see you handled the Elder Brain but I cannot reward you
+without a trade for your Black Arrow.  You can keep the
+Black Arrow, but I think my reward is better :)
+%E
 
 #
 #	Bard
@@ -6688,6 +6973,29 @@ in this life, but I hope to at %ds feet."
 %Cc Mon 00207
 %E
 %Cc Mon 00208
+%E
+%Cc Mon 00306
+The path of the drunken master is a difficult one.  If you would
+choose this path, you must bring me a cask of ale so that we
+can start the process.
+%E
+%Cc Mon 00307
+In order for me to lead you on your way to being a drunken master
+I need you to bring me a cask of ale.
+Without that I can't help you and without it, it just shows you
+don't have the determination to choose this difficult path!
+%E
+%Cc Mon 00308
+Oh yeah, this is the good stuff.  Let me 
+%E
+%Cc Mon 00309
+Sorry, you have already violated the conduct of the drunken master
+and you cannot choose this path.  Maybe in another life.
+%E
+%Cc Mon 00310
+Hi friend, I teach the way of the Drunken Master and your race
+has not learned to fully embrace drinking at its core.
+So have fun, but you will have to choose another path.
 %E
 %Cc Mon 00369
 %E

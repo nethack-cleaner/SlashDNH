@@ -2802,7 +2802,11 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 			the(xname(otmp)), (otmp->quan == 1L) ? "it" : "one");
 		if (yn_function(buf,ynchars,'n')=='n') return 0;
 	}
-	
+	achieve.haseaten++;	
+	if (Role_if(PM_DRUNKEN_MASTER)) {
+	    You("cannot eat. Your faith prevents it.");
+	    return MOVE_CANCELLED;
+	}
 	if (u.uedibility || u.sealsActive&SEAL_BUER || goodsmeller(youracedata)) {
 		int res = edibility_prompts(otmp);
 		if (res) {
@@ -3935,10 +3939,18 @@ gethungry()	/* as time goes by - called by moveloop() and domove() */
 		else if(u.uhs > HUNGRY) hungermod *=5;	/* WEAK or hungrier */
 	}
 	if(Role_if(PM_MONK)){
-		if(u.uhs >= HUNGRY) hungermod *= 2; /* HUNGRY or hungrier */
+		if(u.uhs >= HUNGRY) {
+			hungermod *= 2; /* HUNGRY or hungrier */
+			if (!achieve.introquestsolved) {
+				hungermod *= 4; // During the starter quest monks can go a long time before starving
+			}
+		}
 	}
 	if(Role_if(PM_MONK) && u.unull){
 		hungermod *= 2;
+	}
+	if (Role_if(PM_DRUNKEN_MASTER)) {
+		hungermod *= 3;
 	}
 	
 	//Elder vampires can go for longer without blood

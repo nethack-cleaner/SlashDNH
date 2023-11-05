@@ -2650,6 +2650,9 @@ base_uac()
             uac -= (reduce + 14);
         }
     }
+	if (achieve.steadysteps) {
+		uac -= 5;
+	}
 	if (moves < achieve.dodge) {
 		uac -= 10;
 	}
@@ -2670,6 +2673,9 @@ base_uac()
 	}
 	if (moves < achieve.agressivestrike) {
 		uac += 10;
+	}
+	if (achieve.classdead) {
+		uac += 5;
 	}
 	if (ubracerworn && !uarm) {
 		struct obj *otmp = ubracerworn;
@@ -2841,6 +2847,9 @@ int base_nat_udr()
 	
 	if(u.sealsActive&SEAL_ECHIDNA)
 		udr += 2;
+	
+	if (achieve.classdead)
+		udr -= 2;
 	
 	if(u.specialSealsActive&SEAL_COSMOS) udr += (spiritDsize()+1)/2;
 	if(u.sealsActive&SEAL_ECHIDNA) udr += max((ACURR(A_CON)-9)/4, 0);
@@ -3030,11 +3039,6 @@ int depth;
 		bas_udr += 3;
 	}
 	/* Wearing the Star Emperor's ring adds up to +3 magical DR to the head */
-	if(uring_art(ART_STAR_EMPEROR_S_RING)
-		&& (slot&HEAD_DR)
-	){
-		bas_udr += u.ulevel/10;
-	}
 	/* Vaul is not randomized, and contributes to magical DR */
 	if (u.uvaul) {
 		int offset = 0;

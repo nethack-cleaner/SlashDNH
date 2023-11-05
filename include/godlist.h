@@ -555,6 +555,16 @@ GOD_V2("Pluto",         A_NEUTRAL, NEUTRAL_HOLINESS,
 GOD_V2("Thanatos",             A_CHAOTIC, UNHOLY_HOLINESS,
 	MINIONS(Cdemons)
 	),
+/* Role Player */
+GOD_V2("Lathander",        A_LAWFUL, HOLY_HOLINESS,
+	MINIONS(Langels)
+	),
+GOD_V2("Oghma",         A_NEUTRAL, NEUTRAL_HOLINESS,
+	MINIONS(NElemen)
+	),
+GOD_V2("Hades",             A_CHAOTIC, UNHOLY_HOLINESS,
+	MINIONS(Cdemons)
+	),
 
 /* the great terminator */
 GOD_V2((const char *)0, 0, 0, MINIONS())

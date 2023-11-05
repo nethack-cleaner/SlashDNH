@@ -43,6 +43,7 @@ struct attack basicattack  = { AT_WEAP, AD_PHYS, 1, 4 };
 struct attack grapple = { AT_HUGS, AD_PHYS, 0, 6 };	/* for grappler's grasp */
 struct attack acu_tent = { AT_TENT, AD_DRIN, 1, 4 };	/* for acu tentacles */
 struct attack sala_tuch = { AT_TUCH, AD_FIRE, 1, 4 };	/* for sala tuch */
+struct attack fire_form_attack = { AT_TUCH, AD_FIRE, 2, 6 };	/* for sala tuch */
 struct attack sala_grab = { AT_HUGS, AD_FIRE, 1, 4 };	/* for sala grab */
 
 /* getvis()
@@ -2302,20 +2303,6 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
 			/* this is applied to all acceptable attacks; no subout marker is necessary */
 		}
 	}
-	else if (youagr && uring_art(ART_STAR_EMPEROR_S_RING) && !by_the_book){
-		if ((attk->aatyp == AT_WEAP && !uwep) ||
-			(attk->aatyp == AT_XWEP && !uswapwep && u.twoweap) ||
-			(attk->aatyp == AT_MARI && !is_android(youracedata))	/* (andr/gyn)oids' mari attacks are psi-held, not actual arms */
-			){
-			/* replace the attack */
-			attk->aatyp = attk->aatyp == AT_WEAP ? AT_SRPR : 
-						  attk->aatyp == AT_XWEP ? AT_XSPR : AT_MSPR;
-			attk->adtyp = AD_STAR;
-			attk->damn = 4;
-			attk->damd = 8;
-			/* this is applied to all acceptable attacks; no subout marker is necessary */
-		}	
-	}
 	/* the bestial claw combined with the beast's embrace (or insanity for monsters) allows for a powerful extra claw attk */
 	{
 	struct obj * otmp = (youagr ? uwep : MON_WEP(magr));
@@ -2385,6 +2372,10 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
 	if (youagr && !Upolyd && Race_if(PM_SALAMANDER) && u.ulevel >= 14 && is_null_attk(attk) && !by_the_book && !(*subout&SUBOUT_SALA2)) {
 		*attk = sala_grab;
 		*subout |= SUBOUT_SALA2;
+	}
+	if (youagr && achieve.fireform && is_null_attk(attk) && !by_the_book && !(*subout&SUBOUT_FIREFORM)) {
+		*attk = fire_form_attack;
+		*subout |= SUBOUT_FIREFORM;
 	}
 
 	/* players can get a whole host of spirit attacks */
@@ -3057,6 +3048,11 @@ int dmg;				/* damage to deal */
 		return (MM_HIT|MM_DEF_DIED);
 	}
 
+	if (Role_if(PM_DRUNKEN_MASTER) && youdef) {
+		achieve.damagetaken += dmg;
+		achieve.currentstagger += dmg;
+		dmg = 0;
+	}
 	/* debug */
 	if (wizard && (iflags.wizcombatdebug & WIZCOMBATDEBUG_DMG) && WIZCOMBATDEBUG_APPLIES(magr, mdef))
 		pline("(dmg = %d)", dmg);
@@ -3068,7 +3064,7 @@ int dmg;				/* damage to deal */
 	/* mhitu */
 	if (youdef) {
 		achieve.damagetaken += dmg;
-		if (achieve.hasrage && dmg > 2) {
+		if (achieve.maxrage > 0 && dmg > 2) {
 			int addto = 1;
 			if (achieve.drinkrage) {
 				addto++;
@@ -3837,6 +3833,9 @@ int *shield_margin;
 				if (activeFightingForm(FFORM_SHII_CHO) && MON_WEP(mdef) && is_lightsaber(MON_WEP(mdef)) && litsaber(MON_WEP(mdef))){
 					wepn_acc -= 5;
 				}
+			}
+			if (youagr && is_lightsaber(weapon) && (Role_if(PM_JEDI) || Role_if(PM_ROLE_PLAYER))) {
+				wepn_acc += 10; //Especially accurate with a light saber
 			}
 		}
 		if(has_spear_point(weapon,LUCKSTONE))
@@ -13602,7 +13601,13 @@ int vis;						/* True if action is at all visible to the player */
 	}
 	/* if the player is attacking with a wielded weapon, increment conduct */
 	if (youagr && valid_weapon_attack && (melee || thrust)) {
-		u.uconduct.weaphit++;
+		if (Role_if(PM_DRUNKEN_MASTER)) {
+			pline("You cannot bring yourself to attack in a way that is not holy");
+			result = xdamagey(magr, mdef, attk, 0);
+			return result;
+		} else {
+			u.uconduct.weaphit++;
+		}
 	}
 	/* precision multiplier */
 	if (fired && launcher &&								// Firing ammo from a launcher
@@ -15419,6 +15424,12 @@ int vis;						/* True if action is at all visible to the player */
 	}
 
 	/* Sum reduceable damage */
+	if (achieve.deathstrike && youagr && (natural_strike || unarmed_punch)) {
+		achieve.deathstrike = FALSE;
+		basedmg = basedmg * 3;
+		bonsdmg = bonsdmg * 3;
+		snekdmg = snekdmg * 3;
+	}
 	subtotl = basedmg
 		+ artidmg
 		+ bonsdmg
@@ -17090,6 +17101,19 @@ boolean endofchain;			/* if the attacker has finished their attack chain */
 							break;
 					}
 				}
+			}
+			if (youdef && achieve.fireform &&
+				(multi >= 0) &&														/* not paralyzed */
+				distmin(x(magr), y(magr), x(mdef), y(mdef)) == 1 &&					/* in close quarters */
+				!(result&MM_AGR_DIED)												/* attacker is still alive */
+				){
+					int newvis = vis&VIS_NONE;
+					if (vis&VIS_MAGR)
+						newvis |= VIS_MDEF;
+					if (vis&VIS_MDEF)
+						newvis |= VIS_MAGR;
+					You("burn those that attack you!");
+					newres = xmeleehity(mdef, magr, &fire_form_attack, (struct obj **)0, newvis, 0, FALSE);
 			}
 		}
 	}

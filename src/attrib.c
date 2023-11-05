@@ -1205,28 +1205,22 @@ calc_total_maxhp()
 		*hpmax = rawmax + u.uhpbonus + u.uhpmod;
 	}
 	}
-	if (achieve.hasrage) {
-		if (Role_if(PM_BARBARIAN) || Role_if(PM_CAVEMAN) || Role_if(PM_CONVICT) || Role_if(PM_MADMAN)) {
-			achieve.maxrage = 8 + (u.ulevel - 1);
-		} else if (Role_if(PM_GLADIATOR)) {
-			achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
-		} else if (Role_if(PM_DRUNK)) {
-			achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
-			if (u.ulevel > 9) {
-				achieve.maxrage += u.ulevel;
-			}
-		} else if ((Role_if(PM_OFFICER) || Role_if(PM_JEDI)) && u.ualign.type == A_CHAOTIC) {
-			achieve.maxrage = 8 + ((u.ulevel - 1) * 4);
-		} else if (Role_if(PM_BERSERKER)) {
-			achieve.maxrage = 8 + ((u.ulevel - 1) * 8);
-			if (u.ulevel >= 15) {
-				achieve.drinkrage = TRUE; //Always angry
-				achieve.idontcareaboutpain = TRUE; //Always angry
-			}
+	if (Role_if(PM_BARBARIAN) || Role_if(PM_CAVEMAN) || Role_if(PM_CONVICT) || Role_if(PM_MADMAN)) {
+		achieve.maxrage = 8 + (u.ulevel - 1);
+	} else if (Role_if(PM_GLADIATOR)) {
+		achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
+	} else if (Role_if(PM_DRUNK)) {
+		achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
+		if (u.ulevel > 9) {
+			achieve.maxrage += u.ulevel;
 		}
-		if (achieve.currentrage > achieve.maxrage) {
-			achieve.currentrage = achieve.maxrage;
-		}
+	} else if ((Role_if(PM_OFFICER) || Role_if(PM_JEDI)) && u.ualign.type == A_CHAOTIC) {
+		achieve.maxrage = 8 + ((u.ulevel - 1) * 4);
+	} else if (Role_if(PM_BERSERKER)) {
+		achieve.maxrage = 8 + ((u.ulevel - 1) * 8);
+	}
+	if (achieve.currentrage > achieve.maxrage) {
+		achieve.currentrage = achieve.maxrage;
 	}
 	
 	if(*hpmax < 1) *hpmax = 1;

@@ -866,6 +866,7 @@ struct level_map {
 	{ "szfir",	&szfir_level },
 	{ "szoff",	&szoff_level },
 	{ "szund",	&szund_level },
+	{ "szrpl",	&szrpl_level },
 	{ "szaand",	&szaand_level },
 	{ "szdrow",	&szdrow_level },
 	{ "szdnob",	&szdnob_level },
@@ -1091,6 +1092,11 @@ init_dungeons()		/* initialize the "dungeon" structs */
 		}
 		if (!Role_if(PM_FIREFIGHTER)) {
 			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Fir")) {
+				dodungeon = FALSE;
+			}
+		}
+		if (!Role_if(PM_ROLE_PLAYER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Rpl")) {
 				dodungeon = FALSE;
 			}
 		}

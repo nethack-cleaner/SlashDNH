@@ -4130,12 +4130,6 @@ boolean goodequip;
 			otmp->oward = YELLOW_SIGN;
 		}
 
-		if(Role_if(PM_MADMAN) && Race_if(PM_ELF)){
-			otmp = mksartifact(ART_STAR_EMPEROR_S_RING);
-			otmp->spe = 2;
-			mpickobj(mtmp, otmp);
-		}
-
 #ifndef GOLDOBJ
 		mtmp->mgold = (long)rn1(500,5000);
 		u.spawnedGold += mtmp->mgold;
@@ -15073,7 +15067,7 @@ rndmonst()
 	else minmlev = zlevel / 6;
 	/* determine the level of the strongest monster to make. */
 	maxmlev = (zlevel + u.ulevel) / 2;
-	if (achieve.introquest) {
+	if (achieve.introquestsolved) {
 		maxmlev += 3; /* max monster level is increased by 3 */
 	}
 	if (In_archipelago(&u.uz)) {
@@ -15383,7 +15377,7 @@ rndmonst()
 	    minmlev = zlevel / 6;
 	    /* determine the level of the strongest monster to make. */
 	    maxmlev = (zlevel + u.ulevel) / 2;
-		if (achieve.introquest) {
+		if (achieve.introquestsolved) {
 			maxmlev += 3; /* max monster level is increased by 3 */
 		}
 		if (achieve.clockarc) {

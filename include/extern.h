@@ -278,7 +278,7 @@ E void NDECL(bot);
 #ifdef DUMP_LOG
 E void FDECL(bot1str, (char *));
 E void FDECL(bot2str, (char *, boolean, int, boolean));
-E void FDECL(bot3str, (char *, boolean, int));
+E void FDECL(bot3str, (char *newbot3, boolean terminal_output, int abbrev));
 #endif
 
 /* ### cmd.c ### */

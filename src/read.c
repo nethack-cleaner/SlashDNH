@@ -3877,7 +3877,12 @@ char *in_buff;
 				continue;	//try again
 			}
 			(void)cant_create(&which, FALSE);
-			whichpm = &mons[which];
+            extern int monstr[];
+            if (monstr[which] > u.ulevel + 10) {
+                whichpm = rndmonst();
+			} else {
+				whichpm = &mons[which];
+			}
 		}
 		// validate that the creature falls within the restrictions placed on it
 		if (ma_require || mg_restrict || gen_restrict){

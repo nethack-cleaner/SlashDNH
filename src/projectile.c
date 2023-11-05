@@ -1,5 +1,6 @@
 #include "hack.h"
 #include "xhity.h"
+#include "qtext.h"
 
 STATIC_DCL void FDECL(do_digging_projectile, (struct monst *, struct obj *, int, int));
 STATIC_DCL void FDECL(destroy_projectile, (struct monst *, struct obj *));
@@ -24,6 +25,7 @@ extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
 extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
 extern void FDECL(breakobj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P, BOOLEAN_P));
 extern void FDECL(autoquiver, (boolean));
+static void FDECL(latechangerole, (char *));
 
 /* some damn global variables because passing these as parameters would be a lot to add for something so rarely used.
  * The player threw an object, these save what the player's state was just prior to throwing so it can be restored */
@@ -2051,6 +2053,7 @@ int * hurtle_dist;
 		/* some things maximize range */
 		if ((launcher->oartifact == ART_LONGBOW_OF_DIANA) ||
 			(launcher->oartifact == ART_XIUHCOATL) ||
+			(!achieve.introquestsolved && Role_if(PM_ROLE_PLAYER)) ||
 			(launcher->oartifact == ART_PEN_OF_THE_VOID && launcher->ovar1_seals&SEAL_EVE && mvitals[PM_ACERERAK].died > 0)
 			) {
 			range = 1000;
@@ -2159,6 +2162,10 @@ dothrow()
 	result = uthrow(ammo, launcher, shotlimit, FALSE);
 
 	save_cm = oldsave_cm;
+	if (Role_if(PM_DRUNKEN_MASTER)) {
+		pline("You have violated the holiness of the Drunken way.  You are no longer worthy.");
+		latechangerole("Monk");
+	}
 	return (result);
 }
 
@@ -3772,4 +3779,22 @@ long timeout;
 		(const char *)0);
 
 	return;
+}
+
+static void
+latechangerole(role)
+char *role;
+{
+    int i;
+    for (i = 0; i < ROLECOUNT; i++) {
+        if (!strcmp(roles[i].name.m, role)) {
+            flags.initrole = i;
+            urole = roles[i];
+        }
+    }
+	losexp(0, 0, 1, TRUE);
+	change_luck(-5);
+	godlist[u.ualign.god].anger += 3;
+	adjalign(-5);
+	achieve.classdead = TRUE;
 }

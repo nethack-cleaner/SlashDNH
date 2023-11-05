@@ -967,9 +967,9 @@ you_regen_hp()
 	if (!oddregen && ((uandroid && !u.usleep) || Race_if(PM_ETHEREALOID))) {
 		if (achieve.lastpropcheck < moves) {
 			achieve.lastpropcheck = moves;
-			if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
-				achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
-			}
+			//if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
+			//	achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
+			//}
 			if (achieve.berserkerrageend > 0) {
 				achieve.berserkerrageend--;
 			}
@@ -1068,7 +1068,7 @@ you_regen_hp()
 	}
 	
 	// regeneration 'trinsic
-	if (Regeneration && !is_vampire(youracedata)){
+	if (Regeneration && !is_vampire(youracedata)) {
 		perX += HEALCYCLE;
 	}
 	
@@ -1109,7 +1109,7 @@ you_regen_hp()
 			if((*hp) > (*hpmax))
 				(*hp) = (*hpmax);
 		}
-	} else if (!(nonliving(youracedata) && !uandroid) &&	// not nonliving, however, androids auto-repair while asleep
+	} else if (!(nonliving(youracedata) && !uandroid && !is_vampire(youracedata)) &&	// not nonliving, however, androids auto-repair while asleep
 		(wtcap < MOD_ENCUMBER || !u.umoved) &&		// not overloaded
 		!(uwep && uwep->oartifact == ART_ATMA_WEAPON && uwep->lamplit && !Drain_resistance && rn2(4)) // 3 in 4 chance of being prevented by Atma Weapon
 			// Question for Chris: what if instead, do "reglevel /= 4;" when atma weapon is active, placed either before or after the minimum reg 1 check?
@@ -1164,6 +1164,13 @@ you_regen_hp()
 		}
 
 		perX += reglevel;
+		if (Role_if(PM_DRUNKEN_MASTER)) {
+			if (perX * 5 < HEALCYCLE) {
+				perX = HEALCYCLE / 5;
+			} else {
+				perX += reglevel;
+			}
+		}
 	}
 
 	// The Ring of Hygiene's Disciple
@@ -1240,6 +1247,37 @@ you_regen_hp()
 		}
 		if (achieve.berserkerrageend > 0) {
 			achieve.berserkerrageend--;
+		}
+		if (Role_if(PM_DRUNKEN_MASTER) && achieve.currentstagger > 0) {
+			int stagger = achieve.currentstagger;
+			int str = 0;
+			while (stagger > 0) {
+				stagger -= 30;
+				str++;
+			}
+			if (str) {
+				achieve.currentstagger -= str;
+				perX -= str * HEALCYCLE;
+			}
+			if (str > 1 && rn2(5) == 1 && achieve.currentchi < achieve.maxchi) { //regain a chi 10% of the time
+				achieve.currentchi++;
+			}
+		}
+		if (achieve.fireform && rn2(3) == 1) { //lasts 3 turns per chi on average
+			if (achieve.currentchi > 0) {
+				achieve.currentchi--;
+			} else {
+				achieve.fireform = FALSE;
+				pline("Your fireform goes dim as you lack the chi to maintain it.");
+			}
+		}
+		if (achieve.steadysteps && rn2(5) == 1) { //lasts 3 turns per chi on average
+			if (achieve.currentchi > 0) {
+				achieve.currentchi--;
+			} else {
+				achieve.steadysteps = FALSE;
+				pline("Your steady steps stop as you lack the chi to maintain it.");
+			}
 		}
 		if (achieve.demonproperty1e == 2 || achieve.demonproperty2e == 2 || achieve.demonproperty3e == 2) { // confusion
 			if(rn2(50) > 48 && !Confusion) {
@@ -1333,10 +1371,6 @@ you_regen_hp()
 			achieve.dontcarepain += perX;
 			if (achieve.dontcarepain >= HEALCYCLE) {
 				achieve.dontcarepain = 0;
-				achieve.currentrage++;
-				if (achieve.currentrage > achieve.maxrage) {
-					achieve.currentrage = achieve.maxrage;
-				}
 			}
 			perX = 0;
 		}
@@ -1352,6 +1386,10 @@ you_regen_hp()
 		// check for rehumanization
 		if (Upolyd && (*hp < 1))
 			rehumanize();
+	}
+	if (*hp <= 0) {
+		You("die...");
+		done(DIED);
 	}
 }
 
@@ -3950,6 +3988,8 @@ boolean new_game;	/* false => restoring an old game */
 			goto_level(&szchf_level, FALSE, FALSE, FALSE);
 		} else if (Role_if(PM_FIREFIGHTER)) {
 			goto_level(&szfir_level, FALSE, FALSE, FALSE);
+		} else if (Role_if(PM_ROLE_PLAYER)) {
+			goto_level(&szrpl_level, FALSE, FALSE, FALSE);
 		} else if (Role_if(PM_OFFICER)) {
 			goto_level(&szoff_level, FALSE, FALSE, FALSE);
 		} else if (Role_if(PM_UNDEAD_SLAYER)) {
@@ -6278,20 +6318,10 @@ struct monst *magr;
 	
 	// get attack from statblock
 	attk = mon_get_attacktype(magr, AT_ESPR, &attkbuff);
-	if(!attk && youagr && uring_art(ART_STAR_EMPEROR_S_RING)){
-		attkbuff.aatyp = AT_ESPR;
-		attkbuff.adtyp = AD_STAR;
-		attkbuff.damn = 4;
-		attkbuff.damd = 4;
-		attk = &attkbuff;
-	}
 	if(!attk)
 		return;
 	// count attacks in statblock (assumes that all of these attacks are equals! If this is not true, this will need to be adjusted)
 	n = mon_count_attacktype(magr, AT_ESPR);
-	if(youagr && uring_art(ART_STAR_EMPEROR_S_RING)){
-		n += u.ulevel/10;
-	}
 	//Possible there are no attacks due to star ring etc.
 	if(!n)
 		return;

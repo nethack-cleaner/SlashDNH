@@ -1224,7 +1224,6 @@ register const char *let,*word;
 		    !(otmp->oclass == WAND_CLASS 
 				|| (otmp->oclass == TOOL_CLASS && otmp->otyp == ROD_OF_FORCE)
 				|| (otmp->oclass == ARMOR_CLASS && otmp->otyp == IMPERIAL_ELVEN_GAUNTLETS && check_imp_mod(otmp, IEA_BOLTS))
-				|| (otmp->oartifact == ART_STAR_EMPEROR_S_RING)
 			))
 		|| (!strcmp(word, "give the tear to") &&
 			!(otmp->otyp == BROKEN_ANDROID && otmp->ovar1_insightlevel == 0) &&

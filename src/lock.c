@@ -645,7 +645,10 @@ pick_lock(pick_p) /* pick a lock with a given object */
 					unblock_point(cc.x,cc.y);
 					newsym(cc.x,cc.y);
 					return MOVE_CANCELLED;
-				} else if(In_quest(&u.uz) && urole.neminum == PM_BOLG && xlock.key == ART_KEY_OF_EREBOR){
+				} else if((In_quest(&u.uz) && urole.neminum == PM_BOLG && xlock.key == ART_KEY_OF_EREBOR) || achieve.roleplaystart > 0){
+					if (achieve.roleplaystart > 0) {
+						achieve.roleplaystart--;
+					}
 					register struct rm *here;
 					here = &levl[cc.x][cc.y];
 					here->doormask = D_ISOPEN;
@@ -1327,7 +1330,9 @@ artifact_door(x, y)
 int x, y;
 {
     int i;
-
+			if (!achieve.introquestsolved) {
+				return 1;
+			}
     for(i = 0; i < doorindex; i++) {
 		if (x == doors[i].x && y == doors[i].y){
 			return doors[i].arti_text;

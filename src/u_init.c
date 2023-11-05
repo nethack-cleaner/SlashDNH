@@ -144,12 +144,21 @@ static const struct def_skill Skill_Chef[] = {
 
 static struct trobj Firefighter[] = {
     { AXE, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
-    { FIRE_HELMET, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+    { FIRE_HELMET, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
     { ASBESTOS_JACKET, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
     { POT_WATER, 0, POTION_CLASS, 5, 0 },
     { SCR_FIRE, UNDEF_SPE, SCROLL_CLASS, 4, UNDEF_BLESS },
     { WAN_FIRE, UNDEF_SPE, WAND_CLASS, 1, UNDEF_BLESS },
-    { 0, 0, 0, 0, 0, }
+};
+
+static struct trobj RolePlayer[] = {
+	{ LONG_SWORD, 3, WEAPON_CLASS, 1, UNDEF_BLESS },
+    { HELMET, 3, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ LEATHER_ARMOR, 3, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ BUCKLER, 3, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ GLOVES, 3, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ HIGH_BOOTS, 3, ARMOR_CLASS, 1, UNDEF_BLESS },
+    { DOUGHNUT, 0, FOOD_SYM, 3, 0 },
 };
 
 static const struct def_skill Skill_Fir[] = {
@@ -173,6 +182,12 @@ static const struct def_skill Skill_Fir[] = {
     { P_NONE, 0 }
 };
 
+static const struct def_skill Skill_Rpl[] = {
+    { P_LONG_SWORD, P_BASIC },
+    { P_BOW, P_UNSKILLED },
+    { P_NONE, 0 }
+};
+
 static struct trobj Officer[] = {
     { CLUB, 0, WEAPON_SYM, 1, UNDEF_BLESS },
     { PISTOL, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
@@ -183,7 +198,7 @@ static struct trobj Officer[] = {
     { WAN_MAGIC_MISSILE, UNDEF_SPE, WAND_SYM, 1, UNDEF_BLESS },
     { WAN_STRIKING, UNDEF_SPE, WAND_SYM, 1, UNDEF_BLESS },
 #endif
-    { DOUGHNUT, 0, FOOD_SYM, 6, 0 },
+    { DOUGHNUT, 0, FOOD_SYM, 3, 0 },
     { 0, 0, 0, 0, 0, }
 };
 
@@ -598,20 +613,12 @@ static struct trobj Knight[] = {
 static struct trobj Monk[] = {
 	{ GLOVES, 2, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ ROBE, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
-	{ SEDGE_HAT, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 #define M_BOOK		3
-	{ UNDEF_TYP, UNDEF_SPE, SPBOOK_CLASS, 1, 1 },
-	{ UNDEF_TYP, UNDEF_SPE, SCROLL_CLASS, 1, UNDEF_BLESS },
-	{ POT_HEALING, 0, POTION_CLASS, 3, UNDEF_BLESS },
-	{ FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
-	{ APPLE, 0, FOOD_CLASS, 5, UNDEF_BLESS },
-	{ ORANGE, 0, FOOD_CLASS, 5, UNDEF_BLESS },
-	/* Yes, we know fortune cookies aren't really from China.  They were
-	 * invented by George Jung in Los Angeles, California, USA in 1916.
-	 */
-	{ FORTUNE_COOKIE, 0, FOOD_CLASS, 3, UNDEF_BLESS },
+	{ FOOD_RATION, 0, FOOD_CLASS, 1, 0 },
+	{ POT_BOOZE, 0, POTION_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+
 static struct trobj Madman[] = {
 	{ STRAITJACKET, 0, ARMOR_CLASS, 1, 0 },
 	{ BLINDFOLD, 0, TOOL_CLASS, 1, 0 },
@@ -2240,6 +2247,7 @@ u_init()
 	u.uen = u.uenmax;
 	u.uspellprot = 0;
 	u.usanity = 100;
+	achieve.pathwayprogress = 0;
 	u.umadness = 0L;
 	u.uinsight = 0;
 	if(Role_if(PM_ANACHRONOUNBINDER)) u.uinsight = 100;
@@ -2265,6 +2273,55 @@ u_init()
 
 	/* set nvrange */
 	u.nv_range   =  urace.nv_range;
+
+	if(Race_if(PM_HALF_DRAGON)){
+		if(Role_if(PM_NOBLEMAN) && flags.initgend){
+            if (rn2(2)) {
+                flags.HDbreath = AD_MAGM;
+                HAntimagic |= (FROMRACE|FROMOUTSIDE);
+            }
+            else {
+                flags.HDbreath = AD_COLD;
+                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
+            }
+		} else if(Role_if(PM_WIZARD)){
+			flags.HDbreath = AD_ACID;
+			HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
+		} else if(Role_if(PM_MADMAN)){
+			if(flags.initgend){
+                flags.HDbreath = AD_RBRE;
+            }
+            else {
+                flags.HDbreath = AD_FIRE;
+                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
+            }
+		} else switch(rnd(6)){
+            case 1:
+                flags.HDbreath = AD_COLD;
+                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 2:
+                flags.HDbreath = AD_FIRE;
+                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 3:
+                flags.HDbreath = AD_SLEE;
+                HSleep_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 4:
+                flags.HDbreath = AD_ELEC;
+                HShock_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 5:
+                flags.HDbreath = AD_DRST;
+                HPoison_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+            case 6:
+                flags.HDbreath = AD_ACID;
+                HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
+            break;
+        }
+	}
 
 
 	/*** Role-specific initializations ***/
@@ -2458,9 +2515,8 @@ u_init()
 		skill_init(Skill_B);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
-		achieve.hasrage = TRUE;
-		achieve.maxrage = 8;
 		achieve.currentrage = 8;
+		achieve.maxrage = 8;
 		break;
 #ifdef BARD
 	case PM_BARD:
@@ -2559,7 +2615,6 @@ u_init()
 		} else {
 			u.ualign.type = A_LAWFUL;
 		}
-		achieve.hasrage = TRUE;
 		achieve.maxrage = 8;
 		achieve.currentrage = 8;
 		break;
@@ -2586,7 +2641,6 @@ u_init()
 		flags.initalign = 2; // 2 == chaotic
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Convicts are pariahs of their race */
-		achieve.hasrage = TRUE;
 		achieve.maxrage = 8;
 		achieve.currentrage = 8;
         break;
@@ -2636,7 +2690,6 @@ u_init()
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Madmen are pariahs of their race */
 		u.ualign.type = A_CHAOTIC;
-		achieve.hasrage = TRUE;
 		achieve.maxrage = 8;
 		achieve.currentrage = 8;
         break;
@@ -2714,11 +2767,6 @@ u_init()
 		break;
 	case PM_MONK:
 		u.umartial = TRUE;
-		switch (rn2(90) / 30) {
-		case 0: Monk[M_BOOK].trotyp = SPE_HEALING; break;
-		case 1: Monk[M_BOOK].trotyp = SPE_PROTECTION; break;
-		case 2: Monk[M_BOOK].trotyp = SPE_SLEEP; break;
-		}
 		ini_inv(Monk);
 		knows_object(QUARTERSTAFF);
 		knows_object(KHAKKHARA);
@@ -2731,12 +2779,11 @@ u_init()
 		knows_object(KATAR);
 		if (Race_if(PM_ORC)) {
 			u.ualign.type = A_CHAOTIC;
+		} else if(Race_if(PM_DWARF)){
+			u.ualign.type = A_LAWFUL;
 		} else {
 			u.ualign.type = A_NEUTRAL;
 		}
-		// if(!rn2(5)) ini_inv(Magicmarker);
-		// else if(!rn2(10)) ini_inv(Lamp);
-		// knows_class(ARMOR_CLASS);
 		skill_init(Skill_Mon);
 		break;
 	case PM_NOBLEMAN:
@@ -2949,6 +2996,12 @@ u_init()
 		skill_init(Skill_Fir);
 		u.ualign.type = A_LAWFUL;
 		break;
+	case PM_ROLE_PLAYER:
+		ini_inv(RolePlayer);
+		skill_init(Skill_Rpl);
+		u.ualign.type = A_NEUTRAL;
+		achieve.roleplaystart = 3;
+		break;
 	case PM_JEDI:
 		u.umartial = TRUE;
 		ini_inv(Jedi);
@@ -2972,8 +3025,19 @@ u_init()
 			ini_inv(DarkWand);
 		}
 		skill_init(Skill_W);
-		if (Race_if(PM_ORC) || Race_if(PM_HUMAN)) {
+		if (Race_if(PM_ELF) || Race_if(PM_VAMPIRE)) {
 			u.ualign.type = A_CHAOTIC;
+		} else if (Race_if(PM_HALF_DRAGON)) {
+			if (!strcmp(species[flags.initspecies].name, "orange")) {
+				u.ualign.type = A_LAWFUL;
+                flags.HDbreath = AD_SLEE;
+			} else if (!strcmp(species[flags.initspecies].name, "blue")) {
+				u.ualign.type = A_NEUTRAL;
+                flags.HDbreath = AD_ELEC;
+			} else if (!strcmp(species[flags.initspecies].name, "yellow")) {
+				u.ualign.type = A_CHAOTIC;
+                flags.HDbreath = AD_ACID;
+			}
 		} else {
 			u.ualign.type = A_NEUTRAL;
 		}
@@ -3375,54 +3439,6 @@ u_init()
 	}
 
 	dungeon_topology.eprecursor_typ = rnd(8);
-	if(Race_if(PM_HALF_DRAGON)){
-		if(Role_if(PM_NOBLEMAN) && flags.initgend){
-            if (rn2(2)) {
-                flags.HDbreath = AD_MAGM;
-                HAntimagic |= (FROMRACE|FROMOUTSIDE);
-            }
-            else {
-                flags.HDbreath = AD_COLD;
-                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
-            }
-		} else if(Role_if(PM_WIZARD)){
-			flags.HDbreath = AD_ACID;
-			HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
-		} else if(Role_if(PM_MADMAN)){
-			if(flags.initgend){
-                flags.HDbreath = AD_RBRE;
-            }
-            else {
-                flags.HDbreath = AD_FIRE;
-                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
-            }
-		} else switch(rnd(6)){
-            case 1:
-                flags.HDbreath = AD_COLD;
-                HCold_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-            case 2:
-                flags.HDbreath = AD_FIRE;
-                HFire_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-            case 3:
-                flags.HDbreath = AD_SLEE;
-                HSleep_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-            case 4:
-                flags.HDbreath = AD_ELEC;
-                HShock_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-            case 5:
-                flags.HDbreath = AD_DRST;
-                HPoison_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-            case 6:
-                flags.HDbreath = AD_ACID;
-                HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
-            break;
-        }
-	}
 	if(Race_if(PM_ENT)){
 		set_ent_species();
 	}

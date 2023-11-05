@@ -116,7 +116,12 @@ boolean quietly;
 	do {
 	    if (otmp) {	/* figurine; otherwise spell */
 			int mndx = otmp->corpsenm;
-			pm = &mons[mndx];
+			extern int monstr[];
+			if (monstr[mndx] > u.ulevel + 10) {
+				pm = rndmonst();
+			} else {
+				pm = &mons[mndx];
+			}
 			// No tame uniqs or nowish creatures
 			if ((pm->geno & G_UNIQ) || is_unwishable(pm)){
 				pline_The("figurine warps strangely!");
@@ -777,7 +782,7 @@ boolean portal;
 			all_pets = TRUE;
 			break;
 		}
-	if (!achieve.introquest) { //Pets initially always follow until out of the Starter Quest
+	if (!achieve.introquestsolved) { //Pets initially always follow until out of the Starter Quest
 		all_pets = TRUE;
 	}
 	for (mtmp = fmon; mtmp; mtmp = mtmp2) {

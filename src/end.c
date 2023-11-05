@@ -674,6 +674,7 @@ int how;
 	u.divetimer = ACURR(A_CON)/3;
 	u.uhp = u.uhpmax;
 	u.mh = u.mhmax;
+	achieve.currentstagger = 0;
 	if (YouHunger < 500) {
 		if(Race_if(PM_INCANTIFIER)) u.uen = u.uenmax/4;
 		else u.uhunger = 500;

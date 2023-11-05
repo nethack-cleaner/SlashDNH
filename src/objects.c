@@ -1254,6 +1254,7 @@ TOOL(("android visor", "black blindfold", "blindfold"), /*Needs encyc entry*/
 								0,   MZ_TINY, 0, 0, 0,   0,  2,  40, CLOTH, CLR_BLACK),
 TOOL(("towel"),        1,   MZ_TINY, 0, 0, 0,  45,  2,  50, CLOTH, CLR_MAGENTA),
 TOOL(("saddle"),       1,  MZ_LARGE, 0, 0, 0,   10,200, 150, LEATHER, HI_LEATHER),
+TOOL(("cask of ale"),       1,  MZ_LARGE, 0, 0, 0,   0,1000, 450, WOOD, HI_WOOD),
 TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  5, 12,  20, LEATHER, HI_LEATHER),
 /*Needs encyc entry*/
 TOOL(("stethoscope"),  1,  MZ_SMALL, 0, 0, 0,  27,  4,  75, IRON, HI_METAL),

@@ -78,7 +78,10 @@ onquest()
 void
 nemdead()
 {
-	if(!Qstat(killed_nemesis)) {
+	if (!achieve.introquestsolved) {
+	    qt_pager(QT_ALTQUESTLEADER);
+		achieve.introboss = TRUE;
+	} else if(!Qstat(killed_nemesis)) {
 	    Qstat(killed_nemesis) = TRUE;
 #ifdef RECORD_ACHIEVE
 		give_quest_trophy();
@@ -335,14 +338,15 @@ chat_with_leader()
 	     the regular dungeon; none of the remaining make sense there */
 	  if (!In_quest(&u.uz)) return;
 
-	  if(not_capable() && !flags.stag) {
+	  /* always worthy */
+	  if(not_capable() && !flags.stag && FALSE) {
 	    qt_pager(QT_BADLEVEL + (flags.stag ? QT_TURNEDSTAG : 0));
 	    exercise(A_WIS, TRUE);
 	    expulsion(FALSE);
-	  } else if(is_pure(TRUE) < 0 && !flags.stag) {
+	  } else if(is_pure(TRUE) < 0 && !flags.stag && FALSE) {
 	    com_pager(QT_BANISHED + (flags.stag ? QT_TURNEDSTAG : 0));
 	    expulsion(TRUE);
-	  } else if(is_pure(TRUE) == 0 && !flags.stag) {
+	  } else if(is_pure(TRUE) == 0 && !flags.stag && FALSE) {
 	    qt_pager(QT_BADALIGN + (flags.stag ? QT_TURNEDSTAG : 0));
 	    if(Qstat(not_ready) == MAX_QUEST_TRIES) {
 	      qt_pager(QT_LASTLEADER + (flags.stag ? QT_TURNEDSTAG : 0));

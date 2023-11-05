@@ -5811,9 +5811,14 @@ typfnd:
 				if (ubracerworn) {
 					struct obj *otmp = ubracerworn;
 					if (otmp->otyp == ARMBANDS_OF_UNLIMITED_WISHES) {
-						paidforwish = TRUE;
-						pline("Your bracers turn to mist paying the cost for your wish");
-						useup(ubracerworn);
+						if (achieve.unlimitedwishes < 2) {
+							achieve.unlimitedwishes++;
+							paidforwish = TRUE;
+							pline("Your bracers turn to mist paying the cost for your wish");
+							useup(ubracerworn);
+						} else {
+							pline("The Cosmos is preventing additional unlimited wishes for you.");
+						}
 					}
 				}
 				if (!paidforwish) {

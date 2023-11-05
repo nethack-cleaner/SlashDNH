@@ -2274,10 +2274,10 @@ makecorpse:			if (mons[obj->corpsenm].geno &
 			struct monst *mon;
 			xchar oox, ooy;
 
-			if (obj->otyp != FIGURINE) {
+			//if (obj->otyp != FIGURINE) { //Make figurines work like other tools
 			    res = 0;
 			    break;
-			}
+		//	}
 			if (vegetarian(&mons[obj->corpsenm])) {
 			    /* Don't animate monsters that aren't flesh */
 			    obj = poly_obj(obj, MEATBALL);
@@ -2396,13 +2396,6 @@ register struct obj *wand;
 		if(!wand->owornmask || u.uen < encost)
 			return 0;
 		u.uen -= encost;
-		flags.botl = TRUE;
-		return 1;
-	}
-	else if(wand->oartifact == ART_STAR_EMPEROR_S_RING){
-		if(!wand->owornmask || u.uen < 15)
-			return 0;
-		u.uen -= 15;
 		flags.botl = TRUE;
 		return 1;
 	}
@@ -3351,14 +3344,6 @@ register struct	obj	*obj;
 				zapdat.adtyp = AD_MAGM;
 			}
 			use_skill(P_WAND_POWER, 1);
-			zap(&youmonst, u.ux, u.uy, u.dx, u.dy, range, &zapdat);
-		}
-		else if(obj->oartifact == ART_STAR_EMPEROR_S_RING){
-			basiczap(&zapdat, AD_STAR, ZAP_WAND, wand_damage_die(P_SKILL(P_WAND_POWER)));
-			zapdat.unreflectable = ZAP_REFL_NEVER;
-			zapdat.damd = 8;
-			zapdat.affects_floor = FALSE;
-			use_skill(P_WAND_POWER, 3);
 			zap(&youmonst, u.ux, u.uy, u.dx, u.dy, range, &zapdat);
 		}
 	    else if (otyp >= SPE_MAGIC_MISSILE && otyp <= SPE_ACID_SPLASH){

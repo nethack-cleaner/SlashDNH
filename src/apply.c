@@ -5548,46 +5548,6 @@ use_doll(obj)
 }
 
 boolean
-wish_imperial(obj)
-struct obj *obj;
-{
-	struct monst * mtmp;
-	boolean madewish = FALSE;
-	if (DimensionalLock || !(mtmp = makemon(&mons[flags.female ? PM_STAR_EMPRESS : PM_STAR_EMPEROR], u.ux, u.uy, MM_ADJACENTOK|MM_NOCOUNTBIRTH|NO_MINVENT))){
-		pline1(nothing_happens);
-	}
-	else
-	{
-		if (!Blind) {
-			pline("%s descends in a rain of stars!", Amonnam(mtmp));
-			pline("%s speaks.", Monnam(mtmp));
-		}
-		else {
-			You("smell clean air.");
-			pline("%s speaks.", Something);
-		}
-		verbalize("I will grant one wish!");
-		int artwishes = u.uconduct.wisharti;
-		if (makewish(WISH_VERBOSE | (!(u.uevent.uconstellation & ARTWISH_SPENT) ? WISH_ARTALLOW : 0 ))) {
-			obj->spe--;
-			madewish = TRUE;
-		}
-		if (u.uconduct.wisharti > artwishes) {
-			/* made artifact wish */
-			u.uevent.uconstellation |= ARTWISH_SPENT;
-		}
-
-		mongone(mtmp);
-
-		if (!objects[RIN_WISHES].oc_name_known) {
-			makeknown(RIN_WISHES);
-			more_experienced(0, 10);
-		}
-	}
-	return madewish;
-}
-
-boolean
 wish_standard(obj)
 struct obj *obj;
 {
@@ -5674,10 +5634,7 @@ struct obj *obj;
 
 	if (obj->spe > 0)
 	{
-		if(obj->oartifact == ART_STAR_EMPEROR_S_RING)
-			madewish = wish_imperial(obj);
-		else
-			madewish = wish_standard(obj);
+		madewish = wish_standard(obj);
 	}
 	else
 	{

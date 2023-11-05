@@ -461,13 +461,13 @@ dodrink()
 
 	potion_descr = OBJ_DESCR(objects[otmp->otyp]);
 	if (potion_descr && !otmp->oartifact) {
-	    if (!strcmp(potion_descr, "milky") &&
+	    if ((!strcmp(potion_descr, "milky") && !Role_if(PM_DRUNKEN_MASTER)) &&
 		    flags.ghost_count < MAXMONNO &&
 		    !rn2(POTION_OCCUPANT_CHANCE(flags.ghost_count))) {
 		ghost_from_bottle();
 		useup(otmp);
 		return MOVE_STANDARD;
-	    } else if (!strcmp(potion_descr, "smoky") &&
+	    } else if ((!strcmp(potion_descr, "smoky") && !Role_if(PM_DRUNKEN_MASTER)) &&
 		    flags.djinni_count < MAXMONNO &&
 		    !rn2(POTION_OCCUPANT_CHANCE(flags.djinni_count))) {
 		djinni_from_bottle(otmp);
@@ -524,6 +524,10 @@ boolean force;
 {
 	register int i, ii, lim;
     boolean enhanced;
+
+	if (Role_if(PM_DRUNKEN_MASTER) && otmp->otyp != POT_BOOZE) {
+		return(-1);	/* will be handled further in dopotion() */
+	}
 
 	switch(otmp->otyp){
 	case POT_RESTORE_ABILITY:
@@ -756,8 +760,15 @@ boolean force;
 				u.uhp += u.ulevel*10;
 				if (u.uhp > u.uhpmax) u.uhp = u.uhpmax;
 			}
-			if(u.udrunken < u.ulevel*3){
+			if(u.udrunken < u.ulevel*3 || Role_if(PM_DRUNKEN_MASTER)){
 				u.udrunken++;
+				if (Role_if(PM_DRUNKEN_MASTER)) {
+					achieve.maxchi = 1 + ((int) (u.udrunken / 5));
+					achieve.currentchi++;
+					if (achieve.currentchi > achieve.maxchi) {
+						achieve.currentchi = achieve.maxchi;
+					}
+				}
 				check_drunkard_trophy();
 				change_usanity(5, FALSE);
 			} else {
@@ -770,6 +781,7 @@ boolean force;
 			/* the whiskey makes us feel better */
 			if (!otmp->odiluted) healup(u.ulevel, 0, FALSE, FALSE);
 			if(!Race_if(PM_INCANTIFIER) && !umechanoid && !Race_if(PM_ETHEREALOID)) u.uhunger += 130 + 10 * (2 + bcsign(otmp));
+			if (Role_if(PM_DRUNKEN_MASTER)) u.uhunger += 260 + 20 * (4 + bcsign(otmp));
 			newuhs(FALSE);
 		}
 		if (!umechanoid && !Race_if(PM_ETHEREALOID)){
@@ -2890,8 +2902,12 @@ dodip()
 				}
 			}
 			if (!alc) {
-				pline("You have difficulty handling a stack of potions that large, try five or fewer.");
-				return(1);
+				if (Role_if(PM_DRUNKEN_MASTER)) {
+					pline("Your inate drunken agility balances the potions quite well!");
+				} else {
+					pline("You have difficulty handling a stack of potions that large, try five or fewer.");
+					return(1);
+				}
 			} else {
 				pline("You feel like a proper scientist");
 			}
@@ -2927,9 +2943,13 @@ dodip()
 
 
 		if ((mixture = mixtype(obj, potion)) != 0) {
-			if (obj->otyp == POT_STARLIGHT)
-				end_burn(obj, FALSE);
-			obj->otyp = mixture;
+			if (Role_if(PM_DRUNKEN_MASTER) && rn2(2) == 1) {
+				obj->otyp = POT_BOOZE;
+			} else {
+				if (obj->otyp == POT_STARLIGHT)
+					end_burn(obj, FALSE);
+				obj->otyp = mixture;
+			}
 		} else {
 		    switch (obj->odiluted ? 1 : rnd(8)) {
 			case 1:

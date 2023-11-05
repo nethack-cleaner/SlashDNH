@@ -445,7 +445,7 @@ give_up:	/* Quit */
 		start_menu(win);
 		any.a_void = 0;         /* zero out all bits */
 		for (i = 0; roles[i].name.m; i++) {
-			if (i < 26) {
+			if (i < 3) {
 		    if (ok_role(i, flags.initrace, flags.initgend,
 							flags.initalign)) {
 			any.a_int = i+1;	/* must be non-zero */
@@ -460,6 +460,8 @@ give_up:	/* Quit */
 					thisch = 'J';
 				} else if (extraletter == 3) {
 					thisch = 'K';
+				} else if (extraletter == 4) {
+					thisch = 'D';
 				}
 				extraletter++;
 			}
@@ -552,16 +554,64 @@ give_up:	/* Quit */
 			    any.a_int = i+1;	/* must be non-zero */
 			    char selector = races[i].noun[0];
 			    if(!strcmp(races[i].noun,"etherealoid")) selector = 'E';	
-				char *rdisp = races[i].noun;
+				const char *rdisp = races[i].noun;
+
 				if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "Half-dragon")) {
-					rdisp = "Half-Dragon (Acid Mage)";
-				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "orc")) {
-					rdisp = "orc (Electric Mage)";
+					rdisp = "Half-Dragon (Acid, Electric, or Enchant)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "elf")) {
+					rdisp = "Elf (Wizard)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "salamander")) {
-					rdisp = "salamander (Fire Mage)";
+					rdisp = "Salamander (Fire Mage)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "yuki-onna")) {
-					rdisp = "yuki-onna (Ice Mage)";
+					rdisp = "Yuki-onna (Ice Mage)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "Drow")) {
+					rdisp = "Drow (Dark Mage)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "vampire")) {
+					rdisp = "Vampire (Necromancer)";
 				}
+
+				if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "vampire")) {
+					rdisp = "Vampire (Power Gamer)";
+				} else if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "orc")) {
+					rdisp = "Orc (Pay to Win)";
+				} else if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "elf")) {
+					rdisp = "Elf (Rules Lawyer)";
+				} else if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "human")) {
+					rdisp = "Human (Actor/Investigator)";
+				} else if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "Drow")) {
+					rdisp = "Drow (Hack and Slash)";
+				} else if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "Etherealoid")) {
+					rdisp = "Etherealoid (Explorer)";
+				}
+
+				if (roles[flags.initrole].malenum == PM_ANACHRONONAUT && !strcmp(races[i].noun, "clockwork automaton")) {
+					rdisp = "Android";
+				} else if (roles[flags.initrole].malenum == PM_ANACHRONONAUT && !strcmp(races[i].noun, "gnome")) {
+					rdisp = "Gnome (Power Suit)";
+				} else if (roles[flags.initrole].malenum == PM_ANACHRONONAUT && !strcmp(races[i].noun, "Half-dragon")) {
+					rdisp = "Half-Dragon (Spirit Binder)";
+				} else if (roles[flags.initrole].malenum == PM_ANACHRONONAUT && !strcmp(races[i].noun, "Etherealoid")) {
+					rdisp = "Etherealoid (Alien)";
+				} else if (roles[flags.initrole].malenum == PM_ANACHRONONAUT && !strcmp(races[i].noun, "human")) {
+					rdisp = "Human (Left for dead)";
+				}
+
+				if (roles[flags.initrole].malenum == PM_EXILE && !strcmp(races[i].noun, "gnome")) {
+					rdisp = "Gnome (Binder)";
+				} else if (roles[flags.initrole].malenum == PM_EXILE && !strcmp(races[i].noun, "salamander")) {
+					rdisp = "Salamander (Flame Binder)";
+				} else if (roles[flags.initrole].malenum == PM_EXILE && !strcmp(races[i].noun, "treant")) {
+					rdisp = "Treant (Patient Binder)";
+				} else if (roles[flags.initrole].malenum == PM_EXILE && !strcmp(races[i].noun, "yuki-onna")) {
+					rdisp = "Yuki-onna (Ice Binder)";
+				}
+
+				if (roles[flags.initrole].malenum == PM_JEDI && !strcmp(races[i].noun, "human")) {
+					rdisp = "Human (Light Side)";
+				} else if (roles[flags.initrole].malenum == PM_JEDI && !strcmp(races[i].noun, "Drow")) {
+					rdisp = "Drow (Dark Side)";
+				}
+
 			    add_menu(win, NO_GLYPH, &any, selector,
 				0, ATR_NONE, rdisp, MENU_UNSELECTED);
 			}
@@ -777,8 +827,16 @@ give_up:	/* Quit */
 			if (validspecies(flags.initrole, flags.initrace,
 							flags.initgend, i)) {
 			    any.a_int = i+1;
+				const char *rdisp = species[i].name;
+				if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[flags.initrace].noun, "Half-dragon") && !strcmp(rdisp, "orange")) {
+					rdisp = "Orange (Enchanter)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[flags.initrace].noun, "Half-dragon") && !strcmp(rdisp, "blue")) {
+					rdisp = "Blue (Electric Mage)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[flags.initrace].noun, "Half-dragon") && !strcmp(rdisp, "yellow")) {
+					rdisp = "Yellow (Acid Mage)";
+				}
 			    add_menu(win, NO_GLYPH, &any, 'a' + valid_count,
-				 0, ATR_NONE, species[i].name, MENU_UNSELECTED);
+				 0, ATR_NONE, rdisp, MENU_UNSELECTED);
 			    valid_count++;
 			}
 		    any.a_int = pick_species(flags.initrole, flags.initrace,

@@ -742,15 +742,6 @@ boolean techniqueonly;
 		} else {
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your research has not yet born fruit.", MENU_UNSELECTED);
 		}
-	} else if (Role_if(PM_ROLE_PLAYER)) {
-		if (u.ulevel < 4) {
-			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "At early", MENU_UNSELECTED);
-		} else {
-			if (u.ualign.type == A_LAWFUL) {
-			} else if (u.ualign.type == A_NEUTRAL) {
-			} else if (u.ualign.type == A_CHAOTIC) {
-			}
-		}
 	} else if (Role_if(PM_BERSERKER)) {
 		if (u.ulevel < 15) {
 			if (achieve.drinkrage) {
@@ -769,8 +760,24 @@ boolean techniqueonly;
 		if (achieve.drinkrage && achieve.idontcareaboutpain) {
 			lettertaken[addtech(tmpwin, MATTK_BERSERKERRAGE, freeletter(lettertaken, 'b'), "Enter a berserker rage!", 10, 0, 0)] = TRUE;
 		}
+	} else if (Role_if(PM_DRUNKEN_MASTER)) {
+		lettertaken[addtech(tmpwin, MATTK_BREWCHUG, freeletter(lettertaken, 'b'), "Brew Chug", 0, 0, 0)] = TRUE;
+		lettertaken[addtech(tmpwin, MATTK_CHUGOFLIFE, freeletter(lettertaken, 'c'), "Chug of Life", 0, 0, 0)] = TRUE;
+		lettertaken[addtech(tmpwin, MATTK_CHUGOFDEATH, freeletter(lettertaken, 'c'), "Chug of Death", 0, 0, 0)] = TRUE;
+		lettertaken[addtech(tmpwin, MATTK_FIREBREATH, freeletter(lettertaken, 'f'), "Fire Breath", 0, 0, 0)] = TRUE;
+		if (achieve.fireform) {
+			lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Turn off Fire Form", 0, 0, 0)] = TRUE;
+		} else {
+			lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Fire Form", 0, 0, 0)] = TRUE;
+		}
+		lettertaken[addtech(tmpwin, MATTK_LIQUIDMOVEMENT, freeletter(lettertaken, 'l'), "Liquid Movement", 0, 0, 0)] = TRUE;
+		if (achieve.steadysteps) {
+			lettertaken[addtech(tmpwin, MATTK_STEADYSTEPS, freeletter(lettertaken, 's'), "Turn off Steady Steps", 0, 0, 0)] = TRUE;
+		} else {
+			lettertaken[addtech(tmpwin, MATTK_STEADYSTEPS, freeletter(lettertaken, 's'), "Steady Steps", 0, 0, 0)] = TRUE;
+		}
 	} else if (Role_if(PM_JEDI)) {
-		if (achieve.introquest) {
+		if (achieve.introquestsolved) {
 			lettertaken[addtech(tmpwin, MATTK_JUMP, freeletter(lettertaken, 'j'), "Force Jump", 1000, 0, 20)] = TRUE;
 			lettertaken[addtech(tmpwin, MATTK_HEAL, 'h', "Force Heal", 1000, 0, 20)] = TRUE;
 		} else {
@@ -778,6 +785,15 @@ boolean techniqueonly;
 			any.a_void = 0;		/* zero out all bits */
 			any.a_int = 0;
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "You must attune to the force", MENU_UNSELECTED);
+		}
+	} else if (Role_if(PM_ROLE_PLAYER)) {
+		if (u.ulevel < 4) {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "At early", MENU_UNSELECTED);
+		} else {
+			if (u.ualign.type == A_LAWFUL) {
+			} else if (u.ualign.type == A_NEUTRAL) {
+			} else if (u.ualign.type == A_CHAOTIC) {
+			}
 		}
 	}
 	if (achieve.currentrage > 0 && Role_if(PM_BERSERKER)) {
@@ -875,7 +891,129 @@ boolean techniqueonly;
 		}
 		achieve.techs[picked] = moves;
 		tele();
+		return MOVE_STANDARD;
+	case MATTK_LIQUIDMOVEMENT:
+		if ((achieve.currentstagger * 10 >= u.uhp && achieve.currentchi > 0) || achieve.currentstagger >= u.uhp) {
+			if (achieve.currentstagger < u.uhp) {
+				achieve.currentchi--;
+			}
+			achieve.currentstagger += 25;
+			pline("You step into the darkness of thought to teleport");
+			tele();
+		} else {
+			pline("You lack the liquid clarity to move this way");
+		}
+		return MOVE_STANDARD;
+	case MATTK_FIREBREATH:
+		if (achieve.currentchi > 0) {
+			if(!getdir("Exhale in what direction?")){
+				pline("never mind");
+				return MOVE_CANCELLED;
+			}
+			struct zapdata zapdat = { 0 };
+			int dice = 3;
+			if (u.ulevel > 7) {
+				dice += 3;
+				if (u.ulevel > 15) {
+					dice += 4;
+					if (u.ulevel > 23) {
+						dice += 5;
+					}
+				}
+			}
+			basiczap(&zapdat, AD_FIRE, AD_FIRE, dice);
+            zapdat.unreflectable = ZAP_REFL_NEVER;
+            zapdat.no_bounce = TRUE;
+            zapdat.affects_floor = FALSE;
+            zapdat.directly_hits = TRUE;
+            zap(&youmonst, u.ux, u.uy, u.dx, u.dy, 6, &zapdat);
+			achieve.currentchi--;
+		}
+		return MOVE_STANDARD;
+	case MATTK_STEADYSTEPS:
+		if (achieve.steadysteps) {
+			achieve.steadysteps = FALSE;
+		} else {
+			if (achieve.currentchi > 0) {
+				achieve.currentchi--;
+				achieve.steadysteps = TRUE;
+				pline("You steady your steps to improve your focus");
+			} else {
+				pline("You cannot maintain steady steps without chi");
+			}
+		}
 		break;
+	case MATTK_FIREFORM:
+		if (achieve.fireform) {
+			achieve.fireform = FALSE;
+		} else {
+			if (achieve.currentchi > 0) {
+				achieve.currentchi--;
+				achieve.fireform = TRUE;
+				pline("You use your inate alchol in your body to immolate your body");
+			} else {
+				pline("You cannot maintain fire form without chi");
+			}
+		}
+		return MOVE_STANDARD;
+	case MATTK_CHUGOFDEATH:
+	case MATTK_CHUGOFLIFE:
+		if (achieve.currentchug > 0) {
+			achieve.currentchug--;
+			if (picked == MATTK_CHUGOFLIFE) {
+				int heal = 8 * u.ulevel;
+				if (heal > 100) {
+					heal = 100;
+				}
+				u.uhp += heal;
+				if (u.uhp > u.uhpmax) {
+					u.uhp = u.uhpmax;
+				}
+				pline("You chug life back into your body");
+			} else if (picked == MATTK_CHUGOFDEATH) {
+				achieve.deathstrike = TRUE;
+				pline("Your hands glow with holy drunken energy");
+			}
+		} else {
+			pline("You don't have any more chugs");
+		}
+		return MOVE_PARTIAL;
+	case MATTK_BREWCHUG:
+		if (u.uen >= 5) {
+			losepw(5);
+			if (achieve.currentchug < u.udrunken) {
+				boolean founddrink = FALSE;
+				struct obj *otmp;
+				struct obj *otmp2;
+				for (otmp = invent; otmp; otmp = otmp->nobj) {
+					if (!founddrink && otmp->otyp == POT_BOOZE) {  
+						founddrink = TRUE;
+						otmp2 = otmp;
+					}
+				}
+				if (founddrink) {
+					if (otmp2->quan > 1L) {
+					    otmp2 = splitobj(otmp2, 1L);
+					    otmp2->owornmask = 0L;   /* rest of original stuck unaffected */
+					} else if (otmp2->owornmask) {
+					    remove_worn_item(otmp2, FALSE);
+					}
+					otmp2->in_use = TRUE;        /* you've opened the stopper */
+					useup(otmp2);
+					pline("You brew and store your chug for later!");
+					if (achieve.currentchug < u.udrunken) {
+						achieve.currentchug++;
+					}
+				} else {
+					pline("You need some booze to brew your chug with!");
+				}
+			} else {
+				pline("I can't store any more chugs without drinking some more first.");
+			}
+		} else {
+			pline("I don't have the energy required to brew right now.");
+		}
+		return MOVE_STANDARD;
 	case MATTK_PATIENTDEFENSE:
 		if (achieve.techs[MATTK_PATIENTDEFENSE] + 1000 > moves) {
 			losepw(50);
@@ -916,6 +1054,7 @@ boolean techniqueonly;
 		if (picked == MATTK_IDENTIFY) {
 			identify_pack(1);
 			pline("Your constant research has paid off!");
+			return MOVE_STANDARD;
 		} else if (picked == MATTK_DRINKRAGE) {
 			if (achieve.drinkrage) {
 				pline("You stopping drinking in the rage!");

@@ -590,9 +590,11 @@ struct monst *mtmp;
 			pline_The("tip of %s's horn glows!", mon_nam(mtmp));
 		}
 		if (!mtmp->mcansee) {
-		    mtmp->mcansee = 1;
-		    mtmp->mblinded = 0;
-		    if (vismon) pline(mcsa, Monnam(mtmp));
+			if (!Role_if(PM_BLIND_MASTER)) {
+				mtmp->mcansee = 1;
+				mtmp->mblinded = 0;
+				if (vismon) pline(mcsa, Monnam(mtmp));
+			}
 		} else if (!mtmp->mcanhear) {
 		    mtmp->mcanhear = 1;
 		    mtmp->mdeafened = 0;
@@ -904,9 +906,11 @@ mon_tele:
 		mtmp->mhp += i;
 		if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = ++mtmp->mhpmax;
 		if (!otmp->cursed && !mtmp->mcansee) {
-			mtmp->mcansee = 1;
-			mtmp->mblinded = 0;
-			if (vismon) pline(mcsa, Monnam(mtmp));
+			if (!Role_if(PM_BLIND_MASTER)) {
+				mtmp->mcansee = 1;
+				mtmp->mblinded = 0;
+				if (vismon) pline(mcsa, Monnam(mtmp));
+			}
 		}
 		if (!otmp->cursed && !mtmp->mcanhear) {
 			mtmp->mcanhear = 1;
@@ -925,9 +929,11 @@ mon_tele:
 		if (mtmp->mhp > mtmp->mhpmax)
 			mtmp->mhp = (mtmp->mhpmax += (otmp->blessed ? 5 : 2));
 		if (!mtmp->mcansee) {
-			mtmp->mcansee = 1;
-			mtmp->mblinded = 0;
-			if (vismon) pline(mcsa, Monnam(mtmp));
+			if (!Role_if(PM_BLIND_MASTER)) {
+				mtmp->mcansee = 1;
+				mtmp->mblinded = 0;
+				if (vismon) pline(mcsa, Monnam(mtmp));
+			}
 		}
 		if (!mtmp->mcanhear) {
 			mtmp->mcanhear = 1;
@@ -951,9 +957,11 @@ mon_tele:
 			if (vismon) pline("%s looks completely healed.", Monnam(mtmp));
 		}
 		if (!mtmp->mcansee && otmp->otyp != POT_SICKNESS) {
-			mtmp->mcansee = 1;
-			mtmp->mblinded = 0;
-			if (vismon) pline(mcsa, Monnam(mtmp));
+			if (!Role_if(PM_BLIND_MASTER)) {
+				mtmp->mcansee = 1;
+				mtmp->mblinded = 0;
+				if (vismon) pline(mcsa, Monnam(mtmp));
+			}
 		}
 		if (!mtmp->mcanhear) {
 			mtmp->mcanhear = 1;

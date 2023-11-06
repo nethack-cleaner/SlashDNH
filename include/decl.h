@@ -932,6 +932,7 @@ struct u_achieve {
 		Bitfield(introlevel2,1);
 		Bitfield(introboss,1);
 		Bitfield(talkedileader,1);
+		Bitfield(talkedblindleader,1);
 		Bitfield(talkedtleader,1);
 		Bitfield(talkedgladiatorleader,1);
 		Bitfield(talkedfrenzyleader,1);

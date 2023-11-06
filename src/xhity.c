@@ -3900,6 +3900,9 @@ int *shield_margin;
 				}
 			}
 		}
+		if (youagr && Role_if(PM_BLIND_MASTER)) {
+			wepn_acc += 7;
+		}
 		/* Some madnesses give accuracy bonus/penalty (player-only) (melee) */
 		if(youagr && melee && u.umadness){
 			/* nudist accuracy bonus/penalty */

@@ -83,6 +83,9 @@ const struct innate {
 	kni_abil[] = { {	 7, &(HFast), "quick", "slow" },
 		     {	 0, 0, 0, 0 } },
 
+	blind_abil[] = { {	 3, &(HTelepat), "telepathic", "zoned out" },
+		     {	 0, 0, 0, 0 } },
+
 	mon_abil[] = { {   1, &(HFast), "", "" },
 		     {   1, &(HSleep_resistance), "", "" },
 		     {   1, &(HSee_invisible), "", "" },
@@ -824,11 +827,12 @@ void
 adjabil(oldlevel,newlevel)
 int oldlevel, newlevel;
 {
-	register const struct innate *abil, *rabil;
+	register const struct innate *abil, *abil2, *rabil;
 	long mask = FROMEXPER;
 
 	// set default values
 	abil = 0;
+	abil2 = 0;
 	rabil = 0;
 
 	switch (Role_switch) {
@@ -853,7 +857,13 @@ int oldlevel, newlevel;
 	case PM_MADMAN:        abil = mad_abil;	break;
 	case PM_HEALER:         abil = hea_abil;	break;
 	case PM_KNIGHT:         abil = kni_abil;	break;
-	case PM_MONK:           abil = mon_abil;	break;
+	case PM_KENSEI:
+	case PM_BLIND_MASTER:
+		abil2 = blind_abil;
+	case PM_DRUNKEN_MASTER:
+	case PM_MONK:
+		abil = mon_abil;
+		break;
 	case PM_NOBLEMAN:
 		switch (Race_switch)
 		{
@@ -908,15 +918,20 @@ int oldlevel, newlevel;
 	default:                rabil = 0;		break;
 	}
 
-	while (abil || rabil) {
+	while (abil || rabil || abil2) {
 	    long prevabil;
 	    /* Have we finished with the intrinsics list? */
 	    if (!abil || !abil->ability) {
-	    	/* Try the race intrinsics */
-	    	if (!rabil || !rabil->ability) break;
-	    	abil = rabil;
-	    	rabil = 0;
-	    	mask = FROMRACE;
+			if (!abil2 || !abil2->ability) {
+		    	/* Try the race intrinsics */
+		    	if (!rabil || !rabil->ability) break;
+		    	abil = rabil;
+		    	rabil = 0;
+		    	mask = FROMRACE;
+			} else {
+		    	abil = abil2;
+		    	abil2 = 0;
+			}
 	    }
 		prevabil = *(abil->ability);
 		if(oldlevel < abil->ulevel && newlevel >= abil->ulevel) {

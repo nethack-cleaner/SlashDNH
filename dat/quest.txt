@@ -79,6 +79,10 @@
 #   QT_BERSERKERLEADER6 310 - Berserker leader - your race doesn't allow this
 #   QT_BERSERKERLEADER4	411 - Berserker leader after delivery
 #	QT_BLINDLEADER1	311 - Blind leader first time
+#	QT_BLINDLEADER2	312 - Blind leader, 2nd time no quest item
+#	QT_BLINDLEADER3	313 - Blind leader, 2nd time has quest item
+#	QT_BLINDLEADER4 314 - Blind leader, violated code early
+#	QT_BLINDLEADER5 315 - Blind leader, invalid race choice
 #   QT_STARTCLOCKARC1	368
 #   QT_ALTQUESTLEADER	413 Killing the intro quest nemesis
 #   QT_ALTQUESTAWARD	414 The award after killing the intro nemesis
@@ -6999,6 +7003,34 @@ and you cannot choose this path.  Maybe in another life.
 Hi friend, I teach the way of the Drunken Master and your race
 has not learned to fully embrace drinking at its core.
 So have fun, but you will have to choose another path.
+%E
+%Cc Mon 00311
+I may not see with my eyes, but I feel with my heart.
+My path is a difficult one, but is the most holy path of all.
+Bring me a blindfold and a pair of glasses and a mask to prove
+your will to join the path of the Blind Master.
+%E
+%Cc Mon 00312
+I must continue my meditation.  Return to me with the
+blindfold, glasses, and a mask if you wish to learn the ways
+of the Blind Master.
+%E
+%Cc Mon 00313
+I see as never before!  You are ready for the difficult path
+but the one that leads to true enlightenment!
+I will teach you the ways of the Blind Master!
+First let me teach you the ways of divination!
+%E
+%Cc Mon 00314
+The way of the Blind Master is strict and you have violated
+our sacred code and may not walk our path.  I wish you
+good fortune in your journey, but it will not be with me.
+%E
+%Cc Mon 00315
+The way of the Blind Master is open only to
+humans and dwarves.  I am sure your race is quite noble
+as well, but our creed has abilities that may only
+be learned by those races.
 %E
 %Cc Mon 00369
 %E

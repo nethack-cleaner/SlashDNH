@@ -996,7 +996,7 @@ age_spells()
 		timeout += (NightmareAware_Insanity);
 		
 	for (i = 0; i < MAXSPELL && spellid(i) != NO_SPELL; i++)
-	    if (spellknow(i)){
+	    if (spellknow(i) && !Role_if(PM_BLIND_MASTER)){
 			ndecrnknow(i, timeout);
 		}
 	return;

@@ -592,8 +592,10 @@ Helmet_off()
 		}
 	}
 	else if (was_blind) {
-		blind_changed = TRUE;	/* !Blind */
-		You("can see again.");
+		if (!Role_if(PM_BLIND_MASTER)) {
+			blind_changed = TRUE;	/* !Blind */
+			You("can see again.");
+		}
 	}
 	if (blind_changed) {
 		/* blindness has just been toggled */
@@ -1467,8 +1469,10 @@ register struct obj *otmp;
 		if (Punished) set_bc(0);
 	    }
 	} else if (was_blind) {
-	    changed = TRUE;	/* !Blind */
-	    You("can see again.");
+		if (!Role_if(PM_BLIND_MASTER)) {
+			changed = TRUE;	/* !Blind */
+			You("can see again.");
+		}
 	}
 	if (changed) {
 	    /* blindness has just been toggled */

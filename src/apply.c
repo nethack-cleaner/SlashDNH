@@ -1690,15 +1690,17 @@ struct obj *obj;
 	boolean good_effect = (mon->mpeaceful && !obj->cursed) || (!mon->mpeaceful && obj->cursed);
 	if(good_effect){
 		if (!mon->mcansee) {
-		    mon->mcansee = 1;
-		    mon->mblinded = 0;
-		    if (canseemon(mon)) pline("%s can see again.", Monnam(mon));
-			else {
-				if(shackles)
-					pline("Your broken shackles touch it!");
-				else
-					pline("Your staff touches it!");
-				map_invisible(u.ux+u.dx,u.uy+u.dy);
+			if (!Role_if(PM_BLIND_MASTER)) {
+			    mon->mcansee = 1;
+			    mon->mblinded = 0;
+			    if (canseemon(mon)) pline("%s can see again.", Monnam(mon));
+				else {
+					if(shackles)
+						pline("Your broken shackles touch it!");
+					else
+						pline("Your staff touches it!");
+					map_invisible(u.ux+u.dx,u.uy+u.dy);
+				}
 			}
 		} else if (!mon->mcanhear) {
 		    mon->mcanhear = 1;

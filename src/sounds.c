@@ -1307,6 +1307,7 @@ boolean chatting;
 	case MS_ILEADER:
 	case MS_FRENZY_LEADER:
 	case MS_GLADIATOR_LEADER:
+	case MS_BLIND_LEADER:
 	case MS_TLEADER:
 	case MS_LEADER:
 	case MS_GUARDIAN:
@@ -1345,7 +1346,7 @@ asGuardian:
 		    break;
 
 	    }
-		if (ptr->msound == MS_ILEADER || ptr->msound == MS_TLEADER || ptr->msound == MS_GLADIATOR_LEADER || ptr->msound == MS_FRENZY_LEADER) {
+		if (ptr->msound == MS_ILEADER || ptr->msound == MS_TLEADER || ptr->msound == MS_GLADIATOR_LEADER || ptr->msound == MS_FRENZY_LEADER || ptr->msound == MS_BLIND_LEADER) {
 			boolean hasitemmain = FALSE;
 			boolean hasitemtraitor = FALSE;
 			boolean hasitemalt1 = FALSE;
@@ -1419,17 +1420,28 @@ asGuardian:
 			if (Role_if(PM_ROLE_PLAYER)) {
 				if (achieve.pathwayprogress >= 0) {
 					int remcount = 4;
+					int hasrem = 0;
 					int remobj [] = {LONG_SWORD, HELMET, BUCKLER, HIGH_BOOTS};
 					struct obj *otmp;
 					for (int ii = 0; ii < remcount; ii++) {
+						boolean hasitem = FALSE;
 						for (otmp = invent; otmp; otmp = otmp->nobj) {
 							if (otmp->otyp == remobj[ii]) {  
-							    obj_extract_and_unequip_self(otmp);
-								achieve.pathwayprogress++;
+								hasitem = TRUE;
 							}
 						}
+						if (hasitem) {
+							hasrem++;
+						}
 	                }
-					if (achieve.pathwayprogress >= remcount) {
+					if (hasrem >= remcount) {
+						for (int ii = 0; ii < remcount; ii++) {
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+								    obj_extract_and_unequip_self(otmp);
+								}
+							}
+		                }
 						//Change to the correct race and alignment
 						achieve.chosenapath = MS_GLADIATOR_LEADER;
 						changerace("orc"); //For some reason Drow is capitalized
@@ -1488,6 +1500,53 @@ asGuardian:
 					qt_pager(QT_GLADIATORLEADER1);
 				}
 			}
+		} else if (ptr->msound == MS_BLIND_LEADER) {
+			if (Role_if(PM_MONK) && !Race_if(PM_DWARF) && !Race_if(PM_HUMAN)) {
+				qt_pager(QT_BLINDLEADER5);
+			} else {
+				if (achieve.talkedblindleader) {
+					int remcount = 3;
+					int hasrem = 0;
+					int remobj [] = {BLINDFOLD, SUNGLASSES, MASK};
+					struct obj *otmp;
+					for (int ii = 0; ii < remcount; ii++) {
+						boolean hasitem = FALSE;
+						for (otmp = invent; otmp; otmp = otmp->nobj) {
+							if (otmp->otyp == remobj[ii]) {  
+								hasitem = TRUE;
+							}
+						}
+						if (hasitem) {
+							hasrem++;
+						}
+	                }
+					if (hasrem >= remcount) {
+						for (int ii = 0; ii < remcount; ii++) {
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+								    obj_extract_and_unequip_self(otmp);
+								}
+							}
+		                }
+						changerole("Blind Master");
+						make_blinded(100, FALSE);
+						int addcount = 4;
+						int addspell [] = {SPE_IDENTIFY, SPE_MAGIC_MAPPING, SPE_DETECT_TREASURE, SPE_DETECT_MONSTERS};
+						for (int j = 0; j < addcount; j++) {
+							struct obj *obj3;
+							obj3 = mksobj(addspell[j], NO_MKOBJ_FLAGS);
+							initialspell(obj3);
+						}
+						OLD_P_SKILL(P_DIVINATION_SPELL) = P_BASIC;
+						qt_pager(QT_BLINDLEADER3);;
+					} else {
+						qt_pager(QT_BLINDLEADER2);
+					}
+				} else {
+					achieve.talkedblindleader = TRUE;
+					qt_pager(QT_BLINDLEADER1);
+				}
+			}
 		} else if (ptr->msound == MS_FRENZY_LEADER) {
 			if (achieve.talkedfrenzyleader) {
 				if (hasitemalt2) {
@@ -1533,18 +1592,28 @@ asGuardian:
 					qt_pager(QT_BERSERKERLEADER4);
 				} else if (achieve.pathwayprogress >= 0) {
 					int remcount = 6;
+					int hasrem = 0;
 					int remobj [] = {LONG_SWORD, HELMET, LEATHER_ARMOR, BUCKLER, GLOVES, HIGH_BOOTS};
 					struct obj *otmp;
 					for (int ii = 0; ii < remcount; ii++) {
+						boolean hasitem = FALSE;
 						for (otmp = invent; otmp; otmp = otmp->nobj) {
 							if (otmp->otyp == remobj[ii]) {  
-							    obj_extract_and_unequip_self(otmp);
-								achieve.pathwayprogress++;
+								hasitem = TRUE;
 							}
 						}
+						if (hasitem) {
+							hasrem++;
+						}
 	                }
-					if (achieve.pathwayprogress >= remcount) {
-						//Change to the correct race and alignment
+					if (hasrem >= remcount) {
+						for (int ii = 0; ii < remcount; ii++) {
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+								    obj_extract_and_unequip_self(otmp);
+								}
+							}
+		                }
 						achieve.chosenapath = MS_FRENZY_LEADER;
 						changerace("vampire");
 						knows_object(POT_BLOOD);

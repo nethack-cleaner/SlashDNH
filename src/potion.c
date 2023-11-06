@@ -230,6 +230,9 @@ boolean talk;
 
 	/* we need to probe ahead in case the Eyes of the Overworld
 	   are or will be overriding blindness */
+	if (Role_if(PM_BLIND_MASTER) && Blind) {
+		return;
+	}
 	u_could_see = !Blind;
 	Blinded = xtime ? 1L : 0L;
 	can_see_now = !Blind;

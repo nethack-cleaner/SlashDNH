@@ -988,6 +988,8 @@ struct u_achieve {
 		int dpabyss3;
 		int halooffire;
 		int techs[1000];
+		int techexplain[100];
+		int techcount;
 		char wishes1[BUFSZ];
 		char wishes2[BUFSZ];
 		char wishes3[BUFSZ];

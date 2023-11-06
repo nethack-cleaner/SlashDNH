@@ -446,7 +446,7 @@ register int trouble;
 					calc_total_maxhp();
 				}
 			}
-		    u.uhp = u.uhpmax;
+		    u.uhp = u.uhpmax; //It is intentional that achieve.currentstagger is NOT CLEARED by prayer
 		    flags.botl = 1;
 		    break;
 	    case TROUBLE_COLLAPSING:

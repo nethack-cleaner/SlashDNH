@@ -78,6 +78,7 @@
 #   QT_BERSERKERLEADER5 309 - Berserker leader - violated code early
 #   QT_BERSERKERLEADER6 310 - Berserker leader - your race doesn't allow this
 #   QT_BERSERKERLEADER4	411 - Berserker leader after delivery
+#	QT_BLINDLEADER1	311 - Blind leader first time
 #   QT_STARTCLOCKARC1	368
 #   QT_ALTQUESTLEADER	413 Killing the intro quest nemesis
 #   QT_ALTQUESTAWARD	414 The award after killing the intro nemesis
@@ -85,6 +86,8 @@
 #	Role player 'Monte Hall' is slated as a QT_BERSERKERLEADER1
 #	Role player 'Diablo Immortal' is slated as a QT_GLADIATORLEADER1
 #	Monk 'Moe Szyslak' is slated as a QT_BERSERKERLEADER1
+#	Monk 'Sensei Moore' is slated as a QT_BLINDLEADER1
+#	Monk 'Miyamoto Musashi' is slated as a QT_GLADIATORLEADER1
 
 #
 #	Archeologist

@@ -99,6 +99,8 @@ STAIR: (10,10), up
 REGION:(00,00,75,18),lit,"ordinary"
 
 MONSTER:'@',"Moe Szyslak",(42,16)
+MONSTER:'@',"Sensei Moore",(57,10)
+MONSTER:'@',"Miyamoto Musashi",(74,18)
 OBJECT:'(',"cask of ale",(40,05)
 
 DOOR:closed,(15,02)

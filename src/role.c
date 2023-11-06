@@ -550,7 +550,7 @@ struct Role roles[] = {
 	{  8, 0,  0, 2,  0, 2 },10,	/* Energy */
 	10, 8,-2, 2, 20, A_WIS, SPE_RESTORE_ABILITY, -24
 },
-{	{"Kensai", 0}, {
+{	{"Kensei", 0}, {
 	{"Candidate",         0},
 	{"Novice",            0},
 	{"Initiate",          0},
@@ -563,7 +563,7 @@ struct Role roles[] = {
 	GOD_PRINCE_NEZHA, GOD_LAOZI, GOD_THE_HUNSHI_SIHOU, /* Chinese */
 	"Ken", "the Monastery of Chan-Sune",
 	  "the Monastery of the Earth-Lord",
-	PM_KENSAI, NON_PM, NON_PM,
+	PM_KENSEI, NON_PM, NON_PM,
 	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
 	ART_EYES_OF_THE_OVERWORLD,

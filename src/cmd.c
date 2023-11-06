@@ -207,6 +207,77 @@ doprev_message()
 {
     return nh_doprev_message();
 }
+char * techExplaner[] =  {
+"",
+"Armor breath weapon - breath using your armor", //MATTK_DSCALE         1
+"Breath ray - breath using monster breath ability", //MATTK_BREATH         2
+"Breath ray - breath using your innate ability", //MATTK_HBREATH        3
+"Spit - Spit at foe", //MATTK_SPIT           4
+"Cast random spell - Cast a spell at foe", //MATTK_MAGIC          5
+"Remove - Remove something", //MATTK_REMV           6
+"Gaze - Use monster gave", //MATTK_GAZE           7
+"Summon - Use summoning ability", //MATTK_SUMM           8
+"Create webs - Create webs", //MATTK_WEBS           9
+"Hide - use monster hiding ability", //MATTK_HIDE          10
+"#define MATTK_MIND          11",
+"#define MATTK_CLOCK         12",
+"#define MATTK_DARK          13",
+"#define MATTK_VAMP          14",
+"#define MATTK_REPL          15",
+"#define MATTK_UHORN         16",
+"#define MATTK_SHRIEK        17",
+"#define MATTK_SCREAM        18",
+"#define MATTK_HOLE          19",
+"#define MATTK_REACH         20",
+"#define MATTK_DROID         21",
+"#define MATTK_TNKR          22",
+"#define MATTK_U_SPELLS      23",
+"#define MATTK_U_SPIRITS     24",
+"#define MATTK_U_WORD        25",
+"#define MATTK_U_TURN_UNDEAD 26",
+"#define MATTK_U_STYLE       27",
+"#define MATTK_U_MONST       28",
+"#define MATTK_U_ELMENTAL    29",
+"#define MATTK_WHISPER    	30",
+"#define MATTK_TELEK	    31",
+"#define MATTK_CRAZE	    32",
+"#define MATTK_PULSE	    33",
+"#define MATTK_LAVA	    34",
+"#define MATTK_PHASE_OUT 35",
+"#define MATTK_PHASE_IN 36",
+"#define MATTK_YUKI 37",
+"#define MATTK_JUMP 38",
+"#define MATTK_HEAL 39",
+"#define MATTK_SWIFTNESS 40",
+"#define MATTK_DODGE 41",
+"#define MATTK_SWIFTDEFENSE 42",
+"#define MATTK_ANTHAUL 43",
+"#define MATTK_UNSTOPPABLE 44",
+"#define MATTK_SHRUGOFF 45",
+"#define MATTK_SHADOWWALK 46",
+"#define MATTK_SHADOWSTEP 47",
+"#define MATTK_TRUESHOTAURA 48",
+"#define MATTK_BARRAGE 49",
+"#define MATTK_RESCUEMISSION 50",
+"#define MATTK_FIREASSAULT 51",
+"#define MATTK_WATERASSAULT 52",
+"#define MATTK_FORCETELEPORT 53",
+"#define MATTK_PATIENTDEFENSE 54",
+"#define MATTK_AGRESSIVESTRIKE 55",
+"#define MATTK_IDENTIFY 56",
+"#define MATTK_RAGE_ATTACK 57",
+"#define MATTK_DRINKRAGE 58",
+"#define MATTK_IDONTPAIN 59",
+"#define MATTK_BERSERKERRAGE 60",
+"'Brew Chug' - Add to your your store of chugs to use with other techniques", //MATTK_BREWCHUG 61
+"'Fire Breath' - Breath a line of fire with a range of 6 that does not bounce.  Costs one chi", //MATTK_FIREBREATH 62
+"'Fire Form' - Use your alcohol enfused blood to immolate your body causing fire damage on attack and a passive when you are attacked.  1 chi/3 rounds", //MATTK_FIREFORM 63
+"'Steady Steps' - Steady your movemove to improve your AC.  1 chi/5 rounds", //MATTK_STEADYSTEPS 64
+"'Liquid Movement' - Teleport.  Must have at least 10% stagger.  Increases stagger by 25 points.  Cost 1 chi", //MATTK_LIQUIDMOVEMENT 65
+"'Chug of Life' - Heal 8 per level (max 100).  Costs 1 chug", //MATTK_CHUGOFLIFE 66
+"'Chug of Death' - Empower next hand attack with a death strike dealing triple damage.  Costs 1 chug", //MATTK_CHUGOFDEATH 67
+"'Explain Techs' - Explain techs" //MATTK_EXPLAIN 68
+};
 
 /* Count down by decrementing multi */
 STATIC_PTR int
@@ -736,6 +807,7 @@ boolean techniqueonly;
 	} else if (achieve.berserkerrage) {
 		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your berserk rage prevents you from using techniques", MENU_UNSELECTED);
 	} else {
+		achieve.techcount = 0;
 	if (Role_if(PM_ARCHEOLOGIST)) {
 		if (u.ulevel > 3) {
 			lettertaken[addtech(tmpwin, MATTK_IDENTIFY, freeletter(lettertaken, 'r'), "Research", 3000, 0, 0)] = TRUE;
@@ -839,6 +911,7 @@ boolean techniqueonly;
 			}
 		}
 	}
+		addtech(tmpwin, MATTK_EXPLAIN, freeletter(lettertaken, '?'), "Explain Techniques", 0, 0, 0);
 	}
 	// end: check for item based techniques
 
@@ -872,6 +945,10 @@ boolean techniqueonly;
 		}
 		achieve.techs[picked] = moves;
 		return jump(1);
+	case MATTK_EXPLAIN:
+		for (int i = 0; i < achieve.techcount; i++) {
+			pline("%s", techExplaner[achieve.techexplain[i]]);
+		}
 	case MATTK_HEAL:
 		if (achieve.techs[MATTK_HEAL] + 1000 > moves) {
 			losepw(20);
@@ -4168,6 +4245,11 @@ addtech(tmpwin, ky, letter, txt, timeout, othertimeout, energycost)
 	
 	if (achieve.lightsaberpro && timeout >= 1000) {
 		timeout -= 500;
+	}
+
+	if (ky != MATTK_EXPLAIN) {
+		achieve.techexplain[achieve.techcount] = ky;
+		achieve.techcount++;
 	}
 
 	if (othertimeout > moves) {

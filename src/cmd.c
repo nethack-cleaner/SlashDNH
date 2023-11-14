@@ -219,8 +219,8 @@ char * techExplaner[] =  {
 "Summon - Use summoning ability", //MATTK_SUMM           8
 "Create webs - Create webs", //MATTK_WEBS           9
 "Hide - use monster hiding ability", //MATTK_HIDE          10
-"#define MATTK_MIND          11",
-"#define MATTK_CLOCK         12",
+"Mind blast - you use a mind blast similar to a mind flayer", //MATTK_MIND          11",
+"Modify clock speed - you can modify your speed between fast, normal, and slow.  Fast gives you double speed but consumes nutrition 8 times as fast.  Slow is half speed but consumes nutrition 10 times as slowly", //MATTK_CLOCK         12",
 "#define MATTK_DARK          13",
 "#define MATTK_VAMP          14",
 "#define MATTK_REPL          15",
@@ -268,7 +268,7 @@ char * techExplaner[] =  {
 "#define MATTK_RAGE_ATTACK 57",
 "#define MATTK_DRINKRAGE 58",
 "#define MATTK_IDONTPAIN 59",
-"#define MATTK_BERSERKERRAGE 60",
+"'Enter berserker rage' - Enter into berserker rage where your attacks will be more powerful at the cost of control", //MATTK_BERSERKERRAGE 60",
 "'Brew Chug' - Add to your your store of chugs to use with other techniques", //MATTK_BREWCHUG 61
 "'Fire Breath' - Breath a line of fire with a range of 6 that does not bounce.  Costs one chi", //MATTK_FIREBREATH 62
 "'Fire Form' - Use your alcohol enfused blood to immolate your body causing fire damage on attack and a passive when you are attacked.  1 chi/3 rounds", //MATTK_FIREFORM 63
@@ -277,6 +277,13 @@ char * techExplaner[] =  {
 "'Chug of Life' - Heal 8 per level (max 100).  Costs 1 chug", //MATTK_CHUGOFLIFE 66
 "'Chug of Death' - Empower next hand attack with a death strike dealing triple damage.  Costs 1 chug", //MATTK_CHUGOFDEATH 67
 "'Explain Techs' - Explain techs" //MATTK_EXPLAIN 68
+"'Rage Attack' - Your next weapon attack is swung with the strength of your rage.  Costs 8 rage", //MATTK_RAGEATTACK 69
+"'See through the fabric' - You see through the fabric of the world and can move without anything impeding you.  Costs 10 energy per round and increases hunger", //MATTK_PHASE 70
+"'All seeing defense' - Bonus to AC and DR.  Costs 2 energy to activate and 2 per turn it is on.", //MATTK_SEEDEFENSE 71
+"'Strike So True' - Next 3 attacks do double damage.  1,000 turn timeout after usage", //MATTK_STRIKESOTRUE 72
+"'Blinding Speed' - Greatly increase speed at the cost of increased hunger and progressively increasing damage taken.", //MATTK_BLINDINGSPEED 73
+"'Choose technique to hot key to control i'", //MATTK_CHOOSEI 74
+"'Choose technique to hot key to control v'", //MATTK_CHOOSEV 75
 };
 
 /* Count down by decrementing multi */
@@ -582,6 +589,24 @@ dotechnique()
 	return ability_menu(iflags.quick_m_abilities, TRUE, TRUE);
 }
 
+STATIC_PTR int
+dotechnique1()
+{
+	if (achieve.hottech1) {
+		achieve.technow = achieve.hottech1;
+	}
+	return ability_menu(iflags.quick_m_abilities, TRUE, TRUE);
+}
+
+STATIC_PTR int
+dotechnique2()
+{
+	if (achieve.hottech2) {
+		achieve.technow = achieve.hottech2;
+	}
+	return ability_menu(iflags.quick_m_abilities, TRUE, TRUE);
+}
+
 /* #monster command - use special monster abilities while polymorphed */
 STATIC_PTR int
 domonability()
@@ -601,7 +626,12 @@ boolean techniqueonly;
 	char incntlet = 'a';
 	menu_item *selected;
 	anything any;
+	int picked = 0;
 	
+	if (achieve.technow) {
+		picked = achieve.technow;
+		achieve.technow = 0;
+	} else {
 	tmpwin = create_nhwindow(NHW_MENU);
 	start_menu(tmpwin);
 	any.a_void = 0;		/* zero out all bits */
@@ -808,12 +838,16 @@ boolean techniqueonly;
 		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your berserk rage prevents you from using techniques", MENU_UNSELECTED);
 	} else {
 		achieve.techcount = 0;
+		if (uwep && achieve.currentrage >= 8) {
+			lettertaken[addtech(tmpwin, MATTK_RAGEATTACK, freeletter(lettertaken, 'r'), "Rage Attack", 0, 0, 0)] = TRUE;
+		}
 	if (Role_if(PM_ARCHEOLOGIST)) {
 		if (u.ulevel > 3) {
 			lettertaken[addtech(tmpwin, MATTK_IDENTIFY, freeletter(lettertaken, 'r'), "Research", 3000, 0, 0)] = TRUE;
 		} else {
 			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Your research has not yet born fruit.", MENU_UNSELECTED);
 		}
+	} else if (Role_if(PM_BARBARIAN)) {
 	} else if (Role_if(PM_BERSERKER)) {
 		if (u.ulevel < 15) {
 			if (achieve.drinkrage) {
@@ -831,6 +865,35 @@ boolean techniqueonly;
 		}
 		if (achieve.drinkrage && achieve.idontcareaboutpain) {
 			lettertaken[addtech(tmpwin, MATTK_BERSERKERRAGE, freeletter(lettertaken, 'b'), "Enter a berserker rage!", 10, 0, 0)] = TRUE;
+		}
+	} else if (Role_if(PM_BLIND_MASTER)) {
+		if (u.ulevel >= 2) {
+			if (achieve.seedefense) {
+				lettertaken[addtech(tmpwin, MATTK_SEEDEFENSE, freeletter(lettertaken, 'd'), "Stop using All seeing defense", 0, 0, 0)] = TRUE;
+			} else {
+				if (u.uen >= 2) {
+					lettertaken[addtech(tmpwin, MATTK_SEEDEFENSE, freeletter(lettertaken, 'd'), "All seeing defense", 0, 0, 0)] = TRUE;
+				}
+			}
+		}
+		if (u.ulevel >= 3) {
+			lettertaken[addtech(tmpwin, MATTK_STRIKESOTRUE, freeletter(lettertaken, 'd'), "Strike So True", 1500, 0, 0)] = TRUE;
+		}
+		if (u.ulevel >= 9) {
+			if (u.phasengn) {
+				lettertaken[addtech(tmpwin, MATTK_PHASE, freeletter(lettertaken, 'p'), "Stop phasing", 0, 0, 0)] = TRUE;
+			} else {
+				if (u.uen >= 10) {
+					lettertaken[addtech(tmpwin, MATTK_PHASE, freeletter(lettertaken, 'p'), "See through the fabric", 0, 0, 0)] = TRUE;
+				}
+			}
+		}
+		if (u.ulevel >= 13) {
+			if (achieve.isblindingspeed) {
+				lettertaken[addtech(tmpwin, MATTK_BLINDINGSPEED, freeletter(lettertaken, 'b'), "Stop using Blinding Speed", 0, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_BLINDINGSPEED, freeletter(lettertaken, 'b'), "Blinding Speed", 0, 0, 0)] = TRUE;
+			}
 		}
 	} else if (Role_if(PM_DRUNKEN_MASTER)) {
 		lettertaken[addtech(tmpwin, MATTK_BREWCHUG, freeletter(lettertaken, 'b'), "Brew Chug", 0, 0, 0)] = TRUE;
@@ -912,6 +975,14 @@ boolean techniqueonly;
 		}
 	}
 		addtech(tmpwin, MATTK_EXPLAIN, freeletter(lettertaken, '?'), "Explain Techniques", 0, 0, 0);
+		if (achieve.techtype == MATTK_CHOOSEI) {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Select a technique to bind to 'control-i'", MENU_UNSELECTED);
+		} else if (achieve.techtype == MATTK_CHOOSEV) {
+			add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "Select a technique to bind to 'control-v'", MENU_UNSELECTED);
+		} else {
+			addtech(tmpwin, MATTK_CHOOSEI, freeletter(lettertaken, '+'), "Choose 'control-i' technique", 0, 0, 0);
+			addtech(tmpwin, MATTK_CHOOSEV, freeletter(lettertaken, '!'), "Choose 'control-v' technique", 0, 0, 0);
+		}
 	}
 	// end: check for item based techniques
 
@@ -927,10 +998,23 @@ boolean techniqueonly;
 	n = select_menu(tmpwin, how, &selected);
 	destroy_nhwindow(tmpwin);
 	
-	if(n <= 0) return MOVE_CANCELLED;
+	if(n <= 0) {
+		achieve.techtype = 0;
+		return MOVE_CANCELLED;
+	}
 	
-	int picked = selected[0].item.a_int;
+	picked = selected[0].item.a_int;
 	free(selected);
+	if (achieve.techtype == MATTK_CHOOSEI) {
+		achieve.hottech1 = picked;
+		achieve.techtype = 0;
+		return MOVE_CANCELLED;
+	} else if (achieve.techtype == MATTK_CHOOSEV) {
+		achieve.hottech2 = picked;
+		achieve.techtype = 0;
+		return MOVE_CANCELLED;
+	}
+	}
 	
 	switch (picked) {
 	/* Player abilities */
@@ -949,6 +1033,55 @@ boolean techniqueonly;
 		for (int i = 0; i < achieve.techcount; i++) {
 			pline("%s", techExplaner[achieve.techexplain[i]]);
 		}
+		break;
+	case MATTK_CHOOSEI:
+	case MATTK_CHOOSEV:
+		achieve.techtype = picked;	
+		dotechnique();
+		break;
+	case MATTK_SEEDEFENSE:
+		if (achieve.seedefense) {
+			pline("You stop your all seeing defense");
+		} else {
+			pline("You activate all seeing defense");
+			losepw(2);
+		}
+		achieve.seedefense = !achieve.seedefense;
+		break;
+	case MATTK_BLINDINGSPEED:
+		if (achieve.isblindingspeed) {
+			pline("You slow yourself back to normal");
+		} else {
+			pline("You increase your speed to a blinding level.");
+			achieve.blindingspeedcount++;
+		}
+		achieve.isblindingspeed = !achieve.isblindingspeed;
+		break;
+	case MATTK_STRIKESOTRUE:
+		if (achieve.techs[MATTK_STRIKESOTRUE] + 1500 > moves) {
+			pline("Your strikes become incredibly piercing");
+			if (u.ulevel >= 10) {
+				achieve.strikesotrue = 4;
+			} else {
+				achieve.strikesotrue = 3;
+			}
+		}
+		achieve.techs[picked] = moves;
+		break;
+	case MATTK_PHASE:
+		if (u.phasengn) {
+			pline("You stop phasing");
+		} else {
+			pline("You see through the earthly veil and can now pass through earthly things.");
+		}
+		u.phasengn = !u.phasengn;
+	case MATTK_RAGEATTACK:
+		if (uwep && achieve.currentrage >= 8) {
+			achieve.currentrage -= 8;
+			achieve.rageswing = TRUE;
+			pline("You summon the rage within you to swing your weapon powerfully on your next attack!");
+		}
+		break;
 	case MATTK_HEAL:
 		if (achieve.techs[MATTK_HEAL] + 1000 > moves) {
 			losepw(20);
@@ -2610,6 +2743,8 @@ struct ext_func_tab extcmdlist[] = {
 	{"explore_mode", "enter explore (discovery) mode (only if defined)", enter_explore_mode, IFBURIED},
 
 	{"technique", "use a technique", dotechnique, IFBURIED, AUTOCOMPLETE},
+	{"technique1", "use technique hot key 1", dotechnique1, IFBURIED, AUTOCOMPLETE},
+	{"technique2", "use technique hot key 2", dotechnique2, IFBURIED, AUTOCOMPLETE},
 	{"ability", "use a technique or inherent or learned ability", doability, IFBURIED, AUTOCOMPLETE},
 	{"adjust", "adjust inventory letters", doorganize, IFBURIED, AUTOCOMPLETE},
 	{"annotate", "annotate current dungeon level", donamelevel, IFBURIED, AUTOCOMPLETE},
@@ -2769,10 +2904,10 @@ init_bind_list(void)
 #ifdef WIZARD
 	if (wizard) {
 		bind_key(C('g'), "genesis" );
-		bind_key(C('i'), "identify" );
 		bind_key(C('o'), "where" );
-		bind_key(C('v'), "levelport" );
 	}
+	bind_key(C('i'), "technique1" );
+	bind_key(C('v'), "technique2" );
 #endif
 	bind_key(C('l'), "redraw" ); /* if number_pad is set */
 	bind_key(C('p'), "previous" );
@@ -4247,7 +4382,7 @@ addtech(tmpwin, ky, letter, txt, timeout, othertimeout, energycost)
 		timeout -= 500;
 	}
 
-	if (ky != MATTK_EXPLAIN) {
+	if (ky != MATTK_EXPLAIN && ky != MATTK_CHOOSEI && ky != MATTK_CHOOSEV) {
 		achieve.techexplain[achieve.techcount] = ky;
 		achieve.techcount++;
 	}

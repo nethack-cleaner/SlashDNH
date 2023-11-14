@@ -985,6 +985,11 @@ init_dungeons()		/* initialize the "dungeon" structs */
 				dodungeon = FALSE;
 			}
 		}
+		if (!Role_if(PM_ARCHEOLOGIST) || !Race_if(PM_SALAMANDER)) {
+			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Sarc")) {
+				dodungeon = FALSE;
+			}
+		}
 		if (!Role_if(PM_BARBARIAN)) {
 			if (!strcmp(pd.tmpdungeon[i].name, "Starting Zone Bar")) {
 				dodungeon = FALSE;

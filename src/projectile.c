@@ -2162,8 +2162,14 @@ dothrow()
 	result = uthrow(ammo, launcher, shotlimit, FALSE);
 
 	save_cm = oldsave_cm;
-	if (Role_if(PM_DRUNKEN_MASTER)) {
-		pline("You have violated the holiness of the Drunken way.  You are no longer worthy.");
+	if (Role_if(PM_DRUNKEN_MASTER) || Role_if(PM_BLIND_MASTER) || Role_if(PM_KENSEI)) {
+		if (Role_if(PM_DRUNKEN_MASTER)) {
+			pline("You have violated the holiness of the Drunken way.  You are no longer worthy.");
+		} else if (Role_if(PM_BLIND_MASTER)) {
+			pline("You have violated the holiness of the way of the blind master.  You are no longer worthy.");
+		} else if (Role_if(PM_KENSEI)) {
+			pline("You have violated the holiness of your bond with your weapon.  You are no longer worthy.");
+		}
 		latechangerole("Monk");
 	}
 	return (result);

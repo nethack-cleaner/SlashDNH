@@ -83,7 +83,9 @@ const struct innate {
 	kni_abil[] = { {	 7, &(HFast), "quick", "slow" },
 		     {	 0, 0, 0, 0 } },
 
-	blind_abil[] = { {	 3, &(HTelepat), "telepathic", "zoned out" },
+	blind_abil[] = { {	 2, &(HTelepat), "telepathic", "zoned out" },
+ {	11, &(HRegeneration), "You recover so quickly now", "You recover much more slowly" },
+ {	15, &(HFlying), "You are free from the weight of the world", "the weight of the world overcomes you again" },
 		     {	 0, 0, 0, 0 } },
 
 	mon_abil[] = { {   1, &(HFast), "", "" },
@@ -1178,6 +1180,7 @@ calc_total_maxhp()
 		hpmax = &u.uhpmax;
 		hprolled = &u.uhprolled;
 		hpcap = 24 + 2*maxhp(1);
+	}
 	
 	if(u.uhpbonus > 0){
 		rawmax = *hprolled + ulev*conplus(ACURR(A_CON));
@@ -1219,18 +1222,12 @@ calc_total_maxhp()
 		
 		*hpmax = rawmax + u.uhpbonus + u.uhpmod;
 	}
-	}
 	if (Role_if(PM_BARBARIAN) || Role_if(PM_CAVEMAN) || Role_if(PM_CONVICT) || Role_if(PM_MADMAN)) {
-		achieve.maxrage = 8 + (u.ulevel - 1);
-	} else if (Role_if(PM_GLADIATOR)) {
-		achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
+		achieve.maxrage = 8;
 	} else if (Role_if(PM_DRUNK)) {
-		achieve.maxrage = 8 + ((u.ulevel - 1) * 2);
-		if (u.ulevel > 9) {
-			achieve.maxrage += u.ulevel;
-		}
+		achieve.maxrage = 8;
 	} else if ((Role_if(PM_OFFICER) || Role_if(PM_JEDI)) && u.ualign.type == A_CHAOTIC) {
-		achieve.maxrage = 8 + ((u.ulevel - 1) * 4);
+		achieve.maxrage = 8;
 	} else if (Role_if(PM_BERSERKER)) {
 		achieve.maxrage = 8 + ((u.ulevel - 1) * 8);
 	}

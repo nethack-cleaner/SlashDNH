@@ -64,6 +64,7 @@ static boolean FDECL(render_services,(struct monst *));
 static boolean FDECL(buy_dolls,(struct monst *));
 static void FDECL(changerole, (char *));
 static void FDECL(changerace, (char *));
+static void FDECL(addStartObj, (struct obj *obj));
 
 static const char tools[] = { TOOL_CLASS, 0 };
 static const char models[] = { TOOL_CLASS, FOOD_CLASS, 0 };
@@ -260,6 +261,47 @@ static const struct def_skill Skill_Gla[] = {
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_RIDING, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_MASTER },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_Ken[] = {
+    { P_MARTIAL_ARTS, P_GRAND_MASTER },
+    { P_LONG_SWORD, P_EXPERT },
+    { P_AXE, P_EXPERT },
+    { P_DAGGER, P_EXPERT },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_hack[] = {
+    { P_DAGGER, P_EXPERT },      { P_KNIFE, P_EXPERT },
+    { P_AXE, P_EXPERT },
+    { P_BROAD_SWORD, P_EXPERT },
+    { P_LONG_SWORD, P_EXPERT }, { P_TWO_HANDED_SWORD, P_EXPERT },
+    { P_SCIMITAR, P_EXPERT },        { P_SABER, P_EXPERT },
+    { P_CLUB, P_EXPERT },        { P_MACE, P_EXPERT },
+    { P_MORNING_STAR, P_EXPERT },  { P_FLAIL, P_EXPERT },
+    { P_HAMMER, P_EXPERT },      { P_POLEARMS, P_EXPERT },
+    { P_SPEAR, P_EXPERT },    { P_TRIDENT, P_EXPERT },
+    { P_LANCE, P_EXPERT },      { P_BOW, P_EXPERT },
+    { P_CROSSBOW, P_EXPERT },
+    { P_ATTACK_SPELL, P_EXPERT },
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },
+    { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_actor[] = {
+    { P_DAGGER, P_EXPERT },
+    { P_LONG_SWORD, P_EXPERT },
+    { P_SABER, P_EXPERT },
+    { P_BOW, P_EXPERT },
+    { P_CROSSBOW, P_EXPERT },
+    { P_ATTACK_SPELL, P_BASIC },
+	{ P_MATTER_SPELL, P_BASIC },        { P_HEALING_SPELL, P_SKILLED },
+    { P_ENCHANTMENT_SPELL, P_EXPERT },
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },
+    { P_MARTIAL_ARTS, P_GRAND_MASTER },
+	{ P_MUSICALIZE, P_EXPERT },     { P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -1308,6 +1350,8 @@ boolean chatting;
 	case MS_FRENZY_LEADER:
 	case MS_GLADIATOR_LEADER:
 	case MS_BLIND_LEADER:
+	case MS_HACK_LEADER:
+	case MS_ACTOR_LEADER:
 	case MS_TLEADER:
 	case MS_LEADER:
 	case MS_GUARDIAN:
@@ -1346,7 +1390,7 @@ asGuardian:
 		    break;
 
 	    }
-		if (ptr->msound == MS_ILEADER || ptr->msound == MS_TLEADER || ptr->msound == MS_GLADIATOR_LEADER || ptr->msound == MS_FRENZY_LEADER || ptr->msound == MS_BLIND_LEADER) {
+		if (ptr->msound == MS_ILEADER || ptr->msound == MS_TLEADER || ptr->msound == MS_GLADIATOR_LEADER || ptr->msound == MS_FRENZY_LEADER || ptr->msound == MS_BLIND_LEADER || ptr->msound == MS_HACK_LEADER || ptr->msound == MS_ACTOR_LEADER) {
 			boolean hasitemmain = FALSE;
 			boolean hasitemtraitor = FALSE;
 			boolean hasitemalt1 = FALSE;
@@ -1367,12 +1411,8 @@ asGuardian:
 				}
 			}
 
-		if (achieve.chosenapath > 0 && !Role_if(PM_ROLE_PLAYER)) {
-			if (achieve.chosenapath == ptr->msound) {
-				qt_pager(ptr->msound + 400 - 50);
-			} else {
-				qt_pager(QT_OTHERCHOICE);
-			}
+		if (achieve.chosenapath > 0 && !Role_if(PM_ROLE_PLAYER) && achieve.chosenapath != ptr->msound) {
+			qt_pager(QT_OTHERCHOICE);
 		} else {
 		if (ptr->msound == MS_ILEADER) {
 			if (achieve.talkedileader) {
@@ -1381,14 +1421,13 @@ asGuardian:
 					achieve.chosenapath = MS_ILEADER;
 					struct obj *obj;
 					obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
-				    fully_identify_obj(obj);
 					if (Role_if(PM_ARCHEOLOGIST)) {
 						obj = oname(obj, "Path of the Explorer");
 					} else if (Role_if(PM_BARBARIAN)) {
 						obj = oname(obj, "Path of the Savage Warrior");
 					}
 					obj->spe = abs(obj->spe);
-					addinv(obj);
+					addStartObj(obj);
 				} else
 					qt_pager(QT_STARTLEADER2);
 			} else {
@@ -1409,7 +1448,7 @@ asGuardian:
 				    fully_identify_obj(obj);
 					obj = oname(obj, "Traitor's Path");
 					obj->spe = abs(obj->spe);
-					addinv(obj);
+					addStartObj(obj);
 				} else
 					qt_pager(QT_STARTTRAITOR2);
 			} else {
@@ -1444,10 +1483,12 @@ asGuardian:
 		                }
 						//Change to the correct race and alignment
 						achieve.chosenapath = MS_GLADIATOR_LEADER;
-						changerace("orc"); //For some reason Drow is capitalized
+						if (Race_if(PM_ORC)) {
+							changerace("orc");
+						}
 						u.ualign.type = A_CHAOTIC;
 						achieve.pathwayprogress = -1;
-						qt_pager(QT_GLADIATORLEADER1);
+						qt_pager(QT_GLADIATORLEADER3);
 						OLD_P_SKILL(P_BARE_HANDED_COMBAT) = P_BASIC;
 						OLD_P_MAX_SKILL(P_BARE_HANDED_COMBAT) = P_MASTER;
 						OLD_P_SKILL(P_BOW) = P_UNSKILLED;
@@ -1472,13 +1513,100 @@ asGuardian:
 						OLD_P_MAX_SKILL(P_WAND_POWER) = P_EXPERT;
 						struct obj *obj;
 						obj = mksobj(DOUBLE_LIGHTSABER, NO_MKOBJ_FLAGS);
-						fully_identify_obj(obj);
-						addinv(obj);
+						addStartObj(obj);
 						obj = mksobj(BAG_OF_HOLDING, NO_MKOBJ_FLAGS);
-						fully_identify_obj(obj);
-						addinv(obj);
+						addStartObj(obj);
+						obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+						obj = oname(obj, "Pay to Win!");
+						obj->spe = abs(obj->spe);
+						addStartObj(obj);
 					} else {
 						qt_pager(QT_BERSERKERLEADER2);
+					}
+				}
+			} else if (Role_if(PM_MONK)) {
+				if (u.uconduct.weaphit) {
+					qt_pager(QT_GLADIATORLEADER6);
+				} else {
+					if (achieve.chosenapath) {
+						qt_pager(QT_GLADIATORLEADER5);
+					} else {
+						if (achieve.talkedgladiatorleader) {
+							boolean hasitem = FALSE;
+							int remcount = 3;
+							boolean hasgloves = FALSE;
+							int remobj [] = {LONG_SWORD, DAGGER, BATTLE_AXE};
+							struct obj *otmp;
+							for (int ii = 0; ii < remcount; ii++) {
+								for (otmp = invent; otmp; otmp = otmp->nobj) {
+									if (otmp->otyp == remobj[ii] && otmp->owornmask && otmp->cursed) {  
+										hasitem = TRUE;
+									}
+									if (otmp->otyp == GLOVES) {
+										hasgloves = TRUE;
+									}
+								}
+			                }
+							if (hasitem) {
+								if (hasgloves) {
+									qt_pager(QT_GLADIATORLEADER6);
+									u.uconduct.weaphit++;
+								} else {
+									qt_pager(QT_GLADIATORLEADER3);
+									changerole("Kensei");
+									achieve.chosenapath = MS_GLADIATOR_LEADER;
+									short kentype = 0;
+									for (int ii = 0; ii < remcount; ii++) {
+										if (hasitem) {
+											for (otmp = invent; otmp; otmp = otmp->nobj) {
+												if (otmp->otyp == remobj[ii] && otmp->owornmask && otmp->cursed) {  
+													hasitem = FALSE;
+													if (remobj[ii] == LONG_SWORD) {
+														kentype = 1;
+														obj_extract_and_unequip_self(otmp);
+													} else if (remobj[ii] == DAGGER) {
+														kentype = 2;
+														obj_extract_and_unequip_self(otmp);
+													} else if (remobj[ii] == BATTLE_AXE) {
+														kentype = 3;
+														obj_extract_and_unequip_self(otmp);
+													}
+												}
+											}
+										}
+									}
+									if (kentype == 1) {
+										OLD_P_SKILL(P_LONG_SWORD) = P_BASIC;
+										u.ualign.type = A_LAWFUL;
+										struct obj *obj;
+										obj = mksobj(LONG_SWORD, NO_MKOBJ_FLAGS);
+										obj = oname(obj, artiname(ART_BONDED_BLADE));
+										obj->spe = -2;
+										obj->oerodeproof = TRUE;
+										obj->blessed = TRUE;
+										obj->cursed = FALSE;
+										addStartObj(obj);
+										setuwep(obj);
+									} else if (kentype == 2) {
+										u.ualign.type = A_NEUTRAL;
+										OLD_P_SKILL(P_DAGGER) = P_BASIC;
+									} else if (kentype == 3) {
+										u.ualign.type = A_CHAOTIC;
+										OLD_P_SKILL(P_AXE) = P_BASIC;
+									}
+									struct obj *obj;
+									obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+									obj = oname(obj, "Kensei's Path");
+									obj->spe = abs(obj->spe);
+									addStartObj(obj);
+								}
+							} else {
+								qt_pager(QT_GLADIATORLEADER2);
+							}
+						} else {
+							achieve.talkedgladiatorleader = TRUE;
+							qt_pager(QT_GLADIATORLEADER1);
+						}
 					}
 				}
 			} else {
@@ -1489,10 +1617,9 @@ asGuardian:
 						changerole("Gladiator");
 						struct obj *obj;
 						obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
-					    fully_identify_obj(obj);
 						obj = oname(obj, "Gladiator's Path");
 						obj->spe = abs(obj->spe);
-						addinv(obj);
+						addStartObj(obj);
 					} else
 						qt_pager(QT_GLADIATORLEADER2);
 				} else {
@@ -1500,48 +1627,223 @@ asGuardian:
 					qt_pager(QT_GLADIATORLEADER1);
 				}
 			}
-		} else if (ptr->msound == MS_BLIND_LEADER) {
-			if (Role_if(PM_MONK) && !Race_if(PM_DWARF) && !Race_if(PM_HUMAN)) {
-				qt_pager(QT_BLINDLEADER5);
-			} else {
-				if (achieve.talkedblindleader) {
-					int remcount = 3;
+		} else if (ptr->msound == MS_HACK_LEADER) {
+			if (Role_if(PM_ROLE_PLAYER)) {
+				if (achieve.talkedhackleader) {
+					int remcount = 6;
 					int hasrem = 0;
-					int remobj [] = {BLINDFOLD, SUNGLASSES, MASK};
-					struct obj *otmp;
-					for (int ii = 0; ii < remcount; ii++) {
-						boolean hasitem = FALSE;
-						for (otmp = invent; otmp; otmp = otmp->nobj) {
-							if (otmp->otyp == remobj[ii]) {  
-								hasitem = TRUE;
-							}
-						}
-						if (hasitem) {
-							hasrem++;
-						}
-	                }
-					if (hasrem >= remcount) {
+					int remobj [] = {LONG_SWORD, HELMET, LEATHER_ARMOR, BUCKLER, GLOVES, HIGH_BOOTS};
+						struct obj *otmp;
 						for (int ii = 0; ii < remcount; ii++) {
+							boolean hasitem = FALSE;
 							for (otmp = invent; otmp; otmp = otmp->nobj) {
 								if (otmp->otyp == remobj[ii]) {  
-								    obj_extract_and_unequip_self(otmp);
+									hasitem = TRUE;
 								}
 							}
+							if (hasitem) {
+								hasrem++;
+							}
 		                }
-						changerole("Blind Master");
-						make_blinded(100, FALSE);
-						int addcount = 4;
-						int addspell [] = {SPE_IDENTIFY, SPE_MAGIC_MAPPING, SPE_DETECT_TREASURE, SPE_DETECT_MONSTERS};
-						for (int j = 0; j < addcount; j++) {
-							struct obj *obj3;
-							obj3 = mksobj(addspell[j], NO_MKOBJ_FLAGS);
-							initialspell(obj3);
+						if (hasrem >= remcount) {
+							for (int ii = 0; ii < remcount; ii++) {
+								for (otmp = invent; otmp; otmp = otmp->nobj) {
+									if (otmp->otyp == remobj[ii]) {  
+									    obj_extract_and_unequip_self(otmp);
+									}
+								}
+			                }
+							if (Race_if(PM_DROW)) {
+								changerace("Drow");
+							}
+							u.ualign.type = A_CHAOTIC;
+							achieve.chosenapath = MS_HACK_LEADER;
+							skill_init(Skill_hack);
+							struct obj *obj;
+							obj = mksobj(CLOAK_OF_PROTECTION, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = mksobj(ART_PREMIUM_HEART, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+							obj = oname(obj, "Hack and Slash!");
+							obj->spe = abs(obj->spe);
+							addStartObj(obj);
+							qt_pager(QT_HACKLEADER3);
+						} else {
+							qt_pager(QT_HACKLEADER2);
 						}
-						OLD_P_SKILL(P_DIVINATION_SPELL) = P_BASIC;
-						qt_pager(QT_BLINDLEADER3);;
+				} else {
+					achieve.talkedhackleader = TRUE;
+					qt_pager(QT_HACKLEADER1);
+				}
+			}
+		} else if (ptr->msound == MS_ACTOR_LEADER) {
+			if (Role_if(PM_ROLE_PLAYER)) {
+				if (achieve.talkedactorleader) {
+					int remcount = 6;
+					int hasrem = 0;
+					int remobj [] = {LONG_SWORD, HELMET, LEATHER_ARMOR, BUCKLER, GLOVES, HIGH_BOOTS};
+						struct obj *otmp;
+						for (int ii = 0; ii < remcount; ii++) {
+							boolean hasitem = FALSE;
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+									hasitem = TRUE;
+								}
+							}
+							if (hasitem) {
+								hasrem++;
+							}
+		                }
+						if (hasrem >= remcount) {
+							for (int ii = 0; ii < remcount; ii++) {
+								for (otmp = invent; otmp; otmp = otmp->nobj) {
+									if (otmp->otyp == remobj[ii]) {  
+									    obj_extract_and_unequip_self(otmp);
+									}
+								}
+			                }
+							if (Race_if(PM_HUMAN)) {
+								changerace("human");
+							}
+							u.ualign.type = A_NEUTRAL;
+							achieve.chosenapath = MS_ACTOR_LEADER;
+							qt_pager(QT_ACTORLEADER3);
+							skill_init(Skill_actor);
+							struct obj *obj;
+							obj = mksobj(LIGHTSABER, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = mksobj(ROBE, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = mksobj(GLOVES, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+							addStartObj(obj);
+							obj = oname(obj, "Actor and Investigator");
+							obj->spe = abs(obj->spe);
+							addStartObj(obj);
+						} else {
+							qt_pager(QT_ACTORLEADER2);
+						}
+				} else {
+					achieve.talkedactorleader = TRUE;
+					qt_pager(QT_ACTORLEADER1);
+				}
+			}
+		} else if (ptr->msound == MS_BLIND_LEADER) {
+			if (Role_if(PM_MONK)) {
+				if (!Race_if(PM_DWARF) && !Race_if(PM_HUMAN)) {
+					qt_pager(QT_BLINDLEADER5);
+				} else if (u.uconduct.weaphit) {
+					qt_pager(QT_BLINDLEADER4);
+				} else {
+					if (achieve.talkedblindleader) {
+						int remcount = 3;
+						int hasrem = 0;
+						int remobj [] = {BLINDFOLD, SUNGLASSES, MASK};
+						struct obj *otmp;
+						for (int ii = 0; ii < remcount; ii++) {
+							boolean hasitem = FALSE;
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+									hasitem = TRUE;
+								}
+							}
+							if (hasitem) {
+								hasrem++;
+							}
+		                }
+						if (hasrem >= remcount) {
+							for (int ii = 0; ii < remcount; ii++) {
+								for (otmp = invent; otmp; otmp = otmp->nobj) {
+									if (otmp->otyp == remobj[ii]) {  
+									    obj_extract_and_unequip_self(otmp);
+									}
+								}
+			                }
+							changerole("Blind Master");
+							achieve.chosenapath = MS_BLIND_LEADER;
+							make_blinded(100, FALSE);
+							int addcount = 4;
+							int addspell [] = {SPE_IDENTIFY, SPE_MAGIC_MAPPING, SPE_DETECT_TREASURE, SPE_DETECT_MONSTERS};
+							for (int j = 0; j < addcount; j++) {
+								struct obj *obj3;
+								obj3 = mksobj(addspell[j], NO_MKOBJ_FLAGS);
+								initialspell(obj3);
+							}
+							OLD_P_SKILL(P_DIVINATION_SPELL) = P_BASIC;
+							qt_pager(QT_BLINDLEADER3);
+						} else {
+							qt_pager(QT_BLINDLEADER2);
+						}
 					} else {
-						qt_pager(QT_BLINDLEADER2);
+						achieve.talkedblindleader = TRUE;
+						qt_pager(QT_BLINDLEADER1);
 					}
+				}
+			} else if (Role_if(PM_ROLE_PLAYER)) {
+				if (achieve.talkedblindleader) {
+						int remcount = 4;
+						int hasrem = 0;
+						int remobj [] = {LONG_SWORD, HELMET, LEATHER_ARMOR, BUCKLER};
+						struct obj *otmp;
+						for (int ii = 0; ii < remcount; ii++) {
+							boolean hasitem = FALSE;
+							for (otmp = invent; otmp; otmp = otmp->nobj) {
+								if (otmp->otyp == remobj[ii]) {  
+									hasitem = TRUE;
+								}
+							}
+							if (hasitem) {
+								hasrem++;
+							}
+		                }
+						if (hasrem >= remcount) {
+							for (int ii = 0; ii < remcount; ii++) {
+								for (otmp = invent; otmp; otmp = otmp->nobj) {
+									if (otmp->otyp == remobj[ii]) {  
+									    obj_extract_and_unequip_self(otmp);
+									}
+								}
+			                }
+							if (Race_if(PM_ELF)) {
+								changerace("elf");
+							}
+							u.ualign.type = A_LAWFUL;
+							achieve.chosenapath = MS_BLIND_LEADER;
+							struct obj *obj3;
+							obj3 = mksobj(SPE_IDENTIFY, NO_MKOBJ_FLAGS);
+							initialspell(obj3);
+							OLD_P_SKILL(P_DIVINATION_SPELL) = P_BASIC;
+							OLD_P_SKILL(P_LONG_SWORD) = P_UNSKILLED;
+							OLD_P_MAX_SKILL(P_LONG_SWORD) = P_UNSKILLED;
+							OLD_P_SKILL(P_DAGGER) = P_BASIC;
+							OLD_P_MAX_SKILL(P_DAGGER) = P_EXPERT;
+							OLD_P_SKILL(P_QUARTERSTAFF) = P_BASIC;
+							OLD_P_MAX_SKILL(P_QUARTERSTAFF) = P_EXPERT;
+							OLD_P_SKILL(P_ATTACK_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_DIVINATION_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_ENCHANTMENT_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_CLERIC_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_ESCAPE_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_MATTER_SPELL) = P_UNSKILLED;
+							OLD_P_SKILL(P_WAND_POWER) = P_UNSKILLED;
+							OLD_P_MAX_SKILL(P_ATTACK_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_DIVINATION_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_ENCHANTMENT_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_CLERIC_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_ESCAPE_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_MATTER_SPELL) = P_EXPERT;
+							OLD_P_MAX_SKILL(P_WAND_POWER) = P_EXPERT;
+							qt_pager(QT_BLINDLEADER3);
+							struct obj *obj;
+							obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+							obj = oname(obj, "Rules Lawyer");
+							obj->spe = abs(obj->spe);
+							addStartObj(obj);
+						} else {
+							qt_pager(QT_BLINDLEADER2);
+						}
 				} else {
 					achieve.talkedblindleader = TRUE;
 					qt_pager(QT_BLINDLEADER1);
@@ -1572,9 +1874,12 @@ asGuardian:
 						} else if (Role_if(PM_BARBARIAN)) {
 							changerole("Berserker");
 							obj = oname(obj, "Journey of the Berserker");
+							achieve.chosenapath = MS_FRENZY_LEADER;
+							pline("The rage within your boils to the surface!");
+							achieve.currentrage = achieve.maxrage;
 						}
 						obj->spe = abs(obj->spe);
-						addinv(obj);
+						addStartObj(obj);
 					}
 				} else if (!Role_if(PM_ROLE_PLAYER)) {
 					qt_pager(QT_BERSERKERLEADER2);
@@ -1615,7 +1920,9 @@ asGuardian:
 							}
 		                }
 						achieve.chosenapath = MS_FRENZY_LEADER;
-						changerace("vampire");
+						if (Race_if(PM_VAMPIRE)) {
+							changerace("vampire");
+						}
 						knows_object(POT_BLOOD);
 						u.ualign.type = A_CHAOTIC;
 						achieve.pathwayprogress = -1;
@@ -1642,19 +1949,21 @@ asGuardian:
 							achieve.rewardintro = TRUE;
 							struct obj *obj;
 							obj = mksobj(CANDLE_OF_INVOCATION, NO_MKOBJ_FLAGS);
-						    fully_identify_obj(obj);
-							addinv(obj);
+							addStartObj(obj);
 							obj = mksobj(CANDLE_OF_INVOCATION, NO_MKOBJ_FLAGS);
-						    fully_identify_obj(obj);
-							addinv(obj);
+							addStartObj(obj);
 							obj = mksobj(HELMET, NO_MKOBJ_FLAGS);
-							addinv(obj);
+							addStartObj(obj);
 							obj = mksobj(LEATHER_ARMOR, NO_MKOBJ_FLAGS);
-							addinv(obj);
+							addStartObj(obj);
 							obj = mksobj(HIGH_BOOTS, NO_MKOBJ_FLAGS);
-							addinv(obj);
+							addStartObj(obj);
 							obj = mksobj(CLOAK_OF_DISPLACEMENT, NO_MKOBJ_FLAGS);
-							addinv(obj);
+							addStartObj(obj);
+							obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+							obj = oname(obj, "Power Gamer");
+							obj->spe = abs(obj->spe);
+							addStartObj(obj);
 							u.umartial = TRUE;
 							OLD_P_SKILL(P_SABER) = P_UNSKILLED;
 							OLD_P_MAX_SKILL(P_SABER) = P_EXPERT;
@@ -7744,6 +8053,8 @@ char *role;
 	} else if (!strcmp(role, "Berseker")) {
 		achieve.isberseker = TRUE;
 		//skill_init(Skill_Berserker);
+	} else if (!strcmp(role, "Kensei")) {
+		skill_init(Skill_Ken);
 	}
 }
 
@@ -7760,6 +8071,16 @@ char *race;
 	while (u.ulevel > 1) {
 		losexp(0, 0, 1, TRUE);
 	}
+}
+
+static void
+addStartObj(obj)
+struct obj *obj;
+{
+	obj->cursed = FALSE;
+	obj->blessed = FALSE;
+	fully_identify_obj(obj);
+	addinv(obj);
 }
 
 int

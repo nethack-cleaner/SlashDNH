@@ -109,4 +109,4 @@ ENDMAP
 #MONSTER:'s',"giant spider",(38,12),peaceful
 #MONSTER:'u',"gray unicorn',(42,12),peaceful
 #OBJECT:'(',"bronze vessel",place[0]
-STAIR:(36,10), up
+#STAIR:(36,10), up

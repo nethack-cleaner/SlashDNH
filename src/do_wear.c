@@ -2663,6 +2663,16 @@ base_uac()
 	if (moves < achieve.unstoppable) {
 		uac -= 20;
 	}
+	if (achieve.seedefense) {
+		uac -= 5;
+	}
+	if (Role_if(PM_BLIND_MASTER)) {
+		int highlevel = u.ulevel;
+		while (highlevel >= 5) {
+			uac--;
+			highlevel -= 5;
+		}
+	}
 	if (achieve.demonproperty1e == 5 || achieve.demonproperty2e == 5 || achieve.demonproperty3e == 5) {
 		uac -= 5;
 	}
@@ -2854,6 +2864,10 @@ int base_nat_udr()
 	
 	if (achieve.classdead)
 		udr -= 2;
+
+	if (achieve.seedefense) {
+		udr += 1;
+	}
 	
 	if(u.specialSealsActive&SEAL_COSMOS) udr += (spiritDsize()+1)/2;
 	if(u.sealsActive&SEAL_ECHIDNA) udr += max((ACURR(A_CON)-9)/4, 0);
@@ -2887,6 +2901,13 @@ int base_udr()
 	}
 	if (moves < achieve.unstoppable) {
 		udr += 30;
+	}
+	if (Role_if(PM_BLIND_MASTER)) {
+		int highlevel = u.ulevel;
+		while (highlevel >= 5) {
+			udr++;
+			highlevel -= 5;
+		}
 	}
 	if (achieve.berserkerrage) {
 		udr += 2;

@@ -5,9 +5,9 @@
 #ifndef QTEXT_H
 #define QTEXT_H
 
-#define N_HDR	44		/* Maximum number of categories */
+#define N_HDR	45		/* Maximum number of categories */
 #define LEN_HDR 3		/* Maximum length of a category name */
-#define ROLECOUNT 41
+#define ROLECOUNT 42
 
 struct qtmsg {
 	int	msgnum;
@@ -111,6 +111,9 @@ struct	qtlists {
 #define QT_GLADIATORLEADER1	300
 #define QT_GLADIATORLEADER2	301
 #define QT_GLADIATORLEADER3	302
+#define QT_GLADIATORLEADER4	412
+#define QT_GLADIATORLEADER5	304
+#define QT_GLADIATORLEADER6 305
 #define QT_BERSERKERLEADER1	306
 #define QT_BERSERKERLEADER2	307
 #define QT_BERSERKERLEADER3	308
@@ -121,11 +124,16 @@ struct	qtlists {
 #define QT_BLINDLEADER3	313
 #define QT_BLINDLEADER4	314
 #define QT_BLINDLEADER5	315
+#define QT_HACKLEADER1 316
+#define QT_HACKLEADER2 317
+#define QT_HACKLEADER3 318
+#define QT_ACTORLEADER1 319
+#define QT_ACTORLEADER2 320
+#define QT_ACTORLEADER3 321
 #define QT_STARTCLOCKARC1 368
 #define QT_STARTLEADER4	409
 #define QT_STARTTRAITOR4	410
 #define QT_BERSERKERLEADER4	411
-#define QT_GLADIATORLEADER4	412
 #define QT_ALTQUESTLEADER	413
 #define QT_ALTQUESTAWARD	414
 #define QT_ALTQUESTMISS	415

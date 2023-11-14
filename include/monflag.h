@@ -75,6 +75,8 @@
 #define MS_FRENZY_LEADER	64	/* Frenzy option Leader of the Intro Quest */
 #define MS_GLADIATOR_LEADER	65	/* Frenzy option Leader of the Intro Quest */
 #define MS_BLIND_LEADER	66	/* Blind Leader of the Intro Quest */
+#define MS_HACK_LEADER	67	/* Hack Leader of the Intro Quest */
+#define MS_ACTOR_LEADER	68	/* Actor Leader of the Intro Quest */
 
 #define MR_FIRE			0x0001	/* 1 resists fire */
 #define MR_COLD			0x0002	/* 2 resists cold */

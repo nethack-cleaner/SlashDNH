@@ -63,6 +63,10 @@ doread()
 	
 	scroll = getobj(class_list, "read");
 	if(!scroll) return MOVE_CANCELLED;
+	if (Role_if(PM_BLIND_MASTER)) {
+		pline("The way of the blind master requires that I not even attempt to read even though I am blind");
+		return MOVE_STANDARD;
+	}
 	
 	if((scroll->oartifact 
 			&& !(scroll->oclass == SCROLL_CLASS)

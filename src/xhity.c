@@ -3070,11 +3070,19 @@ int dmg;				/* damage to deal */
 				addto++;
 			}
 			achieve.currentrage += addto;
-			if (dmg > 10) {
+			if (dmg > 12 && Role_if(PM_BERSERKER)) {
 				achieve.currentrage += addto;
 			}
 			if (achieve.currentrage > achieve.maxrage) {
 				achieve.currentrage = achieve.maxrage;
+				if (!rn2(6)) {
+					pline("Your rage boils over into fuel for a rage attack");
+					achieve.rageswing = TRUE;
+				}
+				if (!rn2(12)) {
+					pline("Your boiling rage allows you to shrug off some of the attack");
+					*hp(mdef) += (int) (dmg / 2);
+				}
 			}
 		} else if (achieve.drinkrage) {
 			achieve.currentrage++; //even low damage enrages you
@@ -3843,6 +3851,9 @@ int *shield_margin;
 		/* gnomes are especially accurate, with weapons or ranged or any other "proper" attacks... not a zombie's claw attack. */
 		if (magr && (youagr ? Race_if(PM_GNOME) : is_gnome(pa)))
 			wepn_acc += 2;
+		if (youagr && Role_if(PM_BLIND_MASTER)) {
+			wepn_acc += 7;
+		}
 
 		/* skill bonus (player-only; applies without a weapon as well) */
 		if (youagr) {
@@ -3899,9 +3910,6 @@ int *shield_margin;
 					wepn_acc += (u.ulevel / 3) + 2;
 				}
 			}
-		}
-		if (youagr && Role_if(PM_BLIND_MASTER)) {
-			wepn_acc += 7;
 		}
 		/* Some madnesses give accuracy bonus/penalty (player-only) (melee) */
 		if(youagr && melee && u.umadness){
@@ -13604,11 +13612,15 @@ int vis;						/* True if action is at all visible to the player */
 	}
 	/* if the player is attacking with a wielded weapon, increment conduct */
 	if (youagr && valid_weapon_attack && (melee || thrust)) {
-		if (Role_if(PM_DRUNKEN_MASTER)) {
-			pline("You cannot bring yourself to attack in a way that is not holy");
-			result = xdamagey(magr, mdef, attk, 0);
-			return result;
+		if (Role_if(PM_KENSEI) && uwep->oartifact == ART_BONDED_BLADE) { //Attacks count as unarmed
 		} else {
+			if (Role_if(PM_DRUNKEN_MASTER) || Role_if(PM_BLIND_MASTER) || Role_if(PM_KENSEI)) {
+				if (!is_monk_weapon(uwep)) {
+					pline("You cannot bring yourself to attack in a way that is not holy");
+					result = xdamagey(magr, mdef, attk, 0);
+					return result;
+				}
+			}
 			u.uconduct.weaphit++;
 		}
 	}
@@ -15432,6 +15444,24 @@ int vis;						/* True if action is at all visible to the player */
 		basedmg = basedmg * 3;
 		bonsdmg = bonsdmg * 3;
 		snekdmg = snekdmg * 3;
+		pline("Unleasing the power of your death strike!");
+	}
+	if (achieve.rageswing && youagr && uwep) {
+		achieve.rageswing = FALSE;
+		basedmg = basedmg * 2;
+		bonsdmg = bonsdmg * 2;
+		snekdmg = snekdmg * 2;
+		pline("Unleasing your rage in your strike!");
+	}
+	if (achieve.strikesotrue > 0 && youagr) {
+		achieve.strikesotrue--;
+		basedmg = basedmg * 2;
+		bonsdmg = bonsdmg * 2;
+		snekdmg = snekdmg * 2;
+		pline("Your attacks pierce through your enemy");
+	}
+	if (youagr && Role_if(PM_BLIND_MASTER) && u.ulevel >= 7) {
+		bonsdmg += 3;
 	}
 	subtotl = basedmg
 		+ artidmg

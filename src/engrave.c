@@ -2055,6 +2055,11 @@ int mode;
 	xchar randHalu = FALSE; /* whether or not the randWard should be read as a real or hallucinatory ward */
 	char *writer;
 	char *word;
+
+	if (Role_if(PM_BLIND_MASTER)) {
+		pline("The way of the blind master requires that I not even attempt to write anything as things related to sight are forbidden by our faith.");
+		return MOVE_STANDARD;
+	}
 	
 	if(mode == ENGRAVE_MODE)
 		word = "write";

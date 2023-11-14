@@ -621,6 +621,18 @@ do_statuseffects(char *newbot2, boolean terminal_output, int abbrev, int statusl
 			status_effect("Death Strike", "DS", "DS");
 		}
 	}
+	if (Role_if(PM_BLIND_MASTER)) {
+		if (achieve.strikesotrue > 0) {
+			char nbr[20];
+			Sprintf(nbr, "True:%d", achieve.strikesotrue);
+			char nbr2[20];
+			Sprintf(nbr2, "T:%d", achieve.strikesotrue);
+			status_effect(nbr, nbr2, nbr2);
+		}
+	}
+	if (achieve.rageswing) {
+		status_effect("Rage Attack", "RA", "RA");
+	}
 #undef status_effect
 }
 

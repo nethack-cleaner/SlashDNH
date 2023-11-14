@@ -929,10 +929,13 @@ struct u_achieve {
         Bitfield(inked_up,1);        /* Fell tat */
         Bitfield(new_races,1);        /* Ascended a new race */
 		Bitfield(introquestsolved,1);
+		Bitfield(seedefense,1);
 		Bitfield(introlevel2,1);
 		Bitfield(introboss,1);
 		Bitfield(talkedileader,1);
 		Bitfield(talkedblindleader,1);
+		Bitfield(talkedhackleader,1);
+		Bitfield(talkedactorleader,1);
 		Bitfield(talkedtleader,1);
 		Bitfield(talkedgladiatorleader,1);
 		Bitfield(talkedfrenzyleader,1);
@@ -955,6 +958,15 @@ struct u_achieve {
 		Bitfield(steadysteps,1);
 		Bitfield(deathstrike,1);
 		Bitfield(classdead,1);
+		Bitfield(rageswing,1);
+		Bitfield(isblindingspeed,1);
+		short techtype;
+		short technow;
+		short hottech1;
+		short hottech2;
+		short strikesotrue;
+		short blindingspeedcount;
+		int blindingspeed;
 		int haseaten;
 		int currentstagger;
 		int currentchi;

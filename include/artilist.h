@@ -95,6 +95,16 @@ A("Dirge",			LONG_SWORD,						"half-melted %s",
 	NOINVOKE, NOFLAG
 	),
 
+A("Bonded Blade",			LONG_SWORD,						"your bonded blade %s",
+	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_LAWFUL, PM_KENSEI, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_INHER|ARTG_MAJOR|ARTG_FXALGN),
+	NO_MONS(),
+	NOFLAG, NOFLAG,
+	NOFLAG, NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+	),
+
 /*
  *	Stormbringer only has a 2 because it can drain a level,
  *	providing 8 more.

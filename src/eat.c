@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "qtext.h"
 
 #include "artifact.h"
 /* #define DEBUG */	/* uncomment to enable new eat code debugging */
@@ -39,6 +40,7 @@ STATIC_DCL void NDECL(eatspecial);
 STATIC_DCL void FDECL(eataccessory, (struct obj *));
 STATIC_DCL const char *FDECL(foodword, (struct obj *));
 STATIC_DCL boolean FDECL(maybe_cannibal, (int,BOOLEAN_P));
+static void FDECL(latechangerole, (char *));
 
 char msgbuf[BUFSZ];
 int etype;			/* Clockwork's eat type */
@@ -1408,11 +1410,15 @@ violated_vegetarian()
 {
     u.uconduct.unvegetarian++;
 	
-    if (Role_if(PM_MONK)) {
+    if (Role_if(PM_MONK) || Role_if(PM_KENSEI) || Role_if(PM_BLIND_MASTER) || Role_if(PM_DRUNKEN_MASTER)) {
 		You_feel("guilty.");
 		adjalign(-1);
 		u.ualign.sins++;
 		if(u.uconduct.unvegetarian%2) u.hod++;
+		if (Role_if(PM_KENSEI) || Role_if(PM_BLIND_MASTER) || Role_if(PM_DRUNKEN_MASTER)) {
+			pline("You can no longer follow this holy way");
+			latechangerole("Monk");
+		}
     }
     return;
 }
@@ -4861,6 +4867,24 @@ clockwork_eat_menu(dry,mgc)
 		return picked;
 	}
 	return 0;
+}
+
+static void
+latechangerole(role)
+char *role;
+{
+    int i;
+    for (i = 0; i < ROLECOUNT; i++) {
+        if (!strcmp(roles[i].name.m, role)) {
+            flags.initrole = i;
+            urole = roles[i];
+        }
+    }
+    losexp(0, 0, 1, TRUE);
+    change_luck(-5);
+    godlist[u.ualign.god].anger += 3;
+    adjalign(-5);
+    achieve.classdead = TRUE;
 }
 
 #endif /* OVLB */

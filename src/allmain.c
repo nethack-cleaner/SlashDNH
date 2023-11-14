@@ -710,6 +710,10 @@ you_calc_movement()
 		else if(uarmf->otyp == WIND_AND_FIRE_WHEELS)
 			moveamt = (moveamt+1)/2;
 	}
+	if(u.phasengn){
+		//Phasing mount as well
+		morehungry(10);
+	}
 	
 	if(u.sealsActive&SEAL_EURYNOME && IS_PUDDLE_OR_POOL(levl[u.ux][u.uy].typ)){
 		if (Very_fast) {	/* speed boots or potion */
@@ -809,11 +813,11 @@ you_calc_movement()
 		multi = -1;
 		nomovemsg = "The crawling bugs awaken you.";
 	}
-	if((uclockwork && u.ucspeed == HIGH_CLOCKSPEED) || achieve.clockarc) {
+	if((uclockwork && u.ucspeed == HIGH_CLOCKSPEED) || achieve.clockarc || achieve.isblindingspeed) {
 		int hungerup;
 		moveamt *= 2;
 		hungerup = 2*moveamt/NORMAL_SPEED - 1;
-		if(u.slowclock < hungerup) morehungry(hungerup-u.slowclock);
+		if(u.slowclock < hungerup || achieve.isblindingspeed) morehungry(hungerup-u.slowclock);
 		else if(!TimeStop && !(moves%(u.slowclock - hungerup + 1))) morehungry(1);
 	}
 	if (achieve.berserkerrage || achieve.berserkerrageend > 0) {
@@ -864,14 +868,35 @@ you_calc_movement()
 	}
 	}
 	
-	if(uclockwork && u.phasengn){
+	if (achieve.seedefense) {
+		losepw(2);
+		if (u.uen <= 0) {
+			You("You stop your defensive stance");
+			achieve.seedefense = FALSE;
+		}
+	}
+	if(u.phasengn){
 		morehungry(10);
+		if (!uclockwork) {
+			losepw(10);
+			if(u.uen <= 0) {
+				You("can no longer maintain phase!");
+				u.phasengn = 0;
+			}
+		}
 	}
 	
 	if(uclockwork && u.ucspeed == SLOW_CLOCKSPEED)
 		moveamt /= 2; /*Even if you are mounted, a slow clockspeed affects how 
 						fast you can issue commands to the mount*/
-	
+	if (Role_if(PM_KENSEI) || Role_if(PM_BLIND_MASTER) || Role_if(PM_DRUNKEN_MASTER)) {
+		boolean resunderwear = uarmu && uarmu->otyp == VICTORIAN_UNDERWEAR;
+		boolean resarmor = uarm && uarm->otyp != WAISTCLOTH && uarm->otyp != HAWAIIAN_SHORTS;	
+		if (resunderwear || resarmor) {
+			You_feel("your spirit is slowed by this bulky atire, you need rest");
+			moveamt /= 3;
+		}
+	}
 	switch (wtcap) {
 	case UNENCUMBERED: break;
 	case SLT_ENCUMBER: moveamt -= (moveamt / 4); break;
@@ -967,9 +992,16 @@ you_regen_hp()
 	if (!oddregen && ((uandroid && !u.usleep) || Race_if(PM_ETHEREALOID))) {
 		if (achieve.lastpropcheck < moves) {
 			achieve.lastpropcheck = moves;
-			//if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
-			//	achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
-			//}
+			if (achieve.isblindingspeed) {
+				achieve.blindingspeed += achieve.blindingspeedcount;
+				int damage = achieve.blindingspeed;
+				while (damage >= 5) {
+					u.uhp--;
+					damage -= 5;
+				}
+			} else if (achieve.blindingspeed > 0) {
+				achieve.blindingspeed--;
+			}
 			if (achieve.berserkerrageend > 0) {
 				achieve.berserkerrageend--;
 			}
@@ -1242,11 +1274,18 @@ you_regen_hp()
 	}
 	if (achieve.lastpropcheck < moves) {
 		achieve.lastpropcheck = moves;
-		if (achieve.currentrage > 0 && !Role_if(PM_BERSERKER) && rn2(4) == 1) {
-			achieve.currentrage--; //Non berserkers lose rage 1 rage every 4 turns
-		}
 		if (achieve.berserkerrageend > 0) {
 			achieve.berserkerrageend--;
+		}
+		if (achieve.isblindingspeed) {
+			achieve.blindingspeed += achieve.blindingspeedcount;
+			int damage = achieve.blindingspeed;
+			while (damage >= 5) {
+				u.uhp--;
+				damage -= 5;
+			}
+		} else if (achieve.blindingspeed > 0) {
+			achieve.blindingspeed--;
 		}
 		if (Role_if(PM_DRUNKEN_MASTER) && achieve.currentstagger > 0) {
 			int stagger = achieve.currentstagger;
@@ -2566,6 +2605,13 @@ karemade:
 				coa_arrive();
 			}*/
 			//Random monster generation block
+			//Higher generation of random monster during starter quest
+			int baserate = 70;
+			int baserate2 = 50;
+			if (!achieve.introquestsolved) {
+				baserate = 35;
+				baserate2 = 35;
+			}
 			if(In_mithardir_terminus(&u.uz) &&
 				mvitals[PM_ASPECT_OF_THE_SILENCE].born == 0 &&
 				((u.ufirst_light && u.ufirst_sky)
@@ -2579,7 +2625,7 @@ karemade:
 				!rn2(u.uevent.udemigod ? 25 :
 				Infuture ? (!(Is_qstart(&u.uz) && !(quest_status.leader_is_dead)) ? 35 : ANA_HOME_PROB) :
 				(In_quest(&u.uz) && Race_if(PM_HALF_DRAGON) && Role_if(PM_NOBLEMAN) && flags.initgend && u.uevent.qcompleted && u.ualign.record > 4) ? 210 : /*Drastically reduce spawn rate if the painting is peaceful*/
-			    (depth(&u.uz) > depth(&stronghold_level)) ? 50 : 70)
+			    (depth(&u.uz) > depth(&stronghold_level)) ? baserate2 : baserate)
 			){
 				if(Is_ford_level(&u.uz)){
 					if(rn2(2)){

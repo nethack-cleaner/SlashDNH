@@ -418,6 +418,7 @@ static struct trobj Anachrononaut_Mal_Clk[] = {
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Barbarian[] = {
+	{ AXE, 0, WEAPON_CLASS, 0, 0 },
 	{ RING_MAIL, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ FOOD_RATION, 0, FOOD_CLASS, 1, 0 },
@@ -2515,7 +2516,7 @@ u_init()
 		skill_init(Skill_B);
 		knows_class(WEAPON_CLASS);
 		knows_class(ARMOR_CLASS);
-		achieve.currentrage = 8;
+		achieve.currentrage = 0;
 		achieve.maxrage = 8;
 		break;
 #ifdef BARD
@@ -2616,7 +2617,7 @@ u_init()
 			u.ualign.type = A_LAWFUL;
 		}
 		achieve.maxrage = 8;
-		achieve.currentrage = 8;
+		achieve.currentrage = 0;
 		break;
 #ifdef CONVICT
 	case PM_CONVICT:
@@ -2642,7 +2643,7 @@ u_init()
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Convicts are pariahs of their race */
 		achieve.maxrage = 8;
-		achieve.currentrage = 8;
+		achieve.currentrage = 0;
         break;
 #endif	/* CONVICT */
 	case PM_MADMAN:
@@ -2691,7 +2692,7 @@ u_init()
         urace.lovemask = 0; /* Madmen are pariahs of their race */
 		u.ualign.type = A_CHAOTIC;
 		achieve.maxrage = 8;
-		achieve.currentrage = 8;
+		achieve.currentrage = 0;
         break;
 	case PM_HEALER:
 		if(Race_if(PM_DROW)){

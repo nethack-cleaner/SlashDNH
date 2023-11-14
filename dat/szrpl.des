@@ -118,6 +118,9 @@ NON_PASSWALL:(00,00,75,18)
 
 MONSTER:'@',"Diablo Immortal",(42,16)
 MONSTER:'@',"Monte Hall",(42,18)
+MONSTER:'@',"Robert Shapiro",(42,14)
+MONSTER:'@',"Vendes Baenre",(44,11)
+MONSTER:'@',"Christian Bale",(36,05)
 
 DOOR:closed,(15,02)
 DOOR:closed,(21,02)

@@ -2416,7 +2416,8 @@ museamnesia:
 		return 2;
 	case MUSE_BULLWHIP:
 		/* attempt to disarm hero */
-		if (uwep && !rn2(5)) {
+		if (Role_if(PM_KENSEI) && uwep->oartifact == ART_BONDED_BLADE) { //Cannot be disarmed
+		} else if (uwep && !rn2(5)) {
 		    const char *The_whip = vismon ? "The whip" : "A whip";
 		    int where_to = rn2(4);
 		    struct obj *obj = uwep;

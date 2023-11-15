@@ -7,6 +7,7 @@
 #include "xhity.h"
 #include "zap.h"
 #include "artifact.h"
+#include "qtext.h"
 
 #ifndef OVLB
 
@@ -56,6 +57,7 @@ STATIC_PTR int NDECL(take_off);
 STATIC_DCL int FDECL(menu_remarm, (int));
 STATIC_DCL void FDECL(already_wearing, (const char*));
 STATIC_DCL void FDECL(already_wearing2, (const char*, const char*));
+static void FDECL(latechangerole, (char *));
 
 void
 off_msg(otmp)
@@ -651,6 +653,10 @@ Gloves_on()
 			  Tobjnam(uarmg, "glow"), hcolor(NH_BLACK));
 		curse(uarmg);
 	}
+	if (Role_if(PM_KENSEI)) {
+		pline("Kensei must never wear gloves, you have been banished from the sacred fold");
+		latechangerole("Monk");
+	}
 
     return 0;
 }
@@ -720,6 +726,24 @@ Gloves_off()
     }
 
     return 0;
+}
+
+static void
+latechangerole(role)
+char *role;
+{
+    int i;
+    for (i = 0; i < ROLECOUNT; i++) {
+        if (!strcmp(roles[i].name.m, role)) {
+            flags.initrole = i;
+            urole = roles[i];
+        }
+    }
+    losexp(0, 0, 1, TRUE);
+    change_luck(-5);
+    godlist[u.ualign.god].anger += 3;
+    adjalign(-5);
+    achieve.classdead = TRUE;
 }
 
 STATIC_OVL 

@@ -555,7 +555,7 @@ boolean affect_game_state;
 					MOVECOST(NORMAL_SPEED/12);
 				} else if(uwep && uwep->oartifact == ART_SODE_NO_SHIRAYUKI){
 					MOVECOST(NORMAL_SPEED/4);
-				} else if(uwep && uwep->oartifact == ART_TOBIUME){
+				} else if(uwep && (uwep->oartifact == ART_TOBIUME || (Role_if(PM_KENSEI) && u.ulevel >= 7 && uwep->oartifact == ART_BONDED_BLADE))) {
 					if (affect_game_state) {
 						if((HStealth&TIMEOUT) < 2)
 							set_itimeout(&HStealth, 2L);
@@ -871,8 +871,20 @@ you_calc_movement()
 	if (achieve.seedefense) {
 		losepw(2);
 		if (u.uen <= 0) {
-			You("You stop your defensive stance");
+			You("stop your defensive stance");
 			achieve.seedefense = FALSE;
+		}
+	}
+	if (achieve.kenseidef) {
+		achieve.kenseidefpart++;
+		if (achieve.kenseidefpart >= 3) {
+			achieve.kenseidefpart -= 3;
+			achieve.currentchi--;
+			if (achieve.currentchi <= 0) {
+				You("stop your defensive stance");
+				achieve.kenseidef = FALSE;
+				achieve.kenseidefpart = 0;
+			}
 		}
 	}
 	if(u.phasengn){
@@ -3969,7 +3981,13 @@ boolean new_game;	/* false => restoring an old game */
 		pline("Use f to fire from your power suit.");	
 	}
 	}
-	if (!achieve.startedgame) {
+	if (achieve.startedgame) {
+		if (Role_if(PM_DRUNKEN_MASTER)) {
+			achieve.maxchi = 1 + ((int) (u.udrunken / 5));
+		} else if (Role_if(PM_KENSEI)) {
+			achieve.maxchi = 1 + u.ulevel;
+		}
+	} else {
 		int startx = 5;
 		int starty = 2;
 		achieve.startedgame = TRUE;

@@ -960,12 +960,16 @@ struct u_achieve {
 		Bitfield(classdead,1);
 		Bitfield(rageswing,1);
 		Bitfield(isblindingspeed,1);
+		Bitfield(kenseidef,1);
 		short techtype;
+		short kenseidefpart;
 		short technow;
 		short hottech1;
 		short hottech2;
 		short strikesotrue;
+		short weapondeath;
 		short blindingspeedcount;
+		int usingweapondeath;
 		int blindingspeed;
 		int haseaten;
 		int currentstagger;

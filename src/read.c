@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "qtext.h"
 
 #include "artifact.h"
 
@@ -38,6 +39,7 @@ static int FDECL(read_tile, (struct obj *));
 static int FDECL(study_word, (struct obj *));
 static int NDECL(learn_word);
 static void FDECL(learn_spell_aphanactonan, (int));
+static void FDECL(latechangerole, (char *));
 
 int
 doread()
@@ -2254,6 +2256,11 @@ struct obj	*sobj;
 		}
 	    break;
 	case SCR_ENCHANT_WEAPON:
+		if (Role_if(PM_KENSEI)) {
+			pline("Enchanting weapons is against the code of the Kensei, you are banished.");
+			latechangerole("Monk");
+			break;
+		}
 		if(uwep && (uwep->oclass == WEAPON_CLASS || is_weptool(uwep) || uwep->otyp == STILETTOS || uwep->otyp == WIND_AND_FIRE_WHEELS)
 			&& confused && uwep->oartifact != ART_ROD_OF_SEVEN_PARTS) {
 		/* read text for the rod of seven parts may lead players to think they need to errode-proof it.
@@ -4016,6 +4023,24 @@ int spellnum;
 			}
 		}
 	}
+}
+
+static void
+latechangerole(role)
+char *role;
+{
+    int i;
+    for (i = 0; i < ROLECOUNT; i++) {
+        if (!strcmp(roles[i].name.m, role)) {
+            flags.initrole = i;
+            urole = roles[i];
+        }
+    }
+    losexp(0, 0, 1, TRUE);
+    change_luck(-5);
+    godlist[u.ualign.god].anger += 3;
+    adjalign(-5);
+    achieve.classdead = TRUE;
 }
 
 

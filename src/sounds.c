@@ -1554,6 +1554,7 @@ asGuardian:
 								} else {
 									qt_pager(QT_GLADIATORLEADER3);
 									changerole("Kensei");
+									achieve.maxchi = 1 + u.ulevel;
 									achieve.chosenapath = MS_GLADIATOR_LEADER;
 									short kentype = 0;
 									for (int ii = 0; ii < remcount; ii++) {

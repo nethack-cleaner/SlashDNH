@@ -2780,7 +2780,11 @@ boolean dumping;
 	    you_have_been("an atheist");
 
 	if (!u.uconduct.weaphit)
-	    you_have_never("hit with a wielded weapon");
+		if (Role_if(PM_KENSEI)) {
+			you_have_never("hit with a non-bonded weapon");
+		} else {
+			you_have_never("hit with a wielded weapon");
+		}
 #ifdef WIZARD
 	else if (wizard) {
 	    Sprintf(buf, "used a wielded weapon %ld time%s",

@@ -3052,6 +3052,12 @@ int dmg;				/* damage to deal */
 		achieve.damagetaken += dmg;
 		achieve.currentstagger += dmg;
 		dmg = 0;
+	} else if (Role_if(PM_KENSEI) && achieve.kenseidef) {
+		if (youdef) {
+			dmg = (int) (dmg / 2);
+		} else if (youagr) {
+			dmg = (int) (dmg * 0.9);
+		}
 	}
 	/* debug */
 	if (wizard && (iflags.wizcombatdebug & WIZCOMBATDEBUG_DMG) && WIZCOMBATDEBUG_APPLIES(magr, mdef))
@@ -13263,6 +13269,12 @@ int vis;						/* True if action is at all visible to the player */
 		u_anger_guards = FALSE;
 
 	result = hmoncore(magr, mdef, attk, originalattk, weapon_p, vpointer, hmoncode, flatbasedmg, monsdmg, dohitmsg, dieroll, recursed, vis);
+	if (result&MM_DEF_DIED && magr == &youmonst && Role_if(PM_KENSEI) && uwep->oartifact == ART_BONDED_BLADE && achieve.usingweapondeath + 1 < moves) {
+		if (achieve.currentchi < achieve.maxchi) {
+			You("feel your holy energy surge as you nobly defeat your foe");
+			achieve.currentchi++;
+		}
+	}
 
 	/* reset killer */
 	killer = 0;
@@ -15212,7 +15224,7 @@ int vis;						/* True if action is at all visible to the player */
 			/* get simple weapon skill associated with the weapon, not including twoweapon */
 			if (fired && launcher)
 				wtype = weapon_type(launcher);
-			else if (unarmed_punch || unarmed_kick || (weapon && martial_aid(weapon)))
+			else if (unarmed_punch || unarmed_kick || (weapon && martial_aid(weapon)) || (Role_if(PM_KENSEI) && uwep->oartifact == ART_BONDED_BLADE))
 				wtype = P_BARE_HANDED_COMBAT;
 			else if (weapon && weapon->oartifact == ART_LIECLEAVER)
 				wtype = P_SCIMITAR;
@@ -15452,6 +15464,12 @@ int vis;						/* True if action is at all visible to the player */
 		bonsdmg = bonsdmg * 2;
 		snekdmg = snekdmg * 2;
 		pline("Unleasing your rage in your strike!");
+	}
+	if (achieve.usingweapondeath == moves && youagr && uwep) {
+		basedmg = basedmg * 2;
+		bonsdmg = bonsdmg * 2;
+		snekdmg = snekdmg * 2;
+		pline("You instill your combo attack with raw power");
 	}
 	if (achieve.strikesotrue > 0 && youagr) {
 		achieve.strikesotrue--;
@@ -17978,9 +17996,13 @@ android_combo()
 	struct monst * mdef;
 	int vis;
 
-	if (!uandroid) {
+	if (!uandroid && !Role_if(PM_KENSEI)) {
 		pline("You aren't an android!");
 		return MOVE_CANCELLED;
+	}
+	if (achieve.weapondeath > 0) {
+		achieve.usingweapondeath = moves;
+		achieve.weapondeath--;
 	}
 
 	if(Straitjacketed){
@@ -18299,19 +18321,22 @@ android_combo()
 		flags.botl = 1;
 
 		if (uwep && P_SKILL(weapon_type(uwep)) >= P_SKILLED && u.uen > 0){
-			//Two throws. Aborting either one ends the combo.
-			if(dofire() == MOVE_CANCELLED)
-				return MOVE_ATTACKED;
-			//Charge energy for continuing combo after first throw.
-			u.uen--;
-			flags.botl = 1;
-			//Now do second throw. Aborting either one ends the combo.
-			if(dofire() == MOVE_CANCELLED)
-				return MOVE_ATTACKED;
+			if (Role_if(PM_KENSEI)) {
+			} else {
+				//Two throws. Aborting either one ends the combo.
+				if(dofire() == MOVE_CANCELLED)
+					return MOVE_ATTACKED;
+				//Charge energy for continuing combo after first throw.
+				u.uen--;
+				flags.botl = 1;
+				//Now do second throw. Aborting either one ends the combo.
+				if(dofire() == MOVE_CANCELLED)
+					return MOVE_ATTACKED;
+			}
 		}
 		if (uwep && P_SKILL(weapon_type(uwep)) >= P_EXPERT && u.uen > 0){
 			//One throw, followed by a moving attack.  Aborting either one ends the combo.
-			if(dofire() != MOVE_CANCELLED){
+			if (Role_if(PM_KENSEI)) {
 				//Charge energy for continuing the combo after the throw
 				u.uen--;
 				flags.botl = 1;
@@ -18339,13 +18364,44 @@ android_combo()
 					if(uwep)
 						projectile(&youmonst, uwep, (void *)0, HMON_PROJECTILE|HMON_FIRED, u.ux, u.uy, u.dx, u.dy, u.dz, 10, FALSE, TRUE, FALSE);
 				}
+			} else {
+				if(dofire() != MOVE_CANCELLED){
+					//Charge energy for continuing the combo after the throw
+					u.uen--;
+					flags.botl = 1;
+					if (uwep){
+						/* get direction of attack */
+						if (!getdir((char *)0) || u.dz)
+							return MOVE_ATTACKED;
+						/* Lunge in indicated direction */
+						if(!u.ustuck && !u.utrap && goodpos(u.ux+u.dx, u.uy+u.dy, &youmonst, 0)){
+							hurtle(u.dx, u.dy, 1, FALSE, FALSE);
+							spoteffects(TRUE);
+						}
+						/* get defender */
+						if (u.ustuck && u.uswallow)
+							mdef = u.ustuck;
+						else
+							mdef = m_at(u.ux + u.dx, u.uy + u.dy);
+						/* attack (twice) */
+						if (!mdef)
+							You("leap and swing wildly!");
+						else {
+							vis = (VIS_MAGR | VIS_NONE) | (canseemon(mdef) ? VIS_MDEF : 0);
+							xmeleehity(&youmonst, mdef, &weaponhit, &uwep, vis, 0, FALSE);
+						}
+						if(uwep)
+							projectile(&youmonst, uwep, (void *)0, HMON_PROJECTILE|HMON_FIRED, u.ux, u.uy, u.dx, u.dy, u.dz, 10, FALSE, TRUE, FALSE);
+					}
+				}
+				else return MOVE_ATTACKED;
 			}
-			else return MOVE_ATTACKED;
 		}
 		return MOVE_ATTACKED;
 	}
 	else if (bimanual(uwep, youracedata)){ //!uwep handled above
 		int i, j;
+	pline("6com");
 		/* get direction of attack */
 		if (!getdir((char *)0) || u.dz)
 			return MOVE_CANCELLED;

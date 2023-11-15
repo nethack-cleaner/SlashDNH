@@ -1350,9 +1350,9 @@ struct monst *mon;
 			(wep && wep->oartifact == ART_SCEPTRE_OF_MIGHT) || 
 			(wep && wep->oartifact == ART_PEN_OF_THE_VOID && wep->ovar1&SEAL_YMIR && mvitals[PM_ACERERAK].died > 0) ||
 			(wep && wep->oartifact == ART_STORMBRINGER) ||
-			// (swapwep && swapwep->oartifact == ART_STORMBRINGER) ||
+			// (swapwep && swapwep->oartifact == ART_STORMBRINGER && !Role_if(PM_KENSEI)) ||
 			(wep && wep->oartifact == ART_OGRESMASHER) ||
-			(swapwep && swapwep->oartifact == ART_OGRESMASHER) ||
+			(swapwep && swapwep->oartifact == ART_OGRESMASHER && !Role_if(PM_KENSEI)) ||
 			(arms && arms->oartifact == ART_GOLDEN_KNIGHT) ||
 			(u.sealsActive&SEAL_YMIR)
 		) return(125);

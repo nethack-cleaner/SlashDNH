@@ -284,6 +284,10 @@ char * techExplaner[] =  {
 "'Blinding Speed' - Greatly increase speed at the cost of increased hunger and progressively increasing damage taken.", //MATTK_BLINDINGSPEED 73
 "'Choose technique to hot key to control i'", //MATTK_CHOOSEI 74
 "'Choose technique to hot key to control v'", //MATTK_CHOOSEV 75
+"'Attack Combo'", //MATTK_ANDROIDCOMBO 76
+"'My weapon is my life' - heal yourself similar to a full healing potion.  Costs 4 chi and 20 energy.  250 turn timeout.", //MATTK_WEAPONLIFE 77
+"'My weapon is your death' - Greatly increase your next 2 combo attack damage.  Costs 4 chi and 20 energy.  250 turn timeout.", //MATTK_WEAPONDEATH 78
+"'Defensive Stance' - Reduce damage taken by 50%.  Reduces damage you do with your attacks by 10%.  Costs 1 chi to activate plus 1 chi per 3 turns.", //MATTK_WEAPONDEF 79
 };
 
 /* Count down by decrementing multi */
@@ -895,6 +899,17 @@ boolean techniqueonly;
 				lettertaken[addtech(tmpwin, MATTK_BLINDINGSPEED, freeletter(lettertaken, 'b'), "Blinding Speed", 0, 0, 0)] = TRUE;
 			}
 		}
+	} else if (Role_if(PM_KENSEI)) {
+		if (uwep->oartifact == ART_BONDED_BLADE) {
+			lettertaken[addtech(tmpwin, MATTK_ANDROIDCOMBO, freeletter(lettertaken, 'c'), "Attack Combo", 0, 0, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_WEAPONLIFE, freeletter(lettertaken, 'h'), "My weapon is my life", 250, 0, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_WEAPONDEATH, freeletter(lettertaken, 'w'), "My weapon is your death", 250, 0, 0)] = TRUE;
+			if (achieve.kenseidef) {
+				lettertaken[addtech(tmpwin, MATTK_WEAPONDEF, freeletter(lettertaken, 'd'), "Stop using - Defensive Stance", 0, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_WEAPONDEF, freeletter(lettertaken, 'd'), "Defensive Stance", 0, 0, 0)] = TRUE;
+			}
+		}
 	} else if (Role_if(PM_DRUNKEN_MASTER)) {
 		lettertaken[addtech(tmpwin, MATTK_BREWCHUG, freeletter(lettertaken, 'b'), "Brew Chug", 0, 0, 0)] = TRUE;
 		lettertaken[addtech(tmpwin, MATTK_CHUGOFLIFE, freeletter(lettertaken, 'c'), "Chug of Life", 0, 0, 0)] = TRUE;
@@ -1024,7 +1039,7 @@ boolean techniqueonly;
 	case MATTK_U_TURN_UNDEAD: return doturn();
 	case MATTK_U_STYLE: return dofightingform();
 	case MATTK_JUMP:
-		if (achieve.techs[MATTK_JUMP] + 1000 > moves) {
+		if (achieve.techs[MATTK_JUMP] + 1000 > moves) { //Use energy to fuel
 			losepw(20);
 		}
 		achieve.techs[picked] = moves;
@@ -1057,8 +1072,44 @@ boolean techniqueonly;
 		}
 		achieve.isblindingspeed = !achieve.isblindingspeed;
 		break;
+	case MATTK_WEAPONDEF:
+		if (achieve.kenseidef) {
+			pline("You resume your normal attack stance");
+		} else {
+			if (u.uen > 0) {
+				u.uen--;
+			}
+			pline("You assume a defensive stance");
+		}
+		achieve.kenseidef = !achieve.kenseidef;
+	case MATTK_WEAPONDEATH:
+		if (achieve.techs[MATTK_WEAPONDEATH] + 250 < moves) {
+			if (u.uen >= 20 && achieve.currentchi >= 4) {
+				achieve.weapondeath += 2;
+				if (achieve.weapondeath > 5) {
+					achieve.weapondeath = 5;
+				}
+				u.uen -= 20;
+				achieve.currentchi -= 4;
+			}
+			achieve.techs[picked] = moves;
+		}
+	case MATTK_WEAPONLIFE:
+		if (achieve.techs[MATTK_WEAPONLIFE] + 250 < moves) {
+			if (u.uen >= 20 && achieve.currentchi >= 4) {
+				u.uhp += 400;
+				if (u.uhp > u.uhpmax) {
+					u.uhp = u.uhpmax;
+				}
+				u.uen -= 20;
+				achieve.currentchi -= 4;
+			}
+			achieve.techs[picked] = moves;
+		}
+	case MATTK_ANDROIDCOMBO:
+		return android_combo();
 	case MATTK_STRIKESOTRUE:
-		if (achieve.techs[MATTK_STRIKESOTRUE] + 1500 > moves) {
+		if (achieve.techs[MATTK_STRIKESOTRUE] + 1500 < moves) {
 			pline("Your strikes become incredibly piercing");
 			if (u.ulevel >= 10) {
 				achieve.strikesotrue = 4;
@@ -1083,7 +1134,7 @@ boolean techniqueonly;
 		}
 		break;
 	case MATTK_HEAL:
-		if (achieve.techs[MATTK_HEAL] + 1000 > moves) {
+		if (achieve.techs[MATTK_HEAL] + 1000 > moves) { //Use energy to fuel
 			losepw(20);
 		}
 		achieve.techs[picked] = moves;
@@ -1096,7 +1147,7 @@ boolean techniqueonly;
 		}
 		break;
 	case MATTK_FORCETELEPORT:
-		if (achieve.techs[MATTK_FORCETELEPORT] + 1000 > moves) {
+		if (achieve.techs[MATTK_FORCETELEPORT] + 1000 > moves) { //Use energy to fuel
 			losepw(25);
 		}
 		achieve.techs[picked] = moves;
@@ -1225,14 +1276,14 @@ boolean techniqueonly;
 		}
 		return MOVE_STANDARD;
 	case MATTK_PATIENTDEFENSE:
-		if (achieve.techs[MATTK_PATIENTDEFENSE] + 1000 > moves) {
+		if (achieve.techs[MATTK_PATIENTDEFENSE] + 1000 > moves) { //Use energy to fuel
 			losepw(50);
 		}
 		achieve.techs[picked] = moves;
 		achieve.patientdefense = moves + 30;
 		break;
 	case MATTK_AGRESSIVESTRIKE:
-		if (achieve.techs[MATTK_AGRESSIVESTRIKE] + 1000 > moves) {
+		if (achieve.techs[MATTK_AGRESSIVESTRIKE] + 1000 > moves) { //Use energy to fuel
 			losepw(50);
 		}
 		achieve.techs[picked] = moves;
@@ -2749,7 +2800,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"adjust", "adjust inventory letters", doorganize, IFBURIED, AUTOCOMPLETE},
 	{"annotate", "annotate current dungeon level", donamelevel, IFBURIED, AUTOCOMPLETE},
 	{"chat", "talk to someone", dotalk, IFBURIED, AUTOCOMPLETE},	/* converse? */
-	{"combo", "use an android combo based on your weapon", android_combo, !IFBURIED},
+	{"combo", "use an an attack combo based on your weapon", android_combo, !IFBURIED},
 	{"come", "order pets to come", docome, !IFBURIED, AUTOCOMPLETE},
 	{"conduct", "list which challenges you have adhered to", doconduct, IFBURIED, AUTOCOMPLETE},
 	{"dip", "dip an object into something", dodip, !IFBURIED, AUTOCOMPLETE},

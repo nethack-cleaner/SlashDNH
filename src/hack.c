@@ -3019,7 +3019,7 @@ max_capacity()
 {
     int wt = inv_weight();
 
-    return (wt - (2 * wc));
+    return (wt - (3 * wc));
 }
 
 boolean

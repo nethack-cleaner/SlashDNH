@@ -1858,9 +1858,9 @@ asGuardian:
 					} else {
 						qt_pager(QT_BERSERKERLEADER3);
 						achieve.chosenapath = MS_FRENZY_LEADER;
-						struct obj *obj;
-						obj = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
-						fully_identify_obj(obj);
+						struct obj *obj2;
+						obj2 = mksobj(THE_BEGINNING, NO_MKOBJ_FLAGS);
+						fully_identify_obj(obj2);
 						if (Role_if(PM_MONK)) {
 							struct obj *otmp;
 							for (otmp = invent; otmp; otmp = otmp->nobj) {
@@ -1871,16 +1871,16 @@ asGuardian:
 							changerole("Drunken Master");
 							achieve.maxchi = 1 + ((int) (u.udrunken / 5));
 							achieve.currentchi = achieve.maxchi;
-							obj = oname(obj, "Path of the Drunken Master");
+							obj2 = oname(obj2, "Path of the Drunken Master");
 						} else if (Role_if(PM_BARBARIAN)) {
 							changerole("Berserker");
-							obj = oname(obj, "Journey of the Berserker");
+							obj2 = oname(obj2, "Journey of the Berserker");
 							achieve.chosenapath = MS_FRENZY_LEADER;
 							pline("The rage within your boils to the surface!");
 							achieve.currentrage = achieve.maxrage;
 						}
-						obj->spe = abs(obj->spe);
-						addStartObj(obj);
+						obj2->spe = abs(obj2->spe);
+						addStartObj(obj2);
 					}
 				} else if (!Role_if(PM_ROLE_PLAYER)) {
 					qt_pager(QT_BERSERKERLEADER2);
@@ -8043,6 +8043,7 @@ char *role;
 		if (!strcmp(roles[i].name.m, role)) {
 			flags.initrole = i;
 			urole = roles[i];
+			break;
 		}
 	}
 	while (u.ulevel > 1) {

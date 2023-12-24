@@ -34,7 +34,9 @@
 #define MOD_ENCUMBER	2	/* Stressed */
 #define HVY_ENCUMBER	3	/* Strained */
 #define EXT_ENCUMBER	4	/* Overtaxed */
-#define OVERLOADED	5	/* Overloaded */
+#define SUP_ENCUMBER	5	/* Very Overtaxed */
+#define ZZZ_ENCUMBER	6	/* Very VERY Overtaxed */
+#define OVERLOADED	7	/* Overloaded */
 
 /* hunger texts used on bottom line (each 8 chars long) */
 #define SATIATED	0

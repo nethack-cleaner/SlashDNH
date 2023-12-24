@@ -492,6 +492,16 @@ A("Staff of Necromancy", QUARTERSTAFF,					"skull-topped %s",
 	PROPS(), NOFLAG,
 	SKELETAL_MINION, NOFLAG
 	),
+
+A("Staff of Fire", QUARTERSTAFF,					"flame-topped %s",
+	6660L, BONE, MZ_DEFAULT, WT_DEFAULT,
+	A_CHAOTIC, NON_PM, PM_VAMPIRE, TIER_C, (ARTG_GIFT|ARTG_INHER),
+	NO_MONS(),
+	ATTK(AD_DRLI, 5, 0), NOFLAG,
+	PROPS(COLD_RES), NOFLAG,
+	PROPS(), NOFLAG,
+	SKELETAL_MINION, NOFLAG
+	),
 /*
  *	Magicbane is a bit different!  Its magic fanfare
  *	unbalances victims in addition to doing some damage.
@@ -996,6 +1006,15 @@ A("The Fluorite Octahedron",		BLUE_FLUORITE,		"glowing cobalt eight-sided die",
 	A_NONE, NON_PM, NON_PM, TIER_D, NOFLAG,
 	NO_MONS(),
 	NO_ATTK(), (ARTA_DLUCK|ARTA_DEXPL),	/* EXTREMELY potent combination of lucky-exploding dice */
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	NOINVOKE, NOFLAG
+	),
+A("The Headman's Axe",			BATTLE_AXE,						(const char *)0,
+	1500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, PM_BARBARIAN, NON_PM, TIER_B, NOFLAG,
+	NO_MONS(),
+	ATTK(AD_PHYS, 3, 0), (ARTA_SHATTER),
 	PROPS(), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
@@ -1667,6 +1686,16 @@ A("The Hand-Mirror of Cthylla",		MIRROR,					(const char *)0,
 
 /*from the works of HP Lovecraft*/
 A("The Silver Key",					UNIVERSAL_KEY,			"strangely figured %s",
+	5000L, SILVER, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, NON_PM, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH),
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(ENERGY_REGENERATION, POLYMORPH_CONTROL, TELEPORT_CONTROL), NOFLAG,
+	CREATE_PORTAL, NOFLAG
+	),
+
+A("Yuumi's Book",					SPBOOK_CLASS,			"greatly enchanted %s",
 	5000L, SILVER, MZ_DEFAULT, WT_DEFAULT,
 	A_NEUTRAL, NON_PM, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH),
 	NO_MONS(),
@@ -3686,6 +3715,16 @@ A("The Booze of the Drunken Master",	POT_BOOZE,		(const char *)0,
 	FIRE_BLAST, NOFLAG
 	),
 
+A("Blood of Iblis",	POT_BLOOD,		(const char *)0,
+	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NONE, PM_MONK, NON_PM, NO_TIER, (ARTG_NOGEN|ARTG_NOWISH),
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	FIRE_BLAST, NOFLAG
+	),
+
 /* TODO jumping while wielded */
 /* TODO staggering blows while wielded */
 A("The Khakkhara of the Monkey",		KHAKKHARA,		(const char *)0,
@@ -3968,6 +4007,46 @@ A("The Trappings of the Grave",			AMULET_OF_RESTFUL_SLEEP,			(const char *)0,
 	PROPS(), NOFLAG,
 	SUMMON_VAMP, NOFLAG
 	),
+
+A("Snaga", KATANA, "Still sounding blade %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, PM_CHEF, NON_PM, TIER_D, NOFLAG,
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 0), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(ACID_RES), NOFLAG,
+	NOINVOKE, NOFLAG
+),
+
+A("Revered Mother's Crysknife", CRYSKNIFE, "Still sounding blade %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, PM_CHEF, NON_PM, TIER_D, NOFLAG,
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 0), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(ACID_RES), NOFLAG,
+	NOINVOKE, NOFLAG
+),
+
+A("Atreides Crysknife", CRYSKNIFE, "Eerie sounding blade %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, PM_CHEF, NON_PM, TIER_D, NOFLAG,
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 0), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(ACID_RES), NOFLAG,
+	NOINVOKE, NOFLAG
+),
+
+A("Melf's Acid Arrow", SILVER_ARROW, "Acid coated arrow %s",
+	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_NEUTRAL, PM_CHEF, NON_PM, TIER_D, NOFLAG,
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 0), NOFLAG,
+	PROPS(STEALTH), NOFLAG,
+	PROPS(ACID_RES), NOFLAG,
+	NOINVOKE, NOFLAG
+),
 
 A("The Deluxe Yendorian Knife", KNIFE, "Perfectly balanced and ever sharp %s",
 	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,

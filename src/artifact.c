@@ -2360,9 +2360,88 @@ register const char *name;
 	    /* if (a->otyp != otmp->otyp) continue; */ //don't consider type anymore -CM
 	    aname = a->name;
 	    if (!strncmpi(aname, "the ", 4)) aname += 4;
-	    if (!strcmp(aname, name))
+	    if (!strcmp(aname, name)) {
+			int ceremonycomplete = 90;
+			if (!strcmp(aname, "Orcrist")) {
+				ceremonycomplete = 0;
+			} else if (!strcmp(aname, "Sting")) {
+				ceremonycomplete = 1;
+			} else if (!strcmp(aname, "Grimtooth")) {
+				ceremonycomplete = 2;
+			} else if (!strcmp(aname, "Carnwennan")) {
+				ceremonycomplete = 3;
+			} else if (!strcmp(aname, "Slave to Armok")) {
+				ceremonycomplete = 4;
+			} else if (!strcmp(aname, "Claideamh")) {
+				ceremonycomplete = 5;
+			} else if (!strcmp(aname, "The Singing Sword")) {
+				ceremonycomplete = 6;
+			} else if (!strcmp(aname, "Grandmaster's Robe")) {
+				ceremonycomplete = 7;
+			} else if (!strcmp(aname, "The Kusanagi no Tsurugi")) {
+				ceremonycomplete = 8;
+			} else if (!strcmp(aname, "Snickersnee")) {
+				ceremonycomplete = 9;
+			} else if (!strcmp(aname, "Staff of Wild Magic")) {
+				ceremonycomplete = 10;
+			} else if (!strcmp(aname, "Staff of Necromancy")) {
+				ceremonycomplete = 11;
+			} else if (!strcmp(aname, "Wallet of Perseus")) {
+				ceremonycomplete = 12;
+			} else if (!strcmp(aname, "Soulmirror")) {
+				ceremonycomplete = 13;
+			} else if (!strcmp(aname, "Helm of Undeath")) {
+				ceremonycomplete = 14;
+			} else if (!strcmp(aname, "Gauntlets of Spell Power")) {
+				ceremonycomplete = 15;
+			} else if (!strcmp(aname, "Robe of the Archmagi")) {
+				ceremonycomplete = 16;
+			} else if (!strcmp(aname, "Melf's Acid Arrow")) {
+				ceremonycomplete = 17;
+			} else if (!strcmp(aname, "Ramiel")) {
+				ceremonycomplete = 18;
+			} else if (!strcmp(aname, "The Scorpion Carapace")) {
+				ceremonycomplete = 19;
+			} else if (!strcmp(aname, "Staff of Fire")) {
+				ceremonycomplete = 20;
+			} else if (!strcmp(aname, "The Lash of the Cold Waste")) {
+				ceremonycomplete = 21;
+			} else if (!strcmp(aname, "Ogresmasher")) {
+				ceremonycomplete = 22;
+			} else if (!strcmp(aname, "Nodensfork")) {
+				ceremonycomplete = 23;
+			} else if (!strcmp(aname, "Tobiume")) {
+				ceremonycomplete = 24;
+			} else if (!strcmp(aname, "Grappler's Grasp")) {
+				ceremonycomplete = 25;
+			} else if (!strcmp(aname, "Giantslayer")) {
+				ceremonycomplete = 26;
+			} else if (!strcmp(aname, "Snaga")) {
+				ceremonycomplete = 27;
+			} else if (!strcmp(aname, "Tie-Dye Shirt of Shambhala")) {
+				ceremonycomplete = 28;
+			} else if (!strcmp(aname, "Revered Mother's Crysknife")) {
+				ceremonycomplete = 29;
+			} else if (!strcmp(aname, "The Headman's Axe")) {
+				ceremonycomplete = 30;
+			} else if (!strcmp(aname, "Atreides Crysknife")) {
+				ceremonycomplete = 31;
+			} else if (!strcmp(aname, "Yuumi's Book")) {
+				ceremonycomplete = 32;
+			} else if (!strcmp(aname, "Blood of Iblis")) {
+				ceremonycomplete = 33;
+			}
+			if (ceremonycomplete < 90) {
+				if (achieve.nameceremony[ceremonycomplete]) { //The artifact is always nameable at this point
+					return TRUE;
+				} else {
+					achieve.tellceremony = TRUE;
+					return FALSE;
+				}
+			}
 			return ((boolean)( !is_nameable_artifact(a) ||
 				otmp->quan > 1L));
+		}
 	}
 
 	return FALSE;

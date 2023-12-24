@@ -540,15 +540,13 @@ register struct obj *obj;
 			pline_The("object seems to resist the attempt.");
 		return;
 	} else if (restrict_name(obj, buf) || art_already_exists_byname(obj->otyp, buf)) {
-		int n = rn2((int)strlen(buf));
-		register char c1, c2;
-
-		c1 = lowc(buf[n]);
-		do c2 = 'a' + rn2('z'-'a'); while (c1 == c2);
-		buf[n] = (buf[n] == c1) ? c2 : highc(c2);  /* keep same case */
-//		pline("While engraving your %s slips.", body_part(HAND));
-		display_nhwindow(WIN_MESSAGE, FALSE);
-		You("christen it \"%s\".",buf);
+		if (achieve.tellceremony) {
+			achieve.tellceremony = FALSE;
+			You("have not performed the ceremony necessary to name this artifact");
+		} else {
+			You("decide not to name the item");
+		}
+		return;
 	}
 	obj = oname(obj, buf);
 }

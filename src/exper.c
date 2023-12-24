@@ -478,6 +478,7 @@ boolean incr;	/* true iff via incremental experience growth */
 	    ++u.ulevel;
 	    if (u.ulevelmax < u.ulevel) u.ulevelmax = u.ulevel;
 	    pline("Welcome to experience level %d.", u.ulevel);
+		achieve.levelsgained++;
 	    adjabil(u.ulevel - 1, u.ulevel);	/* give new intrinsics */
 	    reset_rndmonst(NON_PM);		/* new monster selection */
 	}

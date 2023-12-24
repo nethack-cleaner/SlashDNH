@@ -961,6 +961,10 @@ struct u_achieve {
 		Bitfield(rageswing,1);
 		Bitfield(isblindingspeed,1);
 		Bitfield(kenseidef,1);
+		Bitfield(drunkenme,1);
+		Bitfield(tellceremony,1);
+		int levelsgained;
+		short bindingsreplaced;
 		short techtype;
 		short kenseidefpart;
 		short technow;
@@ -969,6 +973,42 @@ struct u_achieve {
 		short strikesotrue;
 		short weapondeath;
 		short blindingspeedcount;
+		int nameceremony[100]; /* 
+0 Orcrist
+1 Sting
+2 Grimtooth
+3 Carnwennan
+4 Slave to Armok
+5 Claideamh
+6 The Singing Sword
+7 Grandmaster's Robe
+8 The Kusanagi no Tsurugi
+9 Snickersnee
+10 Staff of Wild Magic
+11 Staff of Necromancy
+12 Wallet of Perseus
+13 Soulmirror
+14 Helm of Undeath
+15 Gauntlets of Spell Power
+16 Robe of the Archmagi
+17 Melf's Acid Arrow - Acid Mage
+18 Ramiel - Electric Mage
+19 The Scorpion Carapace - Enchanter
+20 Staff of Fire - Fire Mage
+21 The Lash of the Cold Waste - Ice Mage
+22 Ogresmasher - Chef
+23 Nodensfork - Diver
+24 Tobiume - Firestarter
+25 Grappler's Grasp - Gladiator
+26 Giantslayer - Barbarian
+27 Snaga - Berserker
+28 Tie-Dye Shirt of Shambhala - Tourist
+29 Revered Mother's Crysknife
+30 The Headman's Axe
+31 Atreides Crysknife
+32 Yuumi's Book
+33 Blood of Iblis
+*/
 		int usingweapondeath;
 		int blindingspeed;
 		int haseaten;

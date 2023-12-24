@@ -559,15 +559,17 @@ give_up:	/* Quit */
 				if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "Half-dragon")) {
 					rdisp = "Half-Dragon (Acid, Electric, or Enchant)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "elf")) {
-					rdisp = "Elf (Wizard)";
+					rdisp = "Elf (Wizard or Wild Mage)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "salamander")) {
-					rdisp = "Salamander (Fire Mage)";
+					rdisp = "Salamander (Fire Mage or Wild Mage)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "yuki-onna")) {
-					rdisp = "Yuki-onna (Ice Mage)";
+					rdisp = "Yuki-onna (Ice Mage or Wizard)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "Drow")) {
-					rdisp = "Drow (Dark Mage)";
+					rdisp = "Drow (Dark Mage or Wizard)";
 				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "vampire")) {
-					rdisp = "Vampire (Necromancer)";
+					rdisp = "Vampire (Necromancer or Wild Mage)";
+				} else if (roles[flags.initrole].malenum == PM_WIZARD && !strcmp(races[i].noun, "treant")) {
+					rdisp = "Treant (Earth Mage or Wild Mage)";
 				}
 
 				if (roles[flags.initrole].malenum == PM_ROLE_PLAYER && !strcmp(races[i].noun, "vampire")) {

@@ -915,6 +915,8 @@ you_calc_movement()
 	case MOD_ENCUMBER: moveamt -= (moveamt / 2); break;
 	case HVY_ENCUMBER: moveamt -= ((moveamt * 3) / 4); break;
 	case EXT_ENCUMBER: moveamt -= ((moveamt * 7) / 8); break;
+	case SUP_ENCUMBER: moveamt -= ((moveamt * 7) / 8); break;
+	case ZZZ_ENCUMBER: moveamt -= ((moveamt * 7) / 8); break;
 	default: break;
 	}
 	
@@ -1299,18 +1301,77 @@ you_regen_hp()
 		} else if (achieve.blindingspeed > 0) {
 			achieve.blindingspeed--;
 		}
+		if (achieve.drunkenme) {
+			make_confused(itimeout_incr(HConfusion, 2), FALSE);
+			make_stunned(itimeout_incr(HStun, 2), TRUE);
+		}
 		if (Role_if(PM_DRUNKEN_MASTER) && achieve.currentstagger > 0) {
+			if (!HConfusion && u.udrunken >= 5 && u.udrunken < 25 && !rn2(30)) {
+				pline("Your blood rises and gives you a slight buzz");
+				make_confused(itimeout_incr(HConfusion, rnd(10)+1), FALSE);
+			} else if (!HConfusion && u.udrunken >= 25 && !rn2(10)) {
+				pline("Your blood rises and gives you a slight buzz");
+				make_confused(itimeout_incr(HConfusion, rnd(10)+1), FALSE);
+			}
 			int stagger = achieve.currentstagger;
+			if (stagger > 1000) { //Maximum stagger that impacts the player
+				stagger = 1000;
+			}
 			int str = 0;
 			while (stagger > 0) {
-				stagger -= 30;
+				if (HConfusion) {
+					stagger -= 90;
+				} else {
+					stagger -= 30;
+				}
 				str++;
 			}
-			if (str) {
+			if (str > 0 && HConfusion) {
+				if (!rn2(6)) {
+					achieve.currentstagger--;
+				}
+				if (!rn2(6)) {
+					str--;
+				}
+				if (str > 1) {
+					if (!rn2(6)) {
+						achieve.currentstagger--;
+					}
+					if (!rn2(6)) {
+						str--;
+					}
+				}
+				if (str > 0) {
+					perX += HEALCYCLE / 10;
+				}
+			}
+			if (str > 0 && HStun) {
+				if (!rn2(6)) {
+					achieve.currentstagger--;
+				}
+				if (!rn2(6)) {
+					str--;
+				}
+				if (str > 1) {
+					if (!rn2(6)) {
+						achieve.currentstagger--;
+					}
+					if (!rn2(6)) {
+						str--;
+					}
+				}
+				if (str > 0) {
+					perX += HEALCYCLE / 10;
+				}
+			}
+			if (str > 0) {
 				achieve.currentstagger -= str;
 				perX -= str * HEALCYCLE;
 			}
-			if (str > 1 && rn2(5) == 1 && achieve.currentchi < achieve.maxchi) { //regain a chi 10% of the time
+			if (achieve.currentstagger < 0) {
+				achieve.currentstagger = 0;
+			}
+			if (str > 1 && !rn2(5) && achieve.currentchi < achieve.maxchi) { //regain a chi 20% of the time when absorbing 2 or more stagger
 				achieve.currentchi++;
 			}
 		}

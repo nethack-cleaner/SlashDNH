@@ -531,6 +531,10 @@ exerper()
 					exercise(A_DEX, FALSE); break;
 		    case EXT_ENCUMBER:	exercise(A_DEX, FALSE);
 					exercise(A_CON, FALSE); break;
+		    case SUP_ENCUMBER:	exercise(A_DEX, FALSE);
+					exercise(A_CON, FALSE); break;
+		    case ZZZ_ENCUMBER:	exercise(A_DEX, FALSE);
+					exercise(A_CON, FALSE); break;
 		}
 
 	}

@@ -2128,7 +2128,7 @@ u_init()
 	}
 	if(!Role_if(PM_ANACHRONOUNBINDER)){
 		for (int i = 0; i < 1; i++) {
-			if (rn2(3) == 2) { //33% of alternate binding
+			if (!rn2(3)) {
 				achieve.altbind[i] = TRUE;
 			}
 		}

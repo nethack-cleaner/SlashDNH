@@ -17,6 +17,8 @@ const char * const enc_stat[] = {
 	"Stressed",
 	"Strained",
 	"Overtaxed",
+	"Overtax+",
+	"Overtax++",
 	"Overloaded"
 };
 
@@ -26,6 +28,8 @@ const char * const enc_stat_abbrev1[] = {
 	"Stress",
 	"Strain",
 	"Overtax",
+	"Overta+",
+	"Overt++",
 	"Overload"
 };
 
@@ -35,6 +39,8 @@ const char * const enc_stat_abbrev2[] = {
 	"Strs",
 	"Strn",
 	"Ovtx",
+	"Ovt+",
+	"Ov++",
 	"Ovld"
 };
 

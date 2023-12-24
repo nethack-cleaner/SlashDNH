@@ -288,6 +288,8 @@ char * techExplaner[] =  {
 "'My weapon is my life' - heal yourself similar to a full healing potion.  Costs 4 chi and 20 energy.  250 turn timeout.", //MATTK_WEAPONLIFE 77
 "'My weapon is your death' - Greatly increase your next 2 combo attack damage.  Costs 4 chi and 20 energy.  250 turn timeout.", //MATTK_WEAPONDEATH 78
 "'Defensive Stance' - Reduce damage taken by 50%.  Reduces damage you do with your attacks by 10%.  Costs 1 chi to activate plus 1 chi per 3 turns.", //MATTK_WEAPONDEF 79
+"'Stagger Death' - Cure nearly any ailment.  Costs a chug and increases stagger by 30.", //MATTK_STAGGERDEATH 80
+"'Drunken Mastery' - Lean into your mastery of your drink.  This makes you stunned and confused.", //MATTK_DRUNKENME 81
 };
 
 /* Count down by decrementing multi */
@@ -913,12 +915,20 @@ boolean techniqueonly;
 	} else if (Role_if(PM_DRUNKEN_MASTER)) {
 		lettertaken[addtech(tmpwin, MATTK_BREWCHUG, freeletter(lettertaken, 'b'), "Brew Chug", 0, 0, 0)] = TRUE;
 		lettertaken[addtech(tmpwin, MATTK_CHUGOFLIFE, freeletter(lettertaken, 'c'), "Chug of Life", 0, 0, 0)] = TRUE;
-		lettertaken[addtech(tmpwin, MATTK_CHUGOFDEATH, freeletter(lettertaken, 'c'), "Chug of Death", 0, 0, 0)] = TRUE;
-		lettertaken[addtech(tmpwin, MATTK_FIREBREATH, freeletter(lettertaken, 'f'), "Fire Breath", 0, 0, 0)] = TRUE;
-		if (achieve.fireform) {
-			lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Turn off Fire Form", 0, 0, 0)] = TRUE;
-		} else {
-			lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Fire Form", 0, 0, 0)] = TRUE;
+		if (u.udrunken >= 25) {
+			lettertaken[addtech(tmpwin, MATTK_CHUGOFDEATH, freeletter(lettertaken, 'd'), "Chug of Death", 0, 0, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_FIREBREATH, freeletter(lettertaken, 'f'), "Fire Breath", 0, 0, 0)] = TRUE;
+			lettertaken[addtech(tmpwin, MATTK_STAGGERDEATH, freeletter(lettertaken, 'h'), "Stagger Death", 0, 0, 0)] = TRUE;
+			if (achieve.drunkenme) {
+				lettertaken[addtech(tmpwin, MATTK_DRUNKENME, freeletter(lettertaken, 'A'), "Stop using Drunken Mastery", 0, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_DRUNKENME, freeletter(lettertaken, 'A'), "Drunken Mastery", 0, 0, 0)] = TRUE;
+			}
+			if (achieve.fireform) {
+				lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Turn off Fire Form", 0, 0, 0)] = TRUE;
+			} else {
+				lettertaken[addtech(tmpwin, MATTK_FIREFORM, freeletter(lettertaken, 'F'), "Fire Form", 0, 0, 0)] = TRUE;
+			}
 		}
 		lettertaken[addtech(tmpwin, MATTK_LIQUIDMOVEMENT, freeletter(lettertaken, 'l'), "Liquid Movement", 0, 0, 0)] = TRUE;
 		if (achieve.steadysteps) {
@@ -1072,6 +1082,43 @@ boolean techniqueonly;
 		}
 		achieve.isblindingspeed = !achieve.isblindingspeed;
 		break;
+	case MATTK_DRUNKENME:
+		if (achieve.drunkenme) {
+			pline("You being to steady yourself.  It may take time to shake off your confusion.");
+		} else {
+			pline("You release your mastery of drink");
+		}
+		achieve.drunkenme = !achieve.drunkenme;
+	case MATTK_STAGGERDEATH:
+		if (achieve.currentchug > 0 && u.udrunken >= 25) {
+			achieve.currentchug--;
+			achieve.currentstagger += 30;
+			if(Slimed){
+                Slimed = 0L;
+                flags.botl = 1;
+            }   
+            healup(0, 0, TRUE, FALSE);
+            if (Stoned) fix_petrification();
+            if (Golded) fix_petrification();
+            pline("You feel like that chug cured all that ails you!");
+            give_intrinsic(GOOD_HEALTH, 100L);
+			if (Sick) {
+				make_sick(0L, (char *) 0, TRUE, SICK_ALL);
+			}
+			if (Blinded > (long)u.ucreamed) {
+				make_blinded((long)u.ucreamed, TRUE);
+			}
+			if (HHallucination) {
+				(void) make_hallucinated(0L, TRUE, 0L);
+			}
+			if (Vomiting) {
+				make_vomiting(0L, TRUE);
+			}
+			if (HStun) {
+				make_stunned(0L, TRUE);
+			}
+		}
+		break;
 	case MATTK_WEAPONDEF:
 		if (achieve.kenseidef) {
 			pline("You resume your normal attack stance");
@@ -1166,7 +1213,7 @@ boolean techniqueonly;
 		}
 		return MOVE_STANDARD;
 	case MATTK_FIREBREATH:
-		if (achieve.currentchi > 0) {
+		if (achieve.currentchi > 0 && u.udrunken >= 25) {
 			if(!getdir("Exhale in what direction?")){
 				pline("never mind");
 				return MOVE_CANCELLED;
@@ -1205,15 +1252,17 @@ boolean techniqueonly;
 		}
 		break;
 	case MATTK_FIREFORM:
-		if (achieve.fireform) {
-			achieve.fireform = FALSE;
-		} else {
-			if (achieve.currentchi > 0) {
-				achieve.currentchi--;
-				achieve.fireform = TRUE;
-				pline("You use your inate alchol in your body to immolate your body");
+		if (u.udrunken >= 25) {
+			if (achieve.fireform) {
+				achieve.fireform = FALSE;
 			} else {
-				pline("You cannot maintain fire form without chi");
+				if (achieve.currentchi > 0) {
+					achieve.currentchi--;
+					achieve.fireform = TRUE;
+					pline("You use your inate alchol in your body to immolate your body");
+				} else {
+					pline("You cannot maintain fire form without chi");
+				}
 			}
 		}
 		return MOVE_STANDARD;
@@ -1231,7 +1280,7 @@ boolean techniqueonly;
 					u.uhp = u.uhpmax;
 				}
 				pline("You chug life back into your body");
-			} else if (picked == MATTK_CHUGOFDEATH) {
+			} else if (picked == MATTK_CHUGOFDEATH && u.udrunken >= 25) {
 				achieve.deathstrike = TRUE;
 				pline("Your hands glow with holy drunken energy");
 			}

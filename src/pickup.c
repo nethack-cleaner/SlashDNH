@@ -1517,7 +1517,7 @@ encumber_msg()
 		    stagger(&youmonst, "stagger"));
 		break;
 	default: You("%s move a handspan with this load!",
-		     newcap == 4 ? "can barely" : "can't even");
+		     newcap >= 7 ? "can't even" : "can barely");
 		break;
 	}
 	flags.botl = 1;

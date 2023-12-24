@@ -5949,7 +5949,7 @@ boolean ranged;
 			   biting if they might have trouble getting it down */
 			/* Hard change vampires drain blood only 1/2th the time and gain only 5 instead of 6 food. */
 			if (youagr && !Race_if(PM_INCANTIFIER) && is_vampire(youracedata)
-				&& u.uhunger <= 1420 && attk->aatyp == AT_BITE && rn2(2) == 1) {
+				&& u.uhunger <= 1420 && attk->aatyp == AT_BITE) {
 				/* For the life of a creature is in the blood (Lev 17:11) */
 				if (flags.verbose)
 				    You("feed on the lifeblood.");
@@ -5957,7 +5957,7 @@ boolean ranged;
 				   eating conducts. The draining of life is
 				   considered to be primarily a non-physical
 				   effect */
-				lesshungry(ptmp * 5);
+				lesshungry(ptmp * 6);
 			}
 			/* tame vampires gain nutrition */
 			if (uncancelled && !youagr && get_mx(magr, MX_EDOG))

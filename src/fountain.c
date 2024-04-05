@@ -370,7 +370,11 @@ register struct obj *obj;
 	    && !obj->oartifact
 	    && !art_already_exists(ART_EXCALIBUR)) {
 
-		if (u.ualign.type != A_LAWFUL) {
+		//Excalibur must be wielded to properly dip
+		if (!obj->owornmask) {
+			pline("To bless your weapon you must wield it, without faith in your weapon, your faith will not be returned.");
+			return;
+		} else if (u.ualign.type != A_LAWFUL) {
 			/* Ha!  Trying to cheat her. */
 			pline("A freezing mist rises from the water and envelops the sword.");
 			pline_The("fountain disappears!");

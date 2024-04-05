@@ -1504,7 +1504,6 @@ struct obj *obj;			/* 2nd arg to fhitm/fhito */
 			/* note: monsters don't use opening or locking magic
 			   at present, but keep these as placeholders */
 			case WAN_OPENING:
-			case WAN_LOCKING:
 			case WAN_STRIKING:
 			case ROD_OF_FORCE:
 			    if (doorlock(obj, bhitpos.x, bhitpos.y)) {
@@ -1900,7 +1899,6 @@ int otyp;
 		case WAN_SLOW_MONSTER:
 		case WAN_UNDEAD_TURNING:
 		case WAN_CANCELLATION:
-		case WAN_LOCKING:
 		
 		return TRUE;
 	}

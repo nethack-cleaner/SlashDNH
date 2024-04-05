@@ -2233,7 +2233,6 @@ int mode;
 
 			/* NODIR wands */
 		    case WAN_LIGHT:
-		    case WAN_SECRET_DOOR_DETECTION:
 		    case WAN_CREATE_MONSTER:
 		    case WAN_WISHING:
 		    case WAN_ENLIGHTENMENT:
@@ -2320,7 +2319,6 @@ int mode;
 		    case WAN_NOTHING:
 		    case WAN_UNDEAD_TURNING:
 		    case WAN_OPENING:
-		    case WAN_LOCKING:
 		    case WAN_PROBING:
 			break;
 

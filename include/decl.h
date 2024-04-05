@@ -1059,7 +1059,7 @@ struct u_achieve {
 		char wishes10[BUFSZ];
 		char wishes11[BUFSZ];
 		char wishes12[BUFSZ];
-		int wishmade[10];
+		int wishmade[12];
 		boolean altbind[31];
 		int swiftness;
 		int dodge;

@@ -1684,16 +1684,16 @@ SPELL(("secrets", "ragged leather"),      P_NONE,                  0, 7, 1, 0,  
 #define WAND(names,prob,cost,mgc,dir,metal,color,...) OBJECT( \
 		DEF_BLINDNAME(names, "wand"), BITS(0,0,1,0,mgc,1,0,0,MZ_TINY,0,0,dir,0,P_NONE,metal,0), {0}, \
 		WAND_CLASS, prob, 0, 7, cost, {0}, {0}, 0, 0, 0, 30, color, __VA_ARGS__)
-WAND(("light",          "glass"),         88, 100, 1, NODIR,     GLASS,       CLR_WHITE),/*Needs tile?*/
-WAND(("darkness",       "obsidian"),      10, 100, 1, NODIR,     OBSIDIAN_MT, CLR_BLACK),/*Needs tile*/
+WAND(("light",          "glass"),         98, 100, 1, NODIR,     GLASS,       CLR_WHITE),/*Needs tile?*/
+WAND(("darkness",       "obsidian"),      30, 100, 1, NODIR,     OBSIDIAN_MT, CLR_BLACK),/*Needs tile*/
 WAND(("wishing",        "dragon-bone"),    0, 500, 1, NODIR,     DRAGON_HIDE, CLR_WHITE, O_NOWISH(1)),	/* wizmode only */
-WAND(("secret door detection", "balsa"),  50, 150, 1, NODIR,	   WOOD,        HI_WOOD),
-WAND(("enlightenment",  "crystal"),       18, 150, 1, NODIR,     GLASS,       HI_GLASS),
+WAND(("secret door detection", "balsa"),  0, 150, 1, NODIR,       WOOD,        HI_WOOD),
+WAND(("enlightenment",  "crystal"),       23, 150, 1, NODIR,     GLASS,       HI_GLASS),
 WAND(("create monster", "maple"),         42, 200, 1, NODIR,     WOOD,        HI_WOOD),
 WAND(("nothing",        "oak"),           20, 100, 0, IMMEDIATE, WOOD,        HI_WOOD),
 WAND(("striking",       "ebony"),         75, 150, 1, IMMEDIATE, WOOD,        HI_WOOD),
-WAND(("draining",       "ceramic"),        5, 175, 1, IMMEDIATE, MINERAL,     HI_MINERAL),
-WAND(("make invisible", "marble"),        42, 150, 1, IMMEDIATE, MINERAL,     HI_MINERAL),
+WAND(("draining",       "ceramic"),       20, 175, 1, IMMEDIATE, MINERAL,     HI_MINERAL),
+WAND(("make invisible", "marble"),        45, 150, 1, IMMEDIATE, MINERAL,     HI_MINERAL),
 WAND(("slow monster",   "tin"),           41, 150, 1, IMMEDIATE, METAL,       HI_METAL),
 WAND(("speed monster",  "brass"),         50, 150, 1, IMMEDIATE, COPPER,      HI_COPPER),
 WAND(("undead turning", "copper"),        50, 150, 1, IMMEDIATE, COPPER,      HI_COPPER),
@@ -1701,17 +1701,16 @@ WAND(("polymorph",      "silver"),        45, 200, 1, IMMEDIATE, SILVER,      HI
 WAND(("cancellation",   "platinum"),      42, 200, 1, IMMEDIATE, PLATINUM,    CLR_WHITE),
 WAND(("teleportation",  "iridium"),       45, 200, 1, IMMEDIATE, METAL,       CLR_BRIGHT_CYAN),
 WAND(("opening",        "zinc"),          30, 150, 1, IMMEDIATE, METAL,       HI_METAL),
-WAND(("locking",        "aluminum"),      25, 150, 1, IMMEDIATE, METAL,       HI_METAL),
-WAND(("probing",        "uranium"),       30, 150, 1, IMMEDIATE, METAL,       HI_METAL),
+WAND(("probing",        "uranium"),       40, 150, 1, IMMEDIATE, METAL,       HI_METAL),
 WAND(("digging",        "iron"),          55, 150, 1, RAY,       IRON,        HI_METAL),
 WAND(("magic missile",  "steel"),         50, 150, 1, RAY,       IRON,        HI_METAL),
 WAND(("fire",           "hexagonal"),     40, 175, 1, RAY,       IRON,        HI_METAL),
 WAND(("cold",           "short"),         40, 175, 1, RAY,       IRON,        HI_METAL),
-WAND(("sleep",          "runed"),         50, 175, 1, RAY,       IRON,        HI_METAL),
+WAND(("sleep",          "runed"),         60, 175, 1, RAY,       IRON,        HI_METAL),
 WAND(("death",          "long"),           5, 500, 1, RAY,       IRON,        HI_METAL),
 WAND(("lightning",      "curved"),        40, 175, 1, RAY,       IRON,        HI_METAL),
 WAND(("identify",       "pine"),         10, 150, 1, NODIR,     WOOD,        HI_WOOD),
-WAND(("magic mapping",  "forked"),         2, 150, 1, NODIR,         WOOD,        HI_WOOD),
+WAND(("magic mapping",  "forked"),         4, 150, 1, NODIR,         WOOD,        HI_WOOD),
 WAND(((char *)0,        "spiked"),         0, 150, 1, 0,         IRON,        HI_METAL),
 WAND(((char *)0,        "jeweled"),        0, 150, 1, 0,         IRON,        HI_MINERAL),
 #undef WAND

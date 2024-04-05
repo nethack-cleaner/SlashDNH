@@ -3645,8 +3645,6 @@ struct obj *sensor;
 					}
 				}
 			} break;
-			case WAN_SECRET_DOOR_DETECTION:
-				findit();
 			break;
 		}
 	}
@@ -3674,13 +3672,6 @@ sensorMenu()
 	incntlet = 'c';
 	Sprintf(buf, "Scan for creatures");
 	any.a_int = POT_MONSTER_DETECTION;	/* must be non-zero */
-	add_menu(tmpwin, NO_GLYPH, &any,
-		incntlet, 0, ATR_NONE, buf,
-		MENU_UNSELECTED);
-
-	incntlet = 'd';
-	Sprintf(buf, "Scan for secret doors");
-	any.a_int = WAN_SECRET_DOOR_DETECTION;	/* must be non-zero */
 	add_menu(tmpwin, NO_GLYPH, &any,
 		incntlet, 0, ATR_NONE, buf,
 		MENU_UNSELECTED);
@@ -5811,6 +5802,35 @@ struct obj *obj;
 			}
 			break;
 		case SUMMON_SERVANT:{
+			char buf[BUFSZ];
+			Sprintf(buf, "Used a candle of invocation to summon a servant");
+			if (u.uconduct.wishes == 0)
+            Sprintf(achieve.wishes1, buf);
+        else if (u.uconduct.wishes == 1)
+            Sprintf(achieve.wishes2, buf);
+        else if (u.uconduct.wishes == 2)
+            Sprintf(achieve.wishes3, buf);
+        else if (u.uconduct.wishes == 3)
+            Sprintf(achieve.wishes4, buf);
+        else if (u.uconduct.wishes == 3)
+            Sprintf(achieve.wishes4, buf);
+        else if (u.uconduct.wishes == 4)
+            Sprintf(achieve.wishes5, buf);
+        else if (u.uconduct.wishes == 5)
+            Sprintf(achieve.wishes6, buf);
+        else if (u.uconduct.wishes == 6)
+            Sprintf(achieve.wishes7, buf);
+        else if (u.uconduct.wishes == 7)
+            Sprintf(achieve.wishes8, buf);
+        else if (u.uconduct.wishes == 8)
+            Sprintf(achieve.wishes9, buf);
+        else if (u.uconduct.wishes == 9)
+            Sprintf(achieve.wishes10, buf);
+        else if (u.uconduct.wishes == 10)
+            Sprintf(achieve.wishes11, buf);
+        else if (u.uconduct.wishes == 11)
+            Sprintf(achieve.wishes12, buf);
+			u.uconduct.wishes++; //Counts as a wish
 			long futurewishflag = Role_if(PM_TOURIST) ? 0 : MG_FUTURE_WISH;
 			mtmp = create_particular(u.ux, u.uy, MT_DOMESTIC, 0, FALSE, MA_MINION | MA_DEMON | MA_FEY | MA_PRIMORDIAL, MG_NOWISH | MG_NOTAME | futurewishflag, G_UNIQ, (char *)0);
 			if (!mtmp) {
@@ -5824,6 +5844,35 @@ struct obj *obj;
 			break;
 		}
 		case SUMMON_DEMON_LORD:
+			char buf[BUFSZ];
+			Sprintf(buf, "Used a candle of invocation to summon a demon lord");
+			if (u.uconduct.wishes == 0)
+            Sprintf(achieve.wishes1, buf);
+        else if (u.uconduct.wishes == 1)
+            Sprintf(achieve.wishes2, buf);
+        else if (u.uconduct.wishes == 2)
+            Sprintf(achieve.wishes3, buf);
+        else if (u.uconduct.wishes == 3)
+            Sprintf(achieve.wishes4, buf);
+        else if (u.uconduct.wishes == 3)
+            Sprintf(achieve.wishes4, buf);
+        else if (u.uconduct.wishes == 4)
+            Sprintf(achieve.wishes5, buf);
+        else if (u.uconduct.wishes == 5)
+            Sprintf(achieve.wishes6, buf);
+        else if (u.uconduct.wishes == 6)
+            Sprintf(achieve.wishes7, buf);
+        else if (u.uconduct.wishes == 7)
+            Sprintf(achieve.wishes8, buf);
+        else if (u.uconduct.wishes == 8)
+            Sprintf(achieve.wishes9, buf);
+        else if (u.uconduct.wishes == 9)
+            Sprintf(achieve.wishes10, buf);
+        else if (u.uconduct.wishes == 10)
+            Sprintf(achieve.wishes11, buf);
+        else if (u.uconduct.wishes == 11)
+            Sprintf(achieve.wishes12, buf);
+			u.uconduct.wishes++; //Counts as a wish
 			choice = do_demon_lord_summon_menu();
 			if (!choice){
 				// the player didn't choose an option
@@ -5926,10 +5975,8 @@ do_break_wand(obj)
 	pline("Suddenly, and without warning, nothing happens.");
 	goto discard_broken_wand;
     case WAN_WISHING:
-    case WAN_LOCKING:
     case WAN_PROBING:
     case WAN_ENLIGHTENMENT:
-    case WAN_SECRET_DOOR_DETECTION:
 	pline("%s", nothing_else_happens);
 	goto discard_broken_wand;
     case WAN_OPENING:

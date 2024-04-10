@@ -338,7 +338,7 @@ typedef long glyph_t;
 #define SINKS		/* Kitchen sinks - Janet Walz */
 /* dungeon levels */
 #define WALLIFIED_MAZE	/* Fancy mazes - Jean-Christophe Collet */
-#define REINCARNATION	/* Special Rogue-like levels */
+/* #define REINCARNATION */	/* Special Rogue-like levels */
 /* monsters & objects */
 /*define KOPS*/		/* Keystone Kops by Scott R. Turner */
 	/*The Kops have been removed and replaced with the Keter Sephiroth*/

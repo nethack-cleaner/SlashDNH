@@ -554,10 +554,10 @@ const char *build_date;
 #endif
 
     if (getenv("COMMIT_DESC") && getenv("COMMIT_DESC")[0])
-        Sprintf(outbuf, "notdNetHack v%s (notdnethack git %s), last build %s.",
+        Sprintf(outbuf, "notnotdNetHack v%s (notnotdnethack git %s), last build %s.",
                 version_string(versbuf), getenv("COMMIT_DESC"), build_date);
     else
-        Sprintf(outbuf, "notdNetHack v%s (notdnethack), last build %s.",
+        Sprintf(outbuf, "notnotdNetHack v%s (notnotdnethack), last build %s.",
                 version_string(versbuf), build_date);
     return outbuf;
 }
@@ -893,9 +893,9 @@ do_options()
 	build_savebones_compat_string();
 	Fprintf(ofp,
 #ifdef BETA
-		"\n    notdNetHack version %d.%d.%d [beta]\n",
+		"\n    notnotdNetHack version %d.%d.%d [beta]\n",
 #else
-		"\n    notdNetHack version %d.%d.%d\n",
+		"\n    notnotdNetHack version %d.%d.%d\n",
 #endif
 		VERSION_MAJOR, VERSION_MINOR, PATCHLEVEL);
 

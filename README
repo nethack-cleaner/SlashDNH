@@ -1,33 +1,32 @@
-To read about notdNetHack, see the included changelog
+To read about notnotdNetHack, see the included changelog
 
-To chat about notdNetHack, visit IRC here: https://web.libera.chat/?channel=##nethack-variants
+To chat about notnotdNetHack, visit IRC here: https://web.libera.chat/?channel=##nethack-variants
 
-You can play notdNetHack online using SSH or HTTPS:
-* https://www.hardfought.org/nethack/ (servers in USA, UK, and AUS)
-* if other servers decide to host dNetHack, they will be listed here: https://nethackwiki.com/wiki/Public_server
+You can't play notnotdNetHack online using SSH or HTTPS:
+* if other servers decide to host notnotdNetHack, they will be listed here: https://nethackwiki.com/wiki/Public_server
 
-Setting up notdNetHack:
+Setting up notnotdNetHack:
 
-notdNetHack is currently only supported on Unix, including WSL for Windows, with no plans to change this for the foreseeable future.
+notnotdNetHack is currently only supported on Unix, including WSL for Windows, with no plans to change this for the foreseeable future.
 
 For compiling on Windows:
 * Download Windows Subsystem for Linux (WSL)
 * Open the Terminal in WSL. (Just clicking on the shortcut opens the terminal)
-* Navigate (using `ls` and `cd`) to where you want to install notdnethack
+* Navigate (using `ls` and `cd`) to where you want to install notnotdnethack
 * Install git: `apt install git`
-* Clone the version of notdnethack you want with git: `git clone https://github.com/demogorgon22/notdnethack.git` will get you whatever the default release branch is at the time
+* Clone the version of notnotdnethack you want with git: `git clone https://codeberg.org/noisytoot/notnotdnethack.git` will get you whatever the default release branch is at the time
 * Install the following using `apt install <XXXX>`: `bison`, `build-essential`, `libncurses5-dev`, `flex`
   * If you want to rebuild `include/macromagic.h` (this is only required if you modify `util/MacroMagicMarker.py` or `doc/macromagic.txt`), you also need `python3`
 * Build & install by typing `make install`
   * If you want to enable AddressSanitizer, useful for finding certain types of bugs, add `CFLAGS='-g -fsanitize=address' LDFLAGS=-fsanitize=address`
   * If you want to rebuild `include/macromagic.h` despite not actually having to, also type `rm include/macromagic.h && make include/macromagic.h`
-* Navigate to the newly-created notdnethackdir directory: `cd notdnethackdir`
-* Run by typing `./notdnethack`. Wizard mode is `./notdnethack -D -u wizard`
-* If you want an rc file (to have custom options and use things like menucolours and autopickup exceptions), edit it via `nano ~/.notdnethackrc` (or your preferred text editor)
+* Navigate to the newly-created notnotdnethackdir directory: `cd notnotdnethackdir`
+* Run by typing `./notnotdnethack`. Wizard mode is `./notnotdnethack -D -u wizard`
+* If you want an rc file (to have custom options and use things like menucolours and autopickup exceptions), edit it via `nano ~/.notnotdnethackrc` (or your preferred text editor)
 
 For Unix, the same steps apply minus installing WSL.
 
 Copyright:
 
-notdNetHack is free software released under the NetHack General Public License, see `dat/license` for details.
+notnotdNetHack is free software released under the NetHack General Public License, see `dat/license` for details.
 util/MacroMagicMarker.py is released under the MIT/Expat license, see the comment at the beginning of that file for details.

@@ -1,4 +1,4 @@
-GAMEDIR = notdnethackdir
+GAMEDIR = notnotdnethackdir
 
 # only used for generating include/macromagic.h
 PYTHON = python3
@@ -32,14 +32,14 @@ CPPFLAGS += -Wno-format-overflow
 .DELETE_ON_ERROR:
 
 .PHONY: all
-all: src/notdnethack util/recover dat/nhdat dat/license
+all: src/notnotdnethack util/recover dat/nhdat dat/license
 
 ATOMIC_LN = ln $(1) $(2).new && mv $(2).new $(2)
 
 .PHONY: install
 install: all
 	mkdir -p $(GAMEDIR)
-	install src/notdnethack $(GAMEDIR)
+	install src/notnotdnethack $(GAMEDIR)
 	install util/recover $(GAMEDIR)
 	install -m 644 dat/nhdat dat/license $(GAMEDIR)
 	touch $(GAMEDIR)/perm
@@ -79,9 +79,9 @@ GAME_O = $(SRCOBJ:%.o=src/%.o) $(SYSUNIXOBJ:%.o=sys/unix/%.o)	\
          $(SYSSHAREOBJ:%.o=sys/share/%.o)			\
          $(WINTTYOBJ:%.o=win/tty/%.o)				\
          $(WINCURSESOBJ:%.o=win/curses/%.o)
-src/notdnethack: $(GAME_O)
+src/notnotdnethack: $(GAME_O)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) $(GAMELIBS) -o $@
-AUTO_BIN += src/notdnethack
+AUTO_BIN += src/notnotdnethack
 
 RECOVER_O = util/recover_main.o src/recover.o
 util/recover: $(RECOVER_O)

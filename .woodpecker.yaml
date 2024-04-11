@@ -1,0 +1,8 @@
+steps:
+  - name: build
+    image: debian
+    commands:
+      - apt-get update
+      - apt-get install -y --no-install-recommends bison build-essential libncurses5-dev flex git python3
+      - make
+      - make install

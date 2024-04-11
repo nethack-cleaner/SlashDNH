@@ -220,6 +220,20 @@ boolean impaired;				/* TRUE if throwing/firing slipped OR magr is confused/stun
 				impaired = FALSE; //always catch
 			}
 		}
+		else if((Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_RETURN_LVL) && youagr &&  !(
+			(forcedestroy) ||
+			(launcher) || /* no returning fired ammo */
+			(uball == thrownobj) || /* Not the ball (it clears wornmask and does special stuff anyway) */
+			(thrownobj->oartifact == ART_FLUORITE_OCTAHEDRON && thrownobj->quan > 1)	/* no multithrown fluorite octet for balance reasons */
+		)){
+			returning = TRUE;
+			if(uandroid && impaired){
+				/*Use intrinsic, error proof throwing ability*/
+				range = range/2 + 1;
+				initrange = initrange/2 + 1;
+				impaired = FALSE; //always catch
+			}
+		}
 		else if(uandroid && youagr && !(
 			(launcher) || /* no returning fired ammo */
 			(forcedestroy) || /* no temporary ammo */
@@ -230,13 +244,6 @@ boolean impaired;				/* TRUE if throwing/firing slipped OR magr is confused/stun
 			range = range/2 + 1;
 			initrange = initrange/2 + 1;
 			impaired = FALSE; //always catch
-		} else if((Role_if(PM_ANACHRONOUNBINDER) && u.ulevel >= ACU_RETURN_LVL) && youagr &&  !(
-			(forcedestroy) ||
-			(launcher) || /* no returning fired ammo */
-			(uball == thrownobj) || /* Not the ball (it clears wornmask and does special stuff anyway) */
-			(thrownobj->oartifact == ART_FLUORITE_OCTAHEDRON && thrownobj->quan > 1)	/* no multithrown fluorite octet for balance reasons */
-		)){
-			returning = TRUE;
 		}
 
 	}

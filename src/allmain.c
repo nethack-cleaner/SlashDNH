@@ -3786,7 +3786,7 @@ boolean new_game;	/* false => restoring an old game */
 			pline("Beware, droven armor evaporates in light!");
 		pline("Use #monster to create a patch of darkness.");
 	}
-	if(Race_if(PM_ANDROID)){
+	if(Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID)){
 		pline("Androids do not need to eat, but *do* need to sleep.");
 		pline("Use #monster to access your innate abilities, including sleep.");
 		pline("Use '.' to recover HP using magic energy.");

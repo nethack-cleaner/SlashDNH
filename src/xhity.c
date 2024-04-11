@@ -12077,6 +12077,11 @@ int vis;
 					pline("It didn't seem to work.");
 				}
 			}
+			else if (is_delouseable(mdef->data)){
+				if (canseemon(mdef))
+					pline("The parasite is killed!");
+				delouse(mdef, AD_DEAD);
+			}
 			else {
 				/* no hallucination protection for monsters */
 				/* instakill */

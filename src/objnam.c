@@ -2395,7 +2395,7 @@ weapon:
 			break;
 		case WAND_CLASS:
 		charges:
-			if (obj->known || Race_if(PM_ANDROID)){
+			if (obj->known || Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID)){
 				if (obj->otyp == PRESERVATIVE_ENGINE) {
 					if(obj->known) Sprintf(eos(buf), " (%s:%d)", obj->altmode == ENG_MODE_OFF ? "off" : obj->altmode == ENG_MODE_PYS ? "low" : obj->altmode == ENG_MODE_ENR ? "high" : "err", obj->spe);
 					else Sprintf(eos(buf), " (%d)", obj->spe);

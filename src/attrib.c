@@ -181,6 +181,13 @@ const struct innate {
 		     {  15, &(HFire_resistance), ">Activating asymmetrical heat sink<", ">Asymmetrical heat sink destroyed<" },
 		     {	 0, 0, 0, 0 } },
 
+	andacu_abil[] = { {	1, &(HPoison_resistance), "", "" },
+		     {	 1, &(HSick_resistance), "", "" },
+		     {   5, &(HStealth), ">Initiating short-range camouflage<", ">Short-range camouflage damaged<" },
+		     {  10, &(HShock_resistance), ">Initiating ion-channel re-direction<", ">Ion-channel re-direction non-operational<" },
+		     {  15, &(HFire_resistance), ">Activating asymmetrical heat sink<", ">Asymmetrical heat sink destroyed<" },
+		     {	 0, 0, 0, 0 } },
+
 	vam_abil[] = { {	1, &(HPoison_resistance), "", "" },
 			 {	 1, &(HSleep_resistance), "", "" },
 			 {	11, &(HCold_resistance), "the chill of the grave", "the warmth of life" },
@@ -924,6 +931,7 @@ int oldlevel, newlevel;
 	case PM_ORC:            rabil = orc_abil;	break;
 	case PM_CLOCKWORK_AUTOMATON:rabil = clk_abil;	break;
 	case PM_ANDROID:		rabil = and_abil;	break;
+	case PM_PARASITIZED_ANDROID:	rabil = andacu_abil;	break;
 	case PM_INCANTIFIER:	rabil = inc_abil;	break;
 	case PM_VAMPIRE:		rabil = vam_abil;	break;
 	case PM_HALF_DRAGON:	rabil = hlf_abil;	break;
@@ -979,7 +987,7 @@ int oldlevel, newlevel;
 				*(abil->ability) |= mask;
 			if(!(*(abil->ability) & INTRINSIC & ~mask)) {
 			    if(*(abil->gainstr)){
-					if(Race_if(PM_ANDROID) && mask == FROMRACE)
+					if((Race_if(PM_ANDROID)  || Race_if(PM_PARASITIZED_ANDROID)) && mask == FROMRACE)
 						pline("%s", abil->gainstr);
 					else You_feel("%s!", abil->gainstr);
 				}
@@ -988,7 +996,7 @@ int oldlevel, newlevel;
 			*(abil->ability) &= ~mask;
 			if(!(*(abil->ability) & INTRINSIC)) {
 			    if(*(abil->losestr)){
-					if(Race_if(PM_ANDROID) && mask == FROMRACE)
+					if((Race_if(PM_ANDROID)  || Race_if(PM_PARASITIZED_ANDROID)) && mask == FROMRACE)
 						pline("%s", abil->losestr);
 					else You_feel("%s!", abil->losestr);
 			    } else if(*(abil->gainstr))
@@ -1004,7 +1012,7 @@ int oldlevel, newlevel;
 		int skillslots;
 	    if (newlevel > oldlevel){
 			skillslots = newlevel - oldlevel;
-			if(Race_if(PM_HUMAN) || Race_if(PM_ANDROID)){
+			if(Race_if(PM_HUMAN) || Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID)){
 				if(!(skillslots%2)) skillslots *= 1.5;
 				else if(!(newlevel%2)) skillslots = skillslots*1.5 + 1;
 				else skillslots *= 1.5;
@@ -1013,7 +1021,7 @@ int oldlevel, newlevel;
 		}
 	    else{
 			skillslots = oldlevel - newlevel;
-			if(Race_if(PM_HUMAN) || Race_if(PM_ANDROID)){
+			if(Race_if(PM_HUMAN) || Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID)){
 				if(!(skillslots%2)) skillslots *= 1.5;
 				else if(!(oldlevel%2)) skillslots = skillslots*1.5 + 1;
 				else skillslots *= 1.5;

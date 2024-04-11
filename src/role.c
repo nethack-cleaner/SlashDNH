@@ -224,7 +224,7 @@ struct Role roles[] = {
 	PM_ULITHARID, PM_MINDLESS_THRALL, PM_MENZOBERRANZAN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
 	ART_ELDER_CEREBRAL_FLUID,
-	MA_HUMAN|MA_DWARF|MA_GNOME|MA_ELF|MA_ORC|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT|MA_FEY, ROLE_MALE|ROLE_FEMALE |
+	MA_HUMAN|MA_DWARF|MA_GNOME|MA_ELF|MA_ORC|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT|MA_FEY|MA_CLOCK, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_LAWFUL,
 	/* Str Int Wis Dex Con Cha */
 	{  12, 10,  7, 12,  12,  7 },
@@ -970,6 +970,21 @@ struct Race android =
 	{"android", "gynoid"},
 	PM_ANDROID, PM_GYNOID, PM_MUMMIFIED_ANDROID, PM_FLAYED_ANDROID,
 	ROLE_MALE|ROLE_FEMALE | ROLE_NEUTRAL,
+	MA_CLOCK, 0, MA_ORC,
+	/*  Str    Int Wis Dex Con Cha */
+	{    3,     3,  3,  3,  3,  3 },
+	{   STR19(20),    18, 16, 22, 22, 18 },
+	/* Init   Lower  Higher */
+	{  2, 0,  1, 3,  1, 0 },	/* Hit points */
+	{  1, 0,  1, 0,  1, 0 },	/* Energy */
+	NO_NIGHTVISION
+};
+
+struct Race parasitized_android = 
+{	"parasitized android", "parasitized android", "parasitized android-kind", "And",
+	{"parasitized android", "parasitized gynoid"},
+	PM_PARASITIZED_ANDROID, PM_PARASITIZED_GYNOID, PM_MUMMIFIED_ANDROID, PM_FLAYED_ANDROID,
+	ROLE_MALE|ROLE_FEMALE | ROLE_LAWFUL,
 	MA_CLOCK, 0, MA_ORC,
 	/*  Str    Int Wis Dex Con Cha */
 	{    3,     3,  3,  3,  3,  3 },
@@ -2131,6 +2146,11 @@ int newgame;
 				quest_status.leader_is_dead = TRUE;
 				flags.questprogress = 1;
 			}
+		}
+	}
+	if(Role_if(PM_ANACHRONOUNBINDER)){
+		if(Race_if(PM_CLOCKWORK_AUTOMATON)){
+			urace = parasitized_android;
 		}
 	}
 	if(flags.altrace != NON_PM)

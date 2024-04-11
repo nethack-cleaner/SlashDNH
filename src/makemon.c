@@ -16699,7 +16699,7 @@ struct monst *mtmp;
 			give_mintrinsic(mtmp, FIRE_RES);
 		}
 	}
-	if(free_android(mtmp->data)){
+	if(is_android(mtmp->data)){
 		if(mtmp->m_lev >= 5){
 			give_mintrinsic(mtmp, STEALTH);
 		}

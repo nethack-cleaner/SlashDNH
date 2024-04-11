@@ -624,6 +624,9 @@ draw_horizontal_new(int x, int y, int hp, int hpmax)
     char race[BUFSZ];
     Strncpy(race, urace.adj, BUFSZ);
     race[0] = highc(race[0]);
+    for (int i = 0; race[i]; i++)
+        if (race[i] == ' ' && race[i+1])
+            race[i+1] = highc(race[i+1]);
     wprintw(win, "%s the %s %s%s%s", plname,
             (u.ualign.type == A_CHAOTIC ? "Chaotic" :
              u.ualign.type == A_NEUTRAL ? "Neutral" :

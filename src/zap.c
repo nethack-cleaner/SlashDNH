@@ -2885,7 +2885,7 @@ boolean ordinary;
 		case SPE_FINGER_OF_DEATH:
 			//Shooting yourself with a death effect while inside a Circle of Acheron doesn't protect you, since the spell originates inside the ward.
 			if(u.sealsActive&SEAL_BUER) unbind(SEAL_BUER,TRUE);
-		    if (nonliving(youracedata) || is_demon(youracedata) || is_angel(youracedata)) {
+		    if (!is_delouseable(youracedata) && (nonliving(youracedata) || is_demon(youracedata) || is_angel(youracedata))) {
 			pline((obj->otyp == WAN_DEATH) ?
 			  "The wand shoots an apparently harmless beam at you."
 			  : "You seem no deader than before.");
@@ -4785,7 +4785,7 @@ struct zapdata * zapdata;
 			}
 			zapdata->single_target = TRUE; /* absorbs the beam */
 		}
-		else if (!youdef && is_delouseable(mdef->data)){
+		else if (!youdef && is_delouseable(mdef->data) && !Magic_res(mdef)){
 			dmg = 0;
 			domsg();
 			if (canseemon(mdef))

@@ -3181,8 +3181,15 @@ register struct trobj *trop;
 			if(Race_if(PM_ETHEREALOID) && objects[otyp].oc_class == ARMOR_CLASS && !is_shield(obj)){
 				obfree(obj, (struct obj*) 0);
 				trop++;
-				continue;	
-			}	
+				continue;
+			}
+
+			//no gloves, boots, suits, or shirts for octopodes
+			if(Race_if(PM_OCTOPODE) && (is_gloves(obj) || is_boots(obj) || is_suit(obj) || is_shirt(obj))){
+				obfree(obj, (struct obj*) 0);
+				trop++;
+				continue;
+			}
 
 			if(obj->otyp == POT_BLOOD) 
 				obj->corpsenm = PM_HUMAN;

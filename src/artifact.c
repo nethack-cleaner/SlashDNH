@@ -847,6 +847,13 @@ aligntyp alignment;
 			/* avoid boots for chiropterans */
 			skip_if(Race_if(PM_CHIROPTERAN) && objects[a->otyp].oc_class == ARMOR_CLASS && objects[a->otyp].oc_armcat == ARM_BOOTS);
 
+			/* avoid gloves, boots, shirts, and suits for octopodes */
+			skip_if(Race_if(PM_OCTOPODE) && objects[a->otyp].oc_class == ARMOR_CLASS &&
+				(objects[a->otyp].oc_armcat == ARM_GLOVES ||
+				 objects[a->otyp].oc_armcat == ARM_BOOTS ||
+				 objects[a->otyp].oc_armcat == ARM_SUIT ||
+				 objects[a->otyp].oc_armcat == ARM_SHIRT));
+
 			/* skip nameable artifacts */
 			skip_if((a->gflags & ARTG_NAME));
 

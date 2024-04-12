@@ -3773,7 +3773,7 @@ boolean new_game;	/* false => restoring an old game */
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 	if(iflags.dnethack_start_text){
 	pline("Press Ctrl^W or type #ward to engrave a warding sign.");
-	if(Role_if(PM_PIRATE)) You("can swim! Type #swim while swimming on the surface to dive down to the bottom.");
+	if(Role_if(PM_PIRATE) || Race_if(PM_OCTOPODE)) You("can swim! Type #swim while swimming on the surface to dive down to the bottom.");
 	else if(Role_if(PM_EXILE)){
 		pline("Press Ctrl^E or type #seal to engrave a seal of binding.");
 		pline("#chat to a fresh seal to contact the spirit beyond.");
@@ -3814,6 +3814,9 @@ boolean new_game;	/* false => restoring an old game */
 	}	
 	if(Race_if(PM_INCANTIFIER)){
 		pline("Incantifiers eat magic, not food, and do not heal naturally.");
+	}
+	if(Race_if(PM_OCTOPODE)){
+		pline("Use #monster to spray ink.");
 	}
 	if (Role_if(PM_ANACHRONONAUT) && Race_if(PM_GNOME)){
 		pline("Use f to fire from your power suit.");	

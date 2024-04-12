@@ -938,9 +938,9 @@ boolean dumping;
 #endif
 	if (Adornment) {
 	    int adorn = 0;
-
-	    if(uleft && uleft->otyp == RIN_ADORNMENT) adorn += uleft->spe;
-	    if(uright && uright->otyp == RIN_ADORNMENT) adorn += uright->spe;
+	    for (int i = 0; i < URINGS_SIZE; i++)
+		    if (urings[i] && urings[i]->otyp == RIN_ADORNMENT)
+			    adorn += urings[i]->spe;
 	    if (adorn < 0)
 		you_are("poorly adorned");
 	    else
@@ -1048,8 +1048,9 @@ boolean dumping;
 	if (u.uspellprot || Protection || u.uuur/2 || u.uuur_duration || (u.uvaul+4)/5) {
 	    int prot = 0;
 
-	    if(uleft && uleft->otyp == RIN_PROTECTION) prot += uleft->spe;
-	    if(uright && uright->otyp == RIN_PROTECTION) prot += uright->spe;
+	    for (int i = 0; i < URINGS_SIZE; i++)
+		    if (urings[i] && urings[i]->otyp == RIN_PROTECTION)
+			    prot += urings[i]->spe;
 	    if (HProtection & INTRINSIC) prot += u.ublessed;
 	    prot += u.uspellprot;
 	    prot += u.uuur/2;
@@ -1247,6 +1248,10 @@ resistances_enlightenment()
 			putstr(en_win, 0, "Your greased cloak protects your gear.");
 		else if (u.sealsActive&SEAL_ENKI)
 			putstr(en_win, 0, "YOU'RE soaked, but the water doesn't wet your gear.");
+		else if (Race_if(PM_HALF_DRAGON) && u.ulevel >= 15 && flags.HDbreath == AD_COLD)
+			putstr(en_win, 0, "Your scales protect you from the water around you.");
+		else if (Race_if(PM_OCTOPODE))
+			putstr(en_win, 0, "Your waterproof field protects you from the water around you.");
 		else
 			putstr(en_win, 0, "Your equipment protects you from the water around you.");
 	}

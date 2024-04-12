@@ -6895,9 +6895,10 @@ int tary;
 	/* don't cast red word if target is already disrobed/disrobing */
 	if (spellnum == MON_RED_WORD
 		&& (youdef ? 
-			(u.ufirst_know || !(uarmh || uarmc || uarm || uarmu || uarmg || uarmf || uamul || ublindf || uleft || uright))
-			: (!(mdef->misc_worn_check&(W_ARMOR|W_AMUL|W_TOOL)) || mdef->mdisrobe)
-			)
+		    (u.ufirst_know || !(uarmh || uarmc || uarm || uarmu || uarmg || uarmf
+					|| uamul || ublindf || count_worn_rings(FALSE)))
+		    : (!(mdef->misc_worn_check&(W_ARMOR|W_AMUL|W_TOOL)) || mdef->mdisrobe)
+		    )
 	)
 		return TRUE;
 	/* peaceful monsters won't cast invisibility if you can't see invisible,

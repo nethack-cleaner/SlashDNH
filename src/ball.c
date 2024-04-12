@@ -864,7 +864,7 @@ bc_sanity_check()
             onam = simple_typename(otyp);
             objects[otyp].oc_name_known = save_nameknown;
         }
-        impossible("uball: type %d (%s), where %d, wornmask=0x%08lx",
+        impossible("uball: type %d (%s), where %d, wornmask=0x%08llx",
                    otyp, onam, uball->where, uball->owornmask);
     }
     /* similar check to ball except can't be in inventory */
@@ -883,7 +883,7 @@ bc_sanity_check()
             onam = simple_typename(otyp);
             objects[otyp].oc_name_known = save_nameknown;
         }
-        impossible("uchain: type %d (%s), where %d, wornmask=0x%08lx",
+        impossible("uchain: type %d (%s), where %d, wornmask=0x%08llx",
                    otyp, onam, uchain->where, uchain->owornmask);
     }
     /* [check bc_order too?] */

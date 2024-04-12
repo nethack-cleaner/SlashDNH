@@ -29,7 +29,7 @@ const char	* const plusattr[] = {
 static
 const struct innate {
 	schar	ulevel;
-	long	*ability;
+	long long	*ability;
 	const char *gainstr, *losestr;
 }
 	arc_abil[] = { {	 1, &(HStealth), "", "" },
@@ -236,11 +236,19 @@ const struct innate {
 		     {	 0, 0, 0, 0 } },
 
 	inc_abil[] = { {	1, &(HAntimagic), "", "" },
+		     {	 0, 0, 0, 0 } },
+
+	oct_abil[] = { {	1, &(HStone_resistance), "", "" },
+		     {  1, &(HPoison_resistance), "", "" },
+		     {  1, &(HStealth), "", "" },
+		     {  1, &(HSwimming), "", "" },
+		     {  1, &(HMagical_breathing), "", "" },
+		     {  1, &(HWaterproof), "", "" },
 		     {	 0, 0, 0, 0 } };
 
 #define	next_check u.exerchkturn
 STATIC_DCL void NDECL(exerper);
-STATIC_DCL void FDECL(postadjabil, (long *));
+STATIC_DCL void FDECL(postadjabil, (long long *));
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
 boolean
@@ -850,8 +858,7 @@ redist_attr()
 
 STATIC_OVL
 void
-postadjabil(ability)
-long *ability;
+postadjabil(long long *ability)
 {
 	if (!ability) return;
 	if (ability == &(HWarning) || ability == &(HSee_invisible))
@@ -936,6 +943,7 @@ int oldlevel, newlevel;
 	case PM_VAMPIRE:		rabil = vam_abil;	break;
 	case PM_HALF_DRAGON:	rabil = hlf_abil;	break;
 	case PM_YUKI_ONNA:		rabil = yki_abil;	break;
+	case PM_OCTOPODE:		rabil = oct_abil;	break;
 	case PM_HUMAN:
 	case PM_DWARF:
 	case PM_GNOME:

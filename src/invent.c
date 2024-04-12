@@ -1120,7 +1120,7 @@ register const char *let,*word;
 	xchar foox = 0;
 	long cnt;
 	boolean prezero = FALSE;
-	long dummymask;
+	long long dummymask;
 
 	if(nextgetobj) return getnextgetobj();
 
@@ -6345,8 +6345,7 @@ u_clothing_discomfort()
 	if(uamul){
 		count++;
 	}
-	if(uleft) count++;
-	if(uright) count++;
+	count += count_worn_rings(FALSE);
 	if(ublindf){
 		count++;
 		if(ublindf->otyp == BLINDFOLD
@@ -6508,10 +6507,9 @@ int material;
 		count++;
 	if(uarmf && uarmf->obj_material == material)
 		count++;
-	if(uleft && uleft->obj_material == material)
-		count++;
-	if(uright && uright->obj_material == material)
-		count++;
+	for (int i = 0; i < URINGS_SIZE; i++)
+		if (urings[i] && urings[i]->obj_material == material)
+		        count++;
 	if(uamul && uamul->obj_material == material && !uarmu && !(uarm && arm_blocks_upper_body(uarm->otyp)))
 		count++;
 	if(u.uentangled_oid && !uarmu && !uarm && !(uarm && arm_blocks_upper_body(uarm->otyp)) && entangle_material(&youmonst, material))

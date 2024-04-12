@@ -1123,36 +1123,35 @@ void
 cancel_item(obj)
 register struct obj *obj;
 {
-	boolean	u_ring = (obj == uleft) || (obj == uright);
 	register boolean holy = (obj->otyp == POT_WATER && obj->blessed);
 	
 	adj_abon(obj, -obj->spe);
 
 	switch(obj->otyp) {
 		case RIN_GAIN_STRENGTH:
-			if ((obj->owornmask & W_RING) && u_ring) {
+			if (obj->owornmask & W_RING) {
 				ABON(A_STR) -= obj->spe;
 				flags.botl = 1;
 			}
 			break;
 		case RIN_GAIN_CONSTITUTION:
-			if ((obj->owornmask & W_RING) && u_ring) {
+			if (obj->owornmask & W_RING) {
 				ABON(A_CON) -= obj->spe;
 				flags.botl = 1;
 			}
 			break;
 		case RIN_ADORNMENT:
-			if ((obj->owornmask & W_RING) && u_ring) {
+			if (obj->owornmask & W_RING) {
 				ABON(A_CHA) -= obj->spe;
 				flags.botl = 1;
 			}
 			break;
 		case RIN_INCREASE_ACCURACY:
-			if ((obj->owornmask & W_RING) && u_ring)
+			if (obj->owornmask & W_RING)
 				u.uhitinc -= obj->spe;
 			break;
 		case RIN_INCREASE_DAMAGE:
-			if ((obj->owornmask & W_RING) && u_ring)
+			if (obj->owornmask & W_RING)
 				u.udaminc -= obj->spe;
 			break;
 		/* case RIN_PROTECTION:  not needed */
@@ -1334,8 +1333,6 @@ boolean
 drain_item(obj)
 struct obj *obj;
 {
-	boolean u_ring;
-
 	/* Is this a charged/enchanted object? */
 	if (!obj || (!objects[obj->otyp].oc_charged &&
 			obj->oclass != WEAPON_CLASS &&
@@ -1352,32 +1349,31 @@ struct obj *obj;
 
 	/* Drain the object and any implied effects */
 	obj->spe--;
-	u_ring = (obj == uleft) || (obj == uright);
 	switch(obj->otyp) {
 	case RIN_GAIN_STRENGTH:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_STR)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_GAIN_CONSTITUTION:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_CON)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_ADORNMENT:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_CHA)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_INCREASE_ACCURACY:
-	    if ((obj->owornmask & W_RING) && u_ring)
+	    if (obj->owornmask & W_RING)
 	    	u.uhitinc--;
 	    break;
 	case RIN_INCREASE_DAMAGE:
-	    if ((obj->owornmask & W_RING) && u_ring)
+	    if (obj->owornmask & W_RING)
 	    	u.udaminc--;
 	    break;
 	case RIN_PROTECTION:
@@ -1395,8 +1391,6 @@ boolean
 damage_item(obj)
 register struct obj *obj;
 {
-	boolean u_ring;
-
 	/* Is this a charged/enchanted object? */
 	if (!obj || (!objects[obj->otyp].oc_charged &&
 			obj->oclass != WEAPON_CLASS &&
@@ -1412,32 +1406,31 @@ register struct obj *obj;
 	
 	/* Drain the object and any implied effects */
 	obj->spe--;
-	u_ring = (obj == uleft) || (obj == uright);
 	switch(obj->otyp) {
 	case RIN_GAIN_STRENGTH:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_STR)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_GAIN_CONSTITUTION:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_CON)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_ADORNMENT:
-	    if ((obj->owornmask & W_RING) && u_ring) {
+	    if (obj->owornmask & W_RING) {
 	    	ABON(A_CHA)--;
 	    	flags.botl = 1;
 	    }
 	    break;
 	case RIN_INCREASE_ACCURACY:
-	    if ((obj->owornmask & W_RING) && u_ring)
+	    if (obj->owornmask & W_RING)
 	    	u.uhitinc--;
 	    break;
 	case RIN_INCREASE_DAMAGE:
-	    if ((obj->owornmask & W_RING) && u_ring)
+	    if (obj->owornmask & W_RING)
 	    	u.udaminc--;
 	    break;
 	case RIN_PROTECTION:
@@ -1977,10 +1970,9 @@ int id;
 			otmp->owornmask = obj->owornmask;
 			remove_worn_item(obj, TRUE);
 			setworn(otmp, otmp->owornmask);
-			if (otmp->owornmask & LEFT_RING)
-				uleft = otmp;
-			if (otmp->owornmask & RIGHT_RING)
-				uright = otmp;
+			for (int i = 0; i < URINGS_SIZE; i++)
+				if (otmp->owornmask & ring_index_to_wornmask[i])
+				        urings[i] = otmp;
 			if (otmp->owornmask & W_WEP)
 				uwep = otmp;
 			if (otmp->owornmask & W_SWAPWEP)

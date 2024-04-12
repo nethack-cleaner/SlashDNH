@@ -978,7 +978,8 @@ you_regen_hp()
 	perX += stone_health();
 	
 	// fish out of water
-	if (youracedata->mlet == S_EEL && !is_pool(u.ux, u.uy, youracedata->msize == MZ_TINY) && !Is_waterlevel(&u.uz)) {
+	if (youracedata->mlet == S_EEL && youracedata->mtyp != PM_OCTOPODE &&
+	    !is_pool(u.ux, u.uy, youracedata->msize == MZ_TINY) && !Is_waterlevel(&u.uz)) {
 		if (is_pool(u.ux, u.uy, TRUE))
 			perX -= HEALCYCLE * (youracedata->msize - 1) / (youracedata->msize);
 		else
@@ -996,7 +997,7 @@ you_regen_hp()
 	if(likes_lava(youracedata) && levl[u.ux][u.uy].typ == LAVAPOOL){
 		perX += HEALCYCLE;
 	}
-	
+
 	// regeneration 'trinsic
 	if (Regeneration){
 		perX += HEALCYCLE;

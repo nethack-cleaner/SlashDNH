@@ -527,15 +527,9 @@ dosinkfall()
 	ELevitation &= ~W_ARTI;
 	HLevitation &= ~(I_SPECIAL|TIMEOUT);
 	HLevitation++;
-	if(uleft && uleft->otyp == RIN_LEVITATION) {
-	    obj = uleft;
-	    Ring_off(obj);
-	    off_msg(obj);
-	}
-	if(uright && uright->otyp == RIN_LEVITATION) {
-	    obj = uright;
-	    Ring_off(obj);
-	    off_msg(obj);
+	if ((obj = uring_otyp(RIN_LEVITATION))) {
+		Ring_off(obj);
+		off_msg(obj);
 	}
 	if(uarmf && uarmf->otyp == FLYING_BOOTS) {
 	    obj = uarmf;
@@ -1643,7 +1637,7 @@ domove()
 		boolean ww_boots = (uarmf && uarmf->otyp == WATER_WALKING_BOOTS && objects[WATER_WALKING_BOOTS].oc_name_known);
 		boolean visible_ww = ww_boots || u.sealsActive&SEAL_EURYNOME || HWwalking ||
 			(u.uprops[WWALKING].extrinsic & W_ARTI) || (u.uprops[WWALKING].extrinsic & W_ART) ||
-			(uleft && uleft->oartifact == ART_NENYA) || (uright && uright->oartifact == ART_NENYA);
+		        uring_art(ART_NENYA);
 
 	    /* Going into 3D water with limited breath can be dangerous. */
 	    boolean safe_3dwater = safe_inwater && Breathless;

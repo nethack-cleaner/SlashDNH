@@ -588,12 +588,19 @@ E NEARDATA struct obj *invent,
 #ifdef TOURIST
 	*uarmu,				/* under-wear, so to speak */
 #endif
-	*uskin, *uamul, *uleft, *uright, *ublindf,
+	*uskin, *uamul, *ublindf,
 	*uwep, *uswapwep, *uquiver;
+
+#define URINGS_SIZE 8
+E NEARDATA struct obj *urings[URINGS_SIZE]; /* init'd and defined in decl.c */
+E NEARDATA const long long ring_index_to_wornmask[URINGS_SIZE]; /* init'd and defined in worn.c */
+#define uleft  (urings[0])
+#define uright (urings[1])
 
 /* Needs to update, so it's redefined each time whenever it's used */
 #define ARMOR_SLOTS { uarm, uarmc, uarmf, uarmh, uarmg, uarms, uarmu }
-#define WORN_SLOTS { uarm, uarmc, uarmf, uarmh, uarmg, uarms, uarmu, uamul, uleft, uright, ublindf, uwep, uswapwep, uquiver }
+#define WORN_SLOTS { uarm, uarmc, uarmf, uarmh, uarmg, uarms, uarmu, uamul, ublindf, uwep, uswapwep, uquiver, \
+			urings[0], urings[1], urings[2], urings[3], urings[4], urings[5], urings[6], urings[7] }
 
 E NEARDATA struct obj *urope;		/* defined only when entangled */
 E NEARDATA struct obj *uchain;		/* defined only when punished */

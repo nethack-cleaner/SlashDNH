@@ -22,8 +22,6 @@
 
 #define maybe_polyd(if_so,if_not)	(Upolyd ? (if_so) : (if_not))
 
-#define uring_art(art_num)	((uright && uright->oartifact == art_num) || (uleft && uleft->oartifact == art_num))
-
 /*** Resistances to troubles ***/
 #define Oona_resistance	((u.oonaenergy == AD_FIRE ? Fire_resistance : u.oonaenergy == AD_COLD ? Cold_resistance : u.oonaenergy == AD_ELEC ? Shock_resistance : FALSE))
 /* With intrinsics and extrinsics */
@@ -398,9 +396,11 @@
 
 #define HWeldproof	u.uprops[WELDPROOF].intrinsic
 #define EWeldproof	u.uprops[WELDPROOF].extrinsic
-#define Weldproof	(HWeldproof || EWeldproof || \
-					 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM) || (Race_if(PM_ANDROID))\
-					)
+#define Weldproof	(HWeldproof || EWeldproof ||			\
+			 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM) || \
+			 Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID) || \
+			 (youracedata->mtyp == PM_OCTOPODE)		\
+			 )
 
 /*** Appearance and behavior ***/
 #define Adornment		u.uprops[ADORNED].extrinsic
@@ -643,7 +643,7 @@
 
  /*Note: the rings only give life saving when charged, so it can't be a normal property*/
 #define ELifesaved		u.uprops[LIFESAVED].extrinsic
-#define Lifesaved		(ELifesaved || Check_crystal_lifesaving() || Check_iaso_lifesaving() || Check_twin_lifesaving() || (uleft && uleft->otyp == RIN_WISHES && uleft->spe > 0) || (uright && uright->otyp == RIN_WISHES && uright->spe > 0) || (check_mutation(ABHORRENT_SPORE) && !(mvitals[PM_DARK_YOUNG].mvflags & G_GENOD)))
+#define Lifesaved		(ELifesaved || Check_crystal_lifesaving() || Check_iaso_lifesaving() || Check_twin_lifesaving() || Check_ring_lifesaving() || (check_mutation(ABHORRENT_SPORE) && !(mvitals[PM_DARK_YOUNG].mvflags & G_GENOD)))
 
 #define Necrospellboost	(u.uprops[NECROSPELLS].extrinsic)
 

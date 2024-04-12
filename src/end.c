@@ -885,6 +885,15 @@ Check_twin_lifesaving()
 	return FALSE;
 }
 
+boolean
+Check_ring_lifesaving()
+{
+	struct obj *ring = uring_otyp(RIN_WISHES);
+	if (ring && ring->spe > 0)
+		return TRUE;
+	return FALSE;
+}
+
 STATIC_OVL void
 Use_crystal_lifesaving()
 {
@@ -1070,6 +1079,7 @@ int how;
 
 	if (how < PANICKED) u.umortality++;
 	if (Lifesaved && (how <= GENOCIDED)) {
+		int ring_index;	/* used for checking ring lifesaving */
 		pline("But wait...");
 		if(uarmh && uarmh->oartifact == ART_HELM_OF_UNDEATH) {
 			otmp = uarmh;
@@ -1167,24 +1177,20 @@ int how;
 			lsvd = LSVD_MISC;
 			pline("Time unwinds and twists!");
 			Use_crystal_lifesaving();
-		} else if(uleft && uleft->otyp == RIN_WISHES && uleft->spe > 0){
+		} else if(((ring_index = uring_otyp_index(RIN_WISHES)) != -1) && urings[ring_index]->spe > 0){
+			struct obj *obj = urings[ring_index];
+			char which[BUFSZ];
+			nth_ring_text(ring_index, which, BUFSZ);
 			lsvd = LSVD_MISC;
 			You("wish that hadn't happened.");
-			pline("A star flares on your left ring-finger!");
-			uleft->spe--;
-		} else if(uright && uright->otyp == RIN_WISHES && uright->spe > 0){
-			lsvd = LSVD_MISC;
-			You("wish that hadn't happened.");
-			pline("A star flares on your right ring-finger!");
-			uright->spe--;
+			pline("A star flares on your %s %s%s!", which,
+			      humanoid(youracedata) ? "ring-" : "",
+			      body_part(FINGER));
+			obj->spe--;
 		} else if(check_mutation(ABHORRENT_SPORE) && !(mvitals[PM_DARK_YOUNG].mvflags & G_GENOD)){
 			lsvd = LSVD_SPOR;
 			if (how == DISINTEGRATED) pline("Your dust is consumed by the abhorrent spore!");
 			else pline("Your body melts and is consumed by the abhorrent spore!");
-			if (Upolyd && uskin && uskin->oartifact == ART_MIRRORED_MASK) {
-				pline("Your mask falls to pieces!");
-				useup(uskin);
-			}
 			if(youracedata->mtyp == PM_DARK_YOUNG)
 				change_gevurah(16); //cheated death extra.
 

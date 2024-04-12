@@ -284,7 +284,7 @@ struct obj {
 	long age;		/* creation date */
 	/* in order to prevent alignment problems oextra should
 	   be (or follow) a long int */
-	long owornmask;
+	long long owornmask;
 	/* Weapons and artifacts */
 //	define W_ARM	    0x00000001L /* Body armor */
 //	define W_ARMC	    0x00000002L /* Cloak */

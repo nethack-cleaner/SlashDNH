@@ -299,6 +299,26 @@ struct obj *otmp;
 
 }
 
+int
+nth_ring_text(int ring_index, char *buf, size_t bufsize)
+{
+	if (youracedata->mtyp != PM_OCTOPODE && ring_index <= 1)
+		return snprintf(buf, bufsize, ring_index == 0 ? "left" : "right");
+	else {
+		switch (ring_index+1) {
+		case 1:  return snprintf(buf, bufsize, "first");
+		case 2:  return snprintf(buf, bufsize, "second");
+		case 3:  return snprintf(buf, bufsize, "third");
+		case 4:  return snprintf(buf, bufsize, "fourth");
+		case 5:  return snprintf(buf, bufsize, "fifth");
+		case 6:  return snprintf(buf, bufsize, "sixth");
+		case 7:  return snprintf(buf, bufsize, "seventh");
+		case 8:  return snprintf(buf, bufsize, "eighth");
+		default: return snprintf(buf, bufsize, "%dth", ring_index+1);
+		}
+	}
+}
+
 const char *
 lightsaber_colorText(otmp)
 struct obj *otmp;
@@ -2413,10 +2433,20 @@ weapon:
 		ring:
 			if (obj->otyp == RIN_WISHES && obj->known) Sprintf(eos(buf), " (%d remaining)", obj->spe);
 			if (obj->otyp == RIN_WISHES && !obj->known && obj->spe > 0) Sprintf(eos(buf), " with %d star%s", obj->spe, plur(obj->spe));
-			if (obj->owornmask & W_RINGR) Strcat(buf, " (on right ");
-			if (obj->owornmask & W_RINGL) Strcat(buf, " (on left ");
+			for (int i = 0; i < URINGS_SIZE; i++) {
+				if (obj->owornmask & ring_index_to_wornmask[i]) {
+					char tmpbuf[BUFSZ];
+					nth_ring_text(i, tmpbuf, BUFSZ);
+					Sprintf(eos(buf), " (on %s ", tmpbuf);
+				}
+			}
 			if (obj->owornmask & W_RING) {
-				const char *hand_s = obj->where == OBJ_MINVENT ? mbodypart(obj->ocarry, HAND) : body_part(HAND);
+				const char *hand_s = obj->where == OBJ_MINVENT
+					? mbodypart(obj->ocarry, HAND)
+					/* body_part(HAND) is "tentacle pair" for octopodes */
+					: (youracedata->mtyp == PM_OCTOPODE
+					   ? "tentacle"
+					   : body_part(HAND));
 				Strcat(buf, hand_s);
 				if (isSignetRing(obj->otyp)){
 					if (obj->opoisoned & OPOISON_BASIC) Strcat(buf, ", poison injecting");

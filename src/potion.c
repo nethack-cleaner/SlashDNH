@@ -46,8 +46,7 @@ long incr;
 
 /* set the timeout field of intrinsic `which' */
 void
-set_itimeout(which, val)
-long *which, val;
+set_itimeout(long long *which, long val)
 {
     *which &= ~TIMEOUT;
     *which |= itimeout(val);
@@ -55,9 +54,7 @@ long *which, val;
 
 /* increment the timeout field of intrinsic `which' */
 void
-incr_itimeout(which, incr)
-long *which;
-long incr;
+incr_itimeout(long long *which, long incr)
 {
     set_itimeout(which, itimeout_incr(*which, incr));
 }

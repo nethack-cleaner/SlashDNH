@@ -17,7 +17,7 @@ STATIC_DCL int NDECL(def_lomya);
 STATIC_DCL int NDECL(def_mountedCombat);
 
 const struct worn {
-	long w_mask;
+	long long w_mask;
 	struct obj **w_obj;
 } worn[] = {
 	{ W_ARM, &uarm },
@@ -29,8 +29,14 @@ const struct worn {
 #ifdef TOURIST
 	{ W_ARMU, &uarmu },
 #endif
-	{ W_RINGL, &uleft },
-	{ W_RINGR, &uright },
+	{ W_RING0, &urings[0] },
+	{ W_RING1, &urings[1] },
+	{ W_RING2, &urings[2] },
+	{ W_RING3, &urings[3] },
+	{ W_RING4, &urings[4] },
+	{ W_RING5, &urings[5] },
+	{ W_RING6, &urings[6] },
+	{ W_RING7, &urings[7] },
 	{ W_WEP, &uwep },
 	{ W_SWAPWEP, &uswapwep },
 	{ W_QUIVER, &uquiver },
@@ -49,6 +55,73 @@ const struct worn {
 		/* note: monsters don't have clairvoyance, so your role
 		   has no significant effect on their use of w_blocks() */
 
+const long long ring_index_to_wornmask[] = {
+	W_RING0, W_RING1, W_RING2, W_RING3, W_RING4, W_RING5, W_RING6, W_RING7
+};
+
+/*
+ * Counts worn rings.  If include_non_rings is true, also includes
+ * non-ring items that block ring slots.
+ */
+int
+count_worn_rings(boolean include_non_rings)
+{
+	int count = 0;
+	for (int i = 0; i < URINGS_SIZE; i++)
+		/* urings[1] == right ring */
+		if (urings[i] || (include_non_rings && i == 1 && uarmg
+				  && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER))
+		        count++;
+	return count;
+}
+
+/*
+ * Returns index of the first object with a matching otyp in urings,
+ * or -1 if none is found.
+ */
+int
+uring_otyp_index(int otyp)
+{
+	for (int i = 0; i < URINGS_SIZE; i++)
+		if (urings[i] && urings[i]->otyp == otyp)
+			return i;
+	return -1;
+}
+
+/*
+ * Returns index of the first object with a matching oartifact in
+ * urings, or -1 if none is found.
+ */
+int
+uring_art_index(int art_num)
+{
+	for (int i = 0; i < URINGS_SIZE; i++)
+		if (urings[i] && urings[i]->oartifact == art_num)
+			return i;
+	return -1;
+}
+
+/*
+ * Returns pointer to the first object with a matching otyp in
+ * urings, or NULL if none is found.
+ */
+struct obj *
+uring_otyp(int otyp)
+{
+	int index = uring_otyp_index(otyp);
+	return index == -1 ? NULL : urings[index];
+}
+
+/*
+ * Returns pointer to the first object with a matching oartifact in
+ * urings, or NULL if none is found.
+ */
+struct obj *
+uring_art(int art_num)
+{
+	int index = uring_art_index(art_num);
+	return index == -1 ? NULL : urings[index];
+}
 
 /* returns TRUE if obj confers prop
  * also checks artifact properties
@@ -320,7 +393,7 @@ long mask;
 	    for(wp = worn; wp->w_mask; wp++) if(wp->w_mask & mask) {
 		oobj = *(wp->w_obj);
 		if(oobj && !(oobj->owornmask & wp->w_mask))
-			impossible("Setworn: mask = %ld.", wp->w_mask);
+			impossible("Setworn: mask = %lld.", wp->w_mask);
 		if(oobj) {
 		    if (u.twoweap && (oobj->owornmask & (W_WEP|W_SWAPWEP)) && !test_twoweapon())
 				u.twoweap = 0;

@@ -2197,7 +2197,7 @@ struct obj *otmp;
 	/* Note: rings are not so common that this is unbalancing. */
 	/* (How often do you even _find_ 3 rings of polymorph in a game?) */
 	oldprop = u.uprops[objects[typ].oc_oprop[0]].intrinsic;
-	if (otmp == uleft || otmp == uright) {
+	if (otmp->owornmask & W_RING) {
 	    Ring_gone(otmp);
 	    if (u.uhp <= 0) return; /* died from sink fall */
 	}
@@ -4092,24 +4092,30 @@ gethungry()	/* as time goes by - called by moveloop() and domove() */
 	    /* Conflict uses up food too */
 	    if (HConflict || (EConflict & (~W_ARTI))) (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
 	    /* Alacrity uses up food too */
-	    if (EFast & (W_RINGL|W_RINGR)) (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
+	    if (EFast & W_RING) (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
 	    /* +0 charged rings don't do anything, so don't affect hunger */
 	    /* Slow digestion still uses ring hunger */
+#define RING_HUNGER(ring)						\
+	    if (ring &&							\
+		(ring->spe || !objects[ring->otyp].oc_charged))		\
+		    (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--)
+	    /* TODO clean this up */
 	    switch ((int)(moves % 20)) {	/* note: use even cases only */
-	     case  4: if (uleft &&
-			  (uleft->spe || !objects[uleft->otyp].oc_charged))
-			    (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
-		    break;
+	     case  2: RING_HUNGER(urings[2]); break;
+	     case  4: RING_HUNGER(uleft); break;
+	     case  6: RING_HUNGER(urings[3]); break;
 	     case  8: if (uamul) (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
 		    break;
-	     case 12: if (uright &&
-			  (uright->spe || !objects[uright->otyp].oc_charged))
-			    (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
-		    break;
+	     case 10: RING_HUNGER(urings[4]); break;
+	     case 12: RING_HUNGER(uright); break;
+	     case 14: RING_HUNGER(urings[5]); break;
 	     case 16: if (u.uhave.amulet) (Race_if(PM_INCANTIFIER) ? u.uen-- : u.uhunger--);
 		    break;
+	     case 18: RING_HUNGER(urings[6]); break;
+	     case 20: RING_HUNGER(urings[7]); break;
 	     default: break;
 	    }
+#undef RING_HUNGER
 	}
 	newuhs(TRUE);
 }

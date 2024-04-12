@@ -10,12 +10,12 @@
 
 #ifndef OVLB
 
-STATIC_DCL long takeoff_mask, taking_off;
+STATIC_DCL long long takeoff_mask, taking_off;
 
 #else /* OVLB */
 
-STATIC_OVL NEARDATA long takeoff_mask = 0L;
-static NEARDATA long taking_off = 0L;
+STATIC_OVL NEARDATA long long takeoff_mask = 0LL;
+static NEARDATA long long taking_off = 0LL;
 
 static NEARDATA int todelay;
 static boolean cancelled_don = FALSE;
@@ -36,14 +36,14 @@ static NEARDATA const char c_armor[]  = "armor",
 			   c_sword[]  = "sword",
 			   c_axe[]    = "axe",
 			   c_that_[]  = "that";
-
-static NEARDATA const long takeoff_order[] = { WORN_BLINDF, W_WEP,
-	WORN_SHIELD, WORN_GLOVES, LEFT_RING, RIGHT_RING, WORN_CLOAK,
-	WORN_HELMET, WORN_AMUL, WORN_ARMOR,
+static NEARDATA const long long takeoff_order[] = { WORN_BLINDF, W_WEP,
+	WORN_SHIELD, WORN_GLOVES,
+	W_RING0, W_RING1, W_RING2, W_RING3, W_RING4, W_RING5, W_RING6, W_RING7,
+	WORN_CLOAK, WORN_HELMET, WORN_AMUL, WORN_ARMOR,
 #ifdef TOURIST
 	WORN_SHIRT,
 #endif
-	WORN_BOOTS, W_SWAPWEP, W_QUIVER, 0L };
+	WORN_BOOTS, W_SWAPWEP, W_QUIVER, 0LL };
 
 STATIC_DCL void FDECL(on_msg, (struct obj *));
 STATIC_DCL int NDECL(Cloak_on);
@@ -1457,7 +1457,7 @@ donning(otmp)		/* also checks for doffing */
 register struct obj *otmp;
 {
  /* long what = (occupation == take_off) ? taking_off : 0L; */
-    long what = taking_off;	/* if nonzero, occupation is implied */
+    long long what = taking_off;	/* if nonzero, occupation is implied */
     boolean result = FALSE;
 
     if (otmp == uarm)
@@ -1551,7 +1551,7 @@ dotakeoff()
 				"dragon scale mail is");
 		else
 		    pline("Not wearing any armor.%s", (iflags.cmdassist && 
-				(uleft || uright || uamul || ublindf)) ?
+				(count_worn_rings(FALSE) || uamul || ublindf)) ?
 			  "  Use 'R' command to remove accessories." : "");
 		return MOVE_CANCELLED;
 	}
@@ -1597,8 +1597,9 @@ doremring()
 	}
 
 #define MOREACC(x) if (x) { Accessories++; otmp = x; }
-	MOREACC(uleft);
-	MOREACC(uright);
+	for (int i = 0; i < URINGS_SIZE; i++) {
+		MOREACC(urings[i]);
+	}
 	MOREACC(uamul);
 	MOREACC(ublindf);
 
@@ -1625,7 +1626,7 @@ doremring()
 	if (!takeoff_mask) return MOVE_CANCELLED;
 	reset_remarm();		/* not used by Ring_/Amulet_/Blindf_off() */
 
-	if (otmp == uright || otmp == uleft) {
+	if (otmp->owornmask & W_RING) {
 		/* Sometimes we want to give the off_msg before removing and
 		 * sometimes after; for instance, "you were wearing a moonstone
 		 * ring (on right hand)" is desired but "you were wearing a
@@ -1737,7 +1738,7 @@ register struct obj *otmp;
 		else setworn((struct obj *)0, otmp->owornmask & W_ARMOR);
 		off_msg(otmp);
 	}
-	takeoff_mask = taking_off = 0L;
+	takeoff_mask = taking_off = 0LL;
 	return MOVE_STANDARD;
 }
 
@@ -1765,7 +1766,7 @@ const char *cc1, *cc2;
 int
 canwearobj(otmp,mask,noisy)
 struct obj *otmp;
-long *mask;
+long long *mask;
 boolean noisy;
 {
     int err = 0;
@@ -1963,7 +1964,7 @@ dowear()
 {
 	struct obj *otmp;
 	int delay;
-	long mask = 0;
+	long long mask = 0;
 
 	if (nohands(youracedata)) {
 		pline("Don't even bother.");
@@ -2025,7 +2026,7 @@ dowear()
 		else if(otmp == uarm) (void) Armor_on();
 		on_msg(otmp);
 	}
-	takeoff_mask = taking_off = 0L;
+	takeoff_mask = taking_off = 0LL;
 	return MOVE_STANDARD;
 }
 
@@ -2033,14 +2034,20 @@ int
 doputon()
 {
 	register struct obj *otmp;
-	long mask = 0L;
+	long long mask = 0LL;
 
 	if(!freehand()){
 		You("have no free %s to put on accessories with!", body_part(HAND));
 		return MOVE_CANCELLED;
 	}
 
-	if(uleft && (uright || (uarmg && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER)) && uamul && ublindf) {
+	int free_ring_slots = (youracedata->mtyp == PM_OCTOPODE ? 8 : 2) - count_worn_rings(TRUE);
+	if (free_ring_slots < 0) {
+		impossible("doputon: more worn rings than ring slots?");
+		free_ring_slots = 0;
+	}
+
+	if(!free_ring_slots && uamul && ublindf) {
 		Your("%s%s are full, and you're already wearing an amulet and %s.",
 			humanoid(youracedata) ? "ring-" : "",
 			makeplural(body_part(FINGER)),
@@ -2070,34 +2077,64 @@ doputon()
 			You("cannot make the ring stick to your body.");
 			return MOVE_CANCELLED;
 		}
-		if(uleft && (uright || (uarmg && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER))){
+		if(!free_ring_slots){
 			There("are no more %s%s to fill.",
 				humanoid(youracedata) ? "ring-" : "",
 				makeplural(body_part(FINGER)));
 			return MOVE_CANCELLED;
 		}
-		if(uleft) mask = RIGHT_RING;
-		else if((uright || (uarmg && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER))) mask = LEFT_RING;
-		else do {
+
+		if(youracedata->mtyp == PM_OCTOPODE) do {
 			char qbuf[QBUFSZ];
 			char answer;
 
-			Sprintf(qbuf, "Which %s%s, Right or Left?",
+			char respchars[8] = {0};
+			for (int i = 0; i < 8; i++)
+				if (!urings[i])
+					Sprintf(eos(respchars), "%d", i+1);
+
+			Sprintf(qbuf, "Which %s%s?",
 				humanoid(youracedata) ? "ring-" : "",
 				body_part(FINGER));
-			if(!(answer = yn_function(qbuf, "rl", '\0')))
+			/* Don't ask if only one slot is free. */
+			if(strlen(respchars) == 1)
+				answer = respchars[0];
+			else if(!(answer = yn_function(qbuf, respchars, '\0')))
 				return MOVE_CANCELLED;
 			switch(answer){
-			case 'l':
-			case 'L':
-				mask = LEFT_RING;
-				break;
-			case 'r':
-			case 'R':
-				mask = RIGHT_RING;
-				break;
+			case '1': mask = W_RING0; break;
+			case '2': mask = W_RING1; break;
+			case '3': mask = W_RING2; break;
+			case '4': mask = W_RING3; break;
+			case '5': mask = W_RING4; break;
+			case '6': mask = W_RING5; break;
+			case '7': mask = W_RING6; break;
+			case '8': mask = W_RING7; break;
 			}
-		} while(!mask);
+	        } while(!mask); else {
+			if(uleft) mask = RIGHT_RING;
+			else if((uright || (uarmg && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER))) mask = LEFT_RING;
+			else do {
+	       			char qbuf[QBUFSZ];
+	       			char answer;
+
+	       			Sprintf(qbuf, "Which %s%s, Right or Left?",
+       					humanoid(youracedata) ? "ring-" : "",
+	       				body_part(FINGER));
+		       		if(!(answer = yn_function(qbuf, "rl", '\0')))
+       					return MOVE_CANCELLED;
+	       			switch(answer){
+		       		case 'l':
+			       	case 'L':
+				       	mask = LEFT_RING;
+       					break;
+	       			case 'r':
+		       		case 'R':
+			       		mask = RIGHT_RING;
+       					break;
+	       			}
+		       	} while(!mask);
+		}
 		if (uarmg && uarmg->cursed && !Weldproof) {
 			uarmg->bknown = TRUE;
 		    You("cannot remove your gloves to put on the ring.");
@@ -2626,11 +2663,13 @@ base_uac()
 			}
 		}
 	}
-	if(uleft && uleft->otyp == RIN_PROTECTION) uac -= uleft->spe;
-	if(uright && uright->otyp == RIN_PROTECTION) uac -= uright->spe;
+	for (int i = 0; i < URINGS_SIZE; i++)
+		if (urings[i] && urings[i]->otyp == RIN_PROTECTION)
+			uac -= urings[i]->spe;
 	if (HProtection & INTRINSIC) uac -= (u.ublessed+1)/2;
 	if(Race_if(PM_ETHEREALOID)) uac -= u.ulevel;	
-	if(Race_if(PM_SNOW_CLOUD) && !Upolyd) uac -= u.ulevel;	
+	if(Race_if(PM_SNOW_CLOUD) && !Upolyd) uac -= u.ulevel;
+	if(Race_if(PM_OCTOPODE)) uac -= u.ulevel/2;
 	if(u.utats & TAT_BULWARK) uac -= 1;
 	uac -= u.uacinc;
 	uac -= u.spiritAC;
@@ -2790,7 +2829,7 @@ int base_nat_udr()
 {
 	int udr = 0;
 
-	if(Race_if(PM_ORC)){
+	if(Race_if(PM_ORC) || Race_if(PM_OCTOPODE)){
 		udr += u.ulevel/10;
 	}
 	if(is_ent_species(youracedata, ENT_MIMOSA)) udr++;
@@ -2798,7 +2837,7 @@ int base_nat_udr()
 
 	if(Race_if(PM_SNOW_CLOUD) && !Upolyd)
 		udr += (u.ulevel/6)+1;
-	
+
 	if(Race_if(PM_HALF_DRAGON)){
 		//DS half dragons may be more humanoid
 		if(Humanoid_half_dragon(urole.malenum)){
@@ -3095,6 +3134,10 @@ glibr()
 	boolean leftfall, rightfall;
 	const char *otherwep = 0;
 
+	/* octopodes' suckers make them immune to glib */
+	if(youracedata->mtyp == PM_OCTOPODE)
+		return;
+
 	leftfall = (uleft && !uleft->cursed && !Weldproof &&
 		    (!uwep || !welded(uwep) || !bimanual(uwep,youracedata)));
 	rightfall = (uright && !uright->cursed && !Weldproof && (!welded(uwep)));
@@ -3374,15 +3417,22 @@ register struct obj *otmp;
 #ifdef TOURIST
 	else if(otmp == uarmu) takeoff_mask |= WORN_SHIRT;
 #endif
-	else if(otmp == uleft) takeoff_mask |= LEFT_RING;
-	else if(otmp == uright) takeoff_mask |= RIGHT_RING;
 	else if(otmp == uamul) takeoff_mask |= WORN_AMUL;
 	else if(otmp == ublindf) takeoff_mask |= WORN_BLINDF;
 	else if(otmp == uwep) takeoff_mask |= W_WEP;
 	else if(otmp == uswapwep) takeoff_mask |= W_SWAPWEP;
 	else if(otmp == uquiver) takeoff_mask |= W_QUIVER;
-
-	else impossible("select_off: %s???", doname(otmp));
+	else {
+		boolean found_ring = FALSE;
+		for (int i = 0; i < URINGS_SIZE; i++) {
+			if (otmp == urings[i]) {
+				found_ring = TRUE;
+				takeoff_mask |= ring_index_to_wornmask[i];
+				break;
+			}
+		}
+		if (!found_ring) impossible("select_off: %s???", doname(otmp));
+	}
 
 	return MOVE_CANCELLED;
 }
@@ -3433,15 +3483,20 @@ do_takeoff()
 	} else if (taking_off == WORN_AMUL) {
 	  otmp = uamul;
 	  if(!cursed(otmp)) Amulet_off();
-	} else if (taking_off == LEFT_RING) {
-	  otmp = uleft;
-	  if(!cursed(otmp)) Ring_off(uleft);
-	} else if (taking_off == RIGHT_RING) {
-	  otmp = uright;
-	  if(!cursed(otmp)) Ring_off(uright);
 	} else if (taking_off == WORN_BLINDF) {
 	  if (!cursed(ublindf)) Blindf_off(ublindf);
-	} else impossible("do_takeoff: taking off %lx", taking_off);
+	} else {
+		boolean found_ring = FALSE;
+		for (int i = 0; i < URINGS_SIZE; i++) {
+			if (taking_off & ring_index_to_wornmask[i]) {
+				found_ring = TRUE;
+				otmp = urings[i];
+				if(!cursed(otmp)) Ring_off(urings[i]);
+				break;
+			}
+		}
+		if (!found_ring) impossible("do_takeoff: taking off %llx", taking_off);
+	}
 
 	return(otmp);
 }
@@ -3463,7 +3518,7 @@ take_off()
 		if ((otmp = do_takeoff())) off_msg(otmp);
 	    }
 	    takeoff_mask &= ~taking_off;
-	    taking_off = 0L;
+	    taking_off = 0LL;
 	}
 
 	for(i = 0; takeoff_order[i]; i++)
@@ -3475,7 +3530,7 @@ take_off()
 	otmp = (struct obj *) 0;
 	todelay = 0;
 
-	if (taking_off == 0L) {
+	if (taking_off == 0LL) {
 	  You("finish %s.", disrobing);
 	  return MOVE_FINISHED_OCCUPATION;
 	} else if (taking_off == W_WEP) {
@@ -3510,14 +3565,12 @@ take_off()
 #endif
 	} else if (taking_off == WORN_AMUL) {
 	  todelay = 1;
-	} else if (taking_off == LEFT_RING) {
-	  todelay = 1;
-	} else if (taking_off == RIGHT_RING) {
+	} else if (taking_off & W_RING) {
 	  todelay = 1;
 	} else if (taking_off == WORN_BLINDF) {
 	  todelay = 2;
 	} else {
-	  impossible("take_off: taking off %lx", taking_off);
+	  impossible("take_off: taking off %llx", taking_off);
 	  return MOVE_FINISHED_OCCUPATION;	/* force done */
 	}
 
@@ -3537,7 +3590,7 @@ take_off()
 void
 reset_remarm()
 {
-	taking_off = takeoff_mask = 0L;
+	taking_off = takeoff_mask = 0LL;
 	disrobing = nul;
 }
 
@@ -3744,7 +3797,7 @@ register struct obj *otmp;
 	if (mtmp == &youmonst)
 		return destroy_arm(otmp);
 
-	long unwornmask;
+	long long unwornmask;
 	if(!otmp || !mtmp)
 		return 0;
 	if(obj_resists(otmp, 0, 100))
@@ -3752,7 +3805,7 @@ register struct obj *otmp;
 	if(!otmp->owornmask)
 		return 0;
 	obj_extract_self(otmp);
-	if ((unwornmask = otmp->owornmask) != 0L) {
+	if ((unwornmask = otmp->owornmask) != 0LL) {
 		mtmp->misc_worn_check &= ~unwornmask;
 		if (otmp->owornmask & W_WEP){
 			setmnotwielded(mtmp,otmp);
@@ -3762,7 +3815,7 @@ register struct obj *otmp;
 			setmnotwielded(mtmp,otmp);
 			MON_NOSWEP(mtmp);
 		}
-		otmp->owornmask = 0L;
+		otmp->owornmask = 0LL;
 		update_mon_intrinsics(mtmp, otmp, FALSE, FALSE);
 		if(unwornmask&W_ARM){
 			if(canseemon(mtmp))
@@ -3890,7 +3943,7 @@ register struct obj *otmp;
 	if (mtmp == &youmonst)
 		return claws_destroy_arm(otmp);
 
-	long unwornmask;
+	long long unwornmask;
 	if(!otmp || !mtmp)
 		return 0;
 	if(obj_resists(otmp, 0, 100))
@@ -3898,7 +3951,7 @@ register struct obj *otmp;
 	if(!otmp->owornmask)
 		return 0;
 	obj_extract_self(otmp);
-	if ((unwornmask = otmp->owornmask) != 0L) {
+	if ((unwornmask = otmp->owornmask) != 0LL) {
 		mtmp->misc_worn_check &= ~unwornmask;
 		if (otmp->owornmask & W_WEP){
 			setmnotwielded(mtmp,otmp);
@@ -3908,7 +3961,7 @@ register struct obj *otmp;
 			setmnotwielded(mtmp,otmp);
 			MON_NOSWEP(mtmp);
 		}
-		otmp->owornmask = 0L;
+		otmp->owornmask = 0LL;
 		update_mon_intrinsics(mtmp, otmp, FALSE, FALSE);
 		if(unwornmask&W_ARM){
 			if(canseemon(mtmp))

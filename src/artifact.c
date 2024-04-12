@@ -2641,7 +2641,7 @@ register struct obj *otmp;
 boolean on;
 long wp_mask;
 {
-	long *mask = 0;
+	long long *mask = 0;
 	register const struct artifact *oart = get_artifact(otmp);
 	int oartifact = otmp->oartifact;
 	uchar dtyp;
@@ -6984,9 +6984,9 @@ boolean printmessages; /* print generic elemental damage messages */
 			/* apply other damage modifiers */
 			if (method == VORPAL_BEHEAD && (noncorporeal(pd) || amorphous(pd)))
 				vorpaldamage = 0;
-			if ((method == VORPAL_BISECT) && (bigmonst(pd) || notonhead))
+			if ((method == VORPAL_BISECT) && (bigmonst(pd) || notonhead || pd->mtyp == PM_OCTOPODE))
 				vorpaldamage = basedmg;
-			if ((method == VORPAL_PIERCE) && (!has_blood_mon(mdef) || !(pd->mflagsb&MB_BODYTYPEMASK) || noncorporeal(pd) || amorphous(pd)))
+			if ((method == VORPAL_PIERCE) && (!has_blood_mon(mdef) || !(pd->mflagsb&MB_BODYTYPEMASK) || noncorporeal(pd) || amorphous(pd) || pd->mtyp == PM_OCTOPODE))
 				vorpaldamage = basedmg;
 
 			/* Are we sufficiently lethal for a vorpal kill? */
@@ -12304,14 +12304,13 @@ arti_invoke(obj)
 		case MORGOTH:{
 			int base_otyp = find_good_iring();
 			int new_otyp = obj->otyp == base_otyp ? RIN_NOTHING : base_otyp;
-			boolean worn_left = obj == uleft;
-			boolean worn_right = obj == uright;
+		        long long wornmask = obj->owornmask;
 			pline("%s suddenly seems much more %s.", artilist[obj->oartifact].name,
 			      new_otyp == RIN_NOTHING ? "boring" : "interesting");
-			if (worn_left || worn_right) Ring_off(obj);
+			if (wornmask) Ring_off(obj);
 			obj->otyp = new_otyp;
-			if (worn_left || worn_right) {
-				setworn(obj, worn_left ? LEFT_RING : RIGHT_RING);
+			if (wornmask) {
+				setworn(obj, wornmask);
 				Ring_on(obj);
 			}
 			if (obj->otyp == RIN_NOTHING) makeknown(RIN_NOTHING);

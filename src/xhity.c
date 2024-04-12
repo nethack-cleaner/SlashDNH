@@ -42,6 +42,7 @@ struct attack grapple = { AT_HUGS, AD_PHYS, 0, 6 };	/* for grappler's grasp */
 struct attack acu_tent = { AT_TENT, AD_DRIN, 1, 4 };	/* for acu tentacles */
 struct attack sala_tuch = { AT_TUCH, AD_FIRE, 1, 4 };	/* for sala tuch */
 struct attack sala_grab = { AT_HUGS, AD_FIRE, 1, 4 };	/* for sala grab */
+struct attack oct_tent = { AT_TENT, AD_WRAP, 1, 8 };	/* for octopode tentacles */
 
 int
 check_subout(subout_list, subout)
@@ -2133,8 +2134,7 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
 		if (*indexnum == 0){
 			if (youdef){
 				boolean engring = FALSE;
-				if ((uleft  && uleft->otyp == find_engagement_ring()) ||
-					(uright && uright->otyp == find_engagement_ring()))
+				if (uring_otyp(find_engagement_ring()))
 					engring = TRUE;
 				if(pd && (!(dmgtype(pd, AD_SEDU)
 					|| dmgtype(pd, AD_SSEX)
@@ -2541,6 +2541,10 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
 	if (youagr && !Upolyd && Race_if(PM_SALAMANDER) && u.ulevel >= 14 && is_null_attk(attk) && !by_the_book && !check_subout(subout, SUBOUT_SALA2)) {
 		*attk = sala_grab;
 		add_subout(subout, SUBOUT_SALA2);
+	}
+	if (youagr && !Upolyd && Race_if(PM_OCTOPODE) && is_null_attk(attk) && !by_the_book && !check_subout(subout, SUBOUT_OCT)) {
+		*attk = oct_tent;
+		add_subout(subout, SUBOUT_OCT);
 	}
 
 	/* players can get a whole host of spirit attacks */
@@ -7032,7 +7036,7 @@ boolean ranged;
 			else {
 				/* Demogorgon tries to kill */
 				if (pa->mtyp == PM_DEMOGORGON || pa->mtyp == PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) {
-					if (noncorporeal(pd) || amorphous(pd)) {
+					if (noncorporeal(pd) || amorphous(pd) || pd->mtyp == PM_OCTOPODE) {
 						/* custom hit message */
 						if (vis && dohitmsg) {
 							pline("%s %s to rip %s apart!",
@@ -7825,8 +7829,7 @@ boolean ranged;
 				break;
 
 			case AD_SEDU:
-				if ((uleft  && uleft->otyp == find_engagement_ring()) ||
-					(uright && uright->otyp == find_engagement_ring()))
+				if (uring_otyp(find_engagement_ring()))
 					engring = TRUE;
 				if (u.sealsActive&SEAL_ANDROMALIUS) break;
 				//pline("test string!");
@@ -7892,8 +7895,7 @@ boolean ranged;
 				if(Chastity)
 					break;
 
-				if ((uleft  && uleft->otyp == find_engagement_ring()) ||
-					(uright && uright->otyp == find_engagement_ring()))
+				if (uring_otyp(find_engagement_ring()))
 					break;
 
 				if (notmcan && could_seduce(magr, &youmonst, attk) == 1) {
@@ -8783,10 +8785,12 @@ boolean ranged;
 				/* Gentle squeeze. Restore 1d3 points of sanity. Just kidding. */
 				else {
 					dmg = 0;
-					pline("%s is %s.",
-						Monnam(mtmp),
-						(youagr ? "wrapped up in you" : "wrapped tight around you")
-						);
+					pline("%s is %s.", Monnam(mtmp),
+					      (youagr
+					       ? (magr->mtyp == PM_OCTOPODE
+						  ? "wrapped up in your tentacles"
+						  : "wrapped up in you")
+					       : "wrapped tight around you"));
 				}
 			}
 			/* nothing really happens */
@@ -13000,8 +13004,7 @@ int vis;
 		/* STRAIGHT COPY-PASTE FROM ORIGINAL */
 		else {
 			boolean engring = FALSE;
-			if ((uleft  && uleft->otyp == find_engagement_ring()) ||
-				(uright && uright->otyp == find_engagement_ring()))
+			if (uring_otyp(find_engagement_ring()))
 				engring = TRUE;
 			if (u.sealsActive&SEAL_ANDROMALIUS) break;
 			if (distu(magr->mx, magr->my) > 1 ||
@@ -13080,8 +13083,7 @@ int vis;
 		else {
 			if(Chastity)
 				break;
-			if ((uleft  && uleft->otyp == find_engagement_ring()) ||
-				(uright && uright->otyp == find_engagement_ring()))
+			if (uring_otyp(find_engagement_ring()))
 				break;
 			if (could_seduce(magr, &youmonst, attk) == 1
 				&& !magr->mcan
@@ -15710,9 +15712,8 @@ int vis;						/* True if action is at all visible to the player */
 		}
 		/* all valid attacks proc effects of offensive rings */
 		if(youagr){
-			struct obj *rings[] = {uleft, uright};
-			for(int i = 0 ; i < 2; i++){
-				otmp = rings[i];
+			for(int i = 0 ; i < URINGS_SIZE; i++){
+				otmp = urings[i];
 				if(!otmp)
 					continue;
 				// Note: artifact rings are currently set to always add their damage, but to only print the generic x hits messages when unarmed.

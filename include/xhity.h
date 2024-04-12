@@ -74,7 +74,8 @@
 #define SUBOUT_ACU	18	/* ACU tentacle attack */
 #define SUBOUT_SALA1	19	/* Sala tuch attack */
 #define SUBOUT_SALA2	20	/* Sala hug attack */
-#define MAX_SUBOUT		21
+#define SUBOUT_OCT	21	/* Octopode tentacle attack */
+#define MAX_SUBOUT		22
 #define SUBOUT_ARRAY_SIZE (MAX_SUBOUT/8+1)
 
 #endif

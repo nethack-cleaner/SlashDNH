@@ -802,6 +802,18 @@ break_armor()
 			dropx(otmp);
 		}
 	}
+	if (youracedata->mtyp != PM_OCTOPODE) {
+		boolean messaged = FALSE;
+		for (int i = 2; i < URINGS_SIZE; i++) {
+			if (urings[i]) {
+				if (!messaged) {
+					You("can no longer wear eight rings!");
+					messaged = TRUE;
+				}
+				Ring_off(urings[i]);
+			}
+		}
+	}
 }
 
 void
@@ -2356,6 +2368,15 @@ int part;
 		"lung", 			"nose", 			"stomach",		"heart",
 		"skin",				"flesh",			"beat",			"bones",
 		"ear",				"ears",				"tongue",		"brain",
+		"creak",		"crack" },
+	*octopode_parts[] = {
+		"arm",        		"eye",			"face",			"tentacle",
+		"tentacle tip",		"rear tentacle",	"tentacle pair",        "tentacled", 
+		"head", 		"rear tentacle tip",	"light headed", 	"neck",
+		"length",		"tentacle tip", 	"surface", 		"blood",
+		"gill",			"rhinophore", 		"stomach",		"heart",
+		"skin",			"flesh",		"beat",			"shell",
+		"statocyst", 		"statocysts",		"radula",		"brain",
 		"creak",		"crack" };
 	/* claw attacks are overloaded in mons[]; most humanoids with
 	   such attacks should still reference hands rather than claws */
@@ -2451,6 +2472,8 @@ int part;
 	    return uvuudaum_parts[part];
 	if (mptr->mtyp == PM_DRACAE_ELADRIN)
 	    return dracae_parts[part];
+	if (mptr->mtyp == PM_OCTOPODE)
+	    return octopode_parts[part];
 
 	//S-based part lists
 	if (mptr->mlet == S_PLANT)

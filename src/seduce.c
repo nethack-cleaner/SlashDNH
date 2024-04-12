@@ -42,8 +42,7 @@ struct attack *mattk;
 	if(youdef || youagr){
 		if(Chastity) return 0;
 		
-		if ((uleft  && uleft->otyp  == find_engagement_ring()) ||
-			(uright && uright->otyp == find_engagement_ring()))
+		if (uring_otyp(find_engagement_ring()))
 			return 0;
 	}
 	
@@ -1298,14 +1297,15 @@ struct monst * mon;
 					xname(ring));
 			}
 			makeknown(RIN_ADORNMENT);
-			if (ring == uleft || ring == uright) Ring_gone(ring);
+			if (ring->owornmask & W_RING) Ring_gone(ring);
 			if (ring == uwep) setuwep((struct obj *)0);
 			if (ring == uswapwep) setuswapwep((struct obj *)0);
 			if (ring == uquiver) setuqwep((struct obj *)0);
 			freeinv(ring);
 			(void)mpickobj(mon, ring);
 		}
-		else {
+		/* TODO implement this for octopodes (>2 ring slots) */
+		else if (youracedata->mtyp != PM_OCTOPODE) {
 			if (uleft && uright && uleft->otyp == RIN_ADORNMENT
 				&& (uright->otyp == RIN_ADORNMENT || (uarmg && uarmg->oartifact == ART_CLAWS_OF_THE_REVENANCER)))
 				break;

@@ -82,7 +82,7 @@ unsigned gpflags;
 						((Swimming || Amphibious) && Waterproof && !(u.sealsActive&SEAL_OSE)));
 			else	return (mon_resistance(mtmp,FLYING) || breathless_mon(mtmp) || mon_resistance(mtmp,SWIMMING) ||
 								is_clinger(mdat) || amphibious_mon(mtmp));
-	    } else if (mdat->mlet == S_EEL && !ignorewater && rn2(13)) {
+	    } else if (mdat->mlet == S_EEL && mdat->mtyp != PM_OCTOPODE && !ignorewater && rn2(13)) {
 			if (is_pool(x, y, TRUE))
 				return (mdat->msize == MZ_TINY);
 			return FALSE;

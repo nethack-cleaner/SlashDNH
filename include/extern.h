@@ -628,7 +628,7 @@ E int NDECL(dotakeoff);
 E int NDECL(doremring);
 E int FDECL(cursed, (struct obj *));
 E int FDECL(armoroff, (struct obj *));
-E int FDECL(canwearobj, (struct obj *, long *, BOOLEAN_P));
+E int FDECL(canwearobj, (struct obj *, long long *, BOOLEAN_P));
 E int NDECL(dowear);
 E int NDECL(doputon);
 E int FDECL(arm_total_bonus, (struct obj *));
@@ -904,6 +904,7 @@ E const char* NDECL(get_alignment_adj);
 E boolean NDECL(Check_crystal_lifesaving);
 E boolean NDECL(Check_iaso_lifesaving);
 E boolean NDECL(Check_twin_lifesaving);
+E boolean NDECL(Check_ring_lifesaving);
 E void FDECL(done, (int));
 E void FDECL(container_contents, (struct obj *,BOOLEAN_P,BOOLEAN_P));
 #ifdef DUMP_LOG
@@ -2114,6 +2115,7 @@ E void NDECL(objects_init);
 
 /* ### objnam.c ### */
 
+E int FDECL(nth_ring_text, (int, char *, size_t));
 E const char *FDECL(lightsaber_colorText, (struct obj *));
 E int FDECL(lightsaber_colorCLR, (struct obj *));
 E char *FDECL(lightsaber_hiltText, (struct obj *));
@@ -2365,8 +2367,8 @@ E void FDECL(ugolemeffects, (int,int));
 
 /* ### potion.c ### */
 
-E void FDECL(set_itimeout, (long *,long));
-E void FDECL(incr_itimeout, (long *,long));
+E void FDECL(set_itimeout, (long long *,long));
+E void FDECL(incr_itimeout, (long long *,long));
 E long FDECL(itimeout_incr, (long,long));
 E void FDECL(make_confused, (long,BOOLEAN_P));
 E void FDECL(make_stunned, (long,BOOLEAN_P));
@@ -3421,6 +3423,11 @@ E int FDECL(count_wsegs, (struct monst *));
 E boolean FDECL(worm_known, (struct monst *));
 
 /* ### worn.c ### */
+E int FDECL(count_worn_rings, (boolean));
+E int FDECL(uring_otyp_index, (int));
+E int FDECL(uring_art_index, (int));
+E struct obj *FDECL(uring_otyp, (int));
+E struct obj *FDECL(uring_art, (int));
 E boolean FDECL(item_has_property, (struct obj *, int));
 E void FDECL(get_item_property_list, (int *, struct obj*, int));
 E void FDECL(setworn, (struct obj *,long));

@@ -143,44 +143,52 @@
 /* Definitions were moved here from obj.h and you.h */
 struct prop {
 	/*** Properties conveyed by objects ***/
-	long extrinsic;
+	long long extrinsic;
 	/* Armor */
-#	define W_ARM	    0x00000001L /* Body armor */
-#	define W_ARMC	    0x00000002L /* Cloak */
-#	define W_ARMH	    0x00000004L /* Helmet/hat */
-#	define W_ARMS	    0x00000008L /* Shield */
-#	define W_ARMG	    0x00000010L /* Gloves/gauntlets */
-#	define W_ARMF	    0x00000020L /* Footwear */
-#	define W_ARMU	    0x00000040L /* Undershirt */
+#	define W_ARM	    0x00000001LL /* Body armor */
+#	define W_ARMC	    0x00000002LL /* Cloak */
+#	define W_ARMH	    0x00000004LL /* Helmet/hat */
+#	define W_ARMS	    0x00000008LL /* Shield */
+#	define W_ARMG	    0x00000010LL /* Gloves/gauntlets */
+#	define W_ARMF	    0x00000020LL /* Footwear */
+#	define W_ARMU	    0x00000040LL /* Undershirt */
 #	define W_ARMOR	     (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF | W_ARMU)
 	/* Weapons and artifacts */
-#	define W_WEP	    0x00000100L /* Wielded weapon */
-#	define W_QUIVER     0x00000200L /* Quiver for (f)iring ammo */
-#	define W_SWAPWEP    0x00000400L /* Secondary weapon */
-#	define W_ART	    0x00001000L /* Carrying artifact (not really worn) */
-#	define W_ARTI	    0x00002000L /* Invoked artifact  (not really worn) */
+#	define W_WEP	    0x00000100LL /* Wielded weapon */
+#	define W_QUIVER     0x00000200LL /* Quiver for (f)iring ammo */
+#	define W_SWAPWEP    0x00000400LL /* Secondary weapon */
+#	define W_ART	    0x00001000LL /* Carrying artifact (not really worn) */
+#	define W_ARTI	    0x00002000LL /* Invoked artifact  (not really worn) */
 	/* Amulets, rings, tools, and other items */
-#	define W_AMUL	    0x00010000L /* Amulet */
-#	define W_RINGL	    0x00020000L /* Left ring */
-#	define W_RINGR	    0x00040000L /* Right ring */
-#	define W_RING	    (W_RINGL | W_RINGR)
-#	define W_TOOL	    0x00080000L /* Eyewear */
-#	define W_ACCESSORY	    (W_AMUL | W_RING| W_TOOL)
+#	define W_AMUL	    0x00010000LL /* Amulet */
+#	define W_RING0	    0x00020000LL /* Ring 0 (left) */
+#	define W_RING1	    0x00040000LL /* Ring 1 (right) */
+#	define W_RING2	    0x00080000LL /* Ring 2 (extra) */
+#	define W_RING3	    0x00100000LL /* Ring 3 (extra) */
+#	define W_RING4	    0x00400000LL /* Ring 4 (extra) */
+#	define W_RING5	    0x00800000LL /* Ring 5 (extra) */
+#	define W_RING6	    0x01000000LL /* Ring 6 (extra) */
+#	define W_RING7 	    0x04000000LL /* Ring 7 (extra) */
+#	define W_RINGL	    W_RING0
+#	define W_RINGR	    W_RING1
+#	define W_RING	    (W_RING0 | W_RING1 | W_RING2 | W_RING3 | W_RING4 | W_RING5 | W_RING6 | W_RING7)
+#	define W_TOOL	    0x20000000LL /* Eyewear */
+#	define W_ACCESSORY	    (W_AMUL | W_RING | W_TOOL)
 #ifdef STEED
-#	define W_SADDLE     0x00100000L	/* KMH -- For riding monsters */
+#	define W_SADDLE     0x40000000LL	/* KMH -- For riding monsters */
 #endif
-#	define W_BALL	    0x00200000L /* Punishment ball */
-#	define W_CHAIN	    0x00400000L /* Punishment chain */
-#	define W_SPIRIT		0x00800000L	/* Bound spirit */
-#	define W_GLYPH		0x01000000L	/* Active thought-glyph */
-#	define W_SKIN		I_SPECIAL	/* merged into skin */
-#	define W_WORN	     (W_ARMOR | W_ACCESSORY)
+#	define W_BALL	    0x0000000080000000LL /* Punishment ball */
+#	define W_CHAIN	    0x0000000100000000LL /* Punishment chain */
+#	define W_SPIRIT	    0x0000000200000000LL	/* Bound spirit */
+#	define W_GLYPH	    0x0000000400000000LL	/* Active thought-glyph */
+#	define W_SKIN	    I_SPECIAL	/* merged into skin */
+#	define W_WORN	    (W_ARMOR | W_ACCESSORY)
 
 	/*** Property is blocked by an object ***/
-	long blocked;					/* Same assignments as extrinsic */
+	long long blocked;					/* Same assignments as extrinsic */
 
 	/*** Timeouts, permanent properties, and other flags ***/
-	long intrinsic;
+	long long intrinsic;
 	/* Timed properties */
 #	define TIMEOUT	    0x00ffffffL /* Up to 16 million turns */
 #	define TIMEOUT_INF	0x00800000L	/* If you get this much, it won't decrement. should be a subset of TIMEOUT */

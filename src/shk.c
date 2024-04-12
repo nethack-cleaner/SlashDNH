@@ -5597,7 +5597,7 @@ shk_armor_works(slang, shkp)
 							obj->otyp - GRAY_DRAGON_SCALES;
 				obj->cursed = 0;
 				obj->known = 1;
-				long wornmask = 0L;
+				long long wornmask = 0LL;
 				if (is_worn && canwearobj(obj, &wornmask, FALSE)) {
 					setworn(obj, wornmask);
 				}

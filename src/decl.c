@@ -184,12 +184,12 @@ NEARDATA struct obj *invent = (struct obj *)0,
 	*uarmc = (struct obj *)0, *uarmh = (struct obj *)0,
 	*uarms = (struct obj *)0, *uarmg = (struct obj *)0,
 	*uarmf = (struct obj *)0, *uamul = (struct obj *)0,
-	*uright = (struct obj *)0,
-	*uleft = (struct obj *)0,
 	*ublindf = (struct obj *)0,
 	*uchain = (struct obj *)0,
 	*uball = (struct obj *)0,
 	*urope = (struct obj *)0;
+
+NEARDATA struct obj *urings[URINGS_SIZE] = {0};
 
 #ifdef TEXTCOLOR
 /*

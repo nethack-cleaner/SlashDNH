@@ -1244,38 +1244,34 @@ int curse_bless;
 					objects[obj->otyp].oc_charged && obj->otyp != RIN_WISHES) {
 	    /* charging does not affect ring's curse/bless status */
 	    int s = is_blessed ? rnd(3) : is_cursed ? -rnd(2) : 1;
-	    boolean is_on = (obj == uleft || obj == uright);
+	    long long ringmask = obj->owornmask & W_RING;
 
 	    /* destruction depends on current state, not adjustment */
 	    if (obj->spe > (6-rnl(7)) || obj->spe <= -5) {
 			if(!obj->oartifact){
 				Your("%s %s momentarily, then %s!",
 					 xname(obj), otense(obj,"pulsate"), otense(obj,"explode"));
-				if (is_on) Ring_gone(obj);
+				if (ringmask) Ring_gone(obj);
 				s = rnd(3 * abs(obj->spe));	/* amount of damage */
 				useup(obj);
 				losehp(s, "exploding ring", KILLED_BY_AN);
 				return 1;
 			} else {
-				long mask = is_on ? (obj == uleft ? LEFT_RING :
-							 RIGHT_RING) : 0L;
 				Your("%s %s momentarily!", xname(obj), otense(obj,"pulsate"));
 				/* cause attributes and/or properties to be updated */
-				if (is_on) Ring_off(obj);
+				if (ringmask) Ring_off(obj);
 				obj->spe = 0;	/* update the ring while it's off */
-				if (is_on) setworn(obj, mask), Ring_on(obj);
+				if (ringmask) setworn(obj, ringmask), Ring_on(obj);
 				/* oartifact: if a touch-sensitive artifact ring is
 				   ever created the above will need to be revised  */
 			}
 		} else {
-			long mask = is_on ? (obj == uleft ? LEFT_RING :
-						 RIGHT_RING) : 0L;
 			Your("%s spins %sclockwise for a moment.",
 				 xname(obj), s < 0 ? "counter" : "");
 			/* cause attributes and/or properties to be updated */
-			if (is_on) Ring_off(obj);
+			if (ringmask) Ring_off(obj);
 			obj->spe += s;	/* update the ring while it's off */
-			if (is_on) setworn(obj, mask), Ring_on(obj);
+			if (ringmask) setworn(obj, ringmask), Ring_on(obj);
 			/* oartifact: if a touch-sensitive artifact ring is
 			   ever created the above will need to be revised  */
 	    }
@@ -1893,7 +1889,7 @@ struct obj	*sobj;
 				otmp->known = 1;
 				fix_object(otmp);
 
-				long wornmask = 0L;
+				long long wornmask = 0LL;
 				if (is_worn && canwearobj(otmp, &wornmask, FALSE)) {
 					setworn(otmp, wornmask);
 				}
@@ -2002,7 +1998,7 @@ struct obj	*sobj;
 				otmp->blessed = 1;
 			}
 			otmp->known = 1;
-			long wornmask = 0L;
+			long long wornmask = 0LL;
 			if (is_worn && canwearobj(otmp, &wornmask, FALSE)) {
 				setworn(otmp, W_ARM);
 			}

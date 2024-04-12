@@ -2088,7 +2088,7 @@ doputon()
 			char qbuf[QBUFSZ];
 			char answer;
 
-			char respchars[8] = {0};
+			char respchars[8+1] = {0};
 			for (int i = 0; i < 8; i++)
 				if (!urings[i])
 					Sprintf(eos(respchars), "%d", i+1);

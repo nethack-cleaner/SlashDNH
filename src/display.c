@@ -952,8 +952,9 @@ boolean
 sense_by_scent(mon)
 	struct monst *mon;
 {
+	boolean ininkcloud = check_region(u.ux, u.uy, AD_INK);
 	/*sanity check: don't bother trying to path to it if it is farther than a path can possibly exist*/
-	if(goodsmeller(youracedata) && distmin(u.ux, u.uy, mon->mx, mon->my) <= 6){
+	if(!ininkcloud && goodsmeller(youracedata) && distmin(u.ux, u.uy, mon->mx, mon->my) <= 6){
 		/*don't running a complicated path function if there is a straight line to it*/
 		if(clear_path(u.ux, u.uy, mon->mx, mon->my)){
 			return TRUE;

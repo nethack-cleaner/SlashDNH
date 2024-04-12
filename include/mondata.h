@@ -866,10 +866,12 @@
 #define arm_size_fits(ptr,obj)	(Is_dragon_scales(obj) || \
 								 obj->objsize == (ptr)->msize || \
 								 (is_elven_armor(obj) && abs(obj->objsize - (ptr)->msize) <= 1))
-#define arm_match(ptr,obj)	(Is_dragon_scales(obj) || obj->otyp == WAISTCLOTH ||\
-							((obj->otyp == ELVEN_TOGA || obj->otyp == NOBLE_S_DRESS || obj->otyp == GENTLEWOMAN_S_DRESS) && upper_body_match(ptr,obj)) ||\
-							(ptr->mtyp == PM_BLIBDOOLPOOLP_S_MINDGRAVEN_CHAMPION && upper_body_match(ptr,obj)) ||\
-							(full_body_match(ptr,obj)))
+#define arm_match(ptr,obj)						\
+	(Is_dragon_scales(obj) || obj->otyp == WAISTCLOTH ||		\
+	 ((obj->otyp == ELVEN_TOGA || obj->otyp == NOBLE_S_DRESS || obj->otyp == GENTLEWOMAN_S_DRESS) && upper_body_match(ptr,obj)) || \
+	 (ptr->mtyp == PM_BLIBDOOLPOOLP_S_MINDGRAVEN_CHAMPION && upper_body_match(ptr,obj)) || \
+	 (ptr->mtyp == PM_OCTOPODE && obj->otyp == LIVING_ARMOR) ||	\
+	 full_body_match(ptr,obj))
 #define full_body_match(ptr,obj)	(((ptr->mflagsb&MB_BODYTYPEMASK) != 0) && \
 		((ptr->mflagsb&MB_BODYTYPEMASK) == (obj->bodytypeflag&MB_BODYTYPEMASK)))
 #define boots_size_fits(ptr,obj)	(ptr->mtyp == PM_BLIBDOOLPOOLP_S_MINDGRAVEN_CHAMPION ? \

@@ -5461,15 +5461,14 @@ int tx,ty;
 	case IRIS:{
 		if(u.sealTimeout[IRIS-FIRST_SEAL] < moves){
 			//Spirit requires that her seal be drawn inside a stinking cloud.
-			if(check_stinking_cloud_region((xchar)tx,(xchar)ty)
-				|| check_solid_fog_region((xchar)tx,(xchar)ty)
-				|| check_dust_cloud_region((xchar)tx,(xchar)ty)
+			if(check_region((xchar)tx,(xchar)ty, AD_ANY)
 				|| levl[tx][ty].typ == CLOUD
 			){ 
-				You("catch a glimpse of something moving in the%s cloud....", 
-					check_solid_fog_region((xchar)tx,(xchar)ty) ? " fog" : 
-					check_dust_cloud_region((xchar)tx,(xchar)ty) ? " dust" : 
-					check_stinking_cloud_region((xchar)tx,(xchar)ty) ? " stinking" : ""
+				You("catch a glimpse of something moving in the%s cloud....",
+				    check_region((xchar)tx, (xchar)ty, AD_SLOW) ? " fog" :
+				    check_region((xchar)tx, (xchar)ty, AD_DESC) ? " dust" :
+				    check_region((xchar)tx, (xchar)ty, AD_DRST) ? " stinking" :
+				    check_region((xchar)tx, (xchar)ty, AD_INK) ? " ink" : ""
 				);
 				pline("But you can't see what it was.");
 				if(u.sealCounts < numSlots){

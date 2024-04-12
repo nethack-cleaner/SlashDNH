@@ -618,6 +618,9 @@ boolean you_abilities;
 	if (mon_abilities && Race_if(PM_ETHEREALOID) && Is_nowhere(&u.uz)){
 		add_ability('i', "Phase in", MATTK_PHASE_IN);
 	}
+	if (mon_abilities && youracedata->mtyp == PM_OCTOPODE){
+		add_ability('i', "Spray ink", MATTK_INK);
+	}
 	if (mon_abilities && youracedata->mlet == S_NYMPH){
 		add_ability('I', "Remove an iron ball", MATTK_REMV);
 	}
@@ -912,6 +915,19 @@ boolean you_abilities;
 				spoteffects(TRUE);
 		}
 		return MOVE_INSTANT;
+		break;
+	case MATTK_INK:
+		if(u.uen < 15){
+			You("lack the energy.");
+			return MOVE_CANCELLED;
+		}
+		You("spray ink.");
+		struct region_arg cloud_data;
+		cloud_data.damage = 8;
+		cloud_data.adtyp = AD_INK;
+		(void) create_generic_cloud(u.ux, u.uy, 5, &cloud_data, TRUE);
+		u.uen -= 15;
+		return MOVE_STANDARD;
 		break;
 	}
 	return MOVE_CANCELLED;

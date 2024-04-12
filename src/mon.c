@@ -2867,6 +2867,7 @@ mon_can_see_mon(looker, lookie)
 	boolean clearpath;
 	boolean hardtosee;
 	boolean indark = (dimness(looker->mx, looker->my) > 0);
+	boolean ininkcloud = check_region(looker->mx, looker->my, AD_INK);
 	
 	if(lookie->mtyp == PM_TWIN_SIBLING && !insightful(looker->data))
 		return FALSE;
@@ -3014,7 +3015,7 @@ mon_can_see_mon(looker, lookie)
 	if(mon_resistance(looker,TELEPAT) && !mindless_mon(lookie)){
 		return TRUE;
 	}
-	if(goodsmeller(looker->data) && distmin(lookie->mx, lookie->my, looker->mx, looker->my) <= 6){
+	if(!ininkcloud && goodsmeller(looker->data) && distmin(lookie->mx, lookie->my, looker->mx, looker->my) <= 6){
 	/*sanity check: don't bother trying to path to it if it is farther than a path can possibly exist*/
 		if(clearpath){
 		/*don't running a complicated path function if there is a straight line to target*/
@@ -3035,6 +3036,7 @@ struct monst *looker;
 	boolean clearpath;
 	boolean hardtosee;
 	boolean catsightdark = !(levl[looker->mx][looker->my].lit || (viz_array[looker->my][looker->mx]&TEMP_LIT1 && !(viz_array[looker->my][looker->mx]&TEMP_DRK1)));
+	boolean ininkcloud = check_region(looker->mx, looker->my, AD_INK);
 	
 	if(looker->mtyp == PM_DREADBLOSSOM_SWARM){
 		if(youracedata->mtyp == PM_DREADBLOSSOM_SWARM) return FALSE;
@@ -3167,10 +3169,10 @@ struct monst *looker;
 	}
 
 	//As a foulness shall ye know Them.
-	if(goodsmeller(looker->data) && u.specialSealsActive&SEAL_YOG_SOTHOTH)
+	if(!ininkcloud && goodsmeller(looker->data) && u.specialSealsActive&SEAL_YOG_SOTHOTH)
 		return TRUE;
 
-	if(goodsmeller(looker->data) && distmin(u.ux, u.uy, looker->mx, looker->my) <= 6){
+	if(!ininkcloud && goodsmeller(looker->data) && distmin(u.ux, u.uy, looker->mx, looker->my) <= 6){
 	/*sanity check: don't bother trying to path to it if it is farther than a path can possibly exist*/
 		if(clearpath){
 		/*don't running a complicated path function if there is a straight line to you*/

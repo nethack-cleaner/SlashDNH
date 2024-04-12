@@ -11124,6 +11124,62 @@ int vis;
 			}
 			return xengulfhurty(magr, mdef, &alt_attk, vis);
 		}break;
+	case AD_INK:
+		/* Blind (resisted by not having eyes or being an octopode) */
+		if (haseyes(mdef->data) && mdef->mtyp != PM_OCTOPODE) {
+			if (youdef) {
+				if (!Blind) {
+					pline_The("ink blinds you!");
+					make_blinded((long)dmg, FALSE);
+					if (!Blind)
+						Your1(vision_clears);
+				} else {
+					/* keep player blind until disgorged */
+					make_blinded(Blinded + 1, FALSE);
+				}
+			} else {
+				if (vis&VIS_MDEF && mdef->mcansee)
+					pline_The("ink blinds %s!", mon_nam(mdef));
+				mdef->mcansee = 0;
+				mdef->mblinded = min(127, dmg + mdef->mblinded);
+			}
+		}
+		/*
+		 * Recolour armour (resisted by waterproofing or being
+		 * an octopode).  Player race and monster octopodes
+		 * should always be waterproof, but a player poly'd
+		 * into one might not be.
+		 */
+		if (!(youdef ? Waterproof : mon_resistance(mdef, WATERPROOF)) && mdef->mtyp != PM_OCTOPODE) {
+			struct obj *otmp;
+			int new_color = CLR_MAGENTA;
+			boolean cloak, armor = FALSE;
+			if ((otmp = youdef ? uarmc : which_armor(mdef, W_ARMC))) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+				cloak = TRUE;
+			}
+			if ((otmp = youdef ? uarm : which_armor(mdef, W_ARM)) && !cloak) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+				armor = TRUE;
+			}
+			if ((otmp = youdef ? uarmu : which_armor(mdef, W_ARMU)) && !cloak && !armor) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+			}
+			if ((otmp = youdef ? uarmh : which_armor(mdef, W_ARMH))) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+			}
+			if ((otmp = youdef ? uarmg : which_armor(mdef, W_ARMG))) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+			}
+			if ((otmp = youdef ? uarmf : which_armor(mdef, W_ARMF))) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+			}
+			if ((otmp = youdef ? uarms : which_armor(mdef, W_ARMS))) {
+				if (!rn2(20)) otmp->obj_color = new_color;
+			}
+		}
+		result = MM_HIT;
+		break;
 	}
 	return result;
 }

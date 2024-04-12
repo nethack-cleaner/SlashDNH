@@ -16785,6 +16785,10 @@ struct monst *mtmp;
 			give_mintrinsic(mtmp, STEALTH);
 		}
 	}
+	if(mtmp->mtyp == PM_OCTOPODE){
+		give_mintrinsic(mtmp, STEALTH);
+		give_mintrinsic(mtmp, WATERPROOF);
+	}
 }
 
 struct permonst *

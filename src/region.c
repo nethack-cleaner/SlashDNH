@@ -499,43 +499,12 @@ xchar
 }
 
 boolean
-check_stinking_cloud_region(x, y)
-xchar x, y;
+check_region(xchar x, xchar y, uchar adtyp)
 {
 	int i;
-    for (i = 0; i < n_regions; i++) {
+	for (i = 0; i < n_regions; i++) {
 		if (inside_region(regions[i], x, y) &&
-			regions[i]->arg.adtyp == AD_DRST
-		) {
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-boolean
-check_solid_fog_region(x, y)
-xchar x, y;
-{
-	int i;
-    for (i = 0; i < n_regions; i++) {
-		if (regions[i]->arg.adtyp == AD_SLOW &&
-			inside_region(regions[i], x, y)
-		) {
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-boolean
-check_dust_cloud_region(x, y)
-xchar x, y;
-{
-	int i;
-    for (i = 0; i < n_regions; i++) {
-		if (inside_region(regions[i], x, y) &&
-			regions[i]->arg.adtyp == AD_DESC
+		    (adtyp == AD_ANY || regions[i]->arg.adtyp == adtyp)
 		) {
 			return TRUE;
 		}
@@ -1014,8 +983,6 @@ genericptr_t p2;
     result = xengulfhurty((struct monst *) 0, mdef, &attk, vis);
     return result & MM_DEF_DIED;
 }
-
-
 
 /*
  * Here is an example of an expire function that may prolong

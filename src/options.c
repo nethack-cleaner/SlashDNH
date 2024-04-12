@@ -80,7 +80,7 @@ static struct Bool_Opt
 #endif
 #ifdef CURSES_GRAPHICS
 	{"classic_status", &iflags.classic_status, TRUE, SET_IN_FILE},
-	{"classic_colors", &iflags.classic_colors, TRUE, DISP_IN_GAME},
+	{"classic_colors", &iflags.classic_colors, FALSE, DISP_IN_GAME},
 #endif
 	{"cmdassist", &iflags.cmdassist, TRUE, SET_IN_GAME},
 # if defined(MICRO) || defined(WIN32) || defined(CURSES_GRAPHICS)
@@ -196,7 +196,7 @@ static struct Bool_Opt
 	{"news", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 	{"msg_wall_hits", &iflags.notice_walls, FALSE, SET_IN_GAME},
-	{"block_forget_map", &iflags.no_forget_map, FALSE, SET_IN_GAME},
+	{"block_forget_map", &iflags.no_forget_map, TRUE, SET_IN_GAME},
 	{"null", &flags.null, TRUE, SET_IN_GAME},
 	{"old_C_behaviour", &iflags.old_C_behaviour, FALSE, SET_IN_GAME},
 #ifdef MAC

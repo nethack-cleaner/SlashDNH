@@ -1,8 +1,8 @@
 steps:
   - name: build
-    image: debian
+    image: alpine
     commands:
-      - apt-get update
-      - apt-get install -y --no-install-recommends bison build-essential libncurses5-dev flex git python3
+      - apk update
+      - apk add ncurses-dev gcc libc-dev flex bison linux-headers make git python3
       - make
       - make install

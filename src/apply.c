@@ -620,6 +620,7 @@ struct obj *obj;
 				EDOG(mtmp)->whistletime = moves;
 	    }
 	}
+	makeknown(obj->otyp);	/* the messages are all unique */
 }
 
 void
@@ -632,7 +633,6 @@ struct obj *obj;
 		You("produce a high-pitched humming noise.");
 		wake_nearby();
 	} else {
-		int pet_cnt = 0;
 		You(whistle_str, Hallucination ? "normal" : "strange");
 		for(mtmp = fmon; mtmp; mtmp = nextmon) {
 		    nextmon = mtmp->nmon; /* trap might kill mon */
@@ -644,12 +644,11 @@ struct obj *obj;
 			    fill_pit(mtmp->mx, mtmp->my);
 			}
 			mnexto(mtmp);
-			if (canspotmon(mtmp)) ++pet_cnt;
 			if (mintrap(mtmp) == 2) change_luck(-1);
 		    }
 		}
-		if (pet_cnt > 0) makeknown(obj->otyp);
 	}
+	makeknown(obj->otyp);	/* the messages are all unique */
 }
 
 boolean

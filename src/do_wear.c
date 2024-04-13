@@ -1146,13 +1146,22 @@ register struct obj *obj;
 		}
 	break;
 	case RIN_FIRE_RESISTANCE:
-		if(!oldprop && !HFire_resistance) pline("The ring feels cool!");
+		if(!oldprop && !HFire_resistance) {
+			makeknown(obj->otyp);
+			pline("The ring feels cool!");
+		}
 	break;
 	case RIN_COLD_RESISTANCE:
-		if(!oldprop && !HCold_resistance) pline("The ring feels warm!");
+		if(!oldprop && !HCold_resistance) {
+			makeknown(obj->otyp);
+			pline("The ring feels warm!");
+		}
 	break;
 	case RIN_SHOCK_RESISTANCE:
-		if(!oldprop && !HShock_resistance) Your("ringfinger feels numb!");
+		if(!oldprop && !HShock_resistance) {
+			makeknown(obj->otyp);
+			Your("ringfinger feels numb!");
+		}
 	break;
 	case RIN_SEE_INVISIBLE:
 		/* can now see invisible monsters */

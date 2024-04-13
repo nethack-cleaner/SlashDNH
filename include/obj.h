@@ -577,8 +577,7 @@ struct obj {
 								(u.brand_otyp == STRANGE_OBJECT ? \
 									((is_blade((o)) && objects[(o)->otyp].oc_size < MZ_HUGE && \
 										!is_vibroweapon((o)) && \
-										!((o)->otyp == RUNESWORD) && \
-										!((o)->otyp == MIRRORBLADE)) \
+										!((o)->otyp == RUNESWORD)) \
 									|| (o)->otyp == GAUNTLETS) : \
 									(u.brand_otyp == (o)->otyp)) : \
 							(a)->otyp == (o)->otyp)

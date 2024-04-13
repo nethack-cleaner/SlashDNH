@@ -694,6 +694,7 @@ long nmv;		/* number of moves */
 	 && !Is_gatetown(&u.uz)
 	 && !Is_advtown_level(&u.uz)
 	 && !on_level(&u.uz, &elshava_level)
+	 && !Is_village_level(&u.uz)
 	) {
 	    int wilder = (imv + 75) / 150;
 		if(mtmp->mwait && !EDOG(mtmp)->friend) wilder = max(0, wilder - 11);

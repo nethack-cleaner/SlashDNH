@@ -6991,9 +6991,9 @@ boolean printmessages; /* print generic elemental damage messages */
 			/* apply other damage modifiers */
 			if (method == VORPAL_BEHEAD && (noncorporeal(pd) || amorphous(pd)))
 				vorpaldamage = 0;
-			if ((method == VORPAL_BISECT) && (bigmonst(pd) || notonhead || pd->mtyp == PM_OCTOPODE))
+			if ((method == VORPAL_BISECT) && (bigmonst(pd) || notonhead))
 				vorpaldamage = basedmg;
-			if ((method == VORPAL_PIERCE) && (!has_blood_mon(mdef) || !(pd->mflagsb&MB_BODYTYPEMASK) || noncorporeal(pd) || amorphous(pd) || pd->mtyp == PM_OCTOPODE))
+			if ((method == VORPAL_PIERCE) && (!has_blood_mon(mdef) || !(pd->mflagsb&MB_BODYTYPEMASK) || noncorporeal(pd) || amorphous(pd)))
 				vorpaldamage = basedmg;
 
 			/* Are we sufficiently lethal for a vorpal kill? */

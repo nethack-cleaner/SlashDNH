@@ -7036,7 +7036,7 @@ boolean ranged;
 			else {
 				/* Demogorgon tries to kill */
 				if (pa->mtyp == PM_DEMOGORGON || pa->mtyp == PM_BLIBDOOLPOOLP__GRAVEN_INTO_FLESH) {
-					if (noncorporeal(pd) || amorphous(pd) || pd->mtyp == PM_OCTOPODE) {
+					if (noncorporeal(pd) || amorphous(pd)) {
 						/* custom hit message */
 						if (vis && dohitmsg) {
 							pline("%s %s to rip %s apart!",

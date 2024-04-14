@@ -1,0 +1,35 @@
+Octopode race
+	Any alignment.
+	Roles: Binder, Convict, Acu, Monk, Pirate, Rogue, Tourist, Wizard
+	Can wear 8 rings
+	Attribute caps:
+		Str   Int Wis Dex Con Cha
+		18/** 20  18  20  16  16
+	Special spell: poison spray
+	Human HP and energy growth
+	Radius-2 low light vision
+	Medium sized. Can wear barded helmets and soft hats, cloaks, dragon scales (not scale mail) and waistcloths and living armor, shields
+	Extra 1d8 tentacle wrap attack that can drown if over water
+	+level/10 bonus to natural DR and +level/2 bonus to natural AC
+	Starts with stone resistance, poison resistance, stealth, swimming, magical breathing, waterproofing
+	Weldproof, immune to glib, can't have rings put on by seduction
+		Because I didn't implement how those work with 8 rings
+	Ink spray ability
+		Costs 15pw
+		Creates a radius 5 magenta ink cloud centered on you, which:
+			Blinds non-octopode monsters with eyes for 8 turns and while they remain in the cloud
+			Blocks monsters within from using scent
+			Has a 1/20 chance of recolouring piece of worn armour to magenta each turn,
+				resisted by being waterproof or being an octopode
+(Parasitized) Android Illithanachronounbinder
+	Not nonliving (the parasite is alive)
+	No cold resistance, stone resistance, or unbreathing
+		Still gets poison resistance, sick resistance (XL1), stealth (XL5), shock resistance (XL10), and fire resistance (XL15)
+More brand base types unbanned
+	Rakuyo, crow talon, crow quill, crystal sword. Runeswords are still banned because of messaging.
+Wizards learn their special spells at level 14
+Pets don't untame on the village level
+More items auto-ID
+	rings of cold/fire/shock resistance, magic/tin whistles, dunce caps
+Rogue level (REINCARNATION) disabled
+Vorpal Blade is an isamusei

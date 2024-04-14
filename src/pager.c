@@ -639,6 +639,9 @@ lookat(x, y, buf, monbuf, shapebuff)
 		/* telepathy */
 		if (tp_sensemon(mtmp))
 		    ways_seen++;
+		/* r'lyehian sight */
+		if (rlyehian_sensemon(mtmp))
+	            ways_seen++;
 		/* xray */
 		if (useemon && xraydist > 0 &&
 			distu(mtmp->mx, mtmp->my) <= xraydist) {
@@ -691,6 +694,10 @@ lookat(x, y, buf, monbuf, shapebuff)
 		    }
 		    if (tp_sensemon(mtmp)) {
 			Strcat(monbuf, "telepathy");
+			if (ways_seen-- > 1) Strcat(monbuf, ", ");
+		    }
+		    if (rlyehian_sensemon(mtmp)) {
+			Strcat(monbuf, "r'lyehian sight");
 			if (ways_seen-- > 1) Strcat(monbuf, ", ");
 		    }
 		    if (useemon && xraydist > 0 &&

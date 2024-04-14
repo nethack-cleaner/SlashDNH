@@ -25,11 +25,15 @@ Octopode race
 	Not nonliving (the parasite is alive)
 	No cold resistance, stone resistance, or unbreathing
 		Still gets poison resistance, sick resistance (XL1), stealth (XL5), shock resistance (XL10), and fire resistance (XL15)
+	Has see invisible, r'lyehian sight, and can fly from the start because parasitized android monsters can
 More brand base types unbanned
-	Rakuyo, crow talon, crow quill, crystal sword. Runeswords are still banned because of messaging.
+	Rakuyo, crow talon, crow quill, crystal sword, mirrorblade. Runeswords are still banned because of messaging.
 Wizards learn their special spells at level 14
 Pets don't untame on the village level
 More items auto-ID
 	rings of cold/fire/shock resistance, magic/tin whistles, dunce caps
 Rogue level (REINCARNATION) disabled
 Vorpal Blade is an isamusei
+Etherealoids can get gifted shields
+Stacks with unknown but identical bknown and known merge
+R'lyehian sight is implemented for players (as detection rather than vision)

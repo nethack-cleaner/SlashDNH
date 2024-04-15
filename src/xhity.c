@@ -16375,6 +16375,7 @@ int vis;						/* True if action is at all visible to the player */
 		slot = rslot;
 		for (int messaged = 0, i = 0; i < (youracedata->mtyp == PM_OCTOPODE ? 2 : 1); i++) {
 			long long prevslot = 0LL;
+			int prevmessaged = messaged;
 			/* use secondary ring slot on the second iteration */
 			if (i == 1) {
 				prevslot = rslot;
@@ -16382,8 +16383,13 @@ int vis;						/* True if action is at all visible to the player */
 			}
 
 			if (active_slots & slot) {
-				if ((i == 0 || !wornmask_to_ring(rslot)) && (active_slots & (W_SKIN|W_WEP)))
+				/* Position before " and " */
+				char *before_and = eos(buf);
+				if (prevmessaged)
+					Strcat(buf, "and ");
+				else if (active_slots & (W_SKIN|W_WEP))
 					Strcat(buf, " and ");
+
 
 				/* only the player wears rings */
 				/* get correct ring */
@@ -16392,9 +16398,10 @@ int vis;						/* True if action is at all visible to the player */
 				if (otmp)
 				{
 					int seartype = -1; /* used to store the current bit in messaged */
+					messaged = 0;	   /* reset messaged to 0 */
 					searcount++;
 #define SEAR_MESSAGE(mask, msg)\
-					if (!(messaged & (1 << ++seartype)) && ((mask) & slot) && !((mask) & prevslot)) \
+					seartype++; if ((mask) & slot)	\
 						(Strcat(buf, (msg)), messaged |= 1 << seartype)
 					SEAR_MESSAGE(holyobj,
 					(otmp->known && (check_oprop(otmp, OPROP_HOLYW) || check_oprop(otmp, OPROP_HOLY))) ? "holy " : 
@@ -16408,7 +16415,8 @@ int vis;						/* True if action is at all visible to the player */
 					(otmp->known && (check_oprop(otmp, OPROP_CONCW) || check_oprop(otmp, OPROP_CONC))) ? "concordant " : 
 					(otmp->known && check_oprop(otmp, OPROP_LESSER_CONCW)) ? "accordant " : "uncursed "
 					);
-					if (!(messaged & (1 << ++seartype)) && (silverobj & slot) && !(silverobj & prevslot)){
+					seartype++;
+					if (silverobj & slot){
 						if(otmp->obj_material != SILVER && arti_silvered(otmp))
 							add_silvered_art_sear_adjectives(buf, otmp);
 						else Strcat(buf, (otmp->obj_material != SILVER || (jadeobj&slot) || (ironobj&slot) ? "silvered " : "silver "));
@@ -16417,9 +16425,13 @@ int vis;						/* True if action is at all visible to the player */
 					SEAR_MESSAGE(jadeobj, "jade ");
 					SEAR_MESSAGE(ironobj, "cold-iron ");
 #undef SEAR_MESSAGE
+					/* if we just printed the same message again, delete it (and the preceding " and ") */
+					if (messaged == prevmessaged) {
+						*before_and = '\0';
+					}
 					if (i == 1 || !wornmask_to_ring(altrslot)) {
 						Strcat(buf, "ring");
-						if (wornmask_to_ring(prevslot)) Strcat(buf, "s");
+						if (prevmessaged) Strcat(buf, "s");
 					}
 				}
 				else {

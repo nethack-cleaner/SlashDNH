@@ -3421,6 +3421,7 @@ E int FDECL(count_wsegs, (struct monst *));
 E boolean FDECL(worm_known, (struct monst *));
 
 /* ### worn.c ### */
+E struct obj *FDECL(wornmask_to_ring, (long long));
 E int FDECL(count_worn_rings, (boolean));
 E int FDECL(uring_otyp_index, (int));
 E int FDECL(uring_art_index, (int));

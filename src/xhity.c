@@ -6,6 +6,17 @@
 
 extern int monstr[];
 
+/* Used by calculate_poison() */
+struct poisoninfo {
+	long long silverobj;
+	int poisons;
+	int resisted;
+	int majoreff;
+	int minoreff;
+	int wipedoff;
+	int poisdmg;
+};
+
 STATIC_DCL void FDECL(wildmiss, (struct monst *, struct attack *, struct obj *, boolean));
 STATIC_DCL boolean FDECL(u_surprise, (struct monst *, boolean));
 STATIC_DCL struct attack * FDECL(getnextspiritattack, (boolean));
@@ -19,6 +30,7 @@ STATIC_DCL int FDECL(xtinkery, (struct monst *, struct monst *, struct attack *,
 STATIC_DCL int FDECL(xexplodey, (struct monst *, struct monst *, struct attack *, int));
 STATIC_DCL int FDECL(hmoncore, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj **, void *, int, int, int, boolean, int, boolean, int));
 STATIC_DCL void FDECL(add_silvered_art_sear_adjectives, (char *, struct obj*));
+STATIC_DCL void FDECL(calculate_poison, (struct monst *, struct monst *, struct attack *, struct obj *, struct obj *, struct poisoninfo *));
 STATIC_DCL int FDECL(shadow_strike, (struct monst *));
 STATIC_DCL int FDECL(xpassivehity, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj *, int, int, struct permonst *, boolean));
 
@@ -11153,7 +11165,7 @@ int vis;
 		if (!(youdef ? Waterproof : mon_resistance(mdef, WATERPROOF)) && mdef->mtyp != PM_OCTOPODE) {
 			struct obj *otmp;
 			int new_color = CLR_MAGENTA;
-			boolean cloak, armor = FALSE;
+			boolean cloak = FALSE, armor = FALSE;
 			if ((otmp = youdef ? uarmc : which_armor(mdef, W_ARMC))) {
 				if (!rn2(20)) otmp->obj_color = new_color;
 				cloak = TRUE;
@@ -13618,21 +13630,18 @@ int vis;						/* True if action is at all visible to the player */
 #define SNEAK_HELPLESS	0x10
 #define SNEAK_JUYO		0x20
 #define SNEAK_SUICIDAL	0x40
-	long silverobj = 0L,
-		jadeobj = 0L,
-		ironobj = 0L,
-		grnstlobj = 0L,
-		holyobj = 0L,
-		unholyobj = 0L,
-		unblessedobj = 0L,
-		uuvuglory = 0L,
-		otherobj = 0L;
-	int poisons_resisted = 0,
-		poisons_minoreff = 0,
-		poisons_majoreff = 0,
-		poisons_wipedoff = 0;
-	struct obj * poisonedobj;	/* object that is poisoned responsible for above poisons_X variables -- set once, should not be reset after */
-	int poisons = 0;
+	long long silverobj = 0LL,
+		jadeobj = 0LL,
+		ironobj = 0LL,
+		grnstlobj = 0LL,
+		holyobj = 0LL,
+		unholyobj = 0LL,
+		unblessedobj = 0LL,
+		uvuuglory = 0LL,
+		otherobj = 0LL;
+	struct obj * poisonedobjs[2] = {0};	/* poisoned objects responsible for poisoninfo -- set once, should not be reset after */
+	struct poisoninfo poisoninfos[2] = {0}; /* used for calculate_poison() results */
+	int allpoisons = 0;			/* combined poison masks for all poisonedobjs */
 	boolean swordofblood = FALSE;
 
 	boolean resisted_weapon_attacks = FALSE;
@@ -13679,8 +13688,9 @@ int vis;						/* True if action is at all visible to the player */
 
 	struct obj tempwep;	/* used to save the data of an object before it gets destroyed, for things like naming */
 	struct obj * otmp;	/* generic object pointer -- variable */
-	long slot = 0L;		/* slot, either the weapon pointer (W_WEP) or armor -- variable */
-	long rslot = 0L;	/* slot, dedicated to rings (left and right) -- set at start, should not be reset */
+	long long slot = 0LL;		/* slot, either the weapon pointer (W_WEP) or armor -- variable */
+	long long rslot = 0LL;	/* slot, dedicated to rings (left and right) -- set at start, should not be reset */
+	long long altrslot = 0LL;	/* extra ring slot for octopodes */
 
 	/* pick the most correct ring slot */
 	if(!youagr || !magr)
@@ -13696,6 +13706,13 @@ int vis;						/* True if action is at all visible to the player */
 			rslot = W_RINGR;
 	}
 	else rslot = rn2(2) ? W_RINGR : W_RINGL;
+
+	/*
+	 * For octopodes, there are 2 rings per hand (tentacle pair):
+	 * - Rings 0 and 2 (shown as 1 and 3) are left-hand rings
+	 * - Rings 1 and 3 (shown as 2 and 4) are right-hand rings
+	 */
+	altrslot = rslot == W_RINGL ? W_RING2 : W_RING3;
 
 	int precision_mult = 0;	/* damage multiplier for precision weapons */
 
@@ -14325,7 +14342,7 @@ int vis;						/* True if action is at all visible to the player */
 
 		if (hates_holy_mon(mdef)){
 			if(magr->mtyp == PM_UVUUDAUM){
-				uuvuglory |= W_SKIN;
+				uvuuglory |= W_SKIN;
 				seardmg += d(4, 9);
 			}
 			else if(is_holy_mon(magr)) {
@@ -14335,7 +14352,7 @@ int vis;						/* True if action is at all visible to the player */
 		}
 		if (hates_unholy_mon(mdef)){
 			if(magr->mtyp == PM_UVUUDAUM){
-				uuvuglory |= W_SKIN;
+				uvuuglory |= W_SKIN;
 				seardmg += d(3, 7);
 			} 
 			else if(is_unholy_mon(magr)) {
@@ -14349,7 +14366,7 @@ int vis;						/* True if action is at all visible to the player */
 		}
 		if (hates_unblessed_mon(mdef)){
 			if(magr->mtyp == PM_UVUUDAUM){
-				uuvuglory |= W_SKIN;
+				uvuuglory |= W_SKIN;
 				seardmg += d(8, 3);
 			}
 			else if(is_unblessed_mon(magr)) {
@@ -14362,104 +14379,83 @@ int vis;						/* True if action is at all visible to the player */
 		if (unarmed_punch) {
 			/* only the player wears rings */
 			if (youagr) {
-				/* get correct ring */
-				otmp = (rslot == W_RINGL) ? uleft
-					: (rslot == W_RINGR) ? uright
-					: (struct obj *)0;
+				long long tmprslot = rslot;
+				for (int i = 0; i < (youracedata->mtyp == PM_OCTOPODE ? 2 : 1); i++) {
+					/* use secondary ring slot on the second iteration */
+					if (i == 1) tmprslot = altrslot;
 
-				/* find what applies */
-				if (otmp) {
-					if (hates_silver(pd) && !(youdef && u.sealsActive&SEAL_EDEN)) {
-						if (obj_silver_searing(otmp) || check_oprop(otmp, OPROP_SFLMW))
-							silverobj |= rslot;
-						if (obj_jade_searing(otmp))
-							jadeobj |= rslot;
+					/* get correct ring */
+					otmp = wornmask_to_ring(tmprslot);
+
+					/* find what applies */
+					if (otmp) {
+						if (hates_silver(pd) && !(youdef && u.sealsActive&SEAL_EDEN)) {
+							if (obj_silver_searing(otmp) || check_oprop(otmp, OPROP_SFLMW))
+								silverobj |= tmprslot;
+							if (obj_jade_searing(otmp))
+								jadeobj |= tmprslot;
+						}
+						if (hates_iron(pd) &&
+						    otmp->obj_material == IRON) {
+							ironobj |= tmprslot;
+						}
+						if ((hates_iron(pd) || hates_unholy_mon(mdef)) &&
+						    otmp->obj_material == GREEN_STEEL) {
+							grnstlobj |= tmprslot;
+						}
+						if (hates_holy_mon(mdef) &&
+						    (otmp->known
+						     && (check_oprop(otmp, OPROP_HOLYW)
+							 || check_oprop(otmp, OPROP_LESSER_HOLYW)
+							 || check_oprop(otmp, OPROP_HOLY)))
+						    /* message requires a particularly holy object */
+						    && otmp->blessed) {
+							holyobj |= tmprslot;
+						}
+						if (hates_unholy_mon(mdef) &&
+						    is_unholy(otmp)) {
+							unholyobj |= tmprslot;
+						}
+						if (hates_unblessed_mon(mdef) &&
+						    !(is_unholy(otmp) || otmp->blessed)) {
+							unblessedobj |= tmprslot;
+						}
+						/* calculate sear damage */
+						seardmg += hatesobjdmg(mdef, otmp);
 					}
-					if (hates_iron(pd) &&
-						otmp->obj_material == IRON) {
-						ironobj |= rslot;
-					}
-					if ((hates_iron(pd) || hates_unholy_mon(mdef)) &&
-						otmp->obj_material == GREEN_STEEL) {
-						grnstlobj |= rslot;
-					}
-					if (hates_holy_mon(mdef) &&
-						(otmp->known && (check_oprop(otmp, OPROP_HOLYW) || check_oprop(otmp, OPROP_LESSER_HOLYW) || check_oprop(otmp, OPROP_HOLY))) && /* message requires a particularly holy object */
-						otmp->blessed) {
-						holyobj |= rslot;
-					}
-					if (hates_unholy_mon(mdef) &&
-						is_unholy(otmp)) {
-						unholyobj |= rslot;
-					}
-					if (hates_unblessed_mon(mdef) &&
-						!(is_unholy(otmp) || otmp->blessed)) {
-						unblessedobj |= rslot;
-					}
-					/* calculate sear damage */
-					seardmg += hatesobjdmg(mdef, otmp);
 				}
 			}
 		}
 	}
 	/* Find poisoned object, if any */
-	poisonedobj = (struct obj *)0;
 	if (valid_weapon_attack) {
-		poisonedobj = weapon;
+		poisonedobjs[0] = weapon;
 	}
 	else if (unarmed_punch) {
 		/* only the player wears rings */
 		if (youagr && (!uarmg || !hits_insubstantial(magr, mdef, attk, uarmg))) {
-			poisonedobj = (rslot == W_RINGL) ? uleft
-				: (rslot == W_RINGR) ? uright
-				: (struct obj *)0;
+			poisonedobjs[0] = wornmask_to_ring(rslot);
+			poisonedobjs[1] = wornmask_to_ring(altrslot);
 		}
 		/* Spidersilk adds sleep poison to unarmed punches -- don't set poisonedobj, this is additional */
 		otmp = (youagr ? uarm : which_armor(magr, W_ARM));
 		if (otmp && otmp->oartifact == ART_SPIDERSILK && !rn2(5)) {
-			poisons |= OPOISON_SLEEP;
+			poisoninfos[0].poisons |= OPOISON_SLEEP;
 		}
-	}
-	/* Apply object's poison */
-	if (poisonedobj && (!insubstantial(pd) || hits_insubstantial(magr, mdef, attk, poisonedobj))) {
-		poisons |= poisonedobj->opoisoned;
-		if (arti_poisoned(poisonedobj))
-			poisons |= OPOISON_BASIC;
-		if (poisonedobj->oartifact == ART_WEBWEAVER_S_CROOK)
-			poisons |= (OPOISON_SLEEP | OPOISON_BLIND | OPOISON_PARAL);
-		if (is_wet_merc(poisonedobj) && !rn2(5))
-			poisons |= (OPOISON_HALLU);
-		if (poisonedobj->oartifact == ART_SUNBEAM)
-			poisons |= OPOISON_FILTH;
-		if (poisonedobj->oartifact == ART_MOONBEAM)
-			poisons |= OPOISON_SLEEP;
-		if (poisonedobj->oartifact == ART_DIRGE)
-			poisons |= OPOISON_ACID;
-		if (poisonedobj->otyp == FANG_OF_APEP)
-			poisons |= OPOISON_DIRE;
-		/* Plague adds poisons to its launched ammo */
-		if (launcher && launcher->oartifact == ART_PLAGUE) {
-			if (monstermoves < artinstance[ART_PLAGUE].PlagueDuration)
-				poisons |= OPOISON_FILTH;
-			else
-				poisons |= OPOISON_BASIC;
-		}
-		if (youagr && poisonedobj == uwep && activeFightingForm(FFORM_KNI_ELDRITCH)){
-			if (u.ueldritch_style == SPE_POISON_SPRAY) poisons |= OPOISON_BASIC;
-			if (u.ueldritch_style == SPE_ACID_SPLASH) poisons |= OPOISON_ACID;
-		}
-	}
-	/* All AD_SHDW attacks are poisoned as well */
-	if (attk && attk->adtyp == AD_SHDW) {
-		poisons |= OPOISON_BASIC;
 	}
 
-	if (poisons)
+	/* Apply objects' poison */
+	for (int i = 0; i < SIZE(poisonedobjs); i++) {
+		calculate_poison(magr, mdef, attk, poisonedobjs[i], launcher, &poisoninfos[i]);
+	        silverobj |= poisoninfos[i].silverobj;
+	        allpoisons |= poisoninfos[i].poisons;
+		poisdmg += poisoninfos[i].poisdmg;
+	}
+
+	/* Penalties for you using a poisoned weapon */
+	if ((allpoisons & ~OPOISON_SILVER) && youagr && !recursed)
 	{
-		/* Penalties for you using a poisoned weapon */
-		if ((poisons & ~OPOISON_SILVER) && youagr && !recursed)
-		{
-			if Role_if(PM_SAMURAI) {
+		if (Role_if(PM_SAMURAI)) {
 				if (!(uarmh && uarmh->oartifact && uarmh->oartifact == ART_HELM_OF_THE_NINJA)){
 					adjalign(-sgn(u.ualign.type) * 5); //stiffer penalty
 
@@ -14478,134 +14474,12 @@ int vis;						/* True if action is at all visible to the player */
 					dishonorable_ninja = moves;
 					adjalign(5);
 				}
-			}
-			else if ((u.ualign.type == A_LAWFUL) && (Pantheon_if(PM_KNIGHT) || Pantheon_if(PM_VALKYRIE)) && (u.ualign.record > -10)) {
-				You_feel("like an evil coward for using a poisoned weapon.");
-				adjalign(-2); //stiffer penalty
-				change_hod(1);
-			}
 		}
-
-		/* which poisons need resist messages, and which will take effect? */
-		int i, n;
-		for (n = 0; n < NUM_POISONS; n++)
-		{
-			boolean resists = FALSE;
-			boolean majoreff = FALSE;
-			i = (1 << n);
-
-			if (!(poisons & i))
-				continue;
-			/* determine which resistance is being checked and calculate the damage the poison will do */
-			switch (i)
-			{
-			case OPOISON_BASIC:
-				resists = Poison_res(mdef);
-				majoreff = !rn2(10);
-				break;
-			case OPOISON_DIRE:
-				majoreff = !rn2(10);
-				break;
-			case OPOISON_FILTH:
-				resists = Sick_res(mdef);
-				majoreff = !rn2(10);
-				break;
-			case OPOISON_SLEEP:
-				resists = Sleep_res(mdef);
-				majoreff = !rn2(2) || (poisonedobj && poisonedobj->oartifact == ART_MOONBEAM);
-				break;
-			case OPOISON_BLIND:
-				resists = (Poison_res(mdef) || !haseyes(pd));
-				majoreff = !rn2(2);
-				break;
-			case OPOISON_PARAL:
-				resists = FALSE;
-				majoreff = (!rn2(8) && !(youdef ? Free_action : mon_resistance(mdef, FREE_ACTION)));
-				break;
-			case OPOISON_AMNES:
-				resists = mindless_mon(mdef);
-				majoreff = !rn2(10);
-				break;
-			case OPOISON_ACID:
-				resists = Acid_res(mdef);
-				majoreff = TRUE;
-				break;
-			case OPOISON_SILVER:
-				resists = !(hates_silver(pd) && !(youdef && u.sealsActive&SEAL_EDEN));
-				if (!resists)
-					silverobj |= slot;
-				majoreff = TRUE;
-				break;
-			case OPOISON_HALLU:
-				resists = youdef ? FALSE : (mindless_mon(mdef) || mon_resistance(mdef, HALLUC_RES));
-				majoreff = !rn2(2);
-				break;
-			}
-			if (majoreff && poisonedobj && (poisonedobj->opoisoned & i) && !rn2(20))
-				poisons_wipedoff |= i;
-
-			if (resists)
-				poisons_resisted |= i;
-			else
-			{
-				if (majoreff)
-					poisons_majoreff |= i;
-				else
-					poisons_minoreff |= i;
-			}
+		else if ((u.ualign.type == A_LAWFUL) && (Pantheon_if(PM_KNIGHT) || Pantheon_if(PM_VALKYRIE)) && (u.ualign.record > -10)) {
+			You_feel("like an evil coward for using a poisoned weapon.");
+			adjalign(-2); //stiffer penalty
+			change_hod(1);
 		}
-		/* poison-injecting rings only ever do major effects */
-		if (poisonedobj && poisonedobj->oclass == RING_CLASS) {
-			poisons_resisted &= ~(poisons_majoreff);
-			poisons_wipedoff = poisons_majoreff;
-			poisons_minoreff = 0;
-		}
-		/* calculate poison damage */
-		for (n = 0; n < NUM_POISONS; n++)
-		{
-			i = (1 << n);
-			boolean major = (poisons_majoreff & i);
-			boolean minor = (poisons_minoreff & i);
-			if (!major && !minor)
-				continue;
-			/* calculate poison damage */
-			switch (i)
-			{
-			case OPOISON_BASIC:
-				poisdmg += (major) ? (youdef ? d(3, 6) : 80) : rnd(6);
-				break;
-			case OPOISON_FILTH:
-				poisdmg += (major) ? (youdef ? d(3, 12) : 100) : rnd(12);
-				break;
-			case OPOISON_DIRE:
-				if(Poison_res(mdef))
-					poisdmg += (major) ? (youdef ? d(3, 6) : 80) : rn1(10, 6)/2;
-				else
-					poisdmg += (major) ? (youdef ? d(6, 6) : 160) : rn1(10, 6);
-				break;
-			case OPOISON_SLEEP:
-				/* no damage */
-				break;
-			case OPOISON_BLIND:
-				poisdmg += (major) ? 3 : rnd(3);
-				break;
-			case OPOISON_PARAL:
-				poisdmg += (major) ? 6 : rnd(6);
-				break;
-			case OPOISON_AMNES:
-				/* no damage */
-				break;
-			case OPOISON_ACID:
-				poisdmg += rnd(10);
-				break;
-			case OPOISON_SILVER:
-				poisdmg += rnd(20);
-				break;
-			}
-		}
-		/* if Plague is being used, note whether or not the current shot is filthed */
-		if (launcher && launcher->oartifact == ART_PLAGUE && monstermoves < artinstance[ART_PLAGUE].PlagueDuration)
-			artinstance[ART_PLAGUE].PlagueDoOnHit = !!(poisons_majoreff&OPOISON_FILTH);
 	}
 
 	/* Clockwork heat - player melee only */
@@ -15259,8 +15133,7 @@ int vis;						/* True if action is at all visible to the player */
 		/* yes, this can be redoubled by artifact gloves */
 		/* it's so strong, its damage applies no matter which hand is punching */
 		if (youagr) {	// only the player wears rings
-			if (((otmp = uright) && otmp->oartifact == ART_ANNULUS) ||
-				((otmp = uleft) && otmp->oartifact == ART_ANNULUS))
+			if (otmp->oartifact == ART_ANNULUS && uring_art(ART_ANNULUS))
 			{
 				basedmg += weapon_dmg_roll(&unarmed_dice, FALSE);
 				basedmg += otmp->spe * 2;
@@ -15279,10 +15152,7 @@ int vis;						/* True if action is at all visible to the player */
 			basedmg += gloves->spe;
 		}
 		/* no gloves? Look at rings -- which are player-only */
-		else if (youagr &&
-			(otmp = (rslot == W_RINGL) ? uleft
-				: (rslot == W_RINGR) ? uright
-				: (struct obj *)0))
+		else if (youagr && ((otmp = wornmask_to_ring(rslot)) || (otmp = wornmask_to_ring(altrslot))))
 		{
 
 			/* edder-symbol signet rings increase melee damage */
@@ -16367,7 +16237,7 @@ int vis;						/* True if action is at all visible to the player */
 		}
 	}
 
-	if(uuvuglory){
+	if(uvuuglory){
 		pline("%s's glory sears %s!", Monnam(magr), youdef ? "you" : mon_nam(mdef));
 	}
 	
@@ -16503,49 +16373,58 @@ int vis;						/* True if action is at all visible to the player */
 		}
 		/* rings -- don't use xname(); "ring" is fine. */
 		slot = rslot;
-		if (active_slots & slot) {
-			if (active_slots & (W_SKIN|W_WEP))
-				Strcat(buf, " and ");
-			/* only the player wears rings */
-			/* get correct ring */
-			otmp = (rslot == W_RINGL) ? uleft
-				: (rslot == W_RINGR) ? uright
-				: (struct obj *)0;
+		for (int messaged = 0, i = 0; i < (youracedata->mtyp == PM_OCTOPODE ? 2 : 1); i++) {
+			long long prevslot = 0LL;
+			/* use secondary ring slot on the second iteration */
+			if (i == 1) {
+				prevslot = rslot;
+				slot = altrslot;
+			}
 
-			if (otmp)
-			{
-				searcount++;
-				if (holyobj & slot)
-					Strcat(buf,
+			if (active_slots & slot) {
+				if ((i == 0 || !wornmask_to_ring(rslot)) && (active_slots & (W_SKIN|W_WEP)))
+					Strcat(buf, " and ");
+
+				/* only the player wears rings */
+				/* get correct ring */
+				otmp = wornmask_to_ring(slot);
+
+				if (otmp)
+				{
+					int seartype = -1; /* used to store the current bit in messaged */
+					searcount++;
+#define SEAR_MESSAGE(mask, msg)\
+					if (!(messaged & (1 << ++seartype)) && ((mask) & slot) && !((mask) & prevslot)) \
+						(Strcat(buf, (msg)), messaged |= 1 << seartype)
+					SEAR_MESSAGE(holyobj,
 					(otmp->known && (check_oprop(otmp, OPROP_HOLYW) || check_oprop(otmp, OPROP_HOLY))) ? "holy " : 
 					(otmp->known && check_oprop(otmp, OPROP_LESSER_HOLYW)) ? "consecrated " : "blessed "
 					);
-				if (unholyobj & slot)
-					Strcat(buf,
+					SEAR_MESSAGE(unholyobj,
 					(otmp->known && (check_oprop(otmp, OPROP_UNHYW) || check_oprop(otmp, OPROP_UNHY))) ? "unholy " : 
 					(otmp->known && check_oprop(otmp, OPROP_LESSER_UNHYW)) ? "desecrated " : "cursed "
 					);
-				if (unblessedobj & slot)
-					Strcat(buf,
+					SEAR_MESSAGE(unblessedobj,
 					(otmp->known && (check_oprop(otmp, OPROP_CONCW) || check_oprop(otmp, OPROP_CONC))) ? "concordant " : 
 					(otmp->known && check_oprop(otmp, OPROP_LESSER_CONCW)) ? "accordant " : "uncursed "
 					);
-				if (silverobj & slot){
-					if(otmp->obj_material != SILVER && arti_silvered(otmp))
-						add_silvered_art_sear_adjectives(buf, otmp);
-					else Strcat(buf, (otmp->obj_material != SILVER || (jadeobj&slot) || (ironobj&slot) ? "silvered " : "silver "));
+					if (!(messaged & (1 << ++seartype)) && (silverobj & slot) && !(silverobj & prevslot)){
+						if(otmp->obj_material != SILVER && arti_silvered(otmp))
+							add_silvered_art_sear_adjectives(buf, otmp);
+						else Strcat(buf, (otmp->obj_material != SILVER || (jadeobj&slot) || (ironobj&slot) ? "silvered " : "silver "));
+						messaged |= 1 << seartype;
+					}
+					SEAR_MESSAGE(jadeobj, "jade ");
+					SEAR_MESSAGE(ironobj, "cold-iron ");
+#undef SEAR_MESSAGE
+					if (i == 1 || !wornmask_to_ring(altrslot)) {
+						Strcat(buf, "ring");
+						if (wornmask_to_ring(prevslot)) Strcat(buf, "s");
+					}
 				}
-				if (jadeobj & slot) {
-					Strcat(buf, "jade ");
+				else {
+					active_slots &= ~slot;
 				}
-				if (ironobj & slot) {
-					Strcat(buf, "cold-iron ");
-				}
-
-				Strcat(buf, "ring");
-			}
-			else {
-				active_slots &= ~rslot;
 			}
 		}
 
@@ -16633,248 +16512,250 @@ int vis;						/* True if action is at all visible to the player */
 	}
 
 	/* poison */
-	if (poisons_resisted || poisons_majoreff || poisons_minoreff || poisons_wipedoff) {
-		otmp = poisonedobj;
-		int i, n, r;
-		char poisons_str[BUFSZ];
-		/* poison resist messages -- should only appear once, as resistivity should be constant between hits */
-		if (poisons_resisted && (vis&VIS_MDEF) && !recursed) {
-			r = 0;	/* # of poisons resisted */
+	for (int i = 0; i < SIZE(poisonedobjs); i++) {
+		struct poisoninfo *poisoninfo = &poisoninfos[i];
+		if (poisoninfo->resisted || poisoninfo->majoreff || poisoninfo->minoreff || poisoninfo->wipedoff) {
+			otmp = poisonedobjs[i];
+			int i, n, r;
+			char poisons_str[BUFSZ];
+			/* poison resist messages -- should only appear once, as resistivity should be constant between hits */
+			if (poisoninfo->resisted && (vis&VIS_MDEF) && !recursed) {
+				r = 0;	/* # of poisons resisted */
+				for (n = 0; n < NUM_POISONS; n++)
+				{
+					i = (1 << n);
+					if (!(poisoninfo->resisted & i))
+						continue;
+					switch (i)
+					{
+					case OPOISON_BASIC:
+					case OPOISON_BLIND:
+					case OPOISON_PARAL:
+					case OPOISON_DIRE:
+						Sprintf(poisons_str, "poison");
+						break;
+					case OPOISON_FILTH:
+						Sprintf(poisons_str, "filth");
+						break;
+					case OPOISON_SLEEP:
+						Sprintf(poisons_str, "drug");
+						break;
+					case OPOISON_HALLU:
+						Sprintf(poisons_str, "hallucinogen");
+						break;
+					case OPOISON_AMNES:
+						Sprintf(poisons_str, "lethe-rust");
+						break;
+					case OPOISON_ACID:
+						Sprintf(poisons_str, "acid-coating");
+						break;
+					case OPOISON_SILVER:
+						/* no message */
+						r--;
+						break;
+					}
+					r++;
+				}
+				if (r) {
+					pline_The("%s %s seem to affect %s.",
+						((r > 1) ? "coatings" : poisons_str),
+						((r > 1) ? "don't" : "doesn't"),
+						(youdef ? "you" : mon_nam(mdef))
+						);
+				}
+			}
+			/* poison major effects and their messages -- can happen multiple times */
 			for (n = 0; n < NUM_POISONS; n++)
 			{
 				i = (1 << n);
-				if (!(poisons_resisted & i))
+				if (!(poisoninfo->majoreff & i))
 					continue;
 				switch (i)
 				{
 				case OPOISON_BASIC:
-				case OPOISON_BLIND:
-				case OPOISON_PARAL:
-				case OPOISON_DIRE:
-					Sprintf(poisons_str, "poison");
-					break;
-				case OPOISON_FILTH:
-					Sprintf(poisons_str, "filth");
-					break;
-				case OPOISON_SLEEP:
-					Sprintf(poisons_str, "drug");
-					break;
-				case OPOISON_HALLU:
-					Sprintf(poisons_str, "hallucinogen");
-					break;
-				case OPOISON_AMNES:
-					Sprintf(poisons_str, "lethe-rust");
-					break;
-				case OPOISON_ACID:
-					Sprintf(poisons_str, "acid-coating");
-					break;
-				case OPOISON_SILVER:
-					/* no message */
-					r--;
-					break;
-				}
-				r++;
-			}
-			if (r) {
-				pline_The("%s %s seem to affect %s.",
-					((r > 1) ? "coatings" : poisons_str),
-					((r > 1) ? "don't" : "doesn't"),
-					(youdef ? "you" : mon_nam(mdef))
-					);
-			}
-		}
-		/* poison major effects and their messages -- can happen multiple times */
-		for (n = 0; n < NUM_POISONS; n++)
-		{
-			i = (1 << n);
-			if (!(poisons_majoreff & i))
-				continue;
-			switch (i)
-			{
-			case OPOISON_BASIC:
-				if (youdef) {
-					int attrib = (
-						!rn2(3) ?	A_STR :
-						!rn2(2) ?	A_CON :
+					if (youdef) {
+						int attrib = (
+							!rn2(3) ?	A_STR :
+							!rn2(2) ?	A_CON :
 									A_DEX);
-					int amnt = rnd(ACURR(attrib) / 5);
+						int amnt = rnd(ACURR(attrib) / 5);
 
-					if (adjattrib(attrib, -amnt, 1))
-						pline_The("poison was quite debilitating...");
-				}
-				else if ((vis&VIS_MDEF) && lethaldamage)
-					pline_The("poison was deadly...");
-				break;
-			case OPOISON_DIRE:
-				if (youdef) {
-					int attrib = (
-						!rn2(3) ?	A_STR :
-						!rn2(2) ?	A_CON :
-									A_DEX);
-					if (!rn2(10) && attrib != A_CHA) {
-						int drain = attrib == A_CON ? -2 : -rn1(3, 3);
+						if (adjattrib(attrib, -amnt, 1))
+							pline_The("poison was quite debilitating...");
+					}
+					else if ((vis&VIS_MDEF) && lethaldamage)
+						pline_The("poison was deadly...");
+					break;
+				case OPOISON_DIRE:
+					if (youdef) {
+						int attrib = (
+							!rn2(3) ?	A_STR :
+							!rn2(2) ?	A_CON :
+										A_DEX);
+						if (!rn2(10) && attrib != A_CHA) {
+							int drain = attrib == A_CON ? -2 : -rn1(3, 3);
 						if(Poison_resistance)
 							drain = (drain - 1)/2;
 						else
 							drain -= 4;
 
 						adjattrib(A_CON, drain, 1);
-					}
-					int amnt = rn1(3, 3);
-					if(Poison_resistance)
-						amnt = (amnt + 1)/2;
-					else
-						amnt += 2;
+						}
+						int amnt = rn1(3, 3);
+						if(Poison_resistance)
+							amnt = (amnt + 1)/2;
+						else
+							amnt += 2;
 
-					if (adjattrib(attrib, -amnt, 1))
-						pline_The("poison was quite debilitating...");
-				}
-				else if ((vis&VIS_MDEF) && lethaldamage)
-					pline_The("poison was deadly...");
-				break;
-			case OPOISON_FILTH:
-				if (youdef) {
-					/* resistance should have already been checked */
-					make_sick(Sick ? Sick / 2L + 1L : (long)rn1(ACURR(A_CON), 20),
-						"filth-coated weapon", TRUE, SICK_NONVOMITABLE);
-				}
-				else if ((vis&VIS_MDEF) && lethaldamage)
-					pline_The("tainted filth was deadly...");
-				break;
-			case OPOISON_SLEEP:
-				if (youdef) {
-					You("suddenly fall asleep!");
-					fall_asleep(-rn1(2, 6), TRUE);
-				}
-				else if (sleep_monst(mdef, rnd(12), POTION_CLASS)) {
-					if (canseemon(mdef))
-						pline("%s falls asleep.", Monnam(mdef));
-					slept_monst(mdef);
-				}
-				break;
-			case OPOISON_BLIND:
-				if (youdef) {
-					make_blinded(rn1(20, 25), (boolean)!Blind);
-				}
-				else {
-					if (canseemon(mdef) && !is_blind(mdef))
-						pline("It seems %s has gone blind!", mon_nam(mdef));
-
-					register int btmp = 64 + rn2(32) +
-						rn2(32) * !resist(mdef, POTION_CLASS, 0, NOTELL);
-					btmp += mdef->mblinded;
-					mdef->mblinded = min(btmp, 127);
-					mdef->mcansee = 0;
-				}
-				break;
-			case OPOISON_PARAL:
-				if (youdef) {
-					int dur = rnd(25 - rnd(ACURR(A_CON)));
-					if (Poison_res(mdef))
-						dur = (dur + 2) / 3;
-					nomul(-dur, "immobilized by paralysis venom");
-				}
-				else {
-					int dur = rnd(25);
-					if (Poison_res(mdef))
-						dur = (dur + 2) / 3;
-					if (canseemon(mdef) && mdef->mcanmove)
-						pline("%s stops moving!", Monnam(mdef));
-					if (mdef->mcanmove) {
-						mdef->mcanmove = 0;
-						mdef->mfrozen = dur;
+						if (adjattrib(attrib, -amnt, 1))
+							pline_The("poison was quite debilitating...");
 					}
-				}
-				break;
-			case OPOISON_AMNES:
-				if (youdef) {
-					if (u.sealsActive&SEAL_HUGINN_MUNINN){
-						unbind(SEAL_HUGINN_MUNINN, TRUE);
+					else if ((vis&VIS_MDEF) && lethaldamage)
+						pline_The("poison was deadly...");
+					break;
+				case OPOISON_FILTH:
+					if (youdef) {
+						/* resistance should have already been checked */
+						make_sick(Sick ? Sick / 2L + 1L : (long)rn1(ACURR(A_CON), 20),
+							"filth-coated weapon", TRUE, SICK_NONVOMITABLE);
+					}
+					else if ((vis&VIS_MDEF) && lethaldamage)
+						pline_The("tainted filth was deadly...");
+					break;
+				case OPOISON_SLEEP:
+					if (youdef) {
+						You("suddenly fall asleep!");
+						fall_asleep(-rn1(2, 6), TRUE);
+					}
+					else if (sleep_monst(mdef, rnd(12), POTION_CLASS)) {
+						if (canseemon(mdef))
+							pline("%s falls asleep.", Monnam(mdef));
+						slept_monst(mdef);
+					}
+					break;
+				case OPOISON_BLIND:
+					if (youdef) {
+						make_blinded(rn1(20, 25), (boolean)!Blind);
 					}
 					else {
-						forget(1);	/* lose 1% of memory per point lost*/
-						// forget_traps();		/* lose memory of all traps*/
+						if (canseemon(mdef) && !is_blind(mdef))
+							pline("It seems %s has gone blind!", mon_nam(mdef));
+
+						register int btmp = 64 + rn2(32) +
+							rn2(32) * !resist(mdef, POTION_CLASS, 0, NOTELL);
+						btmp += mdef->mblinded;
+						mdef->mblinded = min(btmp, 127);
+						mdef->mcansee = 0;
 					}
-				}
-				else {
-					if (canseemon(mdef) && (mdef->mtame || !mdef->mpeaceful))
-						pline("%s looks around as if awakening from a dream.", Monnam(mdef));
-					mdef->mamnesia = TRUE;
-				}
-				break;
-			case OPOISON_HALLU:
-				if (youdef) {
-					boolean oldh = Hallucination;
-					boolean olds = Stunned;
-					make_hallucinated(itimeout_incr(HHallucination, 200), FALSE, 0L);
-					make_stunned(itimeout_incr(HStun, 200), FALSE);
-					if(Hallucination)
-						You("are freaked out!");
-					if(Stunned)
-						You("stagger.");
-
-				}
-				else {
-					if (canseemon(mdef))
-						pline("%s looks freaked out!", Monnam(mdef));
-					mdef->mberserk = TRUE;
-					mdef->mconf = TRUE;
-				}
-				break;
-			case OPOISON_ACID:
-			case OPOISON_SILVER:
-				/* no message, no additional effects */
-				break;
-			}
-		}
-		/* ophidiophobia -- fear of snakes (and also poison, in dnethack) */
-		if (youdef && !recursed && roll_madness(MAD_OPHIDIOPHOBIA)) {
-			if (poisons_majoreff || poisons_minoreff) {
-				You("panic!");
-				HPanicking += 1+rnd(6);
-			}
-			else if (poisons_resisted) {
-				You("panic anyway!");
-				HPanicking += 1+rnd(3);
-			}
-		}
-
-		/* poisons wiped off */
-		if (otmp && poisons_wipedoff) {
-			/* rings subtract from corpsenm */
-			if (otmp->oclass == RING_CLASS) {
-				if (otmp->opoisonchrgs-- <= 0)
-					otmp->opoisoned = OPOISON_NONE;
-			}
-			/* viperwhips also subtract from corpsenm, but do so with a message */
-			else if (otmp->otyp == VIPERWHIP && otmp->opoisonchrgs) {
-				if (youagr) {
-					pline("Poison from the internal reservoir coats the fangs of your %s.", xname(otmp));
-				}
-				otmp->opoisonchrgs--;
-			}
-			/* normal poisoned object behaviour */
-			else {
-				if (otmp->quan > 1){
-					struct obj *unpoisd = splitobj(otmp, 1L);
-					unpoisd->opoisoned &= ~(poisons_wipedoff);
-					if (youagr) {
-						pline("The coating on your %s has worn off.", xname(unpoisd));
-						obj_extract_self(unpoisd);	/* free from inv */
-						/* shouldn't merge */
-						unpoisd = hold_another_object(unpoisd, "You drop %s!",
-							doname(unpoisd), (const char *)0);
+					break;
+				case OPOISON_PARAL:
+					if (youdef) {
+						int dur = rnd(25 - rnd(ACURR(A_CON)));
+						if (Poison_res(mdef))
+							dur = (dur + 2) / 3;
+						nomul(-dur, "immobilized by paralysis venom");
 					}
 					else {
-						obj_extract_self(unpoisd);
-						mpickobj(magr, unpoisd);
+						int dur = rnd(25);
+						if (Poison_res(mdef))
+							dur = (dur + 2) / 3;
+						if (canseemon(mdef) && mdef->mcanmove)
+							pline("%s stops moving!", Monnam(mdef));
+						if (mdef->mcanmove) {
+							mdef->mcanmove = 0;
+							mdef->mfrozen = dur;
+						}
 					}
+					break;
+				case OPOISON_AMNES:
+					if (youdef) {
+						if (u.sealsActive&SEAL_HUGINN_MUNINN){
+							unbind(SEAL_HUGINN_MUNINN, TRUE);
+						}
+						else {
+							forget(1);	/* lose 1% of memory per point lost*/
+							// forget_traps();		/* lose memory of all traps*/
+						}
+					}
+					else {
+						if (canseemon(mdef) && (mdef->mtame || !mdef->mpeaceful))
+							pline("%s looks around as if awakening from a dream.", Monnam(mdef));
+						mdef->mamnesia = TRUE;
+					}
+					break;
+				case OPOISON_HALLU:
+					if (youdef) {
+						boolean oldh = Hallucination;
+						boolean olds = Stunned;
+						make_hallucinated(itimeout_incr(HHallucination, 200), FALSE, 0L);
+						make_stunned(itimeout_incr(HStun, 200), FALSE);
+						if(Hallucination)
+							You("are freaked out!");
+						if(Stunned)
+							You("stagger.");
+					}
+					else {
+						if (canseemon(mdef))
+							pline("%s looks freaked out!", Monnam(mdef));
+						mdef->mberserk = TRUE;
+						mdef->mconf = TRUE;
+					}
+					break;
+				case OPOISON_ACID:
+				case OPOISON_SILVER:
+					/* no message, no additional effects */
+					break;
 				}
-				else {
+			}
+			/* ophidiophobia -- fear of snakes (and also poison, in dnethack) */
+			if (youdef && !recursed && roll_madness(MAD_OPHIDIOPHOBIA)) {
+				if (poisoninfo->majoreff || poisoninfo->minoreff) {
+					You("panic!");
+					HPanicking += 1+rnd(6);
+				}
+				else if (poisoninfo->resisted) {
+					You("panic anyway!");
+					HPanicking += 1+rnd(3);
+				}
+			}
+
+			/* poisons wiped off */
+			if (otmp && poisoninfo->wipedoff) {
+				/* rings subtract from corpsenm */
+				if (otmp->oclass == RING_CLASS) {
+					if (otmp->opoisonchrgs-- <= 0)
+						otmp->opoisoned = OPOISON_NONE;
+				}
+				/* viperwhips also subtract from corpsenm, but do so with a message */
+				else if (otmp->otyp == VIPERWHIP && otmp->opoisonchrgs) {
 					if (youagr) {
-						pline("The coating on your %s has worn off.", xname(otmp));
+						pline("Poison from the internal reservoir coats the fangs of your %s.", xname(otmp));
 					}
-					otmp->opoisoned &= ~(poisons_wipedoff);
+					otmp->opoisonchrgs--;
+				}
+				/* normal poisoned object behaviour */
+				else {
+					if (otmp->quan > 1){
+						struct obj *unpoisd = splitobj(otmp, 1L);
+						unpoisd->opoisoned &= ~(poisoninfo->wipedoff);
+						if (youagr) {
+							pline("The coating on your %s has worn off.", xname(unpoisd));
+							obj_extract_self(unpoisd);	/* free from inv */
+							/* shouldn't merge */
+							unpoisd = hold_another_object(unpoisd, "You drop %s!",
+								doname(unpoisd), (const char *)0);
+						}
+						else {
+							obj_extract_self(unpoisd);
+							mpickobj(magr, unpoisd);
+						}
+					}
+					else {
+						if (youagr) {
+							pline("The coating on your %s has worn off.", xname(otmp));
+						}
+						otmp->opoisoned &= ~(poisoninfo->wipedoff);
+					}
 				}
 			}
 		}
@@ -17149,6 +17030,182 @@ struct obj *otmp;
 		case ART_WRATHFUL_WIND:
 			Strcat(buf, "silver-clouded ");
 		break;
+	}
+}
+
+/* calculate_poison()
+ *
+ * Calculates poison damage and types of poison and puts the results
+ * in the poisoninfo struct passed to it.
+ */
+void
+calculate_poison(
+	struct monst * magr,	  /* attacker */
+	struct monst * mdef,	  /* defender */
+	struct attack * attk,	  /* attack */
+	struct obj * poisonedobj, /* poisoned object */
+	struct obj * launcher,	  /* launcher */
+	struct poisoninfo * p)	  /* used to return results */
+{
+	boolean youagr = (magr == &youmonst);
+	boolean youdef = (mdef == &youmonst);
+	struct permonst * pa = (magr ? (youagr ? youracedata : magr->data) : (struct permonst *)0);
+	struct permonst * pd = youdef ? youracedata : mdef->data;
+	if (poisonedobj && (!insubstantial(pd) || hits_insubstantial(magr, mdef, attk, poisonedobj))) {
+		p->poisons |= poisonedobj->opoisoned;
+		if (arti_poisoned(poisonedobj))
+			p->poisons |= OPOISON_BASIC;
+		if (poisonedobj->oartifact == ART_WEBWEAVER_S_CROOK)
+			p->poisons |= (OPOISON_SLEEP | OPOISON_BLIND | OPOISON_PARAL);
+		if (is_wet_merc(poisonedobj) && !rn2(5))
+			p->poisons |= (OPOISON_HALLU);
+		if (poisonedobj->oartifact == ART_SUNBEAM)
+			p->poisons |= OPOISON_FILTH;
+		if (poisonedobj->oartifact == ART_MOONBEAM)
+			p->poisons |= OPOISON_SLEEP;
+		if (poisonedobj->oartifact == ART_DIRGE)
+			p->poisons |= OPOISON_ACID;
+		if (poisonedobj->otyp == FANG_OF_APEP)
+			p->poisons |= OPOISON_DIRE;
+		/* Plague adds poisons to its launched ammo */
+		if (launcher && launcher->oartifact == ART_PLAGUE) {
+			if (monstermoves < artinstance[ART_PLAGUE].PlagueDuration)
+				p->poisons |= OPOISON_FILTH;
+			else
+				p->poisons |= OPOISON_BASIC;
+		}
+		if (youagr && poisonedobj == uwep && activeFightingForm(FFORM_KNI_ELDRITCH)){
+			if (u.ueldritch_style == SPE_POISON_SPRAY) p->poisons |= OPOISON_BASIC;
+			if (u.ueldritch_style == SPE_ACID_SPLASH) p->poisons |= OPOISON_ACID;
+		}
+	}
+	/* All AD_SHDW attacks are poisoned as well */
+	if (attk && attk->adtyp == AD_SHDW) {
+		p->poisons |= OPOISON_BASIC;
+	}
+
+	if (p->poisons)
+	{
+		/* which *poisons need resist messages, and which will take effect? */
+		int i, n;
+		for (n = 0; n < NUM_POISONS; n++)
+		{
+			boolean resists = FALSE;
+			boolean majoreff = FALSE;
+			i = (1 << n);
+
+			if (!(p->poisons & i))
+				continue;
+			/* determine which resistance is being checked and calculate the damage the poison will do */
+			switch (i)
+			{
+			case OPOISON_BASIC:
+				resists = Poison_res(mdef);
+				majoreff = !rn2(10);
+				break;
+			case OPOISON_DIRE:
+				majoreff = !rn2(10);
+				break;
+			case OPOISON_FILTH:
+				resists = Sick_res(mdef);
+				majoreff = !rn2(10);
+				break;
+			case OPOISON_SLEEP:
+				resists = Sleep_res(mdef);
+				majoreff = !rn2(2) || (poisonedobj && poisonedobj->oartifact == ART_MOONBEAM);
+				break;
+			case OPOISON_BLIND:
+				resists = (Poison_res(mdef) || !haseyes(pd));
+				majoreff = !rn2(2);
+				break;
+			case OPOISON_PARAL:
+				resists = FALSE;
+				majoreff = (!rn2(8) && !(youdef ? Free_action : mon_resistance(mdef, FREE_ACTION)));
+				break;
+			case OPOISON_AMNES:
+				resists = mindless_mon(mdef);
+				majoreff = !rn2(10);
+				break;
+			case OPOISON_ACID:
+				resists = Acid_res(mdef);
+				majoreff = TRUE;
+				break;
+			case OPOISON_SILVER:
+				resists = !(hates_silver(pd) && !(youdef && u.sealsActive&SEAL_EDEN));
+				if (!resists)
+					p->silverobj |= poisonedobj->owornmask;
+				majoreff = TRUE;
+				break;
+			case OPOISON_HALLU:
+				resists = youdef ? FALSE : (mindless_mon(mdef) || mon_resistance(mdef, HALLUC_RES));
+				majoreff = !rn2(2);
+				break;
+			}
+			if (majoreff && poisonedobj && (poisonedobj->opoisoned & i) && !rn2(20))
+				p->wipedoff |= i;
+
+			if (resists)
+				p->resisted |= i;
+			else
+			{
+				if (majoreff)
+				        p->majoreff |= i;
+				else
+				        p->minoreff |= i;
+			}
+		}
+		/* poison-injecting rings only ever do major effects */
+		if (poisonedobj && poisonedobj->oclass == RING_CLASS) {
+		        p->resisted &= ~(p->majoreff);
+			p->wipedoff = p->majoreff;
+			p->minoreff = 0;
+		}
+		/* calculate poison damage */
+		for (n = 0; n < NUM_POISONS; n++)
+		{
+			i = (1 << n);
+			boolean major = (p->majoreff & i);
+			boolean minor = (p->minoreff & i);
+			if (!major && !minor)
+				continue;
+			/* calculate poison damage */
+			switch (i)
+			{
+			case OPOISON_BASIC:
+				p->poisdmg += (major) ? (youdef ? d(3, 6) : 80) : rnd(6);
+				break;
+			case OPOISON_FILTH:
+				p->poisdmg += (major) ? (youdef ? d(3, 12) : 100) : rnd(12);
+				break;
+			case OPOISON_DIRE:
+				if(Poison_res(mdef))
+					p->poisdmg += (major) ? (youdef ? d(3, 6) : 80) : rn1(10, 6)/2;
+				else
+					p->poisdmg += (major) ? (youdef ? d(6, 6) : 160) : rn1(10, 6);
+				break;
+			case OPOISON_SLEEP:
+				/* no damage */
+				break;
+			case OPOISON_BLIND:
+				p->poisdmg += (major) ? 3 : rnd(3);
+				break;
+			case OPOISON_PARAL:
+				p->poisdmg += (major) ? 6 : rnd(6);
+				break;
+			case OPOISON_AMNES:
+				/* no damage */
+				break;
+			case OPOISON_ACID:
+				p->poisdmg += rnd(10);
+				break;
+			case OPOISON_SILVER:
+				p->poisdmg += rnd(20);
+				break;
+			}
+		}
+		/* if Plague is being used, note whether or not the current shot is filthed */
+		if (launcher && launcher->oartifact == ART_PLAGUE && monstermoves < artinstance[ART_PLAGUE].PlagueDuration)
+			artinstance[ART_PLAGUE].PlagueDoOnHit = !!(p->majoreff&OPOISON_FILTH);
 	}
 }
 

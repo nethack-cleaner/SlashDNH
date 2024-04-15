@@ -60,6 +60,20 @@ const long long ring_index_to_wornmask[] = {
 };
 
 /*
+ * Returns a pointer to the ring corresponding to wornmask, or NULL if
+ * none is found.
+ */
+struct obj *
+wornmask_to_ring(long long wornmask) {
+	for (int i = 0; i < URINGS_SIZE; i++) {
+		if (wornmask == ring_index_to_wornmask[i]) {
+		        return urings[i];
+		}
+	}
+	return NULL;
+}
+
+/*
  * Counts worn rings.  If include_non_rings is true, also includes
  * non-ring items that block ring slots.
  */

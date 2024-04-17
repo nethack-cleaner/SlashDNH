@@ -234,9 +234,10 @@ in_trouble()
 	if (count == 8 && !Passes_walls)
 		return(TROUBLE_STUCK_IN_WALL);
 
-	if (stuck_ring(uleft, RIN_LEVITATION) ||
-		stuck_ring(uright, RIN_LEVITATION))
-		return(TROUBLE_CURSED_LEVITATION);
+	for (int i = 0; i < URINGS_SIZE; i++)
+		if (stuck_ring(urings[i], RIN_LEVITATION))
+			return(TROUBLE_CURSED_LEVITATION);
+
 	if (nohands(youracedata) || !freehand()) {
 	    /* for bag/box access [cf use_container()]...
 	       make sure it's a case that we know how to handle;
@@ -325,11 +326,14 @@ worst_cursed_item()
 #endif
     } else if (uamul && uamul->cursed) {		/* amulet */
 	otmp = uamul;
-    } else if (uleft && uleft->cursed) {		/* left ring */
-	otmp = uleft;
-    } else if (uright && uright->cursed) {		/* right ring */
-	otmp = uright;
-    } else if (ublindf && ublindf->cursed) {		/* eyewear */
+    } else {			/* rings */
+	    for (int i = 0; i < URINGS_SIZE; i++) {
+		    if (urings[i] && urings[i]->cursed) {
+			    return urings[i];
+		    }
+	    }
+    }
+    if (ublindf && ublindf->cursed) {		/* eyewear */
 	otmp = ublindf;	/* must be non-blinding lenses */
     /* if weapon wasn't handled above, do it now */
     } else if (welded(uwep)) {				/* weapon */
@@ -355,8 +359,8 @@ register int trouble;
 	int i;
 	struct obj *otmp = 0;
 	const char *what = (const char *)0;
-	static NEARDATA const char leftglow[] = "left ring softly glows",
-				   rightglow[] = "right ring softly glows";
+	char buf[BUFSZ];
+	static NEARDATA const char ringglowmsg[] = "%s ring softly glows";
 
 	switch (trouble) {
 	    case TROUBLE_STONED:
@@ -460,10 +464,14 @@ register int trouble;
 		    (void) safe_teleds(FALSE);
 		    break;
 	    case TROUBLE_CURSED_LEVITATION:
-		    if ((otmp = stuck_ring(uleft,RIN_LEVITATION)) !=0) {
-				if (otmp == uleft) what = leftglow;
-		    } else if ((otmp = stuck_ring(uright,RIN_LEVITATION))!=0) {
-				if (otmp == uright) what = rightglow;
+		    for (int i = 0; i < URINGS_SIZE; i++) {
+			    if ((otmp = stuck_ring(urings[i],RIN_LEVITATION))!=0) {
+				    char tmpbuf[8];
+				    nth_ring_text(i, tmpbuf, 8);
+				    snprintf(buf, BUFSZ, ringglowmsg, tmpbuf);
+				    what = buf;
+				    break;
+			    }
 		    }
 		    goto decurse;
 	    case TROUBLE_UNUSEABLE_HANDS:
@@ -532,8 +540,15 @@ register int trouble;
 		    break;
 	    case TROUBLE_CURSED_ITEMS:
 		    otmp = worst_cursed_item();
-		    if (otmp == uright) what = rightglow;
-		    else if (otmp == uleft) what = leftglow;
+		    for (int i = 0; i < URINGS_SIZE; i++) {
+			    if (otmp == urings[i]) {
+				    char tmpbuf[8];
+				    nth_ring_text(i, tmpbuf, 8);
+				    snprintf(buf, BUFSZ, ringglowmsg, tmpbuf);
+				    what = buf;
+				    break;
+			    }
+		    }
 decurse:
 		    if (!otmp) {
 			impossible("fix_worst_trouble: nothing to uncurse.");
@@ -3104,10 +3119,15 @@ int godnum;
 					otmp = uarmg;
 				else if (martial_bonus() && uarmf && (uarmf->oartifact || !uwep) && uarmf->spe < 5)
 					otmp = uarmf;
-				else if (uleft && uleft->otyp != RIN_WISHES && objects[uleft->otyp].oc_charged && uleft->spe < 5)
-					otmp = uleft;
-				else if (uright && uright->otyp != RIN_WISHES && objects[uright->otyp].oc_charged && uright->spe < 5)
-					otmp = uright;
+				else {
+					for (int i = 0; i < URINGS_SIZE; i++) {
+						if (urings[i] && urings[i]->otyp != RIN_WISHES &&
+						    objects[urings[i]->otyp].oc_charged && urings[i]->spe < 5) {
+							otmp = urings[i];
+							break;
+						}
+					}
+				}
 				/* enchant it */
 				if (otmp) {
 					otmp->spe++;
@@ -3122,11 +3142,20 @@ int godnum;
 				}
 				break;
 			case 2: // identify an item
+				boolean found_ring = FALSE;
 				if (uwep && not_fully_identified(uwep)) identify(uwep);
 				else if (uswapwep && not_fully_identified(uswapwep)) identify(uswapwep);
 				else if (uamul && not_fully_identified(uamul)) identify(uamul);
-				else if (uleft && not_fully_identified(uleft)) identify(uleft);
-				else if (uright && not_fully_identified(uright)) identify(uright);
+				else {
+					for (int i = 0; i < URINGS_SIZE; i++) {
+						if (urings[i] && not_fully_identified(urings[i])) {
+							identify(urings[i]);
+							found_ring = TRUE;
+							break;
+						}
+					}
+				}
+				if (found_ring) break;
 				else if (uarmc && not_fully_identified(uarmc)) identify(uarmc);
 				else if (uarm && not_fully_identified(uarm)) identify(uarm);
 				else if (uarmu && not_fully_identified(uarmu)) identify(uarmu);
@@ -3235,11 +3264,18 @@ int godnum;
 				else if (uarmf && wrongbuc(uarmf)) otmp = uarmf;
 				else if (uarmu && wrongbuc(uarmu)) otmp = uarmu;
 				else if (uamul && wrongbuc(uamul)) otmp = uamul;
-				else if (uleft && wrongbuc(uleft))  otmp = uleft;
-				else if (uright && wrongbuc(uright)) otmp = uright;
 				else {
-					for(otmp=invent; otmp; otmp=otmp->nobj)
-					if (wrongbuc(otmp)) break;
+					boolean found_ring = FALSE;
+					for (int i = 0; i < URINGS_SIZE; i++) {
+						if (urings[i] && wrongbuc(urings[i])) {
+						        otmp = urings[i];
+							found_ring = TRUE;
+							break;
+						}
+					}
+					if (!found_ring)
+						for(otmp=invent; otmp; otmp=otmp->nobj)
+							if (wrongbuc(otmp)) break;
 				}
 				if (!otmp)
 					break;	/* no item found */

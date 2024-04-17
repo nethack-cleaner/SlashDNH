@@ -3628,7 +3628,7 @@ boolean *lostsome;
 		     * for obvious reasons.
 		     */
 		    if (!((obj->otyp == LOADSTONE && obj->cursed) ||
-			  obj == uamul || obj == uleft || obj == uright ||
+			  obj == uamul || obj->owornmask & W_RING ||
 			  obj == ublindf || obj == uarm || obj == uarmc ||
 			  obj == uarmg || obj == uarmf ||
 			  obj == uarmu ||
@@ -5372,8 +5372,7 @@ boolean initialize;
 					else if(obj == uarmg) (void) Gloves_off();
 					else if(obj == uarmf) (void) Boots_off();
 					else if(obj == uarmu) setnotworn(obj);
-					else if(obj == uleft) Ring_gone(obj);
-					else if(obj == uright) Ring_gone(obj);
+					else if(obj->owornmask & W_RING) Ring_gone(obj);
 					else if(obj == ublindf) Blindf_off(obj);
 					else if(obj == uamul) Amulet_off();
 					else if(obj == uwep) uwepgone();

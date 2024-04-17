@@ -3295,8 +3295,8 @@ stuck_ring(ring, otyp)
 struct obj *ring;
 int otyp;
 {
-    if (ring != uleft && ring != uright) {
-	impossible("stuck_ring: neither left nor right?");
+    if (ring && !(ring->owornmask & W_RING)) {
+	impossible("stuck_ring: ring not worn?");
 	return (struct obj *)0;
     }
 
@@ -3306,7 +3306,8 @@ int otyp;
 	if (nolimbs(youracedata) &&
 		uamul && uamul->otyp == AMULET_OF_UNCHANGING && uamul->cursed && !Weldproof)
 	    return uamul;
-	if (welded(uwep) && (ring == uright || bimanual(uwep,youracedata))) return uwep;
+	if (welded(uwep) && (is_right_ring(ring) || (bimanual(uwep,youracedata) && is_left_ring(ring))))
+	    return uwep;
 	if (uarmg && uarmg->cursed && !Weldproof) return uarmg;
 	if (ring->cursed && !Weldproof) return ring;
     }

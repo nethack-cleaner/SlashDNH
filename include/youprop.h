@@ -172,6 +172,10 @@
 #define	FacelessCloak(obj) ((obj)->otyp == WHITE_FACELESS_ROBE || (obj)->otyp == BLACK_FACELESS_ROBE || (obj)->otyp == SMOKY_VIOLET_FACELESS_ROBE)
 #define	Faceless(obj) (FacelessHelm(obj) || FacelessCloak(obj))
 
+/* urings[2] == secondary left ring, urings[3] == secondary right ring */
+#define is_left_ring(obj) ((obj) == uleft || (obj) == urings[2])
+#define is_right_ring(obj) ((obj) == uright || (obj) == urings[3])
+
 #define save_vs_sanloss()	((uwep && uwep->oartifact == ART_NODENSFORK) || (rnd(30) < (ACURR(A_WIS) + (uring_art(ART_NARYA) ? narya() : 0))))
 
 #define Mortal_race	(!nonliving(youracedata) && !is_minion(youracedata) && !is_demon(youracedata) && !is_primordial(youracedata))
@@ -398,8 +402,7 @@
 #define EWeldproof	u.uprops[WELDPROOF].extrinsic
 #define Weldproof	(HWeldproof || EWeldproof ||			\
 			 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM) || \
-			 Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID) || \
-			 (youracedata->mtyp == PM_OCTOPODE)		\
+			 Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID) \
 			 )
 
 /*** Appearance and behavior ***/

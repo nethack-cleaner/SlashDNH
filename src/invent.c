@@ -1808,7 +1808,7 @@ unsigned *resultflags;
 			!uwep && !uswapwep && !uquiver) {
 		    You("are not wielding anything.");
 		    return 0;
-		} else if (oc_of_sym == RING_CLASS && !uright && !uleft) {
+		} else if (oc_of_sym == RING_CLASS && count_worn_rings(FALSE) == 0) {
 		    You("are not wearing rings.");
 		    return 0;
 		} else if (oc_of_sym == AMULET_CLASS && !uamul) {
@@ -5563,14 +5563,15 @@ doprarm()
 int
 doprring()
 {
-	if(!uleft && !uright)
+	if(!count_worn_rings(FALSE))
 		You("are not wearing any rings.");
 	else {
-		char lets[3];
+		char lets[URINGS_SIZE];
 		register int ct = 0;
 
-		if(uleft) lets[ct++] = obj_to_let(uleft);
-		if(uright) lets[ct++] = obj_to_let(uright);
+		for (int i = 0; i < URINGS_SIZE; i++) {
+			if (urings[i]) lets[ct++] = obj_to_let(urings[i]);
+		}
 		lets[ct] = 0;
 		(void) display_inventory(lets, FALSE);
 	}

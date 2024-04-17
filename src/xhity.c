@@ -15133,7 +15133,7 @@ int vis;						/* True if action is at all visible to the player */
 		/* yes, this can be redoubled by artifact gloves */
 		/* it's so strong, its damage applies no matter which hand is punching */
 		if (youagr) {	// only the player wears rings
-			if (otmp->oartifact == ART_ANNULUS && uring_art(ART_ANNULUS))
+			if (otmp && otmp->oartifact == ART_ANNULUS && otmp->owornmask & W_RING)
 			{
 				basedmg += weapon_dmg_roll(&unarmed_dice, FALSE);
 				basedmg += otmp->spe * 2;

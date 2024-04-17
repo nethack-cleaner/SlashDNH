@@ -122,8 +122,8 @@ uring_art_index(int art_num)
 struct obj *
 uring_otyp(int otyp)
 {
-	int index = uring_otyp_index(otyp);
-	return index == -1 ? NULL : urings[index];
+	int i = uring_otyp_index(otyp);
+	return i == -1 ? NULL : urings[i];
 }
 
 /*
@@ -133,8 +133,8 @@ uring_otyp(int otyp)
 struct obj *
 uring_art(int art_num)
 {
-	int index = uring_art_index(art_num);
-	return index == -1 ? NULL : urings[index];
+	int i = uring_art_index(art_num);
+	return i == -1 ? NULL : urings[i];
 }
 
 /* returns TRUE if obj confers prop

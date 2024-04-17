@@ -12,7 +12,7 @@ Octopode race
 	Extra 1d8 tentacle wrap attack that can drown if over water
 	+level/10 bonus to natural DR and +level/2 bonus to natural AC
 	Starts with stone resistance, poison resistance, stealth, swimming, magical breathing, waterproofing
-	Weldproof, immune to glib, can't have rings put on by seduction
+	Immune to glib and can't have rings put on by seduction
 		Because I didn't implement how those work with 8 rings
 	Ink spray ability
 		Costs 15pw

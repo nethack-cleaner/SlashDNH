@@ -93,22 +93,22 @@ MONSTER:'M',"strange corpse",(36,06)
 # The treasure of Pelias
 
 # shadows
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
-MONSTER:' ',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
+MONSTER:'6',"shade",random, peaceful
 # Non diggable walls
 NON_DIGGABLE:(00,00,75,20)
 # One trap to keep the ogres at bay.

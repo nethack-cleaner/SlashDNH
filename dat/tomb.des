@@ -33,20 +33,20 @@ RANDOM_MONSTERS: 'Z','M'
 
 MONSTER: 'M', "priest mummy", (47,9)
 
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
-MONSTER: '.',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
+MONSTER: '8',random,random
 MONSTER: 'Z',random,random
 MONSTER: 'Z',random,random
 MONSTER: 'Z',random,random

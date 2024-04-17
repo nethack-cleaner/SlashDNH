@@ -106,9 +106,9 @@ MAP
 0                                                                            
 ENDMAP
 # Monsters on siege duty.
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
@@ -400,7 +400,7 @@ ENDMAP
 #0123456789012345678901234567890123456789012345678901234567890123456789012345
 #0         1         2   	   3	     4		   5		 6	       7
 
-MONSTER: '.',"ghost",random
+MONSTER: '8',"ghost",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
@@ -449,9 +449,9 @@ ENDMAP
 #0         1         2   	   3	     4		   5		 6	       7
 
 
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
 MONSTER: '&',"damned pirate",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
@@ -687,7 +687,7 @@ OBJECT:random,random,random
 OBJECT:random,random,random
 OBJECT:random,random,random
 # Random monsters.
-MONSTER:'.',"Blackbeard's Ghost",(36,08)
+MONSTER:'8',"Blackbeard's Ghost",(36,08)
 MONSTER:'Z',random,random
 MONSTER:'Z',random,random
 MONSTER:'Z',random,random
@@ -748,7 +748,7 @@ INIT_MAP: 's' , '}' , false, false , lit , false
 NOMAP
 STAIR: (20,00,75,20), (0,0,20,20), down
 
-MONSTER: '.',"ghost",random
+MONSTER: '8',"ghost",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
 MONSTER: 'Z',"skeletal pirate",random
@@ -807,9 +807,9 @@ TRAP: random, random
 OBJECT:random,random,random
 TRAP: random, random
 
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
-MONSTER: '.',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
+MONSTER: '8',"ghost",random
 
 MONSTER: '@',"sergeant",random
 

@@ -37,3 +37,4 @@ Vorpal Blade is an isamusei
 Etherealoids can get gifted shields
 Stacks with unknown but identical bknown and known merge
 R'lyehian sight is implemented for players (as detection rather than vision)
+Default ghost and shade symbols are now 8 and 6 respectively

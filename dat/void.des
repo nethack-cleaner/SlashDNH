@@ -258,7 +258,7 @@ MONSTER:'h',"Malphas",random
 MONSTER:''',"Marionette",random
 MONSTER:'e',"Great Mother",random
 MONSTER:'d',"Naberius",random
-MONSTER:'.',"Orthos",random
+MONSTER:'8',"Orthos",random
 MONSTER:'@',"Ose",random
 MONSTER:'v',"Otiax",random
 MONSTER:'&',"Paimon",random

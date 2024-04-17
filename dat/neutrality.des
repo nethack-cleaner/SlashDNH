@@ -1062,7 +1062,7 @@ MONSTER[10%]:'b',"perfectly clear cube",random
 MONSTER[10%]:'U',"prayerful thing",random
 MONSTER[10%]:'U',"hemorrhagic thing",random
 MONSTER[10%]:'e',"many-eyed seeker",random
-MONSTER[10%]:' ',"voice in the dark",random
+MONSTER[10%]:'6',"voice in the dark",random
 MONSTER[10%]:'y',"tiny being of light",random
 
 MONSTER[10%]:'s',"man-faced millipede",random
@@ -2840,7 +2840,7 @@ MONSTER[75%]:'U',"prayerful thing",random
 MONSTER[75%]:'U',"hemorrhagic thing",random
 
 MONSTER[75%]:'e',"many-eyed seeker",random
-MONSTER[75%]:' ',"voice in the dark",random
+MONSTER[75%]:'6',"voice in the dark",random
 MONSTER[75%]:'y',"tiny being of light",random
 MONSTER[75%]:'s',"man-faced millipede",random
 
@@ -2987,7 +2987,7 @@ MONSTER[75%]:'U',"prayerful thing",random
 MONSTER[75%]:'U',"hemorrhagic thing",random
 
 MONSTER[75%]:'e',"many-eyed seeker",random
-MONSTER[75%]:' ',"voice in the dark",random
+MONSTER[75%]:'6',"voice in the dark",random
 MONSTER[75%]:'y',"tiny being of light",random
 MONSTER[75%]:'s',"man-faced millipede",random
 
@@ -3173,7 +3173,7 @@ MONSTER[75%]:'U',"prayerful thing",random
 MONSTER[75%]:'U',"hemorrhagic thing",random
 
 MONSTER[75%]:'e',"many-eyed seeker",random
-MONSTER[75%]:' ',"voice in the dark",random
+MONSTER[75%]:'6',"voice in the dark",random
 MONSTER[75%]:'y',"tiny being of light",random
 MONSTER[75%]:'s',"man-faced millipede",random
 
@@ -3345,7 +3345,7 @@ MONSTER[75%]:'U',"prayerful thing",random
 MONSTER[75%]:'U',"hemorrhagic thing",random
 
 MONSTER[75%]:'e',"many-eyed seeker",random
-MONSTER[75%]:' ',"voice in the dark",random
+MONSTER[75%]:'6',"voice in the dark",random
 MONSTER[75%]:'y',"tiny being of light",random
 MONSTER[75%]:'s',"man-faced millipede",random
 
@@ -3496,7 +3496,7 @@ MONSTER[75%]:'U',"prayerful thing",random
 MONSTER[75%]:'U',"hemorrhagic thing",random
 
 MONSTER[75%]:'e',"many-eyed seeker",random
-MONSTER[75%]:' ',"voice in the dark",random
+MONSTER[75%]:'6',"voice in the dark",random
 MONSTER[75%]:'y',"tiny being of light",random
 MONSTER[75%]:'s',"man-faced millipede",random
 

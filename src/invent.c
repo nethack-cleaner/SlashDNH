@@ -6546,10 +6546,9 @@ int bcu;
 		count++;
 	if(uarmf && bcu(uarmf) == bcu)
 		count++;
-	if(uleft && bcu(uleft) == bcu)
-		count++;
-	if(uright && bcu(uright) == bcu)
-		count++;
+	for(int i = 0; i < URINGS_SIZE; i++)
+	        if(urings[i] && bcu(urings[i]) == bcu)
+			count++;
 	if(uamul && bcu(uamul) == bcu && !uarmu && !(uarm && arm_blocks_upper_body(uarm->otyp)))
 		count++;
 	if(u.uentangled_oid && !uarmu && !(uarm && arm_blocks_upper_body(uarm->otyp)) && !uarmc && entangle_beatitude(&youmonst, bcu))

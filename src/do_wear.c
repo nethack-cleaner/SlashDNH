@@ -3336,13 +3336,13 @@ register struct obj *otmp;
 	*buf = '\0';			/* lint suppresion */
 
 	/* special ring checks */
-	if (otmp == uright || otmp == uleft) {
+	if (otmp->owornmask & W_RING) {
 	    if (nolimbs(youracedata)) {
 		pline_The("ring is stuck.");
 		return 0;
 	    }
 	    why = 0;	/* the item which prevents ring removal */
-	    if (welded(uwep) && (otmp == uright || bimanual(uwep,youracedata))) {
+	    if (welded(uwep) && (is_right_ring(otmp) || (bimanual(uwep,youracedata) && is_left_ring(otmp)))) {
 		Sprintf(buf, "free a weapon %s", body_part(HAND));
 		why = uwep;
 	    } else if (uarmg && uarmg->cursed && !Weldproof) {
@@ -3616,7 +3616,7 @@ doddoremarm()
 	set_occupation(take_off, disrobing, 0);
 	return MOVE_INSTANT;
     } else if (!uwep && !uswapwep && !uquiver && !uamul && !ublindf &&
-		!uleft && !uright && !wearing_armor()) {
+		!count_worn_rings(FALSE) && !wearing_armor()) {
 	You("are not wearing anything.");
 	return MOVE_CANCELLED;
     }

@@ -40,3 +40,6 @@ R'lyehian sight is implemented for players (as detection rather than vision)
 Default ghost and shade symbols are now 8 and 6 respectively
 New item: cloak of flight (from SpliceHack)
     Same stats as cloak of MR, but provides flight instead of MR
+Bring back night vision goggles from ndnh1
+      Uses blindfold slot, provides extramission
+      Ana dwarves start with them and there is a pair on the home level (and on the android home level)

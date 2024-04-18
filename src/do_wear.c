@@ -275,6 +275,7 @@ Cloak_on()
 	case WHITE_FACELESS_ROBE:
 	case BLACK_FACELESS_ROBE:
 	case SMOKY_VIOLET_FACELESS_ROBE:
+	case ALCHEMY_SMOCK:
 		break;
 	case MUMMY_WRAPPING:
 	case PRAYER_WARDED_WRAPPING:
@@ -299,10 +300,11 @@ Cloak_on()
 	case OILSKIN_CLOAK:
 		pline("%s very tightly.", Tobjnam(uarmc, "fit"));
 		break;
-	/* Alchemy smock gives poison _and_ acid resistance */
-	case ALCHEMY_SMOCK:
-		EAcid_resistance |= WORN_CLOAK;
-  		break;
+	case CLOAK_OF_FLIGHT:
+		pline("%s into a magnificent pair of wings!",
+		      Tobjnam(uarmc, "transform"));
+		makeknown(uarmc->otyp);
+		break;
 	default: impossible(unknown_type, c_cloak, uarmc->otyp);
     }
     /* vampires get a charisma bonus when wearing an opera cloak */
@@ -349,6 +351,7 @@ Cloak_off()
 	case DWARVISH_CLOAK:
 	case CLOAK_OF_PROTECTION:
 	case CLOAK_OF_MAGIC_RESISTANCE:
+	case CLOAK_OF_FLIGHT:
 	case CLOAK_OF_DISPLACEMENT:
 	case OILSKIN_CLOAK:
 	case ROBE:
@@ -357,6 +360,7 @@ Cloak_off()
 	case WHITE_FACELESS_ROBE:
 	case BLACK_FACELESS_ROBE:
 	case SMOKY_VIOLET_FACELESS_ROBE:
+	case ALCHEMY_SMOCK:
 		break;
 	case MUMMY_WRAPPING:
 	case PRAYER_WARDED_WRAPPING:
@@ -376,10 +380,6 @@ Cloak_off()
 			: see_yourself);
 		}
 		break;
-	/* Alchemy smock gives poison _and_ acid resistance */
-	case ALCHEMY_SMOCK:
-		EAcid_resistance &= ~WORN_CLOAK;
-  		break;
 	default: impossible(unknown_type, c_cloak, otyp);
     }
     /* vampires get a charisma bonus when wearing an opera cloak */

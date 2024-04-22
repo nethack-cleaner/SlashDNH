@@ -671,7 +671,8 @@ struct obj {
 		typ == PROTEIN_PILL ||\
 		typ == ETHERBLADE || \
 		typ == KNUCKLE_DUSTERS || \
-		typ == POWER_ARMOR  \
+		typ == POWER_ARMOR || \
+		typ == FORCE_ARMOR \
 		)
 
 #define ensouled_item(otmp)	(((otmp)->otyp >= WAGE_OF_SLOTH && (otmp)->otyp <= WAGE_OF_PRIDE)\

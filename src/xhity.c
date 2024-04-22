@@ -17577,6 +17577,38 @@ boolean endofchain;			/* if the attacker has finished their attack chain */
 				}
 			}
 		}
+
+		/* Force armor */
+		otmp = (youdef ? uarm : which_armor(mdef, W_ARM));
+		if(otmp && otmp->otyp == FORCE_ARMOR && /* wearing force armor */
+			distmin(x(magr), y(magr), x(mdef), y(mdef)) == 1 && /* in close quarters */
+			!(result&MM_AGR_DIED) && /* attacker is still alive */
+			(result&MM_HIT) /* attacker hit */
+		){
+			int mdx=0, mdy=0, oldmx=x(magr), oldmy=y(magr),
+				hurtledist=(3 + max(rn2(otmp->spe),1));
+			pline("%s %s thrown back by %s armor's forcefield!",
+				!youagr ? Monnam(magr) : "You",
+				!youagr ? "is" : "are",
+				youdef ? "your" : s_suffix(mon_nam(mdef)));
+			if(x(mdef) - x(magr) < 0) mdx = -1;
+			else if(x(mdef) - x(magr) > 0) mdx = +1;
+			if(y(mdef) - y(magr) < 0) mdy = -1;
+			else if(y(mdef) - y(magr) > 0) mdy = +1;
+			if (youagr) {
+				/* mhurtle checks size but hurtle doesn't */
+				if (magr->data->msize < MZ_HUGE)
+					hurtle(-mdx, -mdy, hurtledist, FALSE, FALSE);
+				/* mhurtle stuns but hurtle doesn't */
+				if (!Stunned) make_stunned((long)rnd(5), TRUE);
+			} else {
+				mhurtle(magr, -mdx, -mdy, hurtledist, FALSE);
+			}
+			if (oldmx != x(magr) || oldmy != y(magr)) {
+				if (DEADMONSTER(magr)) result |= MM_AGR_DIED;
+				else result |= MM_AGR_STOP;
+			}
+		}
 	}
 	return result;
 }

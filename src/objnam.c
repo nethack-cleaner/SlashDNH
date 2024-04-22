@@ -5058,6 +5058,7 @@ int wishflags;
 	   strncmpi(bp, "living arm", 10) &&
 	   strncmpi(bp, "barnacle arm", 12) &&
 	   strncmpi(bp, "power arm", 9) &&
+	   strncmpi(bp, "force arm", 9) &&
 	   strncmpi(bp, "tooled horn", 11) &&
 	   strncmpi(bp, "food ration", 11) &&
 	   strncmpi(bp, "meat ring", 9) && 

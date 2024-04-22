@@ -827,8 +827,8 @@ SUIT(("eilistran armor", "clockwork plate armor"),
 	0, 1,  MZ_HUGE,  ARMSZ_HEAVY,  	0,  5, 250, 2000, 5, 5, 2, SILVER, HI_SILVER, O_POWER(FLYING)),
 SUIT(("plasteel armor", "hard white armor", "armor"), /*Needs encyc entry*//*Needs tile*/
 	0, 0,   MZ_HUGE, ARMSZ_MEDIUM,  0,  5, 100,  500,  5, 5, 3, PLASTIC, CLR_WHITE),
-// ARMOR(("force armor", "gemstone-adorned clothing"),	/* out of date structure -- rewrite if adding */
-	// 0, 0, 1, 0,	 0, 5,  50, 1000, 9, 3, ARM_SUIT, GEMSTONE, CLR_BRIGHT_GREEN),
+SUIT(("force armor", "gemstone-adorned clothing"),
+	0, 0,   MZ_HUGE, ARMSZ_HEAVY,   0,  5,  50, 1000,  7, 3, 3, GEMSTONE, CLR_BRIGHT_GREEN),
 SUIT(("splint mail"),
 	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 62,  5, 200,   80,  6, 5, 2, IRON, HI_METAL),
 SUIT(("barnacle armor", "giant shell armor"),

@@ -81,7 +81,7 @@ static struct trobj Anachrononaut_Hu[] = {
 static struct trobj Anachrononaut_Hlf[] = {
 	{ AUTO_SHOTGUN,  3, WEAPON_CLASS, 1, 0 },
 	{ SHOTGUN_SHELL, 3, WEAPON_CLASS, 100, 0 },
-	{ SCALE_MAIL, 0, ARMOR_CLASS, 1, 0 },
+	{ FORCE_ARMOR, 0, ARMOR_CLASS, 1, 0 },
 	{ HELMET, 0, ARMOR_CLASS, 1, 0 },
 	{ GAUNTLETS, 0, ARMOR_CLASS, 1, 0 },
 	{ ARMORED_BOOTS, 0, ARMOR_CLASS, 1, 0 },

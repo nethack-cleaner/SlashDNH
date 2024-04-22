@@ -1720,10 +1720,6 @@ struct obj * obj;
 
 	/* after-creating-otmp special handling */
 
-	/* Sokoban guilt, boulder-like objects. Assumed to be the players fault. */
-	if (is_boulder(obj) && In_sokoban(&u.uz)) {
-	    change_luck(-1);
-	}
 	/* 'n' merged objects may be fused into 1 object */
 	if (otmp->quan > 1L &&
 		(!objects[otmp->otyp].oc_merge || (otmp->quan > (long)rn2(1000)))) {
@@ -5550,9 +5546,6 @@ fracture_rock(obj)	/* fractured by pick-axe or wand of striking */
 register struct obj *obj;		   /* no texts here! */
 {
 	int mat = obj->obj_material;
-	/* A little Sokoban guilt... */
-	if(In_sokoban(&u.uz) && !flags.mon_moving)
-	    change_luck(-1);
 
 	obj->otyp = ROCK;
 	obj->quan = (long) rn1(60, 7);

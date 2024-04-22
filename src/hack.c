@@ -318,8 +318,6 @@ moverock()
 			(flags.pickup && !In_sokoban(&u.uz))
 			    ? "pick it up" : "push it aside");
 			if (yn("Do it?") != 'y') return (-1);
-		    if (In_sokoban(&u.uz))
-			change_luck(-1);	/* Sokoban guilt */
 		    break;
 		}
 		break;
@@ -336,8 +334,6 @@ moverock()
 		|| verysmall(youracedata))) {
 		if (yn("However, you can squeeze yourself into a small opening. Do it?") != 'y') return (-1);
 
-		if (In_sokoban(&u.uz))
-		    change_luck(-1);	/* Sokoban guilt */
 		break;
 	    } else
 		return (-1);

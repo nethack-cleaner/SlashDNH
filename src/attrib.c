@@ -38,7 +38,7 @@ const struct innate {
 		     {	 0, 0, 0, 0 } },
 
 	acu_abil[] = { {   1, &(HFast), "quick", "slow" },
-		     {	1, &(ETelepat), "telepathic", "zoned out" },
+		     {	1, &(HTelepat), "telepathic", "zoned out" },
 		     {  7, &(HEcholocation), "able to echolocate with psionic pulses","less psionic" },
 		     {	10, &(HFlying), "able to control your altitude with your mind", "less in control of your altitude" },
 		     {	14, &(HReflecting), "able to repel forces with your mind", "less telekinetic" },

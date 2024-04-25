@@ -6615,7 +6615,9 @@ cleanup:
 	  !(u.sealsActive&SEAL_MALPHAS) && mtmp->malign <= 0 &&
 	   (mndx < PM_ARCHEOLOGIST || mndx > PM_WIZARD) &&
 	   u.ualign.type != A_CHAOTIC) {
-		HTelepat &= ~INTRINSIC;
+		/* acus cannot lose telepathy */
+		if (!Role_if(PM_ANACHRONOUNBINDER))
+			HTelepat &= ~INTRINSIC;
 		change_luck(-2);
 		if(mtmp->mtyp == PM_BLASPHEMOUS_LURKER)
 			You("...murderer!?");

@@ -154,34 +154,34 @@ struct prop {
 #	define W_ARMU	    0x00000040LL /* Undershirt */
 #	define W_ARMOR	     (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF | W_ARMU)
 	/* Weapons and artifacts */
-#	define W_WEP	    0x00000100LL /* Wielded weapon */
-#	define W_QUIVER     0x00000200LL /* Quiver for (f)iring ammo */
-#	define W_SWAPWEP    0x00000400LL /* Secondary weapon */
-#	define W_ART	    0x00001000LL /* Carrying artifact (not really worn) */
-#	define W_ARTI	    0x00002000LL /* Invoked artifact  (not really worn) */
+#	define W_WEP	    0x00000080LL /* Wielded weapon */
+#	define W_QUIVER     0x00000100LL /* Quiver for (f)iring ammo */
+#	define W_SWAPWEP    0x00000200LL /* Secondary weapon */
+#	define W_ART	    0x00000400LL /* Carrying artifact (not really worn) */
+#	define W_ARTI	    0x00000800LL /* Invoked artifact  (not really worn) */
 	/* Amulets, rings, tools, and other items */
-#	define W_AMUL	    0x00010000LL /* Amulet */
-#	define W_RING0	    0x00020000LL /* Ring 0 (left) */
-#	define W_RING1	    0x00040000LL /* Ring 1 (right) */
-#	define W_RING2	    0x00080000LL /* Ring 2 (extra) */
-#	define W_RING3	    0x00100000LL /* Ring 3 (extra) */
-#	define W_RING4	    0x00400000LL /* Ring 4 (extra) */
-#	define W_RING5	    0x00800000LL /* Ring 5 (extra) */
-#	define W_RING6	    0x01000000LL /* Ring 6 (extra) */
-#	define W_RING7 	    0x04000000LL /* Ring 7 (extra) */
+#	define W_AMUL	    0x00001000LL /* Amulet */
+#	define W_RING0	    0x00002000LL /* Ring 0 (left) */
+#	define W_RING1	    0x00004000LL /* Ring 1 (right) */
+#	define W_RING2	    0x00008000LL /* Ring 2 (extra) */
+#	define W_RING3	    0x00010000LL /* Ring 3 (extra) */
+#	define W_RING4	    0x00020000LL /* Ring 4 (extra) */
+#	define W_RING5	    0x00040000LL /* Ring 5 (extra) */
+#	define W_RING6	    0x00080000LL /* Ring 6 (extra) */
+#	define W_RING7 	    0x00100000LL /* Ring 7 (extra) */
 #	define W_RINGL	    W_RING0
 #	define W_RINGR	    W_RING1
 #	define W_RING	    (W_RING0 | W_RING1 | W_RING2 | W_RING3 | W_RING4 | W_RING5 | W_RING6 | W_RING7)
-#	define W_TOOL	    0x20000000LL /* Eyewear */
+#	define W_TOOL	    0x00200000LL /* Eyewear */
 #	define W_ACCESSORY	    (W_AMUL | W_RING | W_TOOL)
 #ifdef STEED
-#	define W_SADDLE     0x40000000LL	/* KMH -- For riding monsters */
+#	define W_SADDLE     0x00400000LL	/* KMH -- For riding monsters */
 #endif
-#	define W_BALL	    0x0000000080000000LL /* Punishment ball */
-#	define W_CHAIN	    0x0000000100000000LL /* Punishment chain */
-#	define W_SPIRIT	    0x0000000200000000LL	/* Bound spirit */
-#	define W_GLYPH	    0x0000000400000000LL	/* Active thought-glyph */
-#	define W_SKIN	    I_SPECIAL	/* merged into skin */
+#	define W_BALL	    0x00800000LL /* Punishment ball */
+#	define W_CHAIN	    0x01000000LL /* Punishment chain */
+#	define W_SPIRIT	    0x02000000LL	/* Bound spirit */
+#	define W_GLYPH	    0x04000000LL	/* Active thought-glyph */
+#	define W_SKIN	    0x08000000LL	/* merged into skin */
 #	define W_WORN	    (W_ARMOR | W_ACCESSORY)
 
 	/*** Property is blocked by an object ***/
@@ -190,16 +190,16 @@ struct prop {
 	/*** Timeouts, permanent properties, and other flags ***/
 	long long intrinsic;
 	/* Timed properties */
-#	define TIMEOUT	    0x00ffffffL /* Up to 16 million turns */
-#	define TIMEOUT_INF	0x00800000L	/* If you get this much, it won't decrement. should be a subset of TIMEOUT */
+#	define TIMEOUT	    0x00ffffffLL /* Up to 16 million turns */
+#	define TIMEOUT_INF	0x00800000LL	/* If you get this much, it won't decrement. should be a subset of TIMEOUT */
 	/* Permanent properties */
-#	define FROMEXPER    0x01000000L /* Gain/lose with experience, for role */
-#	define FROMRACE     0x02000000L /* Gain/lose with experience, for race */
-#	define FROMPOLY		0x04000000L	/* Gain/lose with polyform */
-#	define FROMOUTSIDE  0x08000000L /* Should generally not be lost. */
+#	define FROMEXPER    0x01000000LL /* Gain/lose with experience, for role */
+#	define FROMRACE     0x02000000LL /* Gain/lose with experience, for race */
+#	define FROMPOLY		0x04000000LL	/* Gain/lose with polyform */
+#	define FROMOUTSIDE  0x08000000LL /* Should generally not be lost. */
 #	define INTRINSIC    (FROMOUTSIDE|FROMRACE|FROMPOLY|FROMEXPER|TIMEOUT_INF)
 	/* Control flags */
-#	define I_SPECIAL    0x10000000L /* Property is controllable */
+#	define I_SPECIAL    0x10000000LL /* Property is controllable */
 };
 
 /*** Definitions for backwards compatibility ***/

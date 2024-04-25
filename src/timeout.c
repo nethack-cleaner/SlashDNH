@@ -2964,7 +2964,7 @@ wiz_timeout_queue()
                    width of 6 digits should result in values lining up
                    almost all the time (if/when they don't, it won't
                    look nice but the information will still be accurate) */
-                Sprintf(buf, " %*s %6ld", -longestlen, propname,
+                Sprintf(buf, " %*s %6lld", -longestlen, propname,
                         (intrinsic & TIMEOUT));
                 putstr(win, 0, buf);
             }

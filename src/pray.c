@@ -3868,6 +3868,13 @@ commune_with_silver_flame()
 
 	switch (menu_result) {
 		case FLAMEBOON_SMELT_IMPURITY:
+			if (uclockwork && metallic_material(u.clk_material) &&
+			    yn("Do you want to smelt yourself silver in the silver light?") == 'y') {
+				cost = 50;
+				You("smelt yourself to silver with the reflected light of the silver flame.");
+				u.clk_material = SILVER;
+				break;
+			}
 			otmp = getobj(all_classes, "smelt silver in the silver light");
 			if(otmp && sflm_smeltable_silver(otmp)){
 				cost = 50;
@@ -3878,6 +3885,13 @@ commune_with_silver_flame()
 			break;
 
 		case FLAMEBOON_SMELT_IMPERFECTION:
+			if (uclockwork && metallic_material(u.clk_material) &&
+			    yn("Do you want to smelt yourself platinum in the silver light?") == 'y') {
+				cost = 50;
+				You("smelt yourself to platinum with the reflected light of the silver flame.");
+				u.clk_material = PLATINUM;
+				break;
+			}
 			otmp = getobj(all_classes, "smelt platinum in the silver light");
 			if(otmp && sflm_smeltable_platinum(otmp)){
 				cost = 50;
@@ -3888,6 +3902,13 @@ commune_with_silver_flame()
 			break;
 
 		case FLAMEBOON_SMELT_IMMOBILITY:
+			if (uclockwork && metallic_material(u.clk_material) &&
+			    yn("Do you want to smelt yourself mithril in the silver light?") == 'y') {
+				cost = 50;
+				You("smelt yourself to mithril with the reflected light of the silver flame.");
+				u.clk_material = MITHRIL;
+				break;
+			}
 			otmp = getobj(all_classes, "smelt mithril in the silver light");
 			if(otmp && sflm_smeltable_mithril(otmp)){
 				cost = 50;
@@ -3923,6 +3944,18 @@ commune_with_silver_flame()
 			break;
 
 		case FLAMEBOON_REFLECTION:
+			if (uclockwork &&
+			    (u.clk_material == SILVER ||
+			     u.clk_material == PLATINUM ||
+			     u.clk_material == MITHRIL) &&
+			    !(HReflecting & INTRINSIC) &&
+			    yn("Do you want to melt yourself to a mirror finish?") == 'y') {
+				cost = 50;
+				You("melt yourself to a mirror finish.");
+			        HReflecting |= FROMOUTSIDE;
+				u.ucultsval += TIER_B;
+				break;
+			}
 			otmp = getobj(sflm_classes, "mirror-finish");
 			if(otmp){
 				if(sflm_mirrorable(otmp)){

@@ -1062,7 +1062,10 @@ const struct Species species[] = {
 	{"yellow", AD_ACID, DRAGON_SPECIES},
 	{"gray", AD_MAGM, DRAGON_SPECIES},
 	{"chaos", AD_RBRE, DRAGON_SPECIES},
-	{"black", AD_DISN, DRAGON_SPECIES}
+	{"black", AD_DISN, DRAGON_SPECIES},
+	{"bronze", COPPER, CLK_SPECIES},
+	{"iron", IRON, CLK_SPECIES},
+	{"green-steel", GREEN_STEEL, CLK_SPECIES},
 };
 
 
@@ -1379,6 +1382,11 @@ validspecies(rolenum, racenum, gendnum, speciesnum)
 			breath_type == AD_ELEC ||
 			breath_type == AD_DRST ||
 			breath_type == AD_ACID;
+	} else if(races[racenum].malenum == PM_CLOCKWORK_AUTOMATON
+		  /* ana and acu clockworks are androids, who don't have species */
+		  && roles[rolenum].malenum != PM_ANACHRONONAUT
+		  && roles[rolenum].malenum != PM_ANACHRONOUNBINDER){
+		return species[speciesnum].type == CLK_SPECIES;
 	}
 	return FALSE;
 

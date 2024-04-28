@@ -3868,7 +3868,7 @@ commune_with_silver_flame()
 
 	switch (menu_result) {
 		case FLAMEBOON_SMELT_IMPURITY:
-			if (uclockwork && metallic_material(u.clk_material) &&
+			if (uclockwork && metallic_material(u.clk_material) && u.clk_material != SILVER &&
 			    yn("Do you want to smelt yourself silver in the silver light?") == 'y') {
 				cost = 50;
 				You("smelt yourself to silver with the reflected light of the silver flame.");
@@ -3885,7 +3885,7 @@ commune_with_silver_flame()
 			break;
 
 		case FLAMEBOON_SMELT_IMPERFECTION:
-			if (uclockwork && metallic_material(u.clk_material) &&
+			if (uclockwork && metallic_material(u.clk_material) && u.clk_material != PLATINUM &&
 			    yn("Do you want to smelt yourself platinum in the silver light?") == 'y') {
 				cost = 50;
 				You("smelt yourself to platinum with the reflected light of the silver flame.");
@@ -3902,7 +3902,7 @@ commune_with_silver_flame()
 			break;
 
 		case FLAMEBOON_SMELT_IMMOBILITY:
-			if (uclockwork && metallic_material(u.clk_material) &&
+			if (uclockwork && metallic_material(u.clk_material) && u.clk_material != MITHRIL &&
 			    yn("Do you want to smelt yourself mithril in the silver light?") == 'y') {
 				cost = 50;
 				You("smelt yourself to mithril with the reflected light of the silver flame.");

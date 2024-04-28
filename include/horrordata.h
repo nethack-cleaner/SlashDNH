@@ -222,8 +222,6 @@ static int randBeamDamageTypes[] =
 						AD_DRLI,
 						AD_DREN,
 						AD_STON,
-						AD_SGLD,
-						AD_SITM,
 						AD_TLPT,
 						AD_RUST,
 						AD_CONF,
@@ -235,7 +233,6 @@ static int randBeamDamageTypes[] =
 						AD_CORR,
 						AD_POSN,
 						AD_SHRD,
-						AD_ABDC,
 						AD_TELE,
 						AD_POLY,
 						AD_CHRN,
@@ -244,7 +241,6 @@ static int randBeamDamageTypes[] =
 						AD_WEBS,
 						AD_SHDW,
 						AD_DESC,
-						AD_STTP
 					};
 
 static int randSpitDamageTypes[] =
@@ -276,7 +272,6 @@ static int randGazeDamageTypes[] =
 						AD_STUN,
 						AD_HALU,
 						AD_SLEE,
-						AD_BLNK,
 						AD_VAMP,
 						AD_WISD
 					};

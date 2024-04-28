@@ -5740,6 +5740,7 @@ boolean ranged;
 		/* polymorph? */
 		if (uncancelled
 			&& !(youdef ? Unchanging : mon_resistance(mdef, UNCHANGING))
+			&& (!Magic_res(mdef) || pa->geno&G_UNIQ)
 			&& !(is_rider(pd) || resists_poly(pd))
 			){
 			/* forced polyself */
@@ -17708,6 +17709,7 @@ boolean endofchain;			/* if the passive is occuring at the end of aggressor's at
 			case AD_POLY:
 				/* polymorph? */
 				if (!(youagr ? Unchanging : mon_resistance(magr, UNCHANGING))
+					&& (!Magic_res(magr) || pd->geno&G_UNIQ)
 					&& !(is_rider(pa) || resists_poly(pa))
 					){
 					/* forced polyself */

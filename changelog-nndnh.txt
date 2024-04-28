@@ -71,3 +71,4 @@ Player clockwork automata have materials
 	Rusting is resisted by waterproofing
 	Sear damage only applies on direct contact (like bare-handed attacks with no gloves)
 		Unlike Eden, there's no passive damage
+Barbarians can be chiropterans

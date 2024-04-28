@@ -313,7 +313,7 @@ LEVEL:		"soko1" "none" @ (1, 0)
 DUNGEON:	"Fort Ludios" "K" (1, 0)
 DESCRIPTION:	mazelike
 ALIGNMENT:	unaligned
-LEVEL:		"knox" "K" @ (-1, 0)
+RNDLEVEL:	"knox" "K" @ (-1, 0) 3
 
 #
 #

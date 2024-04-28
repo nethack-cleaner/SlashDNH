@@ -476,9 +476,11 @@ fixup_special()
 		/* stock the main vault */
 		for (x = croom->lx; x <= croom->hx; x++)
 		for (y = croom->ly; y <= croom->hy; y++) {
-			(void)mkgold((long)rn1(300, 600), x, y);
-			if (!rn2(3) && !is_pool(x, y, TRUE))
-				(void)maketrap(x, y, rn2(3) ? LANDMINE : SPIKED_PIT);
+			if (!is_solid(x,y)) {
+				(void)mkgold((long)rn1(300, 600), x, y);
+				if (!rn2(3) && !is_pool(x, y, TRUE))
+					(void)maketrap(x, y, rn2(3) ? LANDMINE : SPIKED_PIT);
+			}
 		}
 	}
     /* MEDUSA'S FLOOR: add statues */

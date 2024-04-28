@@ -7650,7 +7650,7 @@ struct mkroom *sroom;
 		  if(!In_outlands(&u.uz)) for(sx = sroom->lx+1; sx <= sroom->hx-1; sx++){
 			if(!isok(sx, sy))
 				break;//Won't get any less off the map.
-			if(cell_spot(sx, sy) && rn2(4)){
+			if(cell_spot(sx, sy) && !IS_ROCK(levl[sx][sroom->ly].typ) && rn2(4)){
 				mkcell(sx,sy,chest,ctype,0,-1);
 			}
 		  }
@@ -7658,7 +7658,7 @@ struct mkroom *sroom;
 		  for(sx = sroom->lx+1; sx <= sroom->hx-1; sx++){
 			if(!isok(sx, sy))
 				break;//Won't get any less off the map.
-			if(cell_spot(sx, sy) && rn2(4)){
+			if(cell_spot(sx, sy) && !IS_ROCK(levl[sx][sroom->hy].typ) && rn2(4)){
 				mkcell(sx,sy,chest,ctype,0,+1);
 			}
 		  }
@@ -7666,7 +7666,7 @@ struct mkroom *sroom;
 		  for(sy = sroom->ly+1; sy <= sroom->hy-1; sy++) {
 			if(!isok(sx, sy))
 				break;//Won't get any less off the map.
-			if(cell_spot(sx, sy) && rn2(4)){
+			if(cell_spot(sx, sy) && !IS_ROCK(levl[sroom->lx][sy].typ) && rn2(4)){
 				mkcell(sx,sy,chest,ctype,-1,0);
 			}
 		  }
@@ -7674,7 +7674,7 @@ struct mkroom *sroom;
 		  for(sy = sroom->ly+1; sy <= sroom->hy-1; sy++) {
 			if(!isok(sx, sy))
 				break;//Won't get any less off the map.
-			if(cell_spot(sx, sy) && rn2(4)){
+			if(cell_spot(sx, sy) && !IS_ROCK(levl[sroom->hx][sy].typ) && rn2(4)){
 				mkcell(sx,sy,chest,ctype,+1,0);
 			}
 		  }

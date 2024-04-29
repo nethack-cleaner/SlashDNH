@@ -94,7 +94,6 @@ msgpline_type(msg)
  */
 const char * FDECL(replace, (const char *, const char *, const char *));
 
-#if defined(USE_STDARG) || defined(USE_VARARGS)
 static void FDECL(vpline, (const char *, va_list));
 
 void
@@ -108,25 +107,11 @@ pline VA_DECL(const char *, line)
 
 char prevmsg[BUFSZ];
 
-# ifdef USE_STDARG
 static void
 vpline(const char *line, va_list the_args) {
-# else
-static void
-vpline(line, the_args) const char *line; va_list the_args; {
-# endif
-
-#else	/* USE_STDARG | USE_VARARG */
-
-#define vpline pline
-
-void
-pline VA_DECL(const char *, line)
-#endif	/* USE_STDARG | USE_VARARG */
-
 	char pbuf[BUFSZ];
 	int typ;
-/* Do NOT use VA_START and VA_END in here... see above */
+	/* Do NOT use VA_START and VA_END in here... see above */
 
 	if (!line || !*line) return;
 	if (index(line, '%')) {
@@ -308,7 +293,6 @@ verbalize VA_DECL(const char *,line)
  * of the variable argument handling stuff in "tradstdc.h"
  */
 
-#if defined(USE_STDARG) || defined(USE_VARARGS)
 static void FDECL(vraw_printf,(const char *,va_list));
 
 void
@@ -320,20 +304,9 @@ raw_printf VA_DECL(const char *, line)
 	VA_END();
 }
 
-# ifdef USE_STDARG
 static void
 vraw_printf(const char *line, va_list the_args) {
-# else
-static void
-vraw_printf(line, the_args) const char *line; va_list the_args; {
-# endif
-
-#else  /* USE_STDARG | USE_VARARG */
-
-void
-raw_printf VA_DECL(const char *, line)
-#endif
-/* Do NOT use VA_START and VA_END in here... see above */
+	/* Do NOT use VA_START and VA_END in here... see above */
 
 	if(!index(line, '%'))
 	    raw_print(line);

@@ -517,6 +517,7 @@ register struct monst *mtmp;
 /*VARARGS1*/
 void
 panic VA_DECL(const char *, str)
+{
 	VA_START(str);
 	VA_INIT(str, char *);
 	/*The actual panic code is too prone to shredding games*/
@@ -529,6 +530,7 @@ panic VA_DECL(const char *, str)
 	    raw_print(buf);
 	    paniclog("panic", buf);
 	}
+	VA_END();
 	NH_abort(); /*actually just die here*/
 }
 

@@ -252,7 +252,7 @@ E boolean FDECL(blockedFightingForm, (int));
 E boolean FDECL(blockedMentalEdge, (int));
 E int NDECL(uhp);
 E int NDECL(uhpmax);
-E void NDECL(check_brainlessness);
+E void FDECL(check_brainlessness, (const char *));
 E boolean FDECL(change_hod, (int));
 E boolean FDECL(change_chokhmah, (int));
 E boolean FDECL(change_gevurah, (int));

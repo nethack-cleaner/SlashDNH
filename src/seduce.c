@@ -716,34 +716,7 @@ int dmg;
 				}
 				//begin moved brain removal messages
 				Your("brain is cored like an apple!");
-				if (ABASE(A_INT) <= 3) {
-					int lifesaved = 0;
-					struct obj *wore_amulet = uamul;
-					while(1) {
-							/* avoid looping on "die(y/n)?" */
-							if (lifesaved && (discover || wizard)) {
-								if (wore_amulet && !uamul) {
-									/* used up AMULET_OF_LIFE_SAVING; still
-									   subject to dying from brainlessness */
-									wore_amulet = 0;
-								} else {
-									/* explicitly chose not to die;
-									   arbitrarily boost intelligence */
-									ABASE(A_INT) = ATTRMIN(A_INT) + 2;
-									You_feel("like a scarecrow.");
-									break;
-								}
-							}
-						if (lifesaved)
-							pline("Unfortunately your brain is still gone.");
-						else
-							Your("last thought fades away.");
-						killer = "destruction of the brain and spinal cord";
-						killer_format = KILLED_BY;
-						done(DIED);
-						lifesaved++;
-					}
-				}
+				check_brainlessness("destruction of the brain and spinal cord");
 				losehp(Half_physical_damage ? dmg/2 + 1 : dmg, "head trauma", KILLED_BY);
 				change_usanity(u_sanity_loss_minor(mon), TRUE); /*Forces a san check*/
 			break;

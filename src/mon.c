@@ -9594,7 +9594,7 @@ struct monst *mtmp;
 						forget(4);	/* lose 4% of memory per point lost*/
 						exercise(A_WIS, FALSE);
 					}
-					check_brainlessness();
+					check_brainlessness("brainlessness");
 				}
 
 				mtmp->mhp += damage*10;

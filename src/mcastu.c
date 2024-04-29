@@ -3265,7 +3265,7 @@ int tary;
 					exercise(A_INT, FALSE);
 					exercise(A_WIS, FALSE);
 					exercise(A_CHA, FALSE);
-					check_brainlessness();
+					check_brainlessness("brainlessness");
 				}
 				if(save_vs_sanloss())
 					change_usanity(-1*(25-ACURR(stat))/2, FALSE);

@@ -5944,37 +5944,7 @@ boolean ranged;
 				water_damage(invent, FALSE, FALSE, TRUE, &youmonst);
 				exercise(A_WIS, FALSE);
 			}
-			if (ABASE(A_INT) <= 3) {
-				int lifesaved = 0;
-				struct obj *wore_amulet = uamul;
-
-				while (1) {
-					/* avoid looping on "die(y/n)?" */
-					if (lifesaved && (discover || wizard)) {
-						if (wore_amulet && !uamul) {
-							/* used up AMULET_OF_LIFE_SAVING; still
-							subject to dying from brainlessness */
-							wore_amulet = 0;
-						}
-						else {
-							/* explicitly chose not to die;
-							arbitrarily boost intelligence */
-							ABASE(A_INT) = ATTRMIN(A_INT) + 2;
-							You_feel("like a scarecrow.");
-							break;
-						}
-					}
-					if (lifesaved)
-						pline("Unfortunately your mind is still gone.");
-					else
-						Your("last thought drifts away.");
-					killer = "memory loss";
-					killer_format = KILLED_BY;
-					done(DIED);
-					lifesaved++;
-					result |= MM_DEF_LSVD;
-				}
-			}
+			check_brainlessness("memory loss");
 		}
 		else {
 			if (vis&VIS_MDEF)
@@ -8478,7 +8448,7 @@ boolean ranged;
 				else
 					Your("brain is eaten!");
 				/* No such thing as mindless players... */
-				check_brainlessness();
+				check_brainlessness("brainlessness");
 				if (youdef && attk->aatyp == AT_TENT && roll_madness(MAD_HELMINTHOPHOBIA)){
 					You("panic from the burrowing tentacles!");
 					HPanicking += 1+rnd(6);
@@ -10572,37 +10542,7 @@ int vis;
 
 				exercise(A_WIS, FALSE);
 			}
-			if (ABASE(A_INT) <= 3) {
-				int lifesaved = 0;
-				struct obj *wore_amulet = uamul;
-
-				while (1) {
-					/* avoid looping on "die(y/n)?" */
-					if (lifesaved && (discover || wizard)) {
-						if (wore_amulet && !uamul) {
-							/* used up AMULET_OF_LIFE_SAVING; still
-							subject to dying from brainlessness */
-							wore_amulet = 0;
-						}
-						else {
-							/* explicitly chose not to die;
-							arbitrarily boost intelligence */
-							ABASE(A_INT) = ATTRMIN(A_INT) + 2;
-							You_feel("like a scarecrow.");
-							break;
-						}
-					}
-					if (lifesaved)
-						pline("Unfortunately your mind is still gone.");
-					else
-						Your("last thought drifts away.");
-					killer = "memory loss";
-					killer_format = KILLED_BY;
-					done(DIED);
-					lifesaved++;
-					result |= MM_DEF_LSVD;
-				}
-			}
+			check_brainlessness("memory loss");
 		}
 		else {
 			if (vis&VIS_MDEF)

@@ -74,3 +74,5 @@ Player clockwork automata have materials
 Barbarians can be chiropterans
 New Ludios levels from UnNetHack (Winterly Fort Ludios and Minas Tirith)
 	Minas Tirith has some extra secret doors to ensure that there are no unreachable areas
+Brainlessness does not bypass lifesaving
+	Lifesaving from brainlessness sets your Int to 5

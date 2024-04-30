@@ -42,9 +42,7 @@
 #define P_LANCE             20
 #define P_BOW               21
 #define P_SLING             22
-//#ifdef FIREARMS
-#define P_FIREARM			23	/* KMH */
-//#endif
+#define P_FIREARM           23	/* KMH */
 #define P_CROSSBOW          24
 #define P_DART              25
 #define P_SHURIKEN          26
@@ -66,12 +64,8 @@
 #define P_MATTER_SPELL      (P_LAST_WEAPON + 7)
 #define P_WAND_POWER		(P_LAST_WEAPON + 8)
 #define P_FIRST_SPELL		P_ATTACK_SPELL
-#ifdef BARD
 #define P_MUSICALIZE		(P_LAST_WEAPON + 9)	/* 'cast' spells as songs */
 #define P_LAST_SPELL		P_MUSICALIZE
-#else
-#define P_LAST_SPELL		P_WAND_POWER
-#endif
 
 /* musicalize indices */
 #define SNG_FEAR		1

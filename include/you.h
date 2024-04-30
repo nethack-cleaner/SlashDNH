@@ -744,11 +744,9 @@ struct you {
 	struct monst *ustuck;
 	boolean petattacked;
 	boolean pethped;
-#ifdef STEED
 	struct monst *usteed;
 	long ugallop;
 	int urideturns;
-#endif
 	int	umortality;		/* how many times you died */
 	int ugrave_arise; /* you die and become something aside from a ghost */
 	time_t	ubirthday;		/* real world time when game began */

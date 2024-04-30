@@ -580,7 +580,6 @@ int	mntmp;
 
 	if (!sticky && !u.uswallow && u.ustuck && sticks(&youmonst)) u.ustuck = 0;
 	else if (sticky && !sticks(&youmonst)) uunstick();
-#ifdef STEED
 	if (u.usteed) {
 	    if (touch_petrifies(u.usteed->data) &&
 	    		!Stone_resistance && rnl(100) >= 33) {
@@ -593,15 +592,12 @@ int	mntmp;
  	    }
 	    if (!can_ride(u.usteed)) dismount_steed(DISMOUNT_POLY);
 	}
-#endif
 
 	if (flags.verbose) {
 	    static const char use_thec[] = "Use the command #%s to %s.";
 	    static const char monsterc[] = "monster";
-#ifdef YOUMONST_SPELL
 	    if (attacktype(youmonst.data, AT_MAGC))
 		pline(use_thec,monsterc,"cast monster spells");
-#endif /* YOUMONST_SPELL */
 	    if (is_drow(youmonst.data))
 		pline(use_thec,monsterc,"invoke darkness");
 	    if (uclockwork)

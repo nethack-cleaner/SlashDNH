@@ -430,16 +430,9 @@ do_rumors()
 }
 
 /*
- * 3.4.1: way back in 3.2.1 `flags.nap' became unconditional but
- * TIMED_DELAY was erroneously left in VERSION_FEATURES and has
- * been there up through 3.4.0.  Simply removing it now would
- * break save file compatibility with 3.4.0 files, so we will
- * explicitly mask it out during version checks.
- * This should go away in the next version update.
+ * Use this to explicitly mask out features during version checks.
  */
-#define IGNORED_FEATURES	( 0L \
-				| (1L << 23)	/* TIMED_DELAY */ \
-				)
+#define IGNORED_FEATURES	( 0L )
 
 static void
 make_version()
@@ -465,20 +458,11 @@ make_version()
 #ifdef REINCARNATION
 			| (1L <<  1)
 #endif
-#ifdef SINKS
-			| (1L <<  2)
-#endif
 		/* monsters (5..9) */
 #ifdef MAIL
 			| (1L <<  7)
 #endif
 		/* objects (10..14) */
-#ifdef TOURIST
-			| (1L << 10)
-#endif
-#ifdef STEED
-			| (1L << 11)
-#endif
 #ifdef GOLDOBJ
 			| (1L << 12)
 #endif
@@ -488,15 +472,6 @@ make_version()
 #endif
 #ifdef INSURANCE
 			| (1L << 18)
-#endif
-#ifdef ELBERETH
-			| (1L << 19)
-#endif
-#ifdef EXP_ON_BOTL
-			| (1L << 20)
-#endif
-#ifdef SCORE_ON_BOTL
-			| (1L << 21)
 #endif
 		/* data format [COMPRESS excluded] (27..31) */
 #ifdef ZEROCOMP
@@ -603,10 +578,8 @@ do_date(int verinfo)
 		version.incarnation, ul_sfx);
 	Fprintf(ofp,"#define VERSION_FEATURES 0x%08llx%s\n",
 		version.feature_set, ul_sfx);
-#ifdef IGNORED_FEATURES
 	Fprintf(ofp,"#define IGNORED_FEATURES 0x%08lx%s\n",
 		(unsigned long) IGNORED_FEATURES, ul_sfx);
-#endif
 	Fprintf(ofp,"#define VERSION_SANITY1 0x%08llx%s\n",
 		version.entity_count, ul_sfx);
 	Fprintf(ofp,"#define VERSION_SANITY2 0x%08llx%s\n",
@@ -659,9 +632,6 @@ static const char *build_opts[] = {
 #ifdef ANSI_DEFAULT
 		"ANSI default terminal",
 #endif
-#ifdef AUTOPICKUP_EXCEPTIONS
-		"autopickup_exceptions",
-#endif
 #ifdef TEXTCOLOR
 		"color",
 #endif
@@ -677,15 +647,6 @@ static const char *build_opts[] = {
 #ifdef WIZARD
 		"debug mode",
 #endif
-#ifdef REALTIME_ON_BOTL
-                "elapsed time on status line",
-#endif
-#ifdef ELBERETH
-		"Elbereth",
-#endif
-#ifdef EXP_ON_BOTL
-		"experience points on status line",
-#endif
 #ifdef MFLOPPY
 		"floppy drive support",
 #endif
@@ -694,9 +655,6 @@ static const char *build_opts[] = {
 #endif
 #ifdef INSURANCE
 		"insurance files for recovering from crashes",
-#endif
-#ifdef KOPS
-		"Keystone Kops",
 #endif
 #ifdef HOLD_LOCKFILE_OPEN
 		"exclusive lock on level 0 file",
@@ -734,17 +692,8 @@ static const char *build_opts[] = {
 #  endif
 # endif
 #endif
-#ifdef REDO
-		"redo command",
-#endif
 #ifdef REINCARNATION
 		"rogue level",
-#endif
-#ifdef STEED
-		"saddles and riding",
-#endif
-#ifdef SCORE_ON_BOTL
-		"score on status line",
 #endif
 #ifdef CLIPPING
 		"screen clipping",
@@ -774,9 +723,6 @@ static const char *build_opts[] = {
 #ifdef SHELL
 		"shell command",
 #endif
-#ifdef SINKS
-		"sinks",
-#endif
 #ifdef SUSPEND
 		"suspend command",
 #endif
@@ -789,9 +735,6 @@ static const char *build_opts[] = {
 #endif
 #ifdef TIMED_DELAY
 		"timed wait for display effects",
-#endif
-#ifdef TOURIST
-		"tourists",
 #endif
 #ifdef USER_SOUNDS
 # ifdef USER_SOUNDS_REGEX
@@ -806,35 +749,11 @@ static const char *build_opts[] = {
 #ifdef VISION_TABLES
 		"vision tables",
 #endif
-#ifdef WALLIFIED_MAZE
-		"walled mazes",
-#endif
 #ifdef WIN_EDGE
 		"win_edge",
 #endif
 #ifdef ZEROCOMP
 		"zero-compressed save files",
-#endif
-#ifdef RECORD_TURNS
-                "record turns in xlogfile",
-#endif
-#ifdef RECORD_CONDUCT
-                "record conduct in xlogfile",
-#endif
-#ifdef RECORD_ACHIEVE
-                "record major achievements in xlogfile",
-#endif
-#ifdef RECORD_REALTIME
-                "record real time in xlogfile",
-#endif
-#ifdef RECORD_START_END_TIME
-                "record starting and ending time in xlogfile",
-#endif
-#ifdef RECORD_GENDER0
-                "record initial gender in xlogfile",
-#endif
-#ifdef RECORD_ALIGN0
-                "record initial alignment in xlogfile",
 #endif
 		save_bones_compat_buf,
 		"basic NetHack features"
@@ -1073,12 +992,6 @@ h_filter(line)
     if (*line == '#') return TRUE;	/* ignore comment lines */
     if (sscanf(line, "----- %s", tag) == 1) {
 	skip = FALSE;
-#ifndef SINKS
-	if (!strcmp(tag, "SINKS")) skip = TRUE;
-#endif
-#ifndef ELBERETH
-	if (!strcmp(tag, "ELBERETH")) skip = TRUE;
-#endif
     } else if (skip && !strncmp(line, "-----", 5))
 	skip = FALSE;
     return skip;
@@ -1950,11 +1863,9 @@ do_objs()
 
 		if (!strncmp(objnam, "THE_", 4))
 			objnam += 4;
-#ifdef TOURIST
 		/* fudge _platinum_ YENDORIAN EXPRESS CARD */
 		if (!strncmp(objnam, "PLATINUM_", 9))
 			objnam += 9;
-#endif
 		Fprintf(ofp,"#define\tART_%s\t%d\n", limit(objnam, 1), i);
 	}
 

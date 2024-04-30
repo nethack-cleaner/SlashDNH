@@ -759,10 +759,8 @@ struct level_map {
 
 
 	{ "minetn",     &minetown_level },
-#ifdef RECORD_ACHIEVE
 	{ "minend",     &mineend_level },
 	{ "soko1",      &sokoend_level },
-#endif
 	/*Void*/
 	{ "ilsensin",	&ilsensin_level },
 	{ "farvoid",	&farvoid_level },
@@ -1353,10 +1351,8 @@ int x, y;
 #ifdef CLIPPING
 	cliparound(u.ux, u.uy);
 #endif
-#ifdef STEED
 	/* ridden steed always shares hero's location */
 	if (u.usteed) u.usteed->mx = u.ux, u.usteed->my = u.uy;
-#endif
 }
 
 void

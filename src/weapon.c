@@ -34,9 +34,7 @@ STATIC_DCL int FDECL(enhance_skill, (boolean));
 #define PN_HARVEST				(-15)
 #define PN_BEAST_MASTERY		(-16)
 #define PN_FIREARMS				(-17)
-#ifdef BARD
 #define PN_MUSICALIZE			(-18)
-#endif
 #define PN_SHII_CHO				(-19)
 #define PN_MAKASHI				(-20)
 #define PN_SORESU				(-21)
@@ -85,18 +83,14 @@ STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	PN_CLERIC_SPELL,     PN_ESCAPE_SPELL,
 	PN_MATTER_SPELL,
 	PN_WAND_DAMAGE,
-#ifdef BARD
 	PN_MUSICALIZE,
-#endif
 	PN_BARE_HANDED,   PN_TWO_WEAPONS, PN_SHIELD,
 	PN_BEAST_MASTERY,
 	PN_SHII_CHO, PN_MAKASHI, PN_SORESU, PN_ATARU,
 	PN_DJEM_SO, PN_SHIEN, PN_NIMAN, PN_JUYO,
 	PN_SHIELD_BASH, PN_GREAT_WEP, PN_HALF_SWORD,
 	PN_KNI_SACRED, PN_KNI_ELDRITCH, PN_KNI_RUNIC,
-#ifdef STEED
 	PN_RIDING
-#endif
 };
 
 /* note: entry [0] isn't used */
@@ -119,9 +113,7 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
 	"farm implements",
 	"beast mastery",
     "firearms",
-#ifdef BARD
 	"musicalize spell",
-#endif
     "form I: Shii-Cho",
     "form II: Makashi",
     "form III: Soresu",
@@ -1552,9 +1544,7 @@ static NEARDATA const int rwep[] =
 	BANDS/*lost turns*/, 
 	ROPE_OF_ENTANGLING/*lost turns*/, 
 	LOADSTONE/*1d30 plus weight*/, 
-// #ifdef FIREARMS
 	FRAG_GRENADE, GAS_GRENADE, ROCKET, SILVER_BULLET, BULLET, SHOTGUN_SHELL,
-// #endif
 	DROVEN_BOLT/*1d9+1/1d6+1*/, 
 	DWARVISH_SPEAR/*1d9/1d9*/, 
 	SHURIKEN/*1d8/1d6*/, 
@@ -1752,7 +1742,6 @@ register struct monst *mtmp;
 		case P_SLING:
 		  propellor = (oselect(mtmp, SLING, W_WEP));
 		  break;
-//ifdef FIREARMS
 		case P_FIREARM:
 		  if ((objects[rwep[i]].w_ammotyp) == WP_BULLET) {
 			propellor = (oselect(mtmp, BFG, W_WEP));
@@ -1776,7 +1765,6 @@ register struct monst *mtmp;
 			if (!propellor) propellor = &zeroobj;  /* can toss grenades */
 		  }
 		break;
-//endif
 		case P_CROSSBOW:
 		  propellor = (oselect(mtmp, DROVEN_CROSSBOW, W_WEP));
 		  if (!propellor) propellor = (oselect(mtmp, CROSSBOW, W_WEP));
@@ -3492,10 +3480,8 @@ struct obj *obj;
 	if (!obj)
 		/* Not using a weapon */
 		return (P_BARE_HANDED_COMBAT);
-#ifdef CONVICT
     if ((obj->otyp == HEAVY_IRON_BALL) && (Role_if(PM_CONVICT) || u.sealsActive&SEAL_AHAZU))
         return objects[obj->otyp].oc_skill;
-#endif /* CONVICT */
     if ((obj->otyp == CHAIN) && (Role_if(PM_CONVICT) || u.sealsActive&SEAL_AHAZU))
         return objects[obj->otyp].oc_skill;
     if (is_shield(obj) && activeFightingForm(FFORM_SHIELD_BASH))
@@ -3743,7 +3729,6 @@ int wep_type;
 		else if (!twowepwarn) twowepwarn = TRUE;
 	}
 
-#ifdef STEED
 	/* KMH -- It's harder to hit while you are riding */
 	if (u.usteed) {
 		switch (P_SKILL(P_RIDING)) {
@@ -3755,7 +3740,6 @@ int wep_type;
 		}
 		if (u.twoweap) bonus -= 2;
 	}
-#endif
 	//Do to-hit bonuses for lightsaber forms here.  May do other fighting styles at some point.
 	if(weapon && is_lightsaber(weapon) && litsaber(weapon) && uwep == weapon){
 		validateLightsaberForm();
@@ -4063,7 +4047,6 @@ int wep_type;
 		}
 	}
 
-#ifdef STEED
 	/* KMH -- Riding gives some thrusting damage */
 	if (u.usteed && type != P_TWO_WEAPON_COMBAT) {
 		switch (P_SKILL(P_RIDING)) {
@@ -4074,7 +4057,6 @@ int wep_type;
 		    case P_EXPERT:      bonus += 5; break;
 		}
 	}
-#endif
 
 	//Do damage bonuses for lightsaber forms here.  May do other fighting styles at some point.
 	if(weapon && is_lightsaber(weapon) && litsaber(weapon) && uwep == weapon){
@@ -4349,10 +4331,8 @@ const struct def_skill *class_skill;
 	}
 
 	/* Roles that start with a horse know how to ride it */
-#ifdef STEED
 	if (urole.petnum == PM_PONY)
 	    OLD_P_SKILL(P_RIDING) = P_BASIC;
-#endif
 	
 	/*
 	 * Make sure we haven't missed setting the max on a skill

@@ -18,10 +18,8 @@ static boolean FDECL(wishymatch, (const char *,const char *,BOOLEAN_P));
 static char *NDECL(nextobuf);
 static void FDECL(add_erosion_words, (struct obj *, char *));
 char * doxname(struct obj *, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P);
-#ifdef SORTLOOT
 char * FDECL(xname2, (struct obj *,BOOLEAN_P));
 boolean FDECL(an_bool, (const char *));
-#endif
 
 #define useJNames (Role_if(PM_SAMURAI) || (Role_if(PM_MADMAN) && Race_if(PM_YUKI_ONNA)))
 struct Jitem {
@@ -2146,9 +2144,7 @@ boolean getting_obj_base_desc;
 					Sprintf(eos(buf), " of %s", an(mons[obj->corpsenm].mname));
 			}
 		}
-#ifdef SORTLOOT
 		if (!ignore_oquan)
-#endif
 		if (obj->quan != 1L) Strcpy(buf, makeplural(buf));
 	}//endif !obj_is_pname(obj)
 	
@@ -2269,7 +2265,6 @@ weapon:
 					break;
 				}
 			}
-			//#ifdef FIREARMS
 			if (obj->otyp == STICK_OF_DYNAMITE) {
 				if (obj->lamplit) Strcat(buf, " (lit)");
 #  ifdef DEBUG
@@ -2282,7 +2277,6 @@ weapon:
 				Sprintf(eos(buf), " (%d)", obj->age);
 #  endif
 			}
-			//#endif	/* FIREARMS */
 			if (obj->otyp == RAYGUN){
 				if (obj->altmode == AD_SLEE) Strcat(buf, " (stun)");
 				else if (obj->altmode == AD_FIRE) Strcat(buf, " (heat)");
@@ -2381,9 +2375,7 @@ weapon:
 			break;
 		case TOOL_CLASS:
 			if (obj->owornmask & (W_TOOL /* blindfold */
-#ifdef STEED
 				| W_SADDLE
-#endif
 				)) {
 				Strcat(buf, (obj == uskin) ? " (embedded in your skin)" :
 				" (being worn)");
@@ -2734,7 +2726,6 @@ struct obj *obj;
 	    return corpse_xname(obj, FALSE);
 	return xname(obj);
 }
-#ifdef SORTLOOT
 char *
 cxname2(obj)
 struct obj *obj;
@@ -2743,7 +2734,6 @@ struct obj *obj;
 	    return corpse_xname(obj, TRUE);
 	return xname2(obj, TRUE);
 }
-#endif /* SORTLOOT */
 
 /* treat an object as fully ID'd when it might be used as reason for death */
 char *
@@ -3497,9 +3487,7 @@ STATIC_OVL NEARDATA const struct o_range o_ranges[] = {
 	{ "boots",	ARMOR_CLASS,  LOW_BOOTS,      FLYING_BOOTS },
 	{ "shoes",	ARMOR_CLASS,  LOW_BOOTS,      SHOES },
 	{ "cloak",	ARMOR_CLASS,  MUMMY_WRAPPING, CLOAK_OF_DISPLACEMENT },
-#ifdef TOURIST
 	{ "shirt",	ARMOR_CLASS,  HAWAIIAN_SHIRT, RUFFLED_SHIRT },
-#endif
 	{ "dragon scales",
 			ARMOR_CLASS,  GRAY_DRAGON_SCALES, YELLOW_DRAGON_SCALES },
 	{ "dragon scale shield",
@@ -3510,11 +3498,9 @@ STATIC_OVL NEARDATA const struct o_range o_ranges[] = {
 			ARMOR_CLASS,  GRAY_DRAGON_SCALE_MAIL, YELLOW_DRAGON_SCALE_MAIL },
 	{ "sword",	WEAPON_CLASS, SHORT_SWORD,    KATANA },
 	{ "melee",	WEAPON_CLASS, SPEAR,    KATAR },
-//#ifdef FIREARMS
 	{ "firearm", 	WEAPON_CLASS, PISTOL, AUTO_SHOTGUN },
 	{ "gun", 	WEAPON_CLASS, PISTOL, AUTO_SHOTGUN },
 	{ "grenade", 	WEAPON_CLASS, FRAG_GRENADE, GAS_GRENADE },
-//#endif
 #ifdef WIZARD
 	{ "venom",	VENOM_CLASS,  BLINDING_VENOM, ACID_VENOM },
 #endif
@@ -3825,17 +3811,14 @@ struct alt_spellings {
 	{ "amulet versus gazes", AMULET_VERSUS_EVIL_EYES },
 	{ "stone", ROCK },
 	{ "crystal", ROCK },
-#ifdef TOURIST
 	{ "camera", EXPENSIVE_CAMERA },
 	{ "tee shirt", T_SHIRT },
-#endif
 	{ "lembas", LEMBAS_WAFER },
 	{ "can", TIN },
 	{ "can opener", TIN_OPENER },
 	{ "kelp", KELP_FROND },
 	{ "eucalyptus", EUCALYPTUS_LEAF },
 	{ "grapple", GRAPPLING_HOOK },
-//#ifdef FIREARMS
 	{ "handgun", PISTOL },
 	{ "hand-gun", PISTOL },
 	{ "hand gun", PISTOL },
@@ -3844,7 +3827,6 @@ struct alt_spellings {
 	{ "hand grenade", FRAG_GRENADE },
 	{ "dynamite", STICK_OF_DYNAMITE },
 	{ "ampule", HYPOSPRAY_AMPULE },
-//#endif
 	{ "rum", POT_BOOZE },
 	{ "sea biscuit", CRAM_RATION },
 	{ "cutlass", SCIMITAR },
@@ -5427,7 +5409,6 @@ srch:
 			*wishreturn = WISH_SUCCESS;
 			return(&zeroobj);
 		}
-# ifdef SINKS
 		if(!BSTRCMP(bp, p-4, "sink")) {
 			levl[u.ux][u.uy].typ = SINK;
 			level.flags.nsinks++;
@@ -5436,7 +5417,6 @@ srch:
 			*wishreturn = WISH_SUCCESS;
 			return &zeroobj;
 		}
-# endif
 		if(!BSTRCMP(bp, p-12, "hellish seal")) {
 			levl[u.ux][u.uy].typ = HELLISH_SEAL;
 			if(VN_MAX > VAULT_LIMIT){

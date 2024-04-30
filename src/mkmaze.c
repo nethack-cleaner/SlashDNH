@@ -1917,11 +1917,7 @@ int x,y,depth;
 		y = (int) mazey[pos];
 		if(!IS_DOOR(levl[x][y].typ)) {
 		    /* might still be on edge of MAP, so don't overwrite */
-#ifndef WALLIFIED_MAZE
-		    levl[x][y].typ = CORR;
-#else
 		    levl[x][y].typ = ROOM;
-#endif
 		    levl[x][y].flags = 0;
 		}
 		q = 0;
@@ -1932,11 +1928,7 @@ int x,y,depth;
 		else {
 			dir = dirs[rn2(q)];
 			move(&x, &y, dir);
-#ifndef WALLIFIED_MAZE
-			levl[x][y].typ = CORR;
-#else
 			levl[x][y].typ = ROOM;
-#endif
 			move(&x, &y, dir);
 			if (levl[x][y].roomno - ROOMOFFSET >= level.flags.sp_lev_nroom)
 				maze_remove_room(levl[x][y].roomno - ROOMOFFSET);
@@ -1959,11 +1951,7 @@ int x,y,depth;
 
 	if(!IS_DOOR(levl[x][y].typ)) {
 	    /* might still be on edge of MAP, so don't overwrite */
-#ifndef WALLIFIED_MAZE
-	    levl[x][y].typ = CORR;
-#else
 	    levl[x][y].typ = ROOM;
-#endif
 	    levl[x][y].flags = 0;
 	}
 
@@ -1977,11 +1965,7 @@ int x,y,depth;
 		move(&x,&y,dir);
 		if (levl[x][y].roomno - ROOMOFFSET >= level.flags.sp_lev_nroom)
 			maze_remove_room(levl[x][y].roomno - ROOMOFFSET);
-#ifndef WALLIFIED_MAZE
-		levl[x][y].typ = CORR;
-#else
 		levl[x][y].typ = ROOM;
-#endif
 		move(&x,&y,dir);
 		walkfrom(x,y,depth+1);
 		/* move x and y back to our original spot */
@@ -2017,11 +2001,7 @@ mazexy(cc)	/* find random point in generated corridors,
 	    cc->y = 3 + 2*rn2((y_maze_max>>1) - 1);
 	    cpt++;
 	} while (cpt < 100 && levl[cc->x][cc->y].typ !=
-#ifdef WALLIFIED_MAZE
 		 ROOM
-#else
-		 CORR
-#endif
 		);
 	if (cpt >= 100) {
 		register int x, y;
@@ -2031,11 +2011,7 @@ mazexy(cc)	/* find random point in generated corridors,
 			cc->x = 3 + 2 * x;
 			cc->y = 3 + 2 * y;
 			if (levl[cc->x][cc->y].typ ==
-#ifdef WALLIFIED_MAZE
 			    ROOM
-#else
-			    CORR
-#endif
 			|| levl[cc->x][cc->y].typ == SAND
 		 	|| levl[cc->x][cc->y].typ == SOIL
 			   ) return;

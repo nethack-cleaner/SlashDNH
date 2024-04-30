@@ -87,9 +87,7 @@ register struct obj *otmp;
     {
         if (is_cloak(otmp)  && !is_cloak(obj) ) continue;
         if (is_suit(otmp)   && !is_suit(obj)  ) continue;
-#ifdef TOURIST
         if (is_shirt(otmp)  && !is_shirt(obj) ) continue;
-#endif
 	if (is_boots(otmp)  && !is_boots(obj) ) continue;
 	if (is_shield(otmp) && !is_shield(obj)) continue;
 	if (is_helmet(otmp) && !is_helmet(obj)) continue;
@@ -650,9 +648,7 @@ register struct edog *edog;
 	    } else if (monstermoves > edog->hungrytime + 750 || mtmp->mhp < 1) {
 dog_died:
 			if (mtmp->mleashed
-#ifdef STEED
 				&& mtmp != u.usteed
-#endif
 		    ) Your("leash goes slack.");
 			else if (cansee(mtmp->mx, mtmp->my))
 				pline("%s starves.", Monnam(mtmp));
@@ -779,7 +775,6 @@ int udist;
 			(edog->mhpmax_penalty && edible == ACCFOOD)) &&
 		    could_reach_item(mtmp, obj->ox, obj->oy))
 		{
-#ifdef PET_SATIATION
 		    /* Don't eat if satiated.  (arbitrary) 
 				Non-mindless pets can sense if you are hungry or starving, and will eat less.
 			*/
@@ -791,7 +786,6 @@ int udist;
 					)
 				)
 			) 
-#endif /* PET_SATIATION */
 		    return dog_eat(mtmp, obj, omx, omy, FALSE);
 		}
 
@@ -835,11 +829,9 @@ int after, udist, whappr;
 	xchar otyp;
 	int appr;
 
-#ifdef STEED
 	/* Steeds don't move on their own will */
 	if (mtmp == u.usteed)
 		return (-2);
-#endif
 
 	omx = mtmp->mx;
 	omy = mtmp->my;
@@ -1146,7 +1138,6 @@ register int after;	/* this is extra fast monster movement */
 	if (has_edog && dog_hunger(mtmp, EDOG(mtmp))) return(2);	/* starved */
 
 	udist = distu(omx,omy);
-#ifdef STEED
 	/* Let steeds eat and maybe throw rider during Conflict */
 	if (mtmp == u.usteed) {
 	    if ((Conflict && !resist(mtmp, RING_CLASS, 0, 0)) || mtmp->mberserk) {
@@ -1155,7 +1146,6 @@ register int after;	/* this is extra fast monster movement */
 	    }
 	    udist = 1;
 	} else
-#endif
 	/* maybe we tamed him while being swallowed --jgm */
 	if (!udist) return(0);
 
@@ -1179,7 +1169,6 @@ register int after;	/* this is extra fast monster movement */
 							after, udist, whappr);
 	if (appr == -2) return(0);
 
-#ifdef BARD
 	/*NOTE: This may make pets skip their turns IF YOU ARE SINGING (pet_can_sing checks). */
 	if (pet_can_sing(mtmp, FALSE))
 		return(3);
@@ -1192,7 +1181,6 @@ register int after;	/* this is extra fast monster movement */
 			return(3);
 		}
 	}
-#endif
 
 	allowflags = ALLOW_M | ALLOW_TRAPS | ALLOW_SSM | ALLOW_SANCT;
 	if (mon_resistance(mtmp,PASSES_WALLS)) allowflags |= (ALLOW_ROCK | ALLOW_WALL);
@@ -1371,9 +1359,7 @@ register int after;	/* this is extra fast monster movement */
 		    else if ((otyp = dogfood(mtmp, obj)) < MANFOOD &&
 			     (otyp < ACCFOOD
 			     || EDOG(mtmp)->hungrytime <= monstermoves)
-#ifdef PET_SATIATION
 			     && EDOG(mtmp)->hungrytime < monstermoves + DOG_SATIATED
-#endif /* PET_SATIATION */
 				 && !((mtmp->misc_worn_check & W_ARMH) && which_armor(mtmp, W_ARMH) && 
 					   FacelessHelm(which_armor(mtmp, W_ARMH)) && (which_armor(mtmp, W_ARMH))->cursed)
 				 && !((mtmp->misc_worn_check & W_ARMC) && which_armor(mtmp, W_ARMC) && 

@@ -1599,7 +1599,6 @@ boolean forcedestroy;			/* TRUE if projectile should be forced to be destroyed a
 				if (*u.ushops) {
 					check_shop_obj(thrownobj, bhitpos.x, bhitpos.y, TRUE);
 				}
-				//#ifdef FIREARMS
 				destroy_projectile(magr, thrownobj);
 				*thrownobj_p = NULL;
 
@@ -3570,12 +3569,10 @@ int n;	/* number to try to fire */
 				if (bhitpos.x == u.ux && bhitpos.y == u.uy && ttmp2 && ttmp2->ttyp == WEB) {
 					pline_The("webbing sticks to you. You're caught!");
 					dotrap(ttmp2, NOWEBMSG);
-#ifdef STEED
 					if (u.usteed && u.utrap) {
 						/* you, not steed, are trapped */
 						dismount_steed(DISMOUNT_FELL);
 					}
-#endif
 				}
 				else {
 					struct monst * mdef = m_at(bhitpos.x, bhitpos.y);

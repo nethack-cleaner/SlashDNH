@@ -299,7 +299,6 @@ done2()
 {
 	if (iflags.debug_fuzzer)
 		return MOVE_CANCELLED;
-#ifdef PARANOID
 	char buf[BUFSZ];
 	int really_quit = FALSE;
 
@@ -311,9 +310,6 @@ done2()
 	  if(yn("Really quit?") == 'y') really_quit = TRUE;
 	}
 	if (!really_quit) {
-#else /* PARANOID */
-	if(yn("Really quit?") == 'n') {
-#endif /* PARANOID */
 #ifndef NO_SIGNAL
 		(void) signal(SIGINT, (SIG_RET_TYPE) done1);
 #endif
@@ -644,9 +640,9 @@ boolean taken;
 	ask = should_query_disclose_option('g', &defquery);
 	if (!done_stopprint)
 #ifdef DUMP_LOG
-	    list_genocided(defquery, ask, TRUE, TRUE);
+	    list_genocided(defquery, ask, TRUE);
 #else
-	    list_genocided(defquery, ask, FALSE, TRUE);
+	    list_genocided(defquery, ask, FALSE);
 #endif
 
 	ask = should_query_disclose_option('c', &defquery);
@@ -1010,7 +1006,7 @@ void
 done(how)
 int how;
 {
-#if defined(WIZARD) && defined(PARANOID)
+#if defined(WIZARD)
 	char paranoid_buf[BUFSZ];
 	int really_bon = TRUE;
 #endif
@@ -1338,11 +1334,9 @@ die:
 				
 		}
 	}
-#ifdef RECORD_REALTIME
         /* Update the realtime counter to reflect the playtime of the current
          * game. */
         realtime_data.realtime = get_realtime();
-#endif /* RECORD_REALTIME */
 
 	/* Sometimes you die on the first move.  Life's not fair.
 	 * On those rare occasions you get hosed immediately, go out
@@ -1468,7 +1462,6 @@ die:
 
 	if (bones_ok) {
 #ifdef WIZARD
-# ifdef PARANOID
 	    if(wizard) {
 		getlin("Save WIZARD MODE bones? [no/yes]", paranoid_buf);
 		(void) lcase (paranoid_buf);
@@ -1476,9 +1469,6 @@ die:
 		  really_bon = FALSE;
             }
             if(really_bon)
-# else
-	    if (!wizard || yn("Save bones?") == 'y')
-#endif /* PARANOID */
 #endif /* WIZARD */
 		savebones(corpse);
 	    /* corpse may be invalid pointer now so
@@ -1735,11 +1725,9 @@ boolean identified, all_containers, want_dump, want_disp;
 /* The original container_contents function */
 {
 	register struct obj *box, *obj;
-#ifdef SORTLOOT
 	struct obj **oarray;
 	int i,j,n;
 	char *invlet;
-#endif /* SORTLOOT */
 	char buf[BUFSZ];
 
 	for (box = list; box; box = box->nobj) {
@@ -1752,7 +1740,6 @@ boolean identified, all_containers, want_dump, want_disp;
 		    if (want_disp)
 #endif
 		    tmpwin = create_nhwindow(NHW_MENU);
-#ifdef SORTLOOT
 		    /* count the number of items */
 		    for (n = 0, obj = box->cobj; obj; obj = obj->nobj) n++;
 		    /* Make a temporary array to store the objects sorted */
@@ -1785,7 +1772,6 @@ boolean identified, all_containers, want_dump, want_disp;
 		    if (flags.sortpack) {
 		      if (*++invlet) goto nextclass;
 		    }
-#endif /* SORTLOOT */
 		    Sprintf(buf, "Contents of %s:", the(xname(box)));
 #ifdef DUMP_LOG
 		    if (want_disp) {
@@ -1796,12 +1782,8 @@ boolean identified, all_containers, want_dump, want_disp;
 		    }
 		    if (dump_fp) dump("", buf);
 #endif
-#ifdef SORTLOOT
 		    for (i = 0; i < n; i++) {
 		      obj = oarray[i];
-#else
-		    for (obj = box->cobj; obj; obj = obj->nobj) {
-#endif
 			if (identified) {
 			    makeknown(obj->otyp);
 			    obj->known = obj->bknown =
@@ -1945,11 +1927,9 @@ boolean want_dump;
 			else
 			    Sprintf(buf, "%d %s",
 				    nkilled, makeplural(mons[i].mname));
-#ifdef SHOW_BORN
 			if (iflags.show_born && nkilled != mvitals[i].born)
 			    Sprintf(buf + strlen(buf), " (%d created)",
 				    (int) mvitals[i].born);
-#endif
 		    }
 		    if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
@@ -2005,11 +1985,7 @@ num_extinct()
 }
 
 void
-list_genocided(defquery, ask, want_dump, show_extinct)
-int defquery;
-boolean ask;
-boolean want_dump;
-boolean show_extinct;
+list_genocided(int defquery, boolean ask, boolean want_dump)
 {
     register int i;
     int ngenocided=0;
@@ -2017,11 +1993,6 @@ boolean show_extinct;
     char c;
     winid klwin = WIN_ERR;
     char buf[BUFSZ];
-
-    /* why is this even conditional? */
-#ifndef SHOW_EXTINCT
-    show_extinct = FALSE;
-#endif
 
     /* get totals first */
     for (i = LOW_PM; i < NUMMONS; i++) {
@@ -2032,14 +2003,14 @@ boolean show_extinct;
     }
 
     /* genocided species list */
-    if (ngenocided != 0 || (show_extinct && nextincted != 0)) {
+    if (ngenocided != 0 || nextincted != 0) {
 	c = ask ?
-	    yn_function((show_extinct && nextincted != 0) ?
+	    yn_function((nextincted != 0) ?
 			"Do you want a list of species genocided or extinct?" :
 			"Do you want a list of species genocided?",
 			ynqchars, defquery) : defquery;
 	if (c == 'q') done_stopprint++;
-	Sprintf(buf, show_extinct ? "Genocided or extinct species:" : "Genocided species:");
+	Sprintf(buf, "Genocided or extinct species:");
 	if (c == 'y') {
 	    klwin = create_nhwindow(NHW_MENU);
 	    putstr(klwin, 0, buf);
@@ -2050,16 +2021,14 @@ boolean show_extinct;
 #endif
 
 	for (i = LOW_PM; i < NUMMONS; i++)
-	    if (show_extinct ?
-		(mvitals[i].mvflags & G_GONE && !(mons[i].geno & G_UNIQ)) :
-		(mvitals[i].mvflags & G_GENOD)) {
+	    if (mvitals[i].mvflags & G_GONE && !(mons[i].geno & G_UNIQ)) {
 		if ((mons[i].geno & G_UNIQ) && i != PM_HIGH_PRIEST)
 		    Sprintf(buf, "%s%s",
 			    !type_is_pname(&mons[i]) ? "" : "the ",
 			    mons[i].mname);
 		else
 		    Strcpy(buf, makeplural(mons[i].mname));
-		if(show_extinct && !(mvitals[i].mvflags & G_GENOD))
+		if(!(mvitals[i].mvflags & G_GENOD))
 		    Strcat(buf, " (extinct)");
 		if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
@@ -2075,7 +2044,7 @@ boolean show_extinct;
 	    if (want_dump)  dump("  ", buf);
 #endif
 	}
-	if (show_extinct && nextincted>0) {
+	if (nextincted>0) {
 	    Sprintf(buf, "%d species extinct.", nextincted);
 	    if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG

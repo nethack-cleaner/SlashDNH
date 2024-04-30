@@ -154,7 +154,6 @@ struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	0, 12, 0, 1,  8, A_INT, SPE_DIG, -1000
 },
-#ifdef CONVICT
 {	{"Convict", 0}, {
 	{"Detainee",     0},
 	{"Inmate",   0},
@@ -182,7 +181,6 @@ struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	-10, 5, 0, 2, 10, A_INT, SPE_TELEPORT_AWAY,   -19
 },
-#endif	/* CONVICT */
 {	{"Healer", 0}, {
 	{"Rhizotomist",    0},
 	{"Empiric",        0},
@@ -473,7 +471,6 @@ struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },11,	/* Energy */
 	10, 10, 0, 0,  8, A_INT, SPE_CLAIRVOYANCE,    -10
 },
-#ifdef TOURIST
 {	{"Tourist", 0}, {
 	{"Rambler",     0},
 	{"Sightseer",   0},
@@ -499,8 +496,6 @@ struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },14,	/* Energy */
 	0, 5, 1, 2, 10, A_INT, SPE_CHARM_MONSTER,   -15
 },
-#endif
-#ifdef BARD
 {	{"Troubadour", 0}, {
 	{"Rhymer",      0},
 	{"Lyrist",      0},
@@ -527,7 +522,6 @@ struct Role roles[] = {
 	{  4, 3,  1, 2,  0, 3 },10,	/* Energy */
 	10, 3,-3, 2, 9, A_INT, SPE_CREATE_MONSTER, -24
 },
-#endif
 {	{"Valkyrie", 0}, {
 	{"Stripling",   0},
 	{"Skirmisher",  0},
@@ -1283,9 +1277,7 @@ validalign(rolenum, racenum, alignnum)
 	return (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		(((roles[rolenum].allow & races[racenum].allow &
 		 aligns[alignnum].allow & ROLE_ALIGNMASK))
-#ifdef CONVICT
 	|| (roles[rolenum].malenum==PM_CONVICT && aligns[alignnum].allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 		));
 }
 
@@ -1300,9 +1292,7 @@ randalign(rolenum, racenum)
 	for (i = 0; i < ROLE_ALIGNS; i++)
 	    if ((roles[rolenum].allow & races[racenum].allow &
 	    		aligns[i].allow & ROLE_ALIGNMASK)
-#ifdef CONVICT
 		|| (roles[rolenum].malenum==PM_CONVICT && aligns[i].allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 			)
 	    	n++;
 
@@ -1311,9 +1301,7 @@ randalign(rolenum, racenum)
 	for (i = 0; i < ROLE_ALIGNS; i++)
 	    if ((roles[rolenum].allow & races[racenum].allow &
 	    		aligns[i].allow & ROLE_ALIGNMASK)
-#ifdef CONVICT
 		|| (roles[rolenum].malenum==PM_CONVICT && aligns[i].allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 			) {
 	    	if (n) n--;
 	    	else return (i);
@@ -1475,9 +1463,7 @@ int rolenum, racenum, gendnum, alignnum;
 	    return FALSE;
 	if (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		!(allow & aligns[alignnum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 		|| (roles[rolenum].malenum==PM_CONVICT && aligns[alignnum].allow & allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 	))
 		return FALSE;
 	return TRUE;
@@ -1492,9 +1478,7 @@ int rolenum, racenum, gendnum, alignnum;
 			continue;
 	    if (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		    !(allow & aligns[alignnum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 			|| (roles[rolenum].malenum==PM_CONVICT && aligns[alignnum].allow & allow & ROLE_ALIGNMASK && roles[i].marace & races[racenum].selfmask)
-#endif
 		))
 			continue;
 	    return TRUE;
@@ -1549,9 +1533,7 @@ int rolenum, racenum, gendnum, alignnum;
 	    return FALSE;
 	if (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		!(allow & aligns[alignnum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 		|| (roles[rolenum].malenum==PM_CONVICT && aligns[alignnum].allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 	))
 	    return FALSE;
 	return TRUE;
@@ -1566,9 +1548,7 @@ int rolenum, racenum, gendnum, alignnum;
 		continue;
 	    if (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		    !(allow & aligns[alignnum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 			|| (roles[rolenum].malenum==PM_CONVICT && aligns[alignnum].allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[i].selfmask)
-#endif
 	))
 		continue;
 	    return TRUE;
@@ -1683,9 +1663,7 @@ int rolenum, racenum, gendnum, alignnum;
 	    return FALSE;
 	if (racenum >= 0 && racenum < SIZE(races)-1 &&
 		!(allow & races[racenum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 		|| (roles[rolenum].malenum==PM_CONVICT && allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 	))
 	    return FALSE;
 	return TRUE;
@@ -1697,9 +1675,7 @@ int rolenum, racenum, gendnum, alignnum;
 		continue;
 	    if (racenum >= 0 && racenum < SIZE(races)-1 &&
 		    !(allow & races[racenum].allow & ROLE_ALIGNMASK
-#ifdef CONVICT
 			|| (roles[rolenum].malenum==PM_CONVICT && allow & roles[rolenum].allow & ROLE_ALIGNMASK && roles[rolenum].marace & races[racenum].selfmask)
-#endif
 		))
 		continue;
 	    return TRUE;
@@ -2727,10 +2703,8 @@ struct monst *mtmp;
 	    		"Irasshaimase" : "Konnichi wa"); /* Japanese */
 	case PM_PIRATE:
 		return ("Ahoy");
-#ifdef TOURIST
 	case PM_TOURIST:
 	    return ("Aloha");       /* Hawaiian */
-#endif
 	case PM_VALKYRIE:
 	    return (
 #ifdef MAIL
@@ -2750,10 +2724,8 @@ Goodbye()
 	    return ("Fare thee well");  /* Olde English */
 	case PM_SAMURAI:
 	    return ("Sayonara");        /* Japanese */
-#ifdef TOURIST
 	case PM_TOURIST:
 	    return ("Aloha");           /* Hawaiian */
-#endif
 	case PM_VALKYRIE:
 	    return ("Farvel");          /* Norse */
 	default:
@@ -2761,7 +2733,6 @@ Goodbye()
 	}
 }
 
-#ifdef RECORD_ACHIEVE
 void
 add_imp_record(prop)
 long prop;
@@ -2833,9 +2804,7 @@ give_quest_trophy()
 	if(quest_status.second_thoughts)
 		achieve.trophies |= SECOND_THOUGHTS;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_ascension_trophy()
 {
@@ -2870,65 +2839,49 @@ give_ascension_trophy()
 	check_madman_trophy();
 	check_drunkard_trophy();
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_lamashtu_trophy()
 {
 	achieve.trophies |= LAMASHTU_KILL;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_baalphegor_trophy()
 {
 	achieve.trophies |= BAALPHEGOR_KILL;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_angel_vault_trophy()
 {
 	achieve.trophies |= ANGEL_VAULT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_ancient_vault_trophy()
 {
 	achieve.trophies |= ANCIENT_VAULT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_tannin_vault_trophy()
 {
 	achieve.trophies |= TANNINIM_VAULT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_devil_vault_trophy()
 {
 	achieve.trophies |= DEVIL_VAULT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_demon_vault_trophy()
 {
 	achieve.trophies |= DEMON_VAULT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_hell_vault_trophy(hv_id)
 int hv_id;
@@ -2963,50 +2916,38 @@ int hv_id;
 		break;
 	}
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_castle_trophy()
 {
 	achieve.trophies |= CASTLE_WISH;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_ugwish_trophy()
 {
 	achieve.trophies |= UNKNOWN_WISH;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_law_trophy()
 {
 	achieve.trophies |= LAW_QUEST;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_neutral_trophy()
 {
 	achieve.trophies |= NEU_QUEST;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_chaos_temple_trophy()
 {
 	if(chaos_dvariant == TEMPLE_OF_CHAOS)
 		achieve.trophies |= CHA_QUEST;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 check_mithardir_trophy()
 {
@@ -3015,18 +2956,14 @@ check_mithardir_trophy()
 			achieve.trophies |= MITH_QUEST;
 	}
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_mordor_trophy()
 {
 	if(chaos_dvariant == MORDOR)
 		achieve.trophies |= MORD_QUEST;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 check_illumian_trophy()
 {
@@ -3035,17 +2972,13 @@ check_illumian_trophy()
 	if(u.ufirst_light && u.ufirst_sky && u.ufirst_life && u.ufirst_know && syls >= 30 && u.sealsUsed&SEAL_TENEBROUS)
 		achieve.trophies |= ILLUMIAN;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_rescue_trophy()
 {
 	achieve.trophies |= RESCUE;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 check_loadout_trophy()
 {
@@ -3053,17 +2986,13 @@ check_loadout_trophy()
 	if((u.clockworkUpgrades&allupgrades) == allupgrades)
 		achieve.trophies |= FULL_LOADOUT;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_nightmare_hunter_trophy()
 {
 	achieve.trophies |= NIGHTMAREHUNTER;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 check_madman_trophy()
 {
@@ -3076,23 +3005,18 @@ check_madman_trophy()
 	if(count >= 6)
 		achieve.trophies |= QUITE_MAD;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 check_drunkard_trophy()
 {
 	if(u.udrunken >= 90)
 		achieve.trophies |= TOTAL_DRUNK;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 void
 give_bokrug_trophy()
 {
 	achieve.trophies |= BOKRUG_QUEST;
 }
-#endif
 
 /* role.c */

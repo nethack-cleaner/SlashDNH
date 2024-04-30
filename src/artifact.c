@@ -2839,7 +2839,6 @@ touch_artifact(obj, mon, hypothetical)
        will have to be extended to explicitly include quest artifacts */
     self_willed = ((oart->gflags & ARTG_MAJOR) != 0);
     if (yours) {
-#ifdef RECORD_ACHIEVE
 		if(!hypothetical){
 			if(obj->oartifact == ART_ROD_OF_SEVEN_PARTS)
 				give_law_trophy();
@@ -2848,7 +2847,6 @@ touch_artifact(obj, mon, hypothetical)
 			if(obj->oartifact == ART_SHARD_FROM_MORGOTH_S_CROWN)
 				give_mordor_trophy();
 		}
-#endif
 		if(Role_if(PM_EXILE) && !hypothetical){
 			if(obj->oartifact == ART_ROD_OF_SEVEN_PARTS && !(u.specialSealsKnown&SEAL_MISKA)){
 				pline("There is a seal on the tip of the Rod! You can't see it, you know it's there, just the same.");
@@ -3038,7 +3036,6 @@ touch_artifact(obj, mon, hypothetical)
 		return 0;
     } //Clarent sticks itself into it's surroundings if dropped
 //	if (oart == &artilist[ART_CLARENT]  && (!yours || ) )
-#ifdef CONVICT
     /* This is a kludge, but I'm not sure where else to put it */
     if (oart == &artilist[ART_IRON_BALL_OF_LEVITATION] && !hypothetical) {
 		if (Role_if(PM_CONVICT) && (!obj->oerodeproof)) {
@@ -3049,7 +3046,6 @@ touch_artifact(obj, mon, hypothetical)
 			unpunish(); /* Remove a mundane heavy iron ball */
 		}
     }
-#endif /* CONVICT */
 
     return 1;
 }
@@ -3757,12 +3753,10 @@ char *hittee;			/* target's name: "you" or mon_nam(mdef) */
 			if(youdefend){
 				pline_The("webbing sticks to you. You're caught!");
 				dotrap(ttmp2, NOWEBMSG);
-#ifdef STEED
 				if (u.usteed && u.utrap) {
 				/* you, not steed, are trapped */
 				dismount_steed(DISMOUNT_FELL);
 				}
-#endif
 			}
 			else mintrap(mdef);
 		}
@@ -3967,12 +3961,10 @@ char *hittee;			/* target's name: "you" or mon_nam(mdef) */
 				   the saddle, and save it for later messages */
 				Strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
 
-	#ifdef STEED
 				if (u.usteed == mdef &&
 						otmp == which_armor(mdef, W_SADDLE))
 					/* "You can no longer ride <steed>." */
 					dismount_steed(DISMOUNT_POLY);
-	#endif
 				obj_extract_self(otmp);
 				if (otmp->owornmask) {
 					mdef->misc_worn_check &= ~otmp->owornmask;
@@ -6689,12 +6681,10 @@ boolean printmessages; /* print generic elemental damage messages */
 				/* make a special x_monnam() call that never omits
 				   the saddle, and save it for later messages */
 				Strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
-#ifdef STEED
 				if (u.usteed == mdef &&
 					obj == which_armor(mdef, W_SADDLE))
 					/* "You can no longer ride <steed>." */
 					dismount_steed(DISMOUNT_POLY);
-#endif
 				obj_extract_self(obj);
 				if (obj->owornmask) {
 					mdef->misc_worn_check &= ~obj->owornmask;
@@ -7146,12 +7136,10 @@ boolean printmessages; /* print generic elemental damage messages */
 			if (ttmp2) {
 				pline_The("webbing sticks to you. You're caught!");
 				dotrap(ttmp2, NOWEBMSG);
-#ifdef STEED
 				if (u.usteed && u.utrap) {
 				/* you, not steed, are trapped */
 				dismount_steed(DISMOUNT_FELL);
 				}
-#endif
 			}
 		}
 	}
@@ -7958,12 +7946,10 @@ boolean printmessages; /* print generic elemental damage messages */
 					/* make a special x_monnam() call that never omits
 					   the saddle, and save it for later messages */
 					Strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
-#ifdef STEED
 					if (u.usteed == mdef &&
 						obj == which_armor(mdef, W_SADDLE))
 						/* "You can no longer ride <steed>." */
 						dismount_steed(DISMOUNT_POLY);
-#endif
 					obj_extract_self(obj);
 					if (obj->owornmask) {
 						mdef->misc_worn_check &= ~obj->owornmask;
@@ -9091,7 +9077,6 @@ arti_invoke(obj)
 			pline("%s teleports without you.",xname(obj));
 		}
 	break;
-#ifdef CONVICT
 	case PHASING:   /* Walk through walls and stone like a xorn */
         if (Passes_walls) goto nothing_special;
         if (!Hallucination) {    
@@ -9104,7 +9089,6 @@ arti_invoke(obj)
         incr_itimeout(&Phasing, (50 + rnd(100)));
         obj->age += Phasing; /* Time begins after phasing ends */
     break;
-#endif /* CONVICT */
 
 	case SATURN:
 		{
@@ -9130,7 +9114,6 @@ arti_invoke(obj)
 				pline("Silence Wall!");
 				cast_protection();
 			}
-#ifdef PARANOID
 			else if(u.dz > 0 ){
 				char buf[BUFSZ];
 				int really_bdown = FALSE;
@@ -9144,9 +9127,6 @@ arti_invoke(obj)
 				  }
 				}
 				if (really_bdown) {
-#else
-				else if(u.dz > 0 && (yn("Are you sure you want to bring down the Silence Glaive?") == 'y') ){
-#endif
 				register struct monst *mtmp, *mtmp2;
 				int gonecnt = 0;
 				You("touch the tip of the Silence Glaive to the ground.");
@@ -9169,9 +9149,7 @@ arti_invoke(obj)
 				killer = "leading departed souls to another world";
 				done(DIED);
 				You("return, having delivered your followers to their final destination.");
-#ifdef PARANOID
 				}
-#endif
 			}
 			else{
 				obj->age = 0;
@@ -12389,7 +12367,6 @@ nothing_special:
 		if (on) You_feel("more buoyant!");
 		else You_feel("heavier!");
 		break;
-#ifdef BARD
 	    /*
 	case HARMONIZE:
 	    {
@@ -12412,7 +12389,6 @@ nothing_special:
 	    }
 	    break;
 	    */
-#endif
 	}
     }
 	if (oart == &artilist[ART_IRON_BALL_OF_LEVITATION]) {

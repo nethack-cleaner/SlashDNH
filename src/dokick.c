@@ -425,10 +425,8 @@ register struct obj *gold;
 			   goldreqd = 500L;
 			else if (mtmp->mtyp == PM_CAPTAIN)
 			   goldreqd = 750L;
-#ifdef CONVICT
 			else if (mtmp->mtyp == PM_PRISON_GUARD)
 			   goldreqd = 200L;
-#endif /* CONVICT */
 
 			if (goldreqd) {
 #ifndef GOLDOBJ
@@ -703,9 +701,7 @@ char *buf;
 	else if (IS_FOUNTAIN(maploc->typ)) what = "a fountain";
 	else if (IS_FORGE(maploc->typ)) what = "a forge";
 	else if (IS_GRAVE(maploc->typ)) what = "a headstone";
-#ifdef SINKS
 	else if (IS_SINK(maploc->typ)) what = "a sink";
-#endif
 	else if (IS_ALTAR(maploc->typ)) what = "an altar";
 	else if (IS_DRAWBRIDGE(maploc->typ)) what = "a drawbridge";
 	else if (maploc->typ == STAIRS) what = "the stairs";
@@ -767,7 +763,6 @@ int dx, dy;
 	} else if (verysmall(youracedata)) {
 		You("are too small to do any kicking.");
 		no_kick = TRUE;
-#ifdef STEED
 	} else if (u.usteed) {
 		if (!dx && !dy && yn_function("Kick your steed?", ynchars, 'y') == 'y') {
 		    You("kick %s.", mon_nam(u.usteed));
@@ -778,7 +773,6 @@ int dx, dy;
 				You("can't kick while riding!");
 		    return MOVE_CANCELLED;
 		}
-#endif
 	} else if (Wounded_legs) {
 		/* note: jump() has similar code */
 		long wl = (EWounded_legs & BOTH_SIDES);
@@ -1416,7 +1410,6 @@ int dx, dy;
 			wake_nearby();
 			return MOVE_STANDARD;
 		}
-#ifdef SINKS
 		if(IS_SINK(maploc->typ)) {
 		    int gend = poly_gender();
 		    short washerndx = (gend == 1 || (gend == 2 && rn2(2))) ?
@@ -1473,7 +1466,6 @@ int dx, dy;
 		    }
 		    goto ouch;
 		}
-#endif
 		if (maploc->typ == STAIRS || maploc->typ == LADDER ||
 						    IS_STWALL(maploc->typ)) {
 		    if(!IS_STWALL(maploc->typ) && maploc->ladder == LA_DOWN)
@@ -1837,9 +1829,7 @@ boolean shop_floor_obj;
 	    const char *result;
 
 		if (is_shatterable(otmp)
-#ifdef TOURIST
 		|| otmp->otyp == EXPENSIVE_CAMERA
-#endif
 		) {
 		if (otmp->otyp == MIRROR)
 		    change_luck(-2);

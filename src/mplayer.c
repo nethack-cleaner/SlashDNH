@@ -847,7 +847,6 @@ int *weapon, *secweapon, *rweapon, *rwammo, *armor, *shirt, *cloak, *helm, *boot
 		*boots = ARMORED_BOOTS;
 		*tool = MASK;
 	break;
-#ifdef TOURIST
 	case PM_TOURIST:
 		if (special && !rn2(4)) *weapon = LIGHTSABER;
 		*rweapon = EXPENSIVE_CAMERA;
@@ -857,7 +856,6 @@ int *weapon, *secweapon, *rweapon, *rwammo, *armor, *shirt, *cloak, *helm, *boot
 		*boots = LOW_BOOTS;
 		*tool = CREDIT_CARD;
 	break;
-#endif
 	case PM_VALKYRIE:
 	case PM_AWAKENED_VALKYRIE:
 	case PM_TRANSCENDENT_VALKYRIE:

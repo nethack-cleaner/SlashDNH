@@ -414,7 +414,6 @@ max_rank_sz()
 #endif /* OVLB */
 #ifdef OVL0
 
-#ifdef SCORE_ON_BOTL
 long
 botl_score()
 {
@@ -433,7 +432,6 @@ botl_score()
 			  + (long)(deepest > 30 ? 10000 :
 				   deepest > 20 ? 1000*(deepest - 20) : 0);
 }
-#endif
 
 #ifdef DUMP_LOG
 void bot1str(char *newbot1)
@@ -535,10 +533,8 @@ bot1()
 			(u.ualign.type == A_LAWFUL) ?  "   Lawful " :
 			(u.ualign.type == A_VOID) ?    "   Gnostic" :
 			(u.ualign.type == A_NONE) ?    " Unaligned" : "    Other ");
-#ifdef SCORE_ON_BOTL
 	if (flags.showscore)
 	    Sprintf(nb = eos(nb), " S:%ld", botl_score());
-#endif
 #ifdef DUMP_LOG
 }
 STATIC_OVL void
@@ -712,22 +708,18 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
         Sprintf(nb = eos(nb), " DR:%-2d", u.udr - u.ustdy);
 	if (Upolyd)
 		Sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
-#ifdef EXP_ON_BOTL
 	else if(flags.showexp)
 		Sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
-#endif
 	else
 		Sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
 
 	if(flags.time)
 	    Sprintf(nb = eos(nb), " T:%ld", iflags.mod_turncount ? moves%10 : moves);
-#ifdef REALTIME_ON_BOTL
   if(iflags.showrealtime) {
     time_t currenttime = get_realtime();
     Sprintf(nb = eos(nb), " %ld:%2.2ld", currenttime / 3600,
                                          (currenttime % 3600) / 60);
   }
-#endif
   if (!dumplog && (LI <= ROWNO+3 || iflags.statuslines <= 2))
     do_statuseffects(newbot2, terminal_output, abbrev, 2);
 }

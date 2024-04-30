@@ -25,10 +25,8 @@ struct edog {
 	int revivals;			/* count pet deaths */
 	int mhpmax_penalty;		/* while starving, points reduced */
 	Bitfield(killed_by_u, 1);	/* you attempted to kill him */
-//ifdef BARD
 	Bitfield(friend, 1);		/* tamed by song - will lose tameness */
 	Bitfield(waspeaceful, 1);      	/* was peaceful before tame song */
-//endif
 	Bitfield(loyal, 1);      	/* is particularly loyal (starting pet, quest home pet) */
 	Bitfield(dominated, 1);     /* is under mental domination */
 };
@@ -116,7 +114,6 @@ struct eshk {
 	int visitct;		/* nr of visits by most recent customer */
 	char customer[PL_NSIZ]; /* most recent customer */
 	char shknam[PL_NSIZ];
-#ifdef OTHER_SERVICES
 	long services;          /* Services offered */
 #define SHK_ID_BASIC    00001L
 #define SHK_ID_PREMIUM  00002L
@@ -125,7 +122,6 @@ struct eshk {
 #define SHK_SPECIAL_A   01000L
 #define SHK_SPECIAL_B   02000L
 #define SHK_SPECIAL_C   04000L
-#endif
 };
 #define HAS_ESHK(mon)	((mon) && (mon)->mextra_p && (mon)->mextra_p->eshk_p)
 #define ESHK(mon)	((mon)->mextra_p->eshk_p)

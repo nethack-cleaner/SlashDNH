@@ -1947,10 +1947,8 @@ char		*tmp_levels;
 		parseoptions(bufp, TRUE, TRUE);
 		if (plname[0])		/* If a name was given */
 			plnamesuffix();	/* set the character class */
-#ifdef AUTOPICKUP_EXCEPTIONS
 	} else if (match_varname(buf, "AUTOPICKUP_EXCEPTION", 5)) {
 		add_autopickup_exception(bufp);
-#endif
 	} else if (match_varname(buf, "BINDINGS", 4)) {
 		parsebindings(bufp);
 	} else if (match_varname(buf, "AUTOCOMPLETE", 5)) {
@@ -2051,10 +2049,8 @@ char		*tmp_levels;
 	    (void) strncpy(monkeyname, bufp, PL_PSIZ-1);
 	} else if (match_varname(buf, "WHISPERNAME", 3)) {
 	    (void) strncpy(whisperername, bufp, PL_PSIZ-1);
-#ifdef CONVICT
 	} else if (match_varname(buf, "RATNAME", 3)) {
 	    (void) strncpy(catname, bufp, PL_PSIZ-1);
-#endif /* CONVICT */
 
 	} else if (match_varname(buf, "BOULDER", 3)) {
 	    (void) get_uchars(fp, buf, bufp, &iflags.bouldersym, TRUE,

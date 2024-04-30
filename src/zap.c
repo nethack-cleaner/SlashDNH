@@ -30,9 +30,7 @@ STATIC_DCL boolean FDECL(zap_updown, (struct obj *));
 STATIC_DCL boolean FDECL(zap_reflect, (struct monst *, struct zapdata *));
 STATIC_DCL int FDECL(zapdamage, (struct monst *, struct monst *, struct zapdata *));
 STATIC_DCL int FDECL(zhit, (struct monst *, struct monst *, struct zapdata *));
-#ifdef STEED
 STATIC_DCL boolean FDECL(zap_steed, (struct obj *));
-#endif
 
 #ifdef OVL0
 STATIC_DCL void FDECL(backfire, (struct obj *));
@@ -409,7 +407,6 @@ struct obj *otmp;
 				else pline("%s opens its mouth!", Monnam(mtmp));
 			}
 			expels(mtmp, mtmp->data, TRUE);
-#ifdef STEED
 		} else if (!!(obj = which_armor(mtmp, W_SADDLE))) {
 			mtmp->misc_worn_check &= ~obj->owornmask;
 			update_mon_intrinsics(mtmp, obj, FALSE, FALSE);
@@ -418,7 +415,6 @@ struct obj *otmp;
 			place_object(obj, mtmp->mx, mtmp->my);
 			/* call stackobj() if we ever drop anything that can merge */
 			newsym(mtmp->mx, mtmp->my);
-#endif
 		}
 		break;
 	case SPE_HEALING:
@@ -2947,9 +2943,7 @@ boolean ordinary;
 		case WAN_LIGHT:	/* (broken wand) */
 		 /* assert( !ordinary ); */
 		    damage = d(obj->spe, 25);
-#ifdef TOURIST
 		case EXPENSIVE_CAMERA:
-#endif
 		    damage += rnd(25);
 		    if (!resists_blnd(&youmonst)) {
 			You(are_blinded_by_the_flash);
@@ -3013,7 +3007,6 @@ boolean ordinary;
 	return(damage);
 }
 
-#ifdef STEED
 /* you've zapped a wand downwards while riding
  * Return TRUE if the steed was hit by the wand.
  * Return FALSE if the steed was not hit by the wand.
@@ -3075,7 +3068,6 @@ struct obj *obj;	/* wand or spell */
 	}
 	return steedhit;
 }
-#endif
 
 #endif /*OVL0*/
 #ifdef OVL3
@@ -3376,12 +3368,10 @@ register struct	obj	*obj;
 	boolean disclose = FALSE, was_unkn = !objects[otyp].oc_name_known;
 
 	exercise(A_WIS, TRUE);
-#ifdef STEED
 	if (u.usteed && (objects[otyp].oc_dir != NODIR) &&
 	    !u.dx && !u.dy && (u.dz > 0) && zap_steed(obj)) {
 		disclose = TRUE;
 	} else
-#endif
 	if (objects[otyp].oc_dir == IMMEDIATE) {
 	    obj_zapped = FALSE;
 
@@ -4047,9 +4037,7 @@ struct zapdata * zapdata;	/* lots of flags and data about the zap */
 				mdef = m_at(sx, sy);
 
 			if (mdef) {
-#ifdef STEED
 				if (u.usteed && !rn2(3) && mdef == &youmonst) mdef = u.usteed;
-#endif
 				youdef = (mdef == &youmonst);
 
 				/* does it hit? */

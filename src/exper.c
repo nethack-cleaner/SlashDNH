@@ -231,9 +231,7 @@ more_experienced(exp, rexp)
 	}
 	u.urexp += 4*exp + rexp;
 	if(exp
-#ifdef SCORE_ON_BOTL
 	   || flags.showscore
-#endif
 	   ) flags.botl = 1;
 	if (u.urexp >= (Role_if(PM_WIZARD) ? 1000 : 2000))
 		flags.beginner = 0;
@@ -247,9 +245,7 @@ lose_experience(exp)
 		return;
 	u.uexp = max(u.uexp - exp, 0);
 	if(exp
-#ifdef SCORE_ON_BOTL
 	   || flags.showscore
-#endif
 	   ) flags.botl = 1;
 	if (u.ulevel > 1 && u.uexp < newuexp(u.ulevel-1))
 	    losexp("lost experience",FALSE,FALSE,FALSE);

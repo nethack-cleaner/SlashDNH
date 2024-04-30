@@ -197,9 +197,7 @@ int mndx, mode;
 	case PM_STUDENT:     mndx = mode ? PM_ARCHEOLOGIST  : PM_HUMAN; break;
 	case PM_TROOPER:   mndx = mode ? PM_ANACHRONONAUT : PM_HUMAN; break;
 	case PM_CHIEFTAIN:   mndx = mode ? PM_BARBARIAN : PM_HUMAN; break;
-#ifdef BARD
 	case PM_RHYMER:      mndx = mode ? PM_BARD   : PM_HUMAN; break;
-#endif
 	case PM_NEANDERTHAL: mndx = mode ? PM_CAVEMAN   : PM_HUMAN; break;
 	case PM_ATTENDANT:   mndx = mode ? PM_HEALER    : PM_HUMAN; break;
 	case PM_PAGE:        mndx = mode ? PM_KNIGHT    : PM_HUMAN; break;
@@ -209,9 +207,7 @@ int mndx, mode;
 	case PM_HUNTER:      mndx = mode ? PM_RANGER    : PM_HUMAN; break;
 	case PM_THUG:        mndx = mode ? PM_ROGUE     : PM_HUMAN; break;
 	case PM_ROSHI:       mndx = mode ? PM_SAMURAI   : PM_HUMAN; break;
-#ifdef TOURIST
 	case PM_GUIDE:       mndx = mode ? PM_TOURIST   : PM_HUMAN; break;
-#endif
 	case PM_APPRENTICE:  mndx = mode ? PM_WIZARD    : PM_HUMAN; break;
 	case PM_WARRIOR:     mndx = mode ? PM_VALKYRIE  : PM_HUMAN; break;
 	default:
@@ -1541,12 +1537,10 @@ register struct monst *mtmp;
 	inshallow = IS_PUDDLE(levl[mtmp->mx][mtmp->my].typ) &&
 		(!mon_resistance(mtmp, WWALKING) && !mon_resistance(mtmp, FLYING) && !mon_resistance(mtmp, LEVITATION));
 
-#ifdef STEED
 	/* Flying and levitation keeps our steed out of the liquid */
 	/* (but not water-walking or swimming) */
 	if (mtmp == u.usteed && (Flying || Levitation) && !is_3dwater(mtmp->mx,mtmp->my))
 		return (0);
-#endif
 
 	/* Frost Treads freeze water and lava */
 	struct obj * otmp;
@@ -1724,14 +1718,12 @@ struct monst *mon;
     else if (mon->mspeed == MFAST)
 	mmove = (4 * mmove + 2) / 3;
 
-#ifdef STEED
     if (mon == u.usteed) {
 	if (u.ugallop && flags.mv) {
 	    /* average movement is 1.50 times normal */
 	    mmove = ((rn2(2) ? 4 : 5) * mmove) / 3;
 	}
     }
-#endif
 	if(is_alabaster_mummy(mon->data) && mon->mvar_syllable == SYLLABLE_OF_GRACE__UUR)
 		mmove += 6;
 	
@@ -2846,13 +2838,11 @@ register struct monst *mtmp;
 		else if(!cloak->cursed) carcap *= 1.25;
 		else carcap *= .75;
 	}
-#ifdef TOURIST
 	if(arti_lighten(underarmor, FALSE)){
 		if(underarmor->blessed) carcap *= 1.5;
 		else if(!underarmor->cursed) carcap *= 1.25;
 		else carcap *= .75;
 	}
-#endif	/* TOURIST */
 
 	if (carcap < 1) carcap = 1;
 
@@ -3223,10 +3213,8 @@ struct obj *otmp;
 	if (is_iron_obj(otmp) && hates_iron(mdat))
 	    return FALSE;
 
-#ifdef STEED
 	/* Steeds don't pick up stuff (to avoid shop abuse) */
 	if (mtmp == u.usteed) return (FALSE);
-#endif
 	if (mtmp->isshk) return(TRUE); /* no limit */
 	if ((mtmp->mpeaceful && mtmp->mtyp != PM_MAID && !(Infuture && mtmp->mfaction == QUEST_FACTION)) && !mtmp->mtame) return(FALSE);
 	/* otherwise players might find themselves obligated to violate
@@ -3795,14 +3783,12 @@ boolean actual;			/* actual attack or faction check? */
 	if (ma->mtyp == PM_GHOUL && md->mtyp == PM_GUG) {
 		return ALLOW_M|ALLOW_TM;
 	}
-#ifdef ATTACK_PETS
     // pets attack hostile monsters
 	if (magr->mtame && !mdef->mpeaceful && (!actual || magr->mhp > magr->mhpmax/2 || banish_kill(magr->mtyp)) && !magr->mflee)
 	    return ALLOW_M|ALLOW_TM;
 	// and vice versa, with some limitations that will help your pet survive
 	if (mdef->mtame && !magr->mpeaceful && (!actual || mdef->mhp > mdef->mhpmax/2 || banish_kill(mdef->mtyp)) && !mdef->meating && mdef != u.usteed && !mdef->mflee)
 	    return ALLOW_M|ALLOW_TM;
-#endif /* ATTACK_PETS */
 
 	/* Since the quest guardians are under siege, it makes sense to have 
        them fight hostiles.  (But we don't want the quest leader to be in danger.) */
@@ -4167,9 +4153,7 @@ register struct monst *mtmp, *mtmp2;
     relmon(mtmp);
 
     /* finish adding its replacement */
-#ifdef STEED
     if (mtmp == u.usteed) ; else	/* don't place steed onto the map */
-#endif
     place_monster(mtmp2, mtmp2->mx, mtmp2->my);
     if (mtmp2->wormno)	    /* update level.monsters[wseg->wx][wseg->wy] */
 	place_wsegs(mtmp2); /* locations to mtmp2 not mtmp. */
@@ -4182,9 +4166,7 @@ register struct monst *mtmp, *mtmp2;
     mtmp2->nmon = fmon;
     fmon = mtmp2;
     if (u.ustuck == mtmp) u.ustuck = mtmp2;
-#ifdef STEED
     if (u.usteed == mtmp) u.usteed = mtmp2;
-#endif
     if (mtmp2->isshk) replshk(mtmp2);
 
     /* discard the old monster */
@@ -4933,11 +4915,9 @@ register struct monst *mtmp;
 	}
 	
 
-#ifdef STEED
 	/* Player is thrown from his steed when it dies */
 	if (mtmp == u.usteed)
 		dismount_steed(DISMOUNT_GENERIC);
-#endif
 
 	mptr = mtmp->data;		/* save this for m_detach() */
 	/* restore chameleon, lycanthropes to true form at death */
@@ -5163,7 +5143,6 @@ register struct monst *mtmp;
 	if(mtmp->mtyp == PM_PUPPET_EMPEROR_XELETH || mtmp->mtyp == PM_PUPPET_EMPRESS_XEDALLI){
 		makemon(&mons[PM_SUZERAIN], 0, 0, MM_ADJACENTOK);
 	}
-#ifdef RECORD_ACHIEVE
 	if(mtmp->mtyp == PM_LUCIFER){
 		achieve.killed_lucifer = 1;
 	}
@@ -5227,7 +5206,6 @@ register struct monst *mtmp;
 		)
 			give_nightmare_hunter_trophy();
 	}
-#endif
 	if(glyph_is_invisible(levl[mtmp->mx][mtmp->my].glyph))
 		unmap_object(mtmp->mx, mtmp->my);
 	m_detach(mtmp, mptr);
@@ -5818,11 +5796,9 @@ register struct monst *mdef;
 	check_spirit_unbind(mdef->mtyp);
 	mdef->deadmonster |= DEADMONSTER_DEAD;
 
-#ifdef STEED
 	/* Player is thrown from his steed when it disappears */
 	if (mdef == u.usteed)
 		dismount_steed(DISMOUNT_GENERIC);
-#endif
 	/* cease occupation if the monster was associated */
 	if(mdef->moccupation) stop_occupation();
 	
@@ -5847,11 +5823,9 @@ register struct monst *mdef;
 	check_spirit_unbind(mdef->mtyp);
 	mdef->deadmonster |= DEADMONSTER_DEAD;
 
-#ifdef STEED
 	/* Player is thrown from his steed when it disappears */
 	if (mdef == u.usteed)
 		dismount_steed(DISMOUNT_GENERIC);
-#endif
 
 	/* cease occupation if the monster was associated */
 	if(mdef->moccupation) stop_occupation();
@@ -6761,14 +6735,12 @@ mnexto(mtmp)	/* Make monster mtmp next to you (if possible) */
 {
 	coord mm;
 
-#ifdef STEED
 	if (mtmp == u.usteed) {
 		/* Keep your steed in sync with you instead */
 		mtmp->mx = u.ux;
 		mtmp->my = u.uy;
 		return;
 	}
-#endif
 
 	if(!enexto(&mm, u.ux, u.uy, mtmp->data)) return;
 	rloc_to(mtmp, mm.x, mm.y);
@@ -6781,14 +6753,12 @@ monline(mtmp)	/* Make monster mtmp next to you (if possible) */
 {
 	coord mm;
 
-#ifdef STEED
 	if (mtmp == u.usteed) {
 		/* Keep your steed in sync with you instead */
 		mtmp->mx = u.ux;
 		mtmp->my = u.uy;
 		return;
 	}
-#endif
 
 	if(!eonline(&mm, u.ux, u.uy, mtmp->data)) return;
 	rloc_to(mtmp, mm.x, mm.y);
@@ -6801,14 +6771,12 @@ mofflin(mtmp)	/* Make monster mtmp near to you (if possible) */
 {
 	coord mm;
 
-#ifdef STEED
 	if (mtmp == u.usteed) {
 		/* Keep your steed in sync with you instead */
 		mtmp->mx = u.ux;
 		mtmp->my = u.uy;
 		return;
 	}
-#endif
 
 	if(!eofflin(&mm, u.ux, u.uy, mtmp->data)) return;
 	rloc_to(mtmp, mm.x, mm.y);
@@ -6821,14 +6789,12 @@ mofflin_close(mtmp)	/* Make monster mtmp near to you (if possible) */
 {
 	coord mm;
 
-#ifdef STEED
 	if (mtmp == u.usteed) {
 		/* Keep your steed in sync with you instead */
 		mtmp->mx = u.ux;
 		mtmp->my = u.uy;
 		return;
 	}
-#endif
 
 	if(!eofflin_close(&mm, u.ux, u.uy, mtmp->data)) return;
 	rloc_to(mtmp, mm.x, mm.y);

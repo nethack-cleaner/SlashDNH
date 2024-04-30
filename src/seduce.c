@@ -852,9 +852,7 @@ boolean dontask;
 			(obj == uarmc || obj == uarms) ? "it's in the way" :
 			(obj == uarmf) ? "let me rub your feet" :
 			(obj == uarmg) ? "they're too clumsy" :
-#ifdef TOURIST
 			(obj == uarmu) ? "let me massage you" :
-#endif
 			/* obj == uarmh */
 			hairbuf);
 	}
@@ -1095,9 +1093,7 @@ struct monst * mon;
 {
 	/* check no-clothes case */
 	if (!uarm && !uarmc && !uarmf && !uarmg && !uarms && !uarmh
-#ifdef TOURIST
 		&& !uarmu
-#endif
 		) {
 		/* message */
 		switch (mon->mtyp)
@@ -1181,10 +1177,8 @@ struct monst * mon;
 
 		if (mon->mtyp != PM_GRAZ_ZT) /* his seduces can replace your hat */
 			undressfunc(uarmh, "helmet", helpless);
-#ifdef TOURIST
 		if (!uarmc && !uarm)
 			undressfunc(uarmu, "clothes", helpless);
-#endif
 	}
 
 	return;
@@ -1729,12 +1723,10 @@ int effect_num;
 				if (ttmp2) {
 					pline("She wraps you tight in her webs!");
 					dotrap(ttmp2, NOWEBMSG);
-	#ifdef STEED
 					if (u.usteed && u.utrap) {
 						/* you, not steed, are trapped */
 						dismount_steed(DISMOUNT_FELL);
 					}
-	#endif
 				}
 			}
 			if (uclockwork){
@@ -1816,10 +1808,8 @@ int effect_num;
 		case SEDU_PARALYZE:
 			if (Levitation || Weightless || Is_waterlevel(&u.uz))
 				You("are motionlessly suspended.");
-#ifdef STEED
 			else if (u.usteed)
 				You("are frozen in place!");
-#endif
 			else
 				You("are paralyzed!");
 			pline("She has immobilized you with her magic!");

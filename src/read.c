@@ -506,7 +506,6 @@ doread()
 	    if (!Blind) u.uconduct.literate++;
 	    useup(scroll);
 	    return MOVE_READ;
-#ifdef TOURIST
 	} else if(scroll->oclass == ARMOR_CLASS
 		&& is_readable_armor(scroll)
 	){
@@ -678,7 +677,6 @@ doread()
 			pline("\"%s\"", buf);
 			return MOVE_READ;
 		}
-#endif	/* TOURIST */
 	} else if (scroll->oclass == TILE_CLASS){
 		return read_tile(scroll);
 	} else if (scroll->oclass != SCROLL_CLASS
@@ -1163,12 +1161,10 @@ struct obj *obj;
 	if (is_lightsaber(obj) && obj->oartifact != ART_INFINITY_S_MIRRORED_ARC && obj->otyp != KAMEREL_VAJRA)
 	    return TRUE;
 	if(obj->otyp == POWER_ARMOR) return TRUE;
-//#ifdef FIREARMS
 	if (is_blaster(obj) && (obj->recharged < 4 || (obj->otyp != HAND_BLASTER && obj->otyp != ARM_BLASTER)))
 	    return TRUE;
 	if (is_vibroweapon(obj) || obj->otyp == SEISMIC_HAMMER || obj->otyp == ETHERBLADE)
 	    return TRUE;
-//#endif
 	if (is_weptool(obj))	/* specific check before general tools */
 	    return FALSE;
 	if (obj->oclass == TOOL_CLASS)
@@ -1296,9 +1292,7 @@ int curse_bless;
 		break;
 	    case MAGIC_MARKER:
 	    case TINNING_KIT:
-#ifdef TOURIST
 	    case EXPENSIVE_CAMERA:
-#endif
 		if (is_cursed) stripspe(obj);
 		else if (rechrg && obj->otyp == MAGIC_MARKER) {	/* previously recharged */
 		    obj->recharged = 1;	/* override increment done above */
@@ -1365,7 +1359,6 @@ int curse_bless;
 		    p_glow1(obj);
 		}
 		break;
-//#ifdef FIREARMS
 	    case HAND_BLASTER:
 	    case ARM_BLASTER:
 			if(obj->recharged >= 4){
@@ -1419,7 +1412,6 @@ int curse_bless;
 				else obj->ovar1_charges = 2+rnd(5)*2;
 			}
 		break;
-//#endif
 	    case LIGHTSABER:
 	    case BEAMSWORD:
 	    case DOUBLE_LIGHTSABER:
@@ -2210,7 +2202,6 @@ struct obj	*sobj;
 			    else uncurse(obj);
 			}
 		    }
-#ifdef STEED
 			/* also affects saddles */
 			if (u.usteed) {	
 				obj = which_armor(u.usteed, W_SADDLE);
@@ -2219,7 +2210,6 @@ struct obj	*sobj;
 					else uncurse(obj);
 				}
 			}
-#endif
 		}
 		if(Punished && !confused) unpunish();
 		if(u.umummyrot && !confused){
@@ -3544,9 +3534,7 @@ void
 punish(sobj)
 register struct obj	*sobj;
 {
-#ifdef CONVICT
     struct obj *otmp;
-#endif /* CONVICT */
 	boolean cursed = (sobj && sobj->cursed);
 	/* KMH -- Punishment is still okay when you are riding */
 	if(u.sealsActive&SEAL_MALPHAS){
@@ -3569,7 +3557,6 @@ register struct obj	*sobj;
 		return;
 	}
 	setworn(mkobj(CHAIN_CLASS, TRUE), W_CHAIN);
-#ifdef CONVICT
     if (((otmp = carrying(HEAVY_IRON_BALL)) != 0) &&(otmp->oartifact ==
      ART_IRON_BALL_OF_LEVITATION)) {
         setworn(otmp, W_BALL);
@@ -3577,9 +3564,6 @@ register struct obj	*sobj;
     } else {
 		setworn(mkobj(BALL_CLASS, TRUE), W_BALL);
     }
-#else
-	setworn(mkobj(BALL_CLASS, TRUE), W_BALL);
-#endif /* CONVICT */
 	uball->spe = 1;		/* special ball (see save) */
 
 	/*

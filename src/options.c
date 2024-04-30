@@ -204,13 +204,11 @@ static struct Bool_Opt
 #else
 	{"page_wait", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#ifdef PARANOID
 	{"paranoid_self_cast", &iflags.paranoid_self_cast, FALSE, SET_IN_GAME},
 	{"paranoid_hit", &iflags.paranoid_hit, FALSE, SET_IN_GAME},
 	{"paranoid_quit", &iflags.paranoid_quit, FALSE, SET_IN_GAME},
 	{"paranoid_remove", &iflags.paranoid_remove, FALSE, SET_IN_GAME},
 	{"paranoid_swim", &iflags.paranoid_swim, TRUE, SET_IN_GAME},
-#endif
 	{"perm_invent", &flags.perm_invent, FALSE, SET_IN_GAME},
        {"pickup_thrown", &iflags.pickup_thrown, FALSE, SET_IN_GAME},
 	{"polearm_old_style", &flags.standard_polearms, FALSE, SET_IN_GAME},
@@ -223,9 +221,7 @@ static struct Bool_Opt
 	{"pushweapon", &flags.pushweapon, FALSE, SET_IN_GAME},
 	{"quick_m_abilities", &iflags.quick_m_abilities, TRUE, SET_IN_GAME },
 	{"quiver_fired", &iflags.quiver_fired, TRUE, SET_IN_GAME},
-#ifdef QWERTZ
 	{"qwertz_movement", &iflags.qwertz_movement, FALSE, SET_IN_GAME},
-#endif
 #if defined(MICRO) && !defined(AMIGA)
 	{"rawio", &iflags.rawio, FALSE, DISP_IN_GAME},
 #else
@@ -238,25 +234,13 @@ static struct Bool_Opt
 #else
 	{"sanity_check", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#ifdef SHOW_BORN
-	{"showborn", &iflags.show_born, FALSE, SET_IN_GAME},
-#endif
+	{"showborn", &iflags.show_born, TRUE, SET_IN_GAME},
 	{"showbuc", &iflags.show_buc, FALSE, SET_IN_GAME},
-#ifdef EXP_ON_BOTL
 	{"showexp", &flags.showexp, FALSE, SET_IN_GAME},
-#else
-	{"showexp", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"show_obj_sym", &iflags.show_obj_sym, TRUE, SET_IN_GAME},
 	{"showrace", &iflags.showrace, FALSE, SET_IN_GAME},
-#ifdef REALTIME_ON_BOTL
         {"showrealtime", &iflags.showrealtime, FALSE, SET_IN_GAME},
-#endif
-#ifdef SCORE_ON_BOTL
 	{"showscore", &flags.showscore, FALSE, SET_IN_GAME},
-#else
-	{"showscore", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"show_shop_prices", &iflags.show_shop_prices, TRUE, SET_IN_GAME},
 	{"silent", &flags.silent, TRUE, SET_IN_GAME},
 	{"softkeyboard", &iflags.wc2_softkeyboard, FALSE, SET_IN_FILE},
@@ -428,10 +412,8 @@ static struct Comp_Opt
 						32, SET_IN_GAME },
 	{ "race",     "your starting race (e.g., Human, Elf)",
 						PL_CSIZ, DISP_IN_GAME },
-#ifdef CONVICT
 	{ "ratname",  "the name of your (first) rat (e.g., ratname:Squeak)",
 						PL_PSIZ, DISP_IN_GAME },
-#endif /* CONVICT */
 	{ "role",     "your starting role (e.g., Barbarian, Valkyrie)",
 						PL_CSIZ, DISP_IN_GAME },
 	{ "runmode", "display frequency when `running' or `travelling'",
@@ -443,9 +425,7 @@ static struct Comp_Opt
 	{ "scroll_margin", "scroll map when this far from the edge", 20, DISP_IN_GAME }, /*WC*/
 	{ "species",    "your starting species (e.g., poplar, blue)",
 						PL_CSIZ, DISP_IN_GAME },
-#ifdef SORTLOOT
 	{ "sortloot", "sort object selection lists by description", 4, SET_IN_GAME },
-#endif
 #ifdef MSDOS
 	{ "soundcard", "type of sound card to use", 20, SET_IN_FILE },
 #endif
@@ -583,10 +563,8 @@ STATIC_OVL boolean FDECL(is_wc_option, (const char *));
 STATIC_OVL boolean FDECL(wc_supported, (const char *));
 STATIC_OVL boolean FDECL(is_wc2_option, (const char *));
 STATIC_OVL boolean FDECL(wc2_supported, (const char *));
-#ifdef AUTOPICKUP_EXCEPTIONS
 STATIC_DCL void FDECL(remove_autopickup_exception, (struct autopickup_exception *));
 STATIC_OVL int FDECL(count_ape_maps, (int *, int *));
-#endif
 
 /* check whether a user-supplied option string is a proper leading
    substring of a particular option name; option string might have
@@ -704,9 +682,7 @@ initoptions()
 	flags.warntypev = 0L;
 	flags.montype = (long long int)0;
 
-#ifdef SORTLOOT
 	iflags.sortloot = 'n';
-#endif
 
      /* assert( sizeof flags.inv_order == sizeof def_inv_order ); */
 	(void)memcpy((genericptr_t)flags.inv_order,
@@ -2168,7 +2144,6 @@ boolean tinitial, tfrom_file;
 		return;
 	}
 
-#ifdef CONVICT
 	fullname = "ratname";
 	if (match_optname(opts, fullname, 3, TRUE)) {
 		if (negated) bad_negation(fullname, FALSE);
@@ -2177,7 +2152,6 @@ boolean tinitial, tfrom_file;
 		sanitizestr(ratname);
 		return;
 	}
-#endif /* CONVICT */
 
 	fullname = "number_pad";
 	if (match_optname(opts, fullname, 10, TRUE)) {
@@ -2208,7 +2182,6 @@ boolean tinitial, tfrom_file;
 		return;
 	}
 
-#ifdef QWERTZ
         fullname = "qwertz_movement";
         if (match_optname(opts, fullname, 6, FALSE)) {
                 if (negated)
@@ -2218,7 +2191,6 @@ boolean tinitial, tfrom_file;
                 iflags.qwertz_movement=!negated;
                 return;
         }
-#endif
 
 	fullname = "runmode";
 	if (match_optname(opts, fullname, 4, TRUE)) {
@@ -3097,7 +3069,6 @@ goodfruit:
 	}
 
 
-#ifdef SORTLOOT
 	fullname = "sortloot";
 	if (match_optname(opts, fullname, 4, TRUE)) {
 		op = string_for_env_opt(fullname, opts, FALSE);
@@ -3113,7 +3084,6 @@ goodfruit:
 		}
 		return;
 	}
-#endif /* SORTLOOT */
 
 	fullname = "suppress_alert";
 	if (match_optname(opts, fullname, 4, TRUE)) {
@@ -3574,12 +3544,8 @@ goodfruit:
 			if (initial) return;
 
 			if ((boolopt[i].addr) == &flags.time
-#ifdef EXP_ON_BOTL
 			 || (boolopt[i].addr) == &flags.showexp
-#endif
-#ifdef SCORE_ON_BOTL
 			 || (boolopt[i].addr) == &flags.showscore
-#endif
 			    )
 			    flags.botl = TRUE;
 
@@ -3660,11 +3626,9 @@ static NEARDATA const char *delay_lengths[] = {
 	"none", "short", "normal"
 };
 
-#ifdef SORTLOOT
 static NEARDATA const char *sortltype[] = {
 	"none", "loot", "full"
 };
-#endif
 
 /*
  * Convert the given string of object classes to a string of default object
@@ -3866,13 +3830,11 @@ doset()
 				doset_add_menu(tmpwin, compopt[i].name,
 					(pass == DISP_IN_GAME) ? 0 : indexoffset);
 		}
-#ifdef AUTOPICKUP_EXCEPTIONS
 	any.a_int = -1;
 	Sprintf(buf, "autopickup exceptions (%d currently set)",
 		count_ape_maps((int *)0, (int *)0));
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 
-#endif /* AUTOPICKUP_EXCEPTIONS */
 #ifdef PREFIXES_IN_USE
 	any.a_void = 0;
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "", MENU_UNSELECTED);
@@ -3892,12 +3854,10 @@ doset()
 	     */
 	    for (pick_idx = 0; pick_idx < pick_cnt; ++pick_idx) {
 		opt_indx = pick_list[pick_idx].item.a_int - 1;
-#ifdef AUTOPICKUP_EXCEPTIONS
 		if (opt_indx == -2) {
 		    special_handling("autopickup_exception",
 		    			setinitial, fromfile);
 		} else
-#endif
 		if (opt_indx < boolcount) {
 		    /* boolean option */
 		    Sprintf(buf, "%s%s", *boolopt[opt_indx].addr ? "!" : "",
@@ -3955,9 +3915,7 @@ boolean setinitial,setfromfile;
     /* Special handling of menustyle, pickup_burden, pickup_types,
      * disclose, runmode, msg_window, menu_headings, number_pad and sortloot
 	 * attack_mode, pokedex, wizlevelport, wizcombatdebug
-#ifdef AUTOPICKUP_EXCEPTIONS
      * Also takes care of interactive autopickup_exception_handling changes.
-#endif
      */
 	if(!strcmp("attack_mode", optname)){
 		menu_item *pick = (menu_item *) 0;
@@ -4400,7 +4358,6 @@ boolean setinitial,setfromfile;
 			}
 		destroy_nhwindow(tmpwin);
 			retval = TRUE;
-#ifdef SORTLOOT
     } else if (!strcmp("sortloot", optname)) {
 		const char *sortl_name;
 		menu_item *sortl_pick = (menu_item *)0;
@@ -4419,7 +4376,6 @@ boolean setinitial,setfromfile;
 		}
 		destroy_nhwindow(tmpwin);
 		retval = TRUE;
-#endif /* SORTLOOT */
     } else if (!strcmp("menu_headings", optname)) {
 		static const char *mhchoices[3] = {"bold", "inverse", "underline"};
 		const char *npletters = "biu";
@@ -4450,7 +4406,6 @@ boolean setinitial,setfromfile;
 			}
 		destroy_nhwindow(tmpwin);
 			retval = TRUE;
-#ifdef AUTOPICKUP_EXCEPTIONS
     } else if (!strcmp("autopickup_exception", optname)) {
     	boolean retval;
 	int pick_cnt, pick_idx, opt_idx, pass;
@@ -4532,7 +4487,6 @@ ape_again:
 		goto ape_again;
 	}
 	retval = TRUE;
-#endif /* AUTOPICKUP_EXCEPTIONS */
     }
     return retval;
 }
@@ -4736,10 +4690,8 @@ char *buf;
 	     }
 	else if (!strcmp(optname, "race"))
 		Sprintf(buf, "%s", rolestring(flags.initrace, races, noun));
-#ifdef CONVICT
 	else if (!strcmp(optname, "ratname")) 
 		Sprintf(buf, "%s", ratname[0] ? catname : none );
-#endif /* CONVICT */
 	else if (!strcmp(optname, "role"))
 		Sprintf(buf, "%s", rolestring(flags.initrole, roles, name.m));
 	else if (!strcmp(optname, "runmode"))
@@ -4760,7 +4712,6 @@ char *buf;
 	}
 	else if (!strcmp(optname,"species"))
 		Sprintf(buf, "%s", rolestring(flags.initspecies, species, name));
-#ifdef SORTLOOT
 	else if (!strcmp(optname, "sortloot")) {
 		char *sortname = (char *)NULL;
 		for (i=0; i < SIZE(sortltype) && sortname==(char *)NULL; i++) {
@@ -4770,7 +4721,6 @@ char *buf;
 		if (sortname != (char *)NULL)
 		   Sprintf(buf, "%s", sortname);
 	}
-#endif /* SORTLOOT */
 	else if (!strcmp(optname, "player_selection"))
 		Sprintf(buf, "%s", iflags.wc_player_selection ? "prompts" : "dialog");
 #ifdef MSDOS
@@ -4876,12 +4826,10 @@ dotogglepickup()
 	if (flags.pickup) {
 	    oc_to_str(flags.pickup_types, ocl);
 	    Sprintf(buf, "ON, for %s objects%s", ocl[0] ? ocl : "all",
-#ifdef AUTOPICKUP_EXCEPTIONS
 			(iflags.autopickup_exceptions[AP_LEAVE] ||
 			 iflags.autopickup_exceptions[AP_GRAB]) ?
 			 ((count_ape_maps((int *)0, (int *)0) == 1) ?
 			    ", with one exception" : ", with some exceptions") :
-#endif
 			"");
 	} else {
 	    Strcpy(buf, "OFF");
@@ -4890,7 +4838,6 @@ dotogglepickup()
 	return MOVE_CANCELLED;
 }
 
-#ifdef AUTOPICKUP_EXCEPTIONS
 int
 add_autopickup_exception(mapping)
 const char *mapping;
@@ -5006,7 +4953,6 @@ free_autopickup_exceptions()
 		}
 	}
 }
-#endif /* AUTOPICKUP_EXCEPTIONS */
 
 /* data for option_help() */
 static const char *opt_intro[] = {

@@ -424,10 +424,8 @@ struct permonst *pa; /* permonst of the attacker (used for disease) */
 		}
 		/* can be both you and mtmp if you're swallowed */
 		mtmp = m_at(xi, yi);
-#ifdef STEED
 		if (!mtmp && xi == u.ux && yi == u.uy)
 			mtmp = u.usteed;
-#endif
 		if (mtmp) {
 		    if (mtmp->mhp < 1) explmask = 2;
 		    else switch(adtyp) {
@@ -585,10 +583,8 @@ struct permonst *pa; /* permonst of the attacker (used for disease) */
 		(void)zap_over_floor((xchar)xi, (xchar)yi, adtyp, WAND_CLASS, FALSE, &shopdamage);
 		
 		mtmp = m_at(xi, yi);
-#ifdef STEED
 		if (!mtmp && xi == u.ux && yi == u.uy)
 			mtmp = u.usteed;
-#endif
 		if (!mtmp) continue;
 		if (DEADMONSTER(mtmp)) continue;
 		if (u.uswallow && mtmp == u.ustuck) {
@@ -1134,8 +1130,6 @@ splatter_burning_oil(x, y)
     explode(x, y, AD_FIRE, BURNING_OIL, d(4,4), EXPL_FIERY, 1);
 }
 
-#ifdef FIREARMS
-
 #define BY_OBJECT       ((struct monst *)0)
 
 STATIC_DCL int
@@ -1243,10 +1237,8 @@ boolean isyou;
 	if (redraw) newsym(x, y);
     }
     mon = m_at(x, y);
-#ifdef STEED
     if (!mon && x == u.ux && y == u.uy)
 	mon = u.usteed;
-#endif
     if (mon && !DEADMONSTER(mon)) {
 		if (resists_fire(mon)) {
 		    shielded = TRUE;
@@ -1384,8 +1376,6 @@ boolean yours;
 	}
 	/* Otherwise, do nothing */
 }
-
-#endif /* FIREARMS */
 
 int
 adtyp_expl_color(adtyp)

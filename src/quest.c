@@ -80,9 +80,7 @@ nemdead()
 {
 	if(!Qstat(killed_nemesis)) {
 	    Qstat(killed_nemesis) = TRUE;
-#ifdef RECORD_ACHIEVE
 		give_quest_trophy();
-#endif
 		if (Role_if(PM_EXILE)) {
 			u.uevent.qcompleted = TRUE;
 			u.specialSealsKnown |= SEAL_ACERERAK;
@@ -99,9 +97,7 @@ artitouch()
 {
 	if(!Qstat(touched_artifact)) {
 	    Qstat(touched_artifact) = TRUE;
-#ifdef RECORD_ACHIEVE
 		if(!Role_if(PM_EXILE)) give_quest_trophy();
-#endif
 		if(Role_if(PM_NOBLEMAN) && Race_if(PM_DROW) && !flags.initgend)
 			u.uevent.qcompleted = 1; /* Touching this advances the "plot" and will cause the leader to vanish, so set this now. */
 	    qt_pager(QT_GOTIT + (flags.stag ? QT_TURNEDSTAG : 0));

@@ -273,28 +273,20 @@ struct obj *obj;
 	} else if (obj->otyp == AMULET_OF_YENDOR) {
 		if (u.uhave.amulet) impossible("already have amulet?");
 		u.uhave.amulet = 1;
-#ifdef RECORD_ACHIEVE
 		achieve.get_amulet = 1;
-#endif
 	} else if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
 		if (u.uhave.menorah) impossible("already have candelabrum?");
 		u.uhave.menorah = 1;
-#ifdef RECORD_ACHIEVE
 		achieve.get_candelabrum = 1;
-#endif
 	} else if (obj->otyp == BELL_OF_OPENING || obj->oartifact == ART_ANNULUS) {
 		if (u.uhave.bell) impossible("already have silver bell?");
 		u.uhave.bell = 1;
-#ifdef RECORD_ACHIEVE
 		achieve.get_bell = 1;
 		give_quest_trophy();
-#endif
 	} else if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
 		if (u.uhave.book) impossible("already have the book?");
 		u.uhave.book = 1;
-#ifdef RECORD_ACHIEVE
 		achieve.get_book = 1;
-#endif
 	}
 	if (obj->oartifact) {
 		if (is_quest_artifact(obj)) {
@@ -310,14 +302,12 @@ struct obj *obj;
 		}
 		if(obj->oartifact == ART_TREASURY_OF_PROTEUS){
 			u.ukinghill = TRUE;
-//ifdef RECORD_ACHIEVE Record_achieve now mission-critical for Binder, so....
 		} else if(obj->oartifact == ART_SILVER_KEY){
 			achieve.get_skey = TRUE;
 		} else if(obj->oartifact == ART_CAGE_KEY){
 			achieve.get_ckey = TRUE;
 		} else if(obj->oartifact >= ART_FIRST_KEY_OF_LAW && obj->oartifact <= ART_THIRD_KEY_OF_NEUTRALITY){
 			achieve.get_keys |= (1 << (obj->oartifact - ART_FIRST_KEY_OF_LAW));
-//endif
 		}
 		if(Role_if(PM_EXILE) && 
 				(achieve.get_keys&0x002) && //Second key #1 (was 0x007)
@@ -331,7 +321,6 @@ struct obj *obj;
 		set_artifact_intrinsic(obj, 1, W_ART);
 	}
 
-#ifdef RECORD_ACHIEVE
 	if((obj->otyp == LUCKSTONE && obj->record_achieve_special) ||
 			obj->oartifact == ART_GILLYSTONE ||
 			obj->oartifact == ART_POPLAR_PUNISHER ||
@@ -364,7 +353,6 @@ struct obj *obj;
 		obj->record_achieve_special = 0;
 		give_law_trophy();
 	}
-#endif /* RECORD_ACHIEVE */
 
 }
 
@@ -716,9 +704,7 @@ register struct obj *obj;
 	else if (obj == uarmh) setnotworn(obj);
 	else if (obj == uarms) setnotworn(obj);
 	else if (obj == uarmg) setnotworn(obj);
-#ifdef TOURIST
 	else if (obj == uarmu) setnotworn(obj);
-#endif
 	else if (obj == uarmf) setnotworn(obj);
 
 	update_map = (obj->where == OBJ_FLOOR);
@@ -1194,9 +1180,7 @@ register const char *let,*word;
 		if ((taking_off(word) &&
 		    (!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL))
 		     || (otmp==uarm && uarmc && arm_blocks_upper_body(uarm->otyp))
-#ifdef TOURIST
 		     || (otmp==uarmu && ((uarm && arm_blocks_upper_body(uarm->otyp)) || uarmc))
-#endif
 		    ))
 		|| (putting_on(word) &&
 		     (otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)))
@@ -1290,7 +1274,6 @@ register const char *let,*word;
 			!strcmp(word, "untrap with")) &&
 		     /* Picks, axes, pole-weapons, bullwhips */
 		    ((otmp->oclass == WEAPON_CLASS && !is_pick(otmp) &&
-//ifdef FIREARMS
 		      otyp != BFG &&
 		      otyp != RAYGUN &&
 		      otyp != SUBMACHINE_GUN &&
@@ -1303,7 +1286,6 @@ register const char *let,*word;
 		      !is_tipped_spear(otmp) && 
 			  otmp->oartifact != ART_STAFF_OF_AESCULAPIUS &&
 			  otmp->oartifact != ART_ESSCOOAHLIPBOOURRR &&
-//endif
 		      !is_axe(otmp) && !is_pole(otmp) && 
 			  otyp != BULLWHIP && otyp != VIPERWHIP && otyp != FORCE_WHIP &&
 			  otyp != NUNCHAKU && 
@@ -1481,17 +1463,13 @@ register const char *let,*word;
 			Sprintf(qbuf, "What do you want to %s? [%s or ?*]",
 				word, buf);
 		}
-#ifdef REDO
 		if (in_doagain)
 		    ilet = readchar();
 		else
-#endif
 		    ilet = yn_function(qbuf, (char *)0, '\0');
 		if(ilet == '0') prezero = TRUE;
 		while(digit(ilet) && allowcnt) {
-#ifdef REDO
 			if (ilet != '?' && ilet != '*')	savech(ilet);
-#endif
 			cnt = 10*cnt + (ilet - '0');
 			allowcnt = 2;	/* signal presence of cnt */
 			ilet = readchar();
@@ -1568,16 +1546,12 @@ register const char *let,*word;
 		    }
 		    /* they typed a letter (not a space) at the prompt */
 		}
-#ifdef REDO
 		savech(ilet);
-#endif
 		for (otmp = invent; otmp; otmp = otmp->nobj)
 			if (otmp->invlet == ilet) break;
 		if(!otmp) {
 			You("don't have that object.");
-#ifdef REDO
 			if (in_doagain) return((struct obj *) 0);
-#endif
 			continue;
 		} else if (allowcnt == 2 && !strcmp(word,"throw") && cnt > 1 && !(
 #ifdef GOLDOBJ
@@ -1592,9 +1566,7 @@ register const char *let,*word;
 		} else if (cnt < 0 || otmp->quan < cnt) {
 			You("don't have that many!  You have only %ld.",
 			    otmp->quan);
-#ifdef REDO
 			if (in_doagain) return((struct obj *) 0);
-#endif
 			continue;
 		}
 		break;
@@ -1679,9 +1651,7 @@ boolean
 wearing_armor()
 {
 	return((boolean)(uarm || uarmc || uarmf || uarmg || uarmh || uarms
-#ifdef TOURIST
 		|| uarmu
-#endif
 		));
 }
 
@@ -1690,9 +1660,7 @@ is_worn(otmp)
 register struct obj *otmp;
 {
     return((boolean)(!!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL |
-#ifdef STEED
 			W_SADDLE |
-#endif
 			W_WEP | W_SWAPWEP | W_QUIVER))));
 }
 
@@ -2264,9 +2232,7 @@ struct obj *obj;
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Use the can to grease an item", MENU_UNSELECTED);
 	else if (obj->otyp == LOCK_PICK ||
-#ifdef TOURIST
 			obj->otyp == CREDIT_CARD ||
-#endif
 			obj->otyp == SKELETON_KEY)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Use this tool to pick a lock", MENU_UNSELECTED);
@@ -2318,11 +2284,9 @@ struct obj *obj;
 				"Dip something into this potion", MENU_UNSELECTED);
 	}
 #endif
-#ifdef TOURIST
 	else if (obj->otyp == EXPENSIVE_CAMERA)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Take a photograph", MENU_UNSELECTED);
-#endif
 	else if (obj->otyp == TOWEL)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Clean yourself off with this towel", MENU_UNSELECTED);
@@ -4461,7 +4425,6 @@ find_unpaid(list, last_found)
     return (struct obj *) 0;
 }
 
-#ifdef SORTLOOT
 void
 munge_objnames(obj, buffer)
 	struct obj *obj;
@@ -4548,7 +4511,6 @@ sortloot_cmp(obj1, obj2)
 
   return 0; /* They're identical, as far as we're concerned. */
 }
-#endif
 
 
 /*
@@ -4573,10 +4535,8 @@ long* out_cnt;
 #endif
 {
 	struct obj *otmp;
-#ifdef SORTLOOT
 	struct obj **oarray;
 	int i, j;
-#endif
 	char ilet, ret = '\0';
 	char *invlet = flags.inv_order;
 	int n, classcount;
@@ -4666,7 +4626,6 @@ long* out_cnt;
 	    return ret;
 	}
 
-#ifdef SORTLOOT
 	/* count the number of items */
 	for (n = 0, otmp = invent; otmp; otmp = otmp->nobj)
 	  if(!lets || !*lets || index(lets, otmp->invlet)) n++;
@@ -4691,7 +4650,6 @@ long* out_cnt;
 	      oarray[i++] = otmp;
 	    }
 	  }
-#endif /* SORTLOOT */
 
 #ifdef DUMP_LOG
 	if (want_disp){
@@ -4710,7 +4668,6 @@ long* out_cnt;
 nextclass:
 	classcount = 0;
 	any.a_void = 0;		/* set all bits to zero */
-#ifdef SORTLOOT
 	for(i = 0; i < n; i++) {
 	  otmp = oarray[i];
 	  ilet = otmp->invlet;
@@ -4740,38 +4697,6 @@ nextclass:
 		     MENU_UNSELECTED);
 	  }
 	}
-#else /* SORTLOOT */
-	for(otmp = invent; otmp; otmp = otmp->nobj) {
-		ilet = otmp->invlet;
-		if(!lets || !*lets || index(lets, ilet)) {
-			if (!flags.sortpack || otmp->oclass == *invlet) {
-			    if (flags.sortpack && !classcount) {
-				any.a_void = 0;		/* zero */
-#ifdef DUMP_LOG
-				if (want_dump)
-				    dump("  ", let_to_name(*invlet, FALSE, FALSE));
-				if (want_disp)
-#endif
-				add_menu(win, NO_GLYPH, &any, 0, 0, iflags.menu_headings,
-					 let_to_name(*invlet, FALSE, FALSE), MENU_UNSELECTED);
-				classcount++;
-			    }
-			    any.a_char = ilet;
-#ifdef DUMP_LOG
-			    if (want_dump) {
-			      char letbuf[7];
-			      sprintf(letbuf, "  %c - ", ilet);
-			      dump(letbuf, doname(otmp));
-			    }
-			    if (want_disp)
-#endif
-			    add_menu(win, obj_to_glyph(otmp),
-					&any, ilet, 0, ATR_NONE, doname(otmp),
-					MENU_UNSELECTED);
-			}
-		}
-	}
-#endif /* SORTLOOT */
 	if (flags.sortpack) {
 		if (*++invlet) goto nextclass;
 #ifdef WIZARD
@@ -4781,9 +4706,7 @@ nextclass:
 		}
 #endif
 	}
-#ifdef SORTLOOT
 	free(oarray);
-#endif
 #ifdef DUMP_LOG
 	if (want_disp) {
 #endif
@@ -5079,9 +5002,7 @@ dotypeinv()
 
 	    if(class_count > 1) {
 		c = yn_function(prompt, types, '\0');
-#ifdef REDO
 		savech(c);
-#endif
 		if(c == '\0') {
 			clear_nhwindow(WIN_MESSAGE);
 			return MOVE_CANCELLED;
@@ -5169,10 +5090,8 @@ char *buf;
 	    cmap = S_litsoil;				/* "soil" */
 	else if (IS_SAND(ltyp))
 	    cmap = S_litsand;				/* "sand" */
-#ifdef SINKS
 	else if (IS_SINK(ltyp))
 	    cmap = S_sink;				/* "sink" */
-#endif
 	else if (IS_ALTAR(ltyp)) {
 		if(a_gnum(x,y) != GOD_NONE) {
 			Sprintf(altbuf, "altar to %s (%s)", a_gname(),
@@ -5542,16 +5461,10 @@ doprarm()
 	if(!wearing_armor())
 		You("are not wearing any armor.");
 	else {
-#ifdef TOURIST
 		char lets[8];
-#else
-		char lets[7];
-#endif
 		register int ct = 0;
 
-#ifdef TOURIST
 		if(uarmu) lets[ct++] = obj_to_let(uarmu);
-#endif
 		if(uarm) lets[ct++] = obj_to_let(uarm);
 		if(uarmc) lets[ct++] = obj_to_let(uarmc);
 		if(uarmh) lets[ct++] = obj_to_let(uarmh);
@@ -5598,9 +5511,7 @@ tool_in_use(obj)
 struct obj *obj;
 {
 	if ((obj->owornmask & (W_TOOL
-#ifdef STEED
 			| W_SADDLE
-#endif
 			)) != 0L) return TRUE;
 	if (obj->oclass != TOOL_CLASS) return FALSE;
 	return (boolean)(obj == uwep || obj->lamplit ||

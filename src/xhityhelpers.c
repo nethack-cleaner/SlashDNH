@@ -257,7 +257,6 @@ struct obj * wep;	/* uwep for attack(), null for kick_monster() */
 			}
 			else if (iflags.attack_mode == ATTACK_MODE_ASK){
 				char qbuf[QBUFSZ];
-#ifdef PARANOID
 				char buf[BUFSZ];
 				if (iflags.paranoid_hit) {
 					Sprintf(qbuf, "Really attack %s? [no/yes]",
@@ -270,15 +269,12 @@ struct obj * wep;	/* uwep for attack(), null for kick_monster() */
 					}
 				}
 				else {
-#endif
 					Sprintf(qbuf, "Really attack %s?", mon_nam(mdef));
 					if (yn(qbuf) != 'y') {
 						flags.move |= MOVE_CANCELLED;
 						return ATTACKCHECK_NONE;
 					}
-#ifdef PARANOID
 				}
-#endif
 			}
 		}
 	}
@@ -1000,11 +996,9 @@ boolean candestroy;
 			}
 			if ((target = which_armor(mdef, W_ARM)) != (struct obj *)0) {
 				(void)rust_dmg(target, xname(target), hurt, TRUE, mdef, candestroy);
-#ifdef TOURIST
 			}
 			else if ((target = which_armor(mdef, W_ARMU)) != (struct obj *)0) {
 				(void)rust_dmg(target, xname(target), hurt, TRUE, mdef, candestroy);
-#endif
 			}
 			break;
 		case 2:

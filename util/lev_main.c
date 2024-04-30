@@ -546,12 +546,7 @@ char c;
 		  case 'O'  : return(FORGE);
 		  case '\\' : return(THRONE);
 		  case 'K'  :
-#ifdef SINKS
 		      return(SINK);
-#else
-		      yywarning("Sinks are not allowed in this version!  Ignoring...");
-		      return(ROOM);
-#endif
 		  case '}'  : return(MOAT);
 		  case 'P'  : return(POOL);
 		  case 'L'  : return(LAVAPOOL);

@@ -66,7 +66,6 @@ STATIC_DCL void FDECL(bill_box_content, (struct obj *, BOOLEAN_P, BOOLEAN_P,
 static boolean FDECL(rob_shop, (struct monst *, struct obj *));
 #endif
 
-#ifdef OTHER_SERVICES
 #define NOBOUND         (-1)    /* No lower/upper limit to charge       */
 static void NDECL(shk_other_services);
 static void FDECL(shk_identify, (char *, struct monst *));
@@ -80,7 +79,6 @@ static void FDECL(shk_wind, (char *, struct monst *));
 static boolean FDECL(shk_obj_match, (struct obj *, struct monst *));
 static boolean FDECL(shk_offer_price, (char *, long, struct monst *));
 static void FDECL(shk_smooth_charge, (int *, int, int));
-#endif
 
 #ifdef OVLB
 /*
@@ -690,12 +688,10 @@ register char *enterstring;
 	    verbalize("Invisible customers are not welcome!");
 	    return;
 	}
-#ifdef CONVICT
 	/* Visible striped prison shirt */
 	if ((uarmu && (uarmu->otyp == STRIPED_SHIRT)) && !(uarm && arm_blocks_upper_body(uarm->otyp)) && !uarmc && strcmp(shkname(shkp), "Izchak") != 0) {
 	    eshkp->pbanned = TRUE;
 	}
-#endif /* CONVICT */
 
 	seenSeals = countFarSigns(shkp);
 	if(seenSeals && strcmp(shkname(shkp), "Izchak") == 0) seenSeals = 0;
@@ -806,13 +802,11 @@ register char *enterstring;
 			  "Leave the %s%s outside.",
 			  tool, plur(cnt));
 		should_block = TRUE;
-#ifdef STEED
 	    } else if (u.usteed) {
 		verbalize(NOTANGRY(shkp) ?
 			  "Will you please leave %s outside?" :
 			  "Leave %s outside.", y_monnam(u.usteed));
 		should_block = TRUE;
-#endif
 	    } else if (eshkp->pbanned || seenSeals) {
 	    // verbalize("I don't sell to your kind here.");
 		should_block = TRUE;
@@ -1526,10 +1520,8 @@ proceed:
 #endif
 			pline(no_money, stashed_gold ? " seem to" : "");
 		 
-#ifdef OTHER_SERVICES
 /*		    else */
 			shk_other_services();
-#endif                
 		
 		} else if(ltmp) {
 		    pline("%s is after blood, not money!", Monnam(shkp));
@@ -1799,7 +1791,6 @@ proceed:
 	return MOVE_STANDARD;
 }
 
-#ifdef OTHER_SERVICES
 /*
 ** FUNCTION shk_other_services
 **
@@ -2014,7 +2005,6 @@ shk_other_services()
 		free(selected);
 	}
 }
-#endif /* OTHER_SERVICES */
 
 #endif /*OVL0*/
 #ifdef OVL3
@@ -3501,10 +3491,8 @@ boolean shk_buying, shk_selling;
 	case WEAPON_CLASS:
 		if (obj->spe > 0 && (shk_buying || shk_selling || obj->known))
 			tmp += 10L * (long)obj->spe;
-//#ifdef FIREARMS
 		/* Don't buy activated explosives! */
 		if (is_grenade(obj) && obj->oarmed && (shk_buying || shk_selling)) tmp = 0L;
-//#endif
 		break;
 	case TOOL_CLASS:
 		if (Is_candle(obj) && (shk_buying || shk_selling) &&
@@ -3913,9 +3901,7 @@ register struct monst *shkp;
 		uondoor = (u.ux == eshkp->shd.x && u.uy == eshkp->shd.y);
 #define	GDIST(x,y)	(dist2(x,y,gx,gy))
 		if ((Invis && uondoor)
-#ifdef STEED
 			|| u.usteed
-#endif
 			) {
 		    avoid = FALSE;
 		} else {
@@ -4478,9 +4464,7 @@ struct monst *shkp;
 	else{
 		pline("%s talks about the problem of shoplifters.",shkname(shkp));
 	}
-#ifdef OTHER_SERVICES
 	shk_other_services();
-#endif                
 }
 
 STATIC_OVL void
@@ -4549,9 +4533,7 @@ boolean altusage; /* some items have an "alternate" use with different cost */
 		tmp -= tmp / 5L;
 	} else if (otmp->otyp == CAN_OF_GREASE ||
 		   otmp->otyp == TINNING_KIT
-#ifdef TOURIST
 		   || otmp->otyp == EXPENSIVE_CAMERA
-#endif
 		   ) {
 		tmp /= 10L;
 	} else if (otmp->otyp == POT_OIL) {
@@ -4706,9 +4688,7 @@ register xchar x, y;
 		&& shkp->mcanmove && shkp->mnotlaugh && !shkp->msleeping
 		&& (x == sx-1 || x == sx+1 || y == sy-1 || y == sy+1)
 		&& (Invis || carrying(PICK_AXE) || carrying(DWARVISH_MATTOCK)
-#ifdef STEED
 			|| u.usteed
-#endif
 	  )) {
 		pline("%s%s blocks your way!", shkname(shkp),
 				Invis ? " senses your motion and" : "");
@@ -4799,7 +4779,6 @@ sasc_bug(struct obj *op, unsigned x){
 }
 #endif
 
-#ifdef OTHER_SERVICES
 static NEARDATA const char identify_types[] = { ALL_CLASSES, 0 };
 static NEARDATA const char weapon_types[] = { WEAPON_CLASS, TOOL_CLASS, 0 };
 static NEARDATA const char armor_types[] = { ARMOR_CLASS, 0 };
@@ -5946,7 +5925,6 @@ check_lower:
 	if (*pcharge < lower) *pcharge=lower;
 }
 
-#endif /* OTHER_SERVICES */
 
 boolean
 dahlverNarVis()
@@ -6317,10 +6295,8 @@ smith_resizeArmor(smith, otmp)
 
     if (getdir("Resize armor to fit what creature? (in what direction)")) {
 
-#ifdef STEED
 		if (u.usteed && u.dz > 0) ptr = u.usteed->data;
 		else 
-#endif
 		if(u.dz){
 			verbalize("I don't think anybody's there.");
 		} else if (u.dx == 0 && u.dy == 0) {

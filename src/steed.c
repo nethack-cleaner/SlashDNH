@@ -6,7 +6,6 @@
 
 
 
-#ifdef STEED
 
 /* Monsters that might be ridden */
 static NEARDATA const char steeds[] = {
@@ -687,6 +686,5 @@ int x, y;
 		block_point(x,y);
 }
 
-#endif /* STEED */
 
 /*steed.c*/

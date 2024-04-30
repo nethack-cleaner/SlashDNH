@@ -536,10 +536,8 @@ unsigned int *stuckid, *steedid;	/* STEED */
 	restore_oracles(fd);
 	if (u.ustuck)
 		mread(fd, (genericptr_t) stuckid, sizeof (*stuckid));
-#ifdef STEED
 	if (u.usteed)
 		mread(fd, (genericptr_t) steedid, sizeof (*steedid));
-#endif
 	mread(fd, (genericptr_t) pl_character, sizeof pl_character);
 
 	mread(fd, (genericptr_t) pl_fruit, sizeof pl_fruit);
@@ -549,13 +547,9 @@ unsigned int *stuckid, *steedid;	/* STEED */
 
 	restnames(fd);
 	restore_waterlevel(fd);
-#ifdef RECORD_ACHIEVE
 	mread(fd, (genericptr_t) &achieve, sizeof achieve);
-#endif
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 	mread(fd, (genericptr_t) &realtime_data.realtime, 
 			  sizeof realtime_data.realtime);
-#endif
 	/* must come after all mons & objs are restored */
 	relink_mx((struct monst *)0);
 	relink_ox((struct obj *)0);
@@ -584,7 +578,6 @@ unsigned int stuckid, steedid;	/* STEED */
 			u.ustuck = mtmp;
 		}
 	}
-#ifdef STEED
 	if (steedid) {
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 			if (mtmp->m_id == steedid) break;
@@ -596,7 +589,6 @@ unsigned int stuckid, steedid;	/* STEED */
 			remove_monster(mtmp->mx, mtmp->my);
 		}
 	}
-#endif
 }
 
 /*ARGSUSED*/	/* fd used in MFLOPPY only */
@@ -698,9 +690,7 @@ register int fd;
 	 * place_monster() on other levels
 	 */
 	u.ustuck = (struct monst *)0;
-#ifdef STEED
 	u.usteed = (struct monst *)0;
-#endif
 
 #ifdef MICRO
 # ifdef AMII_GRAPHICS
@@ -810,7 +800,6 @@ register int fd;
 	clear_nhwindow(WIN_MESSAGE);
 	program_state.something_worth_saving++;	/* useful data now exists */
 
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 
 /* Start the timer here (realtime has already been set) */
 #if defined(BSD) && !defined(POSIX_TYPES)
@@ -819,7 +808,6 @@ register int fd;
 	(void) time(&realtime_data.restoretime);
 #endif
 
-#endif /* RECORD_REALTIME || REALTIME_ON_BOTL */
 
 	/* Success! */
 	welcome(FALSE);

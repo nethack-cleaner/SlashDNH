@@ -667,7 +667,6 @@ you_calc_movement()
 	int wtcap = near_capacity();
 	struct monst *mtmp;
 	
-#ifdef STEED
 	if (u.usteed && u.umoved) {
 	/* your speed doesn't augment steed's speed */
 	moveamt = mcalcmove(u.usteed);
@@ -684,7 +683,6 @@ you_calc_movement()
 		}
 	}
 	} else
-#endif
 	{
 	//Override species-based speed penalties in some cases.
 	if(!Upolyd && (
@@ -2304,14 +2302,12 @@ karemade:
 					} else if(sensemon(mtmp) || (canseemon(mtmp) && !mtmp->mundetected))
 						pline("%s is trembling hysterically.", Monnam(mtmp));
 				}
-//ifdef BARD
 				if (mtmp->encouraged && (!rn2(8))) {
 					if(mtmp->encouraged > 0) mtmp->encouraged--;
 					else mtmp->encouraged++;
 					if (!(mtmp->encouraged) && canseemon(mtmp) && mtmp->mtame) 
 						pline("%s looks calm again.", Monnam(mtmp));
 				}
-//endif
 				if(mtmp->mtyp == PM_GREAT_CTHULHU || mtmp->mtyp == PM_ZUGGTMOY 
 					|| mtmp->mtyp == PM_SWAMP_FERN) mtmp->mspec_used = 0;
 				if(is_weeping(mtmp->data)) mtmp->mspec_used = 0;
@@ -2941,9 +2937,7 @@ karemade:
 				(
 #endif
 				 (u.uhave.amulet || On_W_tower_level(&u.uz)
-#ifdef STEED
 				  || (u.usteed && mon_has_amulet(u.usteed))
-#endif
 				 )
 #ifdef WIZARD
 				 && (!wizard) )
@@ -2955,11 +2949,9 @@ karemade:
 				if (!next_to_u()) {
 				    check_leash(old_ux, old_uy);
 				}
-#ifdef REDO
 				/* clear doagain keystrokes */
 				pushch(0);
 				savech(0);
-#endif
 			    }
 			}
 			/* delayed change may not be valid anymore */
@@ -3319,14 +3311,12 @@ karemade:
 ////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-#ifdef REALTIME_ON_BOTL
 	if(iflags.showrealtime) {
 		/* Update the bottom line if the number of minutes has
 		 * changed */
 		if(get_realtime() / 60 != realtime_data.last_displayed_time / 60)
 			flags.botl = 1;
 	}
-#endif
   
 	if(flags.botl || flags.botlx) bot();
 
@@ -3343,10 +3333,8 @@ karemade:
 	    if (kbhit()) {
 		if ((ch = Getchar()) == ABORT)
 		    abort_lev++;
-# ifdef REDO
 		else
 		    pushch(ch);
-# endif /* REDO */
 	    }
 	    if (!abort_lev && ((flags.move = (*occupation)()) & (MOVE_CANCELLED|MOVE_FINISHED_OCCUPATION)))
 #else
@@ -3453,10 +3441,8 @@ stop_occupation()
 /* fainting stops your occupation, there's no reason to sync.
 		sync_hunger();
 */
-#ifdef REDO
 		nomul(0, NULL);
 		pushch(0);
-#endif
 	}
 }
 
@@ -3566,10 +3552,8 @@ newgame()
 		flush_screen(1);
         if(Role_if(PM_EXILE)){
 			com_pager(217);
-#ifdef CONVICT
 		} else if (Role_if(PM_CONVICT)) {
 		    com_pager(199);
-#endif /* CONVICT */
         // } else if(Race_if(PM_ELF)){
 			// com_pager(211);
 		} else if(Race_if(PM_ELF) && (Role_if(PM_PRIEST) || Role_if(PM_RANGER) || Role_if(PM_NOBLEMAN) || Role_if(PM_WIZARD))){
@@ -3650,7 +3634,6 @@ newgame()
 #endif
 	program_state.something_worth_saving++;	/* useful data now exists */
 
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 
 	/* Start the timer here */
 	realtime_data.realtime = (time_t)0L;
@@ -3661,7 +3644,6 @@ newgame()
 	(void) time(&realtime_data.restoretime);
 #endif
 
-#endif /* RECORD_REALTIME || REALTIME_ON_BOTL */
 
 	/* Success! */
 	welcome(TRUE);
@@ -3867,7 +3849,6 @@ do_positionbar()
 }
 #endif
 
-#if defined(REALTIME_ON_BOTL) || defined (RECORD_REALTIME)
 time_t
 get_realtime(void)
 {
@@ -3891,7 +3872,6 @@ get_realtime(void)
  
     return curtime;
 }
-#endif /* REALTIME_ON_BOTL || RECORD_REALTIME */
 
 STATIC_DCL
 void

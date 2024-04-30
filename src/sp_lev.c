@@ -2271,7 +2271,6 @@ default_case:
 	}
 	}
 
-#ifdef RECORD_ACHIEVE
 	/* Nasty hack here: try to determine if this is the Mines or Sokoban
 	 * "prize" and then set record_achieve_special (maps to corpsenm)
 	 * for the object.  That field will later be checked to find out if
@@ -2284,7 +2283,6 @@ default_case:
 	){
 		otmp->record_achieve_special = 1;
 	}
-#endif
 	/* statues placed on top of existing statue traps replace the statue there and attach itself to the trap */
 	/*  I like the statues on Oona's level, so manually except that level.  */
 	if (otmp->otyp == STATUE) {
@@ -3552,12 +3550,8 @@ dlb *fd;
       for(x = 2; x <= x_maze_max; x++)
 	for(y = 0; y <= y_maze_max; y++)
 	    if (filling == -1) {
-#ifndef WALLIFIED_MAZE
-		    levl[x][y].typ = STONE;
-#else
 		    levl[x][y].typ =
 			(y < 2 || ((x % 2) && (y % 2))) ? STONE : HWALL;
-#endif
 	    } else {
 		    levl[x][y].typ = filling;
 	    }
@@ -4074,11 +4068,7 @@ dlb *fd;
 	    }
 
 	    if(!IS_DOOR(levl[x][y].typ)) {
-#ifndef WALLIFIED_MAZE
-		levl[x][y].typ = CORR;
-#else
 		levl[x][y].typ = ROOM;
-#endif
 		levl[x][y].flags = 0;
 	    }
 
@@ -4094,11 +4084,7 @@ dlb *fd;
 		    x--;
 
 		/* no need for IS_DOOR check; out of map bounds */
-#ifndef WALLIFIED_MAZE
-		levl[x][y].typ = CORR;
-#else
 		levl[x][y].typ = ROOM;
-#endif
 		levl[x][y].flags = 0;
 	    }
 

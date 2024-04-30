@@ -16,10 +16,8 @@ STATIC_DCL void FDECL(mkshobj_at, (const struct shclass *,int,int));
 STATIC_DCL void FDECL(nameshk, (struct monst *,const char * const *));
 STATIC_DCL int  FDECL(shkinit, (const struct shclass *,struct mkroom *));
 
-#ifdef OTHER_SERVICES
 /* WAC init shk services */
 static void FDECL(init_shk_services, (struct monst *));
-#endif
 static const char * const shkliquors[] = {
     /* Ukraine */
     "Njezjin", "Tsjernigof", "Ossipewsk", "Gorlowka",
@@ -170,7 +168,6 @@ static const char * const shkgeneral[] = {
     0
 };
 
-#ifdef BARD
 static const char * const shkmusic[] = {
     /* Brazil */
     "Andre", "Daniel", "Tiago", "Alexandre", "Joao", 
@@ -179,7 +176,6 @@ static const char * const shkmusic[] = {
     "Rogerio", "Roberto", "Marcos", "Luis", "Luciano",
     0
 };
-#endif
 
 static const char * const shkbee[] = {
     /* Bee scientific names */
@@ -253,11 +249,7 @@ static const char * const shkdeep[] = {
  */
 
 const struct shclass shtypes[] = {
-#ifdef BARD
 	{"general store", GENERALSHOP, 41,
-#else
-	{"general store", GENERALSHOP, 44, //0
-#endif
 	    D_SHOP, {{100, RANDOM_CLASS}, {0, 0}, {0, 0}}, shkgeneral},
 	{"used armor dealership", ARMORSHOP, 14, //1
 	    D_SHOP, {{90, ARMOR_CLASS}, {10, WEAPON_CLASS}, {0, 0}},
@@ -285,11 +277,9 @@ const struct shclass shtypes[] = {
 	 */
 	{"rare books", BOOKSHOP, 3, D_SHOP, //9
 	    {{90, SPBOOK_CLASS}, {10, SCROLL_CLASS}, {0, 0}}, shkbooks},
-#ifdef BARD
 	{"music shop", MUSICSHOP, 3, D_SHOP, //10
 	    {{100, TOOL_CLASS}, {0, 0}},
 	     shkmusic},
-#endif
 	/* Shops below this point are "unique".  That is they must all have a
 	 * probability of zero.  They are only created via the special level
 	 * loader.
@@ -817,10 +807,8 @@ struct mkroom	*sroom;
 	ESHK(shk)->visitct = 0;
 	ESHK(shk)->following = 0;
 	ESHK(shk)->billct = 0;
-#ifdef OTHER_SERVICES
 	/* WAC init services */
 	init_shk_services(shk);
-#endif
 #ifndef GOLDOBJ
 	shk->mgold = 1000L + 30L*(long)rnd(100);	/* initial capital */
 	u.spawnedGold += shk->mgold;
@@ -922,7 +910,6 @@ register struct mkroom *sroom;
 
     level.flags.has_shop = TRUE;
 }
-#ifdef OTHER_SERVICES
 
 static void
 init_shk_services(shk)
@@ -972,7 +959,6 @@ struct monst *shk;
 
 	return;
 }
-#endif
 
 #endif /* OVLB */
 #ifdef OVL0

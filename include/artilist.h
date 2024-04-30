@@ -1023,7 +1023,6 @@ A("The Fluorite Octahedron",		BLUE_FLUORITE,		"glowing cobalt eight-sided die",
 
 /*//////////Artifact Armors//////////*/
 
-#ifdef TOURIST
 /*Needs encyc entry*/
 A("The Tie-Dye Shirt of Shambhala",	T_SHIRT,			"flamboyantly colorful %s",
 	4500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
@@ -1034,7 +1033,6 @@ A("The Tie-Dye Shirt of Shambhala",	T_SHIRT,			"flamboyantly colorful %s",
 	PROPS(), NOFLAG,
 	ENLIGHTENING, (ARTI_MANDALA|ARTI_PLUSSEV)
 	),
-#endif
 
 /*double robe effect*/
 /*martial arts attacks use exploding dice and get extra damage*/
@@ -2054,7 +2052,6 @@ A("The Heart of Ahriman",			RUBY,				(const char *)0,
 	ARTI_REMOVE_CURSE, NOFLAG
 	),
 
-#ifdef BARD
 A("The Lyre of Orpheus",			MAGIC_HARP,			(const char *)0,
 	5000L, GOLD, MZ_DEFAULT, WT_SPECIAL,
 	A_NEUTRAL, PM_BARD, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
@@ -2064,7 +2061,6 @@ A("The Lyre of Orpheus",			MAGIC_HARP,			(const char *)0,
 	PROPS(ANTIMAGIC), NOFLAG,
 	TAMING, (ARTI_SPEAK)
 	),
-#endif
 
 A("The Sceptre of Might",			SPEAR,				(const char *)0,
 	2500L, BONE, MZ_DEFAULT, WT_DEFAULT,
@@ -2851,7 +2847,6 @@ A("The Tsurugi of Muramasa",		TSURUGI,			(const char *)0,
 	NOINVOKE, (ARTI_LUCK|ARTI_BLOODTHRST)
 	),
 
-#ifdef TOURIST
 A("The Platinum Yendorian Express Card",		CREDIT_CARD,			(const char *)0,
 	7000L, PLATINUM, MZ_DEFAULT, WT_DEFAULT,
 	A_NEUTRAL, PM_TOURIST, NON_PM, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
@@ -2861,7 +2856,6 @@ A("The Platinum Yendorian Express Card",		CREDIT_CARD,			(const char *)0,
 	PROPS(HALF_SPDAM, TELEPAT, ANTIMAGIC), NOFLAG,
 	CHARGE_OBJ, NOFLAG
 	),
-#endif
 
 A("The Orb of Fate",				CRYSTAL_BALL,		(const char *)0,
 	3500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,

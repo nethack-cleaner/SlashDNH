@@ -330,42 +330,15 @@ typedef long glyph_t;
  */
 
 /* dungeon features */
-#define SINKS		/* Kitchen sinks - Janet Walz */
 /* dungeon levels */
-#define WALLIFIED_MAZE	/* Fancy mazes - Jean-Christophe Collet */
 /* #define REINCARNATION */	/* Special Rogue-like levels */
 /* monsters & objects */
-/*define KOPS*/		/* Keystone Kops by Scott R. Turner */
-	/*The Kops have been removed and replaced with the Keter Sephiroth*/
 #define SEDUCE		/* Succubi/incubi seduction, by KAA, suggested by IM */
-#define STEED		/* Riding steeds */
-#define FIREARMS	/* KMH -- Guns and bullets */
-#define TOURIST		/* Tourist players with cameras and Hawaiian shirts */
-#define CONVICT		/* Convict player with heavy iron ball */
-#define OTHER_SERVICES  /* shopkeeper services (SLASH'EM) */
-
-#define TAME_RANGED_ATTACKS /* tame monsters use ranged attacks */
-#define ATTACK_PETS         /* monsters attack pets directly */
-/* #define TAME_SUMMONING */  /* tame spellcasters can summon tame monsters */
-                              /* (including you) */
-#define YOUMONST_SPELL      /* you can cast monster spells in the form
-                               of a monster */
-#define PET_SATIATION       /* pets can become satiated and choke;
-                               they can also hoard food if intelligent */
 /* difficulty */
-#define ELBERETH	/* Engraving the E-word repels monsters */
 /* I/O */
-#define REDO		/* support for redoing last command - DGK */
 #if !defined(MAC)
 # define CLIPPING	/* allow smaller screens -- ERS */
 #endif
-
-#ifdef REDO
-# define DOAGAIN '\001' /* ^A, the "redo" key used in cmd.c and getline.c */
-#endif
-
-#define EXP_ON_BOTL	/* Show experience on bottom line */
-#define SCORE_ON_BOTL	/* added by Gary Erickson (erickson@ucivax) */
 
 /*
  * Section 5:  EXPERIMENTAL STUFF
@@ -394,11 +367,10 @@ typedef long glyph_t;
 #endif
 
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
-#define AUTOPICKUP_EXCEPTIONS  /* exceptions to autopickup */
 
 #define DUMP_LOG        /* Dump game end information to a file */
 #ifndef DUMP_FN
-#define DUMP_FN "/dgldir/userdata/%n/notdnethack/dumplog/%t"      /* Fixed dumpfile name, if you want
+#define DUMP_FN "dumplog/%t"      /* Fixed dumpfile name, if you want
                                    * to prevent definition by users */
 #endif
 #ifndef DUMPMSGS
@@ -425,16 +397,7 @@ typedef long glyph_t;
    Can be left undefined for not writing extrainfo. */
 /* #define EXTRAINFO_FN "/dgldir/extrainfo-dnao/%n.extrainfo" */
 
-#define SHOW_BORN    /* extinct & showborn -patch */
-#define SHOW_EXTINCT
-
-#define SORTLOOT /* sortloot -patch */
-
 #define SIMPLE_MAIL /* dgamelaunch simple mail */
-
-#define PARANOID /* paranoid quit &c */
-
-#define QWERTZ /* qwertz_movement */
 
 /* If this file exists, players get a message from the user defined
    in the file.  The file format is "username:message to be shown" all
@@ -446,33 +409,12 @@ typedef long glyph_t;
 #define LIVELOGFILE "livelog"
 
 #define XLOGFILE "xlogfile"  /* even larger logfile */
-#define REALTIME_ON_BOTL  /* Show elapsed time on bottom line.  Note:
-                                 * this breaks savefile compatibility. */
-
-/* The options in this section require the extended logfile support */
-#ifdef XLOGFILE
-#define RECORD_CONDUCT  /* Record conducts kept in logfile */
-#define RECORD_TURNS    /* Record turns elapsed in logfile */
-#define RECORD_ACHIEVE  /* Record certain notable achievements in the
-                         * logfile.  Note: this breaks savefile compatibility
-                         * due to the addition of the u_achieve struct. */
-#define RECORD_REALTIME /* Record the amount of actual playing time (in
-                         * seconds) in the record file.  Note: this breaks
-                         * savefile compatibility. */
-#define RECORD_START_END_TIME /* Record to-the-second starting and ending
-                               * times; stored as 32-bit values obtained
-                               * from time(2) (seconds since the Epoch.) */
-#define RECORD_GENDER0   /* Record initial gender in logfile */
-#define RECORD_ALIGN0   /* Record initial alignment in logfile */
-#endif
 
 /* Write out player's current location to this file.
    Can be left undefined, which will disable the feature. */
 #define WHEREIS_FILE "whereis/%n.whereis"
 
 #define USER_DUNGEONCOLOR
-
-#define BARD		/* Bards and songs - Andre Bertelli */
 
 #define BONES_POOL /* Multiple bones files per level */
 

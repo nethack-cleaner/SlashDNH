@@ -34,9 +34,7 @@ NEARDATA int occtime = 0;
 
 int x_maze_max, y_maze_max;	/* initialized in main, used in mkmaze.c */
 
-#ifdef REDO
 NEARDATA int in_doagain = 0;
-#endif
 
 /*
  *	The following structure will be initialized at startup time with
@@ -108,22 +106,14 @@ struct linfo level_info[MAXLINFO];
 NEARDATA struct sinfo program_state;
 
 /* 'rogue'-like direction commands (cmd.c) */
-#ifdef QWERTZ
 const char qykbd_dir[] = "hykulnjb><";       /* qwerty layout */
 const char qzkbd_dir[] = "hzkulnjb><";       /* qwertz layout */
 char const *sdir=qykbd_dir;
-#else
-const char sdir[] = "hykulnjb><";
-#endif
 const char ndir[] = "47896321><";	/* number pad mode */
 const schar xdir[10] = { -1,-1, 0, 1, 1, 1, 0,-1, 0, 0 };
 const schar ydir[10] = {  0,-1,-1,-1, 0, 1, 1, 1, 0, 0 };
 const schar zdir[10] = {  0, 0, 0, 0, 0, 0, 0, 0, 1,-1 };
-char misc_cmds[] = {'g', 'G', 'F', 'm', 'M', '\033'
-#ifdef REDO
-		    , '\001'
-#endif
-};
+char misc_cmds[] = {'g', 'G', 'F', 'm', 'M', '\033', '\001'};
 
 NEARDATA schar tbx = 0, tby = 0;	/* mthrowu: target */
 
@@ -177,9 +167,7 @@ NEARDATA struct obj *invent = (struct obj *)0,
 	*uwep = (struct obj *)0, *uarm = (struct obj *)0,
 	*uswapwep = (struct obj *)0,
 	*uquiver = (struct obj *)0, /* quiver */
-#ifdef TOURIST
 	*uarmu = (struct obj *)0, /* under-wear, so to speak */
-#endif
 	*uskin = (struct obj *)0, /* dragon armor, if a dragon */
 	*uarmc = (struct obj *)0, *uarmh = (struct obj *)0,
 	*uarms = (struct obj *)0, *uarmg = (struct obj *)0,
@@ -253,9 +241,7 @@ NEARDATA char lizardname[PL_PSIZ] = DUMMY;
 NEARDATA char dragonname[PL_PSIZ] = DUMMY;
 NEARDATA char horsename[PL_PSIZ] = DUMMY;
 NEARDATA char whisperername[PL_PSIZ] = DUMMY;
-#ifdef CONVICT
 NEARDATA char ratname[PL_PSIZ] = DUMMY;
-#endif /* CONVICT */
 char preferred_pet;	/* '\0', 'c', 'd', 'n' (none) */
 /* monsters that went down/up together with @ */
 NEARDATA struct monst *mydogs = (struct monst *)0;
@@ -375,13 +361,9 @@ char *fqn_prefix_names[PREFIX_COUNT] = { "hackdir", "leveldir", "savedir",
 					"lockdir", "configdir", "troubledir" };
 #endif
 
-#ifdef RECORD_ACHIEVE
 struct u_achieve achieve = DUMMY;
-#endif
 
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 struct realtime_data realtime_data = { 0, 0, 0 };
-#endif
 
 
 struct _plinemsg *pline_msg = NULL;

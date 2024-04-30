@@ -78,18 +78,10 @@ STATIC_DCL void FDECL(free_ttlist, (struct toptenentry *));
 STATIC_DCL int FDECL(classmon, (char *,BOOLEAN_P));
 STATIC_DCL int FDECL(score_wanted,
 		(BOOLEAN_P, int,struct toptenentry *,int,const char **,int));
-#ifdef RECORD_CONDUCT
 /*STATIC_DCL long FDECL(encodeconduct, (void));*/
-#endif
-#ifdef RECORD_ACHIEVE
 STATIC_DCL long FDECL(encodeachieve, (void));
 STATIC_DCL void FDECL(writeachieveX, (char *));
-#endif
 STATIC_DCL long FDECL(encode_xlogflags, (void));
-#ifdef NO_SCAN_BRACK
-STATIC_DCL void FDECL(nsb_mung_line,(char*));
-STATIC_DCL void FDECL(nsb_unmung_line,(char*));
-#endif
 
 /* must fit with end.c; used in rip.c */
 NEARDATA const char * const killed_by_prefix[] = {
@@ -101,9 +93,7 @@ NEARDATA const char * const killed_by_prefix[] = {
 
 static winid toptenwin = WIN_ERR;
 
-#ifdef RECORD_START_END_TIME
 static time_t deathtime = 0L;
-#endif
 
 STATIC_OVL void
 topten_print(x)
@@ -148,15 +138,9 @@ readentry(rfile,tt)
 FILE *rfile;
 struct toptenentry *tt;
 {
-#ifdef NO_SCAN_BRACK /* Version_ Pts DgnLevs_ Hp___ Died__Born id */
-	static const char fmt[] = "%d %d %d %ld %d %d %d %d %d %d %ld %ld %d%*c";
-	static const char fmt32[] = "%c%c %s %s%*c";
-	static const char fmt33[] = "%s %s %s %s %s %s%*c";
-#else
 	static const char fmt[] = "%d.%d.%d %ld %d %d %d %d %d %d %ld %ld %d ";
 	static const char fmt32[] = "%c%c %[^,],%[^\n]%*c";
 	static const char fmt33[] = "%s %s %s %s %[^,],%[^\n]%*c";
-#endif
 
 #ifdef UPDATE_RECORD_IN_PLACE
 	/* note: fscanf() below must read the record's terminating newline */
@@ -191,12 +175,6 @@ struct toptenentry *tt;
 				tt->plrole, tt->plrace, tt->plgend,
 				tt->plalign, tt->name, tt->death) != 6)
 			tt->points = 0;
-#ifdef NO_SCAN_BRACK
-		if(tt->points > 0) {
-			nsb_unmung_line(tt->name);
-			nsb_unmung_line(tt->death);
-		}
-#endif
 	}
 
 	/* check old score entries for Y2K problem and fix whenever found */
@@ -211,40 +189,21 @@ writeentry(rfile,tt)
 FILE *rfile;
 struct toptenentry *tt;
 {
-#ifdef NO_SCAN_BRACK
-	nsb_mung_line(tt->name);
-	nsb_mung_line(tt->death);
-	                   /* Version_ Pts DgnLevs_ Hp___ Died__Born id */
-	(void) fprintf(rfile,"%d %d %d %ld %d %d %d %d %d %d %ld %ld %d ",
-#else
 	(void) fprintf(rfile,"%d.%d.%d %ld %d %d %d %d %d %d %ld %ld %d ",
-#endif
 		tt->ver_major, tt->ver_minor, tt->patchlevel,
 		tt->points, tt->deathdnum, tt->deathlev,
 		tt->maxlvl, tt->hp, tt->maxhp, tt->deaths,
 		tt->deathdate, tt->birthdate, tt->uid);
 	if (tt->ver_major < 3 ||
 			(tt->ver_major == 3 && tt->ver_minor < 3))
-#ifdef NO_SCAN_BRACK
-		(void) fprintf(rfile,"%c%c %s %s\n",
-#else
 		(void) fprintf(rfile,"%c%c %s,%s\n",
-#endif
 			tt->plrole[0], tt->plgend[0],
 			onlyspace(tt->name) ? "_" : tt->name, tt->death);
 	else
-#ifdef NO_SCAN_BRACK
-		(void) fprintf(rfile,"%s %s %s %s %s %s\n",
-#else
 		(void) fprintf(rfile,"%s %s %s %s %s,%s\n",
-#endif
 			tt->plrole, tt->plrace, tt->plgend, tt->plalign,
 			onlyspace(tt->name) ? "_" : tt->name, tt->death);
 
-#ifdef NO_SCAN_BRACK
-	nsb_unmung_line(tt->name);
-	nsb_unmung_line(tt->death);
-#endif
 }
 
 #ifdef XLOGFILE
@@ -318,15 +277,10 @@ struct toptenentry *tt;
 
   (void)fprintf(rfile, SEP "flags=0x%lx", encode_xlogflags());
 
-#ifdef RECORD_CONDUCT
   (void)fprintf(rfile, SEP "conduct=0x%lx", encodeconduct());
-#endif
 
-#ifdef RECORD_TURNS
   (void)fprintf(rfile, SEP "turns=%ld", moves);
-#endif
 
-#ifdef RECORD_ACHIEVE
   (void)fprintf(rfile, SEP "achieve=0x%lx", encodeachieve());
   {
 	long dnethachievements = 0L;
@@ -347,25 +301,16 @@ struct toptenentry *tt;
 	  writeachieveX(achieveXbuff);
   (void)fprintf(rfile, SEP "achieveX=%s", achieveXbuff);
   }
-#endif
 
-#ifdef RECORD_REALTIME
   (void)fprintf(rfile, SEP "realtime=%ld", (long)realtime_data.realtime);
-#endif
 
-#ifdef RECORD_START_END_TIME
   (void)fprintf(rfile, SEP "starttime=%ld", (long)u.ubirthday);
   (void)fprintf(rfile, SEP "endtime=%ld", (long)deathtime);
-#endif
 
-#ifdef RECORD_GENDER0
   (void)fprintf(rfile, SEP "gender0=%s", genders[flags.initgend].filecode);
-#endif
 
-#ifdef RECORD_ALIGN0
   (void)fprintf(rfile, SEP "align0=%s", 
           aligns[1 - galign(u.ugodbase[UGOD_ORIGINAL])].filecode);
-#endif
 
   if (Race_if(PM_ENT) || Race_if(PM_HALF_DRAGON) || Race_if(PM_CLOCKWORK_AUTOMATON)) {
     (void)fprintf(rfile, SEP "species0=%s", species[flags.initspecies].name);
@@ -431,7 +376,6 @@ int how;
 	}
 	t0->birthdate = yyyymmdd(u.ubirthday);
 
-#ifdef RECORD_START_END_TIME
   /* Make sure that deathdate and deathtime refer to the same time; it
    * wouldn't be good to have deathtime refer to the day after deathdate. */
 
@@ -442,9 +386,6 @@ int how;
 #endif
 
         t0->deathdate = yyyymmdd(deathtime);
-#else
-        t0->deathdate = yyyymmdd((time_t)0L);
-#endif /* RECORD_START_END_TIME */
 }
 
 /* record into file whenever user does HUP */
@@ -1040,7 +981,6 @@ encode_xlogflags(void)
 }
 
 
-#ifdef RECORD_CONDUCT
 long
 encodeconduct(void)
 {
@@ -1063,9 +1003,7 @@ encodeconduct(void)
 
        return e;
 }
-#endif
 
-#ifdef RECORD_ACHIEVE
 long
 encodeachieve(void)
 {
@@ -1108,10 +1046,8 @@ encodeachieve(void)
   
   return r;
 }
-#endif
 
 
-#ifdef RECORD_ACHIEVE
 #define	CHECK_ACHIEVE(aflag, string) \
 	if(achieve.trophies&aflag){\
 		Sprintf(eos(achieveXbuff), "%s%s", seperator, string);\
@@ -1195,7 +1131,6 @@ char *achieveXbuff;
 	if(achieve.new_races) Sprintf(eos(achieveXbuff), "%s,", "new_races");
 }
 #undef CHECK_ACHIEVE
-#endif
 
 /*
  * print selected parts of score list.
@@ -1424,23 +1359,5 @@ pickentry:
 	return otmp;
 }
 
-#ifdef NO_SCAN_BRACK
-/* Lattice scanf isn't up to reading the scorefile.  What */
-/* follows deals with that; I admit it's ugly. (KL) */
-/* Now generally available (KL) */
-STATIC_OVL void
-nsb_mung_line(p)
-	char *p;
-{
-	while ((p = index(p, ' ')) != 0) *p = '|';
-}
-
-STATIC_OVL void
-nsb_unmung_line(p)
-	char *p;
-{
-	while ((p = index(p, '|')) != 0) *p = ' ';
-}
-#endif /* NO_SCAN_BRACK */
 
 /*topten.c*/

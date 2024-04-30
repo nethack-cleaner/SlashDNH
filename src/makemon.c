@@ -1488,9 +1488,7 @@ boolean greatequip;
 			  w2 = SHORT_SWORD;
 		  }
 		  break;
-#ifdef CONVICT
 		case PM_PRISON_GUARD:
-#endif /* CONVICT */
 		case PM_CAPTAIN:
 		case PM_WATCH_CAPTAIN:
 		  w1 = rn2(2) ? LONG_SWORD : SABER;
@@ -3205,11 +3203,9 @@ boolean greatequip;
 			otmp->spe = rn2(4);
 			set_material_gm(otmp, DRAGON_HIDE);
 			(void) mpickobj(mtmp, otmp);
-// ifdef CONVICT
 		} else if (mm == PM_INMATE){
 			(void)mongets(mtmp, rn2(2) ? HEAVY_IRON_BALL : SPOON, mkobjflags);
 			(void)mongets(mtmp, STRIPED_SHIRT, mkobjflags);
-// endif
 		} else if (mm == PM_ATTENDANT){
 			(void) mongets(mtmp, SCALPEL, mkobjflags);
 			(void) mongets(mtmp, HEALER_UNIFORM, mkobjflags);
@@ -3867,7 +3863,6 @@ boolean greatequip;
 			fix_object(otmp);
 			(void) mpickobj(mtmp, otmp);
 		}
-// #ifdef CONVICT
 	} else if (mm == PM_WARDEN_ARIANNA) {
 		otmp = mksobj(CHAIN, mkobjflags|MKOBJ_NOINIT);
 		otmp->blessed = FALSE;
@@ -3891,7 +3886,6 @@ boolean greatequip;
 		otmp = mksobj(LANTERN, mkobjflags);
 		(void) mpickobj(mtmp, otmp);
 		begin_burn(otmp);
-// #endif /* CONVICT */
 	} else if (mm == PM_MASTER_KAEN) {
 		otmp = mksobj(SHURIKEN, mkobjflags|MKOBJ_NOINIT);
 		otmp->quan = 48;
@@ -4142,9 +4136,7 @@ boolean goodequip;
 		
 		switch(monsndx(ptr)) {
 		case PM_GUARD: mac = -1; break;
-#ifdef CONVICT
 		case PM_PRISON_GUARD: mac = -2; break;
-#endif /* CONVICT */
 		case PM_SOLDIER: mac = 3; break;
 		case PM_MYRMIDON_HOPLITE: mac = 3; break;
 		case PM_SERGEANT: mac = 0; break;
@@ -4214,9 +4206,7 @@ boolean goodequip;
 			mac += arm_ac_bonus(mongets(mtmp, CLOAK, mkobjflags));
 		}
 		if(ptr->mtyp != PM_GUARD &&
-#ifdef CONVICT
 		ptr->mtyp != PM_PRISON_GUARD &&
-#endif /* CONVICT */
 		ptr->mtyp != PM_WATCHMAN &&
 		ptr->mtyp != PM_WATCH_CAPTAIN) {
 		if(!(level.flags.has_barracks || In_law(&u.uz) || in_mklev || is_undead(ptr))){
@@ -7837,7 +7827,6 @@ int mmflags;
 						(void)mongets(mtmp, SCIMITAR, mkobjflags);
 			if(goodequip || !rn2(3)) (void)mongets(mtmp, KNIFE, mkobjflags);
 			if(goodequip || !rn2(3)) (void)mongets(mtmp, ORCISH_CHAIN_MAIL, mkobjflags);
-//ifdef BARD
 			if (mm == PM_ORC_CAPTAIN ? !rn2(10) : !rn2(50)){
 			    (void)mongets(mtmp, DRUM, mkobjflags);
 				if(!rn2(3)) {
@@ -7845,7 +7834,6 @@ int mmflags;
 					m_initthrow(mtmp, ORCISH_ARROW, 12, mkobjflags);
 				}
 			}
-//endif
 			break;
 		    case PM_URUK_CAPTAIN:
 		    case PM_URUK_HAI:
@@ -7855,7 +7843,6 @@ int mmflags;
 			if(!rn2(3)) (void)mongets(mtmp, URUK_HAI_SHIELD, mkobjflags);
 			else if (could_twoweap(ptr))
 						(void)mongets(mtmp, ORCISH_SHORT_SWORD, mkobjflags);
-//ifdef BARD
 			if (mm == PM_URUK_CAPTAIN ? !rn2(10) : !rn2(50)){
 			    (void)mongets(mtmp, DRUM, mkobjflags);
 				(void)mongets(mtmp, CROSSBOW, mkobjflags);
@@ -7866,7 +7853,6 @@ int mmflags;
 					m_initthrow(mtmp, CROSSBOW_BOLT, 12, mkobjflags);
 				}
 			}
-//endif
 			break;
 		    default:
 			if (mm != PM_ORC_SHAMAN && mm != PM_MORDOR_SHAMAN && rn2(2))

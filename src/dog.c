@@ -38,10 +38,8 @@ register struct monst *mtmp;
 	EDOG(mtmp)->revivals = 0;
 	EDOG(mtmp)->mhpmax_penalty = 0;
 	EDOG(mtmp)->killed_by_u = 0;
-//ifdef BARD
 	EDOG(mtmp)->friend = 0;
 	EDOG(mtmp)->waspeaceful = 0;
-//endif
 	EDOG(mtmp)->loyal = 0;
 	EDOG(mtmp)->dominated = 0;
 
@@ -222,9 +220,7 @@ struct monst *
 makedog()
 {
 	register struct monst *mtmp;
-#ifdef STEED
 	register struct obj *otmp;
-#endif
 	const char *petname;
 	int   pettype;
 	static int petname_used = 0;
@@ -249,10 +245,8 @@ makedog()
 		petname = dragonname;
 	else if(mons[pettype].mlet == S_LIZARD)
 		petname = lizardname;
-#ifdef CONVICT
 	else if (pettype == PM_SEWER_RAT)
 		petname = ratname;
-#endif /* CONVICT */
 	else
 		petname = catname;
 
@@ -271,11 +265,9 @@ makedog()
 	    if(Role_if(PM_WIZARD) && !flags.female) petname = rn2(2) ? "Tom Kitten" : "Mister";     /* Beatrix Potter and Harry Dresden */
 	}
 
-#ifdef CONVICT
 	if (!*petname && pettype == PM_SEWER_RAT) {
 	    if(Role_if(PM_CONVICT)) petname = "Nicodemus"; /* Rats of NIMH */
     }
-#endif /* CONVICT */
 	mtmp = makemon(&mons[pettype], u.ux, u.uy, pettype == PM_SECRET_WHISPERER ? MM_ADJACENTOK|NO_MINVENT|MM_NOCOUNTBIRTH|MM_EDOG|MM_ESUM : MM_ADJACENTOK|MM_EDOG);
 
 	if(!mtmp) return((struct monst *) 0); /* pets were genocided */
@@ -341,7 +333,6 @@ makedog()
 	if(mtmp->m_lev) mtmp->mhpmax = 8*(mtmp->m_lev-1)+rnd(8);
 	mtmp->mhp = mtmp->mhpmax;
 
-#ifdef STEED
 	/* Horses already wear a saddle */
 	if ((pettype == PM_PONY || pettype == PM_GIANT_SPIDER || pettype == PM_SMALL_CAVE_LIZARD || pettype == PM_RIDING_PSEUDODRAGON)
 		&& !!(otmp = mksobj(SADDLE, 0))
@@ -354,7 +345,6 @@ makedog()
 	    otmp->leashmon = mtmp->m_id;
 	    update_mon_intrinsics(mtmp, otmp, TRUE, TRUE);
 	}
-#endif
 
 	if (!petname_used++ && *petname)
 		mtmp = christen_monst(mtmp, petname);
@@ -482,10 +472,8 @@ boolean with_you;
 	mtmp->mtrack[0].x = mtmp->mtrack[0].y = 0;
 	mtmp->mtrack[1].x = mtmp->mtrack[1].y = 0;
 
-#ifdef STEED
 	if (mtmp == u.usteed)
 	    return;	/* don't place steed on the map */
-#endif
 	if (with_you) {
 	    /* When a monster accompanies you, sometimes it will arrive
 	       at your intended destination and you'll end up next to
@@ -699,11 +687,9 @@ long nmv;		/* number of moves */
 	    int wilder = (imv + 75) / 150;
 		if(mtmp->mwait && !EDOG(mtmp)->friend) wilder = max(0, wilder - 11);
 		if(P_SKILL(P_BEAST_MASTERY) > 1 && !EDOG(mtmp)->friend) wilder = max(0, wilder - (3*(P_SKILL(P_BEAST_MASTERY)-1) + 1));
-#ifdef BARD
 	    /* monsters under influence of Friendship song go wilder faster */
 	    if (EDOG(mtmp)->friend)
 		    wilder *= 150;
-#endif
 	    if (mtmp->mtame > wilder) mtmp->mtame -= wilder;	/* less tame */
 	    else if (mtmp->mtame > rn2(wilder)) untame(mtmp, 1);  /* untame, peaceful */
 	    else{
@@ -803,9 +789,7 @@ boolean portal;
 							)
 							&& !(get_mx(mtmp, MX_ESUM) && !mtmp->mextra_p->esum_p->sticky)	// cannot be a summon marked as not-a-follower
 			) ||
-#ifdef STEED
 			(mtmp == u.usteed) ||
-#endif
 		/* the wiz will level t-port from anywhere to chase
 		   the amulet; if you don't have it, will chase you
 		   only if in range. -3. */
@@ -814,11 +798,9 @@ boolean portal;
 			|| (mtmp->mtyp == PM_LURKING_HAND || mtmp->mtyp == PM_BLASPHEMOUS_HAND)
 		)
 		&& ((!mtmp->msleeping && mtmp->mcanmove)
-#ifdef STEED
 		    /* eg if level teleport or new trap, steed has no control
 		       to avoid following */
 		    || (mtmp == u.usteed)
-#endif
 		    )
 		/* monster won't follow if it hasn't noticed you yet */
 		&& !(mtmp->mstrategy & STRAT_WAITFORU)) {
@@ -851,13 +833,11 @@ boolean portal;
 					pline("%s is still trapped.", Monnam(mtmp));
 				stay_behind = TRUE;
 			}
-#ifdef STEED
 			// if (mtmp == u.usteed) stay_behind = FALSE;
 			if (mtmp == u.usteed && stay_behind) {
 			    pline("%s vanishes from underneath you.", Monnam(mtmp));
 				dismount_steed(DISMOUNT_VANISHED);
 			}
-#endif
 			if (stay_behind) {
 				if (mtmp->mleashed) {
 					pline("%s leash suddenly comes loose.",
@@ -1504,7 +1484,6 @@ int enhanced;
 		&& mtmp->data->mlet == S_DOG
 	) return((struct monst *)0);
 
-#ifdef CONVICT
     if (!enhanced && Role_if(PM_CONVICT) && (is_domestic(mtmp->data) && obj
 		&& !is_instrument(obj) && obj->otyp != DOLL_OF_FRIENDSHIP
 		&& obj->oclass != SCROLL_CLASS && obj->oclass != SPBOOK_CLASS)
@@ -1513,7 +1492,6 @@ int enhanced;
         pline("%s still looks wary of you.", Monnam(mtmp));
         return((struct monst *)0);
     }
-#endif
 	/* If we cannot tame it, at least it's no longer afraid. */
 	mtmp->mflee = 0;
 	mtmp->mfleetim = 0;
@@ -1591,11 +1569,9 @@ int enhanced;
 	if(!(obj && obj->oclass == SCROLL_CLASS && Confusion)){
 		enough_dogs(1);
 	}
-#ifdef RECORD_ACHIEVE
 	//Taming Oona counts as completing the law quest
 	if(mtmp->mtyp == PM_OONA)
 		give_law_trophy();
-#endif
 	/* add the pet component */
 	add_mx(mtmp, MX_EDOG);
 	initedog(mtmp);

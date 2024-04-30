@@ -26,9 +26,7 @@ E void NDECL(stop_occupation);
 E void NDECL(display_gamewindows);
 E void NDECL(newgame);
 E void FDECL(welcome, (BOOLEAN_P));
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 E time_t NDECL(get_realtime);
-#endif
 E void NDECL(dogoat);
 E void FDECL(dogoat_mon, (struct monst *));
 E boolean FDECL(doyog, (struct monst *));
@@ -284,9 +282,7 @@ E int NDECL(force_bot);
 E int FDECL(xlev_to_rank, (int));
 E int FDECL(title_to_mon, (const char *,int *,int *));
 E void NDECL(max_rank_sz);
-#ifdef SCORE_ON_BOTL
 E long NDECL(botl_score);
-#endif
 E int FDECL(describe_level, (char *));
 E const char *FDECL(code_of, (SHORT_P));
 E const char *FDECL(rank_of, (int,SHORT_P,BOOLEAN_P));
@@ -327,11 +323,9 @@ E int NDECL(psionic_pulse);
 E int NDECL(wiz_makemap);
 E void NDECL(reset_occupations);
 E void FDECL(set_occupation, (int (*)(void),const char *,int));
-#ifdef REDO
 E char NDECL(pgetchar);
 E void FDECL(pushch, (CHAR_P));
 E void FDECL(savech, (CHAR_P));
-#endif
 #ifdef WIZARD
 E void NDECL(add_debug_extended_commands);
 #endif /* WIZARD */
@@ -914,7 +908,7 @@ E void FDECL(do_containerconts, (struct obj *,BOOLEAN_P,BOOLEAN_P,BOOLEAN_P,BOOL
 E void FDECL(terminate, (int));
 E int NDECL(num_genocides);
 E int NDECL(num_extinct);
-E void FDECL(list_genocided, (int,BOOLEAN_P,BOOLEAN_P,BOOLEAN_P));
+E void FDECL(list_genocided, (int,boolean,boolean));
 
 /* ### engrave.c ### */
 
@@ -999,10 +993,8 @@ E void FDECL(splash, (int,int,int,int,int,int,int,int));
 E long FDECL(scatter, (int, int, int, unsigned int, struct obj *, long *, struct monst *));
 E void FDECL(splatter_burning_oil, (int, int));
 E int FDECL(adtyp_expl_color, (int));
-//#ifdef FIREARMS
 E void FDECL(grenade_explode, (struct obj *, int, int, BOOLEAN_P, int));
 E void FDECL(arm_bomb, (struct obj *, BOOLEAN_P));
-//#endif
 
 /* ### extralev.c ### */
 
@@ -1088,10 +1080,8 @@ E void FDECL(dipfountain, (struct obj *));
 E void FDECL(breakforge, (int, int));
 E void NDECL(drinkforge);
 E void FDECL(dipforge, (struct obj *));
-#ifdef SINKS
 E void FDECL(breaksink, (int,int));
 E void NDECL(drinksink);
-#endif
 
 /* ### thoughtglyph.c ### */
 
@@ -1288,9 +1278,7 @@ E void FDECL(carry_obj_effects, (struct obj *));
 E const char *FDECL(currency, (long));
 E void FDECL(silly_thing, (const char *,struct obj *));
 E struct obj *NDECL(getnextgetobj);
-#ifdef SORTLOOT
 E int FDECL(sortloot_cmp, (struct obj *, struct obj *));
-#endif
 E int FDECL(mon_healing_penalty, (struct monst *));
 E int NDECL(u_healing_penalty);
 E int NDECL(u_clothing_discomfort);
@@ -2003,11 +1991,9 @@ E void FDECL(song_noise,(int));
 E void NDECL(awaken_soldiers);
 E void FDECL(do_earthquake, (int, int, int, int,BOOLEAN_P,struct monst *));
 E int FDECL(do_play_instrument, (struct obj *));
-#ifdef BARD
 E int FDECL(pet_can_sing, (struct monst *,BOOLEAN_P));
 E int FDECL(mon_can_counter_sing, (struct monst *,BOOLEAN_P));
 E int FDECL(resist_song, (struct monst *, int, struct obj *));
-#endif
 
 /* ### mutation.c ### */
 E void FDECL(confer_mutation, (int));
@@ -2141,9 +2127,7 @@ E boolean FDECL(not_fully_identified, (struct obj *));
 E char *FDECL(corpse_xname, (struct obj *,BOOLEAN_P));
 E char *FDECL(cxname, (struct obj *));
 E char *FDECL(xname_bland, (struct obj *));
-#ifdef SORTLOOT
 E char *FDECL(cxname2, (struct obj *));
-#endif
 E char *FDECL(killer_xname, (struct obj *));
 E const char *FDECL(singular, (struct obj *,char *(*)(OBJ_P)));
 E char *FDECL(an, (const char *));
@@ -2185,10 +2169,8 @@ E void FDECL(set_duplicate_opt_detection, (int));
 E void FDECL(set_wc_option_mod_status, (unsigned long, int));
 E void FDECL(set_wc2_option_mod_status, (unsigned long, int));
 E void FDECL(set_option_mod_status, (const char *,int));
-#ifdef AUTOPICKUP_EXCEPTIONS
 E int FDECL(add_autopickup_exception, (const char *));
 E void NDECL(free_autopickup_exceptions);
-#endif /* AUTOPICKUP_EXCEPTIONS */
 #ifdef MENU_COLOR
 E boolean FDECL(add_menu_coloring, (char *));
 #endif /* MENU_COLOR */
@@ -2641,7 +2623,6 @@ E const char *FDECL(Hello, (struct monst *));
 E const char *NDECL(Goodbye);
 E char *FDECL(build_plselection_prompt, (char *, int, int, int, int, int, int));
 E char *FDECL(root_plselection_prompt, (char *, int, int, int, int, int, int));
-#ifdef RECORD_ACHIEVE
 E void FDECL(add_imp_record, (long));
 E void NDECL(give_quest_trophy);
 E void NDECL(give_ascension_trophy);
@@ -2667,7 +2648,6 @@ E void NDECL(give_nightmare_hunter_trophy);
 E void NDECL(check_madman_trophy);
 E void NDECL(check_drunkard_trophy);
 E void NDECL(give_bokrug_trophy);
-#endif
 
 /* ### rumors.c ### */
 
@@ -2929,7 +2909,6 @@ E struct obj *FDECL(findgold, (struct obj *));
 
 /* ### steed.c ### */
 
-#ifdef STEED
 E void NDECL(rider_cant_reach);
 E boolean FDECL(can_saddle, (struct monst *, struct obj *));
 E int FDECL(use_saddle, (struct obj *));
@@ -2940,7 +2919,6 @@ E void NDECL(exercise_steed);
 E void NDECL(kick_steed);
 E void FDECL(dismount_steed, (int));
 E void FDECL(place_monster, (struct monst *,int,int));
-#endif
 
 /* ### teleport.c ### */
 
@@ -3031,9 +3009,7 @@ E void NDECL(timer_sanity_check);
 
 /* ### topten.c ### */
 
-#ifdef RECORD_CONDUCT
 E long FDECL(encodeconduct, (void));
-#endif
 E void FDECL(topten, (int));
 E void FDECL(prscore, (int,char **));
 E struct obj *FDECL(tt_oname, (struct obj *));

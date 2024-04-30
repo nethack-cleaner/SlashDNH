@@ -107,10 +107,8 @@ lock_action()
 	/* otherwise we're trying to unlock it */
 	else if (xlock.picktyp == LOCK_PICK)
 		return actions[3];	/* "picking the lock" */
-#ifdef TOURIST
 	else if (xlock.picktyp == CREDIT_CARD)
 		return actions[3];	/* same as lock_pick */
-#endif
 	else if (xlock.door)
 		return actions[0];	/* "unlocking the door" */
 	else
@@ -411,9 +409,7 @@ pick_lock(pick_p) /* pick a lock with a given object */
 
 	    if (nohands(youracedata) || !freehand()) {
 		const char *what = (picktyp == LOCK_PICK) ? "pick" : "key";
-#ifdef TOURIST
 		if (picktyp == CREDIT_CARD) what = "card";
-#endif
 		pline(no_longer, "hold the", what);
 		reset_pick();
 		return MOVE_CANCELLED;
@@ -440,9 +436,7 @@ pick_lock(pick_p) /* pick a lock with a given object */
 	}
 
 	if((picktyp != LOCK_PICK &&
-#ifdef TOURIST
 	    picktyp != CREDIT_CARD &&
-#endif
 	    picktyp != SKELETON_KEY &&
 	    picktyp != UNIVERSAL_KEY)) {
 		impossible("picking lock with object %d?", picktyp);
@@ -509,19 +503,15 @@ pick_lock(pick_p) /* pick a lock with a given object */
 				}
 				xlock.mgclcknm = (long)(locknumber-'0');
 			}
-#ifdef TOURIST
 		    else if (picktyp == CREDIT_CARD && !otmp->olocked && otmp->otyp != MAGIC_CHEST) {
 				/* credit cards are only good for unlocking */
 				You_cant("do that with %s.", doname(pick));
 				return MOVE_CANCELLED;
 		    }
-#endif
 		    switch(picktyp) {
-#ifdef TOURIST
 			case CREDIT_CARD:
 			    ch = ACURR(A_DEX) + 20*Role_if(PM_ROGUE);
 			    break;
-#endif
 			case LOCK_PICK:
 			    ch = 4*ACURR(A_DEX) + 25*Role_if(PM_ROGUE);
 			    break;
@@ -563,12 +553,10 @@ pick_lock(pick_p) /* pick a lock with a given object */
 				return MOVE_STANDARD;	/* that was quick -- we don't have full handling for this yet */
 			}
 
-#ifdef TOURIST
 			if (picktyp == CREDIT_CARD &&
 				(mtmp->isshk || mtmp->mtyp == PM_ORACLE))
 				verbalize("No checks, no credit, no problem.");
 			else
-#endif
 				pline("I don't think %s would appreciate that.", mon_nam(mtmp));
 			return MOVE_CANCELLED;
 	    }
@@ -592,13 +580,11 @@ pick_lock(pick_p) /* pick a lock with a given object */
 		    pline("This door is broken.");
 		    return MOVE_CANCELLED;
 		default:
-#ifdef TOURIST
 		    /* credit cards are only good for unlocking */
 		    if(picktyp == CREDIT_CARD && !(door->doormask & D_LOCKED)) {
 			You_cant("lock a door with a credit card.");
 			return MOVE_CANCELLED;
 		    }
-#endif
 		    /* ALI - Artifact doors from slash'em */
 		    key = artifact_door(cc.x, cc.y);
 
@@ -609,11 +595,9 @@ pick_lock(pick_p) /* pick a lock with a given object */
 		    if(c == 'n') return MOVE_CANCELLED;
 
 		    switch(picktyp) {
-#ifdef TOURIST
 			case CREDIT_CARD:
 			    ch = 2*ACURR(A_DEX) + 20*Role_if(PM_ROGUE);
 			    break;
-#endif
 			case LOCK_PICK:
 			    ch = 3*ACURR(A_DEX) + 30*Role_if(PM_ROGUE);
 			    break;
@@ -1038,17 +1022,13 @@ doclose()		/* try to close a door */
 
 	if(door->doormask == D_ISOPEN) {
 	    if(verysmall(youracedata)
-#ifdef STEED
 		&& !u.usteed
-#endif
 		) {
 		 pline("You're too small to push the door closed.");
 		 return MOVE_CANCELLED;
 	    }
 	    if (
-#ifdef STEED
 		 u.usteed ||
-#endif
 		rn2(25) < (ACURRSTR+ACURR(A_DEX)+ACURR(A_CON))/3) {
 		pline_The("door closes.");
 		door->doormask = D_CLOSED;

@@ -46,12 +46,10 @@ dosit()
 	register int typ = levl[u.ux][u.uy].typ;
 
 
-#ifdef STEED
 	if (u.usteed) {
 	    You("are already sitting on %s.", mon_nam(u.usteed));
 	    return MOVE_CANCELLED;
 	}
-#endif
 
 	if(!can_reach_floor())	{
 	    if (Levitation)
@@ -160,12 +158,10 @@ dosit()
 		(void) rust_dmg(uarm, "armor", 1, TRUE, &youmonst, FALSE);
 	    if (!rn2(10) && uarmf && uarmf->otyp != WATER_WALKING_BOOTS)
 		(void) rust_dmg(uarm, "armor", 1, TRUE, &youmonst, FALSE);
-#ifdef SINKS
 	} else if(IS_SINK(typ)) {
 
 	    You(sit_message, defsyms[S_sink].explanation);
 	    Your("%s gets wet.", humanoid(youracedata) ? "rump" : "underside");
-#endif
 	} else if(IS_ALTAR(typ)) {
 
 	    You(sit_message, defsyms[S_altar].explanation);
@@ -678,7 +674,6 @@ rndcurse()			/* curse a few inventory items at random! */
 	    update_inventory();
 	}
 
-#ifdef STEED
 	/* treat steed's saddle as extended part of hero's inventory */
 	if (u.usteed && !rn2(4) &&
 		(otmp = which_armor(u.usteed, W_SADDLE)) != 0 &&
@@ -696,7 +691,6 @@ rndcurse()			/* curse a few inventory items at random! */
 	    }
 		did_curse = TRUE;
 	}
-#endif	/*STEED*/
 	return did_curse;
 }
 

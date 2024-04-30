@@ -771,12 +771,10 @@ int mkflags;
 					break;
 				}
 			}
-			//#ifdef FIREARMS
 			if (otmp->otyp == STICK_OF_DYNAMITE) {
 				otmp->age = (otmp->cursed ? rn2(15) + 2 :
 					(otmp->blessed ? 15 : rn2(10) + 10));
 			}
-			//#endif
 			if (is_poisonable(otmp) && ((is_ammo(otmp) && !rn2(100)) || !rn2(1000))){
 				if (!rn2(100)) otmp->opoisoned = OPOISON_FILTH; /* Once a game or once every few games */
 				else otmp->opoisoned = OPOISON_BASIC;
@@ -950,9 +948,7 @@ int mkflags;
 				otmp->olocked = 1;
 				otmp->obolted = 0;
 				break;
-#ifdef TOURIST
 			case EXPENSIVE_CAMERA:
-#endif
 			case TINNING_KIT:
 			case MAGIC_MARKER:	otmp->spe = rn1(70, 30);
 				break;
@@ -3614,14 +3610,12 @@ maid_clean(mon, obj)
 			}
 		}
 	}
-#ifdef TOURIST
 	if(obj->otyp == EXPENSIVE_CAMERA){
 		if (obj->spe <= 50){
 			obj->spe = 50+rn1(16,10);		/* 10..25 */
 			if(canseemon(mon)) pline("The maid replaces the film.");
 		}
 	}
-#endif
 	return 0;
 }
 

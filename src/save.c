@@ -231,9 +231,7 @@ dosave0()
 	bwrite(fd, (genericptr_t) plname, PL_NSIZ);
 #endif
 	ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
-#ifdef STEED
 	usteed_id = (u.usteed ? u.usteed->m_id : 0);
-#endif
 	savelev(fd, ledger_no(&u.uz), WRITE_SAVE | FREE_SAVE);
 	savegamestate(fd, WRITE_SAVE | FREE_SAVE);
 
@@ -248,9 +246,7 @@ dosave0()
 	 * may mislead place_monster() on other levels
 	 */
 	u.ustuck = (struct monst *)0;
-#ifdef STEED
 	u.usteed = (struct monst *)0;
-#endif
 
 	for(ltmp = (int)1; ltmp <= maxledgerno(); ltmp++) {
 		if (ltmp == ledger_no(&uz_save)) continue;
@@ -305,9 +301,7 @@ register int fd, mode;
 {
 	int uid,i;
 	struct obj * bc_objs = (struct obj *)0;
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 	time_t realtime;
-#endif
 
 
 #ifdef MFLOPPY
@@ -365,23 +359,17 @@ register int fd, mode;
 	save_oracles(fd, mode);
 	if(ustuck_id)
 	    bwrite(fd, (genericptr_t) &ustuck_id, sizeof ustuck_id);
-#ifdef STEED
 	if(usteed_id)
 	    bwrite(fd, (genericptr_t) &usteed_id, sizeof usteed_id);
-#endif
 	bwrite(fd, (genericptr_t) pl_character, sizeof pl_character);
 	bwrite(fd, (genericptr_t) pl_fruit, sizeof pl_fruit);
 	bwrite(fd, (genericptr_t) &current_fruit, sizeof current_fruit);
 	savefruitchn(fd, mode);
 	savenames(fd, mode);
 	save_waterlevel(fd, mode);
-#ifdef RECORD_ACHIEVE
 	bwrite(fd, (genericptr_t) &achieve, sizeof achieve);
-#endif
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 	realtime = get_realtime();
 	bwrite(fd, (genericptr_t) &realtime, sizeof realtime);
-#endif
 	bflush(fd);
 }
 
@@ -449,9 +437,7 @@ savestateinlock()
 		    bwrite(fd, (genericptr_t) plname, PL_NSIZ);
 #endif
 		    ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
-#ifdef STEED
 		    usteed_id = (u.usteed ? u.usteed->m_id : 0);
-#endif
 		    savegamestate(fd, WRITE_SAVE);
 		}
 		bclose(fd);
@@ -1145,9 +1131,7 @@ freedynamicdata()
 	if (iflags.wc_font_menu) free(iflags.wc_font_menu);
 	if (iflags.wc_font_status) free(iflags.wc_font_status);
 	if (iflags.wc_tile_file) free(iflags.wc_tile_file);
-#ifdef AUTOPICKUP_EXCEPTIONS
 	free_autopickup_exceptions();
-#endif
 
 #endif	/* FREE_ALL_MEMORY */
 	return;

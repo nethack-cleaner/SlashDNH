@@ -473,12 +473,8 @@
 
 #define HFlying			u.uprops[FLYING].intrinsic
 #define EFlying			u.uprops[FLYING].extrinsic
-#ifdef STEED
 # define Flying			(EFlying || HFlying || species_flies(youracedata) || \
 				 u.ufirst_light || (u.usteed && mon_resistance(u.usteed,FLYING)))
-#else
-# define Flying			(EFlying || HFlying || species_flies(youracedata))
-#endif
 	/* May touch surface; does not override any others */
 
 #define Wwalking		((HWwalking || EWwalking) && \
@@ -492,7 +488,6 @@
 
 #define HSwimming		u.uprops[SWIMMING].intrinsic
 #define ESwimming		u.uprops[SWIMMING].extrinsic	/* [Tom] */
-#ifdef STEED
 # define Swimming	(((HSwimming || ESwimming || \
 				 species_swims(youracedata) || \
 				 Is_waterlevel(&u.uz)) && !Punished && inv_weight() < 0) || \
@@ -501,14 +496,6 @@
 				 species_swims(youracedata) || \
 				 Is_waterlevel(&u.uz)) && !Punished) || \
 				 (u.usteed && mon_resistance(u.usteed,SWIMMING)))
-#else
-# define Swimming	(((HSwimming || ESwimming || \
-				 species_swims(youracedata)) \
-				 && !Punished && inv_weight() < 0) || Is_waterlevel(&u.uz))
-# define NoburdSwimming	(((HSwimming || ESwimming || \
-				 species_swims(youracedata)) \
-				 && !Punished) || Is_waterlevel(&u.uz))
-#endif
 	/* Get wet, don't go under water unless if amphibious */
 
 #define HMagical_breathing	u.uprops[MAGICAL_BREATHING].intrinsic
@@ -547,9 +534,7 @@
 #define EPasses_walls		u.uprops[PASSES_WALLS].extrinsic
 #define Passes_walls		(HPasses_walls || EPasses_walls || \
 				 (uclockwork && u.phasengn)|| species_passes_walls(youracedata))
-#ifdef CONVICT
 # define Phasing            u.uprops[PASSES_WALLS].intrinsic
-#endif /* CONVICT */
 
 /*** Physical attributes ***/
 #define HSlow_digestion		u.uprops[SLOW_DIGESTION].intrinsic

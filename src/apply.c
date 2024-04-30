@@ -21,9 +21,7 @@ static const char apply_all[] = { ALL_CLASSES, CHAIN_CLASS, 0 };
 #define TREPH_THOUGHTS 1
 #define TREPH_CRYSTALS 2
 
-#ifdef TOURIST
 STATIC_DCL int FDECL(use_camera, (struct obj *));
-#endif
 STATIC_DCL int FDECL(do_present_item, (struct obj *));
 STATIC_DCL int FDECL(use_towel, (struct obj *));
 STATIC_DCL boolean FDECL(its_dead, (int,int,int *,struct obj*));
@@ -86,7 +84,6 @@ void FDECL( amii_speaker, ( struct obj *, char *, int ) );
 
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
-#ifdef TOURIST
 STATIC_OVL int
 use_camera(obj)
 	struct obj *obj;
@@ -124,7 +121,6 @@ use_camera(obj)
 	}
 	return MOVE_STANDARD;
 }
-#endif
 
 STATIC_OVL int
 do_present_item(obj)
@@ -523,7 +519,6 @@ use_stethoscope(obj)
 
 	res = MOVE_PARTIAL;
 
-#ifdef STEED
 	if (u.usteed && u.dz > 0) {
 		if (interference) {
 			pline("%s interferes.", Monnam(u.ustuck));
@@ -532,7 +527,6 @@ use_stethoscope(obj)
 			mstatusline(u.usteed);
 		return res;
 	} else
-#endif
 	if (u.uswallow && (u.dx || u.dy || u.dz)) {
 		mstatusline(u.ustuck);
 		return res;
@@ -732,13 +726,11 @@ struct obj *obj;
 	if(!get_adjacent_loc((char *)0, (char *)0, u.ux, u.uy, &cc)) return;
 
 	if((cc.x == u.ux) && (cc.y == u.uy)) {
-#ifdef STEED
 		if (u.usteed && u.dz > 0) {
 		    mtmp = u.usteed;
 		    spotmon = 1;
 		    goto got_target;
 		}
-#endif
 		pline("Leash yourself?  Very funny...");
 		return;
 	}
@@ -749,9 +741,7 @@ struct obj *obj;
 	}
 
 	spotmon = canspotmon(mtmp);
-#ifdef STEED
  got_target:
-#endif
 
 	if(!mtmp->mtame) {
 	    if(!spotmon)
@@ -832,10 +822,8 @@ next_to_u()
 			}
 		}
 	}
-#ifdef STEED
 	/* no pack mules for the Amulet */
 	if (u.usteed && mon_has_amulet(u.usteed)) return FALSE;
-#endif
 	return(TRUE);
 }
 
@@ -2248,11 +2236,7 @@ light_cocktail(obj)
 {
 	char buf[BUFSZ];
 	const char *objnam =
-//#ifdef FIREARMS
 	    obj->otyp == POT_OIL ? "potion" : "stick";
-//#else
-//	    "potion";
-//#endif
 
 	if (u.uswallow){
 		if(!is_whirly(u.ustuck->data)) {
@@ -2291,23 +2275,17 @@ light_cocktail(obj)
 	    /* Normally, we shouldn't both partially and fully charge
 	     * for an item, but (Yendorian Fuel) Taxes are inevitable...
 	     */
-//#ifdef FIREARMS
 	    if (obj->otyp != STICK_OF_DYNAMITE) {
-//#endif
 	    check_unpaid(obj);
 	    verbalize("That's in addition to the cost of the potion, of course.");
-//#ifdef FIREARMS
 	    } else {
 		const char *ithem = obj->quan > 1L ? "them" : "it";
 		verbalize("You burn %s, you bought %s!", ithem, ithem);
 	    }
-//#endif
 	    bill_dummy_object(obj);
 	}
 	makeknown(obj->otyp);
-//#ifdef FIREARMS
 	if (obj->otyp == STICK_OF_DYNAMITE) obj->yours=TRUE;
-//#endif
 
 	if (obj->quan > 1L) {
 	    obj = splitobj(obj, 1L);
@@ -2513,23 +2491,19 @@ int magic; /* 0=Physical, otherwise skill level */
 		const char *bp = body_part(LEG);
 
 		if (wl == BOTH_SIDES) bp = makeplural(bp);
-#ifdef STEED
 		if (u.usteed)
 		    pline("%s is in no shape for jumping.", Monnam(u.usteed));
 		else
-#endif
 		Your("%s%s %s in no shape for jumping.",
 		     (wl == LEFT_SIDE) ? "left " :
 			(wl == RIGHT_SIDE) ? "right " : "",
 		     bp, (wl == BOTH_SIDES) ? "are" : "is");
 		return MOVE_CANCELLED;
 	}
-#ifdef STEED
 	else if (u.usteed && u.utrap) {
 		pline("%s is stuck in a trap.", Monnam(u.usteed));
 		return MOVE_CANCELLED;
 	}
-#endif
 
 	pline("Where do you want to jump?");
 	cc.x = u.ux;
@@ -3972,10 +3946,8 @@ struct obj *hypo;
 				else {
 					if (Levitation || Weightless || Is_waterlevel(&u.uz))
 					You("are motionlessly suspended.");
-#ifdef STEED
 					else if (u.usteed)
 					You("are frozen in place!");
-#endif
 					else
 					Your("%s are frozen to the %s!",
 						 makeplural(body_part(FOOT)), surface(u.ux, u.uy));
@@ -3986,9 +3958,7 @@ struct obj *hypo;
 			break;
 			case POT_SPEED:
 				if(Wounded_legs && !amp->cursed
-#ifdef STEED
 				&& !u.usteed	/* heal_legs() would heal steeds legs */
-#endif
 								) {
 					heal_legs();
 					break;
@@ -4191,7 +4161,6 @@ struct obj *otmp;
 	    trapinfo.time_needed += (tmp > 12) ? 1 : (tmp > 7) ? 2 : 4;
 	/*[fumbling and/or confusion and/or cursed object check(s)
 	   should be incorporated here instead of in set_trap]*/
-#ifdef STEED
 	if (u.usteed && P_SKILL(P_RIDING) < P_BASIC) {
 	    boolean chance;
 
@@ -4221,7 +4190,6 @@ struct obj *otmp;
 		return;
 	    }
 	}
-#endif
 	You("begin setting %s %s.",
 	    shk_your(buf, otmp),
 	    defsyms[trap_to_defsym(what_trap(ttyp))].explanation);
@@ -4546,18 +4514,14 @@ struct obj *obj;
     } else if ((!u.dx && !u.dy) || (u.dz > 0)) {
 	int dam;
 
-#ifdef STEED
 		/* Sometimes you hit your steed by mistake */
 		if (u.usteed && !rn2(proficient + 2)) {
 			You("whip %s!", mon_nam(u.usteed));
 			kick_steed();
 			return MOVE_STANDARD;
 		}
-#endif
 		if (Levitation
-#ifdef STEED
 			|| u.usteed
-#endif
 			) {
 			/* Have a shot at snaring something on the floor */
 			otmp = level.objects[u.ux][u.uy];
@@ -7943,10 +7907,8 @@ struct obj *kit;
 		return MOVE_CANCELLED;
 	}
 
-#ifdef STEED
     if (u.usteed && u.dz > 0) ptr = u.usteed->data;
 	else 
-#endif
 	if(u.dz){
 		pline("No creature there.");
 		return MOVE_CANCELLED;
@@ -8542,9 +8504,7 @@ doapply()
 		vape(obj);
 		break;
 	case LOCK_PICK:
-#ifdef TOURIST
 	case CREDIT_CARD:
-#endif
 	case SKELETON_KEY:
 		res = pick_lock(&obj);
 		break;
@@ -8565,11 +8525,9 @@ doapply()
 	case LEASH:
 		use_leash(obj);
 		break;
-#ifdef STEED
 	case SADDLE:
 		res = use_saddle(obj);
 		break;
-#endif
 	case MAGIC_WHISTLE:
 		use_magic_whistle(obj);
 		break;
@@ -8835,11 +8793,9 @@ doapply()
 	case TORCH:
 		light_torch(obj);
 	break;
-#ifdef TOURIST
 	case EXPENSIVE_CAMERA:
 		res = use_camera(obj);
 	break;
-#endif
 	case TOWEL:
 		res = use_towel(obj);
 	break;
@@ -8891,13 +8847,11 @@ doapply()
 			The("spirits of the land no longer walk with you.");
 		}
 		
-#ifdef STEED
 		/* also affects saddles */
 		if (u.usteed) {
 			curo = which_armor(u.usteed, W_SADDLE);
 			if (curo) uncurse(curo);
 		}
-#endif
 
 		//Share your insanity
 		if(u.usanity < 100){
@@ -9071,7 +9025,6 @@ doapply()
 	case TOUCHSTONE:
 		use_stone(obj);
 	break;
-//ifdef FIREARMS
 	case SENSOR_PACK:
 		res = use_sensor(obj);
 	break;
@@ -9144,7 +9097,6 @@ doapply()
 	case STICK_OF_DYNAMITE:
 		light_cocktail(obj);
 		break;
-//endif
 	case CLOCKWORK_COMPONENT:
 	case SUBETHAIC_COMPONENT:
 	case HELLFIRE_COMPONENT:
@@ -9227,9 +9179,7 @@ unfixable_trouble_count(is_horn)
 	if (Screaming) unfixable_trbl++;
 	if (FaintingFits) unfixable_trbl++;
 	if (Wounded_legs
-#ifdef STEED
 		    && !u.usteed
-#endif
 				) unfixable_trbl++;
 	if (Slimed) unfixable_trbl++;
 	if (FrozenAir) unfixable_trbl++;

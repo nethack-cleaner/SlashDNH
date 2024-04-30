@@ -475,9 +475,7 @@ struct obj *corpse;
 		) mongone(mtmp);
 		if(mptr->mtyp == PM_WEEPING_ANGEL) angelnum++;
 	}
-#ifdef STEED
 	if (u.usteed) dismount_steed(DISMOUNT_BONES);
-#endif
 	dmonsfree();		/* discard dead or gone monsters */
 
 	/* mark all fruits as nonexistent; when we come to them we'll mark

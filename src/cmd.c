@@ -165,9 +165,7 @@ STATIC_PTR int NDECL(wiz_showkills);	/* showborn patch */
 STATIC_PTR int NDECL(wiz_setinsight);
 STATIC_PTR int NDECL(wiz_setsanity);
 STATIC_PTR int FDECL(getvalue, (const char *));
-#ifdef SHOW_BORN
 extern void FDECL(list_vanquished, (int, BOOLEAN_P)); /* showborn patch */
-#endif /* SHOW_BORN */
 #if defined(__BORLANDC__) && !defined(_WIN32)
 extern void FDECL(show_borlandc_stats, (winid));
 #endif
@@ -266,7 +264,6 @@ int xtime;
 	return;
 }
 
-#ifdef REDO
 
 static char NDECL(popch);
 
@@ -332,7 +329,6 @@ char ch;
 	}
 	return;
 }
-#endif /* REDO */
 
 #endif /* OVL1 */
 #ifdef OVLB
@@ -965,7 +961,6 @@ lavaify(){
 STATIC_PTR int
 domountattk()
 {
-#ifdef STEED	
 	struct monst *mtmp;
 	int new_x,new_y;
 	if(!u.usteed){
@@ -993,9 +988,6 @@ domountattk()
 	}
 	pline("Your mount can't find anything to attack!");
 	return MOVE_CANCELLED;
-#else
-	pline("You can't ride anything!");
-#endif
 }
 
 int
@@ -1962,16 +1954,13 @@ dounmaintain()
 STATIC_PTR int
 enter_explore_mode()
 {
-#ifdef PARANOID
 	char buf[BUFSZ];
 	int really_xplor = FALSE;
-#endif
 	pline("Explore mode is for local games, not public servers.");
 	return MOVE_CANCELLED;
 
 	if(!discover && !wizard) {
 		pline("Beware!  From explore mode there will be no return to normal game.");
-#ifdef PARANOID
 		if (iflags.paranoid_quit) {
 		  getlin ("Do you want to enter explore mode? [yes/no]?",buf);
 		  (void) lcase (buf);
@@ -1982,9 +1971,6 @@ enter_explore_mode()
 		  }
 		}
 		if (really_xplor) {
-#else
-		if (yn("Do you want to enter explore mode?") == 'y') {
-#endif
 			clear_nhwindow(WIN_MESSAGE);
 			You("are now in non-scoring explore mode.");
 			discover = TRUE;
@@ -2961,9 +2947,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"overview", "give an overview of dungeon", dooverview, !IFBURIED, AUTOCOMPLETE},
 	{"pray", "pray to the gods for help", dopray, IFBURIED, AUTOCOMPLETE},
 	{"quit", "exit without saving current game", done2, IFBURIED, AUTOCOMPLETE},
-#ifdef STEED
 	{"ride", "ride (or stop riding) a monster", doride, !IFBURIED, AUTOCOMPLETE},
-#endif
 	{"rub", "rub a lamp", dorub, !IFBURIED, AUTOCOMPLETE},
 	{"style", "switch fighting style", dofightingform, !IFBURIED, AUTOCOMPLETE},
 	{"sit", "sit down", dosit, !IFBURIED, AUTOCOMPLETE},
@@ -3289,9 +3273,7 @@ dokeylist(void)
 		 "move without picking up objects/fighting",
 		 "run without picking up objects/fighting",
 		 "escape from the current query/action"
-#ifdef REDO
 		 , "redo the previous command"
-#endif
 		};
 
 
@@ -3959,7 +3941,6 @@ register char *cmd;
 		flags.move |= MOVE_CANCELLED;
 		return;
 	}
-#ifdef REDO
 	if (*cmd == DOAGAIN && !in_doagain && saveq[0]) {
 		in_doagain = TRUE;
 		stail = 0;
@@ -3969,9 +3950,6 @@ register char *cmd;
 	}
 	/* Special case of *cmd == ' ' handled better below */
 	if(!*cmd || *cmd == (char)0377)
-#else
-	if(!*cmd || *cmd == (char)0377 || (!flags.rest_on_space && *cmd == ' '))
-#endif
 	{
 		nhbell();
 		flags.move |= MOVE_CANCELLED;
@@ -4227,16 +4205,12 @@ const char *s;
 {
 	char dirsym;
 	static char saved_dirsym = '\0'; /* saved direction of the previous call of getdir() */
-#ifdef REDO
 	if(in_doagain || *readchar_queue)
 	    dirsym = readchar();
 	else
-#endif
 	    dirsym = yn_function ((s && *s != '^') ? s : "In what direction?",
 					(char *)0, '\0');
-#ifdef REDO
 	savech(dirsym);
-#endif
 	if (dirsym == last_cmd_char) {
 	  /* in here dirsym is not representing a direction
 	   * but the same sym used before for calling the
@@ -4513,14 +4487,12 @@ parse()
 	if (foo == DOESCAPE) {   /* esc cancels count (TH) */
 	    clear_nhwindow(WIN_MESSAGE);
 	    multi = last_multi = 0;
-# ifdef REDO
 	} else if (foo == DOAGAIN || in_doagain) {
 	    multi = last_multi;
 	} else {
 	    last_multi = multi;
 	    savech(0);	/* reset input queue */
 	    savech((char)foo);
-# endif
 	}
 
 	if (multi) {
@@ -4535,9 +4507,7 @@ parse()
 	    || foo == DONOPICKUP || foo == DORUN_NOPICKUP
 	    || (iflags.num_pad && (foo == '5' || foo == '-'))) {
 	    foo = readchar();
-#ifdef REDO
 	    savech((char)foo);
-#endif
 	    in_line[1] = foo;
 	    in_line[2] = 0;
 	}
@@ -4580,11 +4550,7 @@ readchar()
 	if ( *readchar_queue )
 	    sym = *readchar_queue++;
 	else
-#ifdef REDO
 	    sym = in_doagain ? Getchar() : nh_poskey(&x, &y, &mod);
-#else
-	    sym = Getchar();
-#endif
 
 #ifdef UNIX
 # ifdef NR_OF_EOFS

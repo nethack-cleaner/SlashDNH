@@ -25,15 +25,13 @@
  *			on player level.  That is, it creates random pits
  *			called here chasms.
  *
- * If BARD is #defined, there is a new skill called 'musicalize', referring to
- * the ability of 'casting' spells in the form of songs. -- ABA
+ * There is a new skill called 'musicalize', referring to the ability
+ * of 'casting' spells in the form of songs. -- ABA
  */
 
 #include "hack.h"
-#ifdef BARD
 #include "skills.h"
 
-#endif
 
 STATIC_DCL void FDECL(awaken_monsters,(int));
 STATIC_DCL void FDECL(put_monsters_to_sleep,(int));
@@ -41,7 +39,6 @@ STATIC_DCL void FDECL(charm_snakes,(int));
 STATIC_DCL void FDECL(calm_nymphs,(int));
 STATIC_DCL void FDECL(charm_monsters,(int));
 STATIC_DCL int FDECL(do_improvisation,(struct obj *));
-#ifdef BARD
 STATIC_DCL void FDECL(tame_song,(int));
 STATIC_DCL void FDECL(sleep_song,(int));
 STATIC_DCL void FDECL(scary_song,(int));
@@ -54,7 +51,6 @@ STATIC_DCL void FDECL(slowness_song,(int));
 STATIC_DCL void FDECL(haste_song,(int));
 STATIC_DCL void FDECL(heal_song,(int));
 STATIC_DCL void FDECL(encourage_pets,(int));
-#endif
 
 #ifdef UNIX386MUSIC
 STATIC_DCL int NDECL(atconsole);
@@ -74,7 +70,6 @@ void FDECL( amii_speaker, ( struct obj *, char *, int ) );
 #endif
 
 
-#ifdef BARD
 
 struct songspell {
 	short	sp_id;
@@ -85,13 +80,10 @@ struct songspell {
 	int	instr2; /* this one has a bonus to successfully play this song */
 };	
 
-#endif /* BARD */
-/* we need at least these defines (so they're outside #define BARD) */
 #define SNG_NONE            0
 #define SNG_IMPROVISE       99
 #define SNG_NOTES           98
 #define SNG_PASSTUNE        97
-#ifdef BARD
 /* same order and indices as below */
 //define SNG_FEAR		1
 //define SNG_SLEEP		2
@@ -1203,7 +1195,6 @@ int distance;
 		uwep->ovar1_heard |= OHEARD_RALLY;
 	}
 }
-#endif  /* BARD */
 
 
 /*
@@ -1291,7 +1282,6 @@ int distance;
 /*
  * Make monsters fall asleep.  Note that they may resist the spell.
  */
-#ifdef BARD
 STATIC_OVL void
 sleep_song(distance)
 int distance;
@@ -1326,7 +1316,6 @@ int distance;
 		uwep->ovar1_heard |= OHEARD_LETHARGY;
 	}
 }
-#endif /* BARD */
 
 STATIC_OVL void
 put_monsters_to_sleep(distance)
@@ -1435,7 +1424,6 @@ awaken_soldiers()
 /* Charm monsters in range.  Note that they may resist the spell.
  * If swallowed, range is reduced to 0.
  */
-#ifdef BARD
 STATIC_OVL void
 tame_song(distance)
 int distance;
@@ -1531,7 +1519,6 @@ int distance;
 		}
 	}
 }
-#endif /* BARD */
 
 STATIC_OVL void
 charm_monsters(distance)
@@ -1609,12 +1596,10 @@ struct monst *mon;
 			if (cansee(x,y))
 				pline_The("forge falls into a chasm.");
 			goto do_pit;
-#ifdef SINKS
 		  case SINK :
 			if (cansee(x,y))
 				pline_The("kitchen sink falls into a chasm.");
 			goto do_pit;
-#endif
 		  case ALTAR :
 				//Temple priests cast earthquake.
 			break;
@@ -1934,7 +1919,6 @@ struct obj *instr;
 		You_cant("play music underwater!");
 		return(0);
     }
-#ifdef BARD
     if (nohands(youracedata)) {
 		You("have no hands!");
 		return 0;
@@ -1973,7 +1957,6 @@ struct obj *instr;
 		if (song == SNG_NONE)
 			return 0;
     } else {
-#endif
     if (instr->otyp != DRUM && instr->otyp != DRUM_OF_EARTHQUAKE) {
 	    if (yn("Improvise?") == 'y') song = SNG_IMPROVISE;
 	    else if (u.uevent.uheard_tune == 2 && yn("Play the passtune?") == 'y')
@@ -1981,9 +1964,7 @@ struct obj *instr;
 	    else
 		song = SNG_NOTES;
     } else song = SNG_IMPROVISE;
-#ifdef BARD
     }
-#endif
     
     switch (song) {
     case SNG_NONE:
@@ -1999,7 +1980,6 @@ struct obj *instr;
 	    Strcpy(buf, tune);
 	break;
     default:
-#ifdef BARD
 /*
 	a = songs[song].level * (Role_if(PM_BARD) ? 2 : 5);
 	if (a > u.uen) {
@@ -2073,7 +2053,6 @@ struct obj *instr;
 	}
 	set_occupation(play_song, msgbuf, 0);
 	return 0;
-#endif	/* BARD */
     }
     
     (void)mungspaces(buf);

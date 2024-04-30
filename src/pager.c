@@ -521,7 +521,6 @@ lookat(x, y, buf, monbuf, shapebuff)
 	if (Role_if(PM_WIZARD) && Race_if(PM_GNOME) && !Upolyd)
 	    pm = &mons[PM_WIZARD];
 
-#ifdef STEED
 	if (u.usteed) {
 	    char steedbuf[BUFSZ];
 
@@ -529,7 +528,6 @@ lookat(x, y, buf, monbuf, shapebuff)
 	    /* assert((sizeof buf >= strlen(buf)+strlen(steedbuf)+1); */
 	    Strcat(buf, steedbuf);
 	}
-#endif
 	/* When you see yourself normally, no explanation is appended
 	   (even if you could also see yourself via other means).
 	   Sensing self while blind or swallowed is treated as if it
@@ -578,11 +576,7 @@ lookat(x, y, buf, monbuf, shapebuff)
 			((mtmp->isshk && accurate)
 				? "tail of " : "tail of a ") : "",
 		    (mtmp->mtame && accurate) ? 
-#ifdef BARD
 		    (EDOG(mtmp)->friend ? "friendly " : (EDOG(mtmp)->loyal) ? "loyal " : "tame ") :
-#else
-		    "tame " :
-#endif
 		    (mtmp->mpeaceful && accurate) ? (mtmp->mtyp==PM_UVUUDAUM) ? "meditating " : "peaceful " : "",
 		    name);
 	    if (mtmp->mtyp==PM_DREAD_SERAPH && mtmp->mvar_dreadPrayer_progress)
@@ -1118,7 +1112,6 @@ static const char * const bogusobjects[] = {
 	   "stone of controlling earth elementals",
 	   "loan of controlling earth elementals",
 	   
-# ifdef TOURIST
        /* Modern */
        "polo mallet",
        "string vest",
@@ -1207,7 +1200,6 @@ static const char * const bogusobjects[] = {
        "potion of bitter",
        "cursed -2 bargain plane ticket to Ibiza",
        "black pudding corpse",
-# endif
        /* Fantasy */
        "leaf of pipe weed",                /* LOTR */
        "knife missile",                    /* Iain M. Banks */

@@ -1443,15 +1443,9 @@
 
 #define is_vegetation(ptr)	((ptr)->mlet == S_PLANT || is_fern(ptr))
 
-#ifdef CONVICT
 #define befriend_with_obj(ptr, obj) (((obj)->oclass == FOOD_CLASS ||\
 				      (obj)->otyp == SHEAF_OF_HAY) && \
 				      (is_domestic(ptr) || (is_rat(ptr) && Role_if(PM_CONVICT))))
-#else
-#define befriend_with_obj(ptr, obj) (((obj)->oclass == FOOD_CLASS || \
-				      (obj)->otyp == SHEAF_OF_HAY) && \
-				      is_domestic(ptr))
-#endif
 
 #define can_see_hurtnss_of_mon(mon) \
 	((u.sealsActive&SEAL_MOTHER && !is_undead((mon)->data)) || \

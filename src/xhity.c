@@ -516,7 +516,6 @@ int tary;
 		}
 	    }
 	}
-#ifdef STEED
 	/* monsters may target your steed */
 	if (youdef && u.usteed && !missedyou) {
 		if (magr == u.usteed)
@@ -548,7 +547,6 @@ int tary;
 			return result;
 		}
 	}
-#endif
 
 	/* set monster attacking flag */
 	if (!youagr && youdef) {
@@ -613,9 +611,7 @@ int tary;
 		/* maybe end attack loop early (mdef may have been forcibly moved!)*/
 		if (
 			(youdef
-#ifdef STEED
 			|| mdef == u.usteed
-#endif
 			) ? (!missedyou && (tarx != u.ux || tary != u.uy))
 			: (!missedother && m_at(tarx, tary) != mdef && !(youagr && u.uswallow && mdef == u.ustuck))
 		){
@@ -3738,11 +3734,9 @@ int *shield_margin;
 			if(magr->msciaphilia && unshadowed_square(magr->mx, magr->my)){
 				bons_acc -= min(20, magr->m_lev);
 			}
-#ifdef STEED
 			/* Your steed gets a skill-based boost */
 			if (magr == u.usteed)
 				bons_acc += mountedCombat();
-#endif
 			/* All of your pets get a skill-based boost */
 			if (magr->mtame){
 				bons_acc += beastmastery();
@@ -7609,12 +7603,10 @@ boolean ranged;
 				if (youdef) {
 					pline_The("webbing sticks to you. You're caught!");
 					dotrap(ttmp2, NOWEBMSG);
-#ifdef STEED
 					if (u.usteed && u.utrap) {
 						/* you, not steed, are trapped */
 						dismount_steed(DISMOUNT_FELL);
 					}
-#endif
 				}
 				else {
 					mintrap(mdef);
@@ -7639,12 +7631,10 @@ boolean ranged;
 				if (youdef) {
 					pline_The("hook-tip breaks off and attaches to the %s!", surface(x(mdef), y(mdef)));
 					dotrap(ttmp2, 0);
-#ifdef STEED
 					if (u.usteed && u.utrap) {
 						/* you, not steed, are trapped */
 						dismount_steed(DISMOUNT_FELL);
 					}
-#endif
 				}
 				else {
 					mintrap(mdef);
@@ -8107,9 +8097,7 @@ boolean ranged;
 				(void)rloc(mdef, TRUE);
 				result |= MM_AGR_STOP;	/* defender moved */
 				if (vis && !canspotmon(mdef)
-#ifdef STEED
 					&& mdef != u.usteed
-#endif
 					)
 					pline("%s suddenly disappears!", mdef_Monnam);
 			}
@@ -8180,18 +8168,14 @@ boolean ranged;
 				}
 				/* levelport target */
 				else {
-#ifdef STEED
 					if (u.usteed == mdef) {
 						pline("%s vanishes from underneath you.", Monnam(mdef));
 						dismount_steed(DISMOUNT_VANISHED);
 					}
 					else {
-#endif
 						if (vis && canspotmon(mdef) && flags.verbose)
 							pline("%s vanishes before your eyes.", Monnam(mdef));
-#ifdef STEED
 					}
-#endif
 					int nlev;
 					d_level flev;
 					nlev = random_teleport_level();
@@ -8230,9 +8214,7 @@ boolean ranged;
 			* [FIXME: why can't a flying attacker overcome this?]
 			*/
 			if (
-#ifdef STEED
 				u.usteed ||
-#endif
 				Levitation || Flying) {
 				pline("%s tries to reach your %s %s!", Monnam(magr),
 					sidestr, body_part(LEG));
@@ -10084,7 +10066,6 @@ int vis;
 				u.uy0 = u.uy;
 			}
 			u.ustuck = magr;
-#ifdef STEED
 			if (pluck && u.usteed) {
 				/* Too many quirks presently if hero and steed
 				* are swallowed. Pretend purple worms don't
@@ -10095,7 +10076,6 @@ int vis;
 				dismount_steed(DISMOUNT_ENGULFED);
 			}
 			else
-#endif
 				pline("%s engulfs you!", Monnam(magr));
 
 			if (pluck) {
@@ -10229,9 +10209,7 @@ int vis;
 		/* if defender died and aggressor isn't stationary, move agressor to defender's coord */
 		/* if mdef was your steed, you are still there, so magr can't take your spot! */
 		if (!stationary_mon(magr) && result&MM_DEF_DIED
-#ifdef STEED
 			&& !(mdef == u.usteed)
-#endif
 			) {
 			/* sanity check */
 			if (*hp(mdef) > 0)
@@ -13815,9 +13793,7 @@ int vis;						/* True if action is at all visible to the player */
 			/* isn't a misused polearm */
 			(!is_bad_melee_pole(weapon) ||
 			thrust ||
-#ifdef STEED
 			(youagr && u.usteed) ||
-#endif
 			(pa && melee_polearms(pa)) ||
 			weapon->otyp == AKLYS ||
 			check_oprop(weapon, OPROP_CCLAW)
@@ -14038,7 +14014,6 @@ int vis;						/* True if action is at all visible to the player */
 	}
 
 	/* jousting */
-#ifdef STEED
 	if (youagr && melee && !recursed) {	/* do not joust in multihits */
 		if (u.usteed && weapon &&
 			(weapon_type(weapon) == P_LANCE ||
@@ -14085,7 +14060,6 @@ int vis;						/* True if action is at all visible to the player */
 		/* calculate bonus jousting damage */
 		jostdmg += d(2, (weapon == uwep) ? 10 : 2);
 	}
-#endif
 	/* staggering strike */
 	if (youagr && (melee || thrust) && !recursed) {
 		if (
@@ -17915,12 +17889,10 @@ boolean endofchain;			/* if the passive is occuring at the end of aggressor's at
 						if (youagr) {
 							pline_The("webbing sticks to you. You're caught!");
 							dotrap(ttmp2, NOWEBMSG);
-#ifdef STEED
 							if (u.usteed && u.utrap) {
 								/* you, not steed, are trapped */
 								dismount_steed(DISMOUNT_FELL);
 							}
-#endif
 						}
 						else {
 							mintrap(magr);

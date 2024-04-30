@@ -566,7 +566,6 @@ WEAPON(("katar"), /*Needs encyc entry*/
 
 
 /* Firearms */
-//ifdef FIREARMS
  /*Needs encyc entry*/
 GUN(("flintlock", "broken hand-crossbow"),            0,   MZ_LARGE, 0,  10,   50,  8, -2, -2, WP_BULLET, IRON, P_FIREARM, HI_METAL), /*Needs tile*/
 
@@ -633,7 +632,6 @@ BULLET(("carcosan bolt", "golden bolt", "bolt"),
 BULLET(("laser beam", "green bolt", "bolt"),
 	DMG(D(3, 1), F(10)), DMG(D(3, 1), F(10)),
 	0,    MZ_TINY, 0,  1,   0, 0, WP_BLASTER,   E|S, METAL, -P_FIREARM, CLR_BRIGHT_GREEN),/*Needs tile*/
-//endif
 
 /* bows */
 BOW(("bow"),                                          1,  MZ_LARGE, 24, 30,  60,  0, WOOD, P_BOW, HI_WOOD),
@@ -810,13 +808,8 @@ SUIT(("gentlewoman's dress", "expensive dress"), /*Needs encyc entry*/
 	0, 0,  MZ_LARGE,  ARMSZ_HEAVY,  0,  6, 100, 1000, 10, 1, 3, BONE, CLR_RED), /*Specifically, whale bone*/
 SUIT(("crystal plate mail"), /*Needs encyc entry*/
 	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 10,  5, 170, 2000,  4, 6, 0, GLASS, HI_GLASS), /*Best armor, AC wise*/
-#ifdef TOURIST
 SUIT(("archaic plate mail"), /*Needs encyc entry*/
 	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 20,  5, 200,  400,  5, 5, 3, COPPER, HI_COPPER),
-#else
-SUIT(("archaic plate mail"),
-	1, 0,   MZ_HUGE,  ARMSZ_HEAVY, 35,  5, 200,  400,  5, 5, 3, COPPER, HI_COPPER),
-#endif
 SUIT(("harmonium plate", "red-lacquered bladed armor", "bladed armor"),
 	0, 0,   MZ_HUGE,  ARMSZ_HEAVY,  0,  5, 225,    1,  5, 6, 3, METAL, CLR_RED),
 SUIT(("harmonium scale mail", "red-lacquered spiked scale mail", "spiked scale mail"),
@@ -867,7 +860,6 @@ SUIT(("healer uniform","clean clothes"), /*Needs encyc entry*//*Needs tile*/
 	0, 0, MZ_MEDIUM, ARMSZ_LIGHT,   0,  0,  30,   10, 10, 1, 2, CLOTH, CLR_WHITE, O_POWER(SICK_RES)),
 SUIT(("jumpsuit", "silvery clothes", "clothes"),/*Needs encyc entry*//*Needs tile*/
 	0, 0,  MZ_LARGE, ARMSZ_LIGHT,   0,  5,   5, 1000, 10, 1, 3, PLASTIC, HI_SILVER, O_POWER(REFLECTING), O_DRSLOT(ALL_DR)),
-#ifdef TOURIST
 /* shirts */
 /*ARMOR(("Hawaiian shorts", "flowery shorts and lei"),
 	1, 0, 0, 0,	 0, 0,	 5,   3, 10, 0, ARM_SUIT, CLOTH, CLR_MAGENTA),
@@ -882,13 +874,10 @@ SHIRT(("ichcahuipilli", "thick undershirt"), /*Needs encyc entry*/
 	1, 0, MZ_MEDIUM,  0, 3,	10,   2, 10, 0, 0, CLOTH, CLR_WHITE),
 SUIT(("waistcloth"), /*Needs encyc entry*//*Needs tile*/
 	0, 0, MZ_SMALL,  ARMSZ_LIGHT,  0,  0,  15,   10, 10, 0, 0, CLOTH, CLR_WHITE, O_DRSLOT(LOWER_TORSO_DR)),
-# ifdef CONVICT
 SHIRT(("striped shirt", (char *)0, "shirt"), /*Needs encyc entry*/
 	1, 0, MZ_MEDIUM,  0, 0,	 5,   2, 10, 0, 0, CLOTH, CLR_GRAY),
-# endif /* CONVICT */
 SHIRT(("plain dress", "dress"), /*Needs encyc entry*/
 	1, 0, MZ_MEDIUM,  0, 5,   5, 500, 10, 0, 2, CLOTH, CLR_BLACK, O_DRSLOT(TORSO_DR)),
-#endif
 /*Ruffled shirts are little different from other shirts*/
 SHIRT(("ruffled shirt"), /*Needs encyc entry*/
 	1, 0, MZ_MEDIUM,  0, 0,	 5,  200, 10, 0, 0, CLOTH, CLR_WHITE),
@@ -1193,14 +1182,9 @@ CONTAINER(("bag of tricks", "bag"),       0, MZ_MEDIUM, 1, 1,  20,  15, 100, CLO
 /* lock opening tools */
 TOOL(("skeleton key", "key"),              0,   MZ_TINY, 0, 0, 0,  80,  3,  10, IRON,    HI_METAL),
 TOOL(("universal key", "key"),	         0,   MZ_TINY, 0, 0, 0,   0,  3,  10, SILVER,  HI_SILVER, O_MATSPEC(UNIDED)),
-#ifdef TOURIST
 TOOL(("lock pick"),             1,   MZ_TINY, 0, 0, 0,  60,  4,  20, IRON,    HI_METAL),
 /*Needs encyc entry*/
 TOOL(("credit card"),           1,   MZ_TINY, 0, 0, 0,   0,  1,  10, PLASTIC, CLR_WHITE),
-#else
-/*Needs encyc entry*/
-TOOL(("lock pick"),             1,   MZ_TINY, 0, 0, 0,  60,  4,  20, IRON,    HI_METAL),
-#endif
 /* light sources */
 TOOL(("tallow candle", "candle"),          0,   MZ_TINY, 1, 0, 0,  15,  2,  10, WAX,     CLR_WHITE),
 TOOL(("wax candle", "candle"),             0,   MZ_TINY, 1, 0, 0,   5,  2,  20, WAX,     CLR_WHITE),
@@ -1212,13 +1196,9 @@ TOOL(("magic lamp", "lamp"),               0,  MZ_SMALL, 0, 1, 0,  15, 20,  50, 
 // TOOL(("shadowlander's torch", "black torch"),
 								//       0,  MZ_SMALL, 0, 1, 0,  10, 20,  50, WOOD, CLR_BLACK),
 /* other tools */
-#ifdef TOURIST
 TOOL(("expensive camera"),
 				                1,  MZ_SMALL, 0, 0, 1,  15, 12, 200, PLASTIC, CLR_BLACK),
 TOOL(("mirror", "looking glass"), 0,   MZ_TINY, 0, 0, 0,  45, 13,  10, GLASS, HI_SILVER),
-#else
-TOOL(("mirror", "looking glass"), 0,   MZ_TINY, 0, 0, 0,  60, 13,  10, GLASS, HI_SILVER),
-#endif
 TOOL(("purified mirror", "disk"), 0,   MZ_TINY, 0, 0, 0,  0, 13,1000, SILVER, HI_SILVER, O_MATSPEC(UNIDED)),
 TOOL(("crystal ball", "glass orb"),
 								0,  MZ_SMALL, 0, 1, 1,  15, 50, 200, GLASS, HI_GLASS),
@@ -1253,12 +1233,8 @@ TOOL(("android visor", "black blindfold", "blindfold"), /*Needs encyc entry*/
 								0,   MZ_TINY, 0, 0, 0,   0,  2,  40, CLOTH, CLR_BLACK),
 TOOL(("soul-lens", "smooth-gemmed head-chain"),		0,   MZ_TINY, 0, 1, 0,   0,  3, 333, GLASS, HI_GOLD), /*Needs encyc entry*/
 TOOL(("towel"),        1,   MZ_TINY, 0, 0, 0,  45,  2,  50, CLOTH, CLR_MAGENTA),
-#ifdef STEED
 TOOL(("saddle"),       1,  MZ_LARGE, 0, 0, 0,   5,200, 150, LEATHER, HI_LEATHER),
 TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  60, 12,  20, LEATHER, HI_LEATHER),
-#else
-TOOL(("leash"),        1,  MZ_SMALL, 0, 0, 0,  65, 12,  20, LEATHER, HI_LEATHER),
-#endif
 /*Needs encyc entry*/
 TOOL(("stethoscope"),  1,  MZ_SMALL, 0, 0, 0,  25,  4,  75, IRON, HI_METAL),
 TOOL(("tinning kit"),  1, MZ_MEDIUM, 0, 0, 1,  15,100,  30, IRON, HI_METAL),
@@ -1835,11 +1811,7 @@ OBJECT(("gurney"), BITS(1,0,0,0,0,0,0,0,MZ_MEDIUM,1,0,0,0,P_NONE,METAL,0), {0},	
 OBJECT(("Bergonic chair", "strange chair"), BITS(0,0,0,0,0,0,0,0,MZ_LARGE,1,0,0,0,P_NONE,METAL,0), {0},		/*Needs encyc entry*/
 		BED_CLASS,     0, 0, 60,  100, DMG(D(4)), DMG(D(4)), 0, 0, 0, 2000, HI_ZAP),
 
-#ifdef CONVICT
 OBJECT(("heavy iron ball"), BITS(1,0,0,0,0,0,0,0,MZ_LARGE,0,0,0,WHACK,P_FLAIL,IRON,0), {0},
-#else
-OBJECT(("heavy iron ball"), BITS(1,0,0,0,0,0,0,0,MZ_LARGE,0,0,0,WHACK,P_NONE,IRON,0), {0},
-#endif /* CONVICT */
 		BALL_CLASS,  1000, 0,  480, 10, DMG(D(25)), DMG(D(25)), 0, 0,  0, 200, HI_METAL),
 						/* +d4 when "very heavy" */
 

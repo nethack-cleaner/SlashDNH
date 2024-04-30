@@ -12,9 +12,7 @@ STATIC_DCL int NDECL(moverock);
 STATIC_DCL void NDECL(sigilfloat);
 STATIC_DCL int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
 STATIC_DCL int FDECL(invocation_distmin,(int, int));
-#ifdef SINKS
 STATIC_DCL void NDECL(dosinkfall);
-#endif
 STATIC_DCL boolean FDECL(findtravelpath, (BOOLEAN_P));
 STATIC_DCL boolean FDECL(monstinroom, (struct permonst *,int));
 
@@ -100,9 +98,7 @@ moverock()
 	    return -1;
 	}
 	if (verysmall(youracedata)
-#ifdef STEED
 		 && !u.usteed
-#endif
 				    ) {
 	    if (Blind) feel_location(sx, sy);
 	    pline("You're too small to push that %s.", xname(otmp));
@@ -143,9 +139,7 @@ moverock()
 		}
 		if (flags.verbose)
 		    pline("Perhaps that's why %s cannot move it.",
-#ifdef STEED
 				u.usteed ? y_monnam(u.usteed) :
-#endif
 				"you");
 		goto cannot_push;
 	    }
@@ -215,12 +209,10 @@ moverock()
 		    continue;
 		case LEVEL_TELEP:
 		case TELEP_TRAP:
-#ifdef STEED
 		    if (u.usteed)
 			pline("%s pushes %s and suddenly it disappears!",
 			      upstart(y_monnam(u.usteed)), the(xname(otmp)));
 		    else
-#endif
 		    You("push %s and suddenly it disappears!",
 			the(xname(otmp)));
 		    if (ttmp->ttyp == TELEP_TRAP)
@@ -262,19 +254,15 @@ moverock()
 		/* note: reset to zero after save/restore cycle */
 		static NEARDATA long lastmovetime;
 #endif
-#ifdef STEED
 		if (!u.usteed) {
-#endif
 		  if (moves > lastmovetime+2 || moves < lastmovetime)
 		    pline("With %s effort you move %s.",
 			  (throws_rocks(youracedata) || (u.sealsActive&SEAL_YMIR)) ? "little" : "great",
 			  the(xname(otmp)));
 		  exercise(A_STR, TRUE);
-#ifdef STEED
 		} else 
 		    pline("%s moves %s.",
 			  upstart(y_monnam(u.usteed)), the(xname(otmp)));
-#endif
 		lastmovetime = moves;
 	    }
 
@@ -290,12 +278,10 @@ moverock()
 	    }
 	} else {
 	nopushmsg:
-#ifdef STEED
 	  if (u.usteed)
 	    pline("%s tries to move %s, but cannot.",
 		  upstart(y_monnam(u.usteed)), the(xname(otmp)));
 	  else
-#endif
 	    You("try to move %s, but in vain.", the(xname(otmp)));
 	    if (Blind) feel_location(sx, sy);
 	cannot_push:
@@ -305,14 +291,12 @@ moverock()
 			break_boulder(otmp);
 			break;
 		} else if (throws_rocks(youracedata) || (u.sealsActive&SEAL_YMIR)) {
-#ifdef STEED
 		if (u.usteed && P_SKILL(P_RIDING) < P_BASIC) {
 		    You("aren't skilled enough to %s %s from %s.",
 			(flags.pickup && !In_sokoban(&u.uz))
 			    ? "pick up" : "push aside",
 			the(xname(otmp)), y_monnam(u.usteed));
 		} else
-#endif
 		{
 		    pline("However, you can easily %s.",
 			(flags.pickup && !In_sokoban(&u.uz))
@@ -324,9 +308,7 @@ moverock()
 	    }
 
 	    if (
-#ifdef STEED
 		!u.usteed &&
-#endif	    
 		(((!invent || inv_weight() <= -850) &&
 		(!(uarm && uarm->otyp == POWER_ARMOR)) && 
 		 (!u.dx || !u.dy || (IS_ROCK(levl[u.ux][sy].typ)
@@ -487,7 +469,6 @@ register xchar ox, oy;
 	newsym(ox, oy);
 }
 
-#ifdef SINKS
 static NEARDATA const char fell_on_sink[] = "fell onto a sink";
 
 STATIC_OVL void
@@ -534,7 +515,6 @@ dosinkfall()
 	}
 	HLevitation--;
 }
-#endif
 
 boolean
 may_dig(x,y)
@@ -680,12 +660,10 @@ int mode;
 				iflags.door_opened = !(doopen_indir(x, y) & (MOVE_CANCELLED|MOVE_INSTANT));
 		    } else if (x == ux || y == uy) {
 				if (Blind || Stunned || ACURR(A_DEX) < 10 || Fumbling) {
-#ifdef STEED
 			    if (u.usteed) {
 				You_cant("lead %s through that closed door.",
 				         y_monnam(u.usteed));
 			    } else
-#endif
 			    {
 			        pline("Ouch!  You bump into a door.");
 			        exercise(A_DEX, FALSE);
@@ -734,9 +712,7 @@ int mode;
 		&& !(!uarmc && !uarm && uarmu && uarmu->greased)
 	) {
 	    if (mode == DO_MOVE)
-#ifdef CONVICT
         if (!Passes_walls)
-#endif /* CONVICT */
 		You("are carrying too much to get through.");
 	    return FALSE;
 	}
@@ -1382,13 +1358,11 @@ domove()
 	/* not attacking an animal, so we try to move */
 	if (!displacer) {
 
-#ifdef STEED
 	if (u.usteed && !u.usteed->mcanmove && (u.dx || u.dy)) {
 		pline("%s won't move!", upstart(y_monnam(u.usteed)));
 		nomul(0, NULL);
 		return;
 	} else
-#endif
 	if(!youracedata->mmove) {
 		You("are rooted %s.",
 		    Levitation || Weightless || Is_waterlevel(&u.uz) ?
@@ -1423,9 +1397,7 @@ domove()
 				You("%s to the edge of the pit.",
 					(In_sokoban(&u.uz) && Levitation) ?
 					"struggle against the air currents and float" :
-#ifdef STEED
 					u.usteed ? "ride" :
-#endif
 					"crawl");
 				fill_pit(u.ux, u.uy);
 				vision_full_recalc = 1;	/* vision limits change */
@@ -1437,12 +1409,10 @@ domove()
 				fill_pit(u.ux, u.uy);
 				vision_full_recalc = 1;	/* vision limits change */
 		    } else if (flags.verbose) {
-#ifdef STEED
 			if (u.usteed)
 			    Norep("%s is still in a pit.",
 				  upstart(y_monnam(u.usteed)));
 			else
-#endif
 			Norep( (Hallucination && !rn2(5)) ?
 				"You've fallen, and you can't get up." :
 				"You are still in a pit." );
@@ -1455,23 +1425,19 @@ domove()
 			} else {
 		    if(flags.verbose) {
 				predicament = "stuck in the lava";
-#ifdef STEED
 				if (u.usteed)
 					Norep("%s is %s.", upstart(y_monnam(u.usteed)),
 					  predicament);
 				else
-#endif
 				Norep("You are %s.", predicament);
 		    }
 		    if(!is_lava(x,y)) {
 			u.utrap--;
 			if((u.utrap & 0xff) == 0) {
-#ifdef STEED
 			    if (u.usteed)
 				You("lead %s to the edge of the lava.",
 				    y_monnam(u.usteed));
 			    else
-#endif
 			     You("pull yourself to the edge of the lava.");
 			    u.utrap = 0;
 			}
@@ -1503,21 +1469,17 @@ domove()
 		    if(--u.utrap) {
 			if(flags.verbose) {
 			    predicament = "stuck to the web";
-#ifdef STEED
 			    if (u.usteed)
 				Norep("%s is %s.", upstart(y_monnam(u.usteed)),
 				      predicament);
 			    else
-#endif
 			    Norep("You are %s.", predicament);
 			}
 		    } else {
-#ifdef STEED
 			if (u.usteed)
 			    pline("%s breaks out of the web.",
 				  upstart(y_monnam(u.usteed)));
 			else
-#endif
 			You("disentangle yourself.");
 		    }
 			}
@@ -1529,23 +1491,19 @@ domove()
 		    if(--u.utrap) {
 			if(flags.verbose) {
 			    predicament = "stuck in the";
-#ifdef STEED
 			    if (u.usteed)
 				Norep("%s is %s %s.",
 				      upstart(y_monnam(u.usteed)),
 				      predicament, surface(u.ux, u.uy));
 			    else
-#endif
 			    Norep("You are %s %s.", predicament,
 				  surface(u.ux, u.uy));
 			}
 		    } else {
-#ifdef STEED
 			if (u.usteed)
 			    pline("%s finally wiggles free.",
 				  upstart(y_monnam(u.usteed)));
 			else
-#endif
 			You("finally wiggle free.");
 		    }
 			}
@@ -1570,12 +1528,10 @@ domove()
 				char buf[BUFSZ];
 				Sprintf(buf, "caught in %s", an(xname(t_at(u.ux, u.uy)->ammo)));
 				predicament = buf;
-#ifdef STEED
 			if (u.usteed)
 			    Norep("%s is %s.", upstart(y_monnam(u.usteed)),
 				  predicament);
 			else
-#endif
 			Norep("You are %s.", predicament);
 		    }
 		    if((u.dx || u.dy) || !rn2(5)) u.utrap--; //was dx && dy, I think this was a typo
@@ -1607,7 +1563,6 @@ domove()
 	    return;
 	}
 
-#ifdef PARANOID
 	/* credit - Ron Nazarov via IRC/discord, applied with some minor changes*/
 	/* If no 'm' prefix and paranoid_swim enabled, don't allow dangerous moves.  */
 	if (iflags.paranoid_swim && (!flags.nopick || flags.run)) {
@@ -1661,7 +1616,6 @@ domove()
 			return;
 	    }
 	}
-#endif
 	
 	/* Move ball and chain.  */
 	if (Punished){
@@ -1691,14 +1645,12 @@ domove()
 	u.lastmoved = monstermoves;
 	u.ux += u.dx;
 	u.uy += u.dy;
-#ifdef STEED
 	/* Move your steed, too */
 	if (u.usteed) {
 		u.usteed->mx = u.ux;
 		u.usteed->my = u.uy;
 		exercise_steed();
 	}
-#endif
 
 	if (displacer) {
 	    char pnambuf[BUFSZ];
@@ -1951,10 +1903,8 @@ invocation_message()
 	    struct obj *otmp = carrying(CANDELABRUM_OF_INVOCATION);
 
 	    nomul(0, NULL);		/* stop running or travelling */
-#ifdef STEED
 	    if (u.usteed) Sprintf(buf, "beneath %s", y_monnam(u.usteed));
 	    else
-#endif
 	    if (Levitation || Flying) Strcpy(buf, "beneath you");
 	    else Sprintf(buf, "under your %s", makeplural(body_part(FOOT)));
 
@@ -1966,10 +1916,8 @@ invocation_message()
 	} else if(!u.uevent.found_square && invocation_distmin(u.ux, u.uy) <= 2) {
 	    char buf[BUFSZ];
 	    nomul(0, NULL);		/* stop running or travelling */
-#ifdef STEED
 	    if (u.usteed) Sprintf(buf, "beneath %s", y_monnam(u.usteed));
 	    else
-#endif
 	    if (Levitation || Flying) Strcpy(buf, "beneath you");
 	    else Sprintf(buf, "under your %s", makeplural(body_part(FOOT)));
 
@@ -2024,7 +1972,6 @@ stillinwater:;
 	if (((!Levitation && !Flying) || is_3dwater(u.ux, u.uy)) && !u.ustuck) {
 	    /* limit recursive calls through teleds() */
 	    if (is_pool(u.ux, u.uy, FALSE) || is_lava(u.ux, u.uy)) {
-#ifdef STEED
 		if (u.usteed && !mon_resistance(u.usteed,FLYING) &&
 			!mon_resistance(u.usteed,LEVITATION) &&
 			!is_clinger(u.usteed->data)) {
@@ -2034,7 +1981,6 @@ stillinwater:;
 		    if (!Weightless && !Is_waterlevel(&u.uz))
 			pick = FALSE;
 		} else
-#endif
 		if (is_lava(u.ux, u.uy)) {
 		    if (lava_effects(TRUE)) return;
 		} else if (!Wwalking && drown())
@@ -2089,10 +2035,8 @@ stillinwater:;
 		}
 	}
 	check_special_room(FALSE);
-#ifdef SINKS
 	if(IS_SINK(levl[u.ux][u.uy].typ) && Levitation)
 		dosinkfall();
-#endif
 	if (!in_steed_dismounting) { /* if dismounting, we'll check again later */
 		struct trap *trap = t_at(u.ux, u.uy);
 		boolean pit;
@@ -2567,12 +2511,10 @@ dopickup()
 		return MOVE_CANCELLED;
 	}
 	if (!can_reach_floor()) {
-#ifdef STEED
 		if (u.usteed && P_SKILL(P_RIDING) < P_BASIC)
 		    You("aren't skilled enough to reach from %s.",
 			y_monnam(u.usteed));
 		else
-#endif
 		You("cannot reach the %s.", surface(u.ux,u.uy));
 		return MOVE_CANCELLED;
 	}
@@ -2946,7 +2888,6 @@ register struct monst *mtmp;
 register int n;
 {
 	flags.botl = 1;
-	//ifdef BARD
 	if (n > 0){
 		if(!(Nightmare && u.umadness&MAD_RAGE))
 			n += mtmp->encouraged;
@@ -2963,7 +2904,6 @@ register int n;
 		}
 		if (n < 0) n = 0;
 	}
-	//endif
 	if (n > 0) mtmp->mhurtu = TRUE;
 	if (Upolyd) {
 		u.mh -= n;

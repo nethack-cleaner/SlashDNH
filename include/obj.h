@@ -240,9 +240,7 @@ struct obj {
 		int opoisonchrgs;	/* rings/weapons: number of poison doses left */
 	};
 	
-#ifdef RECORD_ACHIEVE
 #define record_achieve_special corpsenm
-#endif
 #define osinging corpsenm	/* song that the Singing Sword is singing */
 #define OSING_FEAR		1
 #define OSING_HEALING	2
@@ -889,15 +887,8 @@ struct obj {
 #define is_multigen(otmp)	((otmp->oclass == WEAPON_CLASS && \
 			 objects[otmp->otyp].oc_skill >= -P_SHURIKEN && \
 			 objects[otmp->otyp].oc_skill <= -P_BOW))
-// define is_poisonable(otmp)	(otmp->oclass == WEAPON_CLASS && \
-			 // objects[otmp->otyp].oc_skill >= -P_SHURIKEN && \
-			 // objects[otmp->otyp].oc_skill <= -P_BOW)
-//#ifdef FIREARMS
 #define is_unpoisonable_firearm_ammo(otmp)	\
 			 (is_bullet(otmp) || (otmp)->otyp == STICK_OF_DYNAMITE)
-//#else
-//#define is_unpoisonable_firearm_ammo(otmp)	0
-//#endif
 #define is_poisonable(otmp)	(((otmp->oclass == WEAPON_CLASS || is_weptool(otmp)) && \
 			!is_launcher(otmp) &&\
 			!is_lightsaber(otmp) &&\
@@ -918,7 +909,6 @@ struct obj {
 #define is_blasting(otmp)	(otmp->oclass != SPBOOK_CLASS && \
 			otmp->oclass != WAND_CLASS && \
 			(objects[otmp->otyp].oc_dtyp & EXPLOSION))
-//#ifdef FIREARMS
 #define is_blaster(otmp) \
 			((otmp)->oclass == WEAPON_CLASS && \
 			 objects[(otmp)->otyp].w_ammotyp == WP_BLASTER && \
@@ -928,7 +918,6 @@ struct obj {
 			 objects[(otmp)->otyp].oc_skill == P_FIREARM)
 #define is_bullet(otmp)	((otmp)->oclass == WEAPON_CLASS && \
 			 objects[(otmp)->otyp].oc_skill == -P_FIREARM)
-//#endif
 #define is_monk_weapon(otmp)	(((otmp)->oclass == WEAPON_CLASS && (\
 			 (otmp)->otyp == QUARTERSTAFF\
 			 || (otmp)->otyp == KHAKKHARA\

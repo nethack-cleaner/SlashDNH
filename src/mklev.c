@@ -1300,7 +1300,6 @@ skip0:
 		    if(mkfeature(FOUNTAIN, FALSE, croom))
 				x -= 20;
 		}
-#ifdef SINKS
 		if(!rn2(60)) {
 		    if(mkfeature(SINK, FALSE, croom))
 				x -= 20;
@@ -1314,7 +1313,6 @@ skip0:
 		}
 
 		if (x < 2) x = 2;
-#endif
 		if(!rn2(x))
 			mkfeature(PUDDLE, FALSE, croom);
 
@@ -2254,9 +2252,7 @@ mkinvokearea()
 
     livelog_write_string("performed the invocation");
 
-#ifdef RECORD_ACHIEVE
     achieve.perform_invocation = 1;
-#endif
 }
 
 /* Change level topology.  Boulders in the vicinity are eliminated.

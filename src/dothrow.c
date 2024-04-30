@@ -68,7 +68,6 @@ STATIC_OVL const char * const Ronnie_ray_gun[] = {
 };
 
 
-//ifdef FIREARMS
 int
 zap_raygun(raygun, shots, shotlimit)
 struct obj *raygun;
@@ -975,9 +974,7 @@ struct obj *obj;
 	if (is_shatterable(obj) && !obj->oerodeproof)
 	    return 1;
 	switch (obj->oclass == POTION_CLASS ? POT_WATER : obj->otyp) {
-#ifdef TOURIST
 		case EXPENSIVE_CAMERA:
-#endif
 		case POT_WATER:		/* really, all potions */
 		case EGG:
 		case CREAM_PIE:

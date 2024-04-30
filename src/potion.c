@@ -90,11 +90,9 @@ boolean talk;
 	}
 	if (xtime && !old) {
 		if (talk) {
-#ifdef STEED
 			if (u.usteed)
 				You("wobble in the saddle.");
 			else
-#endif
 			You("%s...", stagger(&youmonst, "stagger"));
 		}
 	}
@@ -406,7 +404,6 @@ dodrink()
 			return MOVE_QUAFFED;
 		}
 	}
-#ifdef SINKS
 	/* Or a kitchen sink? */
 	if (IS_SINK(levl[u.ux][u.uy].typ)) {
 		if (yn("Drink from the sink?") == 'y') {
@@ -414,7 +411,6 @@ dodrink()
 			return MOVE_QUAFFED;
 		}
 	}
-#endif
 
     /* Or a forge? */
     if (IS_FORGE(levl[u.ux][u.uy].typ)
@@ -895,10 +891,8 @@ boolean force;
 		else {
 		    if (Levitation || Weightless||Is_waterlevel(&u.uz))
 			You("are motionlessly suspended.");
-#ifdef STEED
 		    else if (u.usteed)
 			You("are frozen in place!");
-#endif
 		    else
 			Your("%s are frozen to the %s!",
 			     makeplural(body_part(FOOT)), surface(u.ux, u.uy));
@@ -1028,9 +1022,7 @@ boolean force;
 	break;
 	case POT_SPEED:
 		if(Wounded_legs && !otmp->cursed
-#ifdef STEED
 		   && !u.usteed	/* heal_legs() would heal steeds legs */
-#endif
 						) {
 			heal_legs();
 			unkn++;
@@ -2751,24 +2743,16 @@ dodip()
 	here = levl[u.ux][u.uy].typ;
 	/* Is there a fountain to dip into here? */
 	if (IS_FOUNTAIN(here)) {
-#ifdef PARANOID
 		Sprintf(qbuf, "Dip %s into the fountain?", the(xname(obj)));
 		if(yn(qbuf) == 'y')
-#else
-		if(yn("Dip it into the fountain?") == 'y')
-#endif
 		{
 			dipfountain(obj);
 			return MOVE_STANDARD;
 		}
 	}
 	if (IS_FORGE(here)) {
-#ifdef PARANOID
 		Sprintf(qbuf, "Dip %s into the forge?", the(xname(obj)));
 		if(yn(qbuf) == 'y')
-#else
-		if(yn("Dip it into the forge?") == 'y')
-#endif
 		{
 			dipforge(obj);
 			return MOVE_STANDARD;
@@ -2776,19 +2760,13 @@ dodip()
 	}
 	else if (is_pool(u.ux,u.uy, TRUE)) {
 		tmp = waterbody_name(u.ux,u.uy);
-#ifdef PARANOID
 		Sprintf(qbuf, "Dip %s into the %s?", the(xname(obj)), tmp);
-#else
-		Sprintf(qbuf, "Dip it into the %s?", tmp);
-#endif
 		if (yn(qbuf) == 'y') {
 		    if (Levitation) {
 			floating_above(tmp);
-#ifdef STEED
 		    } else if (u.usteed && !mon_resistance(u.usteed,SWIMMING) &&
 			    P_SKILL(P_RIDING) < P_BASIC) {
 			rider_cant_reach(); /* not skilled enough to reach */
-#endif
 		    } else {
 			(void) get_wet(obj, level.flags.lethe); //lethe
 //			if (obj->otyp == POT_ACID) useup(obj); //Potential error here
@@ -2797,12 +2775,8 @@ dodip()
 		}
 	}
 
-#ifdef PARANOID
 	Sprintf(qbuf, "dip %s into", the(xname(obj)));
 	if(!(potion = getobj(beverages, qbuf)))
-#else
-	if(!(potion = getobj(beverages, "dip into")))
-#endif
 		return MOVE_CANCELLED;
 	if (potion == obj && potion->quan == 1L) {
 		pline("That is a potion bottle, not a Klein bottle!");

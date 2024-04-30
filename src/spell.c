@@ -3234,10 +3234,8 @@ spiriteffects(power, atme)
 						case TT_BEARTRAP: {
 						register long side = rn2(3) ? LEFT_SIDE : RIGHT_SIDE;
 						pline(pullmsg, "bear trap");
-	#ifdef STEED
 						if(u.usteed) set_wounded_legs(side, rn1(1000, 500)); /*clunky as hell, but gets the job done! */
 						if (!u.usteed)
-	#endif
 						{
 							if (uarmf && uarmf->otyp == find_jboots()){
 								int bootdamage = d(1,10);
@@ -4843,7 +4841,6 @@ dothrowspell:
 			}
 			if(!u.dx && !u.dy && !u.dz) {
 
-#ifdef PARANOID
 				if (iflags.paranoid_self_cast &&
 						pseudo->otyp != SPE_HEALING &&
 						pseudo->otyp != SPE_EXTRA_HEALING &&
@@ -4858,7 +4855,6 @@ dothrowspell:
 						break;
 					}
 				}
-#endif
 
 			    if ((damage = zapyourself(pseudo, TRUE)) != 0) {
 				char buf[BUFSZ];

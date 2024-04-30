@@ -11,9 +11,7 @@
 STATIC_DCL void NDECL(stoned_dialogue);
 STATIC_DCL void NDECL(golded_dialogue);
 STATIC_DCL void NDECL(gillyweed_dialogue);
-#ifdef CONVICT
 STATIC_DCL void NDECL(phasing_dialogue);
-#endif /* CONVICT */
 STATIC_DCL void NDECL(vomiting_dialogue);
 STATIC_DCL void NDECL(choke_dialogue);
 STATIC_DCL void NDECL(slime_dialogue);
@@ -174,7 +172,6 @@ gillyweed_dialogue()
     }
 }
 
-#ifdef CONVICT
 STATIC_OVL void
 phasing_dialogue()
 {
@@ -194,7 +191,6 @@ phasing_dialogue()
         stop_occupation();
     }
 }
-#endif /* CONVICT */
 
 /* He is getting sicker and sicker prior to vomiting */
 static NEARDATA char * const vomiting_texts[] = {
@@ -562,9 +558,7 @@ nh_timeout()
 	    }
 	}
     if(HMagical_breathing) gillyweed_dialogue();
-#ifdef CONVICT
     if(Phasing) phasing_dialogue();
-#endif /* CONVICT */
 	if(u.uprops[SANCTUARY].intrinsic&TIMEOUT){
 		u.uprops[SANCTUARY].intrinsic--;
 		if(!u.uprops[SANCTUARY].intrinsic){
@@ -722,12 +716,10 @@ nh_timeout()
 		vision_recalc(2);	/* unsee old position */
 		doredraw();
 	}
-#ifdef STEED
 	if (u.ugallop) {
 	    if (--u.ugallop == 0L && u.usteed)
 	    	pline("%s stops galloping.", Monnam(u.usteed));
 	}
-#endif
 
 	for(upp = u.uprops; upp < u.uprops+SIZE(u.uprops); upp++){
 		if(upp - u.uprops == SANCTUARY)
@@ -1042,7 +1034,6 @@ boolean wakeup_msg;
 	nomovemsg = wakeup_msg ? "You wake up." : You_can_move_again;
 }
 
-//#ifdef FIREARMS
 /* Attach an explosion timeout to a given explosive device */
 void
 attach_bomb_blow_timeout(bomb, fuse, yours)
@@ -1172,7 +1163,6 @@ free_bomb:
 	obj_extract_self(bomb);
 	obfree(bomb, (struct obj *)0);
 }
-//#endif
 
 /* Attach an egg hatch timeout to the given egg. */
 void
@@ -1420,9 +1410,7 @@ slip_or_trip()
 	const char *what, *pronoun;
 	char buf[BUFSZ];
 	boolean on_foot = TRUE;
-#ifdef STEED
 	if (u.usteed) on_foot = FALSE;
-#endif
 
 	if (otmp && on_foot && !u.uinwater && is_pool(u.ux, u.uy, FALSE)) otmp = 0;
 
@@ -1450,11 +1438,9 @@ slip_or_trip()
 	    }
 	} else if (rn2(3) && is_ice(u.ux, u.uy)) {
 	    pline("%s %s%s on the ice.",
-#ifdef STEED
 		u.usteed ? upstart(x_monnam(u.usteed,
 				M_HAS_NAME(u.usteed) ? ARTICLE_NONE : ARTICLE_THE,
 				(char *)0, SUPPRESS_SADDLE, FALSE)) :
-#endif
 		"You", rn2(2) ? "slip" : "slide", on_foot ? "" : "s");
 	} else {
 	    if (on_foot) {
@@ -1475,7 +1461,6 @@ slip_or_trip()
 			break;
 		}
 	    }
-#ifdef STEED
 	    else {
 		switch (rn2(4)) {
 		  case 1:
@@ -1493,7 +1478,6 @@ slip_or_trip()
 		}
 		dismount_steed(DISMOUNT_FELL);
 	    }
-#endif
 	}
 }
 
@@ -1575,7 +1559,6 @@ long timeout;
 				obj_extract_and_unequip_self(obj);
 				obfree(obj, (struct obj *)0);
 				obj = (struct obj *) 0;
-				//#ifdef FIREARMS
 			}
 			else if (obj->otyp == SHADOWLANDER_S_TORCH || obj->otyp == TORCH) {
 				/* torches may become burnt clubs */
@@ -1597,7 +1580,6 @@ long timeout;
 			else if (obj->otyp == STICK_OF_DYNAMITE) {
 				bomb_blow((genericptr_t)obj, timeout);
 				return;
-				//#endif
 			}
 		}
 		else {
@@ -2124,12 +2106,10 @@ long timeout;
 			if (obj && obj->age && obj->lamplit) /* might be deactivated */
 				begin_burn(obj);
 		break;
-//#ifdef FIREARMS
 	    case STICK_OF_DYNAMITE:
 		end_burn(obj, FALSE);
 		bomb_blow((genericptr_t) obj, timeout);
 		return;
-//#endif
 	    default:
 		impossible("burn_object: unexpeced obj %s", xname(obj));
 		break;

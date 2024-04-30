@@ -610,7 +610,6 @@ end_query:
 	return (n_tried > 0);
 }
 
-#ifdef AUTOPICKUP_EXCEPTIONS
 boolean
 is_autopickup_exception(obj, grab)
 struct obj *obj;
@@ -633,7 +632,6 @@ boolean grab;	 /* forced pickup, rather than forced leave behind? */
 	}
 	return FALSE;
 }
-#endif /* AUTOPICKUP_EXCEPTIONS */
 
 STATIC_OVL boolean
 autopick_testobj(otmp, calc_costly)
@@ -654,12 +652,10 @@ boolean calc_costly;
 
     pickit = !*otypes || index(otypes, otmp->oclass);
 
-#ifdef AUTOPICKUP_EXCEPTIONS
     if (!pickit)
 	pickit = is_autopickup_exception(otmp, TRUE);
 
     pickit = pickit && !is_autopickup_exception(otmp, FALSE);
-#endif
 
     if (!pickit)
 	pickit = iflags.pickup_thrown && otmp->was_thrown;
@@ -731,15 +727,11 @@ menu_item **pick_list;		/* return list of items picked */
 int how;			/* type of query */
 boolean FDECL((*allow), (OBJ_P));/* allow function */
 {
-#ifdef SORTLOOT
 	int i, j;
-#endif
 	int n;
 	winid win;
 	struct obj *curr, *last;
-#ifdef SORTLOOT
 	struct obj **oarray;
-#endif
 	char *pack;
 	anything any;
 	boolean printed_type_name;
@@ -764,7 +756,6 @@ boolean FDECL((*allow), (OBJ_P));/* allow function */
 	    return 1;
 	}
 
-#ifdef SORTLOOT
 	/* Make a temporary array to store the objects sorted */
 	oarray = (struct obj **)alloc(n*sizeof(struct obj*));
 
@@ -789,7 +780,6 @@ boolean FDECL((*allow), (OBJ_P));/* allow function */
 	      }
 	  }
 	}
-#endif /* SORTLOOT */
 
 	win = create_nhwindow(NHW_MENU);
 	start_menu(win);
@@ -804,12 +794,8 @@ boolean FDECL((*allow), (OBJ_P));/* allow function */
 	pack = flags.inv_order;
 	do {
 	    printed_type_name = FALSE;
-#ifdef SORTLOOT
 	    for (i = 0; i < n; i++) {
 		curr = oarray[i];
-#else /* SORTLOOT */
-	    for (curr = olist; curr; curr = FOLLOW(curr, qflags)) {
-#endif /* SORTLOOT */
 		if ((qflags & FEEL_COCKATRICE) && curr->otyp == CORPSE &&
 		     will_feel_cockatrice(curr, FALSE)) {
 			destroy_nhwindow(win);	/* stop the menu and revert */
@@ -837,9 +823,7 @@ boolean FDECL((*allow), (OBJ_P));/* allow function */
 	    pack++;
 	} while (qflags & INVORDER_SORT && *pack);
 
-#ifdef SORTLOOT
 	free(oarray);
-#endif
 	end_menu(win, qstr);
 	n = select_menu(win, how, pick_list);
 	destroy_nhwindow(win);
@@ -1571,11 +1555,9 @@ boolean looting;
 {
 	const char *verb = looting ? "loot" : "tip";
 	if (!can_reach_floor()) {
-#ifdef STEED
 		if (u.usteed && P_SKILL(P_RIDING) < P_BASIC)
 			rider_cant_reach(); /* not skilled enough to reach */
 		else
-#endif
 			You("cannot reach the %s.", surface(x, y));
 		return FALSE;
 	} else if ((is_pool(x, y, FALSE) && (looting || !Underwater)) || is_lava(x, y)) {
@@ -1942,7 +1924,6 @@ boolean *prev_loot;
 {
     int c = -1;
     int timepassed = 0;
-#ifdef STEED
     struct obj *otmp;
     char qbuf[QBUFSZ];
 
@@ -1998,7 +1979,6 @@ boolean *prev_loot;
 		return MOVE_CANCELLED;
 	}
     }
-#endif	/* STEED */
     /* 3.4.0 introduced the ability to pick things up from within swallower's stomach */
     if (u.uswallow) {
 	int count = passed_info ? *passed_info : 0;
@@ -2038,12 +2018,10 @@ dopetequip()
 		return MOVE_CANCELLED;
 	}
 
-#ifdef STEED
 	if(mtmp == u.usteed){
 		You_cant("change the equipment of something you're riding!");
 		return MOVE_CANCELLED;
 	}
-#endif	/* STEED */
 	if (nolimbs(youracedata)) {
 		You_cant("do that without limbs."); /* not body_part(HAND) */
 		return MOVE_CANCELLED;

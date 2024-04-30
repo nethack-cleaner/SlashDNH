@@ -26,9 +26,7 @@ const struct worn {
 	{ W_ARMS, &uarms },
 	{ W_ARMG, &uarmg },
 	{ W_ARMF, &uarmf },
-#ifdef TOURIST
 	{ W_ARMU, &uarmu },
-#endif
 	{ W_RING0, &urings[0] },
 	{ W_RING1, &urings[1] },
 	{ W_RING2, &urings[2] },
@@ -856,10 +854,8 @@ boolean on, silently;
 	if ((which = w_blocks(obj, all_worn)))
 		mon_block_extrinsic(mon, obj, which, on, silently);
 
-#ifdef STEED
 	if (!on && mon == u.usteed && obj->otyp == SADDLE)
 	    dismount_steed(DISMOUNT_FELL);
-#endif
 
     /* if couldn't see it but now can, or vice versa, update display */
     if (!silently && (unseen ^ !canseemon(mon)))
@@ -1765,11 +1761,9 @@ boolean creation;
 		return;
 
 	m_dowear_type(mon, W_AMUL, creation, FALSE);
-#ifdef TOURIST
 	/* can't put on shirt if already wearing suit */
 	if (!(mon->misc_worn_check & W_ARM) || creation)
 	    m_dowear_type(mon, W_ARMU, creation, FALSE);
-#endif
 	/* treating small as a special case allows
 	   hobbits, gnomes, and kobolds to wear cloaks */
 	m_dowear_type(mon, W_ARMC, creation, FALSE);
@@ -2261,7 +2255,6 @@ boolean polyspot;
 			m_lose_armor(mon, otmp);
 		}
 	}
-#ifdef STEED
 	otmp = which_armor(mon, W_SADDLE);
 	if (otmp && !can_saddle(mon, otmp)) {
 		if (polyspot) bypass_obj(otmp);
@@ -2285,7 +2278,6 @@ boolean polyspot;
 	    }
 	    dismount_steed(DISMOUNT_FELL);
 	}
-#endif
 	return;
 }
 
@@ -2466,12 +2458,10 @@ struct monst *mon;
 	    armpro = min(3, armpro+objects[armor->otyp].a_can);
 	}
 
-#ifdef STEED
 	/* this one is really a stretch... */
 	armor = (mon == &youmonst) ? 0 : which_armor(mon, W_SADDLE);
 	if (armor && armpro < objects[armor->otyp].a_can)
 	    armpro = objects[armor->otyp].a_can;
-#endif
 
 	return armpro;
 }

@@ -8,12 +8,10 @@
 #include "lev.h"
 #include "artifact.h"
 
-#ifdef SINKS
 # ifdef OVLB
 STATIC_DCL void FDECL(trycall, (struct obj *));
 # endif /* OVLB */
 STATIC_DCL void FDECL(dosinkring, (struct obj *));
-#endif /* SINKS */
 
 STATIC_PTR int NDECL(wipeoff);
 
@@ -350,7 +348,6 @@ doaltarobj(obj)  /* obj is an object dropped on an altar */
 	}
 }
 
-#ifdef SINKS
 STATIC_OVL
 void
 trycall(obj)
@@ -532,7 +529,6 @@ giveback:
 	} else
 		useup(obj);
 }
-#endif
 
 #endif /* OVLB */
 #ifdef OVL0
@@ -571,14 +567,12 @@ register const char *word;
 					body_part(HAND));
 		return(FALSE);
 	}
-#ifdef STEED
 	if (obj->owornmask & W_SADDLE) {
 		if (*word)
 			You("cannot %s %s you are sitting on.", word,
 				something);
 		return (FALSE);
 	}
-#endif
 	return(TRUE);
 }
 
@@ -616,13 +610,11 @@ struct obj *obj;
 				mbodypart(u.ustuck, STOMACH));
 		}
 	} else {
-#ifdef SINKS
 	    if((obj->oclass == RING_CLASS || obj->otyp == MEAT_RING) &&
 			IS_SINK(levl[u.ux][u.uy].typ)) {
 		dosinkring(obj);
 		return(1);
 	    }
-#endif
 	    if (!can_reach_floor()) {
 		if(flags.verbose) You("drop %s.", doname(obj));
 #ifndef GOLDOBJ
@@ -925,7 +917,6 @@ dodown()
 		    (u.ux == sstairs.sx && u.uy == sstairs.sy && !sstairs.up)),
 		ladder_down = (u.ux == xdnladder && u.uy == ydnladder);
 
-#ifdef STEED
 	if (u.usteed && !u.usteed->mcanmove) {
 		pline("%s won't move!", Monnam(u.usteed));
 		return MOVE_CANCELLED;
@@ -933,7 +924,6 @@ dodown()
 		pline("%s is still eating.", Monnam(u.usteed));
 		return MOVE_CANCELLED;
 	} else
-#endif
 	if (Levitation) {
 	    if ((HLevitation & I_SPECIAL) || (ELevitation & W_ARTI)) {
 		/* end controlled levitation */
@@ -1011,9 +1001,7 @@ dodown()
 			return(0);
 		else pline("So be it.");
 		u.uevent.gehennom_entered = 1;	/* don't ask again */
-#ifdef RECORD_ACHIEVE
 		achieve.enter_gehennom = 1;
-#endif
 	}
 	if(on_level(&spire_level,&u.uz)){
 		u.uevent.sum_entered = 1; //entered sum of all
@@ -1073,7 +1061,6 @@ doup()
 		}
 		return MOVE_CANCELLED;
 	}
-#ifdef STEED
 	if (u.usteed && !u.usteed->mcanmove) {
 		pline("%s won't move!", Monnam(u.usteed));
 		return MOVE_CANCELLED;
@@ -1081,7 +1068,6 @@ doup()
 		pline("%s is still eating.", Monnam(u.usteed));
 		return MOVE_CANCELLED;
 	} else
-#endif
 	if(u.ustuck && (u.uswallow || !sticks(&youmonst))) {
 		You("are %s, and cannot go up.",
 			!u.uswallow ? "being held" : is_animal(u.ustuck->data) ?
@@ -1537,14 +1523,10 @@ remake:
 				You("fly down along the %s.",
 				at_ladder ? "ladder" : "stairs");
 			else if (u.dz &&
-	#ifdef CONVICT
 				(near_capacity() > UNENCUMBERED || (Punished &&
 				((uwep != uball) || ((P_SKILL(P_FLAIL) < P_BASIC))
 				|| !Role_if(PM_CONVICT)))
 				 || Fumbling)
-	#else
-				(near_capacity() > UNENCUMBERED || Punished || Fumbling)
-	#endif /* CONVICT */
 			) {
 				You("fall down the %s.", at_ladder ? "ladder" : "stairs");
 				if (Punished) {
@@ -1637,9 +1619,7 @@ misc_levelport:
 	initrack();
 
 	if ((mtmp = m_at(u.ux, u.uy)) != 0
-#ifdef STEED
 		&& mtmp != u.usteed
-#endif
 		) {
 	    /* There's a monster at your target destination; it might be one
 	       which accompanied you--see mon_arrive(dogmove.c)--or perhaps
@@ -1706,9 +1686,7 @@ misc_levelport:
 		You_hear("groans and moans everywhere.");
 	    } else {
 			pline("It is hot here.  You smell smoke...");
-#ifdef RECORD_ACHIEVE
 			achieve.enter_gehennom = 1;
-#endif
 		}
 	}
 
@@ -2771,9 +2749,7 @@ heal_legs()
 			flags.botl = 1;
 		}
 
-#ifdef STEED
 		if (!u.usteed)
-#endif
 		{
 			/* KMH, intrinsics patch */
 			if((EWounded_legs & BOTH_SIDES) == BOTH_SIDES) {

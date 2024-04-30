@@ -606,9 +606,7 @@ register struct monst *mtmp;
 				", swallowed you" :
 				", engulfed you") :
 				", holding you");
-#ifdef STEED
 	if (mtmp == u.usteed)	  Strcat(info, ", carrying you");
-#endif
 
 	/* avoid "Status of the invisible newt ..., invisible" */
 	/* and unlike a normal mon_nam, use "saddled" even if it has a name */
@@ -663,9 +661,7 @@ ustatusline()
 	if (Stunned)		Strcat(info, ", stunned");
 	if (u.ustdy > 0)	  Sprintf(eos(info), ", vulnerable (%d)", u.ustdy);
 	if (u.uencouraged != 0)	  Sprintf(eos(info), ", morale (%d)", u.uencouraged);
-#ifdef STEED
 	if (!u.usteed)
-#endif
 	if (Wounded_legs) {
 	    const char *what = body_part(LEG);
 	    if ((Wounded_legs & BOTH_SIDES) == BOTH_SIDES)

@@ -261,12 +261,10 @@ in_trouble()
 		Cursed_obj(uarmf, FUMBLE_BOOTS))
 	    return TROUBLE_FUMBLING;
 	if (worst_cursed_item()) return TROUBLE_CURSED_ITEMS;
-#ifdef STEED
 	if (u.usteed) {	/* can't voluntarily dismount from a cursed saddle */
 	    otmp = which_armor(u.usteed, W_SADDLE);
 	    if (Cursed_obj(otmp, SADDLE)) return TROUBLE_SADDLE;
 	}
-#endif
 
 	if (u.ucarinc < 0) return(TROUBLE_CARRY_CURSED);
 	if (u.uhitinc < 0) return(TROUBLE_TOHIT_CURSED);
@@ -276,9 +274,7 @@ in_trouble()
 	for(i=0; i<A_MAX; i++)
 	    if(ABASE(i) < AMAX(i)) return(TROUBLE_POISONED);
 	if(Wounded_legs
-#ifdef STEED
 		    && !u.usteed
-#endif
 				) return (TROUBLE_WOUNDED_LEGS);
 	if(u.uhs >= HUNGRY && !Race_if(PM_INCANTIFIER)) return(TROUBLE_HUNGRY);
 	if(HStun) return (TROUBLE_STUNNED);
@@ -320,10 +316,8 @@ worst_cursed_item()
 	otmp = uarmh;
     } else if (uarmf && uarmf->cursed) {		/* boots */
 	otmp = uarmf;
-#ifdef TOURIST
     } else if (uarmu && uarmu->cursed) {		/* shirt */
 	otmp = uarmu;
-#endif
     } else if (uamul && uamul->cursed) {		/* amulet */
 	otmp = uamul;
     } else {			/* rings */
@@ -618,7 +612,6 @@ decurse:
 		    pline ("Looks like you are back in Kansas.");
 		    (void) make_hallucinated(0L,FALSE,0L);
 		    break;
-#ifdef STEED
 	    case TROUBLE_SADDLE:
 		    otmp = which_armor(u.usteed, W_SADDLE);
 		    uncurse(otmp);
@@ -630,7 +623,6 @@ decurse:
 			otmp->bknown = TRUE;
 		    }
 		    break;
-#endif
 	}
 }
 
@@ -695,12 +687,10 @@ int godnum;
 	    if (uarm && !(EReflecting & W_ARM) &&
 	    		!(EDisint_resistance & W_ARM) && !uarmc)
 		(void) destroy_arm(uarm);
-#ifdef TOURIST
 	    if (uarmu && 
 			!(EReflecting & W_ARMU) && !(EDisint_resistance & W_ARMU) &&
 			!(uarm && arm_blocks_upper_body(uarm->otyp)) && !uarmc
 		) (void) destroy_arm(uarmu);
-#endif
 	    if (!Disint_resistance)
 		fry_by_god(godnum);
 	    else {
@@ -1148,9 +1138,7 @@ int godnum;
 	
 	u.ublesscnt = rnz(350);
 	kick_on_butt = u.uevent.udemigod ? 1 : 0;
-#ifdef ELBERETH
 	if (u.uevent.uhand_of_elbereth) kick_on_butt++;
-#endif
 	if (kick_on_butt) u.ublesscnt += kick_on_butt * rnz(1000);
 
 	return;
@@ -1919,10 +1907,8 @@ dosacrifice()
 					done(ESCAPED);
 				} else { /* super big win */
 					adjalign(10);
-#ifdef RECORD_ACHIEVE
 					achieve.ascended = 1;
 					give_ascension_trophy();
-#endif
 					pline("An invisible choir sings, and you are bathed in radiance...");
 					godvoice(altargod, "Congratulations, mortal!");
 					display_nhwindow(WIN_MESSAGE, FALSE);
@@ -1955,10 +1941,8 @@ dosacrifice()
 					done(DISINTEGRATED);
 				} else { /* super big win */
 					adjalign(10);
-#ifdef RECORD_ACHIEVE
 					achieve.ascended = 1;
 					give_ascension_trophy();
-#endif
 					pline("From the threshold of the Gate, you look back at the world");
 					pline("You don't know what awaits you in the Void,");
 					pline("but whatever happens, the way shall remain open behind you,");
@@ -4486,10 +4470,8 @@ struct obj *otmp;
 		else useupf(otmp, 1L);
 		You("offer the Amulet of Yendor to Bokrug...");
 		adjalign(10);
-#ifdef RECORD_ACHIEVE
 		achieve.ascended = 1;
 		give_ascension_trophy();
-#endif
 		You("sink into cool lake water...");
 		You("don't drown. You have achieved the status of Demigod%s!",
 			flags.female ? "dess" : "");

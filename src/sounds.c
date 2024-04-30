@@ -2980,7 +2980,6 @@ humanoid_sound:
 	    }
 	    break;
 	case MS_BRIBE:
-#ifdef CONVICT        
         if (monsndx(ptr) == PM_PRISON_GUARD) {
             long gdemand = 500 * u.ulevel;
             long goffer = 0;
@@ -3002,7 +3001,6 @@ humanoid_sound:
                 verbl_msg = "Out of my way, scum!"; /* still a jerk */
             }
         } else
-#endif /* CONVICT */
 	    if (mtmp->mpeaceful) {
 			if(!mtmp->mtame) (void) demon_talk(mtmp);
 			break;
@@ -3773,10 +3771,8 @@ int dz;
 		return MOVE_CANCELLED;
 	}
 
-#ifdef STEED
     if (u.usteed && u.dz > 0)
 	return (domonnoise(u.usteed, TRUE)) ? MOVE_STANDARD : MOVE_INSTANT;
-#endif
 	if (u.dz) {
 		struct engr *ep = get_head_engr();
 		for(;ep;ep=ep->nxt_engr)

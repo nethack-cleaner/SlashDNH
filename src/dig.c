@@ -289,21 +289,17 @@ dig()
 		    You("fumble and drop your %s.", xname(digitem));
 		    dropx(digitem);
 		} else {
-#ifdef STEED
 		    if (u.usteed)
 			Your("%s %s and %s %s!",
 			     xname(digitem),
 			     otense(digitem, "bounce"), otense(digitem, "hit"),
 			     mon_nam(u.usteed));
 		    else
-#endif
 			pline("Ouch!  Your %s %s and %s you!",
 			      xname(digitem),
 			      otense(digitem, "bounce"), otense(digitem, "hit"));
-#ifdef STEED
 		    if (u.usteed) set_wounded_legs(RIGHT_SIDE, 5 + rnd(5));
 			else
-#endif
 			if (!(uarmf && uarmf->otyp == find_jboots())) set_wounded_legs(RIGHT_SIDE, 5 + rnd(5));
 		}
 		break;
@@ -670,11 +666,9 @@ boolean msgs;
 	} else if (IS_FORGE(lev->typ)) {
 	    breakforge(x, y);
 	    return;
-#ifdef SINKS
 	} else if (IS_SINK(lev->typ)) {
 	    breaksink(x, y);
 	    return;
-#endif
 	} else if (lev->typ == DRAWBRIDGE_DOWN ||
 		   (is_drawbridge_wall(x, y) >= 0)) {
 	    int bx = x, by = y;
@@ -1264,7 +1258,6 @@ boolean pit_only;
 			pline_The("%s here refuses to open.", surface(u.ux,u.uy));
 			return FALSE;
 		}
-#ifdef SINKS
 	} else if (IS_SINK(lev->typ)) {
 		if(!pit_only){
 			openfakedoor();
@@ -1273,7 +1266,6 @@ boolean pit_only;
 			pline_The("%s here refuses to open.", surface(u.ux,u.uy));
 			return FALSE;
 		}
-#endif
 	} else if (IS_THRONE(lev->typ)) {
 		if(!pit_only){
 			openfakedoor();
@@ -1484,11 +1476,9 @@ openrocktrap()
 	} else if (IS_FORGE(lev->typ)) {
 		fakerocktrap();
 	    return TRUE;
-#ifdef SINKS
 	} else if (IS_SINK(lev->typ)) {
 		fakerocktrap();
 	    return TRUE;
-#endif
 	} else if (IS_THRONE(lev->typ)) {
 		fakerocktrap();
 	    return TRUE;

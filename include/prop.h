@@ -174,9 +174,7 @@ struct prop {
 #	define W_RING	    (W_RING0 | W_RING1 | W_RING2 | W_RING3 | W_RING4 | W_RING5 | W_RING6 | W_RING7)
 #	define W_TOOL	    0x00200000LL /* Eyewear */
 #	define W_ACCESSORY	    (W_AMUL | W_RING | W_TOOL)
-#ifdef STEED
 #	define W_SADDLE     0x00400000LL	/* KMH -- For riding monsters */
-#endif
 #	define W_BALL	    0x00800000LL /* Punishment ball */
 #	define W_CHAIN	    0x01000000LL /* Punishment chain */
 #	define W_SPIRIT	    0x02000000LL	/* Bound spirit */
@@ -216,8 +214,6 @@ struct prop {
 #define WORN_BOOTS	W_ARMF
 #define WORN_AMUL	W_AMUL
 #define WORN_BLINDF	W_TOOL
-#ifdef TOURIST
 #define WORN_SHIRT	W_ARMU
-#endif
 
 #endif /* PROP_H */

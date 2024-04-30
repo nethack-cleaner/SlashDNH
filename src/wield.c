@@ -106,9 +106,7 @@ register struct obj *obj;
 				(is_launcher(obj) || is_ammo(obj) ||
 				 is_missile(obj) ||
 				 (is_bad_melee_pole(obj)
-#ifdef STEED
 				&& !u.usteed
-#endif
 				&& !melee_polearms(youracedata)
 				&& obj->otyp != AKLYS
 				&& !is_cclub_able(obj)
@@ -302,9 +300,7 @@ dowield()
 		if(wep->ostolen && u.sealsActive&SEAL_ANDROMALIUS) unbind(SEAL_ANDROMALIUS, TRUE);
 		setuqwep((struct obj *) 0);
 	} else if (wep->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL
-#ifdef STEED
 			| W_SADDLE
-#endif
 			)) {
 		You("cannot wield that!");
 		return MOVE_CANCELLED;
@@ -412,9 +408,7 @@ dowieldquiver()
 		      !is_plural(uwep) ? "That is" : "They are");
 		return MOVE_CANCELLED;
 	} else if (newquiver->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL
-#ifdef STEED
 			| W_SADDLE
-#endif
 			)) {
 		You("cannot ready that!");
 		return MOVE_CANCELLED;

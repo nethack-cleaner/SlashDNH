@@ -246,7 +246,6 @@ static struct trobj Barbarian[] = {
 	{ TORCH, 0, TOOL_CLASS, 3, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#ifdef BARD
 static struct trobj Bard[] = {
 #define BARD_INSTR 0
 	{ HARP, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
@@ -261,7 +260,6 @@ static struct trobj Bard[] = {
 	{ WHISTLE, 0, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ 0, 0, 0, 0, 0 }
 };
-#endif
 static struct trobj Binder[] = {
 	{ SHEPHERD_S_CROOK, 0, WEAPON_CLASS, 1, 0 },
 	{ KNIFE, 0, WEAPON_CLASS, 1, 0 },
@@ -351,14 +349,12 @@ static struct trobj Cave_man[] = {
 	{ TORCH, 0, TOOL_CLASS, 3, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#ifdef CONVICT
 static struct trobj Convict[] = {
 	{ ROCK, 0, GEM_CLASS, 1, 0 },
 	{ STRIPED_SHIRT, 0, ARMOR_CLASS, 1, 0 },
 	{ SPOON, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#endif  /* CONVICT */
 static struct trobj Healer[] = {
 	{ SCALPEL, 0, WEAPON_CLASS, 1, 1 },
 	{ QUARTERSTAFF, 0, WEAPON_CLASS, 1, 1 },
@@ -621,7 +617,6 @@ static struct trobj Samurai[] = {
 	{ MASK, 0, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ 0, 0, 0, 0, 0 }
 };
-#ifdef TOURIST
 static struct trobj Tourist[] = {
 #define T_DARTS		0
 	{ DART, 2, WEAPON_CLASS, 25, UNDEF_BLESS },	/* quan is variable */
@@ -636,7 +631,6 @@ static struct trobj Tourist[] = {
 	{ CREDIT_CARD, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#endif
 static struct trobj Valkyrie[] = {
 	{ SPEAR, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
 	{ BOW, 	 1, WEAPON_CLASS, 1, UNDEF_BLESS },
@@ -781,7 +775,6 @@ static struct trobj Orc_Brd_equip[] = {
 	{ ORCISH_HELM, 0, WEAPON_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#ifdef TOURIST
 static struct trobj Leash[] = {
 	{ LEASH, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -790,7 +783,6 @@ static struct trobj Towel[] = {
 	{ TOWEL, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
-#endif	/* TOURIST */
 static struct trobj Wishing[] = {
 	{ WAN_WISHING, 3, WAND_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -931,17 +923,13 @@ static const struct def_skill Skill_A[] = {
     { P_SCIMITAR, P_SKILLED },		{ P_SABER, P_EXPERT },
     { P_SPEAR, P_EXPERT },
     { P_CLUB, P_SKILLED },		{ P_QUARTERSTAFF, P_SKILLED },
-//#ifdef FIREARMS
     { P_FIREARM, P_SKILLED },
-//#endif
     { P_SLING, P_SKILLED },		{ P_DART, P_BASIC },
     { P_BOOMERANG, P_EXPERT },		{ P_WHIP, P_EXPERT },
     { P_UNICORN_HORN, P_SKILLED },	{ P_HARVEST, P_BASIC },
     { P_ATTACK_SPELL, P_BASIC },	{ P_HEALING_SPELL, P_BASIC },
     { P_DIVINATION_SPELL, P_EXPERT},	{ P_MATTER_SPELL, P_BASIC},
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_SHIELD, P_BASIC },
     { P_WAND_POWER, P_SKILLED },
     { P_TWO_WEAPON_COMBAT, P_BASIC },
@@ -957,16 +945,12 @@ static const struct def_skill Skill_Acu[] = {
     { P_SABER, P_SKILLED },		{ P_LONG_SWORD,  P_BASIC },
     { P_CLUB, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
 	{ P_BROAD_SWORD, P_EXPERT },{ P_HAMMER, P_BASIC },
-//#ifdef FIREARMS
 //    { P_FIREARM, P_SKILLED },
-//#endif
     { P_DART, P_BASIC },		{ P_PICK_AXE, P_BASIC },
     { P_WHIP, P_SKILLED },		 { P_BOOMERANG, P_BASIC },
     { P_ATTACK_SPELL, P_BASIC },	{ P_HEALING_SPELL, P_BASIC },
     { P_DIVINATION_SPELL, P_SKILLED},	{ P_MATTER_SPELL, P_BASIC},
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_SPEAR, P_BASIC },
     //{ P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },{ P_TWO_HANDED_SWORD, P_SKILLED },
@@ -985,9 +969,7 @@ static const struct def_skill Skill_Ana[] = {
     { P_ATTACK_SPELL, P_SKILLED },	{ P_HEALING_SPELL, P_SKILLED },
     { P_DIVINATION_SPELL, P_SKILLED},	{ P_MATTER_SPELL, P_SKILLED},
 	{ P_ENCHANTMENT_SPELL, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_NONE, 0 }
@@ -999,17 +981,13 @@ static const struct def_skill Skill_Dwa_Ana[] = {
     { P_SABER, P_EXPERT },		{ P_LONG_SWORD,  P_BASIC },
     { P_CLUB, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
 	{ P_BROAD_SWORD, P_EXPERT },{ P_HAMMER, P_BASIC },
-//#ifdef FIREARMS
     { P_FIREARM, P_EXPERT },
-//#endif
     { P_DART, P_EXPERT },		{ P_CROSSBOW, P_SKILLED },
     { P_WHIP, P_SKILLED },		 { P_BOOMERANG, P_EXPERT },
     { P_ATTACK_SPELL, P_SKILLED },	{ P_HEALING_SPELL, P_SKILLED },
     { P_DIVINATION_SPELL, P_SKILLED},	{ P_MATTER_SPELL, P_SKILLED},
 	{ P_ENCHANTMENT_SPELL, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_NONE, 0 }
@@ -1021,17 +999,13 @@ static const struct def_skill Skill_Gno_Ana[] = {
     { P_SABER, P_EXPERT },		{ P_LONG_SWORD,  P_BASIC },
     { P_CLUB, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
 	{ P_BROAD_SWORD, P_EXPERT },{ P_HAMMER, P_BASIC },
-//#ifdef FIREARMS
     { P_FIREARM, P_EXPERT },
-//#endif
     { P_DART, P_EXPERT },		{ P_CROSSBOW, P_SKILLED },
     { P_WHIP, P_SKILLED },		 { P_BOOMERANG, P_EXPERT },
     { P_ATTACK_SPELL, P_SKILLED },	{ P_HEALING_SPELL, P_SKILLED },
     { P_DIVINATION_SPELL, P_SKILLED},	{ P_MATTER_SPELL, P_SKILLED},
 	{ P_ENCHANTMENT_SPELL, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_GRAND_MASTER },
     { P_NONE, 0 }
@@ -1047,9 +1021,7 @@ static const struct def_skill Skill_Droid_Ana[] = {
 	{ P_WHIP, P_EXPERT },
 	{ P_CLUB, P_SKILLED },
 	{ P_HAMMER, P_BASIC },
-//#ifdef FIREARMS
     { P_FIREARM, P_EXPERT },
-//#endif
     { P_DAGGER, P_SKILLED },	 { P_KNIFE,  P_SKILLED },
     { P_DART, P_BASIC },		{ P_CROSSBOW, P_SKILLED },
     { P_BOOMERANG, P_SKILLED },
@@ -1058,9 +1030,7 @@ static const struct def_skill Skill_Droid_Ana[] = {
     { P_CLERIC_SPELL, P_SKILLED },	{ P_ESCAPE_SPELL, P_SKILLED },
     { P_MATTER_SPELL, P_SKILLED }, { P_WAND_POWER, P_SKILLED },
 	{ P_BEAST_MASTERY, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_BASIC},
     { P_BARE_HANDED_COMBAT, P_GRAND_MASTER },
     { P_NONE, 0 }
@@ -1106,15 +1076,12 @@ static const struct def_skill Skill_B[] = {
 	{ P_HARVEST, P_SKILLED },
     { P_QUARTERSTAFF, P_BASIC },	{ P_SPEAR, P_SKILLED },
     { P_TRIDENT, P_EXPERT },		{ P_BOW, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_MASTER },
     { P_NONE, 0 }
 };
 
-#ifdef BARD
 static struct def_skill Skill_Bard[] = {
 	{ P_SABER, P_SKILLED },
     { P_DAGGER, P_SKILLED },		{ P_KNIFE,  P_BASIC },
@@ -1128,7 +1095,6 @@ static struct def_skill Skill_Bard[] = {
     { P_MUSICALIZE, P_EXPERT },		{ P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
 };
-#endif
 
 static const struct def_skill Skill_N[] = {
     { P_NONE, 0 }
@@ -1224,9 +1190,7 @@ static const struct def_skill Skill_Dro_M_H[] = {
     { P_MATTER_SPELL, P_SKILLED },
     { P_WAND_POWER, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
 };
@@ -1244,9 +1208,7 @@ static const struct def_skill Skill_Dro_F_H[] = {
     { P_CLERIC_SPELL, P_EXPERT },
     { P_WAND_POWER, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
 };
@@ -1332,9 +1294,7 @@ static const struct def_skill Skill_K[] = {
     { P_CROSSBOW, P_SKILLED },	{ P_SHIELD, P_EXPERT },
 	{ P_ATTACK_SPELL, P_SKILLED },
     { P_HEALING_SPELL, P_SKILLED },	{ P_CLERIC_SPELL, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_EXPERT },
-#endif
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_BEAST_MASTERY, P_SKILLED },
@@ -1357,9 +1317,7 @@ static const struct def_skill Skill_Mon[] = {
     { P_ESCAPE_SPELL, P_BASIC },	{ P_MATTER_SPELL, P_BASIC },
     { P_MARTIAL_ARTS, P_GRAND_MASTER },	{ P_TWO_WEAPON_COMBAT, P_GRAND_MASTER },
 	{ P_BOOMERANG, P_SKILLED },
-#ifdef BARD
     { P_MUSICALIZE, P_BASIC },
-#endif
     { P_NONE, 0 }
 };
 
@@ -1397,9 +1355,7 @@ static const struct def_skill Skill_Nob[] = {
 	{ P_ATTACK_SPELL, P_SKILLED },
     { P_HEALING_SPELL, P_SKILLED },	{ P_ESCAPE_SPELL, P_SKILLED },
     { P_ENCHANTMENT_SPELL, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_SKILLED },
-#endif
     { P_BARE_HANDED_COMBAT, P_SKILLED },
     { P_BEAST_MASTERY, P_EXPERT },
     { P_NONE, 0 }
@@ -1439,9 +1395,7 @@ static const struct def_skill Skill_ENob[] = {
 	{ P_ATTACK_SPELL, P_SKILLED },
     { P_HEALING_SPELL, P_SKILLED }, { P_ESCAPE_SPELL, P_SKILLED },
     { P_ENCHANTMENT_SPELL, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_SKILLED },
-#endif
     { P_BARE_HANDED_COMBAT, P_SKILLED },
     { P_BEAST_MASTERY, P_SKILLED },
     { P_NONE, 0 }
@@ -1461,9 +1415,7 @@ static const struct def_skill Skill_DNob[] = {
     { P_SLING, P_BASIC },
     { P_ATTACK_SPELL, P_SKILLED },	{ P_CLERIC_SPELL, P_SKILLED },
     { P_ESCAPE_SPELL, P_SKILLED },	{ P_ENCHANTMENT_SPELL, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_SKILLED },
-#endif
     { P_BARE_HANDED_COMBAT, P_SKILLED },
     { P_BEAST_MASTERY, P_SKILLED },
     { P_NONE, 0 }
@@ -1481,9 +1433,7 @@ static const struct def_skill Skill_DwaNob[] = {
     { P_QUARTERSTAFF, P_BASIC },	{ P_SPEAR, P_EXPERT },
     { P_TRIDENT, P_EXPERT },		{ P_BOW, P_SKILLED },
 	{ P_SHIELD, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_MASTER },
     { P_BEAST_MASTERY, P_BASIC },
@@ -1504,9 +1454,7 @@ static const struct def_skill Skill_P[] = {
     { P_HEALING_SPELL, P_EXPERT },	{ P_DIVINATION_SPELL, P_EXPERT },
     { P_CLERIC_SPELL, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_BASIC },
-#ifdef BARD
     { P_MUSICALIZE, P_BASIC },
-#endif
     { P_NONE, 0 }
 };
 
@@ -1554,9 +1502,7 @@ static const struct def_skill Skill_Pir[] = {
     { P_CROSSBOW, P_EXPERT },   { P_DART, P_SKILLED },
     { P_WHIP, P_SKILLED },   	{ P_UNICORN_HORN, P_BASIC },
 	{ P_PICK_AXE, P_SKILLED },
-//#ifdef FIREARMS
     { P_FIREARM, P_EXPERT },
-//#endif
     { P_ATTACK_SPELL, P_BASIC },{ P_DIVINATION_SPELL, P_BASIC },
     { P_ENCHANTMENT_SPELL, P_BASIC },{ P_ESCAPE_SPELL, P_SKILLED },
     { P_WAND_POWER, P_SKILLED },
@@ -1578,9 +1524,7 @@ static const struct def_skill Skill_R[] = {
     { P_DIVINATION_SPELL, P_SKILLED },	{ P_ESCAPE_SPELL, P_SKILLED },
     { P_MATTER_SPELL, P_SKILLED },
     { P_WAND_POWER, P_EXPERT },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_NONE, 0 }
@@ -1602,9 +1546,7 @@ static const struct def_skill Skill_Ran[] = {
     { P_DIVINATION_SPELL, P_EXPERT },
     { P_ESCAPE_SPELL, P_BASIC },
     { P_WAND_POWER, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_BEAST_MASTERY, P_EXPERT },
@@ -1622,15 +1564,12 @@ static const struct def_skill Skill_S[] = {
     { P_BOW, P_EXPERT },		{ P_SHURIKEN, P_EXPERT },
     { P_DART, P_EXPERT },
     { P_ATTACK_SPELL, P_SKILLED },	{ P_CLERIC_SPELL, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_SKILLED },
-#endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_MARTIAL_ARTS, P_MASTER },
     { P_NONE, 0 }
 };
 
-#ifdef TOURIST
 static const struct def_skill Skill_T[] = {
     { P_DAGGER, P_BASIC },		{ P_KNIFE,  P_BASIC },
     { P_AXE, P_BASIC },			{ P_PICK_AXE, P_BASIC },
@@ -1644,9 +1583,7 @@ static const struct def_skill Skill_T[] = {
     { P_TRIDENT, P_BASIC },		{ P_LANCE, P_BASIC },
     { P_BOW, P_BASIC },			{ P_SLING, P_BASIC },
 	{ P_SHIELD, P_BASIC },
-//#ifdef FIREARMS
     { P_FIREARM, P_BASIC },
-//#endif
     { P_CROSSBOW, P_BASIC },		{ P_DART, P_EXPERT },
     { P_SHURIKEN, P_BASIC },		{ P_BOOMERANG, P_EXPERT },
     { P_WHIP, P_BASIC },		{ P_HARVEST, P_SKILLED },
@@ -1654,18 +1591,13 @@ static const struct def_skill Skill_T[] = {
     { P_DIVINATION_SPELL, P_SKILLED },	{ P_ENCHANTMENT_SPELL, P_BASIC },
     { P_ESCAPE_SPELL, P_SKILLED },
     { P_WAND_POWER, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
-#ifdef BARD
     { P_MUSICALIZE, P_SKILLED },
-#endif
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_BEAST_MASTERY, P_SKILLED },
     { P_NONE, 0 }
 };
-#endif /* TOURIST */
 
 static const struct def_skill Skill_V[] = {
     { P_DAGGER, P_BASIC },			{ P_AXE, P_EXPERT },
@@ -1681,12 +1613,8 @@ static const struct def_skill Skill_V[] = {
     { P_ATTACK_SPELL, P_EXPERT },	{ P_ESCAPE_SPELL, P_BASIC },
     { P_DIVINATION_SPELL, P_SKILLED },
     { P_WAND_POWER, P_BASIC },
-#ifdef STEED
     { P_RIDING, P_EXPERT },
-#endif
-#ifdef BARD
     { P_MUSICALIZE, P_SKILLED },
-#endif
     { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_NONE, 0 }
 };
@@ -1705,9 +1633,7 @@ static const struct def_skill Skill_W[] = {
     { P_CLERIC_SPELL, P_SKILLED },	{ P_ESCAPE_SPELL, P_EXPERT },
     { P_MATTER_SPELL, P_EXPERT },
     { P_WAND_POWER, P_SKILLED },
-#ifdef STEED
     { P_RIDING, P_BASIC },
-#endif
     { P_BEAST_MASTERY, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_NONE, 0 }
@@ -1737,7 +1663,6 @@ register char sym;
 			knows_object(ct);
 }
 
-#ifdef BARD
 /* Know 5 to 15 random magical objects (wands, potions, scrolls, ...)
    For now we decide that tools while possibly magical (bag of holding/tricks,
    magic lamp) are excempt because the Bard already knows all instruments
@@ -1781,7 +1706,6 @@ int count;
             }
         }
 }
-#endif
 
 static void
 set_ent_species(){
@@ -2236,7 +2160,6 @@ u_init()
 		knows_class(ARMOR_CLASS);
 		skill_init(Skill_B);
 		break;
-#ifdef BARD
 	case PM_BARD:
 		if (Race_if(PM_ORC)) Bard[BARD_INSTR].trotyp = (rn2(100) >= 50) ? BUGLE : TOOLED_HORN;
 		else if (Race_if(PM_HALF_DRAGON)) Bard[BARD_INSTR].trotyp = DRUM;
@@ -2272,7 +2195,6 @@ u_init()
 		u.wardsknown |= WARD_DREPRUN;
 		skill_init(Skill_Bard);
 	break;
-#endif
 	case PM_EXILE:
 		u.veil = FALSE;
 		if(Race_if(PM_VAMPIRE)){
@@ -2324,7 +2246,6 @@ u_init()
 		ini_inv(Cave_man);
 		skill_init(Skill_C);
 		break;
-#ifdef CONVICT
 	case PM_CONVICT:
         ini_inv(Convict);
         knows_object(SKELETON_KEY);
@@ -2344,7 +2265,6 @@ u_init()
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Convicts are pariahs of their race */
         break;
-#endif	/* CONVICT */
 	case PM_MADMAN:
 		u.veil = FALSE;
 		u.umaniac = TRUE;
@@ -2618,7 +2538,6 @@ u_init()
 		knows_class(ARMOR_CLASS);
 		skill_init(Skill_S);
 		break;
-#ifdef TOURIST
 	case PM_TOURIST:
 		Tourist[T_DARTS].trquan = rn1(20, 21);
 #ifndef GOLDOBJ
@@ -2632,7 +2551,6 @@ u_init()
 		// else if(!rn2(25)) ini_inv(Magicmarker);
 		skill_init(Skill_T);
 		break;
-#endif
 	case PM_VALKYRIE:
 		ini_inv(Valkyrie);
 		// if(!rn2(6)) ini_inv(Lamp);
@@ -2699,9 +2617,7 @@ u_init()
 		ini_inv(Instrument);
 	    }
 
-#ifdef BARD
 		if(!Role_if(PM_BARD)) skill_add(Skill_Elf_Music);
-#endif
 		if(Role_if(PM_ANACHRONONAUT)){
 			u.umartial = TRUE;
 			HTelepat |= FROMOUTSIDE;
@@ -2864,9 +2780,7 @@ u_init()
 	case PM_ORC:
 	    /* compensate for generally inferior equipment */
 	    if (!Role_if(PM_WIZARD)
-#ifdef CONVICT
          && !Role_if(PM_CONVICT)
-#endif /* CONVICT */
           && !Role_if(PM_MADMAN)
 		) ini_inv(Xtra_food);
 	    /* Orcs can recognize all orcish objects */
@@ -3129,14 +3043,10 @@ int otyp;
      case PM_ANACHRONOUNBINDER: skills = Skill_Acu; break;
      case PM_ANACHRONONAUT:	skills = Skill_Ana; break;
      case PM_BARBARIAN:		skills = Skill_B; break;
-#ifdef BARD
      case PM_BARD:		skills = Skill_Bard; break;
-#endif
      case PM_EXILE:			skills = Skill_N; break;
      case PM_CAVEMAN:		skills = Skill_C; break;
-#ifdef CONVICT
      case PM_CONVICT:		skills = Skill_Con; break;
-#endif  /* CONVICT */
      case PM_HEALER:		skills = Skill_H; break;
      case PM_KNIGHT:		skills = Skill_K; break;
      case PM_MONK:		skills = Skill_Mon; break;
@@ -3146,9 +3056,7 @@ int otyp;
      case PM_RANGER:		skills = Skill_Ran; break;
      case PM_ROGUE:		skills = Skill_R; break;
      case PM_SAMURAI:		skills = Skill_S; break;
-#ifdef TOURIST
      case PM_TOURIST:		skills = Skill_T; break;
-#endif
      case PM_VALKYRIE:		skills = Skill_V; break;
      case PM_WIZARD:		skills = Skill_W; break;
      default:			skills = 0; break;	/* lint suppression */
@@ -3481,11 +3389,9 @@ register struct trobj *trop;
 				  Role_if(PM_EXILE) )) {
 			    obj->quan = 1L;
 			}
-#ifdef CONVICT
             if (obj->otyp == STRIPED_SHIRT ) {
                 obj->cursed = TRUE;
             }
-#endif /* CONVICT */
             if (obj->otyp == STRAITJACKET ) {
                 obj->cursed = TRUE;
             }
@@ -3584,10 +3490,8 @@ register struct trobj *trop;
 				setworn(obj, W_ARMH);
 			else if (is_gloves(obj) && !uarmg)
 				setworn(obj, W_ARMG);
-#ifdef TOURIST
 			else if (is_shirt(obj) && !uarmu)
 				setworn(obj, W_ARMU);
-#endif
 			else if (is_cloak(obj) && !uarmc)
 				setworn(obj, W_ARMC);
 			else if (is_boots(obj) && !uarmf)

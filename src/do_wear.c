@@ -24,9 +24,7 @@ static NEARDATA const char see_yourself[] = "see yourself";
 static NEARDATA const char unknown_type[] = "Unknown type of %s (%d)";
 static NEARDATA const char c_armor[]  = "armor",
 			   c_suit[]   = "suit",
-#ifdef TOURIST
 			   c_shirt[]  = "shirt",
-#endif
 			   c_cloak[]  = "cloak",
 			   c_gloves[] = "gloves",
 			   c_boots[]  = "boots",
@@ -40,9 +38,7 @@ static NEARDATA const long long takeoff_order[] = { WORN_BLINDF, W_WEP,
 	WORN_SHIELD, WORN_GLOVES,
 	W_RING0, W_RING1, W_RING2, W_RING3, W_RING4, W_RING5, W_RING6, W_RING7,
 	WORN_CLOAK, WORN_HELMET, WORN_AMUL, WORN_ARMOR,
-#ifdef TOURIST
 	WORN_SHIRT,
-#endif
 	WORN_BOOTS, W_SWAPWEP, W_QUIVER, 0LL };
 
 STATIC_DCL void FDECL(on_msg, (struct obj *));
@@ -1462,9 +1458,7 @@ register struct obj *otmp;
 void
 set_wear()
 {
-#ifdef TOURIST
 	if (uarmu) (void) Shirt_on();
-#endif
 	if (uarm)  (void) Armor_on();
 	if (uarmc) (void) Cloak_on();
 	if (uarmf) (void) Boots_on();
@@ -1485,11 +1479,9 @@ register struct obj *otmp;
     if (otmp == uarm)
 	result = (afternmv == Armor_on || afternmv == Armor_off ||
 		  what == WORN_ARMOR);
-#ifdef TOURIST
     else if (otmp == uarmu)
 	result = (afternmv == Shirt_on || afternmv == Shirt_off ||
 		  what == WORN_SHIRT);
-#endif
     else if (otmp == uarmc)
 	result = (afternmv == Cloak_on || afternmv == Cloak_off ||
 		  what == WORN_CLOAK);
@@ -1578,9 +1570,7 @@ dotakeoff()
 		return MOVE_CANCELLED;
 	}
 	if (armorpieces > 1
-#ifdef PARANOID
 	    || iflags.paranoid_remove
-#endif
 	    )
 		otmp = getobj(clothes, "take off");
 	if (otmp == 0) return MOVE_CANCELLED;
@@ -1633,9 +1623,7 @@ doremring()
 		return MOVE_CANCELLED;
 	}
 	if (Accessories != 1
-#ifdef PARANOID
 	    || iflags.paranoid_remove
-#endif
 	    ) otmp = getobj(accessories, "remove");
 	if(!otmp) return MOVE_CANCELLED;
 	if(!(otmp->owornmask & (W_RING | W_AMUL | W_TOOL))) {
@@ -3274,10 +3262,8 @@ struct monst *victim;
 		// if(otmph && !arm_blocks_upper_body(otmph->otyp) && rn2(2))
 			// otmph = 0;
 	}
-#ifdef TOURIST
 	if (!otmph)
 	    otmph = (victim == &youmonst) ? uarmu : which_armor(victim, W_ARMU);
-#endif
 	
 	otmp = (victim == &youmonst) ? uarmh : which_armor(victim, W_ARMH);
 	if(otmp && (!otmph || !rn2(4))) otmph = otmp;
@@ -3440,9 +3426,7 @@ register struct obj *otmp;
 	else if(otmp == uarmg) takeoff_mask |= WORN_GLOVES;
 	else if(otmp == uarmh) takeoff_mask |= WORN_HELMET;
 	else if(otmp == uarms) takeoff_mask |= WORN_SHIELD;
-#ifdef TOURIST
 	else if(otmp == uarmu) takeoff_mask |= WORN_SHIRT;
-#endif
 	else if(otmp == uamul) takeoff_mask |= WORN_AMUL;
 	else if(otmp == ublindf) takeoff_mask |= WORN_BLINDF;
 	else if(otmp == uwep) takeoff_mask |= W_WEP;
@@ -3501,11 +3485,9 @@ do_takeoff()
 	} else if (taking_off == WORN_SHIELD) {
 	  otmp = uarms;
 	  if(!cursed(otmp)) (void) Shield_off();
-#ifdef TOURIST
 	} else if (taking_off == WORN_SHIRT) {
 	  otmp = uarmu;
 	  if (!cursed(otmp)) (void) Shirt_off();
-#endif
 	} else if (taking_off == WORN_AMUL) {
 	  otmp = uamul;
 	  if(!cursed(otmp)) Amulet_off();
@@ -3582,13 +3564,11 @@ take_off()
 	  otmp = uarmh;
 	} else if (taking_off == WORN_SHIELD) {
 	  otmp = uarms;
-#ifdef TOURIST
 	} else if (taking_off == WORN_SHIRT) {
 	  otmp = uarmu;
 	  /* add the time to take off and put back on armor and/or cloak */
 	  if (uarm)  todelay += 2 * objects[uarm->otyp].oc_delay;
 	  if (uarmc) todelay += 2 * objects[uarmc->otyp].oc_delay + 1;
-#endif
 	} else if (taking_off == WORN_AMUL) {
 	  todelay = 1;
 	} else if (taking_off & W_RING) {
@@ -3903,7 +3883,6 @@ register struct obj *atmp;
 			You("panic after having your armor ripped open!");
 			HPanicking += 1+rnd(6);
 		}
-#ifdef TOURIST
 	} else if (DESTROY_ARM(uarmu)) {
 		if (donning(otmp)) cancel_don();
 		Your("underclothes are torn off!");
@@ -3913,7 +3892,6 @@ register struct obj *atmp;
 			You("panic after having your underclothes torn off!");
 			HPanicking += 1+rnd(6);
 		}
-#endif
 	} else if (DESTROY_ARM(uarmh)) {
 		if (donning(otmp)) cancel_don();
 		Your("helmet is knocked to pieces!");
@@ -4267,7 +4245,6 @@ struct obj *atmp;
 			You("panic after having your armor torn apart!");
 			HPanicking += 1+rnd(6);
 		}
-#ifdef TOURIST
 	} else if (DESTROY_ARM(uarmu)) {
 		if (donning(otmp)) cancel_don();
 		pline("The tentacles tear your underclothes to shreds!");
@@ -4277,7 +4254,6 @@ struct obj *atmp;
 			You("panic after having your underclothes shredded!");
 			HPanicking += 1+rnd(6);
 		}
-#endif
 	} else if (DESTROY_ARM(uarmh)) {
 		if (donning(otmp)) cancel_don();
 		pline("The tentacles break your helmet to pieces!");

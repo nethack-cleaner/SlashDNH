@@ -44,9 +44,7 @@ E uchar warnsyms[WARNCOUNT];
 
 E int x_maze_max, y_maze_max;
 
-#ifdef REDO
 E NEARDATA int in_doagain;
-#endif
 
 E struct dgn_topology {		/* special dungeon levels for speed */
 	/*Dungeons of Doom*/
@@ -231,10 +229,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
     d_level	d_leveetwn_level;
     d_level	d_arcboss_level;
 	d_level d_minetown_level;
-#ifdef RECORD_ACHIEVE
     d_level     d_mineend_level;
     d_level     d_sokoend_level;
-#endif
 
 } dungeon_topology;
 /* macros for accesing the dungeon levels by their old names */
@@ -399,10 +395,8 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define arcboss_level           (dungeon_topology.d_arcboss_level)
 
 #define minetown_level           (dungeon_topology.d_minetown_level)
-#ifdef RECORD_ACHIEVE
 #define mineend_level           (dungeon_topology.d_mineend_level)
 #define sokoend_level           (dungeon_topology.d_sokoend_level)
-#endif
 
 E NEARDATA stairway dnstair, upstair;		/* stairs up and down */
 #define xdnstair	(dnstair.sx)
@@ -502,21 +496,15 @@ E NEARDATA char dragonname[];
 E NEARDATA char parrotname[];
 E NEARDATA char monkeyname[];
 E NEARDATA char whisperername[];
-#ifdef CONVICT
 E NEARDATA char ratname[];
-#endif /* CONVICT */
 E char preferred_pet;
 E const char *occtxt;			/* defined when occupation != NULL */
 E const char *nomovemsg;
 E const char nul[];
 E char lock[];
 
-#ifdef QWERTZ
 E const char qykbd_dir[], qzkbd_dir[], ndir[];
 E char const *sdir;
-#else
-E const char sdir[], ndir[];
-#endif
 E const schar xdir[], ydir[], zdir[];
 E char misc_cmds[];
 
@@ -526,17 +514,10 @@ E char misc_cmds[];
 #define DONOPICKUP		misc_cmds[3]
 #define DORUN_NOPICKUP		misc_cmds[4]
 #define DOESCAPE		misc_cmds[5]
-#ifdef REDO			/* JDS: moved from config.h */
-# undef  DOAGAIN /* remove previous definition from config.h */
-# define DOAGAIN		misc_cmds[6]
-#endif
+#define DOAGAIN			misc_cmds[6]
 
 /* the number of miscellaneous commands */
-#ifdef REDO
 # define MISC_CMD_COUNT		7
-#else
-# define MISC_CMD_COUNT		6
-#endif
 
 E NEARDATA schar tbx, tby;		/* set in mthrowu.c */
 
@@ -585,9 +566,7 @@ E uchar monsyms[MAXMCLASSES];		/* current class symbols */
 E NEARDATA struct obj *magic_chest_objs[10];
 E NEARDATA struct obj *invent,
 	*uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
-#ifdef TOURIST
 	*uarmu,				/* under-wear, so to speak */
-#endif
 	*uskin, *uamul, *ublindf,
 	*uwep, *uswapwep, *uquiver;
 
@@ -762,7 +741,6 @@ E char *fqn_prefix[PREFIX_COUNT];
 E char *fqn_prefix_names[PREFIX_COUNT];
 #endif
 
-#ifdef AUTOPICKUP_EXCEPTIONS
 struct autopickup_exception {
 	char *pattern;
 	regex_t match;
@@ -770,9 +748,7 @@ struct autopickup_exception {
 	boolean is_regexp;
 	struct autopickup_exception *next;
 };
-#endif /* AUTOPICKUP_EXCEPTIONS */
 
-#ifdef RECORD_ACHIEVE
 struct u_achieve {
         Bitfield(get_keys,9);        /* the alignment keys */
         Bitfield(get_bell,1);        /* You have obtained the bell of 
@@ -869,16 +845,13 @@ struct u_achieve {
 };
 
 E struct u_achieve achieve;
-#endif
 
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
 E struct realtime_data {
   time_t realtime;    /* Amount of actual playing time up until the last time
                        * the game was restored. */
   time_t restoretime; /* The time that the game was started or restored. */
   time_t last_displayed_time; /* Last time displayed on the status line */
 } realtime_data;
-#endif /* RECORD_REALTIME || REALTIME_ON_BOTL */
 
 
 #ifdef SIMPLE_MAIL

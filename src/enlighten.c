@@ -841,11 +841,9 @@ boolean dumping;
 			if (u.usick_type & SICK_NONVOMITABLE)
 				you_are("sick from illness");
 		}
-#ifdef CONVICT
         if (Punished) {
             you_are("punished");
         }
-#endif /* CONVICT */
 	}
 	if (Stoned) you_are("turning to stone");
 	if (Golded) you_are("turning to gold");
@@ -860,9 +858,7 @@ boolean dumping;
 	if (Fumbling) enl_msg("You fumble", "", "d", "");
 	if(u_healing_penalty()) enl_msg("You heal", "", "ed", " slowly due to your equipment");
 	if (Wounded_legs
-#ifdef STEED
 	    && !u.usteed
-#endif
 			  ) {
 		Sprintf(buf, "wounded %s", makeplural(body_part(LEG)));
 		you_have(buf);
@@ -967,7 +963,6 @@ boolean dumping;
 	if (Breathless) you_can("survive without air");
 	else if (Amphibious) you_can("breathe water");
 	if (Passes_walls) you_can("walk through walls");
-#ifdef STEED
 	/* If you die while dismounting, u.usteed is still set.  Since several
 	 * places in the done() sequence depend on u.usteed, just detect this
 	 * special case. */
@@ -975,7 +970,6 @@ boolean dumping;
 	    Sprintf(buf, "riding %s", y_monnam(u.usteed));
 	    you_are(buf);
 	}
-#endif
 	if (u.uswallow) {
 	    Sprintf(buf, "swallowed by %s", a_monnam(u.ustuck));
 	    if (wizard || final) Sprintf(eos(buf), " (%u)", u.uswldtim);
@@ -1536,9 +1530,7 @@ resistances_enlightenment()
 	}
 	if(u_healing_penalty()) putstr(en_win, 0, "You feel itchy.");
 	if (Wounded_legs
-#ifdef STEED
 	    && !u.usteed
-#endif
 			  ) {
 		Sprintf(buf, "You have wounded %s", makeplural(body_part(LEG)));
 		putstr(en_win, 0, buf);
@@ -3076,7 +3068,7 @@ mutations_enlightenment()
 STATIC_OVL void
 genocide_enlightenment()
 {
-        list_genocided('y', FALSE, FALSE, TRUE);
+        list_genocided('y', FALSE, FALSE);
 }
 
 /*enlighten.c*/

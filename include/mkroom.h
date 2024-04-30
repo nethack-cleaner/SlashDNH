@@ -97,12 +97,8 @@ extern NEARDATA struct altar altars[ALTARMAX];
 #define WANDSHOP	SHOPBASE+7
 #define TOOLSHOP	SHOPBASE+8
 #define BOOKSHOP	SHOPBASE+9
-#ifdef BARD
 #define MUSICSHOP	SHOPBASE+10
 #define UNIQUESHOP	SHOPBASE+11	/* shops here & above not randomly gen'd. */
-#else
-#define UNIQUESHOP	SHOPBASE+10	/* shops here & above not randomly gen'd. */
-#endif
 #define CANDLESHOP	UNIQUESHOP
 #define JELLYSHOP	UNIQUESHOP+1
 #define ACIDSHOP	UNIQUESHOP+2

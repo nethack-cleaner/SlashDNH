@@ -69,12 +69,8 @@ struct flag {
 	boolean  pushweapon;	/* When wielding, push old weapon into second slot */
 	boolean  rest_on_space; /* space means rest */
 	boolean  safe_dog;	/* give complete protection to the dog */
-#ifdef EXP_ON_BOTL
 	boolean  showexp;	/* show experience points */
-#endif
-#ifdef SCORE_ON_BOTL
 	boolean  showscore;	/* show score */
-#endif
 	boolean  silent;	/* whether the bell rings or not */
 	boolean  sortpack;	/* sorted inventory */
 	boolean  soundok;	/* ok to tell about sounds heard */
@@ -281,9 +277,7 @@ struct instance_flags {
 	boolean travel1;	/* first travel step */
 	coord	travelcc;	/* coordinates for travel_cache */
 	boolean  door_opened;	/* set to true if door was opened during test_move */
-#ifdef QWERTZ
 	boolean  qwertz_movement; /* replace y with z for this key layout */
-#endif
 #ifdef SIMPLE_MAIL
 	boolean simplemail;	/* simple mail format $NAME:$MESSAGE */
 #endif
@@ -340,20 +334,14 @@ struct instance_flags {
 	boolean lan_mail;	/* mail is initialized */
 	boolean lan_mail_fetched; /* mail is awaiting display */
 #endif
-#ifdef SHOW_BORN
 	boolean show_born;	/* show numbers of created monsters */
-#endif
-#ifdef SORTLOOT
 	char sortloot;          /* sort items to loot alphabetically */
-#endif
-#ifdef PARANOID
 	boolean  paranoid_self_cast; /* Ask for 'yes' when casting certain spells at yourself (using . ) */
 	boolean  paranoid_hit;  /* Ask for 'yes' when hitting peacefuls */
 	boolean  paranoid_quit; /* Ask for 'yes' when quitting */
 	boolean  paranoid_remove; /* Always show menu for 'T' and 'R' */
 	boolean  paranoid_swim; /* Require 'm' prefix to move into water/lava/air unless it's safe */
 	boolean  no_forget_map; /* Amnesia doesn't blank map layouts. */
-#endif
 #ifdef USE_TILES
 	boolean  vt_nethack;
 #endif
@@ -463,18 +451,14 @@ struct instance_flags {
 	int delay_length;	/* length of delay for delay_output */
 	int wizlevelport;	/* options for ^V in wizmode */
 	int wizcombatdebug;	/* options for combat debug messages (damage, accuracy) */
-#ifdef AUTOPICKUP_EXCEPTIONS
 	struct autopickup_exception *autopickup_exceptions[2];
 #define AP_LEAVE 0
 #define AP_GRAB	 1
-#endif
 #ifdef WIN32CON
 #define MAX_ALTKEYHANDLER 25
 	char	 altkeyhandler[MAX_ALTKEYHANDLER];
 #endif
-#ifdef REALTIME_ON_BOTL
   boolean  showrealtime; /* show actual elapsed time */
-#endif
 	struct {
 		int set;
 		int fg;

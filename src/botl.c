@@ -8,7 +8,6 @@
 # include "wintty.h"
 #endif
 
-#ifdef OVL0
 extern const char *hu_stat[];	/* defined in eat.c */
 extern const char *ca_hu_stat[];	/* defined in eat.c */
 
@@ -41,7 +40,6 @@ const char * const enc_stat_abbrev2[] = {
 
 STATIC_DCL void NDECL(bot1);
 STATIC_DCL void NDECL(bot2);
-#endif /* OVL0 */
 
 long get_status_duration(long long mask) {
 	switch (mask) {
@@ -264,15 +262,10 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
 
 #endif
 
-#ifndef OVLB
-STATIC_DCL int mrank_sz;
-#else /* OVLB */
 STATIC_OVL NEARDATA int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
-#endif /* OVLB */
 
 STATIC_DCL const char *NDECL(rank);
 
-#ifdef OVL1
 
 /* convert experience level (1..30) to rank index (0..8) */
 int
@@ -396,8 +389,6 @@ int *rank_indx, *title_length;
 	return NON_PM;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 max_rank_sz()
@@ -411,8 +402,6 @@ max_rank_sz()
 	return;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 long
 botl_score()
@@ -792,6 +781,5 @@ force_bot()
 	return MOVE_CANCELLED;
 }
 
-#endif /* OVL0 */
 
 /*botl.c*/

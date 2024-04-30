@@ -9,7 +9,6 @@
 #include "dlb.h"
 #include "display.h"
 
-#ifdef OVL1
 
 //define DUNGEON_FILE	"dungeon"
 
@@ -1237,8 +1236,6 @@ int	ledgerno;
 	return((int)(ledgerno - dungeons[ledger_to_dnum(ledgerno)].ledger_start));
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 /* returns the depth of a level, in floors below the surface	*/
 /* (note levels in different dungeons can have the same depth).	*/
@@ -1256,8 +1253,6 @@ d_level	*lev1, *lev2;
 	return((boolean)((lev1->dnum == lev2->dnum) && (lev1->dlevel == lev2->dlevel)));
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 /* is this level referenced in the special level chain? */
 s_level *
@@ -1527,8 +1522,6 @@ int levnum;
 	newlevel->dlevel = levnum;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 boolean
 In_quest(lev)	/* are you in the quest dungeon? */
@@ -1544,8 +1537,6 @@ d_level *lev;
 	return((boolean)(lev->dnum == mines_dnum || (Role_if(PM_RANGER) && Race_if(PM_GNOME) && lev->dnum == quest_dnum) || Is_mineend_level(&u.uz)));
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 boolean
 In_outdoors(lev)
@@ -1842,8 +1833,6 @@ d_level	*lev;
 	return FALSE;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 boolean
 In_hell(lev)	/* are you in one of the Hell levels? */
@@ -1852,8 +1841,6 @@ d_level	*lev;
 	return((boolean)(dungeons[lev->dnum].flags.hellish));
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 void
 find_hell(lev)	/* sets *lev to be the gateway to Gehennom... */
@@ -1895,8 +1882,6 @@ int range;
 		dest->dlevel = 1;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 /* 
  * pct/100 of the time, returns the alignment of the current level / branch
@@ -1919,8 +1904,6 @@ int	pct;
 	return(al);
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 boolean
 Invocation_lev(lev)
@@ -2278,7 +2261,6 @@ int *rdgn;		/* returns selected level dungeon number */
 }
 #endif /* WIZARD */
 
-#endif /* OVL1 */
 /* Record that the player knows about a branch from a level. This function
  * will determine whether or not it was a "real" branch that was taken.
  * This function should not be called for a transition done via level

@@ -4,7 +4,6 @@
 
 #include "hack.h"
 
-#ifdef OVLB
 
 STATIC_DCL int NDECL(pet_type);
 
@@ -747,8 +746,6 @@ long nmv;		/* number of moves */
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 /* called when you move to another level */
 void
@@ -931,8 +928,6 @@ boolean portal;
 	summoner_gone(&youmonst, FALSE);
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 void
 migrate_to_level(mtmp, tolev, xyloc, cc)
@@ -1051,8 +1046,6 @@ migrate_to_level(mtmp, tolev, xyloc, cc)
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
@@ -1317,8 +1310,6 @@ rock:
 	return 0;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 enough_dogs(numdogs)
@@ -1741,6 +1732,5 @@ struct monst *mtmp;
 	if (!mtmp->mtame) untame(mtmp, 0);
 }
 
-#endif /* OVLB */
 
 /*dog.c*/

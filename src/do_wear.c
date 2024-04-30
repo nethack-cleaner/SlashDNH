@@ -8,11 +8,6 @@
 #include "zap.h"
 #include "artifact.h"
 
-#ifndef OVLB
-
-STATIC_DCL long long takeoff_mask, taking_off;
-
-#else /* OVLB */
 
 STATIC_OVL NEARDATA long long takeoff_mask = 0LL;
 static NEARDATA long long taking_off = 0LL;
@@ -2242,7 +2237,6 @@ doputon()
 	return MOVE_STANDARD;
 }
 
-#endif /* OVLB */
 
 int arm_total_bonus(otmp)
 struct obj * otmp;
@@ -2557,7 +2551,6 @@ int agrmoral;
 	return bonus;
 }
 
-#ifdef OVL0
 
 int
 base_uac()
@@ -2930,8 +2923,6 @@ find_dr()
 	}
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 /* Calculates your DR for a slot 
  * Does not randomize values >10 (must be done elsewhere)
@@ -6150,6 +6141,5 @@ struct obj *wep;
 	else doliving_single_attack(magr, wep);
 }
 
-#endif /* OVLB */
 
 /*do_wear.c*/

@@ -20,7 +20,6 @@ STATIC_DCL void FDECL(see_lamp_flicker, (struct obj *, const char *));
 STATIC_DCL void FDECL(lantern_message, (struct obj *));
 STATIC_DCL void FDECL(cleanup_burn, (genericptr_t,long));
 
-#ifdef OVLB
 
 /* used by wizard mode #timeout and #wizintrinsic; order by 'interest'
    for timeout countdown, where most won't occur in normal play */
@@ -345,8 +344,6 @@ melt_frozen_air()
 }
 
 
-#endif /* OVLB */
-#ifdef OVL0
 
 void
 unbind(spir,forced)
@@ -998,8 +995,6 @@ nh_timeout()
 	run_timers();
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 void
 fall_asleep(how_long, wakeup_msg)
@@ -2485,8 +2480,6 @@ end_burn(obj, timer_attached)
 	vision_full_recalc = 1;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 extern boolean saving_game;
 
@@ -2514,8 +2507,6 @@ cleanup_burn(arg, expire_time)
 		update_inventory();
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 void
 do_storms()
@@ -2555,7 +2546,6 @@ do_storms()
     } else
 	You_hear("a rumbling noise.");
 }
-#endif /* OVL1 */
 
 struct obj *
 update_skull_mon(mon, obj)
@@ -2749,7 +2739,6 @@ long timeout;
 }
 
 
-#ifdef OVL0
 /* ------------------------------------------------------------------------- */
 /*
  * Generic Timeout Functions.
@@ -2815,12 +2804,8 @@ static unsigned long timer_id = 1;
 
 typedef struct {
     timeout_proc f, cleanup;
-#ifdef VERBOSE_TIMER
     const char *name;
 # define TTAB(a, b, c) {a,b,c}
-#else
-# define TTAB(a, b, c) {a,b}
-#endif
 } ttable;
 
 /* table of timeout functions */
@@ -2875,18 +2860,11 @@ timer_element *base;
     } else {
 	putstr(win, 0, "timeout  id   kind   call");
 	for (curr = base; curr; curr = curr->next) {
-#ifdef VERBOSE_TIMER
 	    Sprintf(buf, " %4ld   %4ld  %-6s %s(%s) %d",
 		curr->timeout, curr->tid, kind_name(curr->kind),
 		timeout_funcs[curr->func_index].name,
 		fmt_ptr((genericptr_t)curr->arg, arg_address),
 		curr->timerflags);
-#else
-	    Sprintf(buf, " %4ld   %4ld  %-6s #%d(%s)",
-		curr->timeout, curr->tid, kind_name(curr->kind),
-		curr->func_index,
-		fmt_ptr((genericptr_t)curr->arg, arg_address));
-#endif
 	    putstr(win, 0, buf);
 	}
     }
@@ -3449,6 +3427,5 @@ struct obj * otmp;
 	(void) stop_timer(YELLOW_CORPSE, otmp->timed);
 }
 
-#endif /* OVL0 */
 
 /*timeout.c*/

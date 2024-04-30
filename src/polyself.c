@@ -12,7 +12,6 @@
 
 #include "hack.h"
 
-#ifdef OVLB
 STATIC_DCL void FDECL(polyman, (const char *,const char *));
 STATIC_DCL void NDECL(uunstick);
 STATIC_DCL int FDECL(armor_to_dragon,(int));
@@ -2095,8 +2094,6 @@ boolean silently;
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 const char *
 mbodypart(mon, part)
@@ -2533,8 +2530,6 @@ int part;
 	return mbodypart(&youmonst, part);
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 int
 poly_gender()
@@ -2546,8 +2541,6 @@ poly_gender()
 	return flags.female;
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 void
 ugolemeffects(damtype, dam)
@@ -2787,6 +2780,5 @@ dodroidmenu()
 	return 0;
 }
 
-#endif /* OVLB */
 
 /*polyself.c*/

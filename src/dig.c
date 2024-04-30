@@ -6,7 +6,6 @@
 
 /* #define DEBUG */	/* turn on for diagnostics */
 
-#ifdef OVLB
 
 static NEARDATA boolean did_dig_msg;
 
@@ -2177,8 +2176,6 @@ watch_dig(mtmp, x, y, zap)
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 /* Return TRUE if monster died, FALSE otherwise.  Called from m_move(). */
 boolean
@@ -2310,8 +2307,6 @@ int oldy;
 		}
 }
 
-#endif /* OVL0 */
-#ifdef OVL3
 
 /* digging via wand zap or spell cast */
 /* parameters < 0 indicate "use defaults" */
@@ -2932,6 +2927,5 @@ wiz_debug_cmd() /* in this case, bury everything at your loc and around */
 }
 
 #endif /* DEBUG */
-#endif /* OVL3 */
 
 /*dig.c*/

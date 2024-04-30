@@ -118,9 +118,7 @@ extern int NDECL(dozap); /**/
 extern int NDECL(doorganize); /**/
 #endif /* DUMB */
 
-#ifdef OVL1
 static int NDECL((*timed_occ_fn));
-#endif /* OVL1 */
 
 STATIC_DCL int NDECL(use_reach_attack);
 STATIC_DCL int NDECL(psionic_craze);
@@ -192,11 +190,9 @@ static void NDECL(change_bind_list);
 //static void NDECL(add_debug_extended_commands); //Moved to extern.h
 #endif /* WIZARD */
 
-#ifdef OVLB
 #ifdef UNIX
 static void NDECL(end_of_input);
 #endif
-#endif /* OVLB */
 
 static const char* readchar_queue="";
 static char last_cmd_char='\0';
@@ -204,7 +200,6 @@ static char last_cmd_char='\0';
 STATIC_DCL char *NDECL(parse);
 STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 
-#ifdef OVL1
 
 STATIC_PTR int
 doprev_message()
@@ -330,8 +325,6 @@ char ch;
 	return;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 STATIC_PTR int
 doextcmd()	/* here after # - now read a full-word command */
@@ -2811,8 +2804,6 @@ do_naming_ddocall()
 }
 
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* Macros for meta and ctrl modifiers:
  *   M and C return the meta/ctrl code for the given character;
@@ -4315,8 +4306,6 @@ const char *msg;
 	return TRUE;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 confdir()
@@ -4333,8 +4322,6 @@ confdir()
 	return;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 int
 isok(x,y)
@@ -4517,8 +4504,6 @@ parse()
 	return(in_line);
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 #ifdef UNIX
 static
@@ -4535,8 +4520,6 @@ end_of_input()
 }
 #endif
 
-#endif /* OVLB */
-#ifdef OVL0
 
 char
 readchar()
@@ -4657,8 +4640,6 @@ wiz_port_debug()
 }
 # endif /*PORT_DEBUG*/
 
-#endif /* OVL0 */
-#ifdef OVLB
 /*
  *   Parameter validator for generic yes/no function to prevent
  *   the core from sending too long a prompt string to the
@@ -4689,6 +4670,5 @@ char def;
 	Strcat(qbuf,"...");
 	return (*windowprocs.win_yn_function)(qbuf, resp, def);
 }
-#endif
 
 /*cmd.c*/

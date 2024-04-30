@@ -12,7 +12,6 @@
 
 #include "hack.h"
 
-#ifdef OVLB
 STATIC_DCL void FDECL(get_wall_for_db, (int *, int *));
 STATIC_DCL struct entity *FDECL(e_at, (int, int));
 STATIC_DCL void FDECL(m_to_e, (struct monst *, int, int, struct entity *));
@@ -29,9 +28,7 @@ STATIC_DCL boolean FDECL(automiss, (struct entity *));
 STATIC_DCL boolean FDECL(e_missed, (struct entity *, BOOLEAN_P));
 STATIC_DCL boolean FDECL(e_jumps, (struct entity *));
 STATIC_DCL void FDECL(do_entity, (struct entity *));
-#endif /* OVLB */
 
-#ifdef OVL0
 
 boolean
 is_pool(x,y, including_puddles)
@@ -91,9 +88,7 @@ int x,y;
     return FALSE;
 }
 
-#endif /* OVL0 */
 
-#ifdef OVL1
 
 /*
  * We want to know whether a wall (or a door) is the portcullis (passageway)
@@ -166,8 +161,6 @@ int *x,*y;
 	return FALSE;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 /*
  * Find the drawbridge wall associated with a drawbridge.
@@ -958,6 +951,5 @@ int x,y;
 	}
 }
 
-#endif /* OVLB */
 
 /*dbridge.c*/

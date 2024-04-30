@@ -52,7 +52,6 @@ NetHack, except that rounddiv may call panic().
 # define Static static
 #endif
 
-#ifdef OVLB
 boolean
 digit(c)		/* is 'c' a digit? */
     char c;
@@ -66,9 +65,7 @@ letter(c)		/* is 'c' a letter?  note: '@' classed as letter */
 {
     return((boolean)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
 }
-#endif /* OVLB */
 
-#ifdef OVL1
 char
 highc(c)			/* force 'c' into uppercase */
     char c;
@@ -82,9 +79,7 @@ lowc(c)			/* force 'c' into lowercase */
 {
     return((char)(('A' <= c && c <= 'Z') ? (c | 040) : c));
 }
-#endif /* OVL1 */
 
-#ifdef OVLB
 char *
 lcase(s)		/* convert a string into all lowercase */
     char *s;
@@ -122,9 +117,7 @@ char *bp;
     return bp;
 }
 
-#endif /* OVLB */
 
-#ifdef OVL0
 char *
 eos(s)			/* return the end of a string (pointing at '\0') */
     register char *s;
@@ -233,9 +226,7 @@ char *buf;
     *q = '\0';
     return buf;
 }
-#endif /* OVL0 */
 
-#ifdef OVL2
 boolean
 onlyspace(s)		/* is a string entirely whitespace? */
     const char *s;
@@ -244,9 +235,7 @@ onlyspace(s)		/* is a string entirely whitespace? */
 	if (*s != ' ' && *s != '\t') return FALSE;
     return TRUE;
 }
-#endif /* OVL2 */
 
-#ifdef OVLB
 char *
 tabexpand(sbuf)		/* expand tabs into proper number of spaces */
     char *sbuf;
@@ -290,9 +279,7 @@ visctrl(c)		/* make a displayable string from a character */
     }
     return ccc;
 }
-#endif /* OVLB */
 
-#ifdef OVL2
 const char *
 ordin(n)		/* return the ordinal suffix of a number */
     int n;			/* note: should be non-negative */
@@ -302,9 +289,7 @@ ordin(n)		/* return the ordinal suffix of a number */
     return (dd == 0 || dd > 3 || (n % 100) / 10 == 1) ? "th" :
 	    (dd == 1) ? "st" : (dd == 2) ? "nd" : "rd";
 }
-#endif /* OVL2 */
 
-#ifdef OVL1
 char *
 sitoa(n)		/* make a signed digit string from a number */
     int n;
@@ -321,9 +306,7 @@ sgn(n)			/* return the sign of a number: -1, 0, or 1 */
 {
     return (n < 0) ? -1 : (n != 0);
 }
-#endif /* OVL1 */
 
-#ifdef OVLB
 int
 rounddiv(x, y)		/* calculate x/y, rounding as appropriate */
     long x;
@@ -346,9 +329,7 @@ rounddiv(x, y)		/* calculate x/y, rounding as appropriate */
 
     return divsgn * r;
 }
-#endif /* OVLB */
 
-#ifdef OVL0
 int
 distmin(x0, y0, x1, y1) /* distance between two points, in moves */
     int x0, y0, x1, y1;
@@ -381,8 +362,6 @@ online2(x0, y0, x1, y1) /* are two points lined up (on a straight line)? */
     return((boolean)(!dy || !dx || (dy == dx) || (dy + dx == 0)));	/* (dy == -dx) */
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 boolean
 pmatch(patrn, strng)	/* match a string against a pattern */
@@ -405,9 +384,7 @@ pmatch_top:
     else				/* return pmatch(patrn, strng); */
 	goto pmatch_top;	/* optimize tail recursion */
 }
-#endif /* OVLB */
 
-#ifdef OVL2
 #ifndef STRNCMPI
 int
 strncmpi(s1, s2, n)	/* case insensitive counted string comparison */
@@ -426,9 +403,7 @@ strncmpi(s1, s2, n)	/* case insensitive counted string comparison */
     return 0;				/* s1 == s2 */
 }
 #endif	/* STRNCMPI */
-#endif /* OVL2 */
 
-#ifdef OVLB
 #ifndef STRSTRI
 
 char *
@@ -513,8 +488,6 @@ fuzzymatch(s1, s2, ignore_chars, caseblind)
     return (boolean)(!c1 && !c2);
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 /*
  * Time routines
@@ -715,6 +688,5 @@ unsigned long int x;
     return x;
 }
 
-#endif /* OVL2 */
 
 /*hacklib.c*/

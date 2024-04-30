@@ -301,24 +301,6 @@ E long long NDECL(get_status_mask);
 
 E char NDECL(randomkey);
 E int NDECL(doGithForm);
-#ifdef USE_TRAMPOLI
-E int NDECL(doextcmd);
-E int NDECL(domonability);
-E int NDECL(dofightingform);
-E int NDECL(doprev_message);
-E int NDECL(timed_occupation);
-E int NDECL(wiz_attributes);
-E int NDECL(enter_explore_mode);
-# ifdef WIZARD
-E int NDECL(wiz_detect);
-E int NDECL(wiz_genesis);
-E int NDECL(wiz_identify);
-E int NDECL(wiz_level_tele);
-E int NDECL(wiz_map);
-E int NDECL(wiz_where);
-E int NDECL(wiz_wish);
-# endif /* WIZARD */
-#endif /* USE_TRAMPOLI */
 E int NDECL(psionic_pulse);
 E int NDECL(wiz_makemap);
 E void NDECL(reset_occupations);
@@ -398,10 +380,6 @@ E int FDECL(use_crystal_ball, (struct obj *));
 E void NDECL(do_mapping);
 E void FDECL(do_vicinity_map, (int,int));
 E void FDECL(cvt_sdoor_to_door, (struct rm *));
-#ifdef USE_TRAMPOLI
-E void FDECL(findone, (int,int,genericptr_t));
-E void FDECL(openone, (int,int,genericptr_t));
-#endif
 E int NDECL(findit);
 E int NDECL(openit);
 E void FDECL(find_trap, (struct trap *));
@@ -414,9 +392,6 @@ E int NDECL(doterrain);
 
 E schar FDECL(fillholetyp, (int, int));
 E boolean NDECL(is_digging);
-#ifdef USE_TRAMPOLI
-E int NDECL(dig);
-#endif
 E int NDECL(holetime);
 E boolean FDECL(dig_check, (struct monst *, BOOLEAN_P, int, int));
 E void FDECL(openactualrocktrap, (int,int,struct monst *));
@@ -495,10 +470,6 @@ E void NDECL(set_wall_state);
 
 /* ### do.c ### */
 
-#ifdef USE_TRAMPOLI
-E int FDECL(drop, (struct obj *));
-E int NDECL(wipeoff);
-#endif
 E int NDECL(dodrop);
 E boolean FDECL(boulder_hits_pool, (struct obj *,int,int,BOOLEAN_P));
 E boolean FDECL(flooreffects, (struct obj *,int,int,const char *));
@@ -588,13 +559,6 @@ E char *FDECL(coyotename, (struct monst *,char *));
 
 /* ### do_wear.c ### */
 
-#ifdef USE_TRAMPOLI
-E int NDECL(Boots_on);
-E int NDECL(Gloves_on);
-E int NDECL(Helmet_on);
-E int FDECL(select_off, (struct obj *));
-E int NDECL(take_off);
-#endif
 E void FDECL(off_msg, (struct obj *));
 E void NDECL(set_wear);
 E boolean FDECL(donning, (struct obj *));
@@ -704,9 +668,6 @@ E int FDECL(dog_eat, (struct monst *,struct obj *,int,int,BOOLEAN_P));
 E void FDECL(give_mon_corpse_intrinsic, (struct monst *,int));
 E int FDECL(monster_eat, (struct monst *,struct obj *,int,int,BOOLEAN_P));
 E int FDECL(dog_move, (struct monst *,int));
-#ifdef USE_TRAMPOLI
-E void FDECL(wantdoor, (int,int,genericptr_t));
-#endif
 E struct obj *FDECL(DROPPABLES, (struct monst *));
 E struct obj *FDECL(drop_envy, (struct monst *));
 
@@ -834,11 +795,6 @@ E void NDECL(dust_storm);
 
 /* ### eat.c ### */
 
-#ifdef USE_TRAMPOLI
-E int NDECL(eatmdone);
-E int NDECL(eatfood);
-E int NDECL(opentin);
-#endif
 E int NDECL(unfaint);
 E void FDECL(cprefx, (int, BOOLEAN_P, BOOLEAN_P));
 E void FDECL(cpostfx, (int, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P));
@@ -886,9 +842,6 @@ E void NDECL(mk_dgl_extrainfo);
 E char *FDECL(dump_format_str, (char *));
 E void FDECL(done1, (int));
 E int NDECL(done2);
-#ifdef USE_TRAMPOLI
-E void FDECL(done_intr, (int));
-#endif
 E void FDECL(done_in_by, (struct monst *));
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 E void VDECL(panic, (const char *,...)) PRINTF_F(1,2);
@@ -1071,9 +1024,6 @@ E void FDECL(livelog_write_string, (char *));
 
 E void FDECL(floating_above, (const char *));
 E void FDECL(dogushforth, (int));
-# ifdef USE_TRAMPOLI
-E void FDECL(gush, (int,int,genericptr_t));
-# endif
 E void FDECL(dryup, (XCHAR_P,XCHAR_P, BOOLEAN_P));
 E void NDECL(drinkfountain);
 E void FDECL(dipfountain, (struct obj *));
@@ -1195,9 +1145,6 @@ E boolean FDECL(mergable_traits,(struct obj *,struct obj *));
 E void FDECL(assigninvlet, (struct obj *));
 E struct obj *FDECL(merge_choice, (struct obj *,struct obj *));
 E int FDECL(merged, (struct obj **,struct obj **));
-#ifdef USE_TRAMPOLI
-E int FDECL(ckunpaid, (struct obj *));
-#endif
 E void FDECL(addinv_core1, (struct obj *));
 E void FDECL(addinv_core2, (struct obj *));
 E struct obj *FDECL(addinv, (struct obj *));
@@ -1320,10 +1267,6 @@ E int NDECL(wiz_light_sources);
 
 /* ### lock.c ### */
 
-#ifdef USE_TRAMPOLI
-E int NDECL(forcelock);
-E int NDECL(picklock);
-#endif
 E boolean NDECL(is_box_picking_context);
 E boolean FDECL(picking_lock, (int *,int *));
 E boolean FDECL(picking_at, (int,int));
@@ -1492,9 +1435,6 @@ E int NDECL(cminion);
 
 /* ### mklev.c ### */
 
-#ifdef USE_TRAMPOLI
-E int FDECL(do_comp, (genericptr_t,genericptr_t));
-#endif
 E void NDECL(sort_rooms);
 E void FDECL(add_room, (int,int,int,int,BOOLEAN_P,SCHAR_P,BOOLEAN_P));
 E void FDECL(add_subroom, (struct mkroom *,int,int,int,int,
@@ -1962,9 +1902,6 @@ E int FDECL(use_defensive, (struct monst *));
 E int FDECL(rnd_defensive_item, (struct monst *));
 E boolean FDECL(find_offensive, (struct monst *));
 E struct permonst * FDECL(find_mask, (struct monst *));
-#ifdef USE_TRAMPOLI
-E int FDECL(mbhitm, (struct monst *,struct obj *));
-#endif
 E int FDECL(use_offensive, (struct monst *));
 E int FDECL(rnd_offensive_item, (struct monst *));
 E boolean FDECL(is_attack_wand, (int));
@@ -2267,11 +2204,6 @@ E void FDECL(add_valid_menu_class, (int));
 E boolean FDECL(allow_all, (struct obj *));
 E boolean FDECL(allow_category, (struct obj *));
 E boolean FDECL(is_worn_by_type, (struct obj *));
-#ifdef USE_TRAMPOLI
-E int FDECL(ck_bag, (struct obj *));
-E int FDECL(in_container, (struct obj *));
-E int FDECL(out_container, (struct obj *));
-#endif
 E int FDECL(pickup, (int));
 E int FDECL(pickup_object, (struct obj *, long, BOOLEAN_P));
 E int FDECL(query_category, (const char *, struct obj *, int,
@@ -2376,9 +2308,6 @@ E struct monst *FDECL(split_mon, (struct monst *,struct monst *));
 E const char *NDECL(bottlename);
 
 /* ### pray.c ### */
-#ifdef USE_TRAMPOLI
-E int NDECL(prayer_done);
-#endif
 E void FDECL(godvoice,(int,const char*));
 E void FDECL(gods_angry,(int));
 E void FDECL(gods_upset,(int));
@@ -2835,9 +2764,6 @@ E boolean FDECL(load_special, (const char *));
 
 /* ### spell.c ### */
 
-#ifdef USE_TRAMPOLI
-E int NDECL(learn);
-#endif
 E int FDECL(study_book, (struct obj *));
 E int FDECL(further_study, (int));
 E int FDECL(spellid_to_spellno, (int));
@@ -2885,9 +2811,6 @@ E void NDECL(expel_summons);
 
 /* ### steal.c ### */
 
-#ifdef USE_TRAMPOLI
-E int NDECL(stealarm);
-#endif
 #ifdef GOLDOBJ
 E long FDECL(somegold, (long));
 #else

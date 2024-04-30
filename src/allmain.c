@@ -46,7 +46,6 @@ STATIC_DCL void FDECL(palid_stranger, (struct monst *));
 STATIC_DCL void FDECL(sib_follow, (struct monst *));
 STATIC_DCL void FDECL(invisible_twin_act, (struct monst *));
 
-#ifdef OVL0
 
 extern const int monstr[];
 
@@ -3417,8 +3416,6 @@ karemade:
     } //END MAIN LOOP
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 void
 stop_occupation()
@@ -3446,8 +3443,6 @@ stop_occupation()
 	}
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 display_gamewindows()
@@ -6508,6 +6503,5 @@ struct monst *magr;
 
 }
 
-#endif /* OVLB */
 
 /*allmain.c*/

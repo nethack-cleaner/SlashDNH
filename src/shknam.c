@@ -7,10 +7,6 @@
 #include "hack.h"
 
 
-#ifndef OVLB
-extern const struct shclass shtypes[];
-
-#else
 
 STATIC_DCL void FDECL(mkshobj_at, (const struct shclass *,int,int));
 STATIC_DCL void FDECL(nameshk, (struct monst *,const char * const *));
@@ -115,9 +111,6 @@ static const char * const shktools[] = {
     "Yelpur", "Nosnehpets", "Stewe", "Renrut", "_Zlaw", "Nosalnef",
     "Rewuorb", "Rellenk", "Yad", "Cire Htims", "Y-crad", "Nenilukah",
     "Corsh", "Aned",
-#ifdef OVERLAY
-    "Erreip", "Nehpets", "Mron", "Snivek", "Lapu", "Kahztiy",
-#endif
 #ifdef WIN32
     "Lechaim", "Lexa", "Niod",
 #endif
@@ -960,8 +953,6 @@ struct monst *shk;
 	return;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 /* does shkp's shop stock this item type? */
 boolean
@@ -1009,6 +1000,5 @@ int type;
 	return shp->iprobs[i].itype;
 }
 
-#endif /* OVL0 */
 
 /*shknam.c*/

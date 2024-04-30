@@ -20,7 +20,6 @@
 
 extern const int monstr[];
 
-#ifdef OVLB
 STATIC_DCL boolean FDECL(isbig, (struct mkroom *));
 STATIC_DCL int FDECL(int_sqrt, (int));
 STATIC_DCL boolean FDECL(issemispacious, (struct mkroom *));
@@ -80,13 +79,11 @@ STATIC_DCL struct permonst * NDECL(antholemon);
 STATIC_DCL struct permonst * FDECL(squadmon, (struct d_level *));
 STATIC_DCL void FDECL(save_room, (int,struct mkroom *));
 STATIC_DCL void FDECL(rest_room, (int,struct mkroom *));
-#endif /* OVLB */
 
 #define sq(x) ((x)*(x))
 
 extern const struct shclass shtypes[];	/* defined in shknam.c */
 
-#ifdef OVLB
 
 STATIC_OVL boolean
 isbig(sroom)
@@ -8764,8 +8761,6 @@ register struct mkroom *sroom;
 	return FALSE;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 int
 somex(croom)
@@ -8867,8 +8862,6 @@ schar type;
 	return (struct mkroom *) 0;
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 struct permonst *
 courtmon(kingnum)
@@ -9489,6 +9482,5 @@ int	fd;
 	rooms[nroom].hx = -1;		/* restore ending flags */
 	subrooms[nsubroom].hx = -1;
 }
-#endif /* OVLB */
 
 /*mkroom.c*/

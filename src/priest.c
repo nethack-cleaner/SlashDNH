@@ -8,7 +8,6 @@
 /* this matches the categorizations shown by enlightenment */
 #define ALGN_SINNED	(-4)	/* worse than strayed */
 
-#ifdef OVLB
 
 STATIC_DCL boolean FDECL(histemple_at,(struct monst *,XCHAR_P,XCHAR_P));
 STATIC_DCL boolean FDECL(has_shrine,(struct monst *));
@@ -126,9 +125,7 @@ pick_move:
 	return(0);
 }
 
-#endif /* OVLB */
 
-#ifdef OVL0
 
 char
 temple_occupied(array)
@@ -153,8 +150,6 @@ int roomno;
 	shrine_spot = shrine_pos(roomno);
 	return (a_align(shrine_spot->x, shrine_spot->y));
 }
-#endif /* OVL0 */
-#ifdef OVLB
 
 STATIC_OVL boolean
 histemple_at(priest, x, y)
@@ -1043,6 +1038,5 @@ clearpriests()
 }
 
 
-#endif /* OVLB */
 
 /*priest.c*/

@@ -41,7 +41,6 @@ NEARDATA struct xlock_s {
 	long mgclcknm;
 } xlock;
 
-#ifdef OVLB
 
 STATIC_DCL const char *NDECL(lock_action);
 STATIC_DCL boolean FDECL(obstructed,(int,int));
@@ -373,8 +372,6 @@ forcedoor()      /* try to break/pry open a door */
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 void
 reset_pick()
@@ -384,8 +381,6 @@ reset_pick()
 	xlock.box = 0;
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 int
 pick_lock(pick_p) /* pick a lock with a given object */
@@ -1316,6 +1311,5 @@ int x, y;
     return 0;
 }
 
-#endif /* OVLB */
 
 /*lock.c*/

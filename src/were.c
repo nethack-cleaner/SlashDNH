@@ -4,7 +4,6 @@
 
 #include "hack.h"
 
-#ifdef OVL0
 
 void
 were_change(mon)
@@ -107,8 +106,6 @@ register struct monst *mon;
 	}
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 int
 counter_were(pm)
@@ -436,6 +433,5 @@ boolean purify;
 	    rehumanize();
 }
 
-#endif /* OVLB */
 
 /*were.c*/

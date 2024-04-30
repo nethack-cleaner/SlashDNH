@@ -14,10 +14,8 @@
  */
 #define MAGIC_COOKIE 1000
 
-#ifdef OVLB
 static NEARDATA boolean obj_zapped;
 static NEARDATA int poly_zapped;
-#endif
 
 extern boolean notonhead;	/* for long worms */
 
@@ -32,20 +30,14 @@ STATIC_DCL int FDECL(zapdamage, (struct monst *, struct monst *, struct zapdata 
 STATIC_DCL int FDECL(zhit, (struct monst *, struct monst *, struct zapdata *));
 STATIC_DCL boolean FDECL(zap_steed, (struct obj *));
 
-#ifdef OVL0
 STATIC_DCL void FDECL(backfire, (struct obj *));
 STATIC_DCL int FDECL(spell_hit_bonus, (int));
-#endif
 
 #define is_hero_spell(type)	((type) >= 10 && (type) < 20)
 #define wand_damage_die(skill)	(((skill) > 1) ? (2*(skill) + 4) : 6)
 #define fblt_damage_die(skill)	((skill)+1)
 #define wandlevel(otyp)	(otyp == WAN_MAGIC_MISSILE ? 1 : otyp == WAN_SLEEP ? 1 : otyp == WAN_STRIKING ? 2 : otyp == WAN_FIRE ? 4 : otyp == WAN_COLD ? 4 : otyp == WAN_LIGHTNING ? 5 : otyp == WAN_DEATH ? 7 : 1)
 
-#ifndef OVLB
-STATIC_VAR const char are_blinded_by_the_flash[];
-extern const char * const flash_types[];
-#else
 STATIC_VAR const char are_blinded_by_the_flash[] = "are blinded by the flash!";
 
 static const int dirx[8] = {0, 1, 1,  1,  0, -1, -1, -1},
@@ -632,8 +624,6 @@ struct monst *mtmp;
 	}
 }
 
-#endif /*OVLB*/
-#ifdef OVL1
 
 /*
  * Return the object's physical location.  This only makes sense for
@@ -1079,9 +1069,7 @@ struct monst *mon;
 	}
 	return res;
 }
-#endif /*OVL1*/
 
-#ifdef OVLB
 static const char charged_objs[] = { WAND_CLASS, WEAPON_CLASS, ARMOR_CLASS, 0 };
 
 void
@@ -1438,8 +1426,6 @@ register struct obj *obj;
 	return (TRUE);
 }
 
-#endif /*OVLB*/
-#ifdef OVL0
 
 boolean
 obj_resists(obj, ochance, achance)
@@ -1477,8 +1463,6 @@ struct obj *obj;
 
 	return((boolean)(! rn2(zap_odds)));
 }
-#endif /*OVL0*/
-#ifdef OVLB
 
 /* Use up at least minwt number of things made of material mat.
  * There's also a chance that other stuff will be used up.  Finally,
@@ -2418,8 +2402,6 @@ bhitpile(obj,fhito,tx,ty)
 
     return hitanything;
 }
-#endif /*OVLB*/
-#ifdef OVL1
 
 /* returns an int from 0-100 meaning chance to use a charge when zapping
  * 100 => always uses a charge
@@ -2579,8 +2561,6 @@ register struct obj *obj;
 		more_experienced(0,10);
 	}
 }
-#endif /*OVL1*/
-#ifdef OVL0
 
 STATIC_OVL void
 backfire(otmp)
@@ -3069,8 +3049,6 @@ struct obj *obj;	/* wand or spell */
 	return steedhit;
 }
 
-#endif /*OVL0*/
-#ifdef OVL3
 
 /*
  * cancel a monster (possibly the hero).  inventory is cancelled only
@@ -3355,8 +3333,6 @@ struct obj *obj;	/* wand or spell */
 	return disclose;
 }
 
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* called for various wand and spell effects - M. Stephenson */
 //the u.d_ variables should have been set via a call to getdir before this is called. -D_E
@@ -3476,8 +3452,6 @@ register struct	obj	*obj;
 	}
 	return;
 }
-#endif /*OVLB*/
-#ifdef OVL0
 
 /*
  * Generate the to damage bonus for a spell. Based on the hero's intelligence
@@ -3606,8 +3580,6 @@ register struct monst *mtmp;
 		: ((cansee(bhitpos.x,bhitpos.y) || canspotmon(mtmp)) && flags.verbose) ? mon_nam(mtmp)
 		: "it");
 }
-#endif /*OVL0*/
-#ifdef OVL1
 
 /*
  *  Called for the following distance effects:
@@ -5015,8 +4987,6 @@ struct obj *otmp;	/* source of flash */
 	return res;
 }
 
-#endif /*OVL1*/
-#ifdef OVLB
 
 /*
  * burn scrolls and spellbooks on floor at position x,y
@@ -5110,8 +5080,6 @@ boolean phase_armor;
     return (3 - chance) < ac+spell_bonus;
 }
 
-#endif /*OVLB*/
-#ifdef OVL0
 
 /* caller should check !resists_blnd() before calling */
 void
@@ -5502,8 +5470,6 @@ boolean *shopdamage;
 	return rangemod;
 }
 
-#endif /*OVL0*/
-#ifdef OVL3
 
 /*
  * Wrapper function that correctly handles each type of boulder-like object
@@ -5658,8 +5624,6 @@ boolean burial;
 	fracture_rock(obj);
 }
 
-#endif /*OVL3*/
-#ifdef OVL2
 
 int
 resist(mtmp, oclass, damage, tell)
@@ -5948,6 +5912,5 @@ dowand_refresh()
 	return FALSE;
 }
 
-#endif /*OVL2*/
 
 /*zap.c*/

@@ -13,7 +13,6 @@
 
 STATIC_VAR NEARDATA struct engr *head_engr;
 
-#ifdef OVLB
 /* random engravings */
 static const char *random_mesg[] = {
 	"Elbereth",
@@ -1285,8 +1284,6 @@ can_reach_floor()
 			 (!Levitation ||
 			  Weightless));
 }
-#endif /* OVLB */
-#ifdef OVL0
 
 const char *
 surface(x, y)
@@ -1481,8 +1478,6 @@ num_wards_at(x, y)
 	else return ep->complete_wards;
 }
 
-#endif /* OVL0 */
-#ifdef OVL2
 
 void
 u_wipe_engr(cnt)
@@ -1492,8 +1487,6 @@ register int cnt;
 		wipe_engr_at(u.ux, u.uy, cnt);
 }
 
-#endif /* OVL2 */
-#ifdef OVL1
 
 void
 wipe_engr_at(x,y,strt_cnt)
@@ -1531,8 +1524,6 @@ register xchar x,y,strt_cnt;
 	}
 }
 
-#endif /* OVL1 */
-#ifdef OVL2
 
 void
 read_engr_at(x,y)
@@ -1758,8 +1749,6 @@ register int x,y;
 	}
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 void
 make_engr_at(x,y,s,e_time,e_type)
@@ -4582,6 +4571,5 @@ int f1,f2;
 	else return FALSE;
 }
 
-#endif /* OVLB */
 
 /*engrave.c*/

@@ -6,8 +6,6 @@
 #include "hack.h"
 #include "xhity.h"
 
-#ifdef OVL1
-#endif /*OVL1*/
 STATIC_DCL int NDECL(moverock);
 STATIC_DCL void NDECL(sigilfloat);
 STATIC_DCL int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
@@ -21,7 +19,6 @@ STATIC_DCL struct obj * FDECL(all_items, (boolean, int *, boolean));
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 
-#ifdef OVL2
 
 int
 min_ints(i1, i2)
@@ -454,8 +451,6 @@ still_chewing(x,y)
     return 0;
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 void
 movobj(obj, ox, oy)
@@ -537,8 +532,6 @@ register xchar x,y;
 		)));
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 boolean
 bad_rock(mon,x,y)
@@ -570,8 +563,6 @@ xchar x, y;
 		return 1000;
 }
 
-#endif /* OVL1 */
-#ifdef OVL3
 
 /* return TRUE if (dx,dy) is an OK place to move
  * mode is one of DO_MOVE, TEST_MOVE or TEST_TRAV
@@ -1926,8 +1917,6 @@ invocation_message()
 	}
 }
 
-#endif /* OVL3 */
-#ifdef OVL2
 
 void
 spoteffects(pick)
@@ -2458,8 +2447,6 @@ register boolean newlev;
 	return;
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 int
 dopickup()
@@ -2535,8 +2522,6 @@ dopickup()
 	return (pickup(-count)) ? MOVE_STANDARD : MOVE_CANCELLED;
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 /* stop running if we see something interesting */
 /* turn around a corner if that is the only way we can proceed */
@@ -2769,8 +2754,6 @@ const char *msg_override;
 	afternmv = 0;
 }
 
-#endif /* OVL2 */
-#ifdef OVL1
 
 void
 maybe_wail()
@@ -3123,8 +3106,6 @@ const char *str;
     return 0;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 int
 inv_cnt()
@@ -3156,7 +3137,6 @@ struct obj *otmp;
 	return 0;
 }
 #endif
-#endif /* OVLB */
 
 /* starts all_items() */
 /* initializes all_items to look in where_to_look chains */

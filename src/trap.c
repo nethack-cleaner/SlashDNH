@@ -33,14 +33,6 @@ STATIC_OVL int FDECL(steedintrap, (struct trap *, struct obj *));
 STATIC_OVL boolean FDECL(keep_saddle_with_steedcorpse,
 			(unsigned, struct obj *, struct obj *));
 
-#ifndef OVLB
-STATIC_VAR const char *a_your[2];
-STATIC_VAR const char *A_Your[2];
-STATIC_VAR const char tower_of_flame[];
-STATIC_VAR const char *A_gush_of_water_hits;
-STATIC_VAR const char * const blindgas[6];
-
-#else
 
 STATIC_VAR const char * const a_your[2] = { "a", "your" };
 STATIC_VAR const char * const A_Your[2] = { "A", "Your" };
@@ -49,9 +41,7 @@ STATIC_VAR const char * const A_gush_of_water_hits = "A gush of water hits";
 STATIC_VAR const char * const blindgas[6] = 
 	{"humid", "odorless", "pungent", "chilling", "acrid", "biting"};
 
-#endif /* OVLB */
 
-#ifdef OVLB
 
 /* called when you're hit by fire (dofiretrap,buzz,zapyourself,explode) */
 boolean			/* returns TRUE if hit on torso */
@@ -1629,8 +1619,6 @@ struct trap *trap;
 	seetrap(trap);			/* and it isn't concealed */
 }
 
-#endif /* OVLB */
-#ifdef OVL3
 
 /*
  * Move object of type otyp from one set of trap's launch coordinates to other.
@@ -1901,8 +1889,6 @@ int style;
 		return 2;
 }
 
-#endif /* OVL3 */
-#ifdef OVLB
 
 void
 seetrap(trap)
@@ -1914,8 +1900,6 @@ seetrap(trap)
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL3
 
 STATIC_OVL int
 mkroll_launch(ttmp, x, y, otyp, ocount)
@@ -2001,8 +1985,6 @@ schar dx,dy;
 	cc->y = y;
 	return TRUE;
 }
-#endif /* OVL3 */
-#ifdef OVL1
 
 boolean 
 spire_fall_mon(mtmp)
@@ -2629,8 +2611,6 @@ glovecheck:		    target = which_armor(mtmp, W_ARMG);
 	return mtmp->mtrapped;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 /* Combine cockatrice checks into single functions to avoid repeating code. */
 void
@@ -3905,8 +3885,6 @@ dountrap()	/* disarm a trap */
 	}
 	return untrap((struct obj *)0);
 }
-#endif /* OVLB */
-#ifdef OVL2
 
 /* Probability of disabling a trap.  Helge Hafting */
 STATIC_OVL int
@@ -4929,8 +4907,6 @@ struct obj * tool;
 		return MOVE_STANDARD;
 	}
 }
-#endif /* OVL2 */
-#ifdef OVLB
 
 /* only called when the player is doing something to the chest directly */
 boolean
@@ -5120,8 +5096,6 @@ boolean disarm;
 	return FALSE;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 struct trap *
 t_at(x,y)
@@ -5135,8 +5109,6 @@ register int x, y;
 	return((struct trap *)0);
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 void
 deltrap(trap)
@@ -5540,6 +5512,5 @@ uescape_entanglement()
 	return TRUE;
 }
 
-#endif /* OVLB */
 
 /*trap.c*/

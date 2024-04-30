@@ -13,7 +13,6 @@ STATIC_DCL void FDECL(set_template_data, (struct permonst *, struct permonst *, 
 
 char * nameless_horror_name;
 
-#ifdef OVLB
 
 /* 
  * saves the index number of each part of the permonst array to itself
@@ -2044,8 +2043,6 @@ int level_bonus;
 }
 
 
-#endif /* OVLB */
-#ifdef OVL0
 
 struct attack *
 attacktype_fordmg(ptr, atyp, dtyp)
@@ -2276,8 +2273,6 @@ int atyp, dtyp;
     return -1;
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 boolean
 poly_when_stoned(ptr)
@@ -2595,8 +2590,6 @@ struct obj *obj;		/* aatyp == AT_WEAP, AT_SPIT */
 	return TRUE;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 int
 m_martial_skill(ptr)
@@ -2651,8 +2644,6 @@ struct monst *mon;
 		      (slithy(mptr) && !bigmonst(mptr)));
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 boolean
 can_track(ptr)		/* returns TRUE if monster can track well */
@@ -2667,11 +2658,7 @@ can_track(ptr)		/* returns TRUE if monster can track well */
 		return((boolean)is_tracker(ptr));
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
-#endif /* OVLB */
-#ifdef OVL1
 
 boolean
 sticks(mtmp)	/* creature sticks other creatures it hits */
@@ -2800,8 +2787,6 @@ max_passive_dmg(mdef, magr)
     return 0;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 int
 monsndx(ptr)		/* return an index into the mons array */
@@ -2823,8 +2808,6 @@ monsndx(ptr)		/* return an index into the mons array */
 	//return(i);
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 
 int
@@ -2952,8 +2935,6 @@ const char *in_str;
 	return mntmp;
 }
 
-#endif /* OVL1 */
-#ifdef OVL2
 
 /* returns 3 values (0=male, 1=female, 2=none) */
 int
@@ -2985,8 +2966,6 @@ register struct monst *mtmp;
 	return (int)mtmp->female;
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 /* used for nearby monsters when you go to another level */
 boolean
@@ -3515,6 +3494,5 @@ struct permonst *ptr;
 	return size;
 }
 
-#endif /* OVLB */
 
 /*mondata.c*/

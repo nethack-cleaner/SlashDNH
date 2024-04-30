@@ -24,7 +24,6 @@ STATIC_DCL void FDECL(seduce_effect, (struct monst *, int));
 
 static const char tools[] = { TOOL_CLASS, 0 };
 
-#ifdef OVL1
 int
 could_seduce(magr,mdef,mattk)
 struct monst *magr, *mdef;
@@ -99,8 +98,6 @@ struct attack *mattk;
 	else return 0;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 #ifdef SEDUCE
 
@@ -2501,6 +2498,5 @@ int *result;
 
 #endif  /* SEDUCE */
 
-#endif /* OVLB */
 
 /*mhitu.c*/

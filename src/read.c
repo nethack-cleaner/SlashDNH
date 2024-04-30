@@ -17,7 +17,6 @@
 	((mndx) == urace.malenum || \
 	 (urace.femalenum != NON_PM && (mndx) == urace.femalenum))
 
-#ifdef OVLB
 
 boolean	known;
 
@@ -4017,6 +4016,5 @@ int spellnum;
 
 #endif /* WIZARD */
 
-#endif /* OVLB */
 
 /*read.c*/

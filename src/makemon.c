@@ -18,19 +18,15 @@ struct monst zeromonst;
 		(mptr->mlet == S_HUMAN && Role_if(role_pm) && \
 		  (mptr->mtyp == urole.ldrnum || mptr->msound == MS_NEMESIS))
 
-#ifdef OVL0
 STATIC_DCL int FDECL(makemon_set_template, (struct permonst **, int, boolean));
 STATIC_DCL int FDECL(makemon_get_permonst_faction, (struct permonst *, int, int, int, int));
 STATIC_DCL void FDECL(makemon_set_monster_faction, (struct monst *));
 STATIC_DCL boolean FDECL(uncommon, (int));
 STATIC_DCL int FDECL(align_shift, (struct permonst *));
-#endif /* OVL0 */
 STATIC_DCL struct permonst * NDECL(roguemonst);
 STATIC_DCL boolean FDECL(wrong_elem_type, (struct permonst *));
 STATIC_DCL void FDECL(m_initweap,(struct monst *, int, int, boolean, boolean, int));
-#ifdef OVL1
 STATIC_DCL void FDECL(m_initinv,(struct monst *, int, int, boolean, boolean));
-#endif /* OVL1 */
 
 extern const int monstr[];
 int curhouse = 0;
@@ -40,7 +36,6 @@ int skeletpm = -1;
 #define m_initsgrp(mtmp, x, y)	m_initgrp(mtmp, x, y, 3)
 #define m_initlgrp(mtmp, x, y)	m_initgrp(mtmp, x, y, 10)
 
-#ifdef OVLB
 boolean
 is_home_elemental(ptr)
 register struct permonst *ptr;
@@ -201,8 +196,6 @@ int mkobjflags;
 	(void) mpickobj(mtmp, otmp);
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 static const int ANGELTWOHANDERCUT = 4;
 static NEARDATA int angelwepsbase[] = {
@@ -10984,8 +10977,6 @@ int mmflags;
 		(void) mongets(mtmp, rnd_offensive_item(mtmp), mkobjflags);
 }
 
-#endif /* OVL2 */
-#ifdef OVL1
 
 #ifdef GOLDOBJ
 /*
@@ -15340,8 +15331,6 @@ struct permonst *mptr;		/* usually null; used for confused reading */
 	return known;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 STATIC_OVL boolean
 uncommon(mndx)
@@ -15907,8 +15896,6 @@ int mndx;	/* particular species that can no longer be created */
 	} /* note: safe to ignore extinction of unique monsters */
 }
 
-#endif /* OVL0 */
-#ifdef OVL1
 
 /*	Makes a random adult dragon, favoring non-deep dragons but otherwise ignoring frequency.
  *	Ignores all generation masks other than G_GONE.
@@ -16265,8 +16252,6 @@ register struct permonst *ptr;
 	return((tmp > tmp2) ? tmp2 : (tmp > 0 ? tmp : 0)); /* 0 lower limit */
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 give_grown_equipment(mtmp)
@@ -17033,8 +17018,6 @@ struct monst *mtmp, *victim;
 	return ptr;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 struct obj *
 mongets(mtmp, otyp, mkobjflags)
@@ -17232,8 +17215,6 @@ int mkobjflags;
 	return otmp;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 int
 golemhp(type)
@@ -17280,8 +17261,6 @@ int type;
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /*
  * Returns true if their IS a conflict (which causes peace minded to return false: the monster is not peaceful)
@@ -17570,8 +17549,6 @@ struct monst *mtmp;
 	}
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 static NEARDATA char syms[] = {
 	MAXOCLASSES, MAXOCLASSES+1, RING_CLASS, WAND_CLASS, WEAPON_CLASS,
@@ -17816,6 +17793,5 @@ struct monst *mon;
 
 	return lev_limit;
 }
-#endif /* OVLB */
 
 /*makemon.c*/

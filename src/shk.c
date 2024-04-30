@@ -14,9 +14,7 @@
 #define PAY_BROKE (-2)
 
 STATIC_DCL void FDECL(call_keter, (struct monst *,BOOLEAN_P));
-# ifdef OVLB
 STATIC_DCL void FDECL(keter_gone, (BOOLEAN_P));
-# endif /* OVLB */
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 #define no_cheat      ((ACURR(A_CHA) - rnl(3)) > 7)
@@ -62,9 +60,7 @@ STATIC_DCL void FDECL(dropped_container, (struct obj *, struct monst *,
 STATIC_DCL void FDECL(add_to_billobjs, (struct obj *));
 STATIC_DCL void FDECL(bill_box_content, (struct obj *, BOOLEAN_P, BOOLEAN_P,
 				     struct monst *));
-#ifdef OVL1
 static boolean FDECL(rob_shop, (struct monst *, struct obj *));
-#endif
 
 #define NOBOUND         (-1)    /* No lower/upper limit to charge       */
 static void NDECL(shk_other_services);
@@ -80,7 +76,6 @@ static boolean FDECL(shk_obj_match, (struct obj *, struct monst *));
 static boolean FDECL(shk_offer_price, (char *, long, struct monst *));
 static void FDECL(shk_smooth_charge, (int *, int, int));
 
-#ifdef OVLB
 /*
 	invariants: obj->unpaid iff onbill(obj) [unless bp->useup]
 		obj->quan <= bp->bquan
@@ -291,8 +286,6 @@ boolean ghostly;
     }
 }
 
-#endif /* OVLB */
-#ifdef OVL3
 
 /* Clear the unpaid bit on all of the objects in the list. */
 STATIC_OVL void
@@ -305,8 +298,6 @@ register struct obj *list;
 	list = list->nobj;
     }
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* either you paid or left the shop or the shopkeeper died */
 void
@@ -403,8 +394,6 @@ register struct obj *obj;
 	    }
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 
 STATIC_OVL void
@@ -905,8 +894,6 @@ shopper_financial_report()
 	    }
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 int
 inhishop(mtmp)
@@ -1085,8 +1072,6 @@ register struct obj *obj, *merge;
 
 	dealloc_obj(obj);
 }
-#endif /* OVLB */
-#ifdef OVL3
 
 STATIC_OVL long
 check_credit(tmp, shkp)
@@ -1130,8 +1115,6 @@ register struct monst *shkp;
 		ESHK(shkp)->robbed = robbed;
 	}
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* return shkp to home position */
 void
@@ -1312,12 +1295,7 @@ STATIC_VAR const char no_money[] = "Moreover, you%s have no money.";
 STATIC_VAR const char not_enough_money[] =
 			    "Besides, you don't have enough to interest %s.";
 
-#else
-STATIC_VAR const char no_money[];
-STATIC_VAR const char not_enough_money[];
-#endif /*OVLB*/
 
-#ifdef OVL3
 
 STATIC_OVL long
 cheapest_item(shkp)   /* delivers the cheapest item on the list */
@@ -1334,8 +1312,6 @@ register struct monst *shkp;
 	}
 	return(gmin);
 }
-#endif /*OVL3*/
-#ifdef OVL0
 
 int
 dopay()
@@ -2006,8 +1982,6 @@ shk_other_services()
 	}
 }
 
-#endif /*OVL0*/
-#ifdef OVL3
 
 /* return 2 if used-up portion paid */
 /*	  1 if paid successfully    */
@@ -2120,8 +2094,6 @@ boolean itemize;
 	    update_inventory();	/* Done just once in dopay() if !itemize. */
 	return buy;
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 static coord repo_location;	/* repossession context */
 
@@ -2381,8 +2353,6 @@ unsigned id;
 	/* not found at all */
 	return (struct obj *)0;
 }
-#endif /*OVLB*/
-#ifdef OVL3
 
 
 /** Returns the price of an arbitrary item in the shop.
@@ -2492,8 +2462,6 @@ register struct monst *shkp;	/* if angry, impose a surcharge */
 	if (shkp && shkp->isshk && ESHK(shkp)->surcharge) tmp += (tmp + 2L) / 3L;
 	return tmp;
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* returns the price of a container's content.  the price
  * of the "top" container is added in the calling functions.
@@ -2586,8 +2554,6 @@ register struct obj *obj;
 		picked_container(otmp);
 	}
 }
-#endif /*OVLB*/
-#ifdef OVL3
 
 /* calculate how much the shk will pay when buying [all of] an object */
 STATIC_OVL long
@@ -2625,8 +2591,6 @@ register struct monst *shkp;
 	return tmp;
 }
 
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* called from doinv(invent.c) for inventory of unpaid objects */
 long
@@ -2971,8 +2935,6 @@ register struct monst *shkp;
 	    }
 }
 
-#endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL long
 stolen_container(obj, shkp, price, ininv)
@@ -3013,8 +2975,6 @@ register boolean ininv;
 
 	return(price);
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 long
 stolen_value(obj, x, y, peaceful, silent)
@@ -3578,8 +3538,6 @@ long cost;
 	    levl[x][y].seenv = SVALL;
 }
 
-#endif /*OVLB*/
-#ifdef OVL0
 
 /*
  * Do something about damage. Either (!croaked) try to repair it, or
@@ -3811,8 +3769,6 @@ boolean catchup;	/* restoring a level */
 #undef vert
 #undef horiz
 }
-#endif /*OVL0*/
-#ifdef OVL3
 /*
  * shk_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
  */
@@ -3948,8 +3904,6 @@ struct monst *shkp;
 	}
 }
 
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* for use in levl_follower (mondata.c) */
 boolean
@@ -4218,8 +4172,6 @@ getcad:
 		adjalign(-sgn(u.ualign.type));
 	}
 }
-#endif /*OVLB*/
-#ifdef OVL0
 /* called in dokick.c when we kick an object that might be in a store */
 boolean
 costly_spot(x, y)
@@ -4235,8 +4187,6 @@ register xchar x, y;
 		!(x == ESHK(shkp)->shk.x &&
 			y == ESHK(shkp)->shk.y)));
 }
-#endif /*OVL0*/
-#ifdef OVLB
 
 /* called by dotalk(sounds.c) when #chatting; returns obj if location
    contains shop goods and shopkeeper is willing & able to speak */
@@ -4306,8 +4256,6 @@ register struct obj *first_obj;
     }
     destroy_nhwindow(tmpwin);
 }
-#endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL const char *
 shk_embellish(itm, cost)
@@ -4338,8 +4286,6 @@ long cost;
     }
     return ".";
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* First 4 supplied by Ronen and Tamar, remainder by development team */
 const char *Izchak_speaks[]={
@@ -4488,8 +4434,6 @@ register boolean silent;
 			 /* Note that Sephirah has a non-standard plural form */
 }
 
-#endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL long
 cost_per_charge(shkp, otmp, altusage)
@@ -4541,8 +4485,6 @@ boolean altusage; /* some items have an "alternate" use with different cost */
 	}
 	return(tmp);
 }
-#endif /*OVL3*/
-#ifdef OVLB
 
 /* Charge the player for partial use of an unpaid object.
  *
@@ -4697,8 +4639,6 @@ register xchar x, y;
 	return(FALSE);
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 char *
 shk_mons(buf, obj, mtmp)
@@ -4769,8 +4709,6 @@ struct obj *obj;
 	return (char *)0;
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 
 #ifdef __SASC
 void
@@ -7519,6 +7457,5 @@ struct monst *smith;
 	}
 }
 
-#endif /* OVLB */
 
 /*shk.c*/

@@ -5,7 +5,6 @@
 #include "hack.h"
 #include "xhity.h"
 
-#ifdef OVL0
 
 /* ExplodeRegions share some commonalities with NhRegions, but not enough to
  * make it worth trying to create a common implementation.
@@ -890,8 +889,6 @@ struct permonst *pa; /* permonst of the attacker (used for disease) */
 	if (i < 50) i = 50;	/* in case random damage is very small */
 	wake_nearto_noisy(x, y, 2*i);
 }
-#endif /* OVL0 */
-#ifdef OVL1
 
 struct scatter_chain {
 	struct scatter_chain *next;	/* pointer to next scatter item	*/
@@ -1412,6 +1409,5 @@ int adtyp;
 			return EXPL_MAGICAL;
 	}
 }
-#endif /* OVL1 */
 
 /*explode.c*/

@@ -197,11 +197,7 @@ typedef xchar	boolean;		/* 0 or 1 */
 #  ifdef DJGPP
 #  define PORT_SUB_ID	"djgpp"
 #  else
-#   ifdef OVERLAY
-#  define PORT_SUB_ID	"overlaid"
-#   else
 #  define PORT_SUB_ID	"non-overlaid"
-#   endif
 #  endif
 # endif
 # ifdef OS2
@@ -218,13 +214,6 @@ typedef xchar	boolean;		/* 0 or 1 */
 # endif
 # ifdef WIN32
 #  define PORT_ID	"Windows"
-#  ifndef PORT_SUB_ID
-#   ifdef MSWIN_GRAPHICS
-#    define PORT_SUB_ID	"graphical"
-#   else
-#    define PORT_SUB_ID	"tty"
-#   endif
-#  endif
 # endif
 #endif
 

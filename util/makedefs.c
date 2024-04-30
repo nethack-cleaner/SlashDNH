@@ -681,17 +681,6 @@ static const char *build_opts[] = {
 #ifdef NEWS
 		"news file",
 #endif
-#ifdef OVERLAY
-# ifdef MOVERLAY
-		"MOVE overlays",
-# else
-#  ifdef VROOMM
-		"VROOMM overlays",
-#  else
-		"overlays",
-#  endif
-# endif
-#endif
 #ifdef REINCARNATION
 		"rogue level",
 #endif

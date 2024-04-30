@@ -6,7 +6,6 @@
 
 STATIC_PTR int NDECL(stealarm);
 
-#ifdef OVLB
 STATIC_DCL const char *FDECL(equipname, (struct obj *));
 
 STATIC_OVL const char *
@@ -450,8 +449,6 @@ gotobj:
 	return((mtmp->mhp <= 0) ? -1 : (multi < 0) ? 0 : 1);
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
 int
@@ -494,8 +491,6 @@ register struct obj *otmp;
     return freed_otmp;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 stealamulet(mtmp)
@@ -581,8 +576,6 @@ struct monst *mtmp;
     }
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
 void
@@ -736,6 +729,5 @@ register int show;
 		newsym(omx, omy);
 }
 
-#endif /* OVL0 */
 
 /*steal.c*/

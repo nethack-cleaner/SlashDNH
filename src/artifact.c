@@ -73,10 +73,6 @@ STATIC_DCL boolean FDECL(voidPen_hit, (struct monst *magr,struct monst *mdef,
 				  struct obj *,int *,int,BOOLEAN_P,char *));
 STATIC_DCL boolean FDECL(narrow_voidPen_hit, (struct monst *mdef, struct obj *));
 
-#ifndef OVLB
-STATIC_DCL int spec_dbon_applies;
-STATIC_DCL int artidisco[NROFARTIFACTS];
-#else	/* OVLB */
 /* coordinate effects from spec_dbon() with messages in artifact_hit() */
 STATIC_OVL int spec_dbon_applies = 0;
 
@@ -2210,8 +2206,6 @@ nartifact_exist()
 
     return max(a-u.regifted, 0);
 }
-#endif /* OVLB */
-#ifdef OVL0
 
 boolean
 arti_gen_prop(otmp, flag)
@@ -2470,8 +2464,6 @@ struct obj *obj;
 	return item_has_property(obj, REFLECTING);
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 int
 artifact_weight(obj)
@@ -3050,8 +3042,6 @@ touch_artifact(obj, mon, hypothetical)
     return 1;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* decide whether an artifact's special attacks apply against mdef */
 int
@@ -3577,9 +3567,7 @@ winid tmpwin;		/* supplied by dodiscover() */
     return i;
 }
 
-#endif /* OVL1 */
 
-#ifdef OVLB
 
 boolean
 near_yourteam(mon)
@@ -14293,7 +14281,6 @@ arti_poly_contents(obj)
 		dobj = 0;
 	}
 }
-#endif /* OVLB */
 
 STATIC_OVL int
 throweffect()

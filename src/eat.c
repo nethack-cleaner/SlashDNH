@@ -18,7 +18,6 @@ STATIC_PTR int NDECL(opentin);
 STATIC_PTR int NDECL(windclock);
 STATIC_PTR int FDECL(clockwork_eat_menu, (BOOLEAN_P,BOOLEAN_P));
 
-#ifdef OVLB
 STATIC_DCL const char *FDECL(food_xname, (struct obj *,BOOLEAN_P));
 STATIC_DCL void FDECL(choke, (struct obj *));
 STATIC_DCL void NDECL(recalc_wt);
@@ -43,15 +42,7 @@ STATIC_DCL boolean FDECL(maybe_cannibal, (int,BOOLEAN_P));
 char msgbuf[BUFSZ];
 int etype;			/* Clockwork's eat type */
 
-#endif /* OVLB */
 
-#ifndef OVLB
-
-STATIC_DCL NEARDATA const char comestibles[];
-STATIC_DCL NEARDATA const char allobj[];
-STATIC_DCL boolean force_save_hs;
-
-#else
 
 STATIC_OVL NEARDATA const char comestibles[] = { FOOD_CLASS, 0 };
 
@@ -83,8 +74,6 @@ const char *ca_hu_stat[] = {
 	"Stopped"
 };
 
-#endif /* OVLB */
-#ifdef OVL1
 
 boolean
 incantifier_edible(obj)
@@ -240,8 +229,6 @@ register struct obj *obj;
 	return (boolean)(obj->oclass == FOOD_CLASS && (obj->obj_material == VEGGY || obj->obj_material == FLESH || obj->otyp == TIN));
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 init_uhunger()
@@ -3963,8 +3950,6 @@ bite()
 	return 0;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 void
 gethungry()	/* as time goes by - called by moveloop() and domove() */
@@ -4104,8 +4089,6 @@ gethungry()	/* as time goes by - called by moveloop() and domove() */
 	newuhs(TRUE);
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 void
 morehungry(num)	/* called after vomiting and after performing feats of magic */
@@ -4421,8 +4404,6 @@ windclock()
   flags.botl = 1;
   return MOVE_STANDARD;
 }
-#endif /* OVLB */
-#ifdef OVL0
 
 boolean
 is_fainted()
@@ -4644,8 +4625,6 @@ boolean incr;
 	}
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 /* Returns an object representing food.  Object may be either on floor or
  * in inventory.
@@ -4917,8 +4896,6 @@ clockwork_eat_menu(dry,mgc)
 	return 0;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* called when eatfood occupation has been interrupted,
    or in the case of theft, is about to be interrupted */
@@ -4935,6 +4912,5 @@ boolean stopping;
 	return FALSE;
 }
 
-#endif /* OVL1 */
 
 /*eat.c*/

@@ -9,13 +9,11 @@
 #define NOINVSYM	'#'
 #define CONTAINED_SYM	'>'	/* designator for inside a container */
 
-#ifdef OVL1
 STATIC_DCL void NDECL(reorder_invent);
 STATIC_DCL boolean FDECL(mergable,(struct obj *,struct obj *));
 STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
 STATIC_DCL boolean FDECL(worn_wield_only, (struct obj *));
 STATIC_DCL boolean FDECL(only_here, (struct obj *));
-#endif /* OVL1 */
 STATIC_DCL void FDECL(compactify,(char *));
 STATIC_DCL boolean FDECL(taking_off, (const char *));
 STATIC_DCL boolean FDECL(putting_on, (const char *));
@@ -27,13 +25,11 @@ static char FDECL(display_pickinv,
 #else
 static char FDECL(display_pickinv, (const char *,BOOLEAN_P, long *));
 #endif /* DUMP_LOG */
-#ifdef OVLB
 STATIC_DCL boolean FDECL(this_type_only, (struct obj *));
 STATIC_DCL void NDECL(dounpaid);
 STATIC_DCL struct obj *FDECL(find_unpaid,(struct obj *,struct obj **));
 STATIC_DCL void FDECL(menu_identify, (int));
 STATIC_DCL boolean FDECL(tool_in_use, (struct obj *));
-#endif /* OVLB */
 STATIC_DCL char FDECL(obj_to_let,(struct obj *));
 STATIC_PTR int FDECL(u_material_next_to_skin,(int));
 STATIC_PTR int FDECL(u_bcu_next_to_skin,(int));
@@ -42,7 +38,6 @@ STATIC_PTR int FDECL(mon_bcu_next_to_skin,(struct monst *, int));
 STATIC_DCL int FDECL(itemactions,(struct obj *));
 STATIC_DCL boolean FDECL(describe_spear_point, (char *, struct obj *));
 
-#ifdef OVLB
 
 static int lastinvnr = 51;	/* 0 ... 51 (never saved&restored) */
 
@@ -92,8 +87,6 @@ register struct obj *otmp;
 	lastinvnr = i % 52;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* note: assumes ASCII; toggling a bit puts lowercase in front of uppercase */
 #define inv_rank(o) ((o)->invlet ^ 040)
@@ -443,8 +436,6 @@ struct obj *obj;
 	}
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 /* Add an item to the inventory unless we're fumbling or it refuses to be
  * held (via touch_artifact), and give a message.
@@ -561,8 +552,6 @@ boolean maybe_unpaid;	/* false if caller handles shop billing */
 	if (obj->known) update_inventory();
 }
 
-#endif /* OVLB */
-#ifdef OVL3
 
 /*
 Adjust hero's attributes as if this object was being removed from the
@@ -677,8 +666,6 @@ int x, y;
 	}
 }
 
-#endif /* OVL3 */
-#ifdef OVL2
 
 /* destroy object in fobj chain (if unpaid, it remains on the bill) */
 void
@@ -713,8 +700,6 @@ register struct obj *obj;
 	obfree(obj, (struct obj *) 0);	/* frees contents also */
 }
 
-#endif /* OVL2 */
-#ifdef OVL0
 
 struct obj *
 sobj_at(n,x,y)
@@ -807,8 +792,6 @@ register int x, y;
 	return((struct obj *)0);
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 struct obj *
 carrying(type)
@@ -978,8 +961,6 @@ int x, y;
 	return(FALSE);
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 struct obj *
 g_at(x,y)
@@ -993,8 +974,6 @@ register int x, y;
 	return((struct obj *)0);
 }
 
-#endif /* OVL2 */
-#ifdef OVLB
 #ifndef GOLDOBJ
 /* Make a gold object from the hero's gold. */
 struct obj *
@@ -1011,8 +990,6 @@ register long q;
 	return(otmp);
 }
 #endif
-#endif /* OVLB */
-#ifdef OVL1
 
 STATIC_OVL void
 compactify(buf)
@@ -1629,8 +1606,6 @@ struct obj *otmp;
 	}
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 STATIC_PTR int
 ckvalidcat(otmp)
@@ -2062,8 +2037,6 @@ int id_limit;
     update_inventory();
 }
 
-#endif /* OVLB */
-#ifdef OVL2
 
 STATIC_OVL char
 obj_to_let(obj)	/* should of course only be called for things in invent */
@@ -2096,8 +2069,6 @@ long quan;
 	      xprname(obj, (char *)0, obj_to_let(obj), TRUE, 0L, quan));
 }
 
-#endif /* OVL2 */
-#ifdef OVL1
 
 char *
 xprname(obj, txt, let, dot, cost, quan)
@@ -2147,8 +2118,6 @@ long quan;		/* if non-0, print this quantity, not obj->quan */
     return li;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 /* the 'i' command */
 int
@@ -5290,8 +5259,6 @@ boolean force_touch;
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 void
 stackobj(obj)
@@ -5437,8 +5404,6 @@ doprgold()
 	return MOVE_CANCELLED;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 int
 doprwep()
@@ -5579,10 +5544,8 @@ long numused;
 	    u.uundetected = OBJ_AT(u.ux, u.uy);
 }
 
-#endif /* OVLB */
 
 
-#ifdef OVL1
 
 /*
  * Conversion from a class to a string for printing.
@@ -5681,8 +5644,6 @@ free_invbuf()
 	invbufsiz = 0;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 void
 reassign()
@@ -5699,8 +5660,6 @@ reassign()
 	lastinvnr = i % 52;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /** #adjust command
  *
@@ -6505,6 +6464,5 @@ get_most_complete_puzzle()
 	return puzzle;
 }
 
-#endif /* OVL1 */
 
 /*invent.c*/

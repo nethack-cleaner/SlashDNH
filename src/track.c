@@ -10,7 +10,6 @@
 STATIC_VAR NEARDATA int utcnt, utpnt;
 STATIC_VAR NEARDATA coord utrack[UTSZ];
 
-#ifdef OVLB
 
 void
 initrack()
@@ -18,8 +17,6 @@ initrack()
 	utcnt = utpnt = 0;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* add to track */
 void
@@ -32,8 +29,6 @@ settrack()
 	utpnt++;
 }
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 coord *
 gettrack(x, y, maxtrack)
@@ -55,6 +50,5 @@ register int x, y, maxtrack;
     return (coord *)0;
 }
 
-#endif /* OVL0 */
 
 /*track.c*/

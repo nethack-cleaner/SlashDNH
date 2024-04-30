@@ -15,7 +15,6 @@ static const int dirx[8] = {0, 1, 1,  1,  0, -1, -1, -1},
 				 diry[8] = {1, 1, 0, -1, -1, -1,  0,  1};
 
 
-#ifdef OVLB
 
 /* Remove an item from the monster's inventory and destroy it. */
 void
@@ -41,8 +40,6 @@ struct obj *obj;
 	}
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 boolean
 mtarget_adjacent(magr)
@@ -369,8 +366,6 @@ struct monst * magr;
 }
 
 
-#endif /* OVL1 */
-#ifdef OVL0
 
 /* Check if a monster is carrying a particular item.
  */
@@ -483,6 +478,5 @@ int whodidit;	/* 1==hero, 0=other, -1==just check whether it'll pass thru */
     return hits;
 }
 
-#endif /* OVL0 */
 
 /*mthrowu.c*/

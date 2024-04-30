@@ -14,7 +14,6 @@
 
 extern const int monstr[];
 
-#ifdef OVLB
 
 STATIC_DCL short FDECL(which_arti, (long int));
 STATIC_DCL struct monst *FDECL(other_mon_has_arti, (struct monst *,SHORT_P));
@@ -62,8 +61,6 @@ static NEARDATA const unsigned wizapp[] = {
 	PM_TRAPPER
 };
 
-#endif /* OVLB */
-#ifdef OVL0
 
 /* If you've found the Amulet, make the Wizard appear after some time */
 /* Also, give hints about portal locations, if amulet is worn/wielded -dlc */
@@ -110,8 +107,6 @@ amulet()
 	    }
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 int
 mon_has_amulet(mtmp)
@@ -1747,6 +1742,5 @@ aglaopesong(mtmp)
 		}
 
 }
-#endif /* OVLB */
 
 /*wizard.c*/

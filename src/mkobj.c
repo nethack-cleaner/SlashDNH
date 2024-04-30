@@ -10,14 +10,12 @@ STATIC_DCL void FDECL(mkbox_cnts,(struct obj *));
 STATIC_DCL void FDECL(obj_timer_checks,(struct obj *, XCHAR_P, XCHAR_P, int));
 STATIC_DCL void FDECL(handle_material_specials, (struct obj *, int, int));
 STATIC_DCL void FDECL(init_obj_material, (struct obj *));
-#ifdef OVL1
 STATIC_DCL void FDECL(container_weight, (struct obj *));
 #ifdef WIZARD
 STATIC_DCL const char *FDECL(where_name, (int));
 STATIC_DCL void FDECL(check_contained, (struct obj *,const char *));
 STATIC_DCL int FDECL(maid_clean, (struct monst *, struct obj *));
 #endif
-#endif /* OVL1 */
 
 //extern struct obj *thrownobj;		/* defined in dothrow.c */
 
@@ -38,7 +36,6 @@ struct icp {
     char iclass;	/* item class */
 };
 
-#ifdef OVL1
 
 const struct icp mkobjprobs[] = {
 {10, WEAPON_CLASS},
@@ -618,8 +615,6 @@ register struct obj *otmp;
 	return;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 struct obj *
 mksobj(otyp, mkflags)
@@ -1983,8 +1978,6 @@ register struct obj *otmp;
 	return;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 void
 blessorcurse(otmp, chance)
@@ -2003,8 +1996,6 @@ register int chance;
 	return;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 int
 bcsign(otmp)
@@ -2013,8 +2004,6 @@ register struct obj *otmp;
 	return(!!otmp->blessed - !!otmp->cursed);
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 /* set the size of an object, making sure the object is proper */
 void
 set_obj_size(obj, size)
@@ -2832,8 +2821,6 @@ int x, y;
 	}
 	return mksobj_at(treefruits[rn2(SIZE(treefruits))], x, y, NO_MKOBJ_FLAGS);
 }
-#endif /* OVL0 */
-#ifdef OVLB
 
 struct obj *
 mkgold_core(amount, x, y, new)
@@ -2878,8 +2865,6 @@ int x, y;
 	return gold;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /* return TRUE if the corpse has special timing */
 #define special_corpse(num)  (((num) == PM_LIZARD)		\
@@ -3041,8 +3026,6 @@ boolean copyof;
 	return mnew;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 /* make an object named after someone listed in the scoreboard file */
 struct obj *
@@ -3115,8 +3098,6 @@ register struct obj *otmp;
 			otmp->obj_material != LIQUID));
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 /*
  * These routines maintain the single-linked lists headed in level.objects[][]
@@ -3946,6 +3927,5 @@ check_contained(container, mesg)
 }
 #endif /* WIZARD */
 
-#endif /* OVL1 */
 
 /*mkobj.c*/

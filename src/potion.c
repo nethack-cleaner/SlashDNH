@@ -5,7 +5,6 @@
 #include "hack.h"
 #include "xhity.h"
 
-#ifdef OVLB
 boolean notonhead = FALSE;
 
 static NEARDATA int nothing, unkn;
@@ -3645,6 +3644,5 @@ struct monst *mon,	/* monster being split */
 	return mtmp2;
 }
 
-#endif /* OVLB */
 
 /*potion.c*/

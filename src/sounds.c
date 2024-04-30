@@ -44,7 +44,6 @@ const int nurseprices[] = {
 	6000,//8 20x trephination kit cost
 };
 
-#ifdef OVLB
 
 static const char *FDECL(DantalionRace,(int));
 int FDECL(dobinding,(int, int));
@@ -67,9 +66,7 @@ static const char tools[] = { TOOL_CLASS, 0 };
 static const char models[] = { TOOL_CLASS, FOOD_CLASS, 0 };
 static const char armors[] = { ARMOR_CLASS, 0 };
 
-#endif /* OVLB */
 
-#ifdef OVL0
 
 static int FDECL(mon_in_room, (struct monst *,int));
 
@@ -548,8 +545,6 @@ dosounds()
     }
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 static const char * const h_sounds[] = {
     "beep", "boing", "sing", "belche", "creak", "cough", "rattle",
@@ -8021,6 +8016,5 @@ struct monst *dollmaker;
 	return TRUE;
 }
 
-#endif /* OVLB */
 
 /*sounds.c*/

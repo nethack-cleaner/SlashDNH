@@ -19,7 +19,6 @@ STATIC_DCL boolean FDECL(is_summon_spell		 ,(int));
 STATIC_DCL boolean FDECL(is_debuff_spell		 ,(int));
 STATIC_DCL boolean FDECL(spell_would_be_useless, (struct monst *, struct monst *, int, int, int));
 
-#ifdef OVL0
 
 /* feedback when frustrated creature couldn't cast a spell */
 void
@@ -74,8 +73,6 @@ boolean undirected;
 	}
 }
 
-#endif /* OVL0 */
-#ifdef OVLB
 
 /* default spell selection for mages */
 STATIC_OVL int
@@ -7160,8 +7157,6 @@ int tary;
 	return FALSE;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 int
 needs_familiar(mon)
 struct monst *mon;
@@ -7193,6 +7188,5 @@ struct monst *mon;
 	return PM_AKKABISH_TANNIN;
 }
 
-#endif /* OVL0 */
 
 /*mcastu.c*/

@@ -9,7 +9,6 @@
 #ifdef WIZARD
 #endif
 
-#ifdef OVLB
 
 static boolean no_repeat = FALSE;
 
@@ -779,5 +778,4 @@ const char *orig;
 		orig = replace(orig,"Gold piece","Piece of eight");
 		return orig;
 }
-#endif /* OVLB */
 /*pline.c*/

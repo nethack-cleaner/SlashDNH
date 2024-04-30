@@ -19,7 +19,6 @@ STATIC_DCL void FDECL(topl_putsym, (glyph_t));
 STATIC_DCL void NDECL(remember_topl);
 STATIC_DCL void FDECL(removetopl, (int));
 
-#ifdef OVLB
 
 int
 tty_doprev_message()
@@ -117,8 +116,6 @@ tty_doprev_message()
     return 0;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 STATIC_OVL void
 redotoplin(str)
@@ -169,8 +166,6 @@ const char *s;
     ttyDisplay->toplin = 1;
 }
 
-#endif /* OVL1 */
-#ifdef OVL2
 
 void
 more()
@@ -462,7 +457,6 @@ char def;
 	return q;
 }
 
-#endif /* OVL2 */
 
 #endif /* TTY_GRAPHICS */
 

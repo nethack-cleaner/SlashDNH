@@ -11,7 +11,6 @@
 
 /* #define DEBUG */	/* uncomment for debugging info */
 
-#ifdef OVLB
 
 /* globals that let other parts of the code *temporarily* hard-set the player's stat */
 int override_str = 0;
@@ -455,8 +454,6 @@ stone_energy()
 	return (int)energyup;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
 
 void
 restore_attrib()
@@ -477,8 +474,6 @@ restore_attrib()
 	(void)encumber_msg();
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
 
 #define AVAL	50		/* tune value for exercise gains */
 
@@ -1324,8 +1319,6 @@ calc_total_maxen()
 	flags.botl = 1;
 }
 
-#endif /* OVLB */
-#ifdef OVL0
 
 schar
 acurr(x, mon)
@@ -2001,8 +1994,6 @@ acurrstr(str)
 	else return((schar)(str - 20));
 }
 
-#endif /* OVL0 */
-#ifdef OVL2
 
 /* avoid possible problems with alignment overflow, and provide a centralized
  * location for any future alignment limits
@@ -2295,7 +2286,6 @@ int edge;
 	return TRUE; // Should never be reached
 }
 
-#endif /* OVL2 */
 
 /** Returns the hitpoints of your current form. */
 int

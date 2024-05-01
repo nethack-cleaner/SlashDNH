@@ -1063,9 +1063,9 @@ const struct Species species[] = {
 };
 
 
-STATIC_DCL char * FDECL(promptsep, (char *, int));
-STATIC_DCL int FDECL(role_gendercount, (int));
-STATIC_DCL int FDECL(race_alignmentcount, (int));
+static char * FDECL(promptsep, (char *, int));
+static int FDECL(role_gendercount, (int));
+static int FDECL(race_alignmentcount, (int));
 
 /* used by str2XXX() */
 static char NEARDATA randomstr[] = "random";
@@ -1779,9 +1779,9 @@ rigid_role_checks()
 #define BP_DESC		4
 #define NUM_BP		5
 
-STATIC_VAR char pa[NUM_BP], post_attribs;
+static char pa[NUM_BP], post_attribs;
 
-STATIC_OVL char *
+static char *
 promptsep(buf, num_post_attribs)
 char *buf;
 int num_post_attribs;
@@ -1796,7 +1796,7 @@ int num_post_attribs;
 	return buf;
 }
 
-STATIC_OVL int
+static int
 role_gendercount(rolenum)
 int rolenum;
 {
@@ -1809,7 +1809,7 @@ int rolenum;
 	return gendcount;
 }
 
-STATIC_OVL int
+static int
 race_alignmentcount(racenum)
 int racenum;
 {

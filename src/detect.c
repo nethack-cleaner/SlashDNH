@@ -12,19 +12,19 @@
 
 extern boolean known;	/* from read.c */
 
-STATIC_DCL void FDECL(do_dknown_of, (struct obj *));
-STATIC_DCL boolean FDECL(check_map_spot, (int,int,CHAR_P,unsigned));
-STATIC_DCL boolean FDECL(clear_stale_map, (CHAR_P,unsigned));
-STATIC_DCL void FDECL(sense_trap, (struct trap *,XCHAR_P,XCHAR_P,int));
-STATIC_DCL void FDECL(show_map_spot, (int,int));
-STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
-STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
-STATIC_PTR boolean unconstrain_map(void);
-STATIC_PTR void reconstrain_map(void);
-STATIC_PTR void map_redisplay(void);
-STATIC_PTR void browse_map(const char *);
-STATIC_PTR int reveal_terrain_getglyph(int, int, unsigned, int, unsigned);
-STATIC_PTR void reveal_terrain(int);
+static void FDECL(do_dknown_of, (struct obj *));
+static boolean FDECL(check_map_spot, (int,int,CHAR_P,unsigned));
+static boolean FDECL(clear_stale_map, (CHAR_P,unsigned));
+static void FDECL(sense_trap, (struct trap *,XCHAR_P,XCHAR_P,int));
+static void FDECL(show_map_spot, (int,int));
+static void FDECL(findone,(int,int,genericptr_t));
+static void FDECL(openone,(int,int,genericptr_t));
+static boolean unconstrain_map(void);
+static void reconstrain_map(void);
+static void map_redisplay(void);
+static void browse_map(const char *);
+static int reveal_terrain_getglyph(int, int, unsigned, int, unsigned);
+static void reveal_terrain(int);
 
 /* Recursively search obj for an object in class oclass and return 1st found */
 struct obj *
@@ -85,7 +85,7 @@ struct obj* obj;
 	return (struct obj *) 0;
 }
 
-STATIC_OVL void
+static void
 do_dknown_of(obj)
 struct obj *obj;
 {
@@ -99,7 +99,7 @@ struct obj *obj;
 }
 
 /* Check whether the location has an outdated object displayed on it. */
-STATIC_OVL boolean
+static boolean
 check_map_spot(x, y, oclass, material)
 int x, y;
 register char oclass;
@@ -165,7 +165,7 @@ unsigned material;
    reappear after the detection has completed.  Return true if noticeable
    change occurs.
  */
-STATIC_OVL boolean
+static boolean
 clear_stale_map(oclass, material)
 register char oclass;
 unsigned material;
@@ -1045,7 +1045,7 @@ register struct obj *otmp;	/* detecting object (if any) */
 	return 0;
 }
 
-STATIC_OVL void
+static void
 sense_trap(trap, x, y, src_cursed)
 struct trap *trap;
 xchar x, y;
@@ -1318,7 +1318,7 @@ struct obj *obj;
 	return 1;
 }
 
-STATIC_OVL void
+static void
 show_map_spot(x, y)
 register int x, y;
 {
@@ -1413,7 +1413,7 @@ struct rm *lev;
 }
 
 
-STATIC_PTR void
+static void
 findone(zx,zy,num)
 int zx,zy;
 genericptr_t num;
@@ -1459,7 +1459,7 @@ genericptr_t num;
 	}
 }
 
-STATIC_PTR void
+static void
 openone(zx,zy,num)
 int zx,zy;
 genericptr_t num;

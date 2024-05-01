@@ -4,9 +4,9 @@
 
 #include "hack.h"
 
-STATIC_PTR int NDECL(picklock);
-STATIC_PTR int NDECL(forcelock);
-STATIC_PTR int NDECL(forcedoor);
+static int NDECL(picklock);
+static int NDECL(forcelock);
+static int NDECL(forcedoor);
 
 	//Through me you pass into the city of woe;
 	//Through me you pass into eternal pain;
@@ -42,9 +42,9 @@ NEARDATA struct xlock_s {
 } xlock;
 
 
-STATIC_DCL const char *NDECL(lock_action);
-STATIC_DCL boolean FDECL(obstructed,(int,int));
-STATIC_DCL void FDECL(chest_shatter_msg, (struct obj *));
+static const char *NDECL(lock_action);
+static boolean FDECL(obstructed,(int,int));
+static void FDECL(chest_shatter_msg, (struct obj *));
 
 boolean
 is_box_picking_context() {
@@ -87,7 +87,7 @@ int *x, *y;
 }
 
 /* produce an occupation string appropriate for the current activity */
-STATIC_OVL const char *
+static const char *
 lock_action()
 {
 	/* "unlocking"+2 == "locking" */
@@ -114,7 +114,7 @@ lock_action()
 		return xlock.box->otyp == CHEST ? actions[1] : actions[2];
 }
 
-STATIC_PTR
+static
 int
 picklock()	/* try to open/close a lock */
 {
@@ -190,7 +190,7 @@ picklock()	/* try to open/close a lock */
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-STATIC_PTR
+static
 int
 forcelock()	/* try to force a locked chest */
 {
@@ -304,7 +304,7 @@ forcelock()	/* try to force a locked chest */
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-STATIC_PTR
+static
 int
 forcedoor()      /* try to break/pry open a door */
 {
@@ -925,7 +925,7 @@ int x, y;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL
+static
 boolean
 obstructed(x,y)
 register int x, y;
@@ -1247,7 +1247,7 @@ int x, y;
 	return res;
 }
 
-STATIC_OVL void
+static void
 chest_shatter_msg(otmp)
 struct obj *otmp;
 {

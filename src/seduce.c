@@ -3,23 +3,23 @@
 #include "seduce.h"
 
 # ifdef SEDUCE
-STATIC_DCL void FDECL(mayberem, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL void FDECL(lrdmayberem, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL void FDECL(mlcmayberem, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL void FDECL(mayberem_common, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL void FDECL(sflmayberem, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL void FDECL(palemayberem, (struct obj *, const char *, BOOLEAN_P));
-STATIC_DCL boolean FDECL(sedu_helpless, (struct monst *));
-STATIC_DCL int FDECL(sedu_refuse, (struct monst *));
-STATIC_DCL boolean FDECL(sedu_roll, (struct monst *, boolean));
-STATIC_DCL void FDECL(sedu_payment, (struct monst *));
-STATIC_DCL void FDECL(sedu_undress, (struct monst *));
-STATIC_DCL void FDECL(sedu_adornment_ring, (struct monst *));
-STATIC_DCL void FDECL(sedu_knife, (struct monst *));
-STATIC_DCL void FDECL(sedu_wornout, (struct monst *, boolean));
-STATIC_DCL void FDECL(sedu_timestandsstill, (struct monst *, boolean));
-STATIC_DCL int FDECL(sedu_select_effect, (struct monst *, boolean));
-STATIC_DCL void FDECL(seduce_effect, (struct monst *, int));
+static void FDECL(mayberem, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(lrdmayberem, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(mlcmayberem, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(mayberem_common, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(sflmayberem, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(palemayberem, (struct obj *, const char *, BOOLEAN_P));
+static boolean FDECL(sedu_helpless, (struct monst *));
+static int FDECL(sedu_refuse, (struct monst *));
+static boolean FDECL(sedu_roll, (struct monst *, boolean));
+static void FDECL(sedu_payment, (struct monst *));
+static void FDECL(sedu_undress, (struct monst *));
+static void FDECL(sedu_adornment_ring, (struct monst *));
+static void FDECL(sedu_knife, (struct monst *));
+static void FDECL(sedu_wornout, (struct monst *, boolean));
+static void FDECL(sedu_timestandsstill, (struct monst *, boolean));
+static int FDECL(sedu_select_effect, (struct monst *, boolean));
+static void FDECL(seduce_effect, (struct monst *, int));
 # endif
 
 static const char tools[] = { TOOL_CLASS, 0 };
@@ -797,7 +797,7 @@ int dmg;
 	return 1;
 }
 
-STATIC_OVL void
+static void
 mayberem(obj, str, helpless)
 register struct obj *obj;
 const char *str;
@@ -806,7 +806,7 @@ boolean helpless;
 	mayberem_common(obj, str, !(rn2(20) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 10 : 0))));
 }
 
-STATIC_OVL void
+static void
 lrdmayberem(obj, str, helpless)
 register struct obj *obj;
 const char *str;
@@ -815,7 +815,7 @@ boolean helpless;
 	mayberem_common(obj, str, !(rn2(60) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 30 : 0))));
 }
 
-STATIC_OVL void
+static void
 mlcmayberem(obj, str, helpless)
 register struct obj *obj;
 const char *str;
@@ -824,7 +824,7 @@ boolean helpless;
 	mayberem_common(obj, str, helpless || !(rn2(60) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 30 : 0))));
 }
 
-STATIC_OVL void
+static void
 mayberem_common(obj, str, dontask)
 register struct obj *obj;
 const char *str;
@@ -856,7 +856,7 @@ boolean dontask;
 	remove_worn_item(obj, TRUE);
 }
 
-STATIC_OVL void
+static void
 sflmayberem(obj, str, helpless)
 register struct obj *obj;
 const char *str;
@@ -898,7 +898,7 @@ boolean helpless;
 		str);
 }
 
-STATIC_OVL void
+static void
 palemayberem(obj, str, helpless)
 register struct obj *obj;
 const char *str;

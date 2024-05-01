@@ -9,29 +9,29 @@
 #include "dlb.h"
 #include "xhity.h"
 
-STATIC_DCL boolean FDECL(is_swallow_sym, (int));
-STATIC_DCL int FDECL(append_str, (char *, const char *));
-STATIC_DCL struct monst * FDECL(lookat, (int, int, char *, char *, char *));
-STATIC_DCL int FDECL(do_look, (BOOLEAN_P));
-STATIC_DCL boolean FDECL(help_menu, (int *));
-STATIC_DCL char * get_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_generation_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_weight_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_resistance_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_weakness_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_conveys_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mm_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mt_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mb_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_ma_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mv_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mg_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mw_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_mf_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_speed_description_of_monster_type(struct monst *, char *);
-STATIC_DCL char * get_description_of_damage_prefix(uchar, uchar);
-STATIC_DCL char * get_description_of_ancient_breath(struct monst *, char *);
-STATIC_DCL int generate_list_of_resistances(struct monst *, char *, int);
+static boolean FDECL(is_swallow_sym, (int));
+static int FDECL(append_str, (char *, const char *));
+static struct monst * FDECL(lookat, (int, int, char *, char *, char *));
+static int FDECL(do_look, (BOOLEAN_P));
+static boolean FDECL(help_menu, (int *));
+static char * get_description_of_monster_type(struct monst *, char *);
+static char * get_generation_description_of_monster_type(struct monst *, char *);
+static char * get_weight_description_of_monster_type(struct monst *, char *);
+static char * get_resistance_description_of_monster_type(struct monst *, char *);
+static char * get_weakness_description_of_monster_type(struct monst *, char *);
+static char * get_conveys_description_of_monster_type(struct monst *, char *);
+static char * get_mm_description_of_monster_type(struct monst *, char *);
+static char * get_mt_description_of_monster_type(struct monst *, char *);
+static char * get_mb_description_of_monster_type(struct monst *, char *);
+static char * get_ma_description_of_monster_type(struct monst *, char *);
+static char * get_mv_description_of_monster_type(struct monst *, char *);
+static char * get_mg_description_of_monster_type(struct monst *, char *);
+static char * get_mw_description_of_monster_type(struct monst *, char *);
+static char * get_mf_description_of_monster_type(struct monst *, char *);
+static char * get_speed_description_of_monster_type(struct monst *, char *);
+static char * get_description_of_damage_prefix(uchar, uchar);
+static char * get_description_of_ancient_breath(struct monst *, char *);
+static int generate_list_of_resistances(struct monst *, char *, int);
 #ifdef PORT_HELP
 extern void NDECL(port_help);
 #endif
@@ -41,7 +41,7 @@ extern struct attack noattack;
 
 
 /* Returns "true" for characters that could represent a monster's stomach. */
-STATIC_OVL boolean
+static boolean
 is_swallow_sym(c)
 int c;
 {
@@ -56,7 +56,7 @@ int c;
  * a substring of buf.  Return 1 if the string was appended, 0 otherwise.
  * This only works on buf of LONGBUFSZ.
  */
-STATIC_OVL int
+static int
 append_str(buf, new_str)
     char *buf;
     const char *new_str;
@@ -489,7 +489,7 @@ warned_monster_reasons(mon, wbuf)
  * Return the name of the glyph found at (x,y).
  * If not hallucinating and the glyph is a monster, also monster data.
  */
-STATIC_OVL struct monst *
+static struct monst *
 lookat(x, y, buf, monbuf, shapebuff)
     int x, y;
     char *buf, *monbuf, *shapebuff;
@@ -1387,7 +1387,7 @@ rndobjnam()
 }
 
 
-STATIC_OVL int
+static int
 do_look(quick)
     boolean quick;	/* use cursor && don't search for "more info" */
 {
@@ -2913,7 +2913,7 @@ static const char *help_menu_items[] = {
 	(char *)0
 };
 
-STATIC_OVL boolean
+static boolean
 help_menu(sel)
 	int *sel;
 {

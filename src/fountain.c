@@ -6,13 +6,13 @@
 
 #include "hack.h"
 
-STATIC_DCL void NDECL(dowatersnakes);
-STATIC_DCL void NDECL(dowaterdemon);
-STATIC_DCL void NDECL(dowaternymph);
-STATIC_DCL void NDECL(dolavademon);
-STATIC_PTR void FDECL(gush, (int,int,genericptr_t));
-STATIC_DCL void NDECL(dofindgem);
-STATIC_DCL void FDECL(blowupforge, (int, int));
+static void NDECL(dowatersnakes);
+static void NDECL(dowaterdemon);
+static void NDECL(dowaternymph);
+static void NDECL(dolavademon);
+static void FDECL(gush, (int,int,genericptr_t));
+static void NDECL(dofindgem);
+static void FDECL(blowupforge, (int, int));
 
 void
 floating_above(what)
@@ -21,7 +21,7 @@ const char *what;
     You("are floating high above the %s.", what);
 }
 
-STATIC_OVL void
+static void
 dowatersnakes() /* Fountain of snakes! */
 {
     register int num = rn1(5,2);
@@ -41,7 +41,7 @@ dowatersnakes() /* Fountain of snakes! */
 	pline_The("fountain bubbles furiously for a moment, then calms.");
 }
 
-STATIC_OVL
+static
 void
 dowaterdemon() /* Water demon */
 {
@@ -68,7 +68,7 @@ dowaterdemon() /* Water demon */
 }
 
 /* Lava Demon */
-STATIC_OVL void
+static void
 dolavademon()
 {
     struct monst *mtmp;
@@ -94,7 +94,7 @@ dolavademon()
         pline_The("forge violently spews lava for a moment, then settles.");
 }
 
-STATIC_OVL void
+static void
 dowaternymph() /* Water Nymph */
 {
 	register struct monst *mtmp;
@@ -130,7 +130,7 @@ int drinking;
 	}
 }
 
-STATIC_PTR void
+static void
 gush(x, y, poolcnt)
 int x, y;
 genericptr_t poolcnt;
@@ -161,7 +161,7 @@ genericptr_t poolcnt;
 		newsym(x,y);
 }
 
-STATIC_OVL void
+static void
 dofindgem() /* Find a gem in the sparkling waters. */
 {
 	if (!Blind) You("spot a gem in the sparkling waters!");

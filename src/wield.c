@@ -51,7 +51,7 @@
  */
 
 
-STATIC_DCL int FDECL(ready_weapon, (struct obj *, boolean));
+static int FDECL(ready_weapon, (struct obj *, boolean));
 
 /* used by will_weld() */
 /* probably should be renamed */
@@ -119,7 +119,7 @@ register struct obj *obj;
         }
 }
 
-STATIC_OVL int
+static int
 ready_weapon(wep, quietly)
 struct obj *wep;
 boolean quietly;	/* hide the basic message saying what you are now wielding */

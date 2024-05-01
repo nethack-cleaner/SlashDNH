@@ -11,7 +11,7 @@
 #define SCHAR_LIM 255
 #define NUMOBUF 12
 
-STATIC_DCL char *FDECL(strprepend,(char *,const char *));
+static char *FDECL(strprepend,(char *,const char *));
 static boolean FDECL(wishymatch, (const char *,const char *,BOOLEAN_P));
 static char *NDECL(nextobuf);
 static void FDECL(add_erosion_words, (struct obj *, char *));
@@ -97,7 +97,7 @@ NEARDATA struct colorTextClr LightsaberColor[] = {
 	{"coruscating tornado",CLR_GRAY}	/*catapsi vortex*/
 };
 
-STATIC_OVL char *SaberHilts[] = {
+static char *SaberHilts[] = {
 /*00*/"This %s has a curved hilt, making it particularly suited for use in duels.",
 /*01*/"This %s has a classic grip and exposed emitter disk.",
 /*02*/"This %s has a raised emitter with a lotus-bud shroud.",
@@ -140,7 +140,7 @@ STATIC_OVL char *SaberHilts[] = {
 /*39*/"This %s is quite intricate in its design, covered in delicate runes and inlaid with black markings.",
 };
 
-STATIC_OVL char *BeamHilts[] = {
+static char *BeamHilts[] = {
 /*00*/"This %s is shaped like an angel statuette. The angel's upswept wings form the crossguard.",
 /*01*/"This %s is shaped like an angel statuette. The angel's unfurling wings form the handguard.",
 /*02*/"This %s is shaped like a stylized winged humanoid. The wings form the handguard.",
@@ -152,7 +152,7 @@ STATIC_OVL char *BeamHilts[] = {
 };
 
 
-STATIC_OVL struct Jitem ObscureJapanese_items[] = {
+static struct Jitem ObscureJapanese_items[] = {
 	{ BATTLE_AXE, "ono" },
 	{ BROADSWORD, "ninja-to" },
 	{ ARCHAIC_PLATE_MAIL, "jodai no katchu" },
@@ -187,7 +187,7 @@ STATIC_OVL struct Jitem ObscureJapanese_items[] = {
 	{0, "" }
 };
 
-STATIC_OVL struct Jitem Japanese_items[] = {
+static struct Jitem Japanese_items[] = {
 	{ BROADSWORD, "ninja-to" },
 	{ CRYSTAL_PLATE_MAIL, "crystal tanko" },
 	{ PLATE_MAIL, "tanko" },
@@ -210,7 +210,7 @@ STATIC_OVL struct Jitem Japanese_items[] = {
 	{0, "" }
 };
 
-STATIC_OVL struct Jitem Pirate_items[] = {
+static struct Jitem Pirate_items[] = {
 	{ POT_BOOZE, "rum" },
 	{ CRAM_RATION, "sea biscuit" },
 	{ SCIMITAR, "cutlass" },
@@ -221,10 +221,10 @@ STATIC_OVL struct Jitem Pirate_items[] = {
 	{0, "" }
 };
 
-STATIC_DCL const char *FDECL(Alternate_item_name,(int i, struct Jitem * ));
+static const char *FDECL(Alternate_item_name,(int i, struct Jitem * ));
 
 
-STATIC_OVL char *
+static char *
 strprepend(s,pref)
 register char *s;
 register const char *pref;
@@ -3449,7 +3449,7 @@ struct o_range {
 
 
 /* wishable subranges of objects */
-STATIC_OVL NEARDATA const struct o_range o_ranges[] = {
+static NEARDATA const struct o_range o_ranges[] = {
 	{ "bag",	TOOL_CLASS,   SACK,	      BAG_OF_TRICKS },
 	{ "lamp",	TOOL_CLASS,   OIL_LAMP,	      MAGIC_LAMP },
 	{ "candle",	TOOL_CLASS,   TALLOW_CANDLE,  WAX_CANDLE },
@@ -6055,7 +6055,7 @@ int first,last;
 	return 0;
 }
 
-STATIC_OVL const char *
+static const char *
 Alternate_item_name(i,alternate_items)
 int i;
 struct Jitem *alternate_items;

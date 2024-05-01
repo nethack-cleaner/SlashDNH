@@ -1033,7 +1033,7 @@ struct obj *scroll;
 static int delay = 0;
 static struct obj *curslab = 0;
 
-STATIC_PTR int
+static int
 study_word(slab)
 struct obj *slab;
 {
@@ -1048,7 +1048,7 @@ struct obj *slab;
 	return MOVE_READ;
 }
 
-STATIC_PTR int
+static int
 learn_word()
 {
 	if (Confusion) {		/* became confused while learning */

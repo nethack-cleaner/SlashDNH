@@ -11,18 +11,18 @@
 extern const int monstr[];
 extern void you_aggravate(struct monst *);
 
-STATIC_PTR int NDECL(prayer_done);
-STATIC_DCL struct obj *NDECL(worst_cursed_item);
-STATIC_DCL int NDECL(in_trouble);
-STATIC_DCL void FDECL(fix_worst_trouble,(int));
-STATIC_DCL void FDECL(pleased,(ALIGNTYP_P));
-STATIC_DCL void FDECL(god_zaps_you, (int));
-STATIC_DCL void FDECL(fry_by_god, (int));
-STATIC_DCL void FDECL(consume_offering,(struct obj *));
-STATIC_DCL void FDECL(eat_offering,(struct obj *, boolean, int));
-STATIC_DCL void FDECL(burn_offering,(struct obj *, boolean));
-STATIC_DCL boolean FDECL(water_prayer,(BOOLEAN_P));
-STATIC_DCL boolean FDECL(blocked_boulder,(int,int));
+static int NDECL(prayer_done);
+static struct obj *NDECL(worst_cursed_item);
+static int NDECL(in_trouble);
+static void FDECL(fix_worst_trouble,(int));
+static void FDECL(pleased,(ALIGNTYP_P));
+static void FDECL(god_zaps_you, (int));
+static void FDECL(fry_by_god, (int));
+static void FDECL(consume_offering,(struct obj *));
+static void FDECL(eat_offering,(struct obj *, boolean, int));
+static void FDECL(burn_offering,(struct obj *, boolean));
+static boolean FDECL(water_prayer,(BOOLEAN_P));
+static boolean FDECL(blocked_boulder,(int,int));
 static void NDECL(lawful_god_gives_angel);
 static void FDECL(god_gives_pet,(int));
 static void FDECL(god_gives_benefit,(ALIGNTYP_P));
@@ -186,7 +186,7 @@ This could get as bizarre as noting surrounding opponents, (or hostile dogs),
 but that's really hard.
  */
 
-STATIC_OVL int
+static int
 in_trouble()
 {
 	struct obj *otmp;
@@ -284,7 +284,7 @@ in_trouble()
 }
 
 /* select an item for TROUBLE_CURSED_ITEMS */
-STATIC_OVL struct obj *
+static struct obj *
 worst_cursed_item()
 {
     register struct obj *otmp;
@@ -346,7 +346,7 @@ worst_cursed_item()
     return otmp;
 }
 
-STATIC_OVL void
+static void
 fix_worst_trouble(trouble)
 register int trouble;
 {
@@ -633,7 +633,7 @@ decurse:
  * bathroom walls, but who is foiled by bathrobes." --Bertrand Russell, 1943
  * Divine wrath, dungeon walls, and armor follow the same principle.
  */
-STATIC_OVL void
+static void
 god_zaps_you(godnum)
 int godnum;
 {
@@ -712,7 +712,7 @@ int godnum;
 	}
 }
 
-STATIC_OVL void
+static void
 fry_by_god(godnum)
 int godnum;
 {
@@ -874,7 +874,7 @@ at_your_feet(str)
 	}
 }
 
-STATIC_OVL void
+static void
 pleased(godnum)
 int godnum;
 {
@@ -1147,7 +1147,7 @@ int godnum;
 /* either blesses or curses water on the altar,
  * returns true if it found any water here.
  */
-STATIC_OVL boolean
+static boolean
 water_prayer(bless_water)
     boolean bless_water;
 {
@@ -1269,7 +1269,7 @@ int godnum;
 
 static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
-STATIC_OVL void
+static void
 eat_offering(otmp, silently, eatflag)
 register struct obj *otmp;
 boolean silently;
@@ -1383,7 +1383,7 @@ int eatflag;
     exercise(A_WIS, TRUE);
 }
 
-STATIC_OVL void
+static void
 burn_offering(otmp, silently)
 register struct obj *otmp;
 boolean silently;
@@ -1406,7 +1406,7 @@ boolean silently;
     exercise(A_CHA, TRUE);
 }
 
-STATIC_OVL void
+static void
 consume_offering(otmp)
 register struct obj *otmp;
 {
@@ -2460,7 +2460,7 @@ dopray()
     return MOVE_STANDARD;
 }
 
-STATIC_PTR int
+static int
 prayer_done()		/* M. Stephenson (1.0.3b) */
 {
     aligntyp alignment = galign(p_god);
@@ -2538,7 +2538,7 @@ prayer_done()		/* M. Stephenson (1.0.3b) */
     return MOVE_STANDARD;
 }
 
-STATIC_OVL
+static
 int
 turn_level(mtmp)
 struct monst *mtmp;
@@ -3002,7 +3002,7 @@ register int x, y;
 }
 
 /* assumes isok() at one space away, but not necessarily at two */
-STATIC_OVL boolean
+static boolean
 blocked_boulder(dx,dy)
 int dx,dy;
 {
@@ -3287,7 +3287,7 @@ int godnum;
 	}
 }
 
-STATIC_OVL int
+static int
 goat_resurrect(otmp, eatflag)
 struct obj *otmp;
 int eatflag;
@@ -3312,7 +3312,7 @@ int eatflag;
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 goat_rider(otmp, eatflag)
 struct obj *otmp;
 int eatflag;
@@ -3337,7 +3337,7 @@ int eatflag;
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 fire_rider(otmp, offering)
 struct obj *otmp;
 boolean offering;

@@ -8,15 +8,15 @@
 #include "lev.h"
 #include "artifact.h"
 
-STATIC_DCL void FDECL(trycall, (struct obj *));
-STATIC_DCL void FDECL(dosinkring, (struct obj *));
+static void FDECL(trycall, (struct obj *));
+static void FDECL(dosinkring, (struct obj *));
 
-STATIC_PTR int NDECL(wipeoff);
+static int NDECL(wipeoff);
 
-STATIC_DCL int FDECL(menu_drop, (int));
-STATIC_DCL int NDECL(currentlevel_rewrite);
-STATIC_DCL void NDECL(final_level);
-STATIC_DCL boolean NDECL(no_spirits);
+static int FDECL(menu_drop, (int));
+static int NDECL(currentlevel_rewrite);
+static void NDECL(final_level);
+static boolean NDECL(no_spirits);
 
 /* static boolean FDECL(badspot, (XCHAR_P,XCHAR_P)); */
 
@@ -337,7 +337,7 @@ doaltarobj(obj)  /* obj is an object dropped on an altar */
 	}
 }
 
-STATIC_OVL
+static
 void
 trycall(obj)
 register struct obj *obj;
@@ -347,7 +347,7 @@ register struct obj *obj;
 	   docall(obj);
 }
 
-STATIC_OVL
+static
 void
 dosinkring(obj)  /* obj is a ring being dropped over a kitchen sink */
 register struct obj *obj;
@@ -779,7 +779,7 @@ doddrop()
 }
 
 /* Drop things from the hero's inventory, using a menu. */
-STATIC_OVL int
+static int
 menu_drop(retry)
 int retry;
 {
@@ -1130,7 +1130,7 @@ acu_asc_items_warning(int missing_items)
 d_level save_dlevel = {0, 0};
 
 /* check that we can write out the current level */
-STATIC_OVL int
+static int
 currentlevel_rewrite()
 {
 	register int fd;
@@ -1770,7 +1770,7 @@ misc_levelport:
 #endif
 }
 
-STATIC_OVL boolean
+static boolean
 no_spirits()
 {
 	struct monst *mtmp;
@@ -1782,7 +1782,7 @@ no_spirits()
 	return TRUE;
 }
 
-STATIC_OVL void
+static void
 final_level()
 {
 	struct monst *mtmp;
@@ -2650,7 +2650,7 @@ donull()
 }
 
 
-STATIC_PTR int
+static int
 wipeoff()
 {
 	if(u.ucreamed < 4)	u.ucreamed = 0;

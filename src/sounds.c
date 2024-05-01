@@ -7349,7 +7349,7 @@ const char* msg;
 
 #endif /* USER_SOUNDS */
 
-STATIC_OVL int
+static int
 doyochlolmenu(mon)
 struct monst *mon;
 {
@@ -7415,7 +7415,7 @@ struct monst *mon;
 	return 0;
 }
 
-STATIC_OVL int
+static int
 doblessmenu()
 {
 	winid tmpwin;

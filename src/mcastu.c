@@ -7,17 +7,17 @@
 
 extern void you_aggravate(struct monst *);
 
-STATIC_DCL int FDECL(choose_magic_spell, (int,int,boolean));
-STATIC_DCL int FDECL(choose_clerical_spell, (int,int,boolean,boolean));
-STATIC_DCL int FDECL(choose_psionic_spell, (int,int,boolean));
-STATIC_DCL int FDECL(elemspell, (struct monst *, struct monst *, struct attack *, int, int));
-STATIC_DCL boolean FDECL(is_undirected_spell,(int));
-STATIC_DCL boolean FDECL(is_directed_attack_spell,(int));
-STATIC_DCL boolean FDECL(is_aoe_attack_spell	 ,(int));
-STATIC_DCL boolean FDECL(is_buff_spell			 ,(int));
-STATIC_DCL boolean FDECL(is_summon_spell		 ,(int));
-STATIC_DCL boolean FDECL(is_debuff_spell		 ,(int));
-STATIC_DCL boolean FDECL(spell_would_be_useless, (struct monst *, struct monst *, int, int, int));
+static int FDECL(choose_magic_spell, (int,int,boolean));
+static int FDECL(choose_clerical_spell, (int,int,boolean,boolean));
+static int FDECL(choose_psionic_spell, (int,int,boolean));
+static int FDECL(elemspell, (struct monst *, struct monst *, struct attack *, int, int));
+static boolean FDECL(is_undirected_spell,(int));
+static boolean FDECL(is_directed_attack_spell,(int));
+static boolean FDECL(is_aoe_attack_spell	 ,(int));
+static boolean FDECL(is_buff_spell			 ,(int));
+static boolean FDECL(is_summon_spell		 ,(int));
+static boolean FDECL(is_debuff_spell		 ,(int));
+static boolean FDECL(spell_would_be_useless, (struct monst *, struct monst *, int, int, int));
 
 
 /* feedback when frustrated creature couldn't cast a spell */
@@ -75,7 +75,7 @@ boolean undirected;
 
 
 /* default spell selection for mages */
-STATIC_OVL int
+static int
 choose_magic_spell(spellval,mid,hostile)
 int spellval;
 int mid;
@@ -255,7 +255,7 @@ boolean hostile;
 }
 
 /* default spell selection for priests/monks */
-STATIC_OVL int
+static int
 choose_clerical_spell(spellnum,mid,hostile,quake)
 int spellnum;
 int mid;
@@ -311,7 +311,7 @@ boolean quake;
 }
 
 /* default spell selection for psychic-flavored casters */
-STATIC_OVL int
+static int
 choose_psionic_spell(spellnum,mid,hostile)
 int spellnum;
 int mid;
@@ -347,7 +347,7 @@ boolean hostile;
 }
 
 /* ...but first, check for monster-specific spells */
-STATIC_OVL int
+static int
 choose_magic_special(mtmp, type)
 struct monst *mtmp;
 unsigned int type;

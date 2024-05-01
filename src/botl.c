@@ -38,8 +38,8 @@ const char * const enc_stat_abbrev2[] = {
 	"Ovld"
 };
 
-STATIC_DCL void NDECL(bot1);
-STATIC_DCL void NDECL(bot2);
+static void NDECL(bot1);
+static void NDECL(bot2);
 
 long get_status_duration(long long mask) {
 	switch (mask) {
@@ -262,9 +262,9 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
 
 #endif
 
-STATIC_OVL NEARDATA int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
+static NEARDATA int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
 
-STATIC_DCL const char *NDECL(rank);
+static const char *NDECL(rank);
 
 
 /* convert experience level (1..30) to rank index (0..8) */
@@ -344,7 +344,7 @@ rank_of(lev, monnum, female)
 }
 
 
-STATIC_OVL const char *
+static const char *
 rank()
 {
 	int i;
@@ -425,7 +425,7 @@ botl_score()
 #ifdef DUMP_LOG
 void bot1str(char *newbot1)
 #else
-STATIC_OVL void
+static void
 bot1()
 #endif
 {
@@ -526,7 +526,7 @@ bot1()
 	    Sprintf(nb = eos(nb), " S:%ld", botl_score());
 #ifdef DUMP_LOG
 }
-STATIC_OVL void
+static void
 bot1()
 {
 	char newbot1[MAXCO];
@@ -713,7 +713,7 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
     do_statuseffects(newbot2, terminal_output, abbrev, 2);
 }
 
-STATIC_OVL void
+static void
 bot2()
 {
 	char newbot2[MAXCO];

@@ -33,24 +33,24 @@
 #include "skills.h"
 
 
-STATIC_DCL void FDECL(awaken_monsters,(int));
-STATIC_DCL void FDECL(put_monsters_to_sleep,(int));
-STATIC_DCL void FDECL(charm_snakes,(int));
-STATIC_DCL void FDECL(calm_nymphs,(int));
-STATIC_DCL void FDECL(charm_monsters,(int));
-STATIC_DCL int FDECL(do_improvisation,(struct obj *));
-STATIC_DCL void FDECL(tame_song,(int));
-STATIC_DCL void FDECL(sleep_song,(int));
-STATIC_DCL void FDECL(scary_song,(int));
-STATIC_DCL void FDECL(confusion_song,(int));
-STATIC_DCL void FDECL(cancel_song,(int));
-STATIC_DCL void FDECL(rally_song,(int));
-STATIC_DCL unsigned char FDECL(songs_menu,(struct obj *));
-STATIC_PTR int NDECL(play_song);
-STATIC_DCL void FDECL(slowness_song,(int));
-STATIC_DCL void FDECL(haste_song,(int));
-STATIC_DCL void FDECL(heal_song,(int));
-STATIC_DCL void FDECL(encourage_pets,(int));
+static void FDECL(awaken_monsters,(int));
+static void FDECL(put_monsters_to_sleep,(int));
+static void FDECL(charm_snakes,(int));
+static void FDECL(calm_nymphs,(int));
+static void FDECL(charm_monsters,(int));
+static int FDECL(do_improvisation,(struct obj *));
+static void FDECL(tame_song,(int));
+static void FDECL(sleep_song,(int));
+static void FDECL(scary_song,(int));
+static void FDECL(confusion_song,(int));
+static void FDECL(cancel_song,(int));
+static void FDECL(rally_song,(int));
+static unsigned char FDECL(songs_menu,(struct obj *));
+static int NDECL(play_song);
+static void FDECL(slowness_song,(int));
+static void FDECL(haste_song,(int));
+static void FDECL(heal_song,(int));
+static void FDECL(encourage_pets,(int));
 
 #ifdef PCMUSIC
 void FDECL( pc_speaker, ( struct obj *, char * ) );
@@ -135,7 +135,7 @@ static NEARDATA char msgbuf[BUFSZ];
  * We cannot check song_played directly because if the song was interrupted,
  * we have no means to reset song_played.
  */
-STATIC_DCL int
+static int
 song_being_played()
 {
     if (occupation != play_song)
@@ -143,7 +143,7 @@ song_being_played()
     return song_played;
 }
 
-STATIC_DCL void
+static void
 reset_song()
 {
     song_played = SNG_NONE;
@@ -461,7 +461,7 @@ boolean domsg;
  * Calculates the bonus of all singing pets (see above), if not yet done
  * for this turn
  */
-STATIC_DCL int
+static int
 singing_pets_effect()
 {
     register struct monst *mtmp;
@@ -481,7 +481,7 @@ singing_pets_effect()
     return petsing;
 }
 
-STATIC_DCL int
+static int
 counter_singing_effect()
 {
     register struct monst *mtmp;
@@ -559,7 +559,7 @@ int know_spell;
  * Shows the music menu.
  * Returns a SNG_* identifier
  */
-STATIC_DCL unsigned char
+static unsigned char
 songs_menu(instr)
 struct obj *instr;
 {
@@ -782,7 +782,7 @@ struct obj * instr;
 
 
 
-STATIC_PTR int
+static int
 play_song()
 {
 	register struct monst *mtmp;
@@ -941,7 +941,7 @@ int distance;
 }
 
 
-STATIC_OVL void
+static void
 slowness_song(distance)
 int distance;
 {
@@ -983,7 +983,7 @@ int distance;
 }
 
 
-STATIC_OVL void
+static void
 haste_song(distance)
 int distance;
 {
@@ -1006,7 +1006,7 @@ int distance;
 }
 
 
-STATIC_OVL void
+static void
 heal_song(distance)
 int distance;
 {
@@ -1036,7 +1036,7 @@ int distance;
 }
 
 
-STATIC_OVL void
+static void
 encourage_pets(distance)
 int distance;
 {
@@ -1080,7 +1080,7 @@ int distance;
 	}
 }
 
-STATIC_OVL void
+static void
 confusion_song(distance)
 int distance;
 {
@@ -1101,7 +1101,7 @@ int distance;
 	}
 }
 
-STATIC_OVL void
+static void
 cancel_song(distance)
 int distance;
 {
@@ -1123,7 +1123,7 @@ int distance;
 	}
 }
 
-STATIC_OVL void
+static void
 rally_song(distance)
 int distance;
 {
@@ -1188,7 +1188,7 @@ int distance;
  * Wake every monster in range...
  */
 
-STATIC_OVL void
+static void
 awaken_monsters(distance)
 int distance;
 {
@@ -1269,7 +1269,7 @@ int distance;
 /*
  * Make monsters fall asleep.  Note that they may resist the spell.
  */
-STATIC_OVL void
+static void
 sleep_song(distance)
 int distance;
 {
@@ -1304,7 +1304,7 @@ int distance;
 	}
 }
 
-STATIC_OVL void
+static void
 put_monsters_to_sleep(distance)
 int distance;
 {
@@ -1324,7 +1324,7 @@ int distance;
  * Charm snakes in range.  Note that the snakes are NOT tamed.
  */
 
-STATIC_OVL void
+static void
 charm_snakes(distance)
 int distance;
 {
@@ -1362,7 +1362,7 @@ int distance;
  * Calm nymphs in range.
  */
 
-STATIC_OVL void
+static void
 calm_nymphs(distance)
 int distance;
 {
@@ -1411,7 +1411,7 @@ awaken_soldiers()
 /* Charm monsters in range.  Note that they may resist the spell.
  * If swallowed, range is reduced to 0.
  */
-STATIC_OVL void
+static void
 tame_song(distance)
 int distance;
 {
@@ -1507,7 +1507,7 @@ int distance;
 	}
 }
 
-STATIC_OVL void
+static void
 charm_monsters(distance)
 int distance;
 {
@@ -1731,7 +1731,7 @@ do_pit:		    chasm = maketrap(x,y,PIT);
  * The player is trying to extract something from his/her instrument.
  */
 
-STATIC_OVL int
+static int
 do_improvisation(instr)
 struct obj *instr;
 {

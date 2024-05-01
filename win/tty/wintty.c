@@ -133,22 +133,22 @@ boolean GFlag = FALSE;
 boolean HE_resets_AS;	/* see termcap.c */
 #endif
 
-STATIC_DCL void NDECL(getret);
-STATIC_DCL void FDECL(erase_menu_or_text, (winid, struct WinDesc *, BOOLEAN_P));
-STATIC_DCL void FDECL(free_window_info, (struct WinDesc *, BOOLEAN_P));
-STATIC_DCL void FDECL(dmore,(struct WinDesc *, const char *));
-STATIC_DCL void FDECL(set_item_state, (winid, int, tty_menu_item *));
-STATIC_DCL void FDECL(set_all_on_page, (winid,tty_menu_item *,tty_menu_item *));
-STATIC_DCL void FDECL(unset_all_on_page, (winid,tty_menu_item *,tty_menu_item *));
-STATIC_DCL void FDECL(invert_all_on_page, (winid,tty_menu_item *,tty_menu_item *, CHAR_P));
-STATIC_DCL void FDECL(invert_all, (winid,tty_menu_item *,tty_menu_item *, CHAR_P));
-STATIC_DCL void FDECL(process_menu_window, (winid,struct WinDesc *));
-STATIC_DCL void FDECL(process_text_window, (winid,struct WinDesc *));
-STATIC_DCL tty_menu_item *FDECL(reverse, (tty_menu_item *));
+static void NDECL(getret);
+static void FDECL(erase_menu_or_text, (winid, struct WinDesc *, BOOLEAN_P));
+static void FDECL(free_window_info, (struct WinDesc *, BOOLEAN_P));
+static void FDECL(dmore,(struct WinDesc *, const char *));
+static void FDECL(set_item_state, (winid, int, tty_menu_item *));
+static void FDECL(set_all_on_page, (winid,tty_menu_item *,tty_menu_item *));
+static void FDECL(unset_all_on_page, (winid,tty_menu_item *,tty_menu_item *));
+static void FDECL(invert_all_on_page, (winid,tty_menu_item *,tty_menu_item *, CHAR_P));
+static void FDECL(invert_all, (winid,tty_menu_item *,tty_menu_item *, CHAR_P));
+static void FDECL(process_menu_window, (winid,struct WinDesc *));
+static void FDECL(process_text_window, (winid,struct WinDesc *));
+static tty_menu_item *FDECL(reverse, (tty_menu_item *));
 const char * FDECL(compress_str, (const char *));
-STATIC_DCL void FDECL(tty_putsym, (winid, int, int, CHAR_P));
+static void FDECL(tty_putsym, (winid, int, int, CHAR_P));
 static char *FDECL(copy_of, (const char *));
-STATIC_DCL void FDECL(bail, (const char *));	/* __attribute__((noreturn)) */
+static void FDECL(bail, (const char *));	/* __attribute__((noreturn)) */
 
 /*
  * A string containing all the default commands -- to add to a list
@@ -204,7 +204,7 @@ int i, c;
 
 
 /* clean up and quit */
-STATIC_OVL void
+static void
 bail(mesg)
 const char *mesg;
 {
@@ -215,7 +215,7 @@ const char *mesg;
 }
 
 #if defined(SIGWINCH) && defined(CLIPPING)
-STATIC_OVL void
+static void
 winch()
 {
     int oldLI = LI, oldCO = CO, i;
@@ -848,7 +848,7 @@ tty_get_nh_event()
     return;
 }
 
-STATIC_OVL void
+static void
 getret()
 {
 	xputs("\n");
@@ -1006,7 +1006,7 @@ tty_create_nhwindow(type)
     return newid;
 }
 
-STATIC_OVL void
+static void
 erase_menu_or_text(window, cw, clear)
     winid window;
     struct WinDesc *cw;
@@ -1024,7 +1024,7 @@ erase_menu_or_text(window, cw, clear)
 	docorner((int)cw->offx, cw->maxrow+1);
 }
 
-STATIC_OVL void
+static void
 free_window_info(cw, free_data)
     struct WinDesc *cw;
     boolean free_data;
@@ -1113,7 +1113,7 @@ tty_clear_nhwindow(window)
     cw->curx = cw->cury = 0;
 }
 
-STATIC_OVL void
+static void
 dmore(cw, s)
     register struct WinDesc *cw;
     const char *s;			/* valid responses */
@@ -1133,7 +1133,7 @@ dmore(cw, s)
     xwaitforspace(s);
 }
 
-STATIC_OVL void
+static void
 set_item_state(window, lineno, item)
     winid window;
     int lineno;
@@ -1147,7 +1147,7 @@ set_item_state(window, lineno, item)
     term_end_attr(item->attr);
 }
 
-STATIC_OVL void
+static void
 set_all_on_page(window, page_start, page_end)
     winid window;
     tty_menu_item *page_start, *page_end;
@@ -1162,7 +1162,7 @@ set_all_on_page(window, page_start, page_end)
 	}
 }
 
-STATIC_OVL void
+static void
 unset_all_on_page(window, page_start, page_end)
     winid window;
     tty_menu_item *page_start, *page_end;
@@ -1178,7 +1178,7 @@ unset_all_on_page(window, page_start, page_end)
 	}
 }
 
-STATIC_OVL void
+static void
 invert_all_on_page(window, page_start, page_end, acc)
     winid window;
     tty_menu_item *page_start, *page_end;
@@ -1202,7 +1202,7 @@ invert_all_on_page(window, page_start, page_end, acc)
  * Invert all entries that match the give group accelerator (or all if
  * zero).
  */
-STATIC_OVL void
+static void
 invert_all(window, page_start, page_end, acc)
     winid window;
     tty_menu_item *page_start, *page_end;
@@ -1233,7 +1233,7 @@ invert_all(window, page_start, page_end, acc)
 }
 
 #ifdef MENU_COLOR
-STATIC_OVL boolean
+static boolean
 get_menu_coloring(str, color, attr)
 char *str;
 int *color, *attr;
@@ -1258,7 +1258,7 @@ int *color, *attr;
 }
 #endif /* MENU_COLOR */
 
-STATIC_OVL void
+static void
 process_menu_window(window, cw)
 winid window;
 struct WinDesc *cw;
@@ -1600,7 +1600,7 @@ struct WinDesc *cw;
     free((genericptr_t)morestr);
 }
 
-STATIC_OVL void
+static void
 process_text_window(window, cw)
 winid window;
 struct WinDesc *cw;
@@ -1869,7 +1869,7 @@ register int x, y;	/* not xchar: perhaps xchar is unsigned and
     ttyDisplay->cury = y;
 }
 
-STATIC_OVL void
+static void
 tty_putsym(window, x, y, ch)
     winid window;
     int x, y;
@@ -2211,7 +2211,7 @@ tty_add_menu(window, glyph, identifier, ch, gch, attr, str, preselected)
 }
 
 /* Invert the given list, can handle NULL as an input. */
-STATIC_OVL tty_menu_item *
+static tty_menu_item *
 reverse(curr)
     tty_menu_item *curr;
 {

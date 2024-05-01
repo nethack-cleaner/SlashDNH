@@ -20,72 +20,72 @@
 
 extern const int monstr[];
 
-STATIC_DCL boolean FDECL(isbig, (struct mkroom *));
-STATIC_DCL int FDECL(int_sqrt, (int));
-STATIC_DCL boolean FDECL(issemispacious, (struct mkroom *));
-STATIC_DCL void NDECL(mkshop), FDECL(mkzoo,(int)), NDECL(mkswamp);
-STATIC_DCL void NDECL(mktemple);
-STATIC_DCL void NDECL(mkkamereltowers);
-STATIC_DCL void NDECL(mkminorspire);
-STATIC_DCL void NDECL(mksentenelclearing);
-STATIC_DCL void NDECL(mkfishingvillage);
-STATIC_DCL void NDECL(mkpluhomestead);
-STATIC_DCL void FDECL(mkpluroom, (int));
-STATIC_DCL void FDECL(mkelfhut, (int, int, int));
-STATIC_DCL void FDECL(mkdrowshanty, (int));
-STATIC_DCL void FDECL(mkorccave, (int));
-STATIC_DCL void FDECL(mkshantyorcave, (int, boolean, int));
-STATIC_DCL void FDECL(mkwraithclearing, (int));
-STATIC_DCL void NDECL(mkstonepillars);
-STATIC_DCL void FDECL(mkmordorfossil, (int));
-STATIC_DCL void NDECL(mklavapool);
-STATIC_DCL void FDECL(mkwell, (int));
-STATIC_DCL void FDECL(mkfishinghut, (int));
-STATIC_DCL void NDECL(mkpluvillage);
-STATIC_DCL void NDECL(mkferrufort);
-STATIC_DCL void NDECL(mkferrutower);
-STATIC_DCL void NDECL(mkferrubarracks);
-STATIC_DCL void NDECL(mkinvertzigg);
-STATIC_DCL void FDECL(mkmch, (int));
-STATIC_DCL void FDECL(mkwrk, (int));
-STATIC_DCL void FDECL(mkaph, (int));
-STATIC_DCL void FDECL(mklostitem, (int));
-STATIC_DCL void FDECL(mklawfossil, (int));
-STATIC_DCL void FDECL(mkcamp, (int));
-STATIC_DCL void NDECL(mklolthsepulcher);
-STATIC_DCL void NDECL(mkmivaultlolth);
-STATIC_DCL void NDECL(mkvaultlolth);
-STATIC_DCL void NDECL(mklolthgnoll);
-STATIC_DCL void NDECL(mklolthgarden);
-STATIC_DCL void NDECL(mklolthtroll);
-STATIC_DCL void NDECL(mklolthtemple);
-STATIC_DCL void NDECL(mklolthcell);
-STATIC_DCL void NDECL(mklolthdown);
-STATIC_DCL void NDECL(mklolthup);
-STATIC_DCL void NDECL(mksgarden);
-STATIC_DCL void FDECL(mkgarden, (struct mkroom *));
-STATIC_DCL void FDECL(mklibrary, (struct mkroom *));
-STATIC_DCL void FDECL(mkarmory, (struct mkroom *));
-STATIC_DCL void NDECL(mkisland);
-STATIC_DCL void NDECL(mkriver);
-STATIC_DCL void NDECL(mkneuriver);
-STATIC_DCL void NDECL(mkforest12river);
-STATIC_DCL void FDECL(mkneucell, (int,int,struct obj *,int,int));
-STATIC_DCL void FDECL(liquify, (int,int,int));
-STATIC_DCL void FDECL(neuliquify, (int, int, int));
-STATIC_DCL void FDECL(chaliquify, (int, int, int));
-STATIC_DCL struct permonst * NDECL(morguemon);
-STATIC_DCL struct permonst * NDECL(antholemon);
-STATIC_DCL struct permonst * FDECL(squadmon, (struct d_level *));
-STATIC_DCL void FDECL(save_room, (int,struct mkroom *));
-STATIC_DCL void FDECL(rest_room, (int,struct mkroom *));
+static boolean FDECL(isbig, (struct mkroom *));
+static int FDECL(int_sqrt, (int));
+static boolean FDECL(issemispacious, (struct mkroom *));
+static void NDECL(mkshop), FDECL(mkzoo,(int)), NDECL(mkswamp);
+static void NDECL(mktemple);
+static void NDECL(mkkamereltowers);
+static void NDECL(mkminorspire);
+static void NDECL(mksentenelclearing);
+static void NDECL(mkfishingvillage);
+static void NDECL(mkpluhomestead);
+static void FDECL(mkpluroom, (int));
+static void FDECL(mkelfhut, (int, int, int));
+static void FDECL(mkdrowshanty, (int));
+static void FDECL(mkorccave, (int));
+static void FDECL(mkshantyorcave, (int, boolean, int));
+static void FDECL(mkwraithclearing, (int));
+static void NDECL(mkstonepillars);
+static void FDECL(mkmordorfossil, (int));
+static void NDECL(mklavapool);
+static void FDECL(mkwell, (int));
+static void FDECL(mkfishinghut, (int));
+static void NDECL(mkpluvillage);
+static void NDECL(mkferrufort);
+static void NDECL(mkferrutower);
+static void NDECL(mkferrubarracks);
+static void NDECL(mkinvertzigg);
+static void FDECL(mkmch, (int));
+static void FDECL(mkwrk, (int));
+static void FDECL(mkaph, (int));
+static void FDECL(mklostitem, (int));
+static void FDECL(mklawfossil, (int));
+static void FDECL(mkcamp, (int));
+static void NDECL(mklolthsepulcher);
+static void NDECL(mkmivaultlolth);
+static void NDECL(mkvaultlolth);
+static void NDECL(mklolthgnoll);
+static void NDECL(mklolthgarden);
+static void NDECL(mklolthtroll);
+static void NDECL(mklolthtemple);
+static void NDECL(mklolthcell);
+static void NDECL(mklolthdown);
+static void NDECL(mklolthup);
+static void NDECL(mksgarden);
+static void FDECL(mkgarden, (struct mkroom *));
+static void FDECL(mklibrary, (struct mkroom *));
+static void FDECL(mkarmory, (struct mkroom *));
+static void NDECL(mkisland);
+static void NDECL(mkriver);
+static void NDECL(mkneuriver);
+static void NDECL(mkforest12river);
+static void FDECL(mkneucell, (int,int,struct obj *,int,int));
+static void FDECL(liquify, (int,int,int));
+static void FDECL(neuliquify, (int, int, int));
+static void FDECL(chaliquify, (int, int, int));
+static struct permonst * NDECL(morguemon);
+static struct permonst * NDECL(antholemon);
+static struct permonst * FDECL(squadmon, (struct d_level *));
+static void FDECL(save_room, (int,struct mkroom *));
+static void FDECL(rest_room, (int,struct mkroom *));
 
 #define sq(x) ((x)*(x))
 
 extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 
-STATIC_OVL boolean
+static boolean
 isbig(sroom)
 register struct mkroom *sroom;
 {
@@ -94,7 +94,7 @@ register struct mkroom *sroom;
 	return((boolean)( area > 20 ));
 }
 
-STATIC_OVL int
+static int
 int_sqrt(num)
 int num;
 {
@@ -102,7 +102,7 @@ int num;
 }
 
 /* Returns true if room has both an X and Y size of at least x. */
-STATIC_OVL boolean
+static boolean
 atleastxspace(sroom, x)
 register struct mkroom *sroom;
 int x;
@@ -120,7 +120,7 @@ register struct mkroom *sroom;
 }
 
 /* Returns true if room has both an X and Y size of at least four. */
-STATIC_OVL boolean
+static boolean
 issemispacious(sroom)
 register struct mkroom *sroom;
 {
@@ -181,7 +181,7 @@ mksepulcher()
 	}
 }
 
-STATIC_OVL
+static
 void
 mklolthsepulcher()
 {
@@ -656,7 +656,7 @@ boolean bury;
 	else add_to_container(container, otmp);
 }
 
-STATIC_OVL
+static
 void
 mkmivaultlolth()
 {
@@ -775,7 +775,7 @@ mkmivaultlolth()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkvaultlolth()
 {
@@ -836,7 +836,7 @@ mkvaultlolth()
 	}
 }
 
-STATIC_OVL
+static
 void
 mklolthgnoll()
 {
@@ -979,7 +979,7 @@ mklolthgnoll()
 }
 
 
-STATIC_OVL
+static
 void
 mklolthgarden()
 {
@@ -1109,7 +1109,7 @@ mklolthgarden()
 }
 
 
-STATIC_OVL
+static
 void
 mklolthtroll()
 {
@@ -1228,7 +1228,7 @@ mklolthtroll()
 }
 
 
-STATIC_OVL
+static
 void
 mklolthtemple()
 {
@@ -1366,7 +1366,7 @@ mklolthtemple()
 	}
 }
 
-STATIC_OVL
+static
 void
 mklolthcell()
 {
@@ -1445,7 +1445,7 @@ mklolthcell()
 	}
 }
 
-STATIC_OVL
+static
 void
 mklolthtreasure()
 {
@@ -1585,7 +1585,7 @@ mklolthtreasure()
 }
 
 
-STATIC_OVL
+static
 void
 mklolthup()
 {
@@ -1712,7 +1712,7 @@ mklolthup()
 	}
 }
 
-STATIC_OVL
+static
 void
 mklolthdown()
 {
@@ -1845,7 +1845,7 @@ static const int serpents[] = {PM_PYTHON, PM_COBRA, PM_PIT_VIPER, PM_PYTHON, PM_
 	PM_MARILITH
 	};
 
-STATIC_OVL
+static
 void
 mkkamereltowers()
 {
@@ -2245,7 +2245,7 @@ mkkamereltowers()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkminorspire()
 {
@@ -2403,7 +2403,7 @@ mkminorspire()
 
 int yog_list[] = {PM_KOBOLD_SHAMAN, PM_ORC_SHAMAN, PM_GNOMISH_WIZARD, PM_HEDROW_WIZARD, PM_DWARF_CLERIC, PM_ELF_LADY};
 
-STATIC_OVL
+static
 void
 mksentenelclearing()
 {
@@ -2505,7 +2505,7 @@ mksentenelclearing()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkfishingvillage()
 {
@@ -2574,7 +2574,7 @@ mkfishingvillage()
 	mkwell(left);
 }
 
-STATIC_OVL
+static
 void
 mkfishinghut(left)
 	int left;
@@ -2682,7 +2682,7 @@ mkfishinghut(left)
 	}
 }
 
-STATIC_OVL
+static
 void
 mkwell(left)
 	int left;
@@ -2751,7 +2751,7 @@ mkwell(left)
 	}
 }
 
-STATIC_OVL
+static
 void
 mkpluhomestead()
 {
@@ -2808,7 +2808,7 @@ mkpluhomestead()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkpluroom(width)
 int width;
@@ -2952,7 +2952,7 @@ int width;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkfountainsquare(left)
 int left;
@@ -2993,7 +2993,7 @@ int left;
 	}
 }
 
-STATIC_OVL
+static
 void
 mktowntree()
 {
@@ -3023,7 +3023,7 @@ mktowntree()
 	}
 }
 
-STATIC_OVL
+static
 void
 mksumbuilding(width)
 int width;
@@ -3166,7 +3166,7 @@ int width;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkelfhut(background, foreground, left)
 int background;
@@ -3247,7 +3247,7 @@ int left;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkelfforge(background, foreground, left, mithril)
 int background;
@@ -3327,7 +3327,7 @@ char mithril;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkelffountain()
 {
@@ -3366,7 +3366,7 @@ mkelffountain()
 	}
 }
 
-STATIC_OVL
+static
 void
 orc_cave_spawn_at(x, y, w)
 int x, y, w;
@@ -3417,7 +3417,7 @@ int x, y, w;
 	}
 }
 
-STATIC_OVL
+static
 void
 drow_shanty_spawn_at(x, y, w)
 int x, y, w;
@@ -3643,7 +3643,7 @@ int x, y, w;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkdrowshanty(width)
 int width;
@@ -3658,7 +3658,7 @@ int width;
 	mkshantyorcave(PM_ORC, FALSE, width);
 }
 
-STATIC_OVL
+static
 void
 mkshantyorcave(spawntype, doors, width)
 int spawntype;
@@ -3780,7 +3780,7 @@ int width;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkwraithclearing(right)
 int right;
@@ -3846,7 +3846,7 @@ int right;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkstonepillars()
 {
@@ -3931,7 +3931,7 @@ int typ;
 	}
 }
 	
-STATIC_OVL
+static
 void
 mklavapool()
 {
@@ -3975,7 +3975,7 @@ mklavapool()
 #define FORMIAN_CAMP2	2
 #define THRIAE_CAMP		3
 
-STATIC_OVL
+static
 void
 mkcamp(type)
 	int type;
@@ -4070,7 +4070,7 @@ mkcamp(type)
 	}
 }
 
-STATIC_OVL
+static
 void
 mkpluvillage()
 {
@@ -4470,7 +4470,7 @@ struct roomcon{
 	struct roomcon *right;
 };
 
-STATIC_OVL
+static
 void
 connectRight(curroom)
 	struct roomcon *curroom;
@@ -4491,7 +4491,7 @@ connectRight(curroom)
 	}
 }
 
-STATIC_OVL
+static
 void
 connectLeft(curroom)
 	struct roomcon *curroom;
@@ -4512,7 +4512,7 @@ connectLeft(curroom)
 	}
 }
 
-STATIC_OVL
+static
 void
 connectInner(inroom)
 	struct roomcon *inroom;
@@ -4542,7 +4542,7 @@ connectInner(inroom)
 	}
 }
 
-STATIC_OVL
+static
 void
 mkferrufort()
 {
@@ -4852,7 +4852,7 @@ nestbreak:
 	}
 }
 
-STATIC_OVL
+static
 void
 mkferrutower()
 {
@@ -4928,7 +4928,7 @@ mkferrutower()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkferrubarracks()
 {
@@ -5049,7 +5049,7 @@ char timaresh_template_small[12][12] =
  {'v','.','-','-','-','-','-','.','.'},
  {'v','.','.','.','.','.','.','.','v'}};
 
-STATIC_OVL
+static
 void
 mktimaresh()
 {
@@ -5218,7 +5218,7 @@ mktimaresh()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkinvertzigg()
 {
@@ -5384,7 +5384,7 @@ mkinvertzigg()
 	}
 }
 
-STATIC_OVL
+static
 void
 mkmch(typ)
 int typ;
@@ -5539,7 +5539,7 @@ int typ;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkwrk(typ)
 int typ;
@@ -5710,7 +5710,7 @@ int typ;
 	}
 }
 
-STATIC_OVL
+static
 void
 mkaph(junked)
 int junked;
@@ -5786,7 +5786,7 @@ int junked;
 	}
 }
 
-STATIC_OVL
+static
 void
 mklostitem(typ)
 int typ;
@@ -5836,7 +5836,7 @@ int typ;
 	}
 }
 
-STATIC_OVL
+static
 void
 mk_kobold_bastion()
 {
@@ -5926,7 +5926,7 @@ static int kobold_prisoners[] = {
 	PM_GNOMISH_WIZARD
 };
 
-STATIC_OVL
+static
 void
 mk_kobold_prison()
 {
@@ -5990,7 +5990,7 @@ mk_kobold_prison()
 	}
 }
 
-STATIC_OVL
+static
 void
 mk_kobold_pool()
 {
@@ -6426,7 +6426,7 @@ int	roomtype;
     }
 }
 
-STATIC_OVL void
+static void
 mkshop()
 {
 	register struct mkroom *sroom;
@@ -6618,7 +6618,7 @@ int type;
 	}
 }
 
-STATIC_OVL void
+static void
 mkzoo(type)
 int type;
 {
@@ -6631,7 +6631,7 @@ int type;
 	}
 }
 
-STATIC_OVL boolean
+static boolean
 cell_spot(sx, sy)
 int sx,sy;
 {
@@ -7132,7 +7132,7 @@ int sx,sy;
 	else return 0;
 }
 
-STATIC_OVL void
+static void
 mkcell(sx, sy, chest, kingtype, dx, dy)
 int sx,sy;
 struct obj *chest;
@@ -7170,7 +7170,7 @@ int dx,dy;
 	}
 }
 
-STATIC_OVL void
+static void
 mkneucell(sx, sy, chest, dx, dy)
 int sx,sy;
 struct obj *chest;
@@ -7755,7 +7755,7 @@ long mfaction;
 	level.flags.graveyard = TRUE;	/* reduced chance for undead corpse */
 }
 
-STATIC_OVL struct permonst *
+static struct permonst *
 morguemon()
 {
 	register int i = rn2(100), hd = rn2(level_difficulty());
@@ -7771,7 +7771,7 @@ morguemon()
 			: (i < 40) ? &mons[PM_WRAITH] : mkclass(S_ZOMBIE, Inhell ? G_HELL : G_NOHELL));
 }
 
-STATIC_OVL struct permonst *
+static struct permonst *
 antholemon()
 {
 	int mtyp;
@@ -7797,7 +7797,7 @@ antholemon()
 /** Create a special room with trees, fountains and nymphs.
  * @author Pasi Kallinen
  */
-STATIC_OVL void
+static void
 mkgarden(croom)
 struct mkroom *croom; /* NULL == choose random room */
 {
@@ -7888,7 +7888,7 @@ struct mkroom *croom; /* NULL == choose random room */
     }
 }
 
-STATIC_OVL void
+static void
 mklibrary(croom)
 struct mkroom *croom; /* NULL == choose random room */
 {
@@ -7942,7 +7942,7 @@ struct mkroom *croom; /* NULL == choose random room */
 	}
 }
 
-STATIC_OVL void
+static void
 mkarmory(croom)
 struct mkroom *croom; /* NULL == choose random room */
 {
@@ -8027,7 +8027,7 @@ struct mkroom *croom; /* NULL == choose random room */
 	}
 }
 
-STATIC_OVL void
+static void
 mkswamp()	/* Michiel Huisjes & Fred de Wilde */
 {
 	register struct mkroom *sroom;
@@ -8075,7 +8075,7 @@ mkswamp()	/* Michiel Huisjes & Fred de Wilde */
 	}
 }
 
-STATIC_OVL void
+static void
 mkriver()	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
@@ -8128,7 +8128,7 @@ mkriver()	/* John Harris */
 	}
 }
 
-STATIC_OVL void
+static void
 mkneuriver()	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
@@ -8181,7 +8181,7 @@ mkneuriver()	/* John Harris */
 	}
 }
 
-STATIC_OVL void
+static void
 mkforest12river()	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
@@ -8210,7 +8210,7 @@ mkforest12river()	/* John Harris */
 }
 
 /* This isn't currently used anywhere. It liquifies the whole level. */
-STATIC_OVL void
+static void
 mksea()	/* John Harris */
 {
 	register int x, y;
@@ -8222,7 +8222,7 @@ mksea()	/* John Harris */
 	}
 }
 
-STATIC_OVL void
+static void
 liquify(x, y, edge)
 register int x, y;
 register int edge; /* Allows room walls to intrude slightly into river. */
@@ -8261,7 +8261,7 @@ register int edge; /* Allows room walls to intrude slightly into river. */
 	levl[x][y].lit = 1;
 }
 
-STATIC_OVL void
+static void
 neuliquify(x, y, edge)
 register int x, y;
 register int edge; /* Allows room walls to intrude slightly into river. */
@@ -8302,7 +8302,7 @@ register int edge; /* Allows room walls to intrude slightly into river. */
 	levl[x][y].lit = 1;
 }
 
-STATIC_OVL void
+static void
 chaliquify(x, y, edge)
 register int x, y;
 register int edge; /* Allows room walls to intrude slightly into river. */
@@ -8356,7 +8356,7 @@ int roomno;
 	return(&buf);
 }
 
-STATIC_OVL void
+static void
 mkisland() /* John Harris, modified from mktemple & mkshop,
 				with ideas and aid from Pasi Kallinen.*/
 {
@@ -8627,7 +8627,7 @@ mkhellvaultroom()
 	wallification(sroom->lx, sroom->ly, sroom->hx, sroom->hy);
 }
 
-STATIC_OVL void
+static void
 mksgardenstatueat(x,y)
 	int x;
 	int y;
@@ -8653,7 +8653,7 @@ mksgardenstatueat(x,y)
 
 }
 
-STATIC_OVL void
+static void
 mksgarden()
 {
 	register struct mkroom *sroom;
@@ -8695,7 +8695,7 @@ mksgarden()
 	}
 }
 
-STATIC_OVL void
+static void
 mktemple()
 {
 	register struct mkroom *sroom;
@@ -9371,7 +9371,7 @@ static struct soldier_squad_probabilities {
     {PM_KOBOLD, 65}, {PM_KOBOLD_BRUTE, 30}, {PM_KOBOLD_LORD, 4}, {PM_KOBOLD_SHAMAN, 1}
 };
 
-STATIC_OVL struct permonst *
+static struct permonst *
 squadmon(lev)		/* return soldier types appropriate for the current branch. */
 d_level *lev;
 {
@@ -9411,7 +9411,7 @@ gotone:
  * (if any).
  */
 
-STATIC_OVL void
+static void
 save_room(fd, r)
 int	fd;
 struct mkroom *r;
@@ -9443,7 +9443,7 @@ int fd;
 	    save_room(fd, &rooms[i]);
 }
 
-STATIC_OVL void
+static void
 rest_room(fd, r)
 int fd;
 struct mkroom *r;

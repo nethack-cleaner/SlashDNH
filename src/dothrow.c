@@ -12,7 +12,7 @@ extern void NDECL(autoquiver);
 extern int FDECL(gem_accept, (struct monst *, struct obj *));
 extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
 extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
-STATIC_DCL boolean FDECL(mhurtle_step, (genericptr_t,int,int));
+static boolean FDECL(mhurtle_step, (genericptr_t,int,int));
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
 
 
@@ -28,7 +28,7 @@ boolean barrage=FALSE;
 #define THROW_UWEP 	1
 #define THROW_USWAPWEP 	2
 
-STATIC_OVL const char * const Ronnie_ray_gun[] = {
+static const char * const Ronnie_ray_gun[] = {
 	"When you can't make them see the light, make them feel the heat.",
 	"Every man must be free to become whatever God intends he should become.",
 	"There you go again.",
@@ -519,7 +519,7 @@ hurtle_step(arg, x, y)
     return TRUE;
 }
 
-STATIC_OVL boolean
+static boolean
 mhurtle_step(arg, x, y)
     genericptr_t arg;
     int x, y;

@@ -17,22 +17,22 @@ struct poisoninfo {
 	int poisdmg;
 };
 
-STATIC_DCL void FDECL(wildmiss, (struct monst *, struct attack *, struct obj *, boolean));
-STATIC_DCL boolean FDECL(u_surprise, (struct monst *, boolean));
-STATIC_DCL struct attack * FDECL(getnextspiritattack, (boolean));
-STATIC_DCL void FDECL(xswingsy, (struct monst *, struct monst *, struct obj *, boolean));
-STATIC_DCL void FDECL(xyhitmsg, (struct monst *, struct monst *, struct attack *));
-STATIC_DCL void FDECL(noises, (struct monst *, struct attack *));
-STATIC_DCL void FDECL(xymissmsg, (struct monst *, struct monst *, struct attack *, int, boolean));
-STATIC_DCL int FDECL(do_weapon_multistriking_effects, (struct monst *, struct monst *, struct attack *, struct obj *, int));
-STATIC_DCL int FDECL(xcastmagicy, (struct monst *, struct monst *, struct attack *, int));
-STATIC_DCL int FDECL(xtinkery, (struct monst *, struct monst *, struct attack *, int));
-STATIC_DCL int FDECL(xexplodey, (struct monst *, struct monst *, struct attack *, int));
-STATIC_DCL int FDECL(hmoncore, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj **, void *, int, int, int, boolean, int, boolean, int));
-STATIC_DCL void FDECL(add_silvered_art_sear_adjectives, (char *, struct obj*));
-STATIC_DCL void FDECL(calculate_poison, (struct monst *, struct monst *, struct attack *, struct obj *, struct obj *, struct poisoninfo *));
-STATIC_DCL int FDECL(shadow_strike, (struct monst *));
-STATIC_DCL int FDECL(xpassivehity, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj *, int, int, struct permonst *, boolean));
+static void FDECL(wildmiss, (struct monst *, struct attack *, struct obj *, boolean));
+static boolean FDECL(u_surprise, (struct monst *, boolean));
+static struct attack * FDECL(getnextspiritattack, (boolean));
+static void FDECL(xswingsy, (struct monst *, struct monst *, struct obj *, boolean));
+static void FDECL(xyhitmsg, (struct monst *, struct monst *, struct attack *));
+static void FDECL(noises, (struct monst *, struct attack *));
+static void FDECL(xymissmsg, (struct monst *, struct monst *, struct attack *, int, boolean));
+static int FDECL(do_weapon_multistriking_effects, (struct monst *, struct monst *, struct attack *, struct obj *, int));
+static int FDECL(xcastmagicy, (struct monst *, struct monst *, struct attack *, int));
+static int FDECL(xtinkery, (struct monst *, struct monst *, struct attack *, int));
+static int FDECL(xexplodey, (struct monst *, struct monst *, struct attack *, int));
+static int FDECL(hmoncore, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj **, void *, int, int, int, boolean, int, boolean, int));
+static void FDECL(add_silvered_art_sear_adjectives, (char *, struct obj*));
+static void FDECL(calculate_poison, (struct monst *, struct monst *, struct attack *, struct obj *, struct obj *, struct poisoninfo *));
+static int FDECL(shadow_strike, (struct monst *));
+static int FDECL(xpassivehity, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj *, int, int, struct permonst *, boolean));
 
 /* for long worms */
 extern boolean notonhead;

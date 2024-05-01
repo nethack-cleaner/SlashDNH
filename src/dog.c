@@ -5,7 +5,7 @@
 #include "hack.h"
 
 
-STATIC_DCL int NDECL(pet_type);
+static int NDECL(pet_type);
 
 void
 initedog(mtmp)
@@ -46,7 +46,7 @@ register struct monst *mtmp;
 		newsym(mtmp->mx, mtmp->my);
 }
 
-STATIC_OVL int
+static int
 pet_type()
 {
 	if(Role_if(PM_MADMAN)){

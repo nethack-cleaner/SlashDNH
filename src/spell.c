@@ -15,32 +15,32 @@ static NEARDATA int RoSbook;		/* Read spell or Study Wards?" */
 #define STUDY_WARD 2
 #define MAINTAINED_SPELL_PW_MULTIPLIER 3
 #define MAINTAINED_SPELL_HUNGER_MULTIPLIER 1
-STATIC_PTR int NDECL(purifying_blast);
-STATIC_PTR int NDECL(stargate);
-STATIC_PTR struct permonst * NDECL(choose_crystal_summon);
-STATIC_DCL int FDECL(spell_let_to_idx, (CHAR_P));
-STATIC_DCL boolean FDECL(check_spirit_let, (CHAR_P));
-STATIC_DCL boolean FDECL(cursed_book, (struct obj *bp));
-STATIC_DCL boolean FDECL(confused_book, (struct obj *));
-STATIC_DCL void FDECL(deadbook, (struct obj *));
-STATIC_PTR int NDECL(learn);
-STATIC_DCL boolean FDECL(getspell, (int *, int));
-STATIC_DCL boolean FDECL(getspirit, (int *));
-STATIC_DCL boolean FDECL(spiritLets, (char *, int));
-STATIC_DCL int FDECL(dospiritmenu, (int, int *, int));
-STATIC_DCL boolean FDECL(dospellmenu, (int,int *));
-STATIC_DCL void FDECL(describe_spell, (int));
-STATIC_DCL int NDECL(throwspell);
-STATIC_DCL void NDECL(cast_protection);
-STATIC_DCL void NDECL(cast_abjuration);
-STATIC_DCL void FDECL(cast_mass_healing, (struct obj *));
-STATIC_DCL boolean FDECL(sightwedge, (int,int, int,int, int,int));
-STATIC_DCL void FDECL(spell_backfire, (int));
-STATIC_DCL int FDECL(spellhunger, (int));
-STATIC_DCL char * FDECL(splknowpct, (int));
-STATIC_DCL int FDECL(isqrt, (int));
-STATIC_DCL boolean FDECL(run_maintained_spell, (int));
-STATIC_DCL boolean FDECL(can_maintain_spell, (int));
+static int NDECL(purifying_blast);
+static int NDECL(stargate);
+static struct permonst * NDECL(choose_crystal_summon);
+static int FDECL(spell_let_to_idx, (CHAR_P));
+static boolean FDECL(check_spirit_let, (CHAR_P));
+static boolean FDECL(cursed_book, (struct obj *bp));
+static boolean FDECL(confused_book, (struct obj *));
+static void FDECL(deadbook, (struct obj *));
+static int NDECL(learn);
+static boolean FDECL(getspell, (int *, int));
+static boolean FDECL(getspirit, (int *));
+static boolean FDECL(spiritLets, (char *, int));
+static int FDECL(dospiritmenu, (int, int *, int));
+static boolean FDECL(dospellmenu, (int,int *));
+static void FDECL(describe_spell, (int));
+static int NDECL(throwspell);
+static void NDECL(cast_protection);
+static void NDECL(cast_abjuration);
+static void FDECL(cast_mass_healing, (struct obj *));
+static boolean FDECL(sightwedge, (int,int, int,int, int,int));
+static void FDECL(spell_backfire, (int));
+static int FDECL(spellhunger, (int));
+static char * FDECL(splknowpct, (int));
+static int FDECL(isqrt, (int));
+static boolean FDECL(run_maintained_spell, (int));
+static boolean FDECL(can_maintain_spell, (int));
 
 long FDECL(doreadstudy, (const char *));
 
@@ -136,7 +136,7 @@ static const char where_to_cast[] = "Where do you want to cast the spell?";
 static const char where_to_gaze[] = "Where do you want to look?";
 
 /* convert a letter into a number in the range 0..51, or -1 if not a letter */
-STATIC_OVL int
+static int
 spell_let_to_idx(ilet)
 char ilet;
 {
@@ -150,7 +150,7 @@ char ilet;
 }
 
 /* TRUE: book should be destroyed by caller */
-STATIC_OVL boolean cursed_book(struct obj *bp){
+static boolean cursed_book(struct obj *bp){
 	int lev = objects[bp->otyp].oc_level;
 
 	boolean was_in_use;
@@ -254,7 +254,7 @@ STATIC_OVL boolean cursed_book(struct obj *bp){
 }
 
 /* study while confused: returns TRUE if the book is destroyed */
-STATIC_OVL boolean
+static boolean
 confused_book(struct obj *spellbook){
 	boolean gone = FALSE;
 	
@@ -277,7 +277,7 @@ confused_book(struct obj *spellbook){
 }
 
 /* study while confused: returns TRUE if the book is destroyed */
-STATIC_OVL void
+static void
 hallu_book(struct obj *spellbook){
 	switch(rn2(4)){
 		case 0:
@@ -298,7 +298,7 @@ hallu_book(struct obj *spellbook){
 }
 
 /* special effects for The Book of the Dead */
-STATIC_OVL void
+static void
 deadbook(book2)
 struct obj *book2;
 {
@@ -423,7 +423,7 @@ raise_dead:
     return;
 }
 
-STATIC_PTR int
+static int
 learn()
 {
 	int i;
@@ -944,7 +944,7 @@ run_maintained_spells()
 	}
 }
 
-STATIC_DCL boolean
+static boolean
 can_maintain_spell(spell)
 int spell;
 {
@@ -963,7 +963,7 @@ int spell;
 	return FALSE;
 }
 
-STATIC_OVL boolean
+static boolean
 run_maintained_spell(spell)
 int spell;
 {
@@ -1081,7 +1081,7 @@ int dmg;
  * Return TRUE if a spell was picked, with the spell index in the return
  * parameter.  Otherwise return FALSE.
  */
-STATIC_OVL boolean
+static boolean
 getspell(spell_no, menutype)
 int *spell_no;
 int menutype;
@@ -1132,7 +1132,7 @@ int menutype;
  * parameter.  Otherwise return FALSE.
  */
  
-STATIC_OVL boolean
+static boolean
 getspirit(power_no)
 	int *power_no;
 {
@@ -1402,7 +1402,7 @@ pick_gnosis_seal()
 	return 0;
 }
 
-STATIC_OVL boolean
+static boolean
 spiritLets(lets, respect_timeout)
 	char *lets;
 	int respect_timeout;
@@ -1549,7 +1549,7 @@ dospirit()
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL boolean
+static boolean
 check_spirit_let(let)
 	char let;
 {
@@ -1657,7 +1657,7 @@ int skill;
 	}
 }
 
-STATIC_OVL int
+static int
 spellhunger(energy)
 int energy;
 {
@@ -1703,7 +1703,7 @@ int booktype;
 	return (objects[booktype].oc_skill);
 }
 
-STATIC_OVL void
+static void
 cast_protection()
 {
 	int loglev = 0;
@@ -1773,7 +1773,7 @@ cast_protection()
  * If they fail, they are immediately dispelled.
  * If they suceeed, non-permanent summons' durations are halved.
  */
-STATIC_OVL void
+static void
 cast_abjuration()
 {
 	struct monst * mtmp;
@@ -1816,7 +1816,7 @@ expel_summons()
 }
 
 
-STATIC_OVL void
+static void
 cast_extra_healing_at(x, y, arg)
 int x, y;
 genericptr_t arg;
@@ -1828,7 +1828,7 @@ genericptr_t arg;
 		bhitm(mtmp, (struct obj *)arg);
 }
 
-STATIC_OVL void
+static void
 cast_mass_healing(otmp)
 struct obj * otmp;
 {
@@ -1837,7 +1837,7 @@ struct obj * otmp;
 }
 
 /* attempting to cast a forgotten spell will cause disorientation */
-STATIC_OVL void
+static void
 spell_backfire(spell)
 int spell;
 {
@@ -1865,7 +1865,7 @@ int spell;
     return;
 }
 
-STATIC_OVL boolean
+static boolean
 sightwedge
 (dx,dy,x1,y1,x2,y2)
 int dx,dy,x1,y1,x2,y2;
@@ -1971,7 +1971,7 @@ genericptr_t val;
 	}
 }
 
-STATIC_OVL boolean
+static boolean
 masterDoorBox(x,y)
 	int x, y;
 {
@@ -2043,7 +2043,7 @@ spiritDsize()
 	else if(u.ulevel <= 29) return 8 * bonus;
 	else return 9 * bonus;
 }
-STATIC_PTR int
+static int
 purifying_blast()
 {
 	struct zapdata zapdata = { 0 };
@@ -2077,7 +2077,7 @@ purifying_blast()
 	return MOVE_INSTANT;
 }
 
-STATIC_PTR int
+static int
 stargate()
 {
 	int i, num_ok_dungeons, last_ok_dungeon = 0;
@@ -4952,7 +4952,7 @@ dothrowspell:
 
 /* Choose location where spell takes effect. */
 /* returns 1 if the action should happen, 0 otherwise */
-STATIC_OVL int
+static int
 throwspell()
 {
 	coord cc;
@@ -5291,7 +5291,7 @@ int spell;
 	return buf; 
 }
 
-STATIC_OVL boolean
+static boolean
 dospellmenu(splaction, spell_no)
 int splaction;	/* SPELLMENU_CAST, SPELLMENU_VIEW, SPELLMENU_DESCRIBE, SPELLMENU_MAINTAIN, SPELLMENU_PICK, SPELLMENU_QUIVER, or spl_book[] index */
 int *spell_no;
@@ -5515,7 +5515,7 @@ int *spell_no;
 }
 
 
-STATIC_OVL void
+static void
 describe_spell(spellID)
 int spellID;
 {
@@ -5889,7 +5889,7 @@ dump_spells()
 #endif
 
 /* Integer square root function without using floating point. */
-STATIC_OVL int
+static int
 isqrt(val)
 int val;
 {

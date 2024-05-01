@@ -47,39 +47,39 @@ struct lchoice {
 };
 
 static void FDECL(Fread, (genericptr_t, int, int, dlb *));
-STATIC_DCL int FDECL(dname_to_dnum, (const char *));
-STATIC_DCL int FDECL(find_branch, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(parent_dnum, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(level_range, (int,int,int,int,struct proto_dungeon *,int *));
-STATIC_DCL int FDECL(parent_dlevel, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(correct_branch_type, (struct tmpbranch *));
-STATIC_DCL branch *FDECL(add_branch, (int, int, struct proto_dungeon *));
-STATIC_DCL void FDECL(add_level, (s_level *));
-STATIC_DCL void FDECL(init_level, (int,int,struct proto_dungeon *));
-STATIC_DCL int FDECL(possible_places, (int, boolean *, struct proto_dungeon *));
-STATIC_DCL int FDECL(pick_level, (boolean *, int));
-STATIC_DCL boolean FDECL(place_level, (int, struct proto_dungeon *));
-STATIC_DCL boolean FDECL(select_alternate, (int, struct proto_dungeon *));
+static int FDECL(dname_to_dnum, (const char *));
+static int FDECL(find_branch, (const char *, struct proto_dungeon *));
+static int FDECL(parent_dnum, (const char *, struct proto_dungeon *));
+static int FDECL(level_range, (int,int,int,int,struct proto_dungeon *,int *));
+static int FDECL(parent_dlevel, (const char *, struct proto_dungeon *));
+static int FDECL(correct_branch_type, (struct tmpbranch *));
+static branch *FDECL(add_branch, (int, int, struct proto_dungeon *));
+static void FDECL(add_level, (s_level *));
+static void FDECL(init_level, (int,int,struct proto_dungeon *));
+static int FDECL(possible_places, (int, boolean *, struct proto_dungeon *));
+static int FDECL(pick_level, (boolean *, int));
+static boolean FDECL(place_level, (int, struct proto_dungeon *));
+static boolean FDECL(select_alternate, (int, struct proto_dungeon *));
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(br_string, (int));
-STATIC_DCL void FDECL(print_branch, (winid, int, int, int, BOOLEAN_P, struct lchoice *));
+static const char *FDECL(br_string, (int));
+static void FDECL(print_branch, (winid, int, int, int, BOOLEAN_P, struct lchoice *));
 #endif
 
 mapseen *mapseenchn = (struct mapseen *)0;
-STATIC_DCL void FDECL(free_mapseen, (mapseen *));
-STATIC_DCL mapseen *FDECL(load_mapseen, (int));
-STATIC_DCL void FDECL(save_mapseen, (int, mapseen *));
-STATIC_DCL mapseen *FDECL(find_mapseen, (d_level *));
-STATIC_DCL void FDECL(print_mapseen, (winid,mapseen *,BOOLEAN_P));
-STATIC_DCL boolean FDECL(interest_mapseen, (mapseen *));
-STATIC_DCL char *FDECL(seen_string, (XCHAR_P, const char *));
-STATIC_DCL const char *FDECL(br_string2, (branch *));
+static void FDECL(free_mapseen, (mapseen *));
+static mapseen *FDECL(load_mapseen, (int));
+static void FDECL(save_mapseen, (int, mapseen *));
+static mapseen *FDECL(find_mapseen, (d_level *));
+static void FDECL(print_mapseen, (winid,mapseen *,BOOLEAN_P));
+static boolean FDECL(interest_mapseen, (mapseen *));
+static char *FDECL(seen_string, (XCHAR_P, const char *));
+static const char *FDECL(br_string2, (branch *));
 
 #ifdef DEBUG
 #define DD	dungeons[i]
-STATIC_DCL void NDECL(dumpit);
+static void NDECL(dumpit);
 
-STATIC_OVL void
+static void
 dumpit()
 {
 	int	i;
@@ -245,7 +245,7 @@ Fread(ptr, size, nitems, stream)
 	}
 }
 
-STATIC_OVL int
+static int
 dname_to_dnum(s)
 const char	*s;
 {
@@ -270,7 +270,7 @@ find_level(s)
 }
 
 /* Find the branch that links the named dungeon. */
-STATIC_OVL int
+static int
 find_branch(s, pd)
 	const char *s;		/* dungeon name */
 	struct proto_dungeon *pd;
@@ -302,7 +302,7 @@ find_branch(s, pd)
  * Find the "parent" by searching the prototype branch list for the branch
  * listing, then figuring out to which dungeon it belongs.
  */
-STATIC_OVL int
+static int
 parent_dnum(s, pd)
 const char	   *s;	/* dungeon name */
 struct proto_dungeon *pd;
@@ -334,7 +334,7 @@ struct proto_dungeon *pd;
  *	 a negative random component means from the (adjusted) base to the
  *	 end of the dungeon.
  */
-STATIC_OVL int
+static int
 level_range(dgn, base, rand, chain, pd, adjusted_base)
 	int	dgn;
 	int	base, rand, chain;
@@ -369,7 +369,7 @@ level_range(dgn, base, rand, chain, pd, adjusted_base)
 	return 1;
 }
 
-STATIC_OVL int
+static int
 parent_dlevel(s, pd)
 	const char	*s;
 	struct proto_dungeon *pd;
@@ -397,7 +397,7 @@ parent_dlevel(s, pd)
 }
 
 /* Convert from the temporary branch type to the dungeon branch type. */
-STATIC_OVL int
+static int
 correct_branch_type(tbr)
     struct tmpbranch *tbr;
 {
@@ -464,7 +464,7 @@ insert_branch(new_branch, extract_first)
 }
 
 /* Add a dungeon branch to the branch list. */
-STATIC_OVL branch *
+static branch *
 add_branch(dgn, child_entry_level, pd)
     int dgn;
     int child_entry_level;
@@ -495,7 +495,7 @@ add_branch(dgn, child_entry_level, pd)
  * level that has a dungeon number less than the dungeon number of the
  * last entry.
  */
-STATIC_OVL void
+static void
 add_level(new_lev)
     s_level *new_lev;
 {
@@ -517,7 +517,7 @@ add_level(new_lev)
 	}
 }
 
-STATIC_OVL void
+static void
 init_level(dgn, proto_index, pd)
 	int dgn, proto_index;
 	struct proto_dungeon *pd;
@@ -552,7 +552,7 @@ init_level(dgn, proto_index, pd)
 	new_level->next    = (s_level *) 0;
 }
 
-STATIC_OVL int
+static int
 possible_places(idx, map, pd)
     int idx;		/* prototype index */
     boolean *map;	/* array MAXLEVEL+1 in length */
@@ -584,7 +584,7 @@ possible_places(idx, map, pd)
 }
 
 /* Pick the nth TRUE entry in the given boolean array. */
-STATIC_OVL int
+static int
 pick_level(map, nth)
     boolean *map;	/* an array MAXLEVEL+1 in size */
     int nth;
@@ -614,7 +614,7 @@ int d;
  * all possible places have been tried.  If all possible places have
  * been exausted, return false.
  */
-STATIC_OVL boolean
+static boolean
 place_level(proto_index, pd)
     int proto_index;
     struct proto_dungeon *pd;
@@ -2009,7 +2009,7 @@ const char *nam;
 #ifdef WIZARD
 
 /* Convert a branch type to a string usable by print_dungeon(). */
-STATIC_OVL const char *
+static const char *
 br_string(type)
     int type;
 {
@@ -2023,7 +2023,7 @@ br_string(type)
 }
 
 /* Print all child branches between the lower and upper bounds. */
-STATIC_OVL void
+static void
 print_branch(win, dnum, lower_bound, upper_bound, bymenu, lchoices)
     winid win;
     int   dnum;
@@ -2326,7 +2326,7 @@ donamelevel()
 
 /* find the particular mapseen object in the chain */
 /* may return 0 */
-STATIC_OVL mapseen *
+static mapseen *
 find_mapseen(lev)
 d_level *lev;
 {
@@ -2391,7 +2391,7 @@ int ledger_num;
 }
 
 
-STATIC_OVL void
+static void
 save_mapseen(fd, mptr)
 int fd;
 mapseen *mptr;
@@ -2415,7 +2415,7 @@ mapseen *mptr;
 	bwrite(fd, (genericptr_t) &mptr->rooms, sizeof(mptr->rooms));
 }
 
-STATIC_OVL mapseen *
+static mapseen *
 load_mapseen(fd)
 int fd;
 {
@@ -2523,7 +2523,7 @@ d_level *lev;
 	*/
 
 /* returns true if this level has something interesting to print out */
-STATIC_OVL boolean
+static boolean
 interest_mapseen(mptr)
 mapseen *mptr;
 {
@@ -2708,7 +2708,7 @@ dooverview()
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL char *
+static char *
 seen_string(x, obj)
 xchar x;
 const char *obj;
@@ -2726,7 +2726,7 @@ const char *obj;
 }
 
 /* better br_string */
-STATIC_OVL const char *
+static const char *
 br_string2(br)
 branch *br;
 {
@@ -2745,7 +2745,7 @@ branch *br;
 	return "(unknown)";
 }
 
-STATIC_OVL const char*
+static const char*
 shop_string(rtype)
 int rtype;
 {
@@ -2789,7 +2789,7 @@ int rtype;
 	((var) != 1 ? "s" : "")); }
 #define ADDTOBUF(nam, var) { if (var) Sprintf(eos(buf), "%s " nam, COMMA); }
 
-STATIC_OVL void
+static void
 print_mapseen(win, mptr, printdun)
 winid win;
 mapseen *mptr;

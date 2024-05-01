@@ -9,34 +9,34 @@
 #define NOINVSYM	'#'
 #define CONTAINED_SYM	'>'	/* designator for inside a container */
 
-STATIC_DCL void NDECL(reorder_invent);
-STATIC_DCL boolean FDECL(mergable,(struct obj *,struct obj *));
-STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
-STATIC_DCL boolean FDECL(worn_wield_only, (struct obj *));
-STATIC_DCL boolean FDECL(only_here, (struct obj *));
-STATIC_DCL void FDECL(compactify,(char *));
-STATIC_DCL boolean FDECL(taking_off, (const char *));
-STATIC_DCL boolean FDECL(putting_on, (const char *));
-STATIC_PTR int FDECL(ckunpaid,(struct obj *));
-STATIC_PTR int FDECL(ckvalidcat,(struct obj *));
+static void NDECL(reorder_invent);
+static boolean FDECL(mergable,(struct obj *,struct obj *));
+static void FDECL(invdisp_nothing, (const char *,const char *));
+static boolean FDECL(worn_wield_only, (struct obj *));
+static boolean FDECL(only_here, (struct obj *));
+static void FDECL(compactify,(char *));
+static boolean FDECL(taking_off, (const char *));
+static boolean FDECL(putting_on, (const char *));
+static int FDECL(ckunpaid,(struct obj *));
+static int FDECL(ckvalidcat,(struct obj *));
 #ifdef DUMP_LOG
 static char FDECL(display_pickinv,
 		 (const char *,BOOLEAN_P, long *, BOOLEAN_P, BOOLEAN_P));
 #else
 static char FDECL(display_pickinv, (const char *,BOOLEAN_P, long *));
 #endif /* DUMP_LOG */
-STATIC_DCL boolean FDECL(this_type_only, (struct obj *));
-STATIC_DCL void NDECL(dounpaid);
-STATIC_DCL struct obj *FDECL(find_unpaid,(struct obj *,struct obj **));
-STATIC_DCL void FDECL(menu_identify, (int));
-STATIC_DCL boolean FDECL(tool_in_use, (struct obj *));
-STATIC_DCL char FDECL(obj_to_let,(struct obj *));
-STATIC_PTR int FDECL(u_material_next_to_skin,(int));
-STATIC_PTR int FDECL(u_bcu_next_to_skin,(int));
-STATIC_PTR int FDECL(mon_material_next_to_skin,(struct monst *, int));
-STATIC_PTR int FDECL(mon_bcu_next_to_skin,(struct monst *, int));
-STATIC_DCL int FDECL(itemactions,(struct obj *));
-STATIC_DCL boolean FDECL(describe_spear_point, (char *, struct obj *));
+static boolean FDECL(this_type_only, (struct obj *));
+static void NDECL(dounpaid);
+static struct obj *FDECL(find_unpaid,(struct obj *,struct obj **));
+static void FDECL(menu_identify, (int));
+static boolean FDECL(tool_in_use, (struct obj *));
+static char FDECL(obj_to_let,(struct obj *));
+static int FDECL(u_material_next_to_skin,(int));
+static int FDECL(u_bcu_next_to_skin,(int));
+static int FDECL(mon_material_next_to_skin,(struct monst *, int));
+static int FDECL(mon_bcu_next_to_skin,(struct monst *, int));
+static int FDECL(itemactions,(struct obj *));
+static boolean FDECL(describe_spear_point, (char *, struct obj *));
 
 
 static int lastinvnr = 51;	/* 0 ... 51 (never saved&restored) */
@@ -92,7 +92,7 @@ register struct obj *otmp;
 #define inv_rank(o) ((o)->invlet ^ 040)
 
 /* sort the inventory; used by addinv() and doorganize() */
-STATIC_OVL void
+static void
 reorder_invent()
 {
 	struct obj *otmp, *prev, *next;
@@ -991,7 +991,7 @@ register long q;
 }
 #endif
 
-STATIC_OVL void
+static void
 compactify(buf)
 register char *buf;
 /* compact a string of inventory letters by dashing runs of letters */
@@ -1022,7 +1022,7 @@ register char *buf;
 }
 
 /* match the prompt for either 'T' or 'R' command */
-STATIC_OVL boolean
+static boolean
 taking_off(action)
 const char *action;
 {
@@ -1030,7 +1030,7 @@ const char *action;
 }
 
 /* match the prompt for either 'W' or 'P' command */
-STATIC_OVL boolean
+static boolean
 putting_on(action)
 const char *action;
 {
@@ -1607,7 +1607,7 @@ struct obj *otmp;
 }
 
 
-STATIC_PTR int
+static int
 ckvalidcat(otmp)
 register struct obj *otmp;
 {
@@ -1615,7 +1615,7 @@ register struct obj *otmp;
 	return((int)allow_category(otmp));
 }
 
-STATIC_PTR int
+static int
 ckunpaid(otmp)
 register struct obj *otmp;
 {
@@ -1961,7 +1961,7 @@ struct obj *otmp;
 }
 
 /* menu of unidentified objects; select and identify up to id_limit of them */
-STATIC_OVL void
+static void
 menu_identify(id_limit)
 int id_limit;
 {
@@ -2038,7 +2038,7 @@ int id_limit;
 }
 
 
-STATIC_OVL char
+static char
 obj_to_let(obj)	/* should of course only be called for things in invent */
 register struct obj *obj;
 {
@@ -4292,7 +4292,7 @@ winid *datawin;
 	}
 }
 
-STATIC_DCL boolean
+static boolean
 describe_spear_point(char *ret_buf, struct obj *otmp) {
 	if (!has_any_spear_point(otmp)) {
 		impossible("Describing a spear point that doesn't exist.");
@@ -4385,7 +4385,7 @@ describe_spear_point(char *ret_buf, struct obj *otmp) {
  * next unpaid object is returned.  This routine recursively follows
  * containers.
  */
-STATIC_OVL struct obj *
+static struct obj *
 find_unpaid(list, last_found)
     struct obj *list, **last_found;
 {
@@ -4823,7 +4823,7 @@ count_buc(list, type)
     return count;
 }
 
-STATIC_OVL void
+static void
 dounpaid()
 {
     winid win;
@@ -4914,7 +4914,7 @@ dounpaid()
 /* query objlist callback: return TRUE if obj type matches "this_type" */
 static int this_type;
 
-STATIC_OVL boolean
+static boolean
 this_type_only(obj)
     struct obj *obj;
 {
@@ -5287,7 +5287,7 @@ struct obj *obj;
 	return;
 }
 
-STATIC_OVL boolean
+static boolean
 mergable(otmp, obj)	/* returns TRUE if obj  & otmp can be merged */
 	register struct obj *otmp, *obj;
 {
@@ -5486,7 +5486,7 @@ dopramulet()
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL boolean
+static boolean
 tool_in_use(obj)
 struct obj *obj;
 {
@@ -5566,14 +5566,14 @@ long numused;
  * Conversion from a class to a string for printing.
  * This must match the object class order.
  */
-STATIC_VAR NEARDATA const char *names[] = { 0,
+static NEARDATA const char *names[] = { 0,
 	"Illegal objects", "Weapons", "Armor", "Rings", "Amulets",
 	"Tools", "Comestibles", "Potions", "Scrolls", "Spellbooks",
 	"Wands", "Coins", "Gems", "Boulders/Statues", "Iron balls",
 	"Scrap", "Venoms", "Tiles", "Furnature", "Strange coins"
 };
 
-STATIC_VAR NEARDATA const char *bogusclasses[] = {
+static NEARDATA const char *bogusclasses[] = {
 	"Illegal objects", "Weapons", "Armor", "Rings", "Amulets",
 	"Tools", "Comestibles", "Potions", "Scrolls", "Spellbooks",
 	"Wands", "Coins", "Gems", "Boulders/Statues", "Iron balls",
@@ -5906,7 +5906,7 @@ cleansplit:
 }
 
 /* common to display_minventory and display_cinventory */
-STATIC_OVL void
+static void
 invdisp_nothing(hdr, txt)
 const char *hdr, *txt;
 {
@@ -5928,7 +5928,7 @@ const char *hdr, *txt;
 }
 
 /* query_objlist callback: return things that could possibly be worn/wielded */
-STATIC_OVL boolean
+static boolean
 worn_wield_only(obj)
 struct obj *obj;
 {
@@ -6065,7 +6065,7 @@ register struct obj *obj;
 /* query objlist callback: return TRUE if obj is at given location */
 static coord only;
 
-STATIC_OVL boolean
+static boolean
 only_here(obj)
     struct obj *obj;
 {
@@ -6248,7 +6248,7 @@ u_clothing_discomfort()
 	return count; //0-25
 }
 
-STATIC_OVL int
+static int
 mon_material_next_to_skin(mon, material)
 struct monst *mon;
 int material;
@@ -6310,7 +6310,7 @@ int material;
 	return count;
 }
 
-STATIC_OVL int
+static int
 mon_bcu_next_to_skin(mon, bcu)
 struct monst *mon;
 int bcu;
@@ -6373,7 +6373,7 @@ int bcu;
 	return count;
 }
 
-STATIC_OVL int
+static int
 u_material_next_to_skin(material)
 int material;
 {
@@ -6414,7 +6414,7 @@ int material;
 	return count;
 }
 
-STATIC_OVL int
+static int
 u_bcu_next_to_skin(bcu)
 int bcu;
 {

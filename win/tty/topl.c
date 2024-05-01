@@ -14,10 +14,10 @@
 #define C(c)	(0x1f & (c))
 #endif
 
-STATIC_DCL void FDECL(redotoplin, (const char*));
-STATIC_DCL void FDECL(topl_putsym, (glyph_t));
-STATIC_DCL void NDECL(remember_topl);
-STATIC_DCL void FDECL(removetopl, (int));
+static void FDECL(redotoplin, (const char*));
+static void FDECL(topl_putsym, (glyph_t));
+static void NDECL(remember_topl);
+static void FDECL(removetopl, (int));
 
 
 int
@@ -117,7 +117,7 @@ tty_doprev_message()
 }
 
 
-STATIC_OVL void
+static void
 redotoplin(str)
     const char *str;
 {
@@ -137,7 +137,7 @@ redotoplin(str)
 		more();
 }
 
-STATIC_OVL void
+static void
 remember_topl()
 {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
@@ -255,7 +255,7 @@ update_topl(bp)
 	if(!(cw->flags & WIN_STOP)) redotoplin(toplines);
 }
 
-STATIC_OVL
+static
 void
 topl_putsym(c)
     glyph_t c;
@@ -296,7 +296,7 @@ putsyms(str)
 	topl_putsym(*str++);
 }
 
-STATIC_OVL void
+static void
 removetopl(n)
 register int n;
 {

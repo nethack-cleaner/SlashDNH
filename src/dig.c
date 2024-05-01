@@ -9,13 +9,13 @@
 
 static NEARDATA boolean did_dig_msg;
 
-STATIC_DCL void NDECL(fakerocktrap);
-STATIC_DCL void NDECL(openfakedoor);
-STATIC_DCL boolean NDECL(rm_waslit);
-STATIC_DCL void FDECL(mkcavepos, (XCHAR_P,XCHAR_P,int,BOOLEAN_P,BOOLEAN_P));
-STATIC_DCL void FDECL(mkcavearea, (BOOLEAN_P));
-STATIC_DCL int FDECL(dig_typ, (struct obj *,XCHAR_P,XCHAR_P));
-STATIC_DCL int NDECL(dig);
+static void NDECL(fakerocktrap);
+static void NDECL(openfakedoor);
+static boolean NDECL(rm_waslit);
+static void FDECL(mkcavepos, (XCHAR_P,XCHAR_P,int,BOOLEAN_P,BOOLEAN_P));
+static void FDECL(mkcavearea, (BOOLEAN_P));
+static int FDECL(dig_typ, (struct obj *,XCHAR_P,XCHAR_P));
+static int NDECL(dig);
 
 /* Indices returned by dig_typ() */
 #define DIGTYP_UNDIGGABLE 0
@@ -30,7 +30,7 @@ STATIC_DCL int NDECL(dig);
 #define DIGTYP_BRIDGE     9
 
 
-STATIC_OVL boolean
+static boolean
 rm_waslit()
 {
     register xchar x, y;
@@ -47,7 +47,7 @@ rm_waslit()
  * boulders in the name of a nice effect.  Vision will get fixed up again
  * immediately after the effect is complete.
  */
-STATIC_OVL void
+static void
 mkcavepos(x, y, dist, waslit, rockit)
     xchar x,y;
     int dist;
@@ -91,7 +91,7 @@ mkcavepos(x, y, dist, waslit, rockit)
 		unblock_point(x, y);
 }
 
-STATIC_OVL void
+static void
 mkcavearea(rockit)
 register boolean rockit;
 {
@@ -138,7 +138,7 @@ register boolean rockit;
 }
 
 /* When digging into location <x,y>, what are you actually digging into? */
-STATIC_OVL int
+static int
 dig_typ(otmp, x, y)
 struct obj *otmp;
 xchar x, y;
@@ -235,7 +235,7 @@ dig_check(madeby, verbose, x, y)
 	return(TRUE);
 }
 
-STATIC_OVL int
+static int
 dig()
 {
 	register xchar dpx = digging.pos.x, dpy = digging.pos.y;
@@ -1098,7 +1098,7 @@ boolean pit_only;
 	return FALSE;
 }
 
-STATIC_DCL
+static
 void
 openfakedoor()
 {
@@ -1375,7 +1375,7 @@ badspot:
 	return FALSE;
 }
 
-STATIC_DCL
+static
 void
 fakerocktrap()
 {

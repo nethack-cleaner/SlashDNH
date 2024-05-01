@@ -21,24 +21,24 @@ extern boolean notonhead;	/* for long worms */
 
 /* kludge to use mondied instead of killed */
 extern boolean m_using;
-STATIC_DCL void FDECL(polyuse, (struct obj*, int, int));
-STATIC_DCL struct obj * FDECL(poly_obj_core, (struct obj *, int));
-STATIC_DCL void FDECL(create_polymon, (struct obj *, int));
-STATIC_DCL boolean FDECL(zap_updown, (struct obj *));
-STATIC_DCL boolean FDECL(zap_reflect, (struct monst *, struct zapdata *));
-STATIC_DCL int FDECL(zapdamage, (struct monst *, struct monst *, struct zapdata *));
-STATIC_DCL int FDECL(zhit, (struct monst *, struct monst *, struct zapdata *));
-STATIC_DCL boolean FDECL(zap_steed, (struct obj *));
+static void FDECL(polyuse, (struct obj*, int, int));
+static struct obj * FDECL(poly_obj_core, (struct obj *, int));
+static void FDECL(create_polymon, (struct obj *, int));
+static boolean FDECL(zap_updown, (struct obj *));
+static boolean FDECL(zap_reflect, (struct monst *, struct zapdata *));
+static int FDECL(zapdamage, (struct monst *, struct monst *, struct zapdata *));
+static int FDECL(zhit, (struct monst *, struct monst *, struct zapdata *));
+static boolean FDECL(zap_steed, (struct obj *));
 
-STATIC_DCL void FDECL(backfire, (struct obj *));
-STATIC_DCL int FDECL(spell_hit_bonus, (int));
+static void FDECL(backfire, (struct obj *));
+static int FDECL(spell_hit_bonus, (int));
 
 #define is_hero_spell(type)	((type) >= 10 && (type) < 20)
 #define wand_damage_die(skill)	(((skill) > 1) ? (2*(skill) + 4) : 6)
 #define fblt_damage_die(skill)	((skill)+1)
 #define wandlevel(otyp)	(otyp == WAN_MAGIC_MISSILE ? 1 : otyp == WAN_SLEEP ? 1 : otyp == WAN_STRIKING ? 2 : otyp == WAN_FIRE ? 4 : otyp == WAN_COLD ? 4 : otyp == WAN_LIGHTNING ? 5 : otyp == WAN_DEATH ? 7 : 1)
 
-STATIC_VAR const char are_blinded_by_the_flash[] = "are blinded by the flash!";
+static const char are_blinded_by_the_flash[] = "are blinded by the flash!";
 
 static const int dirx[8] = {0, 1, 1,  1,  0, -1, -1, -1},
 				 diry[8] = {1, 1, 0, -1, -1, -1,  0,  1};
@@ -1469,7 +1469,7 @@ struct obj *obj;
  * there's a random factor here to keep from always using the stuff
  * at the top of the pile.
  */
-STATIC_OVL void
+static void
 polyuse(objhdr, mat, minwt)
     struct obj *objhdr;
     int mat, minwt;
@@ -1507,7 +1507,7 @@ polyuse(objhdr, mat, minwt)
  * Polymorph some of the stuff in this pile into a monster, preferably
  * a golem of the kind okind.
  */
-STATIC_OVL void
+static void
 create_polymon(obj, okind)
     struct obj *obj;
     int okind;
@@ -2567,7 +2567,7 @@ register struct obj *obj;
 	}
 }
 
-STATIC_OVL void
+static void
 backfire(otmp)
 struct obj *otmp;
 {
@@ -2996,7 +2996,7 @@ boolean ordinary;
  * Return TRUE if the steed was hit by the wand.
  * Return FALSE if the steed was not hit by the wand.
  */
-STATIC_OVL boolean
+static boolean
 zap_steed(obj)
 struct obj *obj;	/* wand or spell */
 {
@@ -3151,7 +3151,7 @@ int gaze_cancel;
 }
 
 /* you've zapped an immediate type wand up or down */
-STATIC_OVL boolean
+static boolean
 zap_updown(obj)
 struct obj *obj;	/* wand or spell */
 {
@@ -3503,7 +3503,7 @@ kraubon()
  * Generate the to hit bonus for a spell.  Based on the hero's skill in
  * spell class and dexterity.
  */
-STATIC_OVL int
+static int
 spell_hit_bonus(adtyp)
 int adtyp;
 {

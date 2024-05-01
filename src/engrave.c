@@ -11,7 +11,7 @@
 #define WARD_MODE 2
 #define SEAL_MODE 3
 
-STATIC_VAR NEARDATA struct engr *head_engr;
+static NEARDATA struct engr *head_engr;
 
 /* random engravings */
 static const char *random_mesg[] = {

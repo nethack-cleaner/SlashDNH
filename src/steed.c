@@ -24,7 +24,7 @@ static NEARDATA const char valk_steeds[] = {
 	S_DOG,  '\0'
 };
 
-STATIC_DCL boolean FDECL(landing_spot, (coord *, int, int));
+static boolean FDECL(landing_spot, (coord *, int, int));
 
 /* caller has decided that hero can't reach something while mounted */
 void
@@ -455,7 +455,7 @@ kick_steed()
  * room's walls, which is not what we want.
  * Adapted from mail daemon code.
  */
-STATIC_OVL boolean
+static boolean
 landing_spot(spot, reason, forceit)
 coord *spot;	/* landing position (we fill it in) */
 int reason;

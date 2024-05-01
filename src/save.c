@@ -18,14 +18,14 @@ extern boolean saving_game;
 
 
 #ifdef ZEROCOMP
-STATIC_DCL void FDECL(bputc, (int));
+static void FDECL(bputc, (int));
 #endif
-STATIC_DCL void FDECL(savelevchn, (int,int));
-STATIC_DCL void FDECL(savedamage, (int,int));
-STATIC_DCL void FDECL(saveobjchn, (int,struct obj *,int));
-STATIC_DCL void FDECL(savemonchn, (int,struct monst *,int));
-STATIC_DCL void FDECL(savetrapchn, (int,struct trap *,int));
-STATIC_DCL void FDECL(savegamestate, (int,int));
+static void FDECL(savelevchn, (int,int));
+static void FDECL(savedamage, (int,int));
+static void FDECL(saveobjchn, (int,struct obj *,int));
+static void FDECL(savemonchn, (int,struct monst *,int));
+static void FDECL(savetrapchn, (int,struct trap *,int));
+static void FDECL(savegamestate, (int,int));
 
 #if defined(UNIX)
 #define HUP	if (!program_state.done_hup)
@@ -224,7 +224,7 @@ dosave0()
 	return(1);
 }
 
-STATIC_OVL void
+static void
 savegamestate(fd, mode)
 register int fd, mode;
 {
@@ -506,7 +506,7 @@ static NEARDATA boolean compressing = FALSE;
     HUP printf("outbufp %d outrunlength %d\n", outbufp,outrunlength);
 }*/
 
-STATIC_OVL void
+static void
 bputc(c)
 int c;
 {
@@ -699,7 +699,7 @@ bclose(fd)
 }
 #endif /* ZEROCOMP */
 
-STATIC_OVL void
+static void
 savelevchn(fd, mode)
 register int fd, mode;
 {
@@ -721,7 +721,7 @@ register int fd, mode;
 	    sp_levchn = 0;
 }
 
-STATIC_OVL void
+static void
 savedamage(fd, mode)
 register int fd, mode;
 {
@@ -746,7 +746,7 @@ register int fd, mode;
 	    level.damagelist = 0;
 }
 
-STATIC_OVL void
+static void
 saveobjchn(fd, otmp, mode)
 register int fd, mode;
 register struct obj *otmp;
@@ -789,7 +789,7 @@ register struct obj *otmp;
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void
+static void
 savemonchn(fd, mtmp, mode)
 register int fd, mode;
 register struct monst *mtmp;
@@ -824,7 +824,7 @@ register struct monst *mtmp;
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void
+static void
 savetrapchn(fd, trap, mode)
 register int fd, mode;
 register struct trap *trap;

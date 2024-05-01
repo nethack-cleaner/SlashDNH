@@ -14,42 +14,42 @@
 #endif
 
 #ifdef POSITIONBAR
-STATIC_DCL void NDECL(do_positionbar);
+static void NDECL(do_positionbar);
 #endif
 
-STATIC_DCL void NDECL(mercurial_repair);
-STATIC_DCL void NDECL(clothes_bite_you);
-STATIC_DCL void NDECL(androidUpkeep);
-STATIC_DCL void NDECL(printMons);
-STATIC_DCL void NDECL(printMonNames);
-STATIC_DCL void NDECL(printDPR);
-STATIC_DCL void NDECL(printBodies);
-STATIC_DCL void NDECL(printSanAndInsight);
-STATIC_DCL void FDECL(printAttacks, (char *,struct permonst *));
-STATIC_DCL void FDECL(resFlags, (char *,unsigned int));
-STATIC_DCL int FDECL(find_preset_inherited, (char *));
-STATIC_DCL int NDECL(do_inheritance_menu);
-STATIC_DCL void FDECL(spot_monster, (struct monst *));
-STATIC_DCL void NDECL(sense_nearby_monsters);
-STATIC_DCL void NDECL(cthulhu_mind_blast);
-STATIC_DCL void FDECL(unseen_actions, (struct monst *));
-STATIC_DCL void FDECL(blessed_spawn, (struct monst *));
-STATIC_DCL void FDECL(alkilith_spawn, (struct monst *));
-STATIC_DCL void FDECL(good_neighbor, (struct monst *));
-STATIC_DCL void FDECL(dark_pharaoh, (struct monst *));
-STATIC_DCL void FDECL(dark_pharaoh_visible, (struct monst *));
-STATIC_DCL void FDECL(good_neighbor_visible, (struct monst *));
-STATIC_DCL void FDECL(polyp_pickup, (struct monst *));
-STATIC_DCL void FDECL(unbodied_heal, (struct monst *));
-STATIC_DCL void FDECL(goat_sacrifice, (struct monst *));
-STATIC_DCL void FDECL(palid_stranger, (struct monst *));
-STATIC_DCL void FDECL(sib_follow, (struct monst *));
-STATIC_DCL void FDECL(invisible_twin_act, (struct monst *));
+static void NDECL(mercurial_repair);
+static void NDECL(clothes_bite_you);
+static void NDECL(androidUpkeep);
+static void NDECL(printMons);
+static void NDECL(printMonNames);
+static void NDECL(printDPR);
+static void NDECL(printBodies);
+static void NDECL(printSanAndInsight);
+static void FDECL(printAttacks, (char *,struct permonst *));
+static void FDECL(resFlags, (char *,unsigned int));
+static int FDECL(find_preset_inherited, (char *));
+static int NDECL(do_inheritance_menu);
+static void FDECL(spot_monster, (struct monst *));
+static void NDECL(sense_nearby_monsters);
+static void NDECL(cthulhu_mind_blast);
+static void FDECL(unseen_actions, (struct monst *));
+static void FDECL(blessed_spawn, (struct monst *));
+static void FDECL(alkilith_spawn, (struct monst *));
+static void FDECL(good_neighbor, (struct monst *));
+static void FDECL(dark_pharaoh, (struct monst *));
+static void FDECL(dark_pharaoh_visible, (struct monst *));
+static void FDECL(good_neighbor_visible, (struct monst *));
+static void FDECL(polyp_pickup, (struct monst *));
+static void FDECL(unbodied_heal, (struct monst *));
+static void FDECL(goat_sacrifice, (struct monst *));
+static void FDECL(palid_stranger, (struct monst *));
+static void FDECL(sib_follow, (struct monst *));
+static void FDECL(invisible_twin_act, (struct monst *));
 
 
 extern const int monstr[];
 
-STATIC_OVL void
+static void
 digcrater(mtmp)
 	struct monst *mtmp;
 {
@@ -75,7 +75,7 @@ digcrater(mtmp)
 	}
 }
 
-STATIC_OVL void
+static void
 digcloudcrater(mtmp)
 	struct monst *mtmp;
 {
@@ -92,7 +92,7 @@ digcloudcrater(mtmp)
 	}
 }
 
-STATIC_OVL void
+static void
 digXchasm(mtmp)
 	struct monst *mtmp;
 {
@@ -204,7 +204,7 @@ digXchasm(mtmp)
 	}
 }
 
-STATIC_OVL void
+static void
 digYchasm(mtmp)
 	struct monst *mtmp;
 {
@@ -385,7 +385,7 @@ hpnotify_format_str(char *str)
     return buf;
 }
 
-STATIC_OVL
+static
 void
 androidUpkeep()
 {
@@ -437,7 +437,7 @@ androidUpkeep()
 	}
 }
 
-STATIC_OVL
+static
 void
 mercurial_repair()
 {
@@ -464,7 +464,7 @@ mercurial_repair()
 	}
 }
 
-STATIC_OVL
+static
 void
 clothes_bite_you()
 {
@@ -3609,7 +3609,7 @@ newgame()
 	return;
 }
 
-STATIC_OVL int
+static int
 find_preset_inherited(name)
 	char * name;
 {
@@ -3633,7 +3633,7 @@ find_preset_inherited(name)
 }
 
 
-STATIC_OVL int
+static int
 do_inheritance_menu()
 {
 	winid tmpwin;
@@ -3766,7 +3766,7 @@ boolean new_game;	/* false => restoring an old game */
 }
 
 #ifdef POSITIONBAR
-STATIC_DCL void
+static void
 do_positionbar()
 {
 	static char pbar[COLNO];
@@ -3832,7 +3832,7 @@ get_realtime(void)
     return curtime;
 }
 
-STATIC_DCL
+static
 void
 printBodies(){
 	FILE *rfile;
@@ -3876,7 +3876,7 @@ printBodies(){
 	fclose(rfile);
 }
 
-STATIC_DCL
+static
 void
 printSanAndInsight(){
 	FILE *rfile;
@@ -3905,7 +3905,7 @@ printSanAndInsight(){
 	fclose(rfile);
 }
 
-STATIC_DCL
+static
 void
 printDPR(){
 	FILE *rfile;
@@ -3949,7 +3949,7 @@ printDPR(){
 	fclose(rfile);
 }
 
-STATIC_DCL
+static
 void
 printMons(){
 	FILE *rfile;
@@ -4236,7 +4236,7 @@ printMons(){
 	fclose(rfile);
 }
 
-STATIC_DCL
+static
 void
 printMonNames(){
 	FILE *rfile;
@@ -4251,7 +4251,7 @@ printMonNames(){
 	fclose(rfile);
 }
 
-STATIC_DCL
+static
 void
 resFlags(buf, rflags)
 	char *buf;
@@ -4284,7 +4284,7 @@ resFlags(buf, rflags)
 	}
 }
 
-STATIC_DCL
+static
 void
 printAttacks(buf, ptr)
 	char *buf;
@@ -4340,7 +4340,7 @@ printAttacks(buf, ptr)
 	return;
 }
 
-STATIC_OVL void
+static void
 cthulhu_mind_blast()
 {
 	struct monst *mon, *nmon;
@@ -4411,7 +4411,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL void
+static void
 sense_nearby_monsters()
 {
 	int dx, dy;
@@ -4458,7 +4458,7 @@ sense_nearby_monsters()
 	}
 }
 
-STATIC_OVL
+static
 void
 unseen_actions(mon)
 struct monst *mon;
@@ -4490,7 +4490,7 @@ static int goatkids[] = {PM_SMALL_GOAT_SPAWN, PM_GOAT_SPAWN, PM_GIANT_GOAT_SPAWN
 						 PM_SWIRLING_MIST, PM_DUST_STORM, PM_ICE_STORM, PM_THUNDER_STORM, PM_FIRE_STORM, 
 						 PM_PLAINS_CENTAUR, PM_FOREST_CENTAUR, PM_MOUNTAIN_CENTAUR,
 						 PM_QUICKLING, PM_DRYAD, PM_NAIAD, PM_OREAD, PM_YUKI_ONNA, PM_DEMINYMPH};
-STATIC_OVL
+static
 void
 blessed_spawn(mon)
 struct monst *mon;
@@ -4560,7 +4560,7 @@ static int witchspawns[] = {PM_APPRENTICE_WITCH, PM_APPRENTICE_WITCH, PM_APPRENT
 						 PM_APPRENTICE_WITCH, PM_APPRENTICE_WITCH, PM_APPRENTICE_WITCH, PM_WITCH, 
 						 PM_BABY_LONG_WORM, PM_BABY_PURPLE_WORM, PM_LONG_WORM, PM_PURPLE_WORM, PM_HUNTING_HORROR, 
 						 PM_LARGE_CAT, PM_PANTHER, PM_TIGER, PM_GIANT_RAT, PM_ENORMOUS_RAT, PM_RODENT_OF_UNUSUAL_SIZE};
-STATIC_OVL
+static
 void
 good_neighbor(mon)
 struct monst *mon;
@@ -4637,7 +4637,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 good_neighbor_visible(mon)
 struct monst *mon;
@@ -4718,7 +4718,7 @@ static int toughpharaohspawns[] = {PM_COBRA, PM_SERPENT_NECKED_LIONESS, PM_HUNTI
 							  PM_LIGHTNING_PARAELEMENTAL, PM_BLUE_DRAGON, PM_DAUGHTER_OF_NAUNET};
 
 
-STATIC_OVL
+static
 void
 dark_pharaoh(mon)
 struct monst *mon;
@@ -4832,7 +4832,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 dark_pharaoh_visible(mon)
 struct monst *mon;
@@ -4958,7 +4958,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 polyp_pickup(mon)
 struct monst *mon;
@@ -5022,7 +5022,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 unbodied_heal(mon)
 struct monst *mon;
@@ -5087,7 +5087,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 goat_sacrifice(mon)
 struct monst *mon;
@@ -5192,7 +5192,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 palid_stranger(mon)
 struct monst *mon;
@@ -5279,7 +5279,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL
+static
 void
 sib_follow(mon)
 struct monst *mon;

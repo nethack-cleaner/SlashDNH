@@ -47,10 +47,10 @@
 
 static struct ls_t *light_base = 0;
 
-STATIC_DCL void FDECL(add_chain_ls, (struct ls_t *));
-STATIC_DCL void FDECL(rem_chain_ls, (struct ls_t *));
-STATIC_DCL void FDECL(write_ls, (int, struct ls_t *));
-STATIC_DCL int FDECL(maybe_write_ls, (int, int, BOOLEAN_P));
+static void FDECL(add_chain_ls, (struct ls_t *));
+static void FDECL(rem_chain_ls, (struct ls_t *));
+static void FDECL(write_ls, (int, struct ls_t *));
+static int FDECL(maybe_write_ls, (int, int, BOOLEAN_P));
 
 /* imported from vision.c, for small circles */
 extern char circle_data[];

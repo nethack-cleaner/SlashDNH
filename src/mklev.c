@@ -17,27 +17,27 @@
 /* croom->lx etc are schar (width <= int), so % arith ensures that */
 /* conversion of result to int is reasonable */
 
-STATIC_DCL void NDECL(makevtele);
-STATIC_DCL void NDECL(clear_level_structures);
-STATIC_DCL void NDECL(makelevel);
-STATIC_DCL void NDECL(mineralize);
-STATIC_DCL boolean FDECL(bydoor,(XCHAR_P,XCHAR_P));
-STATIC_DCL struct mkroom *FDECL(find_branch_room, (coord *));
-STATIC_DCL struct mkroom *FDECL(pos_to_room, (XCHAR_P, XCHAR_P));
-STATIC_DCL boolean FDECL(place_niche,(struct mkroom *,int*,int*,int*));
-STATIC_DCL void FDECL(makeniche,(int));
-STATIC_DCL void NDECL(make_niches);
+static void NDECL(makevtele);
+static void NDECL(clear_level_structures);
+static void NDECL(makelevel);
+static void NDECL(mineralize);
+static boolean FDECL(bydoor,(XCHAR_P,XCHAR_P));
+static struct mkroom *FDECL(find_branch_room, (coord *));
+static struct mkroom *FDECL(pos_to_room, (XCHAR_P, XCHAR_P));
+static boolean FDECL(place_niche,(struct mkroom *,int*,int*,int*));
+static void FDECL(makeniche,(int));
+static void NDECL(make_niches);
 
-STATIC_PTR int FDECL( CFDECLSPEC do_comp,(const genericptr,const genericptr));
+static int FDECL( CFDECLSPEC do_comp,(const genericptr,const genericptr));
 
-STATIC_DCL void FDECL(dosdoor,(XCHAR_P,XCHAR_P,struct mkroom *,int));
-STATIC_DCL void FDECL(join,(int,int,BOOLEAN_P));
-STATIC_DCL void FDECL(do_room_or_subroom, (struct mkroom *,int,int,int,int,
+static void FDECL(dosdoor,(XCHAR_P,XCHAR_P,struct mkroom *,int));
+static void FDECL(join,(int,int,BOOLEAN_P));
+static void FDECL(do_room_or_subroom, (struct mkroom *,int,int,int,int,
 				       BOOLEAN_P,SCHAR_P,BOOLEAN_P,BOOLEAN_P));
-STATIC_DCL void NDECL(makerooms);
-STATIC_DCL void FDECL(finddpos,(coord *,XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P));
-STATIC_DCL void FDECL(mkinvpos, (XCHAR_P,XCHAR_P,int));
-STATIC_DCL void FDECL(mk_knox_portal, (XCHAR_P,XCHAR_P));
+static void NDECL(makerooms);
+static void FDECL(finddpos,(coord *,XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P));
+static void FDECL(mkinvpos, (XCHAR_P,XCHAR_P,int));
+static void FDECL(mk_knox_portal, (XCHAR_P,XCHAR_P));
 
 #define create_vault()	create_room(-1, -1, 2, 2, -1, -1, VAULT, TRUE)
 #define init_vault()	vault_x = -1
@@ -49,7 +49,7 @@ static boolean made_branch;	/* used only during level creation */
 
 /* Args must be (const genericptr) so that qsort will always be happy. */
 
-STATIC_PTR int CFDECLSPEC
+static int CFDECLSPEC
 do_comp(vx,vy)
 const genericptr vx;
 const genericptr vy;
@@ -70,7 +70,7 @@ const genericptr vy;
 #endif /* LINT */
 }
 
-STATIC_OVL void
+static void
 finddpos(cc, xl,yl,xh,yh)
 coord *cc;
 xchar xl,yl,xh,yh;
@@ -108,7 +108,7 @@ sort_rooms()
 #endif
 }
 
-STATIC_OVL void
+static void
 do_room_or_subroom(croom, lowx, lowy, hix, hiy, lit, rtype, special, is_room)
     register struct mkroom *croom;
     int lowx, lowy;
@@ -217,7 +217,7 @@ boolean special;
 	nsubroom++;
 }
 
-STATIC_OVL void
+static void
 makerooms()
 {
 	boolean tried_vault = FALSE;
@@ -254,7 +254,7 @@ makerooms()
 	return;
 }
 
-STATIC_OVL void
+static void
 join(a,b,nxcor)
 register int a, b;
 boolean nxcor;
@@ -601,7 +601,7 @@ register struct mkroom *aroom;
 	return tmp;
 }
 
-STATIC_OVL void
+static void
 dosdoor(x,y,aroom,type)
 register xchar x, y;
 register struct mkroom *aroom;
@@ -676,7 +676,7 @@ int godnum;
 	altarindex++;
 }
 
-STATIC_OVL boolean
+static boolean
 place_niche(aroom,dy,xx,yy)
 register struct mkroom *aroom;
 int *dy, *xx, *yy;
@@ -708,7 +708,7 @@ static NEARDATA const char *trap_engravings[TRAPNUM] = {
 			(char *)0,(char *)0,
 };
 
-STATIC_OVL void
+static void
 makeniche(trap_type)
 int trap_type;
 {
@@ -764,7 +764,7 @@ int trap_type;
 	}
 }
 
-STATIC_OVL void
+static void
 make_niches()
 {
 	register int ct, dep;
@@ -790,7 +790,7 @@ make_niches()
 	}
 }
 
-STATIC_OVL void
+static void
 makevtele()
 {
 	makeniche(TELEP_TRAP);
@@ -917,7 +917,7 @@ random_special_room_default_room_and_corridors:
  * special) but it's easier to put it all in one place than make sure
  * each type initializes what it needs to separately.
  */
-STATIC_OVL void
+static void
 clear_level_structures()
 {
 	static struct rm zerorm = { cmap_to_glyph(S_stone),
@@ -997,7 +997,7 @@ clear_level_structures()
 	clear_regions();
 }
 
-STATIC_OVL void
+static void
 makelevel()
 {
 	register struct mkroom *croom, *troom;
@@ -1382,7 +1382,7 @@ mithardir_end:
  *	surrounding the rooms on the map.
  *	Also place kelp in water.
  */
-STATIC_OVL void
+static void
 mineralize()
 {
 	s_level *sp;
@@ -1657,7 +1657,7 @@ register struct mkroom *croom;
 }
 
 /* Find an unused room for a branch location. */
-STATIC_OVL struct mkroom *
+static struct mkroom *
 find_branch_room(mp)
     coord *mp;
 {
@@ -1696,7 +1696,7 @@ find_branch_room(mp)
 }
 
 /* Find the room for (x,y).  Return null if not in a room. */
-STATIC_OVL struct mkroom *
+static struct mkroom *
 pos_to_room(x, y)
     xchar x, y;
 {
@@ -1783,7 +1783,7 @@ xchar x, y;	/* location */
 	made_branch = TRUE;
 }
 
-STATIC_OVL boolean
+static boolean
 bydoor(x, y)
 register xchar x, y;
 {
@@ -2245,7 +2245,7 @@ mkinvokearea()
 /* Change level topology.  Boulders in the vicinity are eliminated.
  * Temporarily overrides vision in the name of a nice effect.
  */
-STATIC_OVL void
+static void
 mkinvpos(x,y,dist)
 xchar x,y;
 int dist;
@@ -2325,7 +2325,7 @@ int dist;
  *
  * Ludios will remain isolated until the branch is corrected by this function.
  */
-STATIC_OVL void
+static void
 mk_knox_portal(x, y)
 xchar x, y;
 {

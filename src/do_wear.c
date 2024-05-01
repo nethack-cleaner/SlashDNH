@@ -9,7 +9,7 @@
 #include "artifact.h"
 
 
-STATIC_OVL NEARDATA long long takeoff_mask = 0LL;
+static NEARDATA long long takeoff_mask = 0LL;
 static NEARDATA long long taking_off = 0LL;
 
 static NEARDATA int todelay;
@@ -36,17 +36,17 @@ static NEARDATA const long long takeoff_order[] = { WORN_BLINDF, W_WEP,
 	WORN_SHIRT,
 	WORN_BOOTS, W_SWAPWEP, W_QUIVER, 0LL };
 
-STATIC_DCL void FDECL(on_msg, (struct obj *));
-STATIC_DCL int NDECL(Cloak_on);
-STATIC_PTR int NDECL(Gloves_on);
-STATIC_PTR int NDECL(Shield_on);
-STATIC_DCL void FDECL(Ring_off_or_gone, (struct obj *, BOOLEAN_P));
-STATIC_PTR int FDECL(select_off, (struct obj *));
-STATIC_DCL struct obj *NDECL(do_takeoff);
-STATIC_PTR int NDECL(take_off);
-STATIC_DCL int FDECL(menu_remarm, (int));
-STATIC_DCL void FDECL(already_wearing, (const char*));
-STATIC_DCL void FDECL(already_wearing2, (const char*, const char*));
+static void FDECL(on_msg, (struct obj *));
+static int NDECL(Cloak_on);
+static int NDECL(Gloves_on);
+static int NDECL(Shield_on);
+static void FDECL(Ring_off_or_gone, (struct obj *, BOOLEAN_P));
+static int FDECL(select_off, (struct obj *));
+static struct obj *NDECL(do_takeoff);
+static int NDECL(take_off);
+static int FDECL(menu_remarm, (int));
+static void FDECL(already_wearing, (const char*));
+static void FDECL(already_wearing2, (const char*, const char*));
 
 void
 off_msg(otmp)
@@ -57,7 +57,7 @@ register struct obj *otmp;
 }
 
 /* for items that involve no delay */
-STATIC_OVL void
+static void
 on_msg(otmp)
 register struct obj *otmp;
 {
@@ -240,7 +240,7 @@ Boots_off()
     return 0;
 }
 
-STATIC_OVL 
+static 
 int
 Cloak_on()
 {
@@ -598,7 +598,7 @@ Helmet_off()
     return 0;
 }
 
-STATIC_PTR
+static
 int
 Gloves_on()
 {
@@ -714,7 +714,7 @@ Gloves_off()
     return 0;
 }
 
-STATIC_OVL 
+static 
 int
 Shield_on()
 {
@@ -1232,7 +1232,7 @@ register struct obj *obj;
 	}
 }
 
-STATIC_OVL void
+static void
 Ring_off_or_gone(obj,gone)
 register struct obj *obj;
 boolean gone;
@@ -1747,14 +1747,14 @@ register struct obj *otmp;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL void
+static void
 already_wearing(cc)
 const char *cc;
 {
 	You("are already wearing %s%c", cc, (cc == c_that_) ? '!' : '.');
 }
 
-STATIC_OVL void
+static void
 already_wearing2(cc1, cc2)
 const char *cc1, *cc2;
 {
@@ -3320,7 +3320,7 @@ cursed_unchanger()
 }
 
 /* occupation callback for 'A' */
-STATIC_PTR
+static
 int
 select_off(otmp)
 register struct obj *otmp;
@@ -3442,7 +3442,7 @@ register struct obj *otmp;
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 do_takeoff()
 {
 	register struct obj *otmp = (struct obj *)0;
@@ -3506,7 +3506,7 @@ do_takeoff()
 
 static const char *disrobing = "";
 
-STATIC_PTR
+static
 int
 take_off()
 {
@@ -3632,7 +3632,7 @@ doddoremarm()
     return MOVE_INSTANT;
 }
 
-STATIC_OVL int
+static int
 menu_remarm(retry)
 int retry;
 {

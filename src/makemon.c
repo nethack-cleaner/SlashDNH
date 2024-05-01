@@ -18,15 +18,15 @@ struct monst zeromonst;
 		(mptr->mlet == S_HUMAN && Role_if(role_pm) && \
 		  (mptr->mtyp == urole.ldrnum || mptr->msound == MS_NEMESIS))
 
-STATIC_DCL int FDECL(makemon_set_template, (struct permonst **, int, boolean));
-STATIC_DCL int FDECL(makemon_get_permonst_faction, (struct permonst *, int, int, int, int));
-STATIC_DCL void FDECL(makemon_set_monster_faction, (struct monst *));
-STATIC_DCL boolean FDECL(uncommon, (int));
-STATIC_DCL int FDECL(align_shift, (struct permonst *));
-STATIC_DCL struct permonst * NDECL(roguemonst);
-STATIC_DCL boolean FDECL(wrong_elem_type, (struct permonst *));
-STATIC_DCL void FDECL(m_initweap,(struct monst *, int, int, boolean, boolean, int));
-STATIC_DCL void FDECL(m_initinv,(struct monst *, int, int, boolean, boolean));
+static int FDECL(makemon_set_template, (struct permonst **, int, boolean));
+static int FDECL(makemon_get_permonst_faction, (struct permonst *, int, int, int, int));
+static void FDECL(makemon_set_monster_faction, (struct monst *));
+static boolean FDECL(uncommon, (int));
+static int FDECL(align_shift, (struct permonst *));
+static struct permonst * NDECL(roguemonst);
+static boolean FDECL(wrong_elem_type, (struct permonst *));
+static void FDECL(m_initweap,(struct monst *, int, int, boolean, boolean, int));
+static void FDECL(m_initinv,(struct monst *, int, int, boolean, boolean));
 
 extern const int monstr[];
 int curhouse = 0;
@@ -58,7 +58,7 @@ register struct permonst *ptr;
 /*
  * Return true if the given monster cannot exist on this elemental level.
  */
-STATIC_OVL boolean
+static boolean
 wrong_elem_type(ptr)
     register struct permonst *ptr;
 {
@@ -209,7 +209,7 @@ static NEARDATA int angelweps[] = {
 	ART_HAMMER_OF_BARQUIEL,
 };
 
-STATIC_OVL void
+static void
 golem_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -423,7 +423,7 @@ boolean goodequip;
 */
 }
 
-STATIC_OVL void
+static void
 yochlol_initinv(mtmp, mkobjflags, faction, goodequip)
 struct monst *mtmp;
 int mkobjflags;
@@ -496,7 +496,7 @@ boolean goodequip;
 		(void) mongets(mtmp, rnd_misc_item(mtmp), mkobjflags);
 }
 
-STATIC_OVL void
+static void
 golem_initinv(mtmp, mkobjflags, faction, goodequip)
 struct monst *mtmp;
 int mkobjflags;
@@ -535,7 +535,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 giant_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -555,7 +555,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 giant_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -822,7 +822,7 @@ boolean goodequip;
 	} 
 }
 
-STATIC_OVL void
+static void
 imp_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -973,7 +973,7 @@ boolean goodequip;
 	if (w2) (void)mongets(mtmp, w2, mkobjflags);
 }
 
-STATIC_OVL void
+static void
 imp_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -982,7 +982,7 @@ boolean goodequip;
 {
 }
 
-STATIC_OVL void
+static void
 human_initweap(mtmp, mkobjflags, faction, goodequip, greatequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4113,7 +4113,7 @@ boolean greatequip;
 	}
 }
 
-STATIC_OVL void
+static void
 human_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4400,7 +4400,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 xorn_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4470,7 +4470,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 elemental_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4517,7 +4517,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 elemental_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4530,7 +4530,7 @@ boolean goodequip;
 	struct obj *otmp;
 }
 
-STATIC_OVL void
+static void
 umber_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4543,7 +4543,7 @@ boolean goodequip;
 	struct obj *otmp;
 }
 
-STATIC_OVL void
+static void
 umber_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4603,7 +4603,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 worm_initweap(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4620,7 +4620,7 @@ boolean goodequip;
 	}
 }
 
-STATIC_OVL void
+static void
 worm_initinv(mtmp, mkobjflags, faction, goodequip)
 register struct monst *mtmp;
 int mkobjflags;
@@ -4642,7 +4642,7 @@ boolean goodequip;
 
 #define MAYBE_MERC(otmp)	if(!rn2(100) || greatequip) set_material_gm(otmp, MERCURIAL);
 
-STATIC_OVL void
+static void
 m_initweap(mtmp, mkobjflags, faction, goodequip, greatequip, mmflags)
 register struct monst *mtmp;
 int mkobjflags;
@@ -10995,7 +10995,7 @@ long amount;
 }
 #endif
 
-STATIC_OVL void
+static void
 m_initinv(mtmp, mkobjflags, faction, goodequip, greatequip)
 register struct	monst	*mtmp;
 int mkobjflags;
@@ -15324,7 +15324,7 @@ struct permonst *mptr;		/* usually null; used for confused reading */
 }
 
 
-STATIC_OVL boolean
+static boolean
 uncommon(mndx)
 int mndx;
 {
@@ -15346,7 +15346,7 @@ int mndx;
  *	comparing the dungeon alignment and monster alignment.
  *	return an integer in the range of 0-5.
  */
-STATIC_OVL int
+static int
 align_shift(ptr)
 register struct permonst *ptr;
 {
@@ -15407,7 +15407,7 @@ static int roguemons[] = {
 	PM_ZOMBIE
 };
 
-STATIC_OVL
+static
 struct permonst *
 roguemonst()
 {
@@ -17258,7 +17258,7 @@ int type;
  * Returns true if their IS a conflict (which causes peace minded to return false: the monster is not peaceful)
  */
 
-STATIC_OVL
+static
 boolean
 conflicting_unaligned_alignment(gnum, ptr)
 int gnum;

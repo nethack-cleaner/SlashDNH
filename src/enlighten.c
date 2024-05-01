@@ -6,15 +6,15 @@
 #include "mutations.h"
 #include "artifact.h"
 
-STATIC_DCL void FDECL(enlght_line, (const char *,const char *,const char *, boolean, long));
-STATIC_DCL void FDECL(put_or_dump, (const char *, boolean));
-STATIC_DCL char *FDECL(enlght_combatinc, (const char *,int,int,char *));
-STATIC_DCL int NDECL(minimal_enlightenment);
-STATIC_DCL void NDECL(resistances_enlightenment);
-STATIC_DCL void NDECL(signs_enlightenment);
-STATIC_DCL void NDECL(spirits_enlightenment);
-STATIC_DCL void NDECL(mutations_enlightenment);
-STATIC_DCL void NDECL(genocide_enlightenment);
+static void FDECL(enlght_line, (const char *,const char *,const char *, boolean, long));
+static void FDECL(put_or_dump, (const char *, boolean));
+static char *FDECL(enlght_combatinc, (const char *,int,int,char *));
+static int NDECL(minimal_enlightenment);
+static void NDECL(resistances_enlightenment);
+static void NDECL(signs_enlightenment);
+static void NDECL(spirits_enlightenment);
+static void NDECL(mutations_enlightenment);
+static void NDECL(genocide_enlightenment);
 
 #define DOATTRIB_RESISTS	1
 #define DOATTRIB_ARMOR		2
@@ -181,7 +181,7 @@ doenlightenment()
  * to help refresh them about who/what they are.
  * Returns FALSE if menu cancelled (dismissed with ESC), TRUE otherwise.
  */
-STATIC_OVL int
+static int
 minimal_enlightenment()
 {
 	winid tmpwin;
@@ -1162,7 +1162,7 @@ boolean dumping;
 	return;
 }
 
-STATIC_OVL void
+static void
 resistances_enlightenment()
 {
 	char buf[BUFSZ];
@@ -1803,7 +1803,7 @@ udr_enlightenment()
 	return;
 }
 
-STATIC_OVL void
+static void
 spirits_enlightenment()
 {
 	char buf[BUFSZ];
@@ -1934,7 +1934,7 @@ spirits_enlightenment()
 #undef addempty
 }
 
-STATIC_OVL void
+static void
 signs_enlightenment()
 {
 	boolean message = FALSE;
@@ -3041,7 +3041,7 @@ boolean dumping;
 	}
 }
 
-STATIC_OVL void
+static void
 mutations_enlightenment()
 {
 	char buf[BUFSZ];
@@ -3065,7 +3065,7 @@ mutations_enlightenment()
 	return;
 }
 
-STATIC_OVL void
+static void
 genocide_enlightenment()
 {
         list_genocided('y', FALSE, FALSE);

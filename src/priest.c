@@ -9,8 +9,8 @@
 #define ALGN_SINNED	(-4)	/* worse than strayed */
 
 
-STATIC_DCL boolean FDECL(histemple_at,(struct monst *,XCHAR_P,XCHAR_P));
-STATIC_DCL boolean FDECL(has_shrine,(struct monst *));
+static boolean FDECL(histemple_at,(struct monst *,XCHAR_P,XCHAR_P));
+static boolean FDECL(has_shrine,(struct monst *));
 
 static const char tools[] = { TOOL_CLASS, 0 };
 /*
@@ -151,7 +151,7 @@ int roomno;
 	return (a_align(shrine_spot->x, shrine_spot->y));
 }
 
-STATIC_OVL boolean
+static boolean
 histemple_at(priest, x, y)
 register struct monst *priest;
 register xchar x, y;
@@ -391,7 +391,7 @@ struct monst *priest;
 	return((boolean)(u.ualign.type == ((int)EPRI(priest)->shralign) && (!(EPRI(priest)->godnum) || u.ugodbase[UGOD_CURRENT] == EPRI(priest)->godnum)));
 }
 
-STATIC_OVL boolean
+static boolean
 has_shrine(pri)
 struct monst *pri;
 {

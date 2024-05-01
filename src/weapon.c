@@ -12,7 +12,7 @@
 #include "xhity.h"
 
 #ifdef DUMP_LOG
-STATIC_DCL int FDECL(enhance_skill, (boolean));
+static int FDECL(enhance_skill, (boolean));
 #endif
 
 /* Categories whose names don't come from OBJ_NAME(objects[type])
@@ -59,10 +59,10 @@ STATIC_DCL int FDECL(enhance_skill, (boolean));
 
 static void FDECL(mon_ignite_lightsaber, (struct obj *, struct monst *));
 
-STATIC_DCL void FDECL(give_may_advance_msg, (int));
+static void FDECL(give_may_advance_msg, (int));
 
 
-STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
+static NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	0,                DAGGER,         KNIFE,        AXE,
 	PICK_AXE,         SHORT_SWORD,    BROADSWORD,   LONG_SWORD,
 	TWO_HANDED_SWORD, SCIMITAR,       PN_SABER,     CLUB,
@@ -87,7 +87,7 @@ STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 };
 
 /* note: entry [0] isn't used */
-STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
+static NEARDATA const char * const odd_skill_names[] = {
     "no skill",
     "bare hands",		/* use barehands_or_martial[] instead */
     "two weapon combat",
@@ -125,11 +125,11 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
     "shield",
 };
 /* indexed vis `is_martial() */
-STATIC_VAR NEARDATA const char * const barehands_or_martial[] = {
+static NEARDATA const char * const barehands_or_martial[] = {
     "bare handed combat", "martial arts"
 };
 
-STATIC_OVL void
+static void
 give_may_advance_msg(skill)
 int skill;
 {
@@ -144,15 +144,15 @@ int skill;
 }
 
 
-STATIC_DCL boolean FDECL(can_advance, (int, BOOLEAN_P));
-STATIC_DCL boolean FDECL(could_advance, (int));
-STATIC_DCL boolean FDECL(peaked_skill, (int));
-STATIC_DCL int FDECL(slots_required, (int));
+static boolean FDECL(can_advance, (int, BOOLEAN_P));
+static boolean FDECL(could_advance, (int));
+static boolean FDECL(peaked_skill, (int));
+static int FDECL(slots_required, (int));
 
 
-STATIC_DCL char *FDECL(skill_level_name, (int,char *));
-STATIC_DCL char *FDECL(max_skill_level_name, (int,char *));
-STATIC_DCL void FDECL(skill_advance, (int));
+static char *FDECL(skill_level_name, (int,char *));
+static char *FDECL(max_skill_level_name, (int,char *));
+static void FDECL(skill_advance, (int));
 
 
 static NEARDATA const char kebabable[] = {
@@ -1450,11 +1450,11 @@ struct monst *magr;
 
 
 
-STATIC_DCL struct obj *FDECL(oselect, (struct monst *,int,int));
-STATIC_DCL struct obj *FDECL(oselectBoulder, (struct monst *));
+static struct obj *FDECL(oselect, (struct monst *,int,int));
+static struct obj *FDECL(oselectBoulder, (struct monst *));
 #define Oselect(x, spot) if ((otmp = oselect(mtmp, x, spot)) != 0) return(otmp);
 
-STATIC_OVL struct obj *
+static struct obj *
 oselect(mtmp, x, spot)
 struct monst *mtmp;
 int x;
@@ -1507,7 +1507,7 @@ int spot;
 	return obest;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 oselectBoulder(mtmp)
 struct monst *mtmp;
 {
@@ -2886,7 +2886,7 @@ struct monst *mtmp;
 }
 
 /* copy the skill level name into the given buffer */
-STATIC_OVL char *
+static char *
 skill_level_name(skill, buf)
 int skill;
 char *buf;
@@ -2909,7 +2909,7 @@ char *buf;
 }
 
 /* copy the skill level name into the given buffer */
-STATIC_OVL char *
+static char *
 max_skill_level_name(skill, buf)
 int skill;
 char *buf;
@@ -2932,7 +2932,7 @@ char *buf;
 }
 
 /* return the # of slots required to advance the skill */
-STATIC_OVL int
+static int
 slots_required(skill)
 int skill;
 {
@@ -2982,7 +2982,7 @@ reset_skills()
 
 /* return true if this skill can be advanced */
 /*ARGSUSED*/
-STATIC_OVL boolean
+static boolean
 can_advance(skill, speedy)
 int skill;
 boolean speedy;
@@ -3004,7 +3004,7 @@ boolean speedy;
 }
 
 /* return true if this skill could be advanced if more slots were available */
-STATIC_OVL boolean
+static boolean
 could_advance(skill)
 int skill;
 {
@@ -3018,7 +3018,7 @@ int skill;
 
 /* return true if this skill has reached its maximum and there's been enough
    practice to become eligible for the next step if that had been possible */
-STATIC_OVL boolean
+static boolean
 peaked_skill(skill)
 int skill;
 {
@@ -3028,7 +3028,7 @@ int skill;
 		(unsigned) practice_needed_to_advance(OLD_P_SKILL(skill))));
 }
 
-STATIC_OVL void
+static void
 skill_advance(skill)
 int skill;
 {

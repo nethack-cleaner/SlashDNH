@@ -17,14 +17,14 @@
 
 extern int monstr[];
 
-STATIC_DCL boolean FDECL(restrap,(struct monst *));
-STATIC_DCL int FDECL(scent_callback,(genericptr_t, int, int));
-STATIC_DCL void FDECL(dead_familiar,(long));
-STATIC_DCL void FDECL(clothes_bite_mon,(struct monst *));
-STATIC_DCL void FDECL(emit_healing, (struct monst *));
+static boolean FDECL(restrap,(struct monst *));
+static int FDECL(scent_callback,(genericptr_t, int, int));
+static void FDECL(dead_familiar,(long));
+static void FDECL(clothes_bite_mon,(struct monst *));
+static void FDECL(emit_healing, (struct monst *));
 int scentgoalx, scentgoaly;
 
-STATIC_DCL void FDECL(kill_eggs, (struct obj *));
+static void FDECL(kill_eggs, (struct obj *));
 
 static const char *nyar_description[] = {
 /* 0*/	"a titanic tri-radial monster crowned with a massive crimson tentacle",
@@ -76,16 +76,16 @@ const char *warnings[] = {
 	"white", "pink", "red", "ruby", "purple", "black"
 };
 
-STATIC_DCL void NDECL(warn_effects);
+static void NDECL(warn_effects);
 #endif /* 0 */
 
-STATIC_DCL struct obj *FDECL(make_corpse,(struct monst *));
-STATIC_DCL void FDECL(m_detach, (struct monst *, struct permonst *));
-STATIC_DCL void FDECL(lifesaved_monster, (struct monst *));
+static struct obj *FDECL(make_corpse,(struct monst *));
+static void FDECL(m_detach, (struct monst *, struct permonst *));
+static void FDECL(lifesaved_monster, (struct monst *));
 
-STATIC_DCL double FDECL(atanGerald, (double x));
+static double FDECL(atanGerald, (double x));
 
-STATIC_OVL double 
+static double 
 atanGerald(x)
 double x;
 {
@@ -100,7 +100,7 @@ double x;
 	return x >= 0 ? sum : -sum;
 }
 
-STATIC_OVL void
+static void
 ara_died(mtmp)
 struct monst *mtmp;
 {
@@ -233,7 +233,7 @@ int mndx;
 }
 
 /* convert chameleon index to monster index */
-STATIC_VAR int cham_to_pm[] = {
+static int cham_to_pm[] = {
 		NON_PM,		/* placeholder for CHAM_ORDINARY */
 		PM_CHAMELEON,
 		PM_DOPPELGANGER,
@@ -294,7 +294,7 @@ const int humanoid_eyes[] = {
  * G_NOCORPSE set in order to prevent wishing for one, finding tins of one,
  * etc....
  */
-STATIC_OVL struct obj *
+static struct obj *
 make_corpse(mtmp)
 register struct monst *mtmp;
 {
@@ -1458,7 +1458,7 @@ register struct monst *mtmp;
 
 #if 0
 /* part of the original warning code which was replaced in 3.3.1 */
-STATIC_OVL void
+static void
 warn_effects()
 {
     if (warnlevel == 100) {
@@ -3158,7 +3158,7 @@ struct monst *looker;
 	return FALSE;
 }
 
-STATIC_DCL int
+static int
 scent_callback(data, x, y)
 genericptr_t data;
 int x, y;
@@ -4171,7 +4171,7 @@ register struct monst *mon;
 }
 
 /* remove effects of mtmp from other data structures */
-STATIC_OVL void
+static void
 m_detach(mtmp, mptr)
 struct monst *mtmp;
 struct permonst *mptr;	/* reflects mtmp->data _prior_ to mtmp's death */
@@ -4356,7 +4356,7 @@ struct monst *mtmp;
 }
 
 /* maybe kills mtmp, possibly lifesaving it */
-STATIC_OVL void
+static void
 lifesaved_monster(mtmp)
 struct monst *mtmp;
 {
@@ -5189,7 +5189,7 @@ register struct monst *mtmp;
 	m_detach(mtmp, mptr);
 }
 
-STATIC_DCL int
+static int
 mon_expl_color(mdat, adtyp)
 struct permonst *mdat;
 int adtyp;
@@ -7377,7 +7377,7 @@ struct monst *mon;
 }
 
 /* unwatched hiders may hide again; if so, a 1 is returned.  */
-STATIC_OVL boolean
+static boolean
 restrap(mtmp)
 register struct monst *mtmp;
 {
@@ -7781,7 +7781,7 @@ boolean egg;
 }
 
 /* kill off any eggs of genocided monsters */
-STATIC_OVL void
+static void
 kill_eggs(obj_list)
 struct obj *obj_list;
 {
@@ -8121,7 +8121,7 @@ struct monst *mtmp;
 	return 0;
 }
 
-STATIC_OVL void
+static void
 dead_familiar(id)
 long id;
 {
@@ -8363,7 +8363,7 @@ int mtyp;
 	return (struct monst *) 0;
 }
 
-STATIC_OVL boolean
+static boolean
 has_blessings(mtmp)
 struct monst *mtmp;
 {
@@ -8386,7 +8386,7 @@ struct monst *mtmp;
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 blessings_consume(magr, mdef)
 struct monst *magr;
 struct monst *mdef;
@@ -8490,7 +8490,7 @@ struct monst *mdef;
 	return damaged;
 }
 
-STATIC_OVL boolean
+static boolean
 has_organic(mtmp)
 struct monst *mtmp;
 {
@@ -8639,7 +8639,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL boolean
+static boolean
 obj_vitality_damage(obj)
 struct obj *obj;
 {
@@ -8762,7 +8762,7 @@ struct obj *obj;
 	return TRUE;
 }
 
-STATIC_OVL int
+static int
 vitality_consume(origin, objchain, owner)
 struct monst *origin;
 struct obj *objchain;
@@ -8835,7 +8835,7 @@ struct monst *owner;
 	return damaged;
 }
 
-STATIC_OVL void
+static void
 vitality_overload(magr, mdef, damage)
 struct monst *magr, *mdef;
 int damage;
@@ -8887,7 +8887,7 @@ int damage;
 	}
 }
 
-STATIC_OVL void
+static void
 thought_scream_side_effects(origin, primary, damage)
 struct monst *origin;
 struct monst *primary;
@@ -10153,7 +10153,7 @@ struct monst *mtmp;
 	}
 }
 
-STATIC_OVL void
+static void
 clothes_bite_mon(mon)
 struct monst *mon;
 {
@@ -10164,7 +10164,7 @@ struct monst *mon;
 	}
 }
 
-STATIC_OVL void
+static void
 emit_healing(mon)
 struct monst *mon;
 {

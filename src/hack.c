@@ -6,16 +6,16 @@
 #include "hack.h"
 #include "xhity.h"
 
-STATIC_DCL int NDECL(moverock);
-STATIC_DCL void NDECL(sigilfloat);
-STATIC_DCL int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
-STATIC_DCL int FDECL(invocation_distmin,(int, int));
-STATIC_DCL void NDECL(dosinkfall);
-STATIC_DCL boolean FDECL(findtravelpath, (BOOLEAN_P));
-STATIC_DCL boolean FDECL(monstinroom, (struct permonst *,int));
+static int NDECL(moverock);
+static void NDECL(sigilfloat);
+static int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
+static int FDECL(invocation_distmin,(int, int));
+static void NDECL(dosinkfall);
+static boolean FDECL(findtravelpath, (BOOLEAN_P));
+static boolean FDECL(monstinroom, (struct permonst *,int));
 
-STATIC_DCL void FDECL(move_update, (BOOLEAN_P));
-STATIC_DCL struct obj * FDECL(all_items, (boolean, int *, boolean));
+static void FDECL(move_update, (BOOLEAN_P));
+static struct obj * FDECL(all_items, (boolean, int *, boolean));
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 
@@ -72,7 +72,7 @@ const char *msg;
     return (revived);
 }
 
-STATIC_OVL int
+static int
 moverock()
 {
     register xchar rx, ry, sx, sy;
@@ -327,7 +327,7 @@ moverock()
  *  Chew on a wall, door, or boulder.  Returns TRUE if still eating, FALSE
  *  when done.
  */
-STATIC_OVL int
+static int
 still_chewing(x,y)
     xchar x, y;
 {
@@ -466,7 +466,7 @@ register xchar ox, oy;
 
 static NEARDATA const char fell_on_sink[] = "fell onto a sink";
 
-STATIC_OVL void
+static void
 dosinkfall()
 {
 	register struct obj *obj;
@@ -553,7 +553,7 @@ xchar x, y;
 	return((boolean)(Invocation_lev(&u.uz) && x == inv_pos.x && y == inv_pos.y));
 }
 
-STATIC_OVL int
+static int
 invocation_distmin(x, y)
 xchar x, y;
 {
@@ -2114,7 +2114,7 @@ void sigilfloat()
 
 }
 
-STATIC_OVL boolean
+static boolean
 monstinroom(mdat,roomno)
 struct permonst *mdat;
 int roomno;
@@ -2221,7 +2221,7 @@ register int x, y;
 	return !has_subrooms;
 }
 
-STATIC_OVL void
+static void
 move_update(newlev)
 register boolean newlev;
 {

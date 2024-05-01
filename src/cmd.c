@@ -32,65 +32,65 @@ extern int NDECL(wiz_debug_cmd);
 
 static int NDECL((*timed_occ_fn));
 
-STATIC_DCL int NDECL(use_reach_attack);
-STATIC_DCL int NDECL(psionic_craze);
-STATIC_DCL int NDECL(dotelekinesis);
-STATIC_DCL int NDECL(lavaify);
-STATIC_PTR int NDECL(doprev_message);
-STATIC_PTR int NDECL(timed_occupation);
-STATIC_PTR int NDECL(doextcmd);
-STATIC_PTR int NDECL(doability);
-STATIC_PTR int NDECL(domonability);
-STATIC_PTR int FDECL(ability_menu, (boolean, boolean));
-STATIC_PTR int NDECL(domountattk);
-STATIC_PTR int NDECL(hasfightingforms);
-STATIC_PTR int NDECL(doMysticForm);
-STATIC_PTR int NDECL(doLightsaberForm);
-STATIC_PTR int NDECL(doKnightForm);
-STATIC_PTR int NDECL(dofightingform);
-STATIC_PTR int NDECL(doMabilForm);
-STATIC_PTR int NDECL(dooverview_or_wiz_where);
-STATIC_PTR int NDECL(doclearinvissyms);
+static int NDECL(use_reach_attack);
+static int NDECL(psionic_craze);
+static int NDECL(dotelekinesis);
+static int NDECL(lavaify);
+static int NDECL(doprev_message);
+static int NDECL(timed_occupation);
+static int NDECL(doextcmd);
+static int NDECL(doability);
+static int NDECL(domonability);
+static int FDECL(ability_menu, (boolean, boolean));
+static int NDECL(domountattk);
+static int NDECL(hasfightingforms);
+static int NDECL(doMysticForm);
+static int NDECL(doLightsaberForm);
+static int NDECL(doKnightForm);
+static int NDECL(dofightingform);
+static int NDECL(doMabilForm);
+static int NDECL(dooverview_or_wiz_where);
+static int NDECL(doclearinvissyms);
 # ifdef WIZARD
-STATIC_PTR int NDECL(wiz_bind);
-STATIC_PTR int NDECL(wiz_mutate);
-STATIC_PTR int NDECL(wiz_cult);
-STATIC_PTR int NDECL(wiz_mk_mapglyphdump);
-STATIC_PTR int NDECL(wiz_wish);
-STATIC_PTR int NDECL(wiz_identify);
-STATIC_PTR int NDECL(wiz_map);
-//STATIC_PTR int NDECL(wiz_makemap);
-STATIC_PTR int NDECL(wiz_genesis);
-STATIC_PTR int NDECL(wiz_where);
-STATIC_PTR int NDECL(wiz_detect);
-STATIC_PTR int NDECL(wiz_panic);
-STATIC_PTR int NDECL(wiz_polyself);
-STATIC_PTR int NDECL(wiz_level_tele);
-STATIC_PTR int NDECL(wiz_level_change);
-STATIC_PTR int NDECL(wiz_show_seenv);
-STATIC_PTR int NDECL(wiz_show_vision);
-STATIC_PTR int NDECL(wiz_mon_polycontrol);
-STATIC_PTR int NDECL(wiz_show_wmodes);
-STATIC_PTR int NDECL(wiz_showkills);	/* showborn patch */
-STATIC_PTR int NDECL(wiz_setinsight);
-STATIC_PTR int NDECL(wiz_setsanity);
-STATIC_PTR int FDECL(getvalue, (const char *));
+static int NDECL(wiz_bind);
+static int NDECL(wiz_mutate);
+static int NDECL(wiz_cult);
+static int NDECL(wiz_mk_mapglyphdump);
+static int NDECL(wiz_wish);
+static int NDECL(wiz_identify);
+static int NDECL(wiz_map);
+//static int NDECL(wiz_makemap);
+static int NDECL(wiz_genesis);
+static int NDECL(wiz_where);
+static int NDECL(wiz_detect);
+static int NDECL(wiz_panic);
+static int NDECL(wiz_polyself);
+static int NDECL(wiz_level_tele);
+static int NDECL(wiz_level_change);
+static int NDECL(wiz_show_seenv);
+static int NDECL(wiz_show_vision);
+static int NDECL(wiz_mon_polycontrol);
+static int NDECL(wiz_show_wmodes);
+static int NDECL(wiz_showkills);	/* showborn patch */
+static int NDECL(wiz_setinsight);
+static int NDECL(wiz_setsanity);
+static int FDECL(getvalue, (const char *));
 extern void FDECL(list_vanquished, (int, BOOLEAN_P)); /* showborn patch */
 #ifdef DEBUG_MIGRATING_MONS
-STATIC_PTR int NDECL(wiz_migrate_mons);
+static int NDECL(wiz_migrate_mons);
 #endif
-STATIC_DCL void FDECL(count_obj, (struct obj *, long *, long *, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL void FDECL(obj_chain, (winid, const char *, struct obj *, long *, long *));
-STATIC_DCL void FDECL(magic_chest_obj_chain, (winid, const char *, long *, long *));
-STATIC_DCL void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
-STATIC_DCL void FDECL(mon_chain, (winid, const char *, struct monst *, long *, long *));
-STATIC_DCL void FDECL(contained, (winid, const char *, long *, long *));
-STATIC_PTR int NDECL(wiz_show_stats);
+static void FDECL(count_obj, (struct obj *, long *, long *, BOOLEAN_P, BOOLEAN_P));
+static void FDECL(obj_chain, (winid, const char *, struct obj *, long *, long *));
+static void FDECL(magic_chest_obj_chain, (winid, const char *, long *, long *));
+static void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
+static void FDECL(mon_chain, (winid, const char *, struct monst *, long *, long *));
+static void FDECL(contained, (winid, const char *, long *, long *));
+static int NDECL(wiz_show_stats);
 #  ifdef PORT_DEBUG
-STATIC_DCL int NDECL(wiz_port_debug);
+static int NDECL(wiz_port_debug);
 #  endif
 # endif
-STATIC_PTR int NDECL(enter_explore_mode);
+static int NDECL(enter_explore_mode);
 
 static void FDECL(bind_key, (UCHAR_P, char*));
 static void NDECL(init_bind_list);
@@ -106,18 +106,18 @@ static void NDECL(end_of_input);
 static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
-STATIC_DCL char *NDECL(parse);
-STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
+static char *NDECL(parse);
+static boolean FDECL(help_dir, (CHAR_P,const char *));
 
 
-STATIC_PTR int
+static int
 doprev_message()
 {
     return nh_doprev_message();
 }
 
 /* Count down by decrementing multi */
-STATIC_PTR int
+static int
 timed_occupation()
 {
 	int result;
@@ -235,7 +235,7 @@ char ch;
 }
 
 
-STATIC_PTR int
+static int
 doextcmd()	/* here after # - now read a full-word command */
 {
 	int idx, retval;
@@ -403,20 +403,20 @@ extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
 #endif
 
 /* #ability command - use standard abilities, maybe polymorphed */
-STATIC_PTR int
+static int
 doability()
 {
 	return ability_menu(iflags.quick_m_abilities, TRUE);
 }
 
 /* #monster command - use special monster abilities while polymorphed */
-STATIC_PTR int
+static int
 domonability()
 {
 	return ability_menu(TRUE, FALSE);
 }
 
-STATIC_PTR int
+static int
 ability_menu(mon_abilities, you_abilities)
 boolean mon_abilities;
 boolean you_abilities;
@@ -831,7 +831,7 @@ boolean you_abilities;
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL int
+static int
 lavaify(){
 	struct rm *lev = &levl[u.ux][u.uy];
 	if (!(
@@ -860,7 +860,7 @@ lavaify(){
 }
 
 /* #mount command - order mount to attack */
-STATIC_PTR int
+static int
 domountattk()
 {
 	struct monst *mtmp;
@@ -910,7 +910,7 @@ psionic_pulse(){
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 dotelekinesis(){
 	if(u.uen < 15){
 		You("lack the energy.");
@@ -936,7 +936,7 @@ dotelekinesis(){
 
 }
 
-STATIC_OVL int
+static int
 psionic_craze(){
 	if(u.uen < 5){
 		You("lack the energy.");
@@ -974,7 +974,7 @@ psionic_craze(){
 }
 
 
-STATIC_OVL int
+static int
 use_reach_attack()
 {
 	int typ, max_range = 4, min_range = 1;
@@ -1853,7 +1853,7 @@ dounmaintain()
 	}
 }
 
-STATIC_PTR int
+static int
 enter_explore_mode()
 {
 	char buf[BUFSZ];
@@ -1885,7 +1885,7 @@ enter_explore_mode()
 	return MOVE_CANCELLED;
 }
 
-STATIC_PTR int
+static int
 dooverview_or_wiz_where()
 {
 #ifdef WIZARD
@@ -1896,7 +1896,7 @@ dooverview_or_wiz_where()
 	return MOVE_CANCELLED;
 }
 
-STATIC_PTR int
+static int
 doclearinvissyms()
 {
 	register int x, y;
@@ -1911,7 +1911,7 @@ doclearinvissyms()
 
 #ifdef WIZARD
 
-STATIC_PTR int
+static int
 wiz_bind()
 {
 	if (wizard) {
@@ -1928,7 +1928,7 @@ wiz_bind()
 }
 
 
-STATIC_PTR int
+static int
 wiz_mutate()
 {
 	if (wizard) {
@@ -1994,7 +1994,7 @@ wiz_mutate()
 #define SET_FLAM_DEVOTION	10
 #define SET_YOG_DEVOTION	11
 
-STATIC_PTR int
+static int
 wiz_cult()
 {
 	if (wizard) {
@@ -2188,7 +2188,7 @@ wiz_cult()
 }
 
 
-STATIC_PTR int
+static int
 wiz_mk_mapglyphdump()
 {
 #ifdef MAPDUMP_FN
@@ -2198,7 +2198,7 @@ wiz_mk_mapglyphdump()
 }
 
 /* ^W command - wish for something */
-STATIC_PTR int
+static int
 wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
 {
 	if (wizard) {
@@ -2214,7 +2214,7 @@ wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
 }
 
 /* ^I command - identify hero's inventory */
-STATIC_PTR int
+static int
 wiz_identify()
 {
 	if (wizard)	identify_pack(0);
@@ -2296,7 +2296,7 @@ wiz_makemap(VOID_ARGS)
 }
 
 /* ^F command - reveal the level map and any traps on it */
-STATIC_PTR int
+static int
 wiz_map()
 {
 	if (wizard) {
@@ -2327,7 +2327,7 @@ wiz_map()
 }
 
 /* ^G command - generate monster(s); a count prefix will be honored */
-STATIC_PTR int
+static int
 wiz_genesis()
 {
 	if (wizard)	(void) create_particular(u.ux, u.uy, -1, -1, TRUE, 0, 0, 0, (char *)0);
@@ -2336,7 +2336,7 @@ wiz_genesis()
 }
 
 /* ^O command - display dungeon layout */
-STATIC_PTR int
+static int
 wiz_where()
 {
 	if (wizard) (void) print_dungeon(FALSE, FALSE, (schar *)0, (int *)0);
@@ -2345,7 +2345,7 @@ wiz_where()
 }
 
 /* ^E command - detect unseen (secret doors, traps, hidden monsters) */
-STATIC_PTR int
+static int
 wiz_detect()
 {
 	if(wizard)  (void) findit();
@@ -2354,7 +2354,7 @@ wiz_detect()
 }
 
 /* ^V command - level teleport */
-STATIC_PTR int
+static int
 wiz_level_tele()
 {
 	if (wizard)	level_tele();
@@ -2363,7 +2363,7 @@ wiz_level_tele()
 }
 
 /* #monpolycontrol command - choose new form for shapechangers, polymorphees */
-STATIC_PTR int
+static int
 wiz_mon_polycontrol()
 {
     iflags.mon_polycontrol = !iflags.mon_polycontrol;
@@ -2373,7 +2373,7 @@ wiz_mon_polycontrol()
 }
 
 /* #levelchange command - adjust hero's experience level */
-STATIC_PTR int
+static int
 wiz_level_change()
 {
     char buf[BUFSZ];
@@ -2413,7 +2413,7 @@ wiz_level_change()
 }
 
 /* #panic command - test program's panic handling */
-STATIC_PTR int
+static int
 wiz_panic()
 {
 	if (iflags.debug_fuzzer) {
@@ -2428,7 +2428,7 @@ wiz_panic()
 }
 
 /* #polyself command - change hero's form */
-STATIC_PTR int
+static int
 wiz_polyself()
 {
 	polyself(TRUE);
@@ -2436,7 +2436,7 @@ wiz_polyself()
 }
 
 /* #seenv command */
-STATIC_PTR int
+static int
 wiz_show_seenv()
 {
 	winid win;
@@ -2478,7 +2478,7 @@ wiz_show_seenv()
 }
 
 /* #vision command */
-STATIC_PTR int
+static int
 wiz_show_vision()
 {
 	winid win;
@@ -2515,7 +2515,7 @@ wiz_show_vision()
 }
 
 /* #wmode command */
-STATIC_PTR int
+static int
 wiz_show_wmodes()
 {
 	winid win;
@@ -2547,13 +2547,13 @@ wiz_show_wmodes()
 }
 
 /* #showkills command */
-STATIC_PTR int wiz_showkills()		/* showborn patch */
+static int wiz_showkills()		/* showborn patch */
 {
 	list_vanquished('y', FALSE);
 	return MOVE_CANCELLED;
 }
 
-STATIC_PTR int wiz_setinsight()
+static int wiz_setinsight()
 {
 	char buf[BUFSZ];
 	int newval;
@@ -2579,7 +2579,7 @@ STATIC_PTR int wiz_setinsight()
 	return MOVE_INSTANT;
 }
 
-STATIC_PTR int wiz_setsanity()
+static int wiz_setsanity()
 {
 	char buf[BUFSZ];
 	int newval;
@@ -2599,7 +2599,7 @@ STATIC_PTR int wiz_setsanity()
 	return MOVE_INSTANT;
 }
 
-STATIC_PTR
+static
 int getvalue(str)
 const char *str;
 {
@@ -3308,7 +3308,7 @@ static const char template[] = "%-18s %4ld  %6ld";
 static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
-STATIC_OVL void
+static void
 count_obj(chain, total_count, total_size, top, recurse)
 	struct obj *chain;
 	long *total_count;
@@ -3331,7 +3331,7 @@ count_obj(chain, total_count, total_size, top, recurse)
 	*total_size += size;
 }
 
-STATIC_OVL void
+static void
 obj_chain(win, src, chain, total_count, total_size)
 	winid win;
 	const char *src;
@@ -3349,7 +3349,7 @@ obj_chain(win, src, chain, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
+static void
 magic_chest_obj_chain(win, src, total_count, total_size)
 	winid win;
 	const char *src;
@@ -3368,7 +3368,7 @@ magic_chest_obj_chain(win, src, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
+static void
 mon_invent_chain(win, src, chain, total_count, total_size)
 	winid win;
 	const char *src;
@@ -3388,7 +3388,7 @@ mon_invent_chain(win, src, chain, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
+static void
 contained(win, src, total_count, total_size)
 	winid win;
 	const char *src;
@@ -3418,7 +3418,7 @@ contained(win, src, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
+static void
 mon_chain(win, src, chain, total_count, total_size)
 	winid win;
 	const char *src;
@@ -4131,7 +4131,7 @@ const char *s;
 	return 1;
 }
 
-STATIC_OVL boolean
+static boolean
 help_dir(sym, msg)
 char sym;
 const char *msg;
@@ -4344,7 +4344,7 @@ click_to_cmd(x, y, mod)
     return cmd;
 }
 
-STATIC_OVL char *
+static char *
 parse()
 {
 #ifdef LINT	/* static char in_line[COLNO]; */

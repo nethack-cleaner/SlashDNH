@@ -5,7 +5,7 @@
 #include "hack.h"
 #include "mfndpos.h" /* ALLOW_M */
 
-//STATIC_DCL int FDECL(drop_throw,(struct monst *, struct obj *,BOOLEAN_P,int,int));
+//static int FDECL(drop_throw,(struct monst *, struct obj *,BOOLEAN_P,int,int));
 
 #define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
 

@@ -6,15 +6,15 @@
 #include "prop.h"
 #include "artifact.h"
 
-STATIC_DCL void FDECL(mkbox_cnts,(struct obj *));
-STATIC_DCL void FDECL(obj_timer_checks,(struct obj *, XCHAR_P, XCHAR_P, int));
-STATIC_DCL void FDECL(handle_material_specials, (struct obj *, int, int));
-STATIC_DCL void FDECL(init_obj_material, (struct obj *));
-STATIC_DCL void FDECL(container_weight, (struct obj *));
+static void FDECL(mkbox_cnts,(struct obj *));
+static void FDECL(obj_timer_checks,(struct obj *, XCHAR_P, XCHAR_P, int));
+static void FDECL(handle_material_specials, (struct obj *, int, int));
+static void FDECL(init_obj_material, (struct obj *));
+static void FDECL(container_weight, (struct obj *));
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(where_name, (int));
-STATIC_DCL void FDECL(check_contained, (struct obj *,const char *));
-STATIC_DCL int FDECL(maid_clean, (struct monst *, struct obj *));
+static const char *FDECL(where_name, (int));
+static void FDECL(check_contained, (struct obj *,const char *));
+static int FDECL(maid_clean, (struct monst *, struct obj *));
 #endif
 
 //extern struct obj *thrownobj;		/* defined in dothrow.c */
@@ -316,7 +316,7 @@ int mkflags;
 	return(mksobj(i, mkflags));
 }
 
-STATIC_OVL void
+static void
 mkbox_cnts(box)
 struct obj *box;
 {
@@ -3193,7 +3193,7 @@ struct obj *otmp;
     return retval;
 }
 
-STATIC_OVL void
+static void
 obj_timer_checks(otmp, x, y, force)
 struct obj *otmp;
 xchar x, y;
@@ -3679,7 +3679,7 @@ add_to_buried(obj)
 }
 
 /* Recalculate the weight of this container and all of _its_ containers. */
-STATIC_OVL void
+static void
 container_weight(container)
     struct obj *container;
 {
@@ -3899,7 +3899,7 @@ static const char *obj_state_names[NOBJ_STATES] = {
 	"minvent",	"migrating",	"buried",	"onbill"
 };
 
-STATIC_OVL const char *
+static const char *
 where_name(where)
     int where;
 {
@@ -3907,7 +3907,7 @@ where_name(where)
 }
 
 /* obj sanity check: check objs contained by container */
-STATIC_OVL void
+static void
 check_contained(container, mesg)
     struct obj *container;
     const char *mesg;

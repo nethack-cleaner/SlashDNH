@@ -15,16 +15,16 @@
 extern const int monstr[];
 
 
-STATIC_DCL short FDECL(which_arti, (long int));
-STATIC_DCL struct monst *FDECL(other_mon_has_arti, (struct monst *,SHORT_P));
-STATIC_DCL boolean FDECL(rightful_owner, (struct monst *,SHORT_P, struct monst *));
-STATIC_DCL struct obj *FDECL(on_ground, (SHORT_P));
-STATIC_DCL boolean FDECL(you_have, (long int));
-STATIC_DCL long FDECL(target_on, (long int,struct monst *));
-STATIC_DCL long FDECL(strategy, (struct monst *));
-STATIC_DCL void FDECL(wizgush, (int, int, genericptr_t));
-STATIC_DCL void NDECL(dowizgush);
-STATIC_DCL void FDECL(aglaopesong, (struct monst *));
+static short FDECL(which_arti, (long int));
+static struct monst *FDECL(other_mon_has_arti, (struct monst *,SHORT_P));
+static boolean FDECL(rightful_owner, (struct monst *,SHORT_P, struct monst *));
+static struct obj *FDECL(on_ground, (SHORT_P));
+static boolean FDECL(you_have, (long int));
+static long FDECL(target_on, (long int,struct monst *));
+static long FDECL(strategy, (struct monst *));
+static void FDECL(wizgush, (int, int, genericptr_t));
+static void NDECL(dowizgush);
+static void FDECL(aglaopesong, (struct monst *));
 
 static int xprime = 0, yprime = 0;
 
@@ -143,7 +143,7 @@ register struct monst *mtmp;
 
 #define M_Wants(mask)	(mtmp->data->mflagst & (mask))
 
-STATIC_OVL short
+static short
 which_arti(mask)
 	register long int mask;
 {
@@ -181,7 +181,7 @@ mon_has_arti(mtmp, otyp)
 
 }
 
-STATIC_OVL struct monst *
+static struct monst *
 other_mon_has_arti(mtmp, otyp)
 	struct monst *mtmp;
 	int otyp;
@@ -196,7 +196,7 @@ other_mon_has_arti(mtmp, otyp)
 	return((struct monst *)0);
 }
 
-STATIC_OVL boolean
+static boolean
 rightful_owner(holder, otyp, seeker)
 	register struct monst *holder;
 	register short	otyp;
@@ -229,7 +229,7 @@ rightful_owner(holder, otyp, seeker)
 	return FALSE;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 on_ground(otyp)
 	register short	otyp;
 {
@@ -246,7 +246,7 @@ on_ground(otyp)
 	return((struct obj *)0);
 }
 
-STATIC_OVL boolean
+static boolean
 you_have(mask)
 	register long int mask;
 {
@@ -261,7 +261,7 @@ you_have(mask)
 	return(0);
 }
 
-STATIC_OVL long
+static long
 target_on(mask, mtmp)
 	register long int mask;
 	register struct monst *mtmp;
@@ -284,7 +284,7 @@ target_on(mask, mtmp)
 	return(STRAT_NONE);
 }
 
-STATIC_OVL long
+static long
 strategy(mtmp)
 	register struct monst *mtmp;
 {
@@ -1241,7 +1241,7 @@ coa_arrive()
 
 }
 
-STATIC_PTR void
+static void
 dowizdarken()
 {
 	register struct monst *mtmp;
@@ -1292,7 +1292,7 @@ dowizgush() /* Gushing forth along LOS from (u.ux, u.uy) and random other spots 
 	}
 }
 
-STATIC_PTR void
+static void
 wizgush(cx, cy, poolcnt)
 int cx, cy;
 genericptr_t poolcnt;
@@ -1619,7 +1619,7 @@ register struct monst	*mtmp;
 	}
 }
 
-STATIC_PTR void
+static void
 aglaopesong(mtmp)
 	struct monst *mtmp;
 {

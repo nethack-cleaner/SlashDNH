@@ -20,7 +20,7 @@ typedef struct {
     short nlocations, alocations;
 } ExplodeRegion;
 
-STATIC_DCL ExplodeRegion *
+static ExplodeRegion *
 create_explode_region()
 {
     ExplodeRegion *reg;
@@ -32,7 +32,7 @@ create_explode_region()
     return reg;
 }
 
-STATIC_DCL void
+static void
 add_location_to_explode_region(x, y, reg)
 xchar x, y;
 ExplodeRegion *reg;
@@ -58,14 +58,14 @@ ExplodeRegion *reg;
     reg->nlocations++;
 }
 
-STATIC_DCL int
+static int
 compare_explode_location(loc1, loc2)
 ExplodeLocation *loc1, *loc2;
 {
     return loc1->y == loc2->y ? loc1->x - loc2->x : loc1->y - loc2->y;
 }
 
-STATIC_DCL void
+static void
 set_blast_symbols(reg)
 ExplodeRegion *reg;
 {
@@ -111,7 +111,7 @@ ExplodeRegion *reg;
 	reg->locations[i].blast = blast_symbols[reg->locations[i].blast];
 }
 
-STATIC_DCL void
+static void
 free_explode_region(reg)
 ExplodeRegion *reg;
 {
@@ -120,7 +120,7 @@ ExplodeRegion *reg;
 }
 
 /* This is the "do-it-all" explosion command */
-STATIC_DCL void FDECL(do_explode,
+static void FDECL(do_explode,
 	(int,int,ExplodeRegion *,int,int,int,int,int,BOOLEAN_P, struct permonst *));
 
 /* Note: I had to choose one of three possible kinds of "type" when writing
@@ -258,7 +258,7 @@ int color;
 	free_explode_region(area);
 }
 
-STATIC_DCL void
+static void
 do_explode(x, y, area, adtyp, olet, dam, color, dest, yours, pa)
 int x, y;
 ExplodeRegion *area;
@@ -1129,7 +1129,7 @@ splatter_burning_oil(x, y)
 
 #define BY_OBJECT       ((struct monst *)0)
 
-STATIC_DCL int
+static int
 dp(n, p)		/* 0 <= dp(n, p) <= n */
 int n, p;
 {
@@ -1159,10 +1159,10 @@ struct grenade_callback {
     boolean isyou;
 };
 
-STATIC_DCL void FDECL(grenade_effects, (struct obj *,XCHAR_P,XCHAR_P,
+static void FDECL(grenade_effects, (struct obj *,XCHAR_P,XCHAR_P,
 	ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,BOOLEAN_P));
 
-STATIC_DCL int
+static int
 grenade_fiery_callback(data, x, y)
 genericptr_t data;
 int x, y;
@@ -1177,7 +1177,7 @@ int x, y;
     return !is_accessible;
 }
 
-STATIC_DCL int
+static int
 grenade_gas_callback(data, x, y)
 genericptr_t data;
 int x, y;
@@ -1189,7 +1189,7 @@ int x, y;
     return !is_accessible;
 }
 
-STATIC_DCL int
+static int
 grenade_dig_callback(data, x, y)
 genericptr_t data;
 int x, y;
@@ -1200,7 +1200,7 @@ int x, y;
     return !ZAP_POS(levl[x][y].typ);
 }
 
-STATIC_DCL void
+static void
 grenade_effects(source, x, y, fiery_area, gas_area, dig_area, isyou)
 struct obj *source;
 xchar x, y;

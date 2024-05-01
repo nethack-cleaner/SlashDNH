@@ -19,13 +19,13 @@ extern boolean lifehunt_sneak_attacking;
 extern struct attack grapple;
 
 //duplicates of other functions, created due to problems with the linker
-STATIC_DCL void NDECL(cast_protection);
-STATIC_DCL int NDECL(throweffect);
-STATIC_DCL void FDECL(awaken_monsters,(int));
+static void NDECL(cast_protection);
+static int NDECL(throweffect);
+static void FDECL(awaken_monsters,(int));
 
-STATIC_DCL void FDECL(do_item_blast, (int));
-STATIC_DCL void FDECL(nitocris_sarcophagous, (struct obj *));
-STATIC_DCL void FDECL(fulvous_desk, (struct obj *));
+static void FDECL(do_item_blast, (int));
+static void FDECL(nitocris_sarcophagous, (struct obj *));
+static void FDECL(fulvous_desk, (struct obj *));
 
 int FDECL(donecromenu, (const char *,struct obj *));
 int FDECL(dopetmenu, (const char *,struct obj *));
@@ -60,32 +60,32 @@ static NEARDATA	int demons[] = {PM_QUASIT, PM_MANES, PM_QUASIT,
 					  PM_BALROG, PM_VROCK, PM_HEZROU};
 
 
-STATIC_PTR int NDECL(read_necro);
-STATIC_PTR int NDECL(read_lost);
+static int NDECL(read_necro);
+static int NDECL(read_lost);
 
-STATIC_DCL int FDECL(select_gift_artifact, (aligntyp));
-STATIC_DCL int FDECL(select_floor_artifact, (struct obj *));
+static int FDECL(select_gift_artifact, (aligntyp));
+static int FDECL(select_floor_artifact, (struct obj *));
 
-STATIC_DCL int FDECL(arti_invoke, (struct obj*));
-STATIC_DCL boolean FDECL(Mb_hit, (struct monst *magr,struct monst *mdef,
+static int FDECL(arti_invoke, (struct obj*));
+static boolean FDECL(Mb_hit, (struct monst *magr,struct monst *mdef,
 				  struct obj *,int *,int,BOOLEAN_P,char *,char *));
-STATIC_DCL boolean FDECL(voidPen_hit, (struct monst *magr,struct monst *mdef,
+static boolean FDECL(voidPen_hit, (struct monst *magr,struct monst *mdef,
 				  struct obj *,int *,int,BOOLEAN_P,char *));
-STATIC_DCL boolean FDECL(narrow_voidPen_hit, (struct monst *mdef, struct obj *));
+static boolean FDECL(narrow_voidPen_hit, (struct monst *mdef, struct obj *));
 
 /* coordinate effects from spec_dbon() with messages in artifact_hit() */
-STATIC_OVL int spec_dbon_applies = 0;
+static int spec_dbon_applies = 0;
 
 /* flags including which artifacts have already been created */
 struct artinstance * artinstance;
 /* and a discovery list for them (no dummy first entry here) */
-STATIC_OVL int * artidisco;
+static int * artidisco;
 /* and a counter for how many artifacts we have */
 int nrofartifacts;
 /* and a pointer to space for randarts' names */
 char ** artiextranames;
 
-STATIC_DCL boolean FDECL(attacks, (int,struct obj *));
+static boolean FDECL(attacks, (int,struct obj *));
 
 const int elements[4] = {AD_PHYS, AD_FIRE, AD_COLD, AD_ELEC};
 const int explType[4] = {0, EXPL_FIERY, EXPL_FROSTY, EXPL_MAGICAL};
@@ -1226,7 +1226,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_jrt_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -1354,7 +1354,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_holy_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -1504,7 +1504,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_devil_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -1604,7 +1604,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_ancient_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -1623,7 +1623,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_demon_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -1726,7 +1726,7 @@ struct obj *otmp;	/* existing object */
 	return otmp;
 }
 
-STATIC_OVL struct obj *
+static struct obj *
 mk_tannin_special(otmp)
 struct obj *otmp;	/* existing object */
 {
@@ -2556,7 +2556,7 @@ register const char *name;
 	return FALSE;
 }
 
-STATIC_OVL boolean
+static boolean
 attacks(adtype, otmp)
 register int adtype;
 register struct obj *otmp;
@@ -3621,7 +3621,7 @@ static const char * const mb_verb[2][4] = {
 #define MB_INDEX_CANCEL		3
 
 /* called when someone is being hit by the pen of the void */
-STATIC_OVL boolean
+static boolean
 voidPen_hit(magr, mdef, pen, dmgptr, dieroll, vis, hittee)
 struct monst *magr, *mdef;	/* attacker and defender */
 struct obj *pen;			/* Pen of the Void */
@@ -4040,7 +4040,7 @@ char *hittee;			/* target's name: "you" or mon_nam(mdef) */
 }
 
 /* called when someone is being hit by the pen of the void */
-STATIC_OVL boolean
+static boolean
 narrow_voidPen_hit(mdef, pen)
 struct monst *mdef;	/* defender */
 struct obj *pen;	/* Pen of the Void */
@@ -4162,7 +4162,7 @@ struct obj *pen;	/* Pen of the Void */
 	return FALSE;
 }
 
-STATIC_OVL boolean
+static boolean
 Mb_hit(magr, mdef, mb, dmgptr, dieroll, vis, hittee, type)
 struct monst *magr, *mdef;	/* attacker and defender */
 struct obj *mb;			/* Magicbane */
@@ -8757,7 +8757,7 @@ doparticularinvoke(obj)
     return arti_invoke(obj);
 }
 
-STATIC_OVL int
+static int
 arti_invoke(obj)
     register struct obj *obj;
 {
@@ -13483,7 +13483,7 @@ struct obj *obj;
 	return 0;
 }
 
-STATIC_PTR int
+static int
 read_necro(VOID_ARGS)
 {
 	struct permonst *pm;
@@ -14014,7 +14014,7 @@ read_necro(VOID_ARGS)
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-STATIC_PTR int
+static int
 read_lost(VOID_ARGS)
 {
 	int i, numSlots;
@@ -14276,7 +14276,7 @@ arti_poly_contents(obj)
 	}
 }
 
-STATIC_OVL int
+static int
 throweffect()
 {
 	coord cc;
@@ -14312,7 +14312,7 @@ throweffect()
 	}
 }
 
-STATIC_OVL void
+static void
 cast_protection()
 {
 	int loglev = 0;
@@ -14354,7 +14354,7 @@ cast_protection()
 	    Your("skin feels warm for a moment.");
 	}
 }
-STATIC_OVL void
+static void
 awaken_monsters(distance)
 int distance;
 {
@@ -14721,7 +14721,7 @@ living_items()
 
 static int nitocrisspawns[] = {PM_PIT_VIPER, PM_PIT_VIPER, PM_COBRA, PM_COBRA, PM_GHOUL, PM_GHOUL, PM_CROCODILE, PM_CROCODILE, PM_SERPENT_NECKED_LIONESS, PM_AMMIT};
 
-STATIC_OVL void
+static void
 nitocris_sarcophagous(obj)
 struct obj *obj;
 {
@@ -14744,7 +14744,7 @@ struct obj *obj;
 static int fulvousspawns[] = {PM_GHOST, PM_GHOST, PM_GHOST, PM_GHOST, 
 							  PM_WRAITH, PM_WRAITH, PM_WRAITH, 
 							  PM_SHADE};
-STATIC_OVL void
+static void
 fulvous_desk(obj)
 struct obj *obj;
 {
@@ -14785,7 +14785,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL void
+static void
 do_item_blast(spe)
 int spe;
 {

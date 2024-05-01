@@ -11,10 +11,10 @@ extern boolean notonhead;
 extern struct attack noattack;
 
 
-STATIC_DCL int FDECL(disturb,(struct monst *));
-STATIC_DCL void FDECL(distfleeck,(struct monst *,int *,int *,int *));
-STATIC_DCL int FDECL(m_arrival, (struct monst *));
-STATIC_DCL void FDECL(watch_on_duty,(struct monst *));
+static int FDECL(disturb,(struct monst *));
+static void FDECL(distfleeck,(struct monst *,int *,int *,int *));
+static int FDECL(m_arrival, (struct monst *));
+static void FDECL(watch_on_duty,(struct monst *));
 void FDECL(ford_rises,(struct monst *));
 boolean FDECL(check_shore,(int, int));
 
@@ -43,7 +43,7 @@ register struct monst *mtmp;
 }
 
 
-STATIC_OVL void
+static void
 watch_on_duty(mtmp)
 register struct monst *mtmp;
 {
@@ -714,7 +714,7 @@ boolean digest_meal;
  * Possibly awaken the given monster.  Return a 1 if the monster has been
  * jolted awake.
  */
-STATIC_OVL int
+static int
 disturb(mtmp)
 	register struct monst *mtmp;
 {
@@ -813,7 +813,7 @@ boolean fleemsg;
 	}
 }
 
-STATIC_OVL void
+static void
 distfleeck(mtmp,inrange,nearby,scared)
 register struct monst *mtmp;
 int *inrange, *nearby, *scared;
@@ -861,7 +861,7 @@ int *inrange, *nearby, *scared;
 
 /* perform a special one-time action for a monster; returns -1 if nothing
    special happened, 0 if monster uses up its turn, 1 if monster is killed */
-STATIC_OVL int
+static int
 m_arrival(mon)
 struct monst *mon;
 {
@@ -870,7 +870,7 @@ struct monst *mon;
 	return -1;
 }
 
-STATIC_OVL void
+static void
 jrt_eladrin_spawn_equip(tmpm, mtyp)
 struct monst *tmpm;
 int mtyp;

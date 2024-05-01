@@ -33,16 +33,16 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 };
 
 #ifndef NO_SIGNAL
-STATIC_PTR void FDECL(done_intr, (int));
+static void FDECL(done_intr, (int));
 # if defined(UNIX)
 static void FDECL(done_hangup, (int));
 # endif
 #endif
-STATIC_DCL void FDECL(disclose,(int,BOOLEAN_P));
-STATIC_DCL void FDECL(get_valuables, (struct obj *));
-STATIC_DCL void FDECL(sort_valuables, (struct valuable_data *,int));
-STATIC_DCL void FDECL(artifact_score, (struct obj *,BOOLEAN_P,winid));
-STATIC_DCL void FDECL(savelife, (int));
+static void FDECL(disclose,(int,BOOLEAN_P));
+static void FDECL(get_valuables, (struct obj *));
+static void FDECL(sort_valuables, (struct valuable_data *,int));
+static void FDECL(artifact_score, (struct obj *,BOOLEAN_P,winid));
+static void FDECL(savelife, (int));
 void FDECL(list_vanquished, (CHAR_P,BOOLEAN_P));
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
@@ -50,7 +50,7 @@ extern int lastmsg;
 extern void NDECL(dump_spells);
 void FDECL(do_vanquished, (int, BOOLEAN_P, BOOLEAN_P));
 #endif /* DUMP_LOG */
-STATIC_DCL boolean FDECL(should_query_disclose_option, (int,char *));
+static boolean FDECL(should_query_disclose_option, (int,char *));
 
 #define nethack_exit exit
 
@@ -335,7 +335,7 @@ done2()
 
 #ifndef NO_SIGNAL
 /*ARGSUSED*/
-STATIC_PTR void
+static void
 done_intr(sig_unused) /* called as signal() handler, so sent at least one arg */
 int sig_unused;
 {
@@ -511,7 +511,7 @@ panic VA_DECL(const char *, str)
 	NH_abort(); /*actually just die here*/
 }
 
-STATIC_OVL boolean
+static boolean
 should_query_disclose_option(category, defquery)
 int category;
 char *defquery;
@@ -549,7 +549,7 @@ char *defquery;
     return TRUE;
 }
 
-STATIC_OVL void
+static void
 disclose(how,taken)
 int how;
 boolean taken;
@@ -643,7 +643,7 @@ boolean taken;
 }
 
 /* try to get the player back in a viable state after being killed */
-STATIC_OVL void
+static void
 savelife(how)
 int how;
 {
@@ -679,7 +679,7 @@ int how;
  * Get valuables from the given list.  Revised code: the list always remains
  * intact.
  */
-STATIC_OVL void
+static void
 get_valuables(list)
 struct obj *list;	/* inventory or container contents */
 {
@@ -712,7 +712,7 @@ struct obj *list;	/* inventory or container contents */
  *  Sort collected valuables, most frequent to least.  We could just
  *  as easily use qsort, but we don't care about efficiency here.
  */
-STATIC_OVL void
+static void
 sort_valuables(list, size)
 struct valuable_data list[];
 int size;		/* max value is less than 20 */
@@ -735,7 +735,7 @@ int size;		/* max value is less than 20 */
 }
 
 /* called twice; first to calculate total, then to list relevant items */
-STATIC_OVL void
+static void
 artifact_score(list, counting, endwin)
 struct obj *list;
 boolean counting;	/* true => add up points; false => display them */
@@ -873,7 +873,7 @@ Check_ring_lifesaving()
 	return FALSE;
 }
 
-STATIC_OVL void
+static void
 Use_crystal_lifesaving()
 {
 	//Use less advantageous l.s. first (the full set of 5 crystals is heavy and riskier for theft)
@@ -937,7 +937,7 @@ Use_crystal_lifesaving()
 	impossible("Crystal lifesaving with invalid crystals!?");
 }
 
-STATIC_OVL void
+static void
 Use_iaso_lifesaving()
 {
 	struct monst *mon;
@@ -967,7 +967,7 @@ Use_iaso_lifesaving()
 	impossible("Iasoian lifesaving but can't find pet!?");
 }
 
-STATIC_OVL void
+static void
 Use_twin_lifesaving()
 {
 	struct monst *mon;

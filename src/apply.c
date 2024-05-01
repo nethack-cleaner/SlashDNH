@@ -20,66 +20,66 @@ static const char apply_all[] = { ALL_CLASSES, CHAIN_CLASS, 0 };
 #define TREPH_THOUGHTS 1
 #define TREPH_CRYSTALS 2
 
-STATIC_DCL int FDECL(use_camera, (struct obj *));
-STATIC_DCL int FDECL(do_present_item, (struct obj *));
-STATIC_DCL int FDECL(use_towel, (struct obj *));
-STATIC_DCL boolean FDECL(its_dead, (int,int,int *,struct obj*));
-STATIC_DCL int FDECL(use_stethoscope, (struct obj *));
-STATIC_DCL void FDECL(use_whistle, (struct obj *));
-STATIC_DCL void FDECL(use_leash, (struct obj *));
-STATIC_DCL int FDECL(use_mirror, (struct obj **));
-STATIC_DCL void FDECL(use_candelabrum, (struct obj *));
-STATIC_DCL void FDECL(use_candle, (struct obj **));
-STATIC_DCL void FDECL(use_lamp, (struct obj *));
-STATIC_DCL int FDECL(swap_aegis, (struct obj *));
-STATIC_DCL int FDECL(aesculapius_poke, (struct obj *));
-STATIC_DCL int FDECL(ilmater_touch, (struct obj *));
-STATIC_DCL int FDECL(use_rakuyo, (struct obj *));
-STATIC_DCL int FDECL(use_mercy_blade, (struct obj *));
-STATIC_DCL int FDECL(use_force_blade, (struct obj *));
-STATIC_DCL void FDECL(light_cocktail, (struct obj *));
-STATIC_DCL void FDECL(light_torch, (struct obj *));
-STATIC_DCL void FDECL(use_trephination_kit, (struct obj *));
-STATIC_DCL void FDECL(use_tinning_kit, (struct obj *));
-STATIC_DCL int FDECL(use_figurine, (struct obj **));
-STATIC_DCL int FDECL(use_crystal_skull, (struct obj **));
-STATIC_DCL void FDECL(use_grease, (struct obj *));
-STATIC_DCL void FDECL(vape, (struct obj *));
-STATIC_DCL void FDECL(use_trap, (struct obj *));
-STATIC_DCL void FDECL(use_stone, (struct obj *));
-STATIC_DCL int FDECL(use_sensor, (struct obj *));
-STATIC_DCL int NDECL(sensorMenu);
-STATIC_DCL int FDECL(use_hypospray, (struct obj *));
-STATIC_DCL int FDECL(use_droven_cloak, (struct obj **));
-STATIC_DCL int FDECL(use_darkweavers_cloak, (struct obj *));
-STATIC_PTR int NDECL(set_trap);		/* occupation callback */
-STATIC_DCL int FDECL(use_pole, (struct obj *));
-STATIC_DCL int FDECL(use_cream_pie, (struct obj *));
-STATIC_DCL int FDECL(use_grapple, (struct obj *));
-STATIC_DCL int FDECL(use_crook, (struct obj *));
-STATIC_DCL int FDECL(use_dilithium, (struct obj *));
-STATIC_DCL int FDECL(use_doll, (struct obj *));
-STATIC_DCL int FDECL(use_doll_tear, (struct obj *));
-STATIC_DCL int FDECL(use_pyramid, (struct obj *));
-STATIC_DCL int FDECL(use_vortex, (struct obj *));
-STATIC_DCL int FDECL(use_rift, (struct obj *));
-STATIC_DCL int FDECL(do_break_wand, (struct obj *));
-STATIC_DCL int FDECL(do_flip_coin, (struct obj *));
-STATIC_DCL void FDECL(soul_crush_consequence, (struct obj *));
-STATIC_DCL int FDECL(do_soul_coin, (struct obj *));
-STATIC_DCL boolean FDECL(figurine_location_checks,
+static int FDECL(use_camera, (struct obj *));
+static int FDECL(do_present_item, (struct obj *));
+static int FDECL(use_towel, (struct obj *));
+static boolean FDECL(its_dead, (int,int,int *,struct obj*));
+static int FDECL(use_stethoscope, (struct obj *));
+static void FDECL(use_whistle, (struct obj *));
+static void FDECL(use_leash, (struct obj *));
+static int FDECL(use_mirror, (struct obj **));
+static void FDECL(use_candelabrum, (struct obj *));
+static void FDECL(use_candle, (struct obj **));
+static void FDECL(use_lamp, (struct obj *));
+static int FDECL(swap_aegis, (struct obj *));
+static int FDECL(aesculapius_poke, (struct obj *));
+static int FDECL(ilmater_touch, (struct obj *));
+static int FDECL(use_rakuyo, (struct obj *));
+static int FDECL(use_mercy_blade, (struct obj *));
+static int FDECL(use_force_blade, (struct obj *));
+static void FDECL(light_cocktail, (struct obj *));
+static void FDECL(light_torch, (struct obj *));
+static void FDECL(use_trephination_kit, (struct obj *));
+static void FDECL(use_tinning_kit, (struct obj *));
+static int FDECL(use_figurine, (struct obj **));
+static int FDECL(use_crystal_skull, (struct obj **));
+static void FDECL(use_grease, (struct obj *));
+static void FDECL(vape, (struct obj *));
+static void FDECL(use_trap, (struct obj *));
+static void FDECL(use_stone, (struct obj *));
+static int FDECL(use_sensor, (struct obj *));
+static int NDECL(sensorMenu);
+static int FDECL(use_hypospray, (struct obj *));
+static int FDECL(use_droven_cloak, (struct obj **));
+static int FDECL(use_darkweavers_cloak, (struct obj *));
+static int NDECL(set_trap);		/* occupation callback */
+static int FDECL(use_pole, (struct obj *));
+static int FDECL(use_cream_pie, (struct obj *));
+static int FDECL(use_grapple, (struct obj *));
+static int FDECL(use_crook, (struct obj *));
+static int FDECL(use_dilithium, (struct obj *));
+static int FDECL(use_doll, (struct obj *));
+static int FDECL(use_doll_tear, (struct obj *));
+static int FDECL(use_pyramid, (struct obj *));
+static int FDECL(use_vortex, (struct obj *));
+static int FDECL(use_rift, (struct obj *));
+static int FDECL(do_break_wand, (struct obj *));
+static int FDECL(do_flip_coin, (struct obj *));
+static void FDECL(soul_crush_consequence, (struct obj *));
+static int FDECL(do_soul_coin, (struct obj *));
+static boolean FDECL(figurine_location_checks,
 				(struct obj *, coord *, BOOLEAN_P));
-STATIC_DCL boolean NDECL(uhave_graystone);
-STATIC_DCL int FDECL(do_carve_obj, (struct obj *));
-STATIC_PTR int FDECL(pick_rune, (BOOLEAN_P));
-STATIC_DCL void FDECL(describe_rune, (int));
-STATIC_PTR char NDECL(pick_carvee);
-STATIC_PTR int FDECL(res_engine_menu, (struct obj *));
-STATIC_PTR int NDECL(dotrephination_options);
+static boolean NDECL(uhave_graystone);
+static int FDECL(do_carve_obj, (struct obj *));
+static int FDECL(pick_rune, (BOOLEAN_P));
+static void FDECL(describe_rune, (int));
+static char NDECL(pick_carvee);
+static int FDECL(res_engine_menu, (struct obj *));
+static int NDECL(dotrephination_options);
 
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
-STATIC_OVL int
+static int
 use_camera(obj)
 	struct obj *obj;
 {
@@ -117,7 +117,7 @@ use_camera(obj)
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 do_present_item(obj)
 	struct obj *obj;
 {
@@ -359,7 +359,7 @@ do_present_item(obj)
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_towel(obj)
 	struct obj *obj;
 {
@@ -430,7 +430,7 @@ use_towel(obj)
 }
 
 /* maybe give a stethoscope message based on floor objects */
-STATIC_OVL boolean
+static boolean
 its_dead(rx, ry, resp, tobj)
 int rx, ry, *resp;
 struct obj* tobj;
@@ -493,7 +493,7 @@ static const char hollow_str[] = "a hollow sound.  This must be a secret %s!";
    not take any time; however, unless it did, the stethoscope would be
    almost useless.  As a compromise, one use per turn is free, another
    uses up the turn; this makes curse status have a tangible effect. */
-STATIC_OVL int
+static int
 use_stethoscope(obj)
 	register struct obj *obj;
 {
@@ -595,7 +595,7 @@ use_stethoscope(obj)
 
 static const char whistle_str[] = "produce a %s whistling sound.";
 
-STATIC_OVL void
+static void
 use_whistle(obj)
 struct obj *obj;
 {
@@ -705,7 +705,7 @@ unleash_all()		/* player is about to die (for bones) */
 #define MAXLEASHED	2
 
 /* ARGSUSED */
-STATIC_OVL void
+static void
 use_leash(obj)
 struct obj *obj;
 {
@@ -885,7 +885,7 @@ register xchar x, y;
 
 static const char look_str[] = "look %s.";
 
-STATIC_OVL int
+static int
 use_mirror(obj_p)
 struct obj **obj_p;
 {
@@ -1276,7 +1276,7 @@ int spiritseal;
 	if (wakem) wake_nearby_noisy();
 }
 
-STATIC_OVL void
+static void
 use_candelabrum(obj)
 register struct obj *obj;
 {
@@ -1337,7 +1337,7 @@ register struct obj *obj;
 	begin_burn(obj);
 }
 
-STATIC_OVL void
+static void
 use_candle(optr)
 struct obj **optr;
 {
@@ -1505,7 +1505,7 @@ struct obj *obj;
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 swap_aegis(obj)
 struct obj *obj;
 {
@@ -1526,7 +1526,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL int
+static int
 ilmater_touch(obj)
 struct obj *obj;
 {
@@ -1600,7 +1600,7 @@ struct obj *obj;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 aesculapius_poke(obj)
 struct obj *obj;
 {
@@ -1875,7 +1875,7 @@ struct obj *obj;
 }
 
 
-STATIC_OVL int
+static int
 use_rakuyo(obj)
 struct obj *obj;
 {
@@ -1949,7 +1949,7 @@ struct obj *obj;
 	return MOVE_INSTANT;
 }
 
-STATIC_OVL int
+static int
 use_mercy_blade(obj)
 struct obj *obj;
 {
@@ -2013,7 +2013,7 @@ struct obj *obj;
 	return MOVE_INSTANT;
 }
 
-STATIC_OVL int
+static int
 use_force_blade(obj)
 struct obj *obj;
 {
@@ -2089,7 +2089,7 @@ struct obj *obj;
 	return MOVE_INSTANT;
 }
 
-STATIC_OVL void
+static void
 use_lamp(obj)
 struct obj *obj;
 {
@@ -2204,7 +2204,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL void
+static void
 light_cocktail(obj)
 	struct obj *obj;	/* obj is a potion of oil */
 {
@@ -2273,7 +2273,7 @@ light_cocktail(obj)
 	    begin_burn(obj);
 }
 
-STATIC_OVL void
+static void
 light_torch(obj)
 	struct obj *obj;	/* obj is a shadowlander's torch */
 {
@@ -2592,7 +2592,7 @@ struct obj *corpse;
 	return TRUE;
 }
 
-STATIC_OVL void
+static void
 use_treph_crystals(obj)
 register struct obj *obj;
 {
@@ -2608,7 +2608,7 @@ register struct obj *obj;
 		obj->spe--;
 }
 
-STATIC_OVL void
+static void
 use_treph_thoughts(obj)
 register struct obj *obj;
 {
@@ -2661,7 +2661,7 @@ register struct obj *obj;
 	return;
 }
 
-STATIC_OVL void
+static void
 use_trephination_kit(obj)
 register struct obj *obj;
 {
@@ -2700,7 +2700,7 @@ register struct obj *obj;
 	return;
 }
 
-STATIC_OVL void
+static void
 use_tinning_kit(obj)
 register struct obj *obj;
 {
@@ -3024,7 +3024,7 @@ long timeout;
 	if (redraw) newsym(cc.x, cc.y);
 }
 
-STATIC_OVL boolean
+static boolean
 figurine_location_checks(obj, cc, quietly)
 struct obj *obj;
 coord *cc;
@@ -3059,7 +3059,7 @@ boolean quietly;
 	return TRUE;
 }
 
-STATIC_OVL int
+static int
 use_figurine(optr)
 struct obj **optr;
 {
@@ -3096,7 +3096,7 @@ struct obj **optr;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL void
+static void
 vape(obj)
 struct obj *obj;
 {
@@ -3123,7 +3123,7 @@ struct obj *obj;
 	obj->spe--;
 }
 
-STATIC_OVL int
+static int
 use_crystal_skull(optr)
 struct obj **optr;
 {
@@ -3269,7 +3269,7 @@ static NEARDATA const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
 static NEARDATA const char need_to_remove_outer_armor[] =
 			"need to remove your %s to grease your %s.";
 
-STATIC_OVL void
+static void
 use_grease(obj)
 struct obj *obj;
 {
@@ -3346,7 +3346,7 @@ reset_trapset()
 }
 
 /* touchstones - by Ken Arnold */
-STATIC_OVL void
+static void
 use_stone(tstone)
 struct obj *tstone;
 {
@@ -3535,7 +3535,7 @@ struct obj *tstone;
     return;
 }
 
-STATIC_OVL int
+static int
 use_sensor(sensor)
 struct obj *sensor;
 {
@@ -3612,7 +3612,7 @@ struct obj *sensor;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 sensorMenu()
 {
 	winid tmpwin;
@@ -3677,7 +3677,7 @@ sensorMenu()
 	return 0;
 }
 
-STATIC_OVL int
+static int
 use_hypospray(hypo)
 struct obj *hypo;
 {
@@ -4077,7 +4077,7 @@ struct obj *hypo;
 }
 
 /* Place a landmine/bear trap.  Helge Hafting */
-STATIC_OVL void
+static void
 use_trap(otmp)
 struct obj *otmp;
 {
@@ -4181,7 +4181,7 @@ struct obj *otmp;
 	return;
 }
 
-STATIC_PTR
+static
 int
 set_trap()
 {
@@ -4230,7 +4230,7 @@ set_trap()
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-STATIC_OVL int
+static int
 use_droven_cloak(optr)
 struct obj **optr;
 {
@@ -4312,7 +4312,7 @@ struct obj **optr;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_darkweavers_cloak(otmp)
 struct obj *otmp;
 {
@@ -4343,7 +4343,7 @@ struct obj *otmp;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_eilistran_armor(optr)
 struct obj **optr;
 {
@@ -4875,7 +4875,7 @@ const char pole_dir[16][4] = {"N","NNE","NE",
 						  "NNW"};
 #define N_POLEDIRS 16
 
-STATIC_OVL int
+static int
 polearm_menu(pole)
 struct obj *pole;
 {
@@ -4962,7 +4962,7 @@ static const char
 	* The caller should therefor always check isok() before using the coordinates.
 	*/
 
-STATIC_OVL int
+static int
 pick_polearm_target(obj,outptr,ccp)
 struct obj *obj;
 struct monst **outptr;
@@ -5056,7 +5056,7 @@ coord *ccp;
 }
 
 /* Distance attacks by pole-weapons */
-STATIC_OVL int
+static int
 use_pole(obj)
 	struct obj *obj;
 {
@@ -5086,7 +5086,7 @@ use_pole(obj)
 	return MOVE_ATTACKED;
 }
 
-STATIC_OVL int
+static int
 use_cream_pie(obj)
 struct obj *obj;
 {
@@ -5125,7 +5125,7 @@ struct obj *obj;
 	return MOVE_INSTANT;
 }
 
-STATIC_OVL int
+static int
 use_grapple (obj)
 	struct obj *obj;
 {
@@ -5255,7 +5255,7 @@ use_grapple (obj)
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_crook (obj)
 	struct obj *obj;
 {
@@ -5407,7 +5407,7 @@ use_crook (obj)
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_rift(obj)
 	struct obj *obj;
 {
@@ -5438,7 +5438,7 @@ use_rift(obj)
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL int
+static int
 use_vortex(obj)
 	struct obj *obj;
 {
@@ -5516,7 +5516,7 @@ int x, y;
 	}
 }
 
-STATIC_OVL int
+static int
 use_pyramid(obj)
 struct obj *obj;
 {
@@ -5533,7 +5533,7 @@ struct obj *obj;
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL int
+static int
 use_dimensional_lock(obj)
 struct obj *obj;
 {
@@ -5547,7 +5547,7 @@ struct obj *obj;
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_dilithium(obj)
 	struct obj *obj;
 {
@@ -5576,7 +5576,7 @@ use_dilithium(obj)
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL int
+static int
 use_doll_tear(obj)
 	struct obj *obj;
 {
@@ -5641,7 +5641,7 @@ use_doll_tear(obj)
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL int
+static int
 use_doll(obj)
 	struct obj *obj;
 {
@@ -6301,7 +6301,7 @@ struct obj *obj;
 
 #define BY_OBJECT	((struct monst *)0)
 
-STATIC_OVL int
+static int
 do_break_wand(obj)
     struct obj *obj;
 {
@@ -6587,7 +6587,7 @@ do_break_wand(obj)
     return MOVE_STANDARD;
 }
 
-STATIC_OVL boolean
+static boolean
 uhave_graystone()
 {
 	register struct obj *otmp;
@@ -6598,7 +6598,7 @@ uhave_graystone()
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 do_flip_coin(obj)
 struct obj *obj;
 {
@@ -6647,7 +6647,7 @@ struct obj *obj;
     return MOVE_STANDARD;
 }
 
-STATIC_DCL void
+static void
 soul_crush_consequence(obj)
 struct obj * obj;
 {
@@ -6706,7 +6706,7 @@ struct obj * obj;
 	}
 }
 
-STATIC_OVL int
+static int
 do_soul_coin(obj)
 struct obj *obj;
 {
@@ -7094,7 +7094,7 @@ struct obj *obj;
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL int
+static int
 res_engine_menu(obj)
 struct obj *obj;
 {
@@ -7463,7 +7463,7 @@ pick_carvee()
 	return 0;
 }
 
-STATIC_OVL boolean
+static boolean
 clockwork_location_checks(obj, cc, quietly)
 struct obj *obj;
 coord *cc;
@@ -7498,7 +7498,7 @@ boolean quietly;
 	return TRUE;
 }
 
-STATIC_OVL struct permonst *
+static struct permonst *
 clockworkMenu(obj)
 struct obj *obj;
 {
@@ -7564,7 +7564,7 @@ struct obj *obj;
 	return (struct permonst *) 0;
 }
 
-STATIC_OVL int
+static int
 doUseComponents(optr)
 struct obj **optr;
 {
@@ -7724,7 +7724,7 @@ struct obj **optr;
 	return ((*optr) == 0) ? MOVE_STANDARD : MOVE_CANCELLED;
 }
 
-STATIC_OVL long
+static long
 upgradeMenu()
 {
 	winid tmpwin;
@@ -7866,7 +7866,7 @@ long shape;
 	return FALSE;
 }
 
-STATIC_OVL int
+static int
 resizeArmor(kit)
 struct obj *kit;
 {
@@ -7972,7 +7972,7 @@ struct obj *kit;
 	}
 
 
-STATIC_OVL int
+static int
 upgradeImpArmor()
 {
 	struct obj *upitm;
@@ -8182,7 +8182,7 @@ upgradeImpArmor()
 	}
 }
 
-STATIC_OVL int
+static int
 doUseUpgradeKit(optr)
 struct obj **optr;
 {
@@ -9384,7 +9384,7 @@ dotrephination_menu()
 	return 0;
 }
 
-STATIC_OVL int
+static int
 dotrephination_options()
 {
 	winid tmpwin;

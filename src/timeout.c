@@ -8,17 +8,17 @@
 
 #include "lev.h"	/* for checking save modes */
 
-STATIC_DCL void NDECL(stoned_dialogue);
-STATIC_DCL void NDECL(golded_dialogue);
-STATIC_DCL void NDECL(gillyweed_dialogue);
-STATIC_DCL void NDECL(phasing_dialogue);
-STATIC_DCL void NDECL(vomiting_dialogue);
-STATIC_DCL void NDECL(choke_dialogue);
-STATIC_DCL void NDECL(slime_dialogue);
-STATIC_DCL void NDECL(slip_or_trip);
-STATIC_DCL void FDECL(see_lamp_flicker, (struct obj *, const char *));
-STATIC_DCL void FDECL(lantern_message, (struct obj *));
-STATIC_DCL void FDECL(cleanup_burn, (genericptr_t,long));
+static void NDECL(stoned_dialogue);
+static void NDECL(golded_dialogue);
+static void NDECL(gillyweed_dialogue);
+static void NDECL(phasing_dialogue);
+static void NDECL(vomiting_dialogue);
+static void NDECL(choke_dialogue);
+static void NDECL(slime_dialogue);
+static void NDECL(slip_or_trip);
+static void FDECL(see_lamp_flicker, (struct obj *, const char *));
+static void FDECL(lantern_message, (struct obj *));
+static void FDECL(cleanup_burn, (genericptr_t,long));
 
 
 /* used by wizard mode #timeout and #wizintrinsic; order by 'interest'
@@ -119,7 +119,7 @@ static NEARDATA const char * const stoned_texts[] = {
 	"You are a statue."			/* 1 */
 };
 
-STATIC_OVL void
+static void
 stoned_dialogue()
 {
 	register long i = (Stoned & TIMEOUT);
@@ -143,7 +143,7 @@ static NEARDATA const char * const golded_texts[] = {
 	"You are a gold statue."			/* 1 */
 };
 
-STATIC_OVL void
+static void
 golded_dialogue()
 {
 	register long i = (Golded & TIMEOUT);
@@ -159,7 +159,7 @@ golded_dialogue()
 	exercise(A_DEX, FALSE);
 }
 
-STATIC_OVL void
+static void
 gillyweed_dialogue()
 {
     if (HMagical_breathing == 15) {
@@ -171,7 +171,7 @@ gillyweed_dialogue()
     }
 }
 
-STATIC_OVL void
+static void
 phasing_dialogue()
 {
     if (Phasing == 15) {
@@ -209,7 +209,7 @@ static NEARDATA char * const non_vomiting_texts[] = {
 	"suddenly retch!"			/* 2 */
 };
 
-STATIC_OVL void
+static void
 vomiting_dialogue()
 {
 	register long i = (Vomiting & TIMEOUT) / 3L;
@@ -259,7 +259,7 @@ static NEARDATA const char * const choke_texts3[] = {
 	"You choke to death."
 };
 
-STATIC_OVL void
+static void
 choke_dialogue()
 {
 	register long i = u.divetimer;
@@ -293,7 +293,7 @@ static NEARDATA const char * const slime_texts[] = {
 	"You have become %s."             /* 1 */
 };
 
-STATIC_OVL void
+static void
 slime_dialogue()
 {
 	register long i = (Slimed & TIMEOUT) / 2L;
@@ -1398,7 +1398,7 @@ struct obj *figurine;
 }
 
 /* give a fumble message */
-STATIC_OVL void
+static void
 slip_or_trip()
 {
 	struct obj *otmp = vobj_at(u.ux, u.uy);
@@ -1477,7 +1477,7 @@ slip_or_trip()
 }
 
 /* Print a lamp flicker message with tailer. */
-STATIC_OVL void
+static void
 see_lamp_flicker(obj, tailer)
 struct obj *obj;
 const char *tailer;
@@ -1494,7 +1494,7 @@ const char *tailer;
 }
 
 /* Print a dimming message for brass lanterns. */
-STATIC_OVL void
+static void
 lantern_message(obj)
 struct obj *obj;
 {
@@ -2780,12 +2780,12 @@ long timeout;
  */
 
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(kind_name, (SHORT_P));
-STATIC_DCL void FDECL(print_queue, (winid, timer_element *));
+static const char *FDECL(kind_name, (SHORT_P));
+static void FDECL(print_queue, (winid, timer_element *));
 #endif
-STATIC_DCL void FDECL(add_procchain_tm, (timer_element *));
-STATIC_DCL void FDECL(rem_procchain_tm, (timer_element *));
-STATIC_DCL void FDECL(rem_locchain_tm, (timer_element *, timer_element **));
+static void FDECL(add_procchain_tm, (timer_element *));
+static void FDECL(rem_procchain_tm, (timer_element *));
+static void FDECL(rem_locchain_tm, (timer_element *, timer_element **));
 
 /* ordered timer list */
 static timer_element *timer_base;		/* head of timer procchain */
@@ -2834,7 +2834,7 @@ static const ttable timeout_funcs[NUM_TIME_FUNCS] = {
 
 #if defined(WIZARD)
 
-STATIC_OVL const char *
+static const char *
 kind_name(kind)
 short kind;
 {
@@ -2847,7 +2847,7 @@ short kind;
     return "unknown";
 }
 
-STATIC_OVL void
+static void
 print_queue(win, base)
 winid win;
 timer_element *base;

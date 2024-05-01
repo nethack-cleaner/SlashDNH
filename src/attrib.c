@@ -242,8 +242,8 @@ const struct innate {
 		     {	 0, 0, 0, 0 } };
 
 #define	next_check u.exerchkturn
-STATIC_DCL void NDECL(exerper);
-STATIC_DCL void FDECL(postadjabil, (long long *));
+static void NDECL(exerper);
+static void FDECL(postadjabil, (long long *));
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
 boolean
@@ -522,7 +522,7 @@ boolean	inc_or_dec;
 #define FAINTED		5
 #define STARVED		6
 
-STATIC_OVL void
+static void
 exerper()
 {
 	if(!(moves % 10)) {
@@ -845,7 +845,7 @@ redist_attr()
 	(void)encumber_msg();
 }
 
-STATIC_OVL
+static
 void
 postadjabil(long long *ability)
 {

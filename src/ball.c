@@ -6,8 +6,8 @@
 
 #include "hack.h"
 
-STATIC_DCL int NDECL(bc_order);
-STATIC_DCL void NDECL(litter);
+static int NDECL(bc_order);
+static void NDECL(litter);
 
 void
 ballrelease(showmsg)
@@ -168,7 +168,7 @@ unplacebc()
  *  Return the stacking of the hero's ball & chain.  This assumes that the
  *  hero is being punished.
  */
-STATIC_OVL int
+static int
 bc_order()
 {
     struct obj *obj;
@@ -762,7 +762,7 @@ xchar x, y;
 }
 
 
-STATIC_OVL void
+static void
 litter()
 {
 	struct obj *otmp = invent, *nextobj;

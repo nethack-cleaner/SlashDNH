@@ -8,7 +8,7 @@
 #include "artifact.h"
 #include "gods.h"
 
-STATIC_DCL int NDECL(choose_crowning);
+static int NDECL(choose_crowning);
 
 /* helpers to announce your crowning */
 #define chosen(rest)		"Thou art chosen to " rest "!"

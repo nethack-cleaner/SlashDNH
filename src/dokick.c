@@ -14,11 +14,11 @@ static NEARDATA const char *gate_str;
 
 extern boolean notonhead;	/* for long worms */
 
-STATIC_DCL void FDECL(kick_monster, (XCHAR_P, XCHAR_P));
-STATIC_DCL int FDECL(kick_object, (XCHAR_P, XCHAR_P));
-STATIC_DCL char *FDECL(kickstr, (char *));
-STATIC_DCL void FDECL(otransit_msg, (struct obj *, BOOLEAN_P, long));
-STATIC_DCL void FDECL(drop_to, (coord *,SCHAR_P));
+static void FDECL(kick_monster, (XCHAR_P, XCHAR_P));
+static int FDECL(kick_object, (XCHAR_P, XCHAR_P));
+static char *FDECL(kickstr, (char *));
+static void FDECL(otransit_msg, (struct obj *, BOOLEAN_P, long));
+static void FDECL(drop_to, (coord *,SCHAR_P));
 
 static NEARDATA struct obj *kickobj;
 
@@ -76,7 +76,7 @@ register boolean clumsy;
 	}
 }
 
-STATIC_OVL void
+static void
 kick_monster(x, y)
 register xchar x, y;
 {
@@ -515,7 +515,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL int
+static int
 kick_object(x, y)
 xchar x, y;
 {
@@ -685,7 +685,7 @@ xchar x, y;
 	return(1);
 }
 
-STATIC_OVL char *
+static char *
 kickstr(buf)
 char *buf;
 {
@@ -1594,7 +1594,7 @@ dumb:
 	return MOVE_STANDARD;
 }
 
-STATIC_OVL void
+static void
 drop_to(cc, loc)
 coord *cc;
 schar loc;
@@ -1911,7 +1911,7 @@ obj_delivery()
 	}
 }
 
-STATIC_OVL void
+static void
 otransit_msg(otmp, nodrop, num)
 register struct obj *otmp;
 register boolean nodrop;

@@ -15,16 +15,16 @@ extern const int monstr[];
 /* #define DEBUG */	/* uncomment for debugging */
 
 static void FDECL(Fread, (genericptr_t,int,int,dlb *));
-STATIC_DCL struct qtmsg * FDECL(construct_qtlist, (long));
-STATIC_DCL const char * NDECL(intermed);
-STATIC_DCL const char * NDECL(neminame);
-STATIC_DCL const char * NDECL(guardname);
-STATIC_DCL const char * NDECL(homebase);
-STATIC_DCL struct qtmsg * FDECL(msg_in, (struct qtmsg *,int));
-STATIC_DCL void FDECL(convert_arg, (CHAR_P));
-STATIC_DCL void NDECL(convert_line);
-STATIC_DCL void FDECL(deliver_by_pline, (struct qtmsg *));
-STATIC_DCL void FDECL(deliver_by_window, (struct qtmsg *,int));
+static struct qtmsg * FDECL(construct_qtlist, (long));
+static const char * NDECL(intermed);
+static const char * NDECL(neminame);
+static const char * NDECL(guardname);
+static const char * NDECL(homebase);
+static struct qtmsg * FDECL(msg_in, (struct qtmsg *,int));
+static void FDECL(convert_arg, (CHAR_P));
+static void NDECL(convert_line);
+static void FDECL(deliver_by_pline, (struct qtmsg *));
+static void FDECL(deliver_by_window, (struct qtmsg *,int));
 
 static char	in_line[80], cvt_buf[64], out_line[128];
 static struct	qtlists	qt_list;
@@ -66,7 +66,7 @@ dlb	*stream;
 	}
 }
 
-STATIC_OVL struct qtmsg *
+static struct qtmsg *
 construct_qtlist(hdr_offset)
 long	hdr_offset;
 {
@@ -172,7 +172,7 @@ ldrname()	/* return your role leader's name */
 	return nambuf;
 }
 
-STATIC_OVL const char *
+static const char *
 intermed()	/* return your intermediate target string */
 {
 	return (urole.intermed);
@@ -214,7 +214,7 @@ struct obj *otmp;
 	));
 }
 
-STATIC_OVL const char *
+static const char *
 neminame()	/* return your role nemesis' name */
 {
 	int i = urole.neminum;
@@ -225,7 +225,7 @@ neminame()	/* return your role nemesis' name */
 	return nambuf;
 }
 
-STATIC_OVL const char *
+static const char *
 guardname()	/* return your role leader's guard monster name */
 {
 	int i = urole.guardnum;
@@ -233,13 +233,13 @@ guardname()	/* return your role leader's guard monster name */
 	return(mons[i].mname);
 }
 
-STATIC_OVL const char *
+static const char *
 homebase()	/* return your role leader's location */
 {
 	return(urole.homebase);
 }
 
-STATIC_OVL struct qtmsg *
+static struct qtmsg *
 msg_in(qtm_list, msgnum)
 struct qtmsg *qtm_list;
 int	msgnum;
@@ -252,7 +252,7 @@ int	msgnum;
 	return((struct qtmsg *)0);
 }
 
-STATIC_OVL void
+static void
 convert_arg(c)
 char c;
 {
@@ -316,7 +316,7 @@ char c;
 	Strcpy(cvt_buf, str);
 }
 
-STATIC_OVL void
+static void
 convert_line()
 {
 	char *c, *cc;
@@ -387,7 +387,7 @@ convert_line()
 	return;
 }
 
-STATIC_OVL void
+static void
 deliver_by_pline(qt_msg)
 struct qtmsg *qt_msg;
 {
@@ -401,7 +401,7 @@ struct qtmsg *qt_msg;
 
 }
 
-STATIC_OVL void
+static void
 deliver_by_window(qt_msg, how)
 struct qtmsg *qt_msg;
 int how;

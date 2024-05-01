@@ -32,21 +32,21 @@ struct tc_lcl_data tc_lcl_data = { 0, 0, 0, 0,0, 0,0, FALSE };
 
 int allow_bgcolor = 0;
 
-STATIC_VAR char *HO, *CL, *CE, *UP, *XD, *BC, *SO, *SE, *TI, *TE;
-STATIC_VAR char *VS, *VE;
-STATIC_VAR char *ME;
-STATIC_VAR char *MR;
+static char *HO, *CL, *CE, *UP, *XD, *BC, *SO, *SE, *TI, *TE;
+static char *VS, *VE;
+static char *ME;
+static char *MR;
 #if 0
-STATIC_VAR char *MB, *MH;
-STATIC_VAR char *MD;     /* may already be in use below */
+static char *MB, *MH;
+static char *MD;     /* may already be in use below */
 #endif
 #ifdef TERMLIB
 # ifdef TEXTCOLOR
-STATIC_VAR char *MD;
+static char *MD;
 # endif
-STATIC_VAR int SG;
-STATIC_OVL char PC = '\0';
-STATIC_VAR char tbuf[512];
+static int SG;
+static char PC = '\0';
+static char tbuf[512];
 #endif
 
 #ifdef TEXTCOLOR
@@ -61,7 +61,7 @@ extern boolean HE_resets_AS;
 #endif
 
 #ifndef TERMLIB
-STATIC_VAR char tgotobuf[20];
+static char tgotobuf[20];
 #define tgoto(fmt, x, y)	(Sprintf(tgotobuf, fmt, y+1, x+1), tgotobuf)
 #endif /* TERMLIB */
 

@@ -8,13 +8,13 @@
 
 void FDECL(mon_block_extrinsic, (struct monst *, struct obj *, int, boolean, boolean));
 boolean FDECL(mon_gets_extrinsic, (struct monst *, int, struct obj *));
-STATIC_DCL void FDECL(update_mon_intrinsic, (struct monst *,struct obj *,int,BOOLEAN_P,BOOLEAN_P));
-STATIC_DCL void FDECL(m_dowear_type, (struct monst *,long, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL int NDECL(def_beastmastery);
-STATIC_DCL int NDECL(def_vilya);
-STATIC_DCL int NDECL(def_narya);
-STATIC_DCL int NDECL(def_lomya);
-STATIC_DCL int NDECL(def_mountedCombat);
+static void FDECL(update_mon_intrinsic, (struct monst *,struct obj *,int,BOOLEAN_P,BOOLEAN_P));
+static void FDECL(m_dowear_type, (struct monst *,long, BOOLEAN_P, BOOLEAN_P));
+static int NDECL(def_beastmastery);
+static int NDECL(def_vilya);
+static int NDECL(def_narya);
+static int NDECL(def_lomya);
+static int NDECL(def_mountedCombat);
 
 const struct worn {
 	long long w_mask;
@@ -692,7 +692,7 @@ struct obj *ignored_obj;
 	return got_prop;
 }
 
-STATIC_OVL void
+static void
 update_mon_intrinsic(mon, obj, which, on, silently)
 struct monst *mon;
 struct obj *obj;
@@ -1776,7 +1776,7 @@ boolean creation;
 	m_dowear_type(mon, W_TOOL, creation, FALSE);
 }
 
-STATIC_OVL void
+static void
 m_dowear_type(mon, flag, creation, racialexception)
 struct monst *mon;
 long flag;
@@ -2755,7 +2755,7 @@ long timeout;
 	else if (in_invent) update_inventory();
 }
 
-STATIC_OVL int
+static int
 def_beastmastery()
 {
 	int bm;
@@ -2778,13 +2778,13 @@ heal_vilya()
 	return (ACURR(A_INT) - 11)/2;
 }
 
-STATIC_OVL int
+static int
 def_vilya()
 {
 	return (ACURR(A_INT) - 11)/2;
 }
 
-STATIC_OVL int
+static int
 def_lomya()
 {
 	return (ACURR(A_WIS) - 11)/2;
@@ -2813,7 +2813,7 @@ en_nenya()
 	return (ACURR(A_WIS) - 11)/2;
 }
 
-STATIC_OVL int
+static int
 def_narya()
 {
 	return (ACURR(A_CHA) - 11)/2;
@@ -2844,7 +2844,7 @@ heal_mlevel_bonus()
 	return bm;
 }
 
-STATIC_OVL int
+static int
 def_mountedCombat()
 {
 	int bm;

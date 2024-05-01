@@ -10,9 +10,9 @@ boolean notonhead = FALSE;
 static NEARDATA int nothing, unkn;
 static NEARDATA const char beverages[] = { POTION_CLASS, 0 };
 
-STATIC_DCL long FDECL(itimeout, (long));
-STATIC_DCL void NDECL(ghost_from_bottle);
-STATIC_DCL short FDECL(mixtype, (struct obj *,struct obj *));
+static long FDECL(itimeout, (long));
+static void NDECL(ghost_from_bottle);
+static short FDECL(mixtype, (struct obj *,struct obj *));
 
 #define polypotion(obj) \
 	((obj)->otyp == POT_POLYMORPH || \
@@ -24,7 +24,7 @@ STATIC_DCL short FDECL(mixtype, (struct obj *,struct obj *));
 	))
 
 /* force `val' to be within valid range for intrinsic timeout value */
-STATIC_OVL long
+static long
 itimeout(val)
 long val;
 {
@@ -352,7 +352,7 @@ long mask;	/* nonzero if resistance status should change by mask */
 	return changed;
 }
 
-STATIC_OVL void
+static void
 ghost_from_bottle()
 {
 	struct monst *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
@@ -2184,7 +2184,7 @@ register struct obj *obj;
 	}
 }
 
-STATIC_OVL short
+static short
 mixtype(o1, o2)
 register struct obj *o1, *o2;
 /* returns the potion type when o1 is dipped in o2 */
@@ -2449,7 +2449,7 @@ register struct obj *o1, *o2;
 
 /* Bills an object that's about to be downgraded, assuming that's not already
  * been done */
-STATIC_OVL
+static
 void
 pre_downgrade_obj(obj, used)
 register struct obj *obj;
@@ -2467,7 +2467,7 @@ boolean *used;
 }
 
 /* Implements the downgrading effect of potions of amnesia and Lethe water */
-STATIC_OVL
+static
 void
 downgrade_obj(obj, nomagic, used)
 register struct obj *obj;

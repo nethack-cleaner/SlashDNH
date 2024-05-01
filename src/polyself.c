@@ -12,13 +12,13 @@
 
 #include "hack.h"
 
-STATIC_DCL void FDECL(polyman, (const char *,const char *));
-STATIC_DCL void NDECL(uunstick);
-STATIC_DCL int FDECL(armor_to_dragon,(int));
-STATIC_DCL void NDECL(newman);
-STATIC_DCL short NDECL(doclockmenu);
-STATIC_DCL short NDECL(dodroidmenu);
-STATIC_DCL void FDECL(worddescriptions, (int));
+static void FDECL(polyman, (const char *,const char *));
+static void NDECL(uunstick);
+static int FDECL(armor_to_dragon,(int));
+static void NDECL(newman);
+static short NDECL(doclockmenu);
+static short NDECL(dodroidmenu);
+static void FDECL(worddescriptions, (int));
 
 /* assumes u.umonnum is set already */
 void
@@ -48,7 +48,7 @@ is_playermon_genocided()
 }
 
 /* make a (new) human out of the player */
-STATIC_OVL void
+static void
 polyman(fmt, arg)
 const char *fmt, *arg;
 {
@@ -154,7 +154,7 @@ change_sex()
 	}
 }
 
-STATIC_OVL void
+static void
 newman()
 {
 	int tmp, tmpen, oldlvl;
@@ -1983,7 +1983,7 @@ int splaction;
 	return MOVE_CANCELLED;
 }
 
-STATIC_OVL void
+static void
 worddescriptions(spellID)
 int spellID;
 {
@@ -2046,7 +2046,7 @@ int spellID;
 	return;
 }
 
-STATIC_OVL void
+static void
 uunstick()
 {
 	pline("%s is no longer in your clutches.", Monnam(u.ustuck));
@@ -2570,7 +2570,7 @@ int damtype, dam;
 	}
 }
 
-STATIC_OVL int
+static int
 armor_to_dragon(atyp)
 int atyp;
 {
@@ -2613,7 +2613,7 @@ int atyp;
 }
 
 
-STATIC_OVL short
+static short
 doclockmenu()
 {
 	winid tmpwin;
@@ -2684,7 +2684,7 @@ doclockmenu()
 	return (short)u.ucspeed;
 }
 
-STATIC_OVL short
+static short
 dodroidmenu()
 {
 	winid tmpwin;

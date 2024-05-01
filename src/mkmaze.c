@@ -11,23 +11,23 @@ extern char *lev_message;
 extern lev_region *lregions;
 extern int num_lregions;
 
-STATIC_DCL boolean FDECL(iswall,(int,int));
-STATIC_DCL boolean FDECL(iswall_or_stone,(int,int));
-STATIC_DCL boolean FDECL(is_solid,(int,int));
-STATIC_DCL int FDECL(extend_spine, (int [3][3], int, int, int));
-STATIC_DCL boolean FDECL(okay,(int,int,int,int));
-STATIC_DCL void FDECL(maze0xy,(coord *));
-STATIC_DCL boolean FDECL(put_lregion_here,(XCHAR_P,XCHAR_P,XCHAR_P,
+static boolean FDECL(iswall,(int,int));
+static boolean FDECL(iswall_or_stone,(int,int));
+static boolean FDECL(is_solid,(int,int));
+static int FDECL(extend_spine, (int [3][3], int, int, int));
+static boolean FDECL(okay,(int,int,int,int));
+static void FDECL(maze0xy,(coord *));
+static boolean FDECL(put_lregion_here,(XCHAR_P,XCHAR_P,XCHAR_P,
 	XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P,BOOLEAN_P,d_level *));
-STATIC_DCL void NDECL(fixup_special);
-STATIC_DCL boolean FDECL(maze_inbounds, (XCHAR_P, XCHAR_P));
-STATIC_DCL void FDECL(move, (int *,int *,int));
-STATIC_DCL void NDECL(setup_waterlevel);
-STATIC_DCL void NDECL(unsetup_waterlevel);
-STATIC_DCL void NDECL(fill_dungeon_of_ill_regard);
+static void NDECL(fixup_special);
+static boolean FDECL(maze_inbounds, (XCHAR_P, XCHAR_P));
+static void FDECL(move, (int *,int *,int));
+static void NDECL(setup_waterlevel);
+static void NDECL(unsetup_waterlevel);
+static void NDECL(fill_dungeon_of_ill_regard);
 
 
-STATIC_OVL boolean
+static boolean
 iswall(x,y)
 int x,y;
 {
@@ -39,7 +39,7 @@ int x,y;
 	    type == SDOOR || type == IRONBARS);
 }
 
-STATIC_OVL boolean
+static boolean
 iswall_or_stone(x,y)
     int x,y;
 {
@@ -54,7 +54,7 @@ iswall_or_stone(x,y)
 }
 
 /* return TRUE if out of bounds, wall or rock */
-STATIC_OVL boolean
+static boolean
 is_solid(x,y)
     int x, y;
 {
@@ -80,7 +80,7 @@ is_solid(x,y)
  *		W x W		This would extend a spine from x down.
  *		. W W
  */
-STATIC_OVL int
+static int
 extend_spine(locale, wall_there, dx, dy)
     int locale[3][3];
     int wall_there, dx, dy;
@@ -196,7 +196,7 @@ int x1, y1, x2, y2;
 	    }
 }
 
-STATIC_OVL boolean
+static boolean
 okay(x,y,dir,depth)
 int x,y;
 register int dir;
@@ -213,7 +213,7 @@ int depth;
 	return(TRUE);
 }
 
-STATIC_OVL void
+static void
 maze0xy(cc)	/* find random starting point for maze generation */
 	coord	*cc;
 {
@@ -298,7 +298,7 @@ place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev)
     impossible("Couldn't place lregion type %d!", rtype);
 }
 
-STATIC_OVL boolean
+static boolean
 put_lregion_here(x,y,nlx,nly,nhx,nhy,rtype,oneshot,lev)
 xchar x, y;
 xchar nlx, nly, nhx, nhy;
@@ -385,7 +385,7 @@ int rndlevs;
 }
 
 /* this is special stuff that the level compiler cannot (yet) handle */
-STATIC_OVL void
+static void
 fixup_special()
 {
     register lev_region *r = lregions;
@@ -1927,7 +1927,7 @@ int x,y,depth;
 	}
 }
 
-STATIC_OVL void
+static void
 move(x,y,dir)
 register int *x, *y;
 register int dir;
@@ -2102,9 +2102,9 @@ static int xmin, ymin, xmax, ymax;	/* level boundaries */
 #define bxmax (xmax - 1)
 #define bymax (ymax - 1)
 
-STATIC_DCL void NDECL(set_wportal);
-STATIC_DCL void FDECL(mk_bubble, (int,int,int));
-STATIC_DCL void FDECL(mv_bubble, (struct bubble *,int,int,BOOLEAN_P));
+static void NDECL(set_wportal);
+static void FDECL(mk_bubble, (int,int,int));
+static void FDECL(mv_bubble, (struct bubble *,int,int,BOOLEAN_P));
 
 void
 movebubbles()
@@ -2361,7 +2361,7 @@ xchar x,y;
 	else return "water";
 }
 
-STATIC_OVL void
+static void
 set_wportal()
 {
 	/* there better be only one magic portal on water level... */
@@ -2370,7 +2370,7 @@ set_wportal()
 	impossible("set_wportal(): no portal!");
 }
 
-STATIC_OVL void
+static void
 setup_waterlevel()
 {
 	register int x, y;
@@ -2399,7 +2399,7 @@ setup_waterlevel()
 			mk_bubble(x,y,rn2(7));
 }
 
-STATIC_OVL void
+static void
 unsetup_waterlevel()
 {
     struct bubble *b, *bb;
@@ -2413,7 +2413,7 @@ unsetup_waterlevel()
 	bbubbles = ebubbles = (struct bubble *)0;
 }
 
-STATIC_OVL void
+static void
 mk_bubble(x,y,n)
 int x, y, n;
 {
@@ -2476,7 +2476,7 @@ int x, y, n;
  * in the immediate neighborhood of one, he/she may get sucked inside.
  * This property also makes leaving a bubble slightly difficult.
  */
-STATIC_OVL void
+static void
 mv_bubble(b,dx,dy,ini)
 struct bubble *b;
 int dx, dy;
@@ -2618,7 +2618,7 @@ boolean ini;
 	}
 }
 
-STATIC_DCL void
+static void
 fill_dungeon_of_ill_regard(){
 	int corrs = 0, all = 0, med = 0, strong = 0;
 	int i = 0, j = 0;

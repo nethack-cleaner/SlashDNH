@@ -400,10 +400,9 @@
 
 #define HWeldproof	u.uprops[WELDPROOF].intrinsic
 #define EWeldproof	u.uprops[WELDPROOF].extrinsic
-#define Weldproof	(HWeldproof || EWeldproof ||			\
-			 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM) || \
-			 Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID) \
-			 )
+#define Weldproof	(HWeldproof || EWeldproof || \
+			 is_weldproof(youracedata) || (u.ulycn >= LOW_PM) || \
+			 Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID))
 
 /*** Appearance and behavior ***/
 #define Adornment		u.uprops[ADORNED].extrinsic

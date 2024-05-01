@@ -316,6 +316,10 @@ struct toptenentry *tt;
     (void)fprintf(rfile, SEP "species0=%s", species[flags.initspecies].name);
   }
 
+  if (Race_if(PM_ENT) || Race_if(PM_HALF_DRAGON) || Race_if(PM_CLOCKWORK_AUTOMATON)) {
+    (void)fprintf(rfile, SEP "species0=%s", species[flags.initspecies].name);
+  }
+
   (void)fprintf(rfile, "\n");
 
 }

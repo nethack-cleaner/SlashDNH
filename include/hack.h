@@ -372,10 +372,6 @@ NEARDATA extern coord bhitpos;	/* place where throw or zap hits or stops */
 #define AC_VALUE(AC)	((AC) >= -10 ? (AC) : (u.sealsActive&SEAL_BALAM || activeFightingForm(FFORM_SORESU) || is_ancient_body_ent(youracedata, u.ent_species)) ? min_ints(ROLL_NEG10(AC),ROLL_NEG10(AC)) : ROLL_NEG10(AC))
 #define MONSTER_AC_VALUE(AC)	((AC) >= -10 ? (AC) : ROLL_NEG10(AC))
 
-#if defined(MICRO) && !defined(__DJGPP__)
-#define getuid() 1
-#define getlogin() ((char *)0)
-#endif /* MICRO */
 
 /* These were required for overlay support */
 #define STATIC_DCL static
@@ -387,10 +383,6 @@ NEARDATA extern coord bhitpos;	/* place where throw or zap hits or stops */
  * calling convention under WINCE which is not the default
  * in that environment.
  */
-#if defined(WIN_CE)
-# define CFDECLSPEC __cdecl
-#else
 # define CFDECLSPEC
-#endif
  
 #endif /* HACK_H */

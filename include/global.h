@@ -37,14 +37,6 @@
  * with Microport SysV/AT, which have small symbol tables;
  * DUMB if needed is defined in CFLAGS
  */
-#ifdef DUMB
-#ifdef BITFIELDS
-#undef BITFIELDS
-#endif
-#ifndef STUPID
-#define STUPID
-#endif
-#endif	/* DUMB */
 
 /*
  * type xchar: small integers in the range 0 - 127, usually coordinates
@@ -62,9 +54,7 @@ typedef xchar	boolean;		/* 0 or 1 */
 #endif
 
 #ifndef STRNCMPI
-# ifndef __SASC_60		/* SAS/C already shifts to stricmp */
-#  define strcmpi(a,b) strncmpi((a),(b),-1)
-# endif
+# define strcmpi(a,b) strncmpi((a),(b),-1)
 #endif
 
 /* comment out to test effects of each #define -- these will probably
@@ -140,100 +130,14 @@ typedef xchar	boolean;		/* 0 or 1 */
  * Please don't change the order.  It does matter.
  */
 
-#ifdef VMS
-#include "vmsconf.h"
-#endif
-
 #ifdef UNIX
 #include "unixconf.h"
 #endif
 
-#ifdef OS2
-#include "os2conf.h"
-#endif
-
-#ifdef MSDOS
-#include "pcconf.h"
-#endif
-
-#ifdef TOS
-#include "tosconf.h"
-#endif
-
-#ifdef AMIGA
-#include "amiconf.h"
-#endif
-
-#ifdef MAC
-#include "macconf.h"
-#endif
-
-#ifdef __BEOS__
-#include "beconf.h"
-#endif
-
-#ifdef WIN32
-#ifdef WIN_CE
-#include "wceconf.h"
-#else
-#include "ntconf.h"
-#endif
-#endif
-
 /* Displayable name of this port; don't redefine if defined in *conf.h */
 #ifndef PORT_ID
-# ifdef AMIGA
-#  define PORT_ID	"Amiga"
-# endif
-# ifdef MAC
-#  define PORT_ID	"Mac"
-# endif
-# ifdef MSDOS
-#  ifdef PC9800
-#  define PORT_ID	"PC-9800"
-#  else
-#  define PORT_ID	"PC"
-#  endif
-#  ifdef DJGPP
-#  define PORT_SUB_ID	"djgpp"
-#  else
-#  define PORT_SUB_ID	"non-overlaid"
-#  endif
-# endif
-# ifdef OS2
-#  define PORT_ID	"OS/2"
-# endif
-# ifdef TOS
-#  define PORT_ID	"ST"
-# endif
 # ifdef UNIX
 #  define PORT_ID	"Unix"
-# endif
-# ifdef VMS
-#  define PORT_ID	"VMS"
-# endif
-# ifdef WIN32
-#  define PORT_ID	"Windows"
-# endif
-#endif
-
-#if defined(MICRO)
-#if !defined(AMIGA) && !defined(TOS) && !defined(OS2_HPFS)
-#define SHORT_FILENAMES		/* filenames are 8.3 */
-#endif
-#endif
-
-#ifdef VMS
-/* vms_exit() (sys/vms/vmsmisc.c) expects the non-VMS EXIT_xxx values below.
- * these definitions allow all systems to be treated uniformly, provided
- * main() routines do not terminate with return(), whose value is not
- * so massaged.
- */
-# ifdef EXIT_SUCCESS
-#  undef EXIT_SUCCESS
-# endif
-# ifdef EXIT_FAILURE
-#  undef EXIT_FAILURE
 # endif
 #endif
 
@@ -243,18 +147,6 @@ typedef xchar	boolean;		/* 0 or 1 */
 #ifndef EXIT_FAILURE
 # define EXIT_FAILURE 1
 #endif
-
-#if defined(X11_GRAPHICS) || defined(QT_GRAPHICS) || defined(GNOME_GRAPHICS) || defined(MSWIN_GRAPHICS)
-# ifndef USE_TILES
-#  define USE_TILES		/* glyph2tile[] will be available */
-# endif
-#endif
-#if defined(AMII_GRAPHICS) || defined(GEM_GRAPHICS)
-# ifndef USE_TILES
-#  define USE_TILES
-# endif
-#endif
-
 
 #define Sprintf  (void) sprintf
 #define Strcat   (void) strcat

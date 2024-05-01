@@ -1044,15 +1044,7 @@ register struct obj *obj, *merge;
 			/* this was a merger */
 			bpm->bquan += bp->bquan;
 			ESHK(shkp)->billct--;
-#ifdef DUMB
-			{
-			/* DRS/NS 2.2.6 messes up -- Peter Kendell */
-				int indx = ESHK(shkp)->billct;
-				*bp = ESHK(shkp)->bill_p[indx];
-			}
-#else
 			*bp = ESHK(shkp)->bill_p[ESHK(shkp)->billct];
-#endif
 		}
 	}
 	interrupt_multishot(obj, merge);
@@ -2898,15 +2890,7 @@ register struct monst *shkp;
 			return;
 		}
 		ESHK(shkp)->billct--;
-#ifdef DUMB
-		{
-		/* DRS/NS 2.2.6 messes up -- Peter Kendell */
-			int indx = ESHK(shkp)->billct;
-			*bp = ESHK(shkp)->bill_p[indx];
-		}
-#else
 		*bp = ESHK(shkp)->bill_p[ESHK(shkp)->billct];
-#endif
 		return;
 	} else if (obj->unpaid) {
 		impossible("sub_one_frombill: unpaid object not on bill");
@@ -3307,9 +3291,6 @@ int
 doinvbill(mode)
 int mode;		/* 0: deliver count 1: paged */
 {
-#ifdef	__SASC
-	void sasc_bug(struct obj *, unsigned);
-#endif
 	struct monst *shkp;
 	struct eshk *eshkp;
 	struct bill_x *bp, *end_bp;
@@ -3362,12 +3343,7 @@ int mode;		/* 0: deliver count 1: paged */
 		obj->unpaid = 0;		/* ditto */
 		/* Why 'x'?  To match `I x', more or less. */
 		buf_p = xprname(obj, (char *)0, 'x', FALSE, thisused, uquan);
-#ifdef __SASC
-				/* SAS/C 6.2 can't cope for some reason */
-		sasc_bug(obj,save_unpaid);
-#else
 		obj->unpaid = save_unpaid;
-#endif
 		putstr(datawin, 0, buf_p);
 	    }
 	}
@@ -4118,8 +4094,8 @@ boolean cant_mollify;
 				You_hear("an angry voice:");
 				verbalize("Out of my way, scum!");
 				wait_synch();
-#if defined(UNIX) || defined(VMS)
-# if defined(SYSV) || defined(ULTRIX) || defined(VMS)
+#if defined(UNIX)
+# if defined(SYSV) || defined(ULTRIX)
 				(void)
 # endif
 				sleep(1);
@@ -4710,12 +4686,6 @@ struct obj *obj;
 }
 
 
-#ifdef __SASC
-void
-sasc_bug(struct obj *op, unsigned x){
-	op->unpaid=x;
-}
-#endif
 
 static NEARDATA const char identify_types[] = { ALL_CLASSES, 0 };
 static NEARDATA const char weapon_types[] = { WEAPON_CLASS, TOOL_CLASS, 0 };

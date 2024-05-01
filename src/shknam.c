@@ -111,23 +111,6 @@ static const char * const shktools[] = {
     "Yelpur", "Nosnehpets", "Stewe", "Renrut", "_Zlaw", "Nosalnef",
     "Rewuorb", "Rellenk", "Yad", "Cire Htims", "Y-crad", "Nenilukah",
     "Corsh", "Aned",
-#ifdef WIN32
-    "Lechaim", "Lexa", "Niod",
-#endif
-#ifdef MAC
-    "Nhoj-lee", "Evad\'kh", "Ettaw-noj", "Tsew-mot", "Ydna-s",
-    "Yao-hang", "Tonbar", "Kivenhoug",
-#endif
-#ifdef AMIGA
-    "Falo", "Nosid-da\'r", "Ekim-p", "Rebrol-nek", "Noslo", "Yl-rednow",
-    "Mured-oog", "Ivrajimsal",
-#endif
-#ifdef TOS
-    "Nivram",
-#endif
-#ifdef VMS
-    "Lez-tneg", "Ytnu-haled", "Niknar",
-#endif
     0
 };
 

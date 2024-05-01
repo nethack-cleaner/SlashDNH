@@ -55,14 +55,6 @@ doextversion()
 	return MOVE_CANCELLED;
 }
 
-#ifdef MICRO
-boolean
-comp_times(filetime)
-long filetime;
-{
-	return((boolean)(filetime < BUILD_TIME));
-}
-#endif
 
 boolean
 check_version(version_data, filename, complain)
@@ -141,9 +133,6 @@ int fd;
 	return;
 }
 
-#ifdef AMIGA
-const char amiga_version_string[] = AMIGA_VERSION_STRING;
-#endif
 
 unsigned long
 get_feature_notice_ver(str)

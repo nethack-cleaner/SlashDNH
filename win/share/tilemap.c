@@ -13,12 +13,6 @@ const char * FDECL(tilename, (int, int));
 void NDECL(init_tilemap);
 void FDECL(process_substitutions, (FILE *));
 
-#if defined(MICRO) || defined(WIN32)
-#undef exit
-#if !defined(MSDOS) && !defined(WIN32)
-extern void FDECL(exit, (int));
-#endif
-#endif
 
 #define MON_GLYPH 1
 #define OBJ_GLYPH 2
@@ -239,15 +233,7 @@ int set, entry;
 
 #define TILE_FILE	"tile.c"
 
-#ifdef AMIGA
-# define SOURCE_TEMPLATE	"NH:src/%s"
-#else
-# ifdef MAC
-#   define SOURCE_TEMPLATE	":src:%s"
-# else
 #   define SOURCE_TEMPLATE	"../src/%s"
-# endif
-#endif
 
 short tilemap[MAX_GLYPH];
 int lastmontile, lastobjtile, lastothtile;

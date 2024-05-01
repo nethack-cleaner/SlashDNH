@@ -421,48 +421,6 @@ char *yytext;
  * Most of these don't exist in flex, yywrap is macro and
  * yyunput is properly declared in flex.skel.
  */
-#if !defined(FLEX_SCANNER) && !defined(FLEXHACK_SCANNER)
-int FDECL(yyback, (int *,int));
-int NDECL(yylook);
-int NDECL(yyinput);
-int NDECL(yywrap);
-int NDECL(yylex);
-	/* Traditional lexes let yyunput() and yyoutput() default to int;
-	 * newer ones may declare them as void since they don't return
-	 * values.  For even more fun, the lex supplied as part of the
-	 * newer unbundled compiler for SunOS 4.x adds the void declarations
-	 * (under __STDC__ or _cplusplus ifdefs -- otherwise they remain
-	 * int) while the bundled lex and the one with the older unbundled
-	 * compiler do not.  To detect this, we need help from outside --
-	 * sys/unix/Makefile.utl.
-	 *
-	 * Digital UNIX is difficult and still has int in spite of all
-	 * other signs.
-	 */
-# if defined(NeXT) || defined(SVR4) || defined(_AIX32)
-#  define VOIDYYPUT
-# endif
-# if !defined(VOIDYYPUT) && defined(POSIX_TYPES)
-#  if !defined(BOS) && !defined(HISX) && !defined(_M_UNIX) && !defined(VMS)
-#   define VOIDYYPUT
-#  endif
-# endif
-# if !defined(VOIDYYPUT) && defined(WEIRD_LEX)
-#  if defined(SUNOS4) && defined(__STDC__) && (WEIRD_LEX > 1)
-#   define VOIDYYPUT
-#  endif
-# endif
-# if defined(VOIDYYPUT) && defined(__osf__)
-#  undef VOIDYYPUT
-# endif
-# ifdef VOIDYYPUT
-void FDECL(yyunput, (int));
-void FDECL(yyoutput, (int));
-# else
-int FDECL(yyunput, (int));
-int FDECL(yyoutput, (int));
-# endif
-#endif	/* !FLEX_SCANNER && !FLEXHACK_SCANNER */
 
 #ifdef FLEX_SCANNER
 #define YY_MALLOC_DECL \
@@ -495,9 +453,6 @@ extern int NDECL(yywrap);
 static void FDECL(yyunput, (int,char *));
 #endif
 
-#ifndef yytext_ptr
-static void FDECL(yy_flex_strncpy, (char *,const char *,int));
-#endif
 
 #ifndef YY_NO_INPUT
 static int NDECL(input);
@@ -1408,17 +1363,6 @@ const char msg[];
 
 /* Internal utility routines. */
 
-#ifndef yytext_ptr
-static void yy_flex_strncpy( s1, s2, n )
-char *s1;
-const char *s2;
-int n;
-	{
-	register int i;
-	for ( i = 0; i < n; ++i )
-		s1[i] = s2[i];
-	}
-#endif
 
 
 static genericptr_t yy_flex_alloc( size )
@@ -1458,11 +1402,9 @@ genericptr_t ptr;
 void init_yyin( input_f )
 FILE *input_f;
 {
-#if defined(FLEX_SCANNER) || defined(FLEXHACK_SCANNER)
 	if (yyin)
 	    yyrestart(input_f);
 	else
-#endif
 	    yyin = input_f;
 }
 /* analogous routine (for completeness) */

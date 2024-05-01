@@ -1153,15 +1153,6 @@ currentlevel_rewrite()
 		return -1;
 	}
 
-#ifdef MFLOPPY
-	if (!savelev(fd, ledger_no(&u.uz), COUNT_SAVE)) {
-		(void) close(fd);
-		delete_levelfile(ledger_no(&u.uz));
-		pline("NetHack is out of disk space for making levels!");
-		You("can save, quit, or continue playing.");
-		return -1;
-	}
-#endif
 	return fd;
 }
 
@@ -1665,9 +1656,6 @@ misc_levelport:
 	    if (Is_valley(&u.uz)) {
 		You("arrive at the Valley of the Dead...");
 		pline_The("odor of burnt flesh and decay pervades the air.");
-#ifdef MICRO
-		display_nhwindow(WIN_MESSAGE, FALSE);
-#endif
 		You_hear("groans and moans everywhere.");
 	    } else {
 			pline("It is hot here.  You smell smoke...");

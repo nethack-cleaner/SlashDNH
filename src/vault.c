@@ -126,9 +126,6 @@ char *array;
 void
 invault()
 {
-#ifdef BSD_43_BUG
-    int dummy;		/* hack to avoid schain botch */
-#endif
     struct monst *guard;
     int trycount, vaultroom = (int)vault_occupied(u.urooms);
 
@@ -642,14 +639,7 @@ letknow:
 		/* seems we found a good place to leave him alone */
 		egrd->gddone = 1;
 		if(ACCESSIBLE(typ)) goto newpos;
-#ifdef STUPID
-		if (typ == SCORR)
-		    crm->typ = CORR;
-		else
-		    crm->typ = DOOR;
-#else
 		crm->typ = (typ == SCORR) ? CORR : DOOR;
-#endif
 		if(crm->typ == DOOR) crm->doormask = D_NODOOR;
 		goto proceed;
 	    }

@@ -30,16 +30,6 @@
 #include "patchlevel.h"
 #endif
 
-#ifdef MAC
-# if defined(__SC__) || defined(__MRC__)	/* MPW compilers */
-#  define MPWTOOL
-#include <CursorCtl.h>
-#include <string.h>
-#include <ctype.h>
-# else		/* MAC without MPWTOOL */
-#  define MACsansMPWTOOL
-# endif
-#endif /* MAC */
 
 #ifndef MPWTOOL
 # define SpinCursor(x)
@@ -48,9 +38,7 @@
 #define Fprintf	(void) fprintf
 #define Fclose	(void) fclose
 #define Unlink	(void) unlink
-#if !defined(AMIGA) || defined(AZTEC_C)
 #define rewind(fp) fseek((fp),0L,SEEK_SET)	/* guarantee a return value */
-#endif
 
 #if defined(UNIX) && !defined(LINT) && !defined(GCC_WARN)
 static	const char	SCCS_Id[] = "@(#)makedefs.c\t3.4\t2002/02/03";
@@ -78,41 +66,11 @@ const char *DGN_O_FILE = "dungeon.pdf";
 #define VIS_TAB_H	"vis_tab.h"
 #define VIS_TAB_C	"vis_tab.c"
 	/* locations for those files */
-#ifdef AMIGA
-# define FILE_PREFIX
-# define INCLUDE_TEMPLATE	"NH:include/t.%s"
-# define SOURCE_TEMPLATE	"NH:src/%s"
-# define DGN_TEMPLATE		"NH:dat/%s"  /* where dungeon.pdf file goes */
-# define DATA_TEMPLATE		"NH:slib/%s"
-# define DATA_IN_TEMPLATE	"NH:dat/%s"
-#else /* not AMIGA */
-# if defined(MAC) && !defined(__MACH__)
-    /* MacOS 9 or earlier */
-#   define INCLUDE_TEMPLATE	":include:%s"
-#   define SOURCE_TEMPLATE	":src:%s"
-#   define DGN_TEMPLATE		":dat:%s"  /* where dungeon.pdf file goes */
-#  if __SC__ || __MRC__
-#   define DATA_TEMPLATE	":Dungeon:%s"
-#  else
-#   define DATA_TEMPLATE	":lib:%s"
-#  endif /* __SC__ || __MRC__ */
-#   define DATA_IN_TEMPLATE	":dat:%s"
-# else /* neither AMIGA nor MAC */
-#  ifdef OS2
-#   define INCLUDE_TEMPLATE	"..\\include\\%s"
-#   define SOURCE_TEMPLATE	"..\\src\\%s"
-#   define DGN_TEMPLATE		"..\\dat\\%s"  /* where dungeon.pdf file goes */
-#   define DATA_TEMPLATE	"..\\dat\\%s"
-#   define DATA_IN_TEMPLATE	"..\\dat\\%s"
-#  else /* not AMIGA, MAC, or OS2 */
 #   define INCLUDE_TEMPLATE	"../include/%s"
 #   define SOURCE_TEMPLATE	"../src/%s"
 #   define DGN_TEMPLATE		"../dat/%s"  /* where dungeon.pdf file goes */
 #   define DATA_TEMPLATE	"../dat/%s"
 #   define DATA_IN_TEMPLATE	"../dat/%s"
-#  endif /* else !OS2 */
-# endif /* else !MAC */
-#endif	/* else !AMIGA */
 
 static const char
     *Dont_Edit_Code =
@@ -208,9 +166,6 @@ static char *FDECL(eos, (char *));
 /* input, output, tmp */
 static FILE *ifp, *ofp, *tfp;
 
-#if defined(__BORLANDC__) && !defined(_WIN32)
-extern unsigned _stklen = STKSIZ;
-#endif
 
 
 #ifdef MACsansMPWTOOL
@@ -391,17 +346,8 @@ do_rumors()
 	}
 
 	/* get size of true rumors file */
-#ifndef VMS
 	(void) fseek(ifp, 0L, SEEK_END);
 	true_rumor_size = ftell(ifp);
-#else
-	/* seek+tell is only valid for stream format files; since rumors.%%%
-	   might be in record format, count the actual data bytes instead.
-	 */
-	true_rumor_size = 0;
-	while (fgets(in_line, sizeof in_line, ifp) != 0)
-		true_rumor_size += strlen(in_line);	/* includes newline */
-#endif /* VMS */
 	Fprintf(ofp,"%06lx\n", true_rumor_size);
 	(void) fseek(ifp, 0L, SEEK_SET);
 
@@ -591,15 +537,6 @@ do_date(int verinfo)
 		version_id_string(buf, cbuf));
 	Fprintf(ofp,"\n");
 	}
-#ifdef AMIGA
-	{
-	struct tm *tm = localtime((time_t *) &clocktim);
-	Fprintf(ofp,"#define AMIGA_VERSION_STRING ");
-	Fprintf(ofp,"\"\\0$VER: NetHack %d.%d.%d (%d.%d.%d)\"\n",
-		VERSION_MAJOR, VERSION_MINOR, PATCHLEVEL,
-		tm->tm_mday, tm->tm_mon+1, tm->tm_year+1900);
-	}
-#endif
 	Fclose(ofp);
 	return;
 }
@@ -626,9 +563,6 @@ build_savebones_compat_string()
 }
 
 static const char *build_opts[] = {
-#ifdef AMIGA_WBENCH
-		"Amiga WorkBench support",
-#endif
 #ifdef ANSI_DEFAULT
 		"ANSI default terminal",
 #endif
@@ -646,9 +580,6 @@ static const char *build_opts[] = {
 #endif
 #ifdef WIZARD
 		"debug mode",
-#endif
-#ifdef MFLOPPY
-		"floppy drive support",
 #endif
 #ifdef GOLDOBJ
 		"gold object in inventories",
@@ -675,9 +606,6 @@ static const char *build_opts[] = {
 		"menu colors via pmatch",
 # endif
 #endif
-#ifdef GNUDOS
-		"MSDOS protected mode",
-#endif
 #ifdef NEWS
 		"news file",
 #endif
@@ -688,22 +616,8 @@ static const char *build_opts[] = {
 		"screen clipping",
 #endif
 #ifdef NO_TERMS
-# ifdef MAC
-		"screen control via mactty",
-# endif
 # ifdef SCREEN_BIOS
 		"screen control via BIOS",
-# endif
-# ifdef SCREEN_DJGPPFAST
-		"screen control via DJGPP fast",
-# endif
-# ifdef SCREEN_VGA
-		"screen control via VGA graphics",
-# endif
-# ifndef MSWIN_GRAPHICS
-#  ifdef WIN32CON
-		"screen control via WIN32 console I/O",
-#  endif
 # endif
 #endif
 #ifdef SEDUCE
@@ -718,7 +632,7 @@ static const char *build_opts[] = {
 #ifdef TERMINFO
 		"terminal info library",
 #else
-# if defined(TERMLIB) || ((!defined(MICRO) && !defined(WIN32)) && defined(TTY_GRAPHICS))
+# if defined(TERMLIB) || defined(TTY_GRAPHICS)
 		"terminal capability library",
 # endif
 #endif
@@ -754,30 +668,6 @@ static const char *window_opts[] = {
 #endif
 #ifdef CURSES_GRAPHICS
         "curses",
-#endif
-#ifdef X11_GRAPHICS
-		"X11",
-#endif
-#ifdef QT_GRAPHICS
-		"Qt",
-#endif
-#ifdef GNOME_GRAPHICS
-		"Gnome",
-#endif
-#ifdef MAC
-		"Mac",
-#endif
-#ifdef AMIGA_INTUITION
-		"Amiga Intuition",
-#endif
-#ifdef GEM_GRAPHICS
-		"Gem",
-#endif
-#ifdef MSWIN_GRAPHICS
-		"mswin",
-#endif
-#ifdef BEOS_GRAPHICS
-		"BeOS InterfaceKit",
 #endif
 		0
 	};
@@ -1106,23 +996,10 @@ do_oracles()
 	if (ok) {
 	    Sprintf(in_line, "data rewrite of \"%s\"", filename);
 	    for (i = 0; i <= oracle_cnt; i++) {
-#ifndef VMS	/* alpha/vms v1.0; this fflush seems to confuse ftell */
 		if (!(ok = (fflush(ofp) == 0))) break;
-#endif
 		if (!(ok = (fpos = ftell(ofp)) >= 0)) break;
 		if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
 		if (!(ok = (fscanf(ofp, "%5lx", &offset) == 1))) break;
-#ifdef MAC
-# ifdef __MWERKS__
-		/*
-		MetroWerks CodeWarrior Pro 1's (AKA CW12) version of MSL
-		(ANSI C Libraries) needs this rewind or else the fprintf
-		stops working.  This may also be true for CW11, but has
-		never been checked.
-		*/
-		rewind(ofp);
-# endif
-#endif
 		if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
 		if (!(ok = (fprintf(ofp, "%05lx\n", offset + txt_offset) >= 0)))
 		    break;

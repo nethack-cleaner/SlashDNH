@@ -28,10 +28,6 @@
 
 extern char *FDECL(tilename, (int, int));
 
-#if BITCOUNT==4
-#define MAX_X 320		/* 2 per byte, 4 bits per pixel */
-#define MAX_Y 480
-#else
 # if (TILE_X==32)
 #define MAX_X (32 * 40)
 #define MAX_Y 960
@@ -39,7 +35,6 @@ extern char *FDECL(tilename, (int, int));
 #define MAX_X 640		/* 1 per byte, 8 bits per pixel */
 #define MAX_Y 544		/* Was 480, increased by 64 (four rows) */
 # endif
-#endif	
 
 /* GCC fix by Paolo Bonzini 1999/03/28 */
 #ifdef __GNUC__
@@ -110,17 +105,12 @@ typedef struct tagRGBQ {
 struct tagBMP{
     BITMAPFILEHEADER bmfh;
     BITMAPINFOHEADER bmih;
-#if BITCOUNT==4
-#define RGBQUAD_COUNT 16
-    RGBQUAD          bmaColors[RGBQUAD_COUNT];
-#else
 #if (TILE_X==32)
 #define RGBQUAD_COUNT 256
 #else
 #define RGBQUAD_COUNT 16
 #endif
     RGBQUAD          bmaColors[RGBQUAD_COUNT];
-#endif
 #if (COLORS_IN_USE==16)
     uchar            packtile[MAX_Y][MAX_X];
 #else
@@ -222,11 +212,7 @@ char *argv[];
 		while (read_text_tile(tilepixels)) {
 			build_bmptile(tilepixels);
 			tilecount++;
-#if BITCOUNT==4
-			xoffset += (TILE_X / 2);
-#else
 			xoffset += TILE_X;
-#endif
 			if (xoffset >= MAX_X) {
 				yoffset += TILE_Y;
 				xoffset = 0;
@@ -265,20 +251,11 @@ BITMAPINFOHEADER *pbmih;
 	WORD cClrBits;
 	int w,h;
 	pbmih->biSize = lelong(sizeof(bmp.bmih));
-#if BITCOUNT==4
-	pbmih->biWidth = lelong(w = MAX_X * 2);
-#else
 	pbmih->biWidth = lelong(w = MAX_X);
-#endif
 	pbmih->biHeight = lelong(h = MAX_Y);
 	pbmih->biPlanes = leshort(1);
-#if BITCOUNT==4
-	pbmih->biBitCount = leshort(4);
-	cClrBits = 4;
-#else
 	pbmih->biBitCount = leshort(8);
 	cClrBits = 8;
-#endif
 	if (cClrBits == 1) 
 	        cClrBits = 1; 
 	else if (cClrBits <= 4) 
@@ -326,15 +303,8 @@ pixel (*pixels)[TILE_X];
 	  if (cur_color >= num_colors)
 		Fprintf(stderr, "color not in colormap!\n");
 	  y = (MAX_Y - 1) - (cur_y + yoffset);
-#if BITCOUNT==4
-	  x = (cur_x / 2) + xoffset;
-	  bmp.packtile[y][x] = cur_x%2 ?
-		(uchar)(bmp.packtile[y][x] | cur_color) :
-		(uchar)(cur_color<<4);
-#else
 	  x = cur_x + xoffset;
 	  bmp.packtile[y][x] = (uchar)cur_color;
-#endif
 	 }
 	}
 }

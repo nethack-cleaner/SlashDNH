@@ -10984,9 +10984,6 @@ arti_invoke(obj)
 						You("ring %s.", the(xname(obj)));
 						
 						if (Underwater) {
-#ifdef	AMIGA
-							amii_speaker( obj, "AhDhGqEqDhEhAqDqFhGw", AMII_MUFFLED_VOLUME );
-#endif
 							pline("But the sound is muffled.");
 						}
 						/* charged Bell of Opening */
@@ -11007,17 +11004,11 @@ arti_invoke(obj)
 						} else  if (invoking) {
 							pline("%s an unsettling shrill sound...",
 								  Tobjnam(obj, "issue"));
-#ifdef	AMIGA
-							amii_speaker( obj, "aefeaefeaefeaefeaefe", AMII_LOUDER_VOLUME );
-#endif
 							u.rangBell = moves;
 							wake_nearby_noisy();
 						} else if (obj->blessed) {
 							int res = 0;
 
-#ifdef	AMIGA
-							amii_speaker( obj, "ahahahDhEhCw", AMII_SOFT_VOLUME );
-#endif
 							if (uchain) {
 								unpunish();
 								res = 1;
@@ -11030,9 +11021,6 @@ arti_invoke(obj)
 							}
 
 						} else {  /* uncursed */
-#ifdef	AMIGA
-							amii_speaker( obj, "AeFeaeFeAefegw", AMII_OKAY_VOLUME );
-#endif
 							if (findit() == 0) pline("%s", nothing_happens);
 						}
 						/* charged BofO */

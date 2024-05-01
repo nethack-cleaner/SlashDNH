@@ -77,10 +77,6 @@ STATIC_PTR char NDECL(pick_carvee);
 STATIC_PTR int FDECL(res_engine_menu, (struct obj *));
 STATIC_PTR int NDECL(dotrephination_options);
 
-#ifdef	AMIGA
-void FDECL( amii_speaker, ( struct obj *, char *, int ) );
-#endif
-
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
 STATIC_OVL int
@@ -1185,9 +1181,6 @@ int spiritseal;
 	}
 	
 	if (Underwater || (u.uswallow && ordinary)) {
-#ifdef	AMIGA
-	    amii_speaker( obj, "AhDhGqEqDhEhAqDqFhGw", AMII_MUFFLED_VOLUME );
-#endif
 	    pline("But the sound is muffled.");
 
 	} else if (invoking && ordinary) {
@@ -1196,9 +1189,6 @@ int spiritseal;
 	    learno = TRUE;	/* help player figure out why */
 
 	} else if (ordinary) {
-#ifdef	AMIGA
-	    amii_speaker( obj, "ahdhgqeqdhehaqdqfhgw", AMII_MUFFLED_VOLUME );
-#endif
 	    if (obj->cursed && !rn2(4) &&
 		    /* note: once any of them are gone, we stop all of them */
 		    !(mvitals[PM_DRYAD].mvflags & G_GONE && !In_quest(&u.uz)) &&
@@ -1251,9 +1241,6 @@ int spiritseal;
 	    } else  if (invoking) {
 		pline("%s an unsettling shrill sound...",
 		      Tobjnam(obj, "issue"));
-#ifdef	AMIGA
-		amii_speaker( obj, "aefeaefeaefeaefeaefe", AMII_LOUDER_VOLUME );
-#endif
 		if(spiritseal && !obj->cursed) u.rangBell = moves;
 		obj->age = moves;
 		learno = TRUE;
@@ -1262,9 +1249,6 @@ int spiritseal;
 	    } else if (obj->blessed) {
 		int res = 0;
 
-#ifdef	AMIGA
-		amii_speaker( obj, "ahahahDhEhCw", AMII_SOFT_VOLUME );
-#endif
 		if (uchain) {
 		    unpunish();
 		    res = 1;
@@ -1279,9 +1263,6 @@ int spiritseal;
 		}
 
 	    } else {  /* uncursed */
-#ifdef	AMIGA
-		amii_speaker( obj, "AeFeaeFeAefegw", AMII_OKAY_VOLUME );
-#endif
 		if (findit() != 0) learno = TRUE;
 		else pline("%s", nothing_happens);
 	    }

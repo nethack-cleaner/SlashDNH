@@ -12,7 +12,7 @@ E int NDECL((*afternmv));
 
 E const char *hname;
 E int hackpid;
-#if defined(UNIX) || defined(VMS)
+#if defined(UNIX)
 E int locknum;
 #endif
 #ifdef DEF_PAGER
@@ -20,9 +20,6 @@ E char *catmore;
 #endif	/* DEF_PAGER */
 
 E char SAVEF[];
-#ifdef MICRO
-E char SAVEP[];
-#endif
 
 E NEARDATA int bases[MAXOCLASSES];
 
@@ -437,15 +434,12 @@ E struct linfo level_info[MAXLINFO];
 E NEARDATA struct sinfo {
 	int gameover;		/* self explanatory? */
 	int stopprint;		/* inhibit further end of game disclosure */
-#if defined(UNIX) || defined(VMS) || defined (__EMX__) || defined(WIN32)
+#if defined(UNIX)
 	int done_hup;		/* SIGHUP or moral equivalent received
 				 * -- no more screen output */
 #endif
 	int something_worth_saving;	/* in case of panic */
 	int panicking;		/* `panic' is in progress */
-#if defined(VMS) || defined(WIN32)
-	int exiting;		/* an exit handler is executing */
-#endif
 	int in_impossible;
 #ifdef PANICLOG
 	int in_paniclog;

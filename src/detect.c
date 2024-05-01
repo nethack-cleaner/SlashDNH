@@ -1574,16 +1574,7 @@ int
 dosearch0(aflag)
 register int aflag;
 {
-#ifdef GCC_BUG
-/* some versions of gcc seriously muck up nested loops. if you get strange
-   crashes while searching in a version compiled with gcc, try putting
-   #define GCC_BUG in *conf.h (or adding -DGCC_BUG to CFLAGS in the
-   makefile).
- */
-	volatile xchar x, y;
-#else
 	register xchar x, y;
-#endif
 	register struct trap *trap;
 	register struct monst *mtmp;
 

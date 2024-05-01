@@ -6436,7 +6436,6 @@ mkshop()
 
 	/* first determine shoptype */
 	if(wizard){
-#ifndef MAC
 		ep = nh_getenv("SHOPTYPE");
 		if(ep){
 			switch(*ep){
@@ -6506,11 +6505,8 @@ mkshop()
 			else
 				i = -1;
 		}
-#endif
 	}
-#ifndef MAC
 gottype:
-#endif
 #endif
 	for(sroom = &rooms[level.flags.sp_lev_nroom]; ; sroom++){
 		if(sroom->hx < 0) return;

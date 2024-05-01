@@ -965,18 +965,12 @@ E const char *FDECL(fqname, (const char *, int, int));
 E FILE *FDECL(fopen_datafile, (const char *,const char *,int));
 E boolean FDECL(uptodate, (int,const char *));
 E void FDECL(store_version, (int));
-#ifdef MFLOPPY
-E void NDECL(set_lock_and_bones);
-#endif
 E void FDECL(set_levelfile_name, (char *,int));
 E int FDECL(create_levelfile, (int,char *));
 E int FDECL(open_levelfile, (int,char *));
 E void FDECL(delete_levelfile, (int));
 E void NDECL(clearlocks);
 E int FDECL(create_bonesfile, (d_level*,char **, char *));
-#ifdef MFLOPPY
-E void NDECL(cancel_bonesfile);
-#endif
 E void FDECL(commit_bonesfile, (d_level *));
 E int FDECL(open_bonesfile, (d_level*,char **));
 E int FDECL(delete_bonesfile, (d_level*));
@@ -985,7 +979,7 @@ E void NDECL(set_savefile_name);
 #ifdef INSURANCE
 E void FDECL(save_savefile_name, (int));
 #endif
-#if defined(WIZARD) && !defined(MICRO)
+#if defined(WIZARD)
 E void NDECL(set_error_savefile);
 #endif
 E int NDECL(create_savefile);
@@ -1234,14 +1228,14 @@ E struct obj * NDECL(get_most_complete_puzzle);
 
 /* ### ioctl.c ### */
 
-#if defined(UNIX) || defined(__BEOS__)
+#if defined(UNIX)
 E void NDECL(getwindowsz);
 E void NDECL(getioctls);
 E void NDECL(setioctls);
 # ifdef SUSPEND
 E int NDECL(dosuspend);
 # endif /* SUSPEND */
-#endif /* UNIX || __BEOS__ */
+#endif /* UNIX */
 
 /* ### light.c ### */
 
@@ -1281,45 +1275,6 @@ E int FDECL(doopen_indir, (int,int));
 E int NDECL(doclose);
 E int FDECL(artifact_door, (int,int));
 
-#ifdef MAC
-/* These declarations are here because the main code calls them. */
-
-/* ### macfile.c ### */
-
-E int FDECL(maccreat, (const char *,long));
-E int FDECL(macopen, (const char *,int,long));
-E int FDECL(macclose, (int));
-E int FDECL(macread, (int,void *,unsigned));
-E int FDECL(macwrite, (int,void *,unsigned));
-E long FDECL(macseek, (int,long,short));
-E int FDECL(macunlink, (const char *));
-
-/* ### macsnd.c ### */
-
-E void FDECL(mac_speaker, (struct obj *,char *));
-
-/* ### macunix.c ### */
-
-E void FDECL(regularize, (char *));
-E void NDECL(getlock);
-
-/* ### macwin.c ### */
-
-E void FDECL(lock_mouse_cursor, (Boolean));
-E int NDECL(SanePositions);
-
-/* ### mttymain.c ### */
-
-E void FDECL(getreturn, (char *));
-E void VDECL(msmsg, (const char *,...));
-E void NDECL(gettty);
-E void NDECL(setftty);
-E void FDECL(settty, (const char *));
-E int NDECL(tgetch);
-E void FDECL(cmov, (int x, int y));
-E void FDECL(nocmov, (int x, int y));
-
-#endif /* MAC */
 
 /* ### mail.c ### */
 
@@ -1819,56 +1774,6 @@ E struct monst *FDECL(mk_mplayer, (struct permonst *,XCHAR_P, XCHAR_P,long));
 E void FDECL(create_mplayers, (int,BOOLEAN_P));
 E void FDECL(mplayer_talk, (struct monst *));
 
-#if defined(MICRO) || defined(WIN32)
-
-/* ### msdos.c,os2.c,tos.c,winnt.c ### */
-
-#  ifndef WIN32
-E int NDECL(tgetch);
-#  endif
-#  ifndef TOS
-E char NDECL(switchar);
-#  endif
-# ifndef __GO32__
-E long FDECL(freediskspace, (char *));
-#  ifdef MSDOS
-E int FDECL(findfirst_file, (char *));
-E int NDECL(findnext_file);
-E long FDECL(filesize_nh, (char *));
-#  else
-E int FDECL(findfirst, (char *));
-E int NDECL(findnext);
-E long FDECL(filesize, (char *));
-#  endif /* MSDOS */
-E char *NDECL(foundfile_buffer);
-# endif /* __GO32__ */
-E void FDECL(chdrive, (char *));
-# ifndef TOS
-E void NDECL(disable_ctrlP);
-E void NDECL(enable_ctrlP);
-# endif
-# if defined(MICRO) && !defined(WINNT)
-E void NDECL(get_scr_size);
-#  ifndef TOS
-E void FDECL(gotoxy, (int,int));
-#  endif
-# endif
-# ifdef TOS
-E int FDECL(_copyfile, (char *,char *));
-E int NDECL(kbhit);
-E void NDECL(set_colors);
-E void NDECL(restore_colors);
-#  ifdef SUSPEND
-E int NDECL(dosuspend);
-#  endif
-# endif /* TOS */
-# ifdef WIN32
-E char *FDECL(get_username, (int *));
-E void FDECL(nt_regularize, (char *));
-E int NDECL((*nt_kbhit));
-E void FDECL(Delay, (int));
-# endif /* WIN32 */
-#endif /* MICRO || WIN32 */
 
 /* ### mthrowu.c ### */
 
@@ -1947,19 +1852,6 @@ E void NDECL(lan_mail_init);
 E void NDECL(lan_mail_finish);
 E void NDECL(lan_mail_terminate);
 # endif
-#endif
-
-/* ### nttty.c ### */
-
-#ifdef WIN32CON
-E void NDECL(get_scr_size);
-E int NDECL(nttty_kbhit);
-E void NDECL(nttty_open);
-E void NDECL(nttty_rubout);
-E int NDECL(tgetch);
-E int FDECL(ntposkey,(int *, int *, int *));
-E void FDECL(set_output_mode, (int));
-E void NDECL(synch_cursor);
 #endif
 
 /* ### o_init.c ### */
@@ -2119,6 +2011,7 @@ E boolean FDECL(parse_object_symbol, (const char *));
 E boolean FDECL(parse_symbol, (const char *));
 
 /* ### pager.c ### */
+
 E char *FDECL(flag_to_word, (unsigned long, int));
 E int NDECL(dowhatis);
 E int NDECL(doquickwhatis);
@@ -2133,55 +2026,6 @@ E int NDECL(dohelp);
 E int NDECL(dohistory);
 E boolean FDECL(checkfile, (char *,struct permonst *,BOOLEAN_P,BOOLEAN_P, winid*));
 E char *FDECL(do_look_letter, (glyph_t, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P, coord, char *, const char *));
-
-/* ### pcmain.c ### */
-
-#if defined(MICRO) || defined(WIN32)
-# ifdef CHDIR
-E void FDECL(chdirx, (char *,BOOLEAN_P));
-# endif /* CHDIR */
-#endif /* MICRO || WIN32 */
-
-/* ### pcsys.c ### */
-
-#if defined(MICRO) || defined(WIN32)
-E void NDECL(flushout);
-E int NDECL(dosh);
-# ifdef MFLOPPY
-E void FDECL(eraseall, (const char *,const char *));
-E void FDECL(copybones, (int));
-E void NDECL(playwoRAMdisk);
-E int FDECL(saveDiskPrompt, (int));
-E void NDECL(gameDiskPrompt);
-# endif
-E void FDECL(append_slash, (char *));
-E void FDECL(getreturn, (const char *));
-# ifndef AMIGA
-E void VDECL(msmsg, (const char *,...));
-# endif
-E FILE *FDECL(fopenp, (const char *,const char *));
-#endif /* MICRO || WIN32 */
-
-/* ### pctty.c ### */
-
-#if defined(MICRO) || defined(WIN32)
-E void NDECL(gettty);
-E void FDECL(settty, (const char *));
-E void NDECL(setftty);
-E void VDECL(error, (const char *,...));
-#if defined(TIMED_DELAY) && defined(_MSC_VER)
-E void FDECL(msleep, (unsigned));
-#endif
-#endif /* MICRO || WIN32 */
-
-/* ### pcunix.c ### */
-
-#if defined(MICRO)
-E void FDECL(regularize, (char *));
-#endif /* MICRO */
-#if defined(PC_LOCKING)
-E void NDECL(getlock);
-#endif
 
 /* ### pickup.c ### */
 
@@ -2430,7 +2274,7 @@ E struct permonst *NDECL(law_montype);
 
 /* ### random.c ### */
 
-#if defined(RANDOM) && !defined(__GO32__) /* djgpp has its own random */
+#if defined(RANDOM)
 E void FDECL(srandom, (unsigned));
 E char *FDECL(initstate, (unsigned,char *,int));
 E char *FDECL(setstate, (char *));
@@ -2591,20 +2435,14 @@ E int FDECL(doconsult, (struct monst *));
 /* ### save.c ### */
 
 E int NDECL(dosave);
-#if defined(UNIX) || defined(VMS) || defined(__EMX__) || defined(WIN32)
+#if defined(UNIX)
 E void FDECL(hangup, (int));
 #endif
 E int NDECL(dosave0);
 #ifdef INSURANCE
 E void NDECL(savestateinlock);
 #endif
-#ifdef MFLOPPY
-E boolean FDECL(savelev, (int,int,int));
-E boolean FDECL(swapin_file, (int));
-E void NDECL(co_false);
-#else
 E void FDECL(savelev, (int,int,int));
-#endif
 E void FDECL(bufon, (int));
 E void FDECL(bufoff, (int));
 E void FDECL(bflush, (int));
@@ -2748,9 +2586,6 @@ E boolean NDECL(doreinforce_binding);
 
 /* ### sys/msdos/sound.c ### */
 
-#ifdef MSDOS
-E int FDECL(assign_soundcard, (char *));
-#endif
 
 /* ### sp_lev.c ### */
 
@@ -3017,14 +2852,14 @@ E void NDECL(port_help);
 
 /* ### unixtty.c ### */
 
-#if defined(UNIX) || defined(__BEOS__)
+#if defined(UNIX)
 E void NDECL(gettty);
 E void FDECL(settty, (const char *));
 E void NDECL(setftty);
 E void NDECL(intron);
 E void NDECL(introff);
 E void VDECL(error, (const char *,...)) PRINTF_F(1,2);
-#endif /* UNIX || __BEOS__ */
+#endif /* UNIX */
 
 /* ### unixunix.c ### */
 
@@ -3045,9 +2880,6 @@ E int FDECL(child, (int));
 /* ### unixres.c ### */
 
 #ifdef UNIX
-# ifdef GNOME_GRAPHICS
-E int FDECL(hide_privileges, (BOOLEAN_P));
-# endif
 #endif /* UNIX */
 
 /* ### vault.c ### */
@@ -3066,9 +2898,6 @@ E char *FDECL(version_string, (char *));
 E char *FDECL(getversionstring, (char *));
 E int NDECL(doversion);
 E int NDECL(doextversion);
-#ifdef MICRO
-E boolean FDECL(comp_times, (long));
-#endif
 E boolean FDECL(check_version, (struct version_info *,
 				const char *,BOOLEAN_P));
 E unsigned long FDECL(get_feature_notice_ver, (char *));
@@ -3079,18 +2908,6 @@ E void FDECL(append_port_id, (char *));
 
 /* ### video.c ### */
 
-#ifdef MSDOS
-E int FDECL(assign_video, (char *));
-# ifdef NO_TERMS
-E void NDECL(gr_init);
-E void NDECL(gr_finish);
-# endif
-E void FDECL(tileview,(BOOLEAN_P));
-#endif
-#ifdef VIDEOSHADES
-E int FDECL(assign_videoshades, (char *));
-E int FDECL(assign_videocolors, (char *));
-#endif
 
 /* ### vis_tab.c ### */
 
@@ -3110,77 +2927,6 @@ E boolean FDECL(clear_path, (int,int,int,int));
 E void FDECL(do_clear_area, (int,int,int,
 			     void (*)(int,int,genericptr_t),genericptr_t));
 
-#ifdef VMS
-
-/* ### vmsfiles.c ### */
-
-E int FDECL(vms_link, (const char *,const char *));
-E int FDECL(vms_unlink, (const char *));
-E int FDECL(vms_creat, (const char *,unsigned int));
-E int FDECL(vms_open, (const char *,int,unsigned int));
-E boolean FDECL(same_dir, (const char *,const char *));
-E int FDECL(c__translate, (int));
-E char *FDECL(vms_basename, (const char *));
-
-/* ### vmsmail.c ### */
-
-E unsigned long NDECL(init_broadcast_trapping);
-E unsigned long NDECL(enable_broadcast_trapping);
-E unsigned long NDECL(disable_broadcast_trapping);
-# if 0
-E struct mail_info *NDECL(parse_next_broadcast);
-# endif /*0*/
-
-/* ### vmsmain.c ### */
-
-E int FDECL(main, (int, char **));
-# ifdef CHDIR
-E void FDECL(chdirx, (const char *,BOOLEAN_P));
-# endif /* CHDIR */
-
-/* ### vmsmisc.c ### */
-
-E void NDECL(vms_abort);
-E void FDECL(vms_exit, (int));
-
-/* ### vmstty.c ### */
-
-E int NDECL(vms_getchar);
-E void NDECL(gettty);
-E void FDECL(settty, (const char *));
-E void FDECL(shuttty, (const char *));
-E void NDECL(setftty);
-E void NDECL(intron);
-E void NDECL(introff);
-E void VDECL(error, (const char *,...)) PRINTF_F(1,2);
-#ifdef TIMED_DELAY
-E void FDECL(msleep, (unsigned));
-#endif
-
-/* ### vmsunix.c ### */
-
-E void NDECL(getlock);
-E void FDECL(regularize, (char *));
-E int NDECL(vms_getuid);
-E boolean FDECL(file_is_stmlf, (int));
-E int FDECL(vms_define, (const char *,const char *,int));
-E int FDECL(vms_putenv, (const char *));
-E char *NDECL(verify_termcap);
-# if defined(CHDIR) || defined(SHELL) || defined(SECURE)
-E void NDECL(privoff);
-E void NDECL(privon);
-# endif
-# ifdef SHELL
-E int NDECL(dosh);
-# endif
-# if defined(SHELL) || defined(MAIL)
-E int FDECL(vms_doshell, (const char *,BOOLEAN_P));
-# endif
-# ifdef SUSPEND
-E int NDECL(dosuspend);
-# endif
-
-#endif /* VMS */
 
 /* ### weapon.c ### */
 

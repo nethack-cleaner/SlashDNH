@@ -45,10 +45,6 @@
  */
 #define TTY_GRAPHICS	/* good old tty based graphics */
 #define CURSES_GRAPHICS     /* Proper curses interface */
-/* #define X11_GRAPHICS */	/* X11 interface */
-/* #define QT_GRAPHICS */	/* Qt interface */
-/* #define GNOME_GRAPHICS */	/* Gnome interface */
-/* #define MSWIN_GRAPHICS */	/* Windows NT, CE, Graphics */
 
 #define TTY_TILES_PATCH
 
@@ -58,91 +54,16 @@
 #endif
 #endif
 
-
 /*
  * Define the default window system.  This should be one that is compiled
  * into your system (see defines above).  Known window systems are:
  *
- *	tty, X11, mac, amii, BeOS, Qt, Gem, Gnome
+ *	tty, curses
  */
-
-/* MAC also means MAC windows */
-#ifdef MAC
-# ifndef	AUX
-#  define DEFAULT_WINDOW_SYS "mac"
-# endif
-#endif
-
-/* Amiga supports AMII_GRAPHICS and/or TTY_GRAPHICS */
-#ifdef AMIGA
-# define AMII_GRAPHICS			/* (optional) */
-# define DEFAULT_WINDOW_SYS "amii"	/* "amii", "amitile" or "tty" */
-#endif
-
-/* Atari supports GEM_GRAPHICS and/or TTY_GRAPHICS */
-#ifdef TOS
-# define GEM_GRAPHICS			/* Atari GEM interface (optional) */
-# define DEFAULT_WINDOW_SYS "Gem"	/* "Gem" or "tty" */
-#endif
-
-#ifdef __BEOS__
-#define BEOS_GRAPHICS /* (optional) */
-#define DEFAULT_WINDOW_SYS "BeOS"  /* "tty" */
-#ifndef HACKDIR	/* override the default hackdir below */
-# define HACKDIR "/boot/apps/NetHack"
-#endif
-#endif
-
-#ifdef QT_GRAPHICS
-# define DEFAULT_WC_TILED_MAP   /* Default to tiles if users doesn't say wc_ascii_map */
-# define USER_SOUNDS		/* Use sounds */
-# ifndef __APPLE__
-#  define USER_SOUNDS_REGEX
-# endif
-# define USE_XPM		/* Use XPM format for images (required) */
-# define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.ppm) */
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "Qt"
-# endif
-#endif
-
-#ifdef GNOME_GRAPHICS
-# define USE_XPM		/* Use XPM format for images (required) */
-# define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.ppm) */
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "Gnome"
-# endif
-#endif
-
-#ifdef MSWIN_GRAPHICS
-# ifdef TTY_GRAPHICS
-# undef TTY_GRAPHICS
-# endif
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "mswin"
-# endif
-# define HACKDIR "\\nethack"
-#endif
 
 #ifndef DEFAULT_WINDOW_SYS
 # define DEFAULT_WINDOW_SYS "tty"
 #endif
-
-#ifdef X11_GRAPHICS
-/*
- * There are two ways that X11 tiles may be defined.  (1) using a custom
- * format loaded by NetHack code, or (2) using the XPM format loaded by
- * the free XPM library.  The second option allows you to then use other
- * programs to generate tiles files.  For example, the PBMPlus tools
- * would allow:
- *  xpmtoppm <x11tiles.xpm | pnmscale 1.25 | ppmquant 90 >x11tiles_big.xpm
- */
-/* # define USE_XPM */		/* Disable if you do not have the XPM library */
-# ifdef USE_XPM
-#  define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.xpm) */
-# endif
-#endif
-
 
 /*
  * Section 2:	Some global parameters and filenames.
@@ -202,18 +123,14 @@
  */
 #define INSURANCE	/* allow crashed game recovery */
 
-#ifndef MAC
-# define CHDIR		/* delete if no chdir() available */
-#endif
 
-#ifdef CHDIR
 /*
  * If you define HACKDIR, then this will be the default playground;
  * otherwise it will be the current directory.
  */
-# ifndef HACKDIR
-#  define HACKDIR "."
-# endif
+#ifndef HACKDIR
+# define HACKDIR "."
+#endif
 
 /*
  * Some system administrators are stupid enough to make Hack suid root
@@ -222,14 +139,13 @@
  * since the user might create files in a directory of his choice.
  * Of course SECURE is meaningful only if HACKDIR is defined.
  */
-# define SECURE		/* do setuid(getuid()) after chdir() */
+#define SECURE		/* do setuid(getuid()) after chdir() */
 
 /*
  * If it is desirable to limit the number of people that can play Hack
  * simultaneously, define HACKDIR, SECURE and MAX_NR_OF_PLAYERS.
  * #define MAX_NR_OF_PLAYERS 6
  */
-#endif /* CHDIR */
 
 
 
@@ -264,11 +180,7 @@
  *
  *	typedef short int schar;
  */
-#ifdef AZTEC
-# define schar	char
-#else
 typedef signed char	schar;
-#endif
 
 /*
  * type uchar: small unsigned integers (8 bits suffice - but 7 bits do not)
@@ -336,9 +248,7 @@ typedef long glyph_t;
 #define SEDUCE		/* Succubi/incubi seduction, by KAA, suggested by IM */
 /* difficulty */
 /* I/O */
-#if !defined(MAC)
 # define CLIPPING	/* allow smaller screens -- ERS */
-#endif
 
 /*
  * Section 5:  EXPERIMENTAL STUFF
@@ -348,7 +258,7 @@ typedef long glyph_t;
  * bugs left here.
  */
 
-#if defined(TTY_GRAPHICS) || defined(MSWIN_GRAPHICS)
+#if defined(TTY_GRAPHICS)
 # define MENU_COLOR
 # define MENU_COLOR_REGEX
 # define MENU_COLOR_REGEX_POSIX

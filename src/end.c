@@ -34,7 +34,7 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 
 #ifndef NO_SIGNAL
 STATIC_PTR void FDECL(done_intr, (int));
-# if defined(UNIX) || defined(VMS) || defined (__EMX__)
+# if defined(UNIX)
 static void FDECL(done_hangup, (int));
 # endif
 #endif
@@ -52,27 +52,15 @@ void FDECL(do_vanquished, (int, BOOLEAN_P, BOOLEAN_P));
 #endif /* DUMP_LOG */
 STATIC_DCL boolean FDECL(should_query_disclose_option, (int,char *));
 
-#if defined(__BEOS__) || defined(MICRO) || defined(WIN32) || defined(OS2)
-extern void FDECL(nethack_exit,(int));
-#else
 #define nethack_exit exit
-#endif
 
 #define done_stopprint program_state.stopprint
 
-#ifdef AMIGA
-# define NH_abort()	Abort(0)
-#else
 # ifdef SYSV
 # define NH_abort()	(void) abort()
 # else
-#  ifdef WIN32
-# define NH_abort()	win32_abort()
-#  else
 # define NH_abort()	abort()
-#  endif
 # endif
-#endif
 
 /*
  * The order of these needs to match the macros in hack.h.
@@ -324,18 +312,14 @@ done2()
 		}
 		return MOVE_CANCELLED;
 	}
-#if defined(WIZARD) && (defined(UNIX) || defined(VMS) || defined(LATTICE))
+#if defined(WIZARD) && (defined(UNIX) || defined(LATTICE))
 	if(wizard) {
 	    int c;
-# ifdef VMS
-	    const char *tmp = "Enter debugger?";
-# else
 #  ifdef LATTICE
 	    const char *tmp = "Create SnapShot?";
 #  else
 	    const char *tmp = "Dump core?";
 #  endif
-# endif
 	    if ((c = ynq(tmp)) == 'y') {
 		(void) signal(SIGINT, (SIG_RET_TYPE) done1);
 		exit_nhwindows((char *)0);
@@ -357,13 +341,13 @@ int sig_unused;
 {
 	done_stopprint++;
 	(void) signal(SIGINT, SIG_IGN);
-# if defined(UNIX) || defined(VMS)
+# if defined(UNIX)
 	(void) signal(SIGQUIT, SIG_IGN);
 # endif
 	return;
 }
 
-# if defined(UNIX) || defined(VMS) || defined(__EMX__)
+# if defined(UNIX)
 static void
 done_hangup(sig)	/* signal() handler */
 int sig;
@@ -506,9 +490,6 @@ register struct monst *mtmp;
 	return;
 }
 
-#if defined(WIN32)
-#define NOTIFY_NETHACK_BUGS
-#endif
 
 /*VARARGS1*/
 void
@@ -1348,7 +1329,7 @@ die:
 	if (have_windows) wait_synch();	/* flush screen output */
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT, (SIG_RET_TYPE) done_intr);
-# if defined(UNIX) || defined(VMS) || defined (__EMX__)
+# if defined(UNIX)
 	(void) signal(SIGQUIT, (SIG_RET_TYPE) done_intr);
 	(void) signal(SIGHUP, (SIG_RET_TYPE) done_hangup);
 # endif
@@ -1838,9 +1819,6 @@ void
 terminate(status)
 int status;
 {
-#ifdef MAC
-	getreturn("to exit");
-#endif
 	/* don't bother to try to release memory if we're in panic mode, to
 	   avoid trouble in case that happens to be due to memory problems */
 	if (!program_state.panicking) {

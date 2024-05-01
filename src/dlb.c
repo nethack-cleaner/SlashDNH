@@ -5,10 +5,6 @@
 #include "config.h"
 #include "dlb.h"
 
-#ifdef __DJGPP__
-#include <string.h>
-#endif
-
 #define DATAPREFIX 4
 
 #ifdef DLB
@@ -33,7 +29,6 @@ typedef struct dlb_procs {
 /* without extern.h via hack.h, these haven't been declared for us */
 extern FILE *FDECL(fopen_datafile, (const char *,const char *,int));
 
-#ifdef DLBLIB
 /*
  * Library Implementation:
  *
@@ -352,13 +347,6 @@ lib_dlb_fgets(buf, len, dp)
     }
     *bp = '\0';
 
-#if defined(MSDOS) || defined(WIN32)
-    if ((bp = index(buf, '\r')) != 0) {
-	*bp++ = '\n';
-	*bp = '\0';
-    }
-#endif
-
     return buf;
 }
 
@@ -392,7 +380,6 @@ const dlb_procs_t lib_dlb_procs = {
     lib_dlb_ftell
 };
 
-#endif /* DLBLIB */
 
 #ifdef DLBRSRC
 const dlb_procs_t rsrc_dlb_procs = {
@@ -427,9 +414,7 @@ boolean
 dlb_init()
 {
     if (!dlb_initialized) {
-#ifdef DLBLIB
 	dlb_procs = &lib_dlb_procs;
-#endif
 #ifdef DLBRSRC
 	dlb_procs = &rsrc_dlb_procs;
 #endif

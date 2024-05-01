@@ -45,27 +45,15 @@ static struct Bool_Opt
 	boolean	*addr, initvalue;
 	int optflags;
 } boolopt[] = {
-#ifdef AMIGA
-	{"altmeta", &flags.altmeta, TRUE, DISP_IN_GAME},
-#else
 	{"altmeta", (boolean *)0, TRUE, DISP_IN_GAME},
-#endif
 	{"ascii_map",     &iflags.wc_ascii_map, !PREFER_TILED, SET_IN_GAME},	/*WC*/
-#ifdef MFLOPPY
-	{"asksavedisk", &flags.asksavedisk, FALSE, SET_IN_GAME},
-#else
 	{"asksavedisk", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"autodig", &flags.autodig, FALSE, SET_IN_GAME},
 	{"autoopen", &iflags.autoopen, TRUE, SET_IN_GAME},
 	{"autopickup", &flags.pickup, TRUE, SET_IN_GAME},
 	{"apexception_regex", &iflags.ape_regex, FALSE,  SET_IN_FILE},
 	{"autoquiver", &flags.autoquiver, FALSE, SET_IN_GAME},
-#if defined(MICRO) && !defined(AMIGA)
-	{"BIOS", &iflags.BIOS, FALSE, SET_IN_FILE},
-#else
 	{"BIOS", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"botl_updates", &iflags.botl_updates, TRUE, SET_IN_GAME},
 	{"bones", (boolean *)&iflags.bones, TRUE, SET_IN_GAME},
 #ifdef INSURANCE
@@ -73,17 +61,13 @@ static struct Bool_Opt
 #else
 	{"checkpoint", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#ifdef MFLOPPY
-	{"checkspace", &iflags.checkspace, TRUE, SET_IN_GAME},
-#else
 	{"checkspace", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef CURSES_GRAPHICS
 	{"classic_status", &iflags.classic_status, TRUE, SET_IN_FILE},
 	{"classic_colors", &iflags.classic_colors, FALSE, DISP_IN_GAME},
 #endif
 	{"cmdassist", &iflags.cmdassist, TRUE, SET_IN_GAME},
-# if defined(MICRO) || defined(WIN32) || defined(CURSES_GRAPHICS)
+# if defined(CURSES_GRAPHICS)
 	{"color",         &iflags.wc_color,TRUE, SET_IN_GAME},		/*WC*/
 # else	/* systems that support multiple terminals, many monochrome */
 	{"color",         &iflags.wc_color, FALSE, SET_IN_GAME},	/*WC*/
@@ -93,7 +77,7 @@ static struct Bool_Opt
 #else
 	{"cursesgraphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#if defined(TERMLIB) && !defined(MAC_GRAPHICS_ENV)
+#if defined(TERMLIB)
 	{"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
 #else
 	{"DECgraphics", (boolean *)0, FALSE, SET_IN_FILE},
@@ -111,24 +95,14 @@ static struct Bool_Opt
 #endif
 	{"female", &flags.female, FALSE, DISP_IN_GAME},
 	{"fixinv", &flags.invlet_constant, TRUE, SET_IN_GAME},
-#ifdef AMIFLUSH
-	{"flush", &flags.amiflush, FALSE, SET_IN_GAME},
-#else
 	{"flush", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"fullscreen", &iflags.wc2_fullscreen, FALSE, SET_IN_FILE},
 	{"guicolor", &iflags.wc2_guicolor, TRUE, SET_IN_GAME},
 	{"help", &flags.help, TRUE, SET_IN_GAME},
 	{"hilite_pet",    &iflags.wc_hilite_pet, TRUE, SET_IN_GAME},	/*WC*/
-#ifdef WIN32CON
-	{"hilite_peaceful",    &iflags.wc_hilite_peaceful, FALSE, SET_IN_GAME},	/*WC*/
-	{"hilite_detected",    &iflags.wc_hilite_detected, FALSE, SET_IN_GAME},	/*WC*/
-	{"use_inverse",   &iflags.wc_inverse, TRUE, SET_IN_GAME},		/*WC*/
-#else
 	{"hilite_peaceful",    &iflags.wc_hilite_peaceful, TRUE, SET_IN_GAME},	/*WC*/
 	{"hilite_detected",    &iflags.wc_hilite_detected, TRUE, SET_IN_GAME},	/*WC*/
 	{"use_inverse",   &iflags.wc_inverse, FALSE, SET_IN_GAME},		/*WC*/
-#endif
 	{"hilite_hidden_stairs",    &iflags.hilite_hidden_stairs, TRUE, SET_IN_GAME},	/*WC*/
 	{"hilite_obj_piles",    &iflags.hilite_obj_piles, FALSE, SET_IN_GAME},	/*WC*/
 	{"default_template_hilite", &iflags.default_template_hilite, TRUE, SET_IN_FILE },
@@ -147,32 +121,20 @@ static struct Bool_Opt
 #else
 	{"IBMgraphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#ifndef MAC
 	{"ignintr", &flags.ignintr, FALSE, SET_IN_GAME},
-#else
-	{"ignintr", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"item_use_menu", &iflags.item_use_menu, TRUE, SET_IN_GAME},
 	{"large_font", &iflags.obsolete, FALSE, SET_IN_FILE},	/* OBSOLETE */
 	{"legacy", &flags.legacy, TRUE, DISP_IN_GAME},
 	{"lit_corridor", &flags.lit_corridor, TRUE, SET_IN_GAME},
 	{"lootabc", &iflags.lootabc, FALSE, SET_IN_GAME},
-#ifdef MAC_GRAPHICS_ENV
-	{"Macgraphics", &iflags.MACgraphics, TRUE, SET_IN_GAME},
-#else
 	{"Macgraphics", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef MAIL
 	{"mail", &flags.biff, TRUE, SET_IN_GAME},
 #else
 	{"mail", (boolean *)0, TRUE, SET_IN_FILE},
 #endif
 #ifdef MENU_COLOR
-# ifdef MICRO
-	{"menucolors", &iflags.use_menu_color, TRUE,  SET_IN_GAME},
-# else
 	{"menucolors", &iflags.use_menu_color, FALSE, SET_IN_GAME},
-# endif
 #else
 	{"menucolors", (boolean *)0, FALSE, SET_IN_GAME},
 #endif
@@ -199,11 +161,7 @@ static struct Bool_Opt
 	{"block_forget_map", &iflags.no_forget_map, TRUE, SET_IN_GAME},
 	{"null", &flags.null, TRUE, SET_IN_GAME},
 	{"old_C_behaviour", &iflags.old_C_behaviour, FALSE, SET_IN_GAME},
-#ifdef MAC
-	{"page_wait", &flags.page_wait, TRUE, SET_IN_GAME},
-#else
 	{"page_wait", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"paranoid_self_cast", &iflags.paranoid_self_cast, FALSE, SET_IN_GAME},
 	{"paranoid_hit", &iflags.paranoid_hit, FALSE, SET_IN_GAME},
 	{"paranoid_quit", &iflags.paranoid_quit, FALSE, SET_IN_GAME},
@@ -222,11 +180,7 @@ static struct Bool_Opt
 	{"quick_m_abilities", &iflags.quick_m_abilities, TRUE, SET_IN_GAME },
 	{"quiver_fired", &iflags.quiver_fired, TRUE, SET_IN_GAME},
 	{"qwertz_movement", &iflags.qwertz_movement, FALSE, SET_IN_GAME},
-#if defined(MICRO) && !defined(AMIGA)
-	{"rawio", &iflags.rawio, FALSE, DISP_IN_GAME},
-#else
 	{"rawio", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"rest_on_space", &flags.rest_on_space, FALSE, SET_IN_GAME},
 	{"safe_pet", &flags.safe_dog, TRUE, SET_IN_GAME},
 #ifdef WIZARD
@@ -271,11 +225,7 @@ static struct Bool_Opt
 	{"UTF8graphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 	{"use_darkgray", &iflags.wc2_darkgray, TRUE, SET_IN_FILE},
-#ifdef WIN32CON
-	{"use_inverse",   &iflags.wc_inverse, TRUE, SET_IN_GAME},		/*WC*/
-#else
 	{"use_inverse",   &iflags.wc_inverse, FALSE, SET_IN_GAME},		/*WC*/
-#endif
 #ifdef WIN_EDGE
 	{"win_edge", &iflags.win_edge, FALSE, SET_IN_GAME},
 #else
@@ -395,10 +345,6 @@ static struct Comp_Opt
 #ifdef CHANGE_COLOR
 	{ "palette",  "palette (00c/880/-fff is blue/yellow/reverse white)",
 						15 , SET_IN_GAME },
-# if defined(MAC)
-	{ "hicolor",  "same as palette, only order is reversed",
-						15, SET_IN_FILE },
-# endif
 #endif
 	{ "petattr",  "attributes for highlighting pets", 12, SET_IN_FILE },
 	{ "pettype",  "your preferred initial pet type", 4, DISP_IN_GAME },
@@ -426,9 +372,6 @@ static struct Comp_Opt
 	{ "species",    "your starting species (e.g., poplar, blue)",
 						PL_CSIZ, DISP_IN_GAME },
 	{ "sortloot", "sort object selection lists by description", 4, SET_IN_GAME },
-#ifdef MSDOS
-	{ "soundcard", "type of sound card to use", 20, SET_IN_FILE },
-#endif
 	{ "statuseffects", "status effects to show in the status line", 20, SET_IN_GAME },
 	{ "statuslines", "number of status lines (2, 3, or 4)", 20, SET_IN_GAME },
 	{ "suppress_alert", "suppress alerts about version-specific features",
@@ -440,18 +383,6 @@ static struct Comp_Opt
 						MAXTCHARS+1, SET_IN_FILE },
 	{ "travelplus", "maximum unknown-explore distance when traveling", 32, SET_IN_GAME},
 	{ "vary_msgcount", "show more old messages at a time", 20, DISP_IN_GAME }, /*WC*/
-#ifdef MSDOS
-	{ "video",    "method of video updating", 20, SET_IN_FILE },
-#endif
-#ifdef VIDEOSHADES
-	{ "videocolors", "color mappings for internal screen routines",
-						40, DISP_IN_GAME },
-	{ "videoshades", "gray shades to map to black/gray/white",
-						32, DISP_IN_GAME },
-#endif
-#ifdef WIN32CON
-	{"subkeyvalue", "override keystroke value", 7, SET_IN_FILE},
-#endif
 	{ "windowcolors",  "the foreground/background colors of windows",	/*WC*/
 						80, DISP_IN_GAME },
 	{ "windowtype", "windowing system to use", WINTYPELEN, DISP_IN_GAME },
@@ -467,14 +398,7 @@ static struct Comp_Opt
 
 static boolean need_redraw; /* for doset() */
 
-#if defined(TOS) && defined(TEXTCOLOR)
-extern boolean colors_changed;	/* in tos.c */
-#endif
 
-#ifdef VIDEOSHADES
-extern char *shade[3];		  /* in sys/msdos/video.c */
-extern char ttycolors[CLR_MAX];	  /* in sys/msdos/video.c */
-#endif
 
 static char def_inv_order[MAXOCLASSES] = {
 	COIN_CLASS, AMULET_CLASS, WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS,
@@ -611,9 +535,7 @@ const char *ev;
 void
 initoptions()
 {
-#ifndef MAC
 	char *opts;
-#endif
 	int i;
 
 	/* initialize the random number generator */
@@ -709,7 +631,7 @@ initoptions()
 # endif
 	}
 #endif /* UNIX && TTY_GRAPHICS */
-#if defined(UNIX) || defined(VMS)
+#if defined(UNIX)
 # ifdef TTY_GRAPHICS
 	/* detect whether a "vt" terminal can handle alternate charsets */
 	if ((opts = nh_getenv("TERM")) &&
@@ -721,17 +643,13 @@ initoptions()
 	if (iflags.supports_utf8) {
 		switch_graphics(UTF8_GRAPHICS);
 	}
-#endif /* UNIX || VMS */
+#endif /* UNIX */
 
-#ifdef MAC_GRAPHICS_ENV
-	switch_graphics(MAC_GRAPHICS);
-#endif /* MAC_GRAPHICS_ENV */
 	flags.menu_style = MENU_FULL;
 
 	/* since this is done before init_objects(), do partial init here */
 	objects[SLIME_MOLD].oc_name_idx = SLIME_MOLD;
 	nmcpy(pl_fruit, OBJ_NAME(objects[SLIME_MOLD]), PL_FSIZ);
-#ifndef MAC
 	opts = getenv("NETHACKOPTIONS");
 	if (!opts) opts = getenv("HACKOPTIONS");
 	if (opts) {
@@ -748,7 +666,6 @@ initoptions()
 			parseoptions(opts, TRUE, FALSE);
 		}
 	} else
-#endif
 		read_config_file((char *)0);
 	if(iflags.default_template_hilite){
 		if(!(iflags.monstertemplate[ZOMBIFIED-1].set&MONSTERTEMPLATE_BACKGROUND)){
@@ -908,12 +825,8 @@ STATIC_OVL void
 rejectoption(optname)
 const char *optname;
 {
-#ifdef MICRO
-	pline("\"%s\" settable only from %s.", optname, configfile);
-#else
 	pline("%s can be set only from NETHACKOPTIONS or %s.", optname,
 			configfile);
-#endif
 }
 
 STATIC_OVL void
@@ -927,9 +840,6 @@ const char *opts;
 		pline("Bad syntax: %s.  Enter \"?g\" for help.", opts);
 	    return;
 	}
-#ifdef MAC
-	else return;
-#endif
 
 	if(from_file)
 	    raw_printf("Bad syntax in OPTIONS in %s: %s.", configfile, opts);
@@ -1401,13 +1311,6 @@ const char *opts;
 int bool_or_comp;	/* 0 == boolean option, 1 == compound */
 {
 	int i, *optptr;
-#if defined(MAC)
-	/* the Mac has trouble dealing with the output of messages while
-	 * processing the config file.  That should get fixed one day.
-	 * For now just return.
-	 */
-	return;
-#endif
 	if ((bool_or_comp == 0) && iflags.opt_booldup && initial && from_file) {
 	    for (i = 0; boolopt[i].name; i++) {
 		if (match_optname(opts, boolopt[i].name, 3, FALSE)) {
@@ -1991,13 +1894,6 @@ boolean tinitial, tfrom_file;
 		return;
 	}
 
-#if defined(MICRO) && !defined(AMIGA)
-	/* included for compatibility with old NetHack.cnf files */
-	if (match_optname(opts, "IBM_", 4, FALSE)) {
-		iflags.BIOS = !negated;
-		return;
-	}
-#endif /* MICRO */
 
 	/* compound options */
 
@@ -2356,40 +2252,21 @@ boolean tinitial, tfrom_file;
 		if (wintype > 0 &&
 		    (op = string_for_opt(opts, FALSE)) != 0) {
 			wc_set_font_name(wintype, op);
-#ifdef MAC
-			set_font_name (wintype, op);
-#endif
 			return;
 		} else if (negated) bad_negation(fullname, TRUE);
 		return;
 	}
 #ifdef CHANGE_COLOR
 	if (match_optname(opts, "palette", 3, TRUE)
-# ifdef MAC
-	    || match_optname(opts, "hicolor", 3, TRUE)
-# endif
 							) {
 	    int color_number, color_incr;
 
-# ifdef MAC
-	    if (match_optname(opts, "hicolor", 3, TRUE)) {
-		if (negated) {
-		    bad_negation("hicolor", FALSE);
-		    return;
-		}
-		color_number = CLR_MAX + 4;	/* HARDCODED inverse number */
-		color_incr = -1;
-	    } else {
-# endif
 		if (negated) {
 		    bad_negation("palette", FALSE);
 		    return;
 		}
 		color_number = 0;
 		color_incr = 1;
-# ifdef MAC
-	    }
-# endif
 	    if ((op = string_for_opt(opts, FALSE)) != (char *)0) {
 		char *pt = op;
 		int cnt, tmp, reverse;
@@ -2406,21 +2283,15 @@ boolean tinitial, tfrom_file;
 		    }
 		    while (cnt-- > 0) {
 			if (*pt && *pt != '/') {
-# ifdef AMIGA
-			    rgb <<= 4;
-# else
 			    rgb <<= 8;
-# endif
 			    tmp = *(pt++);
 			    if (isalpha(tmp)) {
 				tmp = (tmp + 9) & 0xf;	/* Assumes ASCII... */
 			    } else {
 				tmp &= 0xf;	/* Digits in ASCII too... */
 			    }
-# ifndef AMIGA
 			    /* Add an extra so we fill f -> ff and 0 -> 00 */
 			    rgb += tmp << 4;
-# endif
 			    rgb += tmp;
 			}
 		    }
@@ -2666,10 +2537,6 @@ goodfruit:
 	if (match_optname(opts, fullname, 4, TRUE)) {
 		if (negated) bad_negation(fullname, FALSE);
 		else if ((op = string_for_opt(opts, negated))) {
-#ifdef WIN32CON
-		    (void)strncpy(iflags.altkeyhandler, op, MAX_ALTKEYHANDLER - 5);
-		    load_keyboard_handler();
-#endif
 		}
 		return;
 	}
@@ -3102,69 +2969,6 @@ goodfruit:
 		return;
 	}
 
-#ifdef VIDEOSHADES
-	/* videocolors:string */
-	fullname = "videocolors";
-	if (match_optname(opts, fullname, 6, TRUE) ||
-	    match_optname(opts, "videocolours", 10, TRUE)) {
-		if (negated) {
-			bad_negation(fullname, FALSE);
-			return;
-		}
-		else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
-			return;
-		}
-		if (!assign_videocolors(opts))
-			badoption(opts);
-		return;
-	}
-	/* videoshades:string */
-	fullname = "videoshades";
-	if (match_optname(opts, fullname, 6, TRUE)) {
-		if (negated) {
-			bad_negation(fullname, FALSE);
-			return;
-		}
-		else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
-			return;
-		}
-		if (!assign_videoshades(opts))
-			badoption(opts);
-		return;
-	}
-#endif /* VIDEOSHADES */
-#ifdef MSDOS
-# ifdef NO_TERMS
-	/* video:string -- must be after longer tests */
-	fullname = "video";
-	if (match_optname(opts, fullname, 5, TRUE)) {
-		if (negated) {
-			bad_negation(fullname, FALSE);
-			return;
-		}
-		else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
-			return;
-		}
-		if (!assign_video(opts))
-			badoption(opts);
-		return;
-	}
-# endif /* NO_TERMS */
-	/* soundcard:string -- careful not to match boolean 'sound' */
-	fullname = "soundcard";
-	if (match_optname(opts, fullname, 6, TRUE)) {
-		if (negated) {
-			bad_negation(fullname, FALSE);
-			return;
-		}
-		else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
-			return;
-		}
-		if (!assign_soundcard(opts))
-			badoption(opts);
-		return;
-	}
-#endif /* MSDOS */
 
 	/* WINCAP
 	 * map_mode:[tiles|ascii4x6|ascii6x8|ascii8x8|ascii16x8|ascii7x12|ascii8x12|
@@ -3224,10 +3028,6 @@ goodfruit:
 	if (match_optname(opts, fullname, 5, TRUE)) {
 		if (negated) bad_negation(fullname, FALSE);
 		else {
-#if defined(WIN32CON)
-			op = string_for_opt(opts, 0);
-			map_subkeyvalue(op);
-#endif
 		}
 		return;
 	}
@@ -3485,16 +3285,13 @@ goodfruit:
 
 			duplicate_opt_detection(boolopt[i].name, 0);
 
-#if defined(TERMLIB) || defined(ASCIIGRAPH) || defined(MAC_GRAPHICS_ENV) || defined(CURSES_GRAPHICS)
+#if defined(TERMLIB) || defined(ASCIIGRAPH) || defined(CURSES_GRAPHICS)
 			if (FALSE
 # ifdef TERMLIB
 				 || (boolopt[i].addr) == &iflags.DECgraphics
 # endif
 # ifdef ASCIIGRAPH
 				 || (boolopt[i].addr) == &iflags.IBMgraphics
-# endif
-# ifdef MAC_GRAPHICS_ENV
-				 || (boolopt[i].addr) == &iflags.MACgraphics
 # endif
 # ifdef UTF8_GLYPHS
 				 || (boolopt[i].addr) == &iflags.UTF8graphics
@@ -3517,11 +3314,6 @@ goodfruit:
 			    if ((boolopt[i].addr) == &iflags.IBMgraphics)
 				switch_graphics(iflags.IBMgraphics ?
 						IBM_GRAPHICS : ASCII_GRAPHICS);
-# endif
-# ifdef MAC_GRAPHICS_ENV
-			    if ((boolopt[i].addr) == &iflags.MACgraphics)
-				switch_graphics(iflags.MACgraphics ?
-						MAC_GRAPHICS : ASCII_GRAPHICS);
 # endif
 # ifdef UTF8_GLYPHS
 			    if ((boolopt[i].addr) == &iflags.UTF8graphics)
@@ -3584,15 +3376,6 @@ goodfruit:
 #ifdef TEXTCOLOR
 			else if ((boolopt[i].addr) == &iflags.use_color) {
 			    need_redraw = TRUE;
-# ifdef TOS
-			    if ((boolopt[i].addr) == &iflags.use_color
-				&& iflags.BIOS) {
-				if (colors_changed)
-				    restore_colors();
-				else
-				    set_colors();
-			    }
-# endif
 			}
 #endif
 
@@ -3685,11 +3468,7 @@ map_menu_cmd(ch)
 }
 
 
-#if defined(MICRO) || defined(MAC) || defined(WIN32)
-# define OPTIONS_HEADING "OPTIONS"
-#else
 # define OPTIONS_HEADING "NETHACKOPTIONS"
-#endif
 
 static char fmtstr_doset_add_menu[] = "%s%-15s [%s]   "; 
 static char fmtstr_doset_add_menu_tab[] = "%s\t[%s]";
@@ -4523,11 +4302,6 @@ char *buf;
 				   defopt);
 	else if (!strcmp(optname,"align"))
 		Sprintf(buf, "%s", rolestring(flags.initalign, aligns, adj));
-#ifdef WIN32CON
-	else if (!strcmp(optname,"altkeyhandler"))
-		Sprintf(buf, "%s", iflags.altkeyhandler[0] ?
-			iflags.altkeyhandler : "default");
-#endif
 	else if (!strcmp(optname, "attack_mode"))
 	Sprintf(buf, "%s",
 		iflags.attack_mode == ATTACK_MODE_PACIFIST
@@ -4723,11 +4497,6 @@ char *buf;
 	}
 	else if (!strcmp(optname, "player_selection"))
 		Sprintf(buf, "%s", iflags.wc_player_selection ? "prompts" : "dialog");
-#ifdef MSDOS
-	else if (!strcmp(optname, "soundcard")) {
-		Sprintf(buf, "%s", to_be_done);
-	}
-#endif
 	else if (!strcmp(optname, "statuseffects"))
 		Sprintf(buf, "0x%llX", iflags.statuseffects);
 	else if (!strcmp(optname, "statuslines"))
@@ -4767,23 +4536,6 @@ char *buf;
 		if (iflags.wc_vary_msgcount) Sprintf(buf, "%d",iflags.wc_vary_msgcount);
 		else Strcpy(buf, defopt);
 	}
-#ifdef MSDOS
-	else if (!strcmp(optname, "video"))
-		Sprintf(buf, "%s", to_be_done);
-#endif
-#ifdef VIDEOSHADES
-	else if (!strcmp(optname, "videoshades"))
-		Sprintf(buf, "%s-%s-%s", shade[0],shade[1],shade[2]);
-	else if (!strcmp(optname, "videocolors"))
-		Sprintf(buf, "%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-%d-%d",
-			ttycolors[CLR_RED], ttycolors[CLR_GREEN],
-			ttycolors[CLR_BROWN], ttycolors[CLR_BLUE],
-			ttycolors[CLR_MAGENTA], ttycolors[CLR_CYAN],
-			ttycolors[CLR_ORANGE], ttycolors[CLR_BRIGHT_GREEN],
-			ttycolors[CLR_YELLOW], ttycolors[CLR_BRIGHT_BLUE],
-			ttycolors[CLR_BRIGHT_MAGENTA],
-			ttycolors[CLR_BRIGHT_CYAN]);
-#endif /* VIDEOSHADES */
 	else if (!strcmp(optname,"windowborders"))
 		Sprintf(buf, "%s", iflags.wc2_windowborders == 1     ? "1=on" :
 				   iflags.wc2_windowborders == 2             ? "2=off" :
@@ -4961,13 +4713,8 @@ static const char *opt_intro[] = {
 	"",
 #define CONFIG_SLOT 3	/* fill in next value at run-time */
 	(char *)0,
-#if !defined(MICRO) && !defined(MAC)
 	"or use `NETHACKOPTIONS=\"<options>\"' in your environment",
-#endif
 	"(<options> is a list of options separated by commas)",
-#ifdef VMS
-	"-- for example, $ DEFINE NETHACKOPTIONS \"noautopickup,fruit:kumquat\"",
-#endif
 	"or press \"O\" while playing and use the menu.",
 	"",
  "Boolean options (which can be negated by prefixing them with '!' or \"no\"):",

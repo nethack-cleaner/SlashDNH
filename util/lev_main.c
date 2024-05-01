@@ -21,29 +21,12 @@
 #include "godlist.h"
 #undef MAKEDEFS_C
 
-#ifdef MAC
-# if defined(__SC__) || defined(__MRC__)
-#  define MPWTOOL
-#  define PREFIX ":dungeon:"	/* place output files here */
-#  include <CursorCtl.h>
-# else
-#  if !defined(__MACH__)
-#   define PREFIX ":lib:"	/* place output files here */
-#  endif
-# endif
-#endif
 
-#ifdef WIN_CE
-#define PREFIX "\\nethack\\dat\\"
-#endif
 
 #ifndef MPWTOOL
 # define SpinCursor(x)
 #endif
 
-#if defined(AMIGA) && defined(DLB)
-# define PREFIX "NH:slib/"
-#endif
 
 #ifndef O_WRONLY
 #include <fcntl.h>
@@ -55,11 +38,7 @@
 # define O_BINARY 0
 #endif
 
-#if defined(MICRO) || defined(WIN32)
-# define OMASK FCMASK
-#else
 # define OMASK 0644
-#endif
 
 #define ERR		(-1)
 
@@ -67,9 +46,6 @@
 #define Free(ptr)		if(ptr) free((genericptr_t) (ptr))
 #define Write(fd, item, size)	if (write(fd, (genericptr_t)(item), size) != size) return FALSE;
 
-#if defined(__BORLANDC__) && !defined(_WIN32)
-extern unsigned _stklen = STKSIZ;
-#endif
 #define MAX_ERRORS	25
 
 extern int  NDECL (yyparse);
@@ -238,37 +214,6 @@ char **argv;
 	FILE *fin;
 	int i;
 	boolean errors_encountered = FALSE;
-#if defined(MAC) && (defined(THINK_C) || defined(__MWERKS__))
-	static char *mac_argv[] = {	"lev_comp",	/* dummy argv[0] */
-				":dat:Arch.des",
-				":dat:Barb.des",
-				":dat:Caveman.des",
-				":dat:Healer.des",
-				":dat:Knight.des",
-				":dat:Monk.des",
-				":dat:Priest.des",
-				":dat:Ranger.des",
-				":dat:Rogue.des",
-				":dat:Samurai.des",
-				":dat:Tourist.des",
-				":dat:Valkyrie.des",
-				":dat:Wizard.des",
-				":dat:bigroom.des",
-				":dat:castle.des",
-				":dat:endgame.des",
-				":dat:gehennom.des",
-				":dat:knox.des",
-				":dat:medusa.des",
-				":dat:mines.des",
-				":dat:oracle.des",
-				":dat:sokoban.des",
-				":dat:tower.des",
-				":dat:yendor.des"
-				};
-
-	argc = SIZE(mac_argv);
-	argv = mac_argv;
-#endif
 	/* Note:  these initializers don't do anything except guarantee that
 		we're linked properly.
 	*/
@@ -1202,11 +1147,7 @@ specialmaze *maze_level;
 	Strcat(lbuf, filename);
 	Strcat(lbuf, LEV_EXT);
 
-#if defined(MAC) && (defined(__SC__) || defined(__MRC__))
-	fout = open(lbuf, O_WRONLY|O_CREAT|O_BINARY);
-#else
 	fout = open(lbuf, O_WRONLY|O_CREAT|O_BINARY, OMASK);
-#endif
 	if (fout < 0) return FALSE;
 
 	if (room_level) {
@@ -1252,17 +1193,7 @@ specialmaze *maze;
 	    for(j=0;j<pt->ysize;j++) {
 		if(!maze->init_lev.init_present ||
 		   pt->xsize > 1 || pt->ysize > 1) {
-#if !defined(_MSC_VER) && !defined(__BORLANDC__)
 			Write(fd, pt->map[j], pt->xsize * sizeof *pt->map[j]);
-#else
-			/*
-			 * On MSVC and Borland C compilers the Write macro above caused:
-			 * warning '!=' : signed/unsigned mismatch
-			 */
-			unsigned reslt, sz = pt->xsize * sizeof *pt->map[j];
-			reslt = write(fd, (genericptr_t)(pt->map[j]), sz);
-			if (reslt != sz) return FALSE;
-#endif
 		}
 		Free(pt->map[j]);
 	    }
@@ -1657,17 +1588,10 @@ struct attribs attrmax, attrmin;
 const char *configfile;
 char lock[ARBITRARY_SIZE];
 char SAVEF[ARBITRARY_SIZE];
-# ifdef MICRO
-char SAVEP[ARBITRARY_SIZE];
-# endif
 /* termcap.c */
 struct tc_lcl_data tc_lcl_data;
 # ifdef TEXTCOLOR
-#  ifdef TOS
-const char *hilites[CLR_MAX];
-#  else
 char NEARDATA *hilites[CLR_MAX];
-#  endif
 # endif
 /* trap.c */
 const char *traps[TRAPNUM];

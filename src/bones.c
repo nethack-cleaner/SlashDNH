@@ -7,9 +7,6 @@
 #include "artifact.h"
 
 extern char bones[];	/* from files.c */
-#ifdef MFLOPPY
-extern long bytes_counted;
-#endif
 
 STATIC_DCL boolean FDECL(no_bones_level_core, (d_level *, boolean));
 STATIC_DCL boolean FDECL(no_bones_level, (d_level *));
@@ -646,37 +643,6 @@ struct obj *corpse;
 		return;
 	}
 	c = (char) (strlen(bonesid) + 1);
-
-#ifdef MFLOPPY  /* check whether there is room */
-	if (iflags.checkspace) {
-	    savelev(fd, ledger_no(&u.uz), COUNT_SAVE);
-	    /* savelev() initializes bytes_counted to 0, so it must come
-	     * first here even though it does not in the real save.  the
-	     * resulting extra bflush() at the end of savelev() may increase
-	     * bytes_counted by a couple over what the real usage will be.
-	     *
-	     * note it is safe to call store_version() here only because
-	     * bufon() is null for ZEROCOMP, which MFLOPPY uses -- otherwise
-	     * this code would have to know the size of the version
-	     * information itself.
-	     */
-	    store_version(fd);
-	    bwrite(fd, (genericptr_t) &c, sizeof c);
-	    bwrite(fd, (genericptr_t) bonesid, (unsigned) c);	/* DD.nnn */
-	    savefruitchn(fd, COUNT_SAVE);
-	    bflush(fd);
-	    if (bytes_counted > freediskspace(bones)) { /* not enough room */
-# ifdef WIZARD
-		if (wizard)
-			pline("Insufficient space to create bones file.");
-# endif
-		(void) close(fd);
-		cancel_bonesfile();
-		return;
-	    }
-	    co_false();	/* make sure stuff before savelev() gets written */
-	}
-#endif /* MFLOPPY */
 
 	store_version(fd);
 	bwrite(fd, (genericptr_t) &c, sizeof c);

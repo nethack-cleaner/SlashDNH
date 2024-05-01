@@ -8,18 +8,10 @@
  *  time NetHack creates those level files.
  */
 #include "config.h"
-#if !defined(O_WRONLY) && !defined(LSC) && !defined(AZTEC_C)
+#if !defined(O_WRONLY) && !defined(LSC)
 #include <fcntl.h>
 #endif
-#ifdef WIN32
-#include <errno.h>
-#include "win32api.h"
-#endif
 
-#ifdef VMS
-extern int FDECL(vms_creat, (const char *,unsigned));
-extern int FDECL(vms_open, (const char *,int,unsigned));
-#endif	/* VMS */
 
 int FDECL(recover_main, (int, char **));
 int FDECL(restore_savefile, (char *, const char *));
@@ -28,36 +20,20 @@ static int FDECL(open_levelfile, (int, const char *));
 static int FDECL(create_savefile, (const char *));
 void FDECL(copy_bytes, (int,int));
 
-#ifndef WIN_CE
 #define Fprintf	(void)fprintf
-#else
-#define Fprintf	(void)nhce_message
-static void nhce_message(FILE*, const char*, ...);
-#endif
 
 #define Close	(void)close
 
 #ifdef UNIX
 #define SAVESIZE	(PL_NSIZ + 13)	/* save/99999player.e */
 #else
-# ifdef VMS
-#define SAVESIZE	(PL_NSIZ + 22)	/* [.save]<uid>player.e;1 */
-# else
-#  ifdef WIN32
-#define SAVESIZE	(PL_NSIZ + 40)  /* username-player.NetHack-saved-game */
-#  else
 #define SAVESIZE	FILENAME	/* from macconf.h or pcconf.h */
-#  endif
-# endif
 #endif
 
 #if defined(EXEPATH)
 char *FDECL(exepath, (char *));
 #endif
 
-#if defined(__BORLANDC__) && !defined(_WIN32)
-extern unsigned _stklen = STKSIZ;
-#endif
 char savename[SAVESIZE]; /* holds relative path of save file from playground */
 
 int
@@ -67,9 +43,6 @@ char *argv[];
 {
 	int argno;
 	const char *dir = (char *)0;
-#ifdef AMIGA
-	char *startdir = (char *)0;
-#endif
 
 
 	if (!dir) dir = getenv("NETHACKDIR");
@@ -80,12 +53,6 @@ char *argv[];
 	if (argc == 1 || (argc == 2 && !strcmp(argv[1], "-"))) {
 	    Fprintf(stderr,
 		"Usage: %s [ -d directory ] base1 [ base2 ... ]\n", argv[0]);
-#if defined(WIN32) || defined(MSDOS)
-	    if (dir) {
-	    	Fprintf(stderr, "\t(Unless you override it with -d, recover will look \n");
-	    	Fprintf(stderr, "\t in the %s directory on your system)\n", dir);
-	    }
-#endif
 	    exit(EXIT_FAILURE);
 	}
 
@@ -105,7 +72,7 @@ char *argv[];
 		}
 		argno++;
 	}
-#if defined(SECURE) && !defined(VMS)
+#if defined(SECURE)
 	if (dir
 # ifdef HACKDIR
 		&& strcmp(dir, HACKDIR)
@@ -114,15 +81,12 @@ char *argv[];
 		(void) setgid(getgid());
 		(void) setuid(getuid());
 	}
-#endif	/* SECURE && !VMS */
+#endif	/* SECURE */
 
 #ifdef HACKDIR
 	if (!dir) dir = HACKDIR;
 #endif
 
-#ifdef AMIGA
-	startdir = getcwd(0,255);
-#endif
 	if (dir && chdir((char *) dir) < 0) {
 		Fprintf(stderr, "%s: cannot chdir to %s.\n", argv[0], dir);
 		exit(EXIT_FAILURE);
@@ -134,9 +98,6 @@ char *argv[];
 			    argv[argno], savename);
 		argno++;
 	}
-#ifdef AMIGA
-	if (startdir) (void)chdir(startdir);
-#endif
 	exit(EXIT_SUCCESS);
 	/*NOTREACHED*/
 	return 0;
@@ -153,9 +114,6 @@ int lev;
 	tf = rindex(lock, '.');
 	if (!tf) tf = lock + strlen(lock);
 	(void) sprintf(tf, ".%d", lev);
-#ifdef VMS
-	(void) strcat(tf, ";1");
-#endif
 }
 
 static int
@@ -171,11 +129,7 @@ const char *directory;
 	} else {
 	    strcpy(levelfile, lock);
 	}
-#if defined(MICRO) || defined(WIN32) || defined(MSDOS)
-	fd = open(levelfile, O_RDONLY | O_BINARY);
-#else
 	fd = open(levelfile, O_RDONLY, 0);
-#endif
 	return fd;
 }
 
@@ -190,11 +144,7 @@ const char *directory;
 	} else {
 		strcpy(savefile, savename);
 	}
-#if defined(MICRO) || defined(WIN32) || defined(MSDOS)
-	fd = open(savefile, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
-#else
 	fd = creat(savefile, FCMASK);
-#endif
 	return fd;
 }
 
@@ -235,16 +185,6 @@ const char *directory;
 	(void) strcpy(lock, basename);
 	gfd = open_levelfile(0, directory);
 	if (gfd < 0) {
-#if defined(WIN32) && !defined(WIN_CE)
- 	    if(errno == EACCES) {
-	  	Fprintf(stderr,
-			"\nThere are files from a game in progress under your name.");
-		Fprintf(stderr,"\nThe files are locked or inaccessible.");
-		Fprintf(stderr,"\nPerhaps the other game is still running?\n");
-	    } else
-	  	Fprintf(stderr,
-			"\nTrouble accessing level 0 (errno = %d).\n", errno);
-#endif
 	    Fprintf(stderr, "Cannot open level 0 for %s.\n", basename);
 	    return(-1);
 	}
@@ -330,34 +270,12 @@ const char *directory;
 	Close(sfd);
 
 #if 0 /* OBSOLETE, HackWB is no longer in use */
-#ifdef AMIGA
-			/* we need to create an icon for the saved game
-			 * or HackWB won't notice the file.
-			 */
-	{
-	char iconfile[FILENAME];
-	int in, out;
-
-	(void) sprintf(iconfile, "%s.info", savename);
-	in = open("NetHack:default.icon", O_RDONLY);
-	out = open(iconfile, O_WRONLY | O_TRUNC | O_CREAT);
-	if(in > -1 && out > -1){
-		copy_bytes(in,out);
-	}
-	if(in > -1)close(in);
-	if(out > -1)close(out);
-	}
-#endif
 #endif
 	return(0);
 }
 
 #ifdef EXEPATH
-# ifdef __DJGPP__
-#define PATH_SEPARATOR '/'
-# else
 #define PATH_SEPARATOR '\\'
-# endif
 
 #define EXEPATHBUFSZ 256
 char exepathbuf[EXEPATHBUFSZ];
@@ -371,43 +289,13 @@ char *str;
 	if (!str) return (char *)0;
 	bsize = EXEPATHBUFSZ;
 	tmp = exepathbuf;
-#if !defined(WIN32)
 	strcpy (tmp, str);
-#else
-# if defined(WIN_CE)
-	{
-	  TCHAR wbuf[EXEPATHBUFSZ];
-	  GetModuleFileName((HANDLE)0, wbuf, EXEPATHBUFSZ);
-	  NH_W2A(wbuf, tmp, bsize);
-	}
-# else
-	*(tmp + GetModuleFileName((HANDLE)0, tmp, bsize)) = '\0';
-# endif
-#endif
 	tmp2 = strrchr(tmp, PATH_SEPARATOR);
 	if (tmp2) *tmp2 = '\0';
 	return tmp;
 }
 #endif /* EXEPATH */
 
-#ifdef AMIGA
-#include "date.h"
-const char amiga_version_string[] = AMIGA_VERSION_STRING;
-#endif
 
-#ifdef WIN_CE
-void nhce_message(FILE* f, const char* str, ...)
-{
-    va_list ap;
-	TCHAR wbuf[NHSTR_BUFSIZE];
-	char buf[NHSTR_BUFSIZE];
-
-    va_start(ap, str);
-	vsprintf(buf, str, ap);
-    va_end(ap);
-
-	MessageBox(NULL, NH_A2W(buf, wbuf, NHSTR_BUFSIZE), TEXT("Recover"), MB_OK);
-}
-#endif
 
 /*recover.c*/

@@ -30,94 +30,6 @@
 extern int NDECL(wiz_debug_cmd);
 #endif
 
-#ifdef DUMB	/* stuff commented out in extern.h, but needed here */
-extern int NDECL(doapply); /**/
-extern int NDECL(dorub); /**/
-extern int NDECL(dojump); /**/
-extern int NDECL(docome); /**/
-extern int NDECL(doattack); /**/
-extern int NDECL(dopassive); /**/
-extern int NDECL(doextlist); /**/
-extern int NDECL(dodrop); /**/
-extern int NDECL(doddrop); /**/
-extern int NDECL(dodown); /**/
-extern int NDECL(dodownboy); /**/
-extern int NDECL(doup); /**/
-extern int NDECL(donull); /**/
-extern int NDECL(dowait); /**/
-extern int NDECL(dowipe); /**/
-extern int NDECL(do_mname); /**/
-extern int NDECL(ddocall); /**/
-extern void FDECL(do_oname, (struct obj *));
-extern void NDECL(do_floorname); /**/
-extern int NDECL(dotakeoff); /**/
-extern int NDECL(doremring); /**/
-extern int NDECL(dowear); /**/
-extern int NDECL(doputon); /**/
-extern int NDECL(doddoremarm); /**/
-extern int NDECL(dokick); /**/
-extern int NDECL(dofire); /**/
-extern int NDECL(dothrow); /**/
-extern int NDECL(doeat); /**/
-extern int NDECL(done2); /**/
-extern int NDECL(doengward); /**/
-extern int NDECL(doengrave); /**/
-extern int NDECL(doward); /**/
-extern int NDECL(dopickup); /**/
-extern int NDECL(ddoinv); /**/
-extern int NDECL(dotypeinv); /**/
-extern int NDECL(dolook); /**/
-extern int NDECL(doprgold); /**/
-extern int NDECL(doprwep); /**/
-extern int NDECL(doprarm); /**/
-extern int NDECL(doprring); /**/
-extern int NDECL(dopramulet); /**/
-extern int NDECL(doprtool); /**/
-extern int NDECL(dosuspend); /**/
-extern int NDECL(doforce); /**/
-extern int NDECL(doopen); /**/
-extern int NDECL(doclose); /**/
-extern int NDECL(dosh); /**/
-extern int NDECL(dodiscovered); /**/
-extern int NDECL(doset); /**/
-extern int NDECL(dotogglepickup); /**/
-extern int NDECL(dowhatis); /**/
-extern int NDECL(doquickwhatis); /**/
-extern int NDECL(dowhatdoes); /**/
-extern int NDECL(dohelp); /**/
-extern int NDECL(dohistory); /**/
-extern int NDECL(doloot); /**/
-extern int NDECL(dodrink); /**/
-extern int NDECL(dodip); /**/
-extern int NDECL(dosacrifice); /**/
-extern int NDECL(dopray); /**/
-extern int NDECL(doturn); /**/
-extern int NDECL(dotip); /**/
-extern int NDECL(doredraw); /**/
-extern int NDECL(doread); /**/
-extern int NDECL(dosave); /**/
-extern int NDECL(dosearch); /**/
-extern int NDECL(doidtrap); /**/
-extern int NDECL(dopay); /**/
-extern int NDECL(dosickem); /**/
-extern int NDECL(dosit); /**/
-extern int NDECL(dodeepswim); /**/
-extern int NDECL(dotalk); /**/
-extern int NDECL(docast); /**/
-extern int NDECL(dovspell); /**/
-extern int NDECL(reorder_spirit_powers); /**/
-extern int NDECL(dotele); /**/
-extern int NDECL(dountrap); /**/
-extern int NDECL(dounmaintain); /**/
-extern int NDECL(doversion); /**/
-extern int NDECL(doextversion); /**/
-extern int NDECL(doswapweapon); /**/
-extern int NDECL(dowield); /**/
-extern int NDECL(dowieldquiver); /**/
-extern int NDECL(dozap); /**/
-extern int NDECL(doorganize); /**/
-#endif /* DUMB */
-
 static int NDECL((*timed_occ_fn));
 
 STATIC_DCL int NDECL(use_reach_attack);
@@ -164,9 +76,6 @@ STATIC_PTR int NDECL(wiz_setinsight);
 STATIC_PTR int NDECL(wiz_setsanity);
 STATIC_PTR int FDECL(getvalue, (const char *));
 extern void FDECL(list_vanquished, (int, BOOLEAN_P)); /* showborn patch */
-#if defined(__BORLANDC__) && !defined(_WIN32)
-extern void FDECL(show_borlandc_stats, (winid));
-#endif
 #ifdef DEBUG_MIGRATING_MONS
 STATIC_PTR int NDECL(wiz_migrate_mons);
 #endif
@@ -3585,10 +3494,6 @@ wiz_show_stats()
 	Sprintf(buf, template, "Total", total_mon_count, total_mon_size);
 	putstr(win, 0, buf);
 
-#if defined(__BORLANDC__) && !defined(_WIN32)
-	show_borlandc_stats(win);
-#endif
-
 	display_nhwindow(win, FALSE);
 	destroy_nhwindow(win);
 	return MOVE_CANCELLED;
@@ -4591,10 +4496,6 @@ dotravel()
 }
 
 #ifdef PORT_DEBUG
-# ifdef WIN32CON
-extern void NDECL(win32con_debug_keystrokes);
-extern void NDECL(win32con_handler_info);
-# endif
 
 int
 wiz_port_debug()
@@ -4608,10 +4509,6 @@ wiz_port_debug()
 		char *menutext;
 		void NDECL((*fn));
 	} menu_selections[] = {
-#ifdef WIN32CON
-		{"test win32 keystrokes", win32con_debug_keystrokes},
-		{"show keystroke handler information", win32con_handler_info},
-#endif
 		{(char *)0, (void NDECL((*)))0}		/* array terminator */
 	};
 

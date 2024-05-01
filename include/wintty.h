@@ -100,20 +100,8 @@ E void FDECL(tty_startup,(int*, int*));
 #ifndef NO_TERMS
 E void NDECL(tty_shutdown);
 #endif
-#if defined(apollo)
-/* Apollos don't widen old-style function definitions properly -- they try to
- * be smart and use the prototype, or some such strangeness.  So we have to
- * define UNWIDENDED_PROTOTYPES (in tradstdc.h), which makes CHAR_P below a
- * char.  But the tputs termcap call was compiled as if xputc's argument
- * actually would be expanded.	So here, we have to make an exception. */
-E void FDECL(xputc, (int));
-#else
 E void FDECL(xputc, (CHAR_P));
-#endif
 E void FDECL(xputs, (const char *));
-#if defined(SCREEN_VGA) || defined(SCREEN_8514)
-E void FDECL(xputg, (int, int, unsigned));
-#endif
 E void NDECL(cl_end);
 E void NDECL(clear_screen);
 E void NDECL(home);
@@ -216,10 +204,6 @@ E void FDECL(tty_number_pad, (int));
 E void FDECL(tty_delay_output, (int));
 #ifdef CHANGE_COLOR
 E void FDECL(tty_change_color,(int color,long rgb,int reverse));
-#ifdef MAC
-E void FDECL(tty_change_background,(int white_or_black));
-E short FDECL(set_tty_font_name, (winid, char *));
-#endif
 E char * NDECL(tty_get_color_string);
 #endif
 
@@ -230,31 +214,6 @@ E void NDECL(tty_end_screen);
 E void FDECL(genl_outrip, (winid,int));
 
 #ifdef NO_TERMS
-# ifdef MAC
-#  ifdef putchar
-#   undef putchar
-#   undef putc
-#  endif
-#  define putchar term_putc
-#  define fflush term_flush
-#  define puts term_puts
-E int FDECL(term_putc, (int c));
-E int FDECL(term_flush, (void *desc));
-E int FDECL(term_puts, (const char *str));
-# endif /* MAC */
-# if defined(MSDOS) || defined(WIN32CON)
-#  if defined(SCREEN_BIOS) || defined(SCREEN_DJGPPFAST) || defined(WIN32CON)
-#   undef putchar
-#   undef putc
-#   undef puts
-#   define putchar(x) xputc(x)	/* these are in video.c, nttty.c */
-#   define putc(x) xputc(x)
-#   define puts(x) xputs(x)
-#  endif/*SCREEN_BIOS || SCREEN_DJGPPFAST || WIN32CON */
-#  ifdef POSITIONBAR
-E void FDECL(video_update_positionbar, (char *));
-#  endif
-# endif/*MSDOS*/
 #endif/*NO_TERMS*/
 
 #undef E

@@ -67,26 +67,8 @@
 			 * Linux, Solaris 2.x
 			 */
 
-/* #define OPENWINBUG */	/* avoid a problem using OpenWindows 3.0 for
-				   X11 on SunOS 4.1.x, x>= 2.  Do not define
-				   for other X11 implementations. */
-/* #define PYRAMID_BUG */	/* avoid a bug on the Pyramid */
-/* #define BSD_43_BUG */	/* for real 4.3BSD cc's without schain botch fix */
-/* #define MICROPORT_BUG */	/* problems with large arrays in structs */
-/* #define MICROPORT_286_BUG */ /* changes needed in termcap.c to get it to
-				   run with Microport Sys V/AT version 2.4.
-				   By Jay Maynard */
-/* #define AIXPS_2BUG */	/* avoid a problem with little_to_big() optimization */
-
 /* #define RANDOM */		/* if neither random/srandom nor lrand48/srand48
 				   is available from your system */
-
-/* see sys/unix/snd86unx.shr for more information on these */
-/* #define UNIX386MUSIC */	/* play real music through speaker on systems
-				   with music driver installed */
-/* #define VPIX_MUSIC */	/* play real music through speaker on systems
-				   with built-in VPIX support */
-
 
 /*
  * The next two defines are intended mainly for the Andrew File System,
@@ -328,28 +310,6 @@
 # undef hc
 #endif
 
-#if defined(GNOME_GRAPHICS)
-#if defined(LINUX)
-# include <linux/unistd.h>
-# if defined(__NR_getresuid) && defined(__NR_getresgid)	/* ie., >= v2.1.44 */
-#  define GETRES_SUPPORT
-# endif
-#else
-# if defined(BSD) || defined(SVR4)
-/*
- * [ALI] We assume that SVR4 means we can safely include syscall.h
- * (although it's really a BSDism). This is certainly true for Solaris 2.5,
- * Solaris 7, Solaris 8 and Compaq Tru64 5.1
- * Later BSD systems will have the getresid system calls.
- */
-# include <sys/syscall.h>
-# if (defined (SYS_getuid) || defined(SYS_getresuid)) && \
-  (defined(SYS_getgid) || defined(SYS_getresgid))
-#  define GETRES_SUPPORT
-# endif
-# endif	/* BSD || SVR4 */
-#endif /* LINUX */
-#endif	/* GNOME_GRAPHICS */
 
 #endif /* UNIXCONF_H */
 #endif /* UNIX */

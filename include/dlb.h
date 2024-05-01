@@ -9,13 +9,7 @@
 #ifdef DLB
 
 /* implementations */
-#ifdef MAC
-# define DLBRSRC	/* use Mac resources */
-#else
-# define DLBLIB		/* use a set of external files */
-#endif
 
-#ifdef DLBLIB
 /* directory structure in memory */
 typedef struct dlb_directory {
     char *fname;	/* file name as seen from calling code */
@@ -43,17 +37,14 @@ typedef struct dlb_library {
 #  define FILENAME_CMP	strcmp			/* case sensitive */
 # endif
 
-#endif /* DLBLIB */
 
 
 typedef struct dlb_handle {
     FILE *fp;		/* pointer to an external file, use if non-null */
-#ifdef DLBLIB
     library *lib;	/* pointer to library structure */
     long start;		/* offset of start of file */
     long size;		/* size of file */
     long mark;		/* current file marker */
-#endif
 #ifdef DLBRSRC
     int fd;		/* HandleFile file descriptor */
 #endif
@@ -125,17 +116,8 @@ long FDECL(dlb_ftell, (DLB_P));
 #endif
 
 #define RDTMODE "r"
-#if (defined(MSDOS) || defined(WIN32) || defined(TOS) || defined(OS2)) && defined(DLB)
-#define WRTMODE "w+b"
-#else
 #define WRTMODE "w+"
-#endif
-#if (defined(MICRO) && !defined(AMIGA)) || defined(THINK_C) || defined(__MWERKS__) || defined(WIN32)
-# define RDBMODE "rb"
-# define WRBMODE "w+b"
-#else
 # define RDBMODE "r"
 # define WRBMODE "w+"
-#endif
 
 #endif	/* DLB_H */

@@ -2126,11 +2126,6 @@ struct obj *otmp;
 		    }
 		} else
 #endif
-#ifdef MAC	/* KMH -- Why should Unix have all the fun? */
-		if (otmp->otyp == APPLE) {
-			pline("Delicious!  Must be a Macintosh!");
-		} else
-#endif
 		if (otmp->otyp == EGG && stale_egg(otmp)) {
 		    pline("Ugh.  Rotten egg.");	/* perhaps others like it */
 		if (Role_if(PM_CONVICT) && (rn2(8) > u.ulevel)) {

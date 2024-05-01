@@ -6,17 +6,13 @@
 
 #include "config.h"
 #include "dlb.h"
-#if !defined(O_WRONLY) && !defined(MAC) && !defined(AZTEC_C)
+#if !defined(O_WRONLY)
 #include <fcntl.h>
-#endif
-#if defined(__DJGPP__)
-#include <string.h>
 #endif
 
 static void FDECL(xexit, (int));
 
 #ifdef DLB
-#ifdef DLBLIB
 
 #define DLB_DIRECTORY "Directory"	/* name of lib directory */
 #define LIBLISTFILE "dlb.lst"		/* default list file */
@@ -28,10 +24,6 @@ extern void FDECL(close_library,(library *));
 char *FDECL(eos, (char *));	/* also used by dlb.c */
 FILE *FDECL(fopen_datafile, (const char *,const char *));
 
-#ifdef VMS
-extern char *FDECL(vms_basename, (const char *));
-extern int FDECL(vms_open, (const char *,int,unsigned int));
-#endif
 
 static void FDECL(Write, (int,char *,long));
 static void NDECL(usage);
@@ -45,9 +37,6 @@ static char *progname = default_progname;
 static const char *library_file = DLBFILE;
 static const char *list_file = LIBLISTFILE;
 
-#ifdef AMIGA
-static char origdir[255]="";
-#endif
 
 #ifndef O_BINARY
 #define O_BINARY 0
@@ -122,19 +111,7 @@ Write(out,buf,len)
     char *buf;
     long len;
 {
-#if defined(MSDOS) && !defined(__DJGPP__)
-    unsigned short slen;
-
-    if (len > 65534) {
-	printf("%d Length specified for write() too large for 16 bit env.",
-		len);
-	xexit(EXIT_FAILURE);
-    }
-    slen = (unsigned short)len;
-    if (write(out,buf,slen) != slen) {
-#else
     if (write(out,buf,len) != len) {
-#endif
 	printf("Write Error in '%s'\n",library_file);
 	xexit(EXIT_FAILURE);
     }
@@ -150,19 +127,6 @@ eos(s)
 }
 
 
-#ifdef VMS	/* essential to have punctuation, to avoid logical names */
-static FILE *
-vms_fopen(filename, mode)
-const char *filename, *mode;
-{
-    char tmp[BUFSIZ];
-
-    if (!index(filename, '.') && !index(filename, ';'))
-	filename = strcat(strcpy(tmp, filename), ";0");
-    return fopen(filename, mode, "mbc=16");
-}
-#define fopen vms_fopen
-#endif	/* VMS */
 
 /* open_library(dlb.c) needs this (which normally comes from src/files.c) */
 FILE *
@@ -172,7 +136,6 @@ const char *filename, *mode;
     return fopen(filename, mode);
 }
 
-#endif	/* DLBLIB */
 #endif	/* DLB */
 
 int
@@ -181,7 +144,6 @@ main(argc, argv)
     char **argv;
 {
 #ifdef DLB
-#ifdef DLBLIB
     int i, r;
     int ap=2;				/* argument pointer */
     int cp;				/* command pointer */
@@ -190,9 +152,6 @@ main(argc, argv)
     library lib;
 
     if (argc > 0 && argv[0] && *argv[0]) progname = argv[0];
-#ifdef VMS
-    progname = vms_basename(progname);
-#endif
 
     if (argc<2) {
 	usage();
@@ -225,12 +184,6 @@ main(argc, argv)
 		break;
 	    case 'C':
 		if (ap == argc) usage();
-#ifdef AMIGA
-		if(!getcwd(origdir,sizeof(origdir))){
-		    printf("Can't get current directory.\n");
-		    xexit(EXIT_FAILURE);
-		}
-#endif
 		if(chdir(argv[ap++])){
 		    printf("Can't chdir to %s\n",argv[--ap]);
 		    xexit(EXIT_FAILURE);
@@ -477,7 +430,6 @@ main(argc, argv)
 	xexit(EXIT_SUCCESS);
 	}
     }
-#endif	/* DLBLIB */
 #endif	/* DLB */
 
     xexit(EXIT_SUCCESS);
@@ -486,7 +438,6 @@ main(argc, argv)
 }
 
 #ifdef DLB
-#ifdef DLBLIB
 
 static void
 write_dlb_directory(out, nfiles, ld, slen, dir_size, flen)
@@ -519,7 +470,6 @@ long slen, dir_size, flen;
     }
 }
 
-#endif	/* DLBLIB */
 #endif	/* DLB */
 
 static void
@@ -527,17 +477,10 @@ xexit(retcd)
     int retcd;
 {
 #ifdef DLB
-#ifdef AMIGA
-    if (origdir[0]) chdir(origdir);
-#endif
 #endif
     exit(retcd);
 }
 
 
-#ifdef AMIGA
-#include "date.h"
-const char amiga_version_string[] = AMIGA_VERSION_STRING;
-#endif
 
 /*dlb_main.c*/

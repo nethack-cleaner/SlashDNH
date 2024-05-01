@@ -1483,9 +1483,6 @@ you_regen_san()
 void
 moveloop()
 {
-#if defined(MICRO) || defined(WIN32)
-	char ch;
-#endif
 	int abort_lev, i, j;
     struct monst *mtmp, *nxtmon;
 	struct obj *pobj;
@@ -3327,31 +3324,13 @@ karemade:
 	flags.move = MOVE_DEFAULT;
 
 	if(multi >= 0 && occupation) {
-#if defined(MICRO) || defined(WIN32)
-	    abort_lev = 0;
-	    if (kbhit()) {
-		if ((ch = Getchar()) == ABORT)
-		    abort_lev++;
-		else
-		    pushch(ch);
-	    }
-	    if (!abort_lev && ((flags.move = (*occupation)()) & (MOVE_CANCELLED|MOVE_FINISHED_OCCUPATION)))
-#else
 	    if (((flags.move = (*occupation)()) & (MOVE_CANCELLED|MOVE_FINISHED_OCCUPATION)))
-#endif
 		occupation = 0;
 	    if(
-#if defined(MICRO) || defined(WIN32)
-		   abort_lev ||
-#endif
 		   monster_nearby()) {
 		stop_occupation();
 		reset_eat();
 	    }
-#if defined(MICRO) || defined(WIN32)
-	    if (!(++occtime % 7))
-		display_nhwindow(WIN_MAP, FALSE);
-#endif
 	    continue;
 	}
 
@@ -3453,17 +3432,6 @@ display_gamewindows()
     WIN_MAP = create_nhwindow(NHW_MAP);
     WIN_INVEN = create_nhwindow(NHW_MENU);
 
-#ifdef MAC
-    /*
-     * This _is_ the right place for this - maybe we will
-     * have to split display_gamewindows into create_gamewindows
-     * and show_gamewindows to get rid of this ifdef...
-     */
-	if ( ! strcmp ( windowprocs . name , "mac" ) ) {
-	    SanePositions ( ) ;
-	}
-#endif
-
     /*
      * The mac port is not DEPENDENT on the order of these
      * displays, but it looks a lot better this way...
@@ -3478,10 +3446,6 @@ void
 newgame()
 {
 	int i;
-
-#ifdef MFLOPPY
-	gameDiskPrompt();
-#endif
 
 	flags.ident = 1;
 

@@ -10,7 +10,7 @@ int NDECL((*occupation));
 /* from xxxmain.c */
 const char *hname = 0;		/* name of the game (argv[0] of main) */
 int hackpid = 0;		/* current process id */
-#if defined(UNIX) || defined(VMS)
+#if defined(UNIX)
 int locknum = 0;		/* max num of simultaneous users */
 #endif
 #ifdef DEF_PAGER
@@ -85,21 +85,8 @@ NEARDATA long yn_number = 0L;
 
 const char disclosure_options[] = "iavgc";
 
-#if defined(MICRO) || defined(WIN32)
-char hackdir[PATHLEN];		/* where rumors, help, record are */
-# ifdef MICRO
-char levels[PATHLEN];		/* where levels are */
-# endif
-#endif /* MICRO || WIN32 */
 
 
-#ifdef MFLOPPY
-char permbones[PATHLEN];	/* where permanent copy of bones go */
-int ramdisk = FALSE;		/* whether to copy bones to levels or not */
-int saveprompt = TRUE;
-const char *alllevels = "levels.*";
-const char *allbones = "bones*.*";
-#endif
 
 struct linfo level_info[MAXLINFO];
 

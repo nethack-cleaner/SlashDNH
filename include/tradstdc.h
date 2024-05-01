@@ -5,9 +5,6 @@
 #ifndef TRADSTDC_H
 #define TRADSTDC_H
 
-#if defined(DUMB) && !defined(NOVOID)
-#define NOVOID
-#endif
 
 #ifdef NOVOID
 #define void int
@@ -19,7 +16,7 @@
  * in its ANSI keywords only mode, which prevents use of <dos.h> and
  * far pointer use.
  */
-#if (defined(__STDC__) || defined(__TURBOC__)) && !defined(NOTSTDC)
+#if defined(__STDC__) && !defined(NOTSTDC)
 #define NHSTDC
 #endif
 
@@ -77,7 +74,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 
 #endif /* NEED_VARARGS */
 
-#if defined(NHSTDC) || defined(MSDOS) || defined(MAC) || defined(ULTRIX_PROTO) || defined(__BEOS__)
+#if defined(NHSTDC) || defined(ULTRIX_PROTO)
 
 /*
  * Used for robust ANSI parameter forward declarations:
@@ -100,7 +97,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 /* generic pointer, always a macro; genericptr_t is usually a typedef */
 # define genericptr	void *
 
-# if (defined(ULTRIX_PROTO) && !defined(__GNUC__)) || defined(OS2_CSET2)
+# if defined(ULTRIX_PROTO) && !defined(__GNUC__)
 /* Cover for Ultrix on a DECstation with 2.0 compiler, which coredumps on
  *   typedef void * genericptr_t;
  *   extern void a(void(*)(int, genericptr_t));
@@ -109,7 +106,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 /* And IBM CSet/2.  The redeclaration of free hoses the compile. */
 #  define genericptr_t	genericptr
 # else
-#  if !defined(NHSTDC) && !defined(MAC)
+# if !defined(NHSTDC)
 #   define const
 #   define signed
 #   define volatile
@@ -122,7 +119,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
  * because some compilers choke on `defined(const)'.
  * This has been observed with Lattice, MPW, and High C.
  */
-# if (defined(ULTRIX_PROTO) && !defined(NHSTDC)) || defined(apollo)
+# if defined(ULTRIX_PROTO) && !defined(NHSTDC)
 	/* the system header files don't use `const' properly */
 #  ifndef const
 #   define const
@@ -135,7 +132,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 # define FDECL(f,p)	f()
 # define VDECL(f,p)	f()
 
-# if defined(AMIGA) || defined(HPUX) || defined(POSIX_TYPES) || defined(__DECC) || defined(__BORLANDC__)
+# if defined(HPUX) || defined(POSIX_TYPES)
 #  define genericptr	void *
 # endif
 # ifndef genericptr
@@ -171,31 +168,13 @@ typedef genericptr genericptr_t;	/* (void *) or (char *) */
  * prototypes for the ANSI compilers so people quit trying to fix the
  * prototypes to match the standard and thus lose the typechecking.
  */
-#if defined(MSDOS) && !defined(__GO32__)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(AMIGA) && !defined(AZTEC_50)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-#define WIDENED_PROTOTYPES
-#endif
-#if defined(__MWERKS__) && defined(__BEOS__)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(WIN32)
-#define UNWIDENED_PROTOTYPES
-#endif
 
 #if defined(ULTRIX_PROTO) && defined(ULTRIX_CC20)
 #define UNWIDENED_PROTOTYPES
 #endif
-#if defined(apollo)
-#define UNWIDENED_PROTOTYPES
-#endif
 
 #ifndef UNWIDENED_PROTOTYPES
-# if defined(NHSTDC) || defined(ULTRIX_PROTO) || defined(THINK_C)
+# if defined(NHSTDC) || defined(ULTRIX_PROTO)
 # define WIDENED_PROTOTYPES
 # endif
 #endif

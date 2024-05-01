@@ -15,13 +15,6 @@
  */
 
 struct flag {
-#ifdef AMIFLUSH
-	boolean  altmeta;	/* use ALT keys as META */
-	boolean  amiflush;	/* kill typeahead */
-#endif
-#ifdef	MFLOPPY
-	boolean  asksavedisk;
-#endif
 	boolean  autodig;       /* MRKR: Automatically dig */
 	boolean  autoquiver;	/* Automatically fill quiver */
 	boolean  beginner;
@@ -60,9 +53,6 @@ struct flag {
 	boolean  nap;		/* `timed_delay' option for display effects */
 	boolean  nopick;	/* do not pickup objects (as when running) */
 	boolean  null;		/* OK to send nulls to the terminal */
-#ifdef MAC
-	boolean  page_wait;	/* put up a --More-- after a page of messages */
-#endif
 	boolean  perm_invent;	/* keep full inventories up until dismissed */
 	boolean  pickup;	/* whether you pickup or move and look */
 
@@ -137,11 +127,6 @@ struct flag {
 	char	 end_disclose[NUM_DISCLOSURE_OPTIONS + 1];  /* disclose various info
 								upon exit */
 	char	 menu_style;	/* User interface style setting */
-#ifdef AMII_GRAPHICS
-	int numcols;
-	unsigned short amii_dripens[ 20 ]; /* DrawInfo Pens currently there are 13 in v39 */
-	AMII_COLOR_TYPE amii_curmap[ AMII_MAXCOLORS ]; /* colormap */
-#endif
 
 	int	 questvar;	/* quest variant */
 #define	questprogress	questvar
@@ -301,35 +286,6 @@ struct instance_flags {
     boolean use_status_colors; /* use color in status line; only if wc_color */
 #endif
     boolean hitpointbar;
-#ifdef MFLOPPY
-	boolean  checkspace;	/* check disk space before writing files */
-				/* (in iflags to allow restore after moving
-				 * to >2GB partition) */
-#endif
-#ifdef MICRO
-	boolean  BIOS;		/* use IBM or ST BIOS calls when appropriate */
-#endif
-#if defined(MICRO) || defined(WIN32)
-	boolean  rawio;		/* whether can use rawio (IOCTL call) */
-#endif
-#ifdef MAC_GRAPHICS_ENV
-	boolean  MACgraphics;	/* use Macintosh extended character set, as
-				   as defined in the special font HackFont */
-	unsigned  use_stone;		/* use the stone ppats */
-#endif
-#if defined(MSDOS) || defined(WIN32)
-	boolean hassound;	/* has a sound card */
-	boolean usesound;	/* use the sound card */
-	boolean usepcspeaker;	/* use the pc speaker */
-	boolean tile_view;
-	boolean over_view;
-	boolean traditional_view;
-#endif
-#ifdef MSDOS
-	boolean hasvga;		/* has a vga adapter */
-	boolean usevga;		/* use the vga adapter */
-	boolean grmode;		/* currently in graphics mode */
-#endif
 #ifdef LAN_FEATURES
 	boolean lan_mail;	/* mail is initialized */
 	boolean lan_mail_fetched; /* mail is awaiting display */
@@ -454,10 +410,6 @@ struct instance_flags {
 	struct autopickup_exception *autopickup_exceptions[2];
 #define AP_LEAVE 0
 #define AP_GRAB	 1
-#ifdef WIN32CON
-#define MAX_ALTKEYHANDLER 25
-	char	 altkeyhandler[MAX_ALTKEYHANDLER];
-#endif
   boolean  showrealtime; /* show actual elapsed time */
 	struct {
 		int set;
@@ -480,12 +432,6 @@ struct instance_flags {
 #define hilite_peaceful wc_hilite_peaceful
 #define hilite_detected wc_hilite_detected
 #define use_inverse wc_inverse
-#ifdef MAC_GRAPHICS_ENV
-#define large_font obsolete
-#endif
-#ifdef MAC
-#define popup_dialog wc_popup_dialog
-#endif
 #define preload_tiles wc_preload_tiles
 
 extern NEARDATA struct flag flags;

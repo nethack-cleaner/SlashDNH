@@ -3,9 +3,6 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* If you're using precompiled headers, you don't want this either */
-#ifdef MICROPORT_BUG
-#define MKROOM_H
-#endif
 
  //Note: math.h must be included before hack.h bc it contains a yn() macro that is incompatible with the one in hack
 #include <math.h>
@@ -7657,16 +7654,8 @@ boolean msg;		/* "The oldmon turns into a newmon!" */
 			unstuck(mtmp);
 	}
 
-#ifndef DCC30_BUG
 	if ((mtyp == PM_LONG_WORM || mtyp == PM_HUNTING_HORROR) && 
 		(mtmp->wormno = get_wormno()) != 0) {
-#else
-	/* DICE 3.0 doesn't like assigning and comparing mtmp->wormno in the
-	 * same expression.
-	 */
-	if ((mtyp == PM_LONG_WORM || mtyp == PM_HUNTING_HORROR) &&
-		(mtmp->wormno = get_wormno(), mtmp->wormno != 0)) {
-#endif
 	    /* we can now create worms with tails - 11/91 */
 		initworm(mtmp, mtyp == PM_HUNTING_HORROR ? 2 : rn2(5));
 	    if (count_wsegs(mtmp))

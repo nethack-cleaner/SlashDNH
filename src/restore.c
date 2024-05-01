@@ -6,10 +6,6 @@
 #include "lev.h"
 #include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
 
-#if defined(MICRO)
-extern int dotcnt;	/* shared with save */
-extern int dotrow;	/* shared with save */
-#endif
 
 #ifdef USE_TILES
 extern void FDECL(substitute_tiles, (d_level *));       /* from tile.c */
@@ -51,10 +47,6 @@ static int n_ids_mapped = 0;
 static struct bucket *id_map = 0;
 
 
-#ifdef AMII_GRAPHICS
-void FDECL( amii_setpens, (int) );	/* use colors from save file */
-extern int amii_numcolors;
-#endif
 
 #include "quest.h"
 
@@ -423,9 +415,6 @@ unsigned int *stuckid, *steedid;	/* STEED */
 
 	role_init(FALSE);	/* Reset the initial role, race, gender, and alignment */
 	
-#ifdef AMII_GRAPHICS
-	amii_setpens(amii_numcolors);	/* use colors from save file */
-#endif
 	mread(fd, (genericptr_t) &u, sizeof(struct you));
 	mread(fd, (genericptr_t) &youmonst, sizeof(struct monst));
 	if (youmonst.light)
@@ -596,9 +585,6 @@ STATIC_OVL int
 restlevelfile(fd, ltmp)
 register int fd;
 int ltmp;
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-# pragma unused(fd)
-#endif
 {
 	register int nfd;
 	char whynot[BUFSZ];
@@ -609,45 +595,6 @@ int ltmp;
 		   save file if file creation is now failing... */
 		panic("restlevelfile: %s", whynot);
 	}
-#ifdef MFLOPPY
-	if (!savelev(nfd, ltmp, COUNT_SAVE)) {
-
-		/* The savelev can't proceed because the size required
-		 * is greater than the available disk space.
-		 */
-		pline("Not enough space on `%s' to restore your game.",
-			levels);
-
-		/* Remove levels and bones that may have been created.
-		 */
-		(void) close(nfd);
-# ifdef AMIGA
-		clearlocks();
-# else
-		eraseall(levels, alllevels);
-		eraseall(levels, allbones);
-
-		/* Perhaps the person would like to play without a
-		 * RAMdisk.
-		 */
-		if (ramdisk) {
-			/* PlaywoRAMdisk may not return, but if it does
-			 * it is certain that ramdisk will be 0.
-			 */
-			playwoRAMdisk();
-			/* Rewind save file and try again */
-			(void) lseek(fd, (off_t)0, 0);
-			(void) uptodate(fd, (char *)0);	/* skip version */
-			return dorecover(fd);	/* 0 or 1 */
-		} else {
-# endif
-			pline("Be seeing you...");
-			terminate(EXIT_SUCCESS);
-# ifndef AMIGA
-		}
-# endif
-	}
-#endif
 	bufon(nfd);
 	savelev(nfd, ltmp, WRITE_SAVE | FREE_SAVE);
 	bclose(nfd);
@@ -692,29 +639,6 @@ register int fd;
 	u.ustuck = (struct monst *)0;
 	u.usteed = (struct monst *)0;
 
-#ifdef MICRO
-# ifdef AMII_GRAPHICS
-	{
-	extern struct window_procs amii_procs;
-	if(windowprocs.win_init_nhwindows== amii_procs.win_init_nhwindows){
-	    extern winid WIN_BASE;
-	    clear_nhwindow(WIN_BASE);	/* hack until there's a hook for this */
-	}
-	}
-# else
-	clear_nhwindow(WIN_MAP);
-# endif
-	clear_nhwindow(WIN_MESSAGE);
-	You("return to level %d in %s%s.",
-		depth(&u.uz), dungeons[u.uz.dnum].dname,
-		flags.debug ? " while in debug mode" :
-		flags.explore ? " while in explore mode" : "");
-	curs(WIN_MAP, 1, 1);
-	dotcnt = 0;
-	dotrow = 2;
-	if (strncmpi("X11", windowprocs.name, 3))
-    	  putstr(WIN_MAP, 0, "Restoring:");
-#endif
 	while(1) {
 #ifdef ZEROCOMP
 		if(mread(fd, (genericptr_t) &ltmp, sizeof ltmp) < 0)
@@ -723,17 +647,6 @@ register int fd;
 #endif
 			break;
 		getlev(fd, 0, ltmp, FALSE);
-#ifdef MICRO
-		curs(WIN_MAP, 1+dotcnt++, dotrow);
-		if (dotcnt >= (COLNO - 1)) {
-			dotrow++;
-			dotcnt = 0;
-		}
-		if (strncmpi("X11", windowprocs.name, 3)){
-		  putstr(WIN_MAP, 0, ".");
-		}
-		mark_synch();
-#endif
 		rtmp = restlevelfile(fd, ltmp);
 		if (rtmp < 2) return(rtmp);  /* dorecover called recursively */
 	}
@@ -759,9 +672,6 @@ register int fd;
 	substitute_tiles(&u.uz);
 #endif
 	restlevelstate(stuckid, steedid);
-#ifdef MFLOPPY
-	gameDiskPrompt();
-#endif
 	max_rank_sz(); /* to recompute mrank_sz (botl.c) */
 
 	/* this comes after inventory has been loaded */
@@ -839,16 +749,10 @@ boolean ghostly;
 	int hpid;
 	int dlvl;
 	int x, y;
-#ifdef TOS
-	short tlev;
-#endif
 
 	if (ghostly)
 	    clear_id_mapping();
 
-#if defined(MSDOS) || defined(OS2)
-	setmode(fd, O_BINARY);
-#endif
 	/* Load the old fruit info.  We have to do it first, so the
 	 * information is available when restoring the objects.
 	 */
@@ -857,12 +761,7 @@ boolean ghostly;
 	/* First some sanity checks */
 	mread(fd, (genericptr_t) &hpid, sizeof(hpid));
 /* CHECK:  This may prevent restoration */
-#ifdef TOS
-	mread(fd, (genericptr_t) &tlev, sizeof(tlev));
-	dlvl=tlev&0x00ff;
-#else
 	mread(fd, (genericptr_t) &dlvl, sizeof(dlvl));
-#endif
 	if ((pid && pid != hpid) || (lev && dlvl != lev)) {
 	    char trickbuf[BUFSZ];
 
@@ -883,10 +782,6 @@ boolean ghostly;
 		uchar	len;
 		struct rm r;
 		
-#if defined(MAC)
-		/* Suppress warning about used before set */
-		(void) memset((genericptr_t) &r, 0, sizeof(r));
-#endif
 		i = 0; j = 0; len = 0;
 		while(i < ROWNO) {
 		    while(j < COLNO) {

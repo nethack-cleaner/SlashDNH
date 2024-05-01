@@ -2866,7 +2866,7 @@ E void VDECL(error, (const char *,...)) PRINTF_F(1,2);
 #ifdef UNIX
 E void NDECL(getlock);
 E void FDECL(regularize, (char *));
-# if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
+# if defined(TIMED_DELAY) && !defined(msleep)
 E void FDECL(msleep, (unsigned));
 # endif
 # ifdef SHELL

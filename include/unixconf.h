@@ -25,7 +25,6 @@
 /* #define ULTRIX */	/* define for Ultrix v3.0 or higher (but not lower) */
 			/* Use BSD for < v3.0 */
 			/* "ULTRIX" not to be confused with "ultrix" */
-#define SYSV		/* define for System V, Solaris 2.x, newer versions */
 			/* of Linux */
 /* #define HPUX */	/* Hewlett-Packard's Unix, version 6.5 or higher */
 			/* use SYSV for < v6.5 */
@@ -38,7 +37,6 @@
 #define NETWORK		/* if running on a networked system */
 			/* e.g. Suns sharing a playground through NFS */
 /* #define SUNOS4 */	/* SunOS 4.x */
-#define LINUX	/* Another Unix clone */
 /* #define CYGWIN32 */	/* Unix on Win32 -- use with case sensitive defines */
 /* #define GENIX */	/* Yet Another Unix Clone */
 /* #define HISX */	/* Bull Unix for XPS Machines */
@@ -59,13 +57,6 @@
 			/* and/or X11 color */
 #define POSIX_JOB_CONTROL /* use System V / Solaris 2.x / POSIX job control */
 			/* (e.g., VSUSP) */
-#define POSIX_TYPES	/* use POSIX types for system calls and termios */
-			/* Define for many recent OS releases, including
-			 * those with specific defines (since types are
-			 * changing toward the standard from earlier chaos).
-			 * For example, platforms using the GNU libraries,
-			 * Linux, Solaris 2.x
-			 */
 
 /* #define RANDOM */		/* if neither random/srandom nor lrand48/srand48
 				   is available from your system */
@@ -150,31 +141,7 @@
 /* #define NO_MAILREADER */	/* have mail daemon just tell player of mail */
 
 #ifdef	MAIL
-# if defined(BSD) || defined(ULTRIX)
-#  ifdef AMS
-#define AMS_MAILBOX	"/Mailbox"
-#  else
-#   if defined(__FreeBSD__) || defined(__OpenBSD__)
-#define DEF_MAILREADER	"/usr/bin/mail"
-#   else
-#define DEF_MAILREADER	"/usr/ucb/Mail"
-#   endif
-#  endif
-#else
-# if (defined(SYSV) || defined(DGUX) || defined(HPUX)) && !defined(LINUX)
-#  if defined(M_XENIX)
-#define DEF_MAILREADER	"/usr/bin/mail"
-#  else
-#   ifdef __sgi
-#define DEF_MAILREADER	"/usr/sbin/Mail"
-#   else
-#define DEF_MAILREADER	"/usr/bin/mailx"
-#   endif
-#  endif
-# else
 #define DEF_MAILREADER	"/bin/mail"
-# endif
-#endif
 
 /* #define MAILCKFREQ	50 */
 #endif	/* MAIL */
@@ -195,9 +162,7 @@
 /* fcntl(2) is a POSIX-portable call for manipulating file descriptors.
  * Comment out the USE_FCNTL if for some reason you have a strange
  * os/filesystem combination for which fcntl(2) does not work. */
-#ifdef POSIX_TYPES
 # define USE_FCNTL
-#endif
 
 /*
  * The remainder of the file should not need to be changed.
@@ -212,14 +177,9 @@
 # endif
 #endif /* _AUX_SOURCE */
 
-#if defined(LINUX) || defined(bsdi)
-# ifndef POSIX_TYPES
-#  define POSIX_TYPES
-# endif
 # ifndef POSIX_JOB_CONTROL
 #  define POSIX_JOB_CONTROL
 # endif
-#endif
 
 /*
  * BSD/ULTRIX systems are normally the only ones that can suspend processes.
@@ -233,24 +193,13 @@
  * various recent SYSV versions (with possibly tweaks to unixtty.c again).
  */
 #ifndef POSIX_JOB_CONTROL
-# if defined(BSD) || defined(ULTRIX) || defined(HPUX) || defined(AIX_31)
-#  define BSD_JOB_CONTROL
-# else
-#  if defined(SVR4)
-#   define POSIX_JOB_CONTROL
-#  endif
-# endif
 #endif
 #if defined(BSD_JOB_CONTROL) || defined(POSIX_JOB_CONTROL) || defined(AUX)
 /*#define SUSPEND*/		/* let ^Z suspend the game */
 #endif
 
 
-#if defined(BSD) || defined(ULTRIX)
-#include <sys/time.h>
-#else
 #include <time.h>
-#endif
 
 #define HLOCK	"perm"	/* an empty file used for locking purposes */
 
@@ -260,46 +209,23 @@
 
 #include "system.h"
 
-#if defined(POSIX_TYPES) || defined(__GNUC__)
 #include <stdlib.h>
 #include <unistd.h>
-#endif
 
-#if defined(POSIX_TYPES) || defined(__GNUC__) || defined(BSD) || defined(ULTRIX)
 #include <sys/wait.h>
-#endif
 
-#if defined(BSD) || defined(ULTRIX)
-# if !defined(DGUX) && !defined(SUNOS4)
-#define memcpy(d, s, n)		bcopy(s, d, n)
-#define memcmp(s1, s2, n)	bcmp(s2, s1, n)
-# endif
-# ifdef SUNOS4
-#include <memory.h>
-# endif
-#else	/* therefore SYSV */
 # ifndef index	/* some systems seem to do this for you */
 #define index	strchr
 # endif
 # ifndef rindex
 #define rindex	strrchr
 # endif
-#endif
 
 /* Use the high quality random number routines. */
-#if defined(BSD) || defined(LINUX) || defined(ULTRIX) || defined(CYGWIN32) || defined(RANDOM) || defined(__APPLE__)
 #define Rand()	random()
-#else
-#define Rand()	lrand48()
-#endif
 
 #ifdef TIMED_DELAY
-# if defined(SUNOS4) || defined(LINUX) || (defined(BSD) && !defined(ULTRIX))
 # define msleep(k) usleep((k)*1000)
-# endif
-# ifdef ULTRIX
-# define msleep(k) napms(k)
-# endif
 #endif
 
 #ifdef hc	/* older versions of the MetaWare High-C compiler define this */

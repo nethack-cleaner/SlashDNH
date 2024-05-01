@@ -9,9 +9,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <limits.h>
-#if defined(NO_FILE_LINKS) || defined(SUNOS4) || defined(POSIX_TYPES)
 #include <fcntl.h>
-#endif
 #include <signal.h>
 
 #ifdef _M_UNIX
@@ -42,11 +40,7 @@ int fd;
 #ifndef INSURANCE
 	if(buf.st_size != sizeof(int)) return(0);	/* not an xlock file */
 #endif
-#if defined(BSD) && !defined(POSIX_TYPES)
-	(void) time((long *)(&date));
-#else
 	(void) time(&date);
-#endif
 	if(date - buf.st_mtime < 3L*24L*60L*60L) {	/* recent */
 		int lockedpid;	/* should be the same size as hackpid */
 
@@ -224,29 +218,9 @@ register char *s;
 
 	while((lp=index(s, '.')) || (lp=index(s, '/')) || (lp=index(s,' ')))
 		*lp = '_';
-#if defined(SYSV) && !defined(AIX_31) && !defined(SVR4) && !defined(LINUX) && !defined(__APPLE__)
-	/* avoid problems with 14 character file name limit */
-# ifdef COMPRESS
-	/* leave room for .e from error and .Z from compress appended to
-	 * save files */
-	{
-#  ifdef COMPRESS_EXTENSION
-	    int i = 12 - strlen(COMPRESS_EXTENSION);
-#  else
-	    int i = 10;		/* should never happen... */
-#  endif
-	    if(strlen(s) > i)
-		s[i] = '\0';
-	}
-# else
-	if(strlen(s) > 11)
-		/* leave room for .nn appended to level files */
-		s[11] = '\0';
-# endif
-#endif
 }
 
-#if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
+#if defined(TIMED_DELAY) && !defined(msleep)
 #include <poll.h>
 
 void

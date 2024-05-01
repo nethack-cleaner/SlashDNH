@@ -101,11 +101,7 @@ gotit:
 void
 sort_rooms()
 {
-#if defined(SYSV) || defined(DGUX)
 	qsort((genericptr_t) rooms, (unsigned)nroom, sizeof(struct mkroom), do_comp);
-#else
-	qsort((genericptr_t) rooms, nroom, sizeof(struct mkroom), do_comp);
-#endif
 }
 
 static void

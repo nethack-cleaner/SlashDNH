@@ -18,7 +18,6 @@
 
 #ifdef GETRES_SUPPORT
 
-# if defined(LINUX)
 
 /* requires dynamic linking with libc */
 #include <dlfcn.h>
@@ -47,80 +46,6 @@ gid_t *rgid, *egid, *sgid;
     return f(rgid, egid, sgid);
 }
 
-# else
-#  if defined(BSD) || defined(SVR4)
-
-#   ifdef SYS_getresuid
-
-static int
-real_getresuid(ruid, euid, suid)
-uid_t *ruid, *euid, *suid;
-{
-    return syscall(SYS_getresuid, ruid, euid, suid);
-}
-
-#   else	/* SYS_getresuid */
-
-#ifdef SVR4
-#include <sys/stat.h>
-#endif /* SVR4 */
-
-static int
-real_getresuid(ruid, euid, suid)
-uid_t *ruid, *euid, *suid;
-{
-    int retval;
-    int pfd[2];
-    struct stat st;
-    if (pipe(pfd))
-	return -1;
-    retval = fstat(pfd[0], &st);
-    close(pfd[0]);
-    close(pfd[1]);
-    if (!retval) {
-	*euid = st.st_uid;
-	*ruid = syscall(SYS_getuid);
-	*suid = *ruid;			/* Not supported under SVR4 */
-    }
-    return retval;
-}
-
-#   endif	/* SYS_getresuid */
-
-#   ifdef SYS_getresgid
-
-static int
-real_getresgid(rgid, egid, sgid)
-gid_t *rgid, *egid, *sgid;
-{
-    return syscall(SYS_getresgid, rgid, egid, sgid);
-}
-
-#   else	/* SYS_getresgid */
-
-static int
-real_getresgid(rgid, egid, sgid)
-gid_t *rgid, *egid, *sgid;
-{
-    int retval;
-    int pfd[2];
-    struct stat st;
-    if (pipe(pfd))
-	return -1;
-    retval = fstat(pfd[0], &st);
-    close(pfd[0]);
-    close(pfd[1]);
-    if (!retval) {
-	*egid = st.st_gid;
-	*rgid = syscall(SYS_getgid);
-	*sgid = *rgid;			/* Not supported under SVR4 */
-    }
-    return retval;
-}
-
-#   endif	/* SYS_getresgid */
-#  endif	/* BSD || SVR4 */
-# endif		/* LINUX */
 
 static unsigned int hiding_privileges = 0;
 

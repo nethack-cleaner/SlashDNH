@@ -519,22 +519,7 @@ setrandom()
 #ifdef RANDOM	/* srandom() from sys/share/random.c */
 	srandom((unsigned int) time((time_t *)0));
 #else
-# if defined(__APPLE__) || defined(BSD) || defined(LINUX) || defined(ULTRIX) || defined(CYGWIN32) /* system srandom() */
-#  if defined(BSD) && !defined(POSIX_TYPES)
-#   if defined(SUNOS4)
-	(void)
-#   endif
-		srandom((int) time((long *)0));
-#  else
 	srandom((int) (time((time_t *)0)) + rnd[0]);
-#  endif
-# else
-#  ifdef UNIX	/* system srand48() */
-	srand48((long) time((time_t *)0));
-#  else		/* poor quality system routine */
-	srand((int) time((time_t *)0));
-#  endif
-# endif
 #endif
 	srand((int) time((time_t *)0)); /*The basic rand function is always used in a few places, so seed it*/
 }
@@ -544,16 +529,8 @@ getlt()
 {
 	time_t date;
 
-#if defined(BSD) && !defined(POSIX_TYPES)
-	(void) time((long *)(&date));
-#else
 	(void) time(&date);
-#endif
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || (defined(BSD) && !defined(POSIX_TYPES))
-	return(localtime((long *)(&date)));
-#else
 	return(localtime(&date));
-#endif
 }
 
 int
@@ -574,11 +551,7 @@ time_t date;
 	if (date == 0)
 		lt = getlt();
 	else
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || defined(BSD)
-		lt = localtime((long *)(&date));
-#else
 		lt = localtime(&date);
-#endif
 
 	Sprintf(datestr, "%02d%02d%02d",
 		lt->tm_year, lt->tm_mon + 1, lt->tm_mday);
@@ -596,11 +569,7 @@ time_t date;
 	if (date == 0)
 		lt = getlt();
 	else
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || (defined(BSD) && !defined(POSIX_TYPES))
-		lt = localtime((long *)(&date));
-#else
 		lt = localtime(&date);
-#endif
 
 	/* just in case somebody's localtime supplies (year % 100)
 	   rather than the expected (year - 1900) */

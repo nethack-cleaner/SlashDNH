@@ -45,19 +45,9 @@ typedef struct dlb_handle {
     long start;		/* offset of start of file */
     long size;		/* size of file */
     long mark;		/* current file marker */
-#ifdef DLBRSRC
-    int fd;		/* HandleFile file descriptor */
-#endif
 } dlb;
 
-#if defined(ULTRIX_PROTO) && !defined(__STDC__)
- /* buggy old Ultrix compiler wants this for the (*dlb_fread_proc)
-    and (*dlb_fgets_proc) prototypes in struct dlb_procs (dlb.c);
-    we'll use it in all the declarations for consistency */
-#define DLB_P struct dlb_handle *
-#else
 #define DLB_P dlb *
-#endif
 
 boolean NDECL(dlb_init);
 void NDECL(dlb_cleanup);
@@ -72,17 +62,6 @@ long FDECL(dlb_ftell, (DLB_P));
 
 
 /* Resource DLB entry points */
-#ifdef DLBRSRC
-	boolean rsrc_dlb_init(void);
-	void rsrc_dlb_cleanup(void);
-	boolean rsrc_dlb_fopen(dlb *dp, const char *name, const char *mode);
-	int rsrc_dlb_fclose(dlb *dp);
-	int rsrc_dlb_fread(char *buf, int size, int quan, dlb *dp);
-	int rsrc_dlb_fseek(dlb *dp, long pos, int whence);
-	char *rsrc_dlb_fgets(char *buf, int len, dlb *dp);
-	int rsrc_dlb_fgetc(dlb *dp);
-	long rsrc_dlb_ftell(dlb *dp);
-#endif
 
 
 #else /* DLB */

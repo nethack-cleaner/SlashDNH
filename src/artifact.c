@@ -9571,7 +9571,7 @@ arti_invoke(obj)
 			if(Confusion == 0) u.wimage = 0;
 		    for (otmp = invent; otmp; otmp = otmp->nobj) {
 			long wornmask;
-#ifdef GOLDotmp
+#ifdef GOLDOBJ
 			/* gold isn't subject to cursing and blessing */
 			if (otmp->oclass == COIN_CLASS) continue;
 #endif

@@ -9,7 +9,7 @@
 #ifndef NO_SIGNAL
 #include <signal.h>
 #endif
-#if !defined(LSC) && !defined(O_WRONLY)
+#if !defined(O_WRONLY)
 #include <fcntl.h>
 #endif
 
@@ -665,11 +665,7 @@ register unsigned num;
 #endif /* UNIX */
 	{
 /* lint wants the 3rd arg of write to be an int; lint -p an unsigned */
-#if defined(BSD) || defined(ULTRIX)
-	    failed = (write(fd, loc, (int)num) != (int)num);
-#else /* e.g. SYSV, __TURBOC__ */
 	    failed = (write(fd, loc, num) != num);
-#endif
 	}
 
 	if (failed) {

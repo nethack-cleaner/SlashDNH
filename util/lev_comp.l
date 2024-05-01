@@ -30,21 +30,8 @@ int NDECL(yylex);
 	 * Digital UNIX is difficult and still has int in spite of all
 	 * other signs.
 	 */
-# if defined(NeXT) || defined(SVR4) || defined(_AIX32)
+# if !defined(VOIDYYPUT)
 #  define VOIDYYPUT
-# endif
-# if !defined(VOIDYYPUT) && defined(POSIX_TYPES)
-#  if !defined(BOS) && !defined(HISX) && !defined(_M_UNIX) && !defined(VMS)
-#   define VOIDYYPUT
-#  endif
-# endif
-# if !defined(VOIDYYPUT) && defined(WEIRD_LEX)
-#  if defined(SUNOS4) && defined(__STDC__) && (WEIRD_LEX > 1)
-#   define VOIDYYPUT
-#  endif
-# endif
-# if defined(VOIDYYPUT) && defined(__osf__)
-#  undef VOIDYYPUT
 # endif
 # ifdef VOIDYYPUT
 void FDECL(yyunput, (int));
@@ -215,13 +202,6 @@ lethe		{ yylval.i=LETHE; return FLAG_TYPE; }
 '.'		{ yylval.i = yytext[1]; return CHAR; }
 .		{ return yytext[0]; }
 %%
-#ifdef	AMIGA
-long *alloc(n)
-	unsigned n;
-{
-	return ((long *)malloc (n));
-}
-#endif
 
 /* routine to switch to another input file; needed for flex */
 void init_yyin( input_f )

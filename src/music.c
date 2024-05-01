@@ -52,9 +52,6 @@ static void FDECL(haste_song,(int));
 static void FDECL(heal_song,(int));
 static void FDECL(encourage_pets,(int));
 
-#ifdef PCMUSIC
-void FDECL( pc_speaker, ( struct obj *, char * ) );
-#endif
 
 
 
@@ -1736,17 +1733,6 @@ do_improvisation(instr)
 struct obj *instr;
 {
 	int damage, do_spec = !Confusion;
-#if defined (PCMUSIC)
-	struct obj itmp;
-
-	itmp = *instr;
-	/* if won't yield special effect, make sound of mundane counterpart */
-	if (!do_spec || instr->spe <= 0)
-	    while (objects[itmp.otyp].oc_magic) itmp.otyp -= 1;
-#ifdef PCMUSIC
-	  pc_speaker ( &itmp, "C");
-#endif
-#endif /* MAC || AMIGA || VPIX_MUSIC || PCMUSIC */
 
 	if (!do_spec)
 	    pline("What you produce is quite far from music...");
@@ -2040,9 +2026,6 @@ struct obj *instr;
     }
     
 	You("extract a strange sound from %s!", the(xname(instr)));
-#ifdef PCMUSIC
-	pc_speaker ( instr, buf );
-#endif
 	/* Check if there was the Stronghold drawbridge near
 	 * and if the tune conforms to what we're waiting for.
 	 */

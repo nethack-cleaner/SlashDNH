@@ -3597,11 +3597,7 @@ newgame()
 	/* Start the timer here */
 	realtime_data.realtime = (time_t)0L;
 
-#if defined(BSD) && !defined(POSIX_TYPES)
-	(void) time((long *)&realtime_data.restoretime);
-#else
 	(void) time(&realtime_data.restoretime);
-#endif
 
 
 	/* Success! */
@@ -3814,11 +3810,7 @@ get_realtime(void)
     time_t curtime;
 
     /* Get current time */
-#if defined(BSD) && !defined(POSIX_TYPES)
-    (void) time((long *)&curtime);
-#else
     (void) time(&curtime);
-#endif
 
     /* Since the timer isn't set until the game starts, this prevents us
      * from displaying nonsense on the bottom line before it does. */

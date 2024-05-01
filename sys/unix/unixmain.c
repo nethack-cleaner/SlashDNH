@@ -14,14 +14,8 @@
 #include <fcntl.h>
 #endif
 
-#if !defined(_BULL_SOURCE) && !defined(__sgi) && !defined(_M_UNIX)
-# if !defined(SUNOS4) && !(defined(ULTRIX) && defined(__GNUC__))
-#  if defined(POSIX_TYPES) || defined(SVR4) || defined(HPUX)
+#if !defined(__sgi) && !defined(_M_UNIX)
 extern struct passwd *FDECL(getpwuid,(uid_t));
-#  else
-extern struct passwd *FDECL(getpwuid,(int));
-#  endif
-# endif
 #endif
 extern struct passwd *FDECL(getpwnam,(const char *));
 static void FDECL(chdirx, (const char *,BOOLEAN_P));

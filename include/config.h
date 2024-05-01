@@ -192,9 +192,7 @@ typedef signed char	schar;
  *
  *	typedef unsigned short int uchar;
  */
-#ifndef _AIX32		/* identical typedef in system file causes trouble */
 typedef unsigned char	uchar;
-#endif
 
 /* TODO: include inttypes.h or stdint.h and use uint32_t instead of long? */
 typedef long glyph_t;

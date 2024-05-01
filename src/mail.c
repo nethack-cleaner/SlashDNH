@@ -52,15 +52,9 @@ int mustgetmail = -1;
 #include <sys/stat.h>
 #include <pwd.h>
 /* DON'T trust all Unices to declare getpwuid() in <pwd.h> */
-#  if !defined(_BULL_SOURCE) && !defined(__sgi) && !defined(_M_UNIX)
-#   if !defined(SUNOS4) && !(defined(ULTRIX) && defined(__GNUC__))
+# if !defined(__sgi) && !defined(_M_UNIX)
 /* DO trust all SVR4 to typedef uid_t in <sys/types.h> (probably to a long) */
-#    if defined(POSIX_TYPES) || defined(SVR4) || defined(HPUX)
 extern struct passwd *FDECL(getpwuid,(uid_t));
-#    else
-extern struct passwd *FDECL(getpwuid,(int));
-#    endif
-#   endif
 #  endif
 static struct stat omstat,nmstat;
 static char *mailbox = (char *)0;
@@ -69,16 +63,13 @@ static long laststattime;
 # if !defined(MAILPATH) && defined(AMS)	/* Just a placeholder for AMS */
 #  define MAILPATH "/dev/null"
 # endif
-# if !defined(MAILPATH) && (defined(LINUX) || defined(__osf__))
+# if !defined(MAILPATH)
 #  define MAILPATH "/var/spool/mail/"
 # endif
 # if !defined(MAILPATH) && defined(__FreeBSD__)
 #  define MAILPATH "/var/mail/"
 # endif
-# if !defined(MAILPATH) && (defined(BSD) || defined(ULTRIX))
-#  define MAILPATH "/usr/spool/mail/"
-# endif
-# if !defined(MAILPATH) && (defined(SYSV) || defined(HPUX))
+# if !defined(MAILPATH)
 #  define MAILPATH "/usr/mail/"
 # endif
 

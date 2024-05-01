@@ -2,19 +2,10 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#ifdef OPTION_LISTS_ONLY	/* (AMIGA) external program for opt lists */
-#include "config.h"
-#include "objclass.h"
-#include "flag.h"
-NEARDATA struct flag flags;	/* provide linkage */
-NEARDATA struct instance_flags iflags;	/* provide linkage */
-#define static
-#else
 #include "hack.h"
 #include "tcap.h"
 #include "botl.h"
 #include <ctype.h>
-#endif
 #include <errno.h>
 
 #define WINTYPELEN 16
@@ -391,10 +382,6 @@ static struct Comp_Opt
 	{ (char *)0, (char *)0, 0, 0 }
 };
 
-#ifdef OPTION_LISTS_ONLY
-#undef static
-
-#else	/* use rest of file */
 
 static boolean need_redraw; /* for doset() */
 
@@ -5308,6 +5295,5 @@ char *op;
 	return 1;
 }
 
-#endif	/* OPTION_LISTS_ONLY */
 
 /*options.c*/

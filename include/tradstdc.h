@@ -20,19 +20,6 @@
 #define NHSTDC
 #endif
 
-#if defined(ultrix) && defined(__STDC__) && !defined(__LANGUAGE_C)
-/* Ultrix seems to be in a constant state of flux.  This check attempts to
- * set up ansi compatibility if it wasn't set up correctly by the compiler.
- */
-#ifdef mips
-#define __mips mips
-#endif
-
-#ifdef LANGUAGE_C
-#define __LANGUAGE_C LANGUAGE_C
-#endif
-
-#endif
 
 /*
  * ANSI X3J11 detection.
@@ -68,13 +55,10 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 #define VA_ARGS		the_args
 #define VA_START(x)		va_start(the_args, x)
 #define VA_END()		va_end(the_args); }
-#if defined(ULTRIX_PROTO) && !defined(_VA_LIST_)
-# define _VA_LIST_	/* prevents multiple def in stdio.h */
-#endif
 
 #endif /* NEED_VARARGS */
 
-#if defined(NHSTDC) || defined(ULTRIX_PROTO)
+#if defined(NHSTDC)
 
 /*
  * Used for robust ANSI parameter forward declarations:
@@ -97,21 +81,11 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 /* generic pointer, always a macro; genericptr_t is usually a typedef */
 # define genericptr	void *
 
-# if defined(ULTRIX_PROTO) && !defined(__GNUC__)
-/* Cover for Ultrix on a DECstation with 2.0 compiler, which coredumps on
- *   typedef void * genericptr_t;
- *   extern void a(void(*)(int, genericptr_t));
- * Using the #define is OK for other compiler versions too.
- */
-/* And IBM CSet/2.  The redeclaration of free hoses the compile. */
-#  define genericptr_t	genericptr
-# else
 # if !defined(NHSTDC)
 #   define const
 #   define signed
 #   define volatile
 #  endif
-# endif
 
 /*
  * Suppress `const' if necessary and not handled elsewhere.
@@ -119,12 +93,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
  * because some compilers choke on `defined(const)'.
  * This has been observed with Lattice, MPW, and High C.
  */
-# if defined(ULTRIX_PROTO) && !defined(NHSTDC)
-	/* the system header files don't use `const' properly */
-#  ifndef const
-#   define const
-#  endif
-# endif
 
 #else /* NHSTDC */	/* a "traditional" C  compiler */
 
@@ -132,12 +100,7 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 # define FDECL(f,p)	f()
 # define VDECL(f,p)	f()
 
-# if defined(HPUX) || defined(POSIX_TYPES)
 #  define genericptr	void *
-# endif
-# ifndef genericptr
-#  define genericptr	char *
-# endif
 
 /*
  * Traditional C compilers don't have "signed", "const", or "volatile".
@@ -169,12 +132,9 @@ typedef genericptr genericptr_t;	/* (void *) or (char *) */
  * prototypes to match the standard and thus lose the typechecking.
  */
 
-#if defined(ULTRIX_PROTO) && defined(ULTRIX_CC20)
-#define UNWIDENED_PROTOTYPES
-#endif
 
 #ifndef UNWIDENED_PROTOTYPES
-# if defined(NHSTDC) || defined(ULTRIX_PROTO)
+# if defined(NHSTDC)
 # define WIDENED_PROTOTYPES
 # endif
 #endif
@@ -205,7 +165,7 @@ typedef genericptr genericptr_t;	/* (void *) or (char *) */
 
 	/* MetaWare High-C defaults to unsigned chars */
 	/* AIX 3.2 needs this also */
-#if defined(__HC__) || defined(_AIX32)
+#if defined(__HC__)
 # undef signed
 #endif
 

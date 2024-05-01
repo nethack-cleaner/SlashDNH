@@ -1418,13 +1418,7 @@ int mkflags;
 			/* simulate lacquered armor for samurai */
 			if (Role_if(PM_SAMURAI) && otmp->otyp == SPLINT_MAIL &&
 				(moves <= 1 || In_quest(&u.uz))) {
-#ifdef UNIXPC
-				/* optimizer bitfield bug */
-				otmp->oerodeproof = 1;
-				otmp->rknown = 1;
-#else
 				otmp->oerodeproof = otmp->rknown = 1;
-#endif
 			}
 			/* MRKR: Mining helmets have lamps */
 			if (otmp->otyp == DWARVISH_HELM) {

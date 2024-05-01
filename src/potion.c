@@ -2548,12 +2548,7 @@ boolean amnesia;
 		}
 		if (obj->odiluted || amnesia) {
 			obj->odiluted = 0;
-#ifdef UNIXPC
-			obj->blessed = FALSE;
-			obj->cursed = FALSE;
-#else
 			obj->blessed = obj->cursed = FALSE;
-#endif
 			if (obj->otyp == POT_STARLIGHT)
 				end_burn(obj, FALSE);
 			obj->otyp = POT_WATER;

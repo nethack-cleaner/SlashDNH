@@ -15,9 +15,7 @@
  * Some systems may have getchar() return EOF for various reasons, and
  * we should not quit before seeing at least NR_OF_EOFS consecutive EOFs.
  */
-#if defined(SYSV) || defined(DGUX) || defined(HPUX)
 #define NR_OF_EOFS	20
-#endif
 
 #define CMD_TRAVEL (char)0x90
 
@@ -4441,7 +4439,6 @@ readchar()
 	    sym = in_doagain ? Getchar() : nh_poskey(&x, &y, &mod);
 
 #ifdef UNIX
-# ifdef NR_OF_EOFS
 	if (sym == EOF) {
 	    register int cnt = NR_OF_EOFS;
 	  /*
@@ -4454,7 +4451,6 @@ readchar()
 		sym = Getchar();
 	    } while (--cnt && sym == EOF);
 	}
-# endif /* NR_OF_EOFS */
 	if (sym == EOF)
 	    end_of_input();
 #endif /* UNIX */

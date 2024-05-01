@@ -31,9 +31,6 @@ extern short glyph2tile[];
 #include "wintty.h"
 
 #ifdef CLIPPING		/* might want SIGWINCH */
-# if defined(BSD) || defined(ULTRIX) || defined(AIX_31) || defined(_BULL_SOURCE)
-#include <signal.h>
-# endif
 #endif
 
 extern char mapped_menu_cmds[]; /* from options.c */

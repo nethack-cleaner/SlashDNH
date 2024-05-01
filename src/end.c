@@ -56,11 +56,7 @@ static boolean FDECL(should_query_disclose_option, (int,char *));
 
 #define done_stopprint program_state.stopprint
 
-# ifdef SYSV
 # define NH_abort()	(void) abort()
-# else
-# define NH_abort()	abort()
-# endif
 
 /*
  * The order of these needs to match the macros in hack.h.
@@ -312,14 +308,10 @@ done2()
 		}
 		return MOVE_CANCELLED;
 	}
-#if defined(WIZARD) && (defined(UNIX) || defined(LATTICE))
+#if defined(WIZARD) && defined(UNIX)
 	if(wizard) {
 	    int c;
-#  ifdef LATTICE
-	    const char *tmp = "Create SnapShot?";
-#  else
 	    const char *tmp = "Dump core?";
-#  endif
 	    if ((c = ynq(tmp)) == 'y') {
 		(void) signal(SIGINT, (SIG_RET_TYPE) done1);
 		exit_nhwindows((char *)0);

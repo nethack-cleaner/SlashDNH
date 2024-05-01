@@ -1997,11 +1997,7 @@ u_init()
 	u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 	u.ulycn = NON_PM;
 
-#if defined(BSD) && !defined(POSIX_TYPES)
-	(void) time((long *)&u.ubirthday);
-#else
 	(void) time(&u.ubirthday);
-#endif
 
 	/* set nvrange */
 	u.nv_range   =  urace.nv_range;

@@ -381,19 +381,6 @@ const dlb_procs_t lib_dlb_procs = {
 };
 
 
-#ifdef DLBRSRC
-const dlb_procs_t rsrc_dlb_procs = {
-    rsrc_dlb_init,
-    rsrc_dlb_cleanup,
-    rsrc_dlb_fopen,
-    rsrc_dlb_fclose,
-    rsrc_dlb_fread,
-    rsrc_dlb_fseek,
-    rsrc_dlb_fgets,
-    rsrc_dlb_fgetc,
-    rsrc_dlb_ftell
-};
-#endif
 
 /* Global wrapper functions ------------------------------------------------ */
 
@@ -415,9 +402,6 @@ dlb_init()
 {
     if (!dlb_initialized) {
 	dlb_procs = &lib_dlb_procs;
-#ifdef DLBRSRC
-	dlb_procs = &rsrc_dlb_procs;
-#endif
 
 	if (dlb_procs) 
 	    dlb_initialized = do_dlb_init();

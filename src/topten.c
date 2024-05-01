@@ -376,11 +376,7 @@ int how;
   /* Make sure that deathdate and deathtime refer to the same time; it
    * wouldn't be good to have deathtime refer to the day after deathdate. */
 
-#if defined(BSD) && !defined(POSIX_TYPES)
-        (void) time((long *)&deathtime);
-#else
         (void) time(&deathtime);
-#endif
 
         t0->deathdate = yyyymmdd(deathtime);
 }

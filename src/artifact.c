@@ -38,22 +38,22 @@ int FDECL(doprismaticmenu, (const char *,struct obj *));
 int FDECL(doillithidmenu, (const char *,struct obj *));
 
 
-static NEARDATA schar delay;		/* moves left for this spell */
-static NEARDATA struct obj *artiptr;/* last/current artifact being used */
-static NEARDATA int necro_effect;	/* necro effect picked */
-static NEARDATA int lostname;	/* spirit # picked */
+static schar delay;		/* moves left for this spell */
+static struct obj *artiptr;/* last/current artifact being used */
+static int necro_effect;	/* necro effect picked */
+static int lostname;	/* spirit # picked */
 
-static NEARDATA	int oozes[] = {PM_ACID_BLOB, PM_QUIVERING_BLOB, 
+static int oozes[] = {PM_ACID_BLOB, PM_QUIVERING_BLOB, 
 					  PM_GELATINOUS_CUBE, PM_DARKNESS_GIVEN_HUNGER, PM_GRAY_OOZE, 
 					  PM_BROWN_PUDDING, PM_BLACK_PUDDING, PM_GREEN_SLIME,
 					  PM_AOA, PM_BROWN_MOLD, PM_RED_MOLD};
 
-static NEARDATA	int devils[] = {PM_IMP, PM_LEMURE, 
+static int devils[] = {PM_IMP, PM_LEMURE, 
 					  PM_LEGION_DEVIL_GRUNT, PM_LEGION_DEVIL_SOLDIER, PM_LEGION_DEVIL_SERGEANT, 
 					  PM_HORNED_DEVIL, PM_BARBED_DEVIL, PM_BONE_DEVIL,
 					  PM_ICE_DEVIL, PM_PIT_FIEND, PM_ANCIENT_OF_ICE, PM_ANCIENT_OF_DEATH};
 
-static NEARDATA	int demons[] = {PM_QUASIT, PM_MANES, PM_QUASIT,
+static int demons[] = {PM_QUASIT, PM_MANES, PM_QUASIT,
 					  PM_MANES, PM_QUASIT, PM_MANES, 
 					  PM_SUCCUBUS, PM_INCUBUS, PM_VROCK, 
 					  PM_HEZROU, PM_NALFESHNEE, PM_MARILITH,
@@ -8171,8 +8171,8 @@ boolean printmessages; /* print generic elemental damage messages */
 #undef currdmg
 }
 
-static NEARDATA const char recharge_type[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
-static NEARDATA const char invoke_types[] = { ALL_CLASSES, 0 };
+static const char recharge_type[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
+static const char invoke_types[] = { ALL_CLASSES, 0 };
 		/* #invoke: an "ugly check" filters out most objects */
 
 

@@ -95,7 +95,7 @@ struct monst { struct monst *dummy; };	/* lint: struct obj's union */
 # define OBJECT(names,bits,prp,sym,prob,dly,wt,cost,sdam,ldam,oc1,oc2,oc3,nut,color,...) \
 	{SETNAMES(names)}
 
-NEARDATA struct objdescr obj_descr[] = {
+struct objdescr obj_descr[] = {
 #else
 /* second pass -- object definitions */
 
@@ -120,7 +120,7 @@ NEARDATA struct objdescr obj_descr[] = {
 #  define HARDGEM(n) (0)
 # endif
 
-NEARDATA struct objclass objects[] = {
+struct objclass objects[] = {
 #endif
 /* dummy object[0] -- description [2nd arg] *must* be NULL */
 	OBJECT(("strange object",(char *)0), BITS(1,0,0,0,0,0,0,0,0,0,0,0,0,P_NONE,0,0),

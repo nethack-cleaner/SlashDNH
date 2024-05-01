@@ -37,7 +37,7 @@ static const char *god_names[] = {
 #define Cangels PM_NOVIERE_ELADRIN,PM_BRALANI_ELADRIN,PM_FIRRE_ELADRIN,PM_SHIERE_ELADRIN,PM_ANGEL,PM_GHAELE_ELADRIN,PM_TULANI_ELADRIN,NON_PM
 #define Cdemons PM_MANES,PM_QUASIT,PM_VROCK,PM_HEZROU,PM_NALFESHNEE,PM_MARILITH,PM_BALROG,NON_PM
 
-NEARDATA const struct god base_godlist[] = {
+const struct god base_godlist[] = {
 #endif
 /* dummy so all non-zero elements are interesting */
 GOD_V2((const char *)0, 0, 0, MINIONS()),

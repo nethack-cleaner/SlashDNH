@@ -77,7 +77,7 @@ static void FDECL(writeachieveX, (char *));
 static long FDECL(encode_xlogflags, (void));
 
 /* must fit with end.c; used in rip.c */
-NEARDATA const char * const killed_by_prefix[] = {
+const char * const killed_by_prefix[] = {
 	"killed by ", "betrayed by ", "choked on ", "poisoned by ", "died of ", "drowned in ",
 	"burned by ", "dissolved in ", "crushed to death by ", "petrified by ",
 	"turned to slime by ", "exploded by ", "died by ", "disintegrated by ", "killed by ", 

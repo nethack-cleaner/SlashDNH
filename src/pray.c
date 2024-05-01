@@ -354,7 +354,7 @@ register int trouble;
 	struct obj *otmp = 0;
 	const char *what = (const char *)0;
 	char buf[BUFSZ];
-	static NEARDATA const char ringglowmsg[] = "%s ring softly glows";
+	static const char ringglowmsg[] = "%s ring softly glows";
 
 	switch (trouble) {
 	    case TROUBLE_STONED:
@@ -1267,7 +1267,7 @@ int godnum;
 	angrygods(godnum);
 }
 
-static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
+static const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
 static void
 eat_offering(otmp, silently, eatflag)

@@ -32,7 +32,7 @@ And I shall endure eternally. \
 All hope abandon, ye who enter here!"
 };
 /* at most one of `door' and `box' should be non-null at any given time */
-NEARDATA struct xlock_s {
+struct xlock_s {
 	struct rm  *door;
 	struct obj *box;
 	int picktyp, chance, usedtime;

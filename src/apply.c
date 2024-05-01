@@ -2342,7 +2342,7 @@ light_torch(obj)
 	    begin_burn(obj);
 }
 
-static NEARDATA const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
+static const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
 
 int
 dorub()
@@ -3265,8 +3265,8 @@ coord *cc;
 	}
 }
 
-static NEARDATA const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
-static NEARDATA const char need_to_remove_outer_armor[] =
+static const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
+static const char need_to_remove_outer_armor[] =
 			"need to remove your %s to grease your %s.";
 
 static void
@@ -7898,7 +7898,7 @@ struct obj *kit;
 		ptr = mtmp->data;
 	}
 	// attempt to find a piece of armor to resize
-	NEARDATA const char clothes[] = { ARMOR_CLASS, TOOL_CLASS, 0 };
+	const char clothes[] = { ARMOR_CLASS, TOOL_CLASS, 0 };
 	otmp = getobj(clothes, "resize");
 	if (!otmp) return MOVE_CANCELLED;
 	if(otmp == kit){

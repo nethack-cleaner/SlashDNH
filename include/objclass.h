@@ -229,9 +229,9 @@ struct material {
 	const int flat_ac;			/* defense modifier (torso, limbs and head are 1/2) */
 };
 
-extern NEARDATA struct objclass objects[];
-extern NEARDATA struct objdescr obj_descr[];
-extern NEARDATA struct colorTextClr LightsaberColor[];
+extern struct objclass objects[];
+extern struct objdescr obj_descr[];
+extern struct colorTextClr LightsaberColor[];
 
 /*
  * All objects have a class. Make sure that all classes have a corresponding

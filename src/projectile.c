@@ -2261,10 +2261,10 @@ dothrow()
 	}
 
 	/* get object to throw */
-	static NEARDATA const char toss_objs[] =
+	static const char toss_objs[] =
 	{ ALLOW_COUNT, COIN_CLASS, ALL_CLASSES, WEAPON_CLASS, 0 };
 	/* different default choices when wielding a sling (gold must be included) */
-	static NEARDATA const char bullets[] =
+	static const char bullets[] =
 	{ ALLOW_COUNT, COIN_CLASS, ALL_CLASSES, GEM_CLASS, 0 };
 
 	ammo = getobj(uslinging() ? bullets : toss_objs, "throw");

@@ -1253,7 +1253,7 @@ dodemonpet()
 	return MOVE_STANDARD;
 }
 
-static NEARDATA const char food_types[] = { FOOD_CLASS, 0 };
+static const char food_types[] = { FOOD_CLASS, 0 };
 
 int
 dovampminion()
@@ -2093,7 +2093,7 @@ mbodypart(mon, part)
 struct monst *mon;
 int part;
 {
-	static NEARDATA const char
+	static const char
 	*humanoid_parts[] = { 
 		"arm",			"eye",		"face",			"finger",
 		"fingertip",	"foot",		"hand",			"handed", 

@@ -443,7 +443,7 @@ do_mname()
 	return(0);
 }
 
-static NEARDATA const char callable[] = {
+static const char callable[] = {
 	SCROLL_CLASS, TILE_CLASS, POTION_CLASS, WAND_CLASS, RING_CLASS, AMULET_CLASS,
 	GEM_CLASS, SPBOOK_CLASS, ARMOR_CLASS, TOOL_CLASS, 0 };
 
@@ -2176,7 +2176,7 @@ roguename() /* Name of a Rogue player */
 #endif /* REINCARNATION */
 
 
-static NEARDATA const char * const hcolors[] = {
+static const char * const hcolors[] = {
 	"ultraviolet", "infrared", "bluish-orange",
 	"reddish-green", "dark white", "light black", "sky blue-pink",
 	"salty", "sweet", "sour", "bitter",
@@ -2205,7 +2205,7 @@ rndcolor()
 		"colorless" : c_obj_colors[k];
 }
 
-static NEARDATA const char *const hliquids[] = {
+static const char *const hliquids[] = {
 	"yoghurt", "oobleck", "clotted blood", "diluted water", "purified water",
 	"instant coffee", "tea", "herbal infusion", "liquid rainbow",
 	"creamy foam", "mulled wine", "bouillon", "nectar", "grog", "flubber",

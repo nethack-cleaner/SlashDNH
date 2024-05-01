@@ -120,7 +120,7 @@
 #include "zap.h"
 #include "thoughtglyph.h"
 
-NEARDATA extern coord bhitpos;	/* place where throw or zap hits or stops */
+extern coord bhitpos;	/* place where throw or zap hits or stops */
 
 /* types of calls to bhit() */
 #define ZAPPED_WAND		0	/* invisible ray, pierces monsters */

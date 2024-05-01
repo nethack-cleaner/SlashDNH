@@ -7,7 +7,7 @@
 /* #define DEBUG */	/* turn on for diagnostics */
 
 
-static NEARDATA boolean did_dig_msg;
+static boolean did_dig_msg;
 
 static void NDECL(fakerocktrap);
 static void NDECL(openfakedoor);

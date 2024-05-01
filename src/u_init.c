@@ -3184,16 +3184,16 @@ register struct trobj *trop;
 				obj->spe = rne(3);
 			fix_object(obj);
 		} else {	/* UNDEF_TYP */
-			static NEARDATA short nocreate = STRANGE_OBJECT;
-			static NEARDATA short nocreate2 = STRANGE_OBJECT;
-			static NEARDATA short nocreate3 = STRANGE_OBJECT;
-			static NEARDATA short nocreate4 = STRANGE_OBJECT;
-			static NEARDATA short nocreate5 = STRANGE_OBJECT;
-			static NEARDATA short nocreate6 = STRANGE_OBJECT;
-			static NEARDATA short nocreate7 = STRANGE_OBJECT;
+			static short nocreate = STRANGE_OBJECT;
+			static short nocreate2 = STRANGE_OBJECT;
+			static short nocreate3 = STRANGE_OBJECT;
+			static short nocreate4 = STRANGE_OBJECT;
+			static short nocreate5 = STRANGE_OBJECT;
+			static short nocreate6 = STRANGE_OBJECT;
+			static short nocreate7 = STRANGE_OBJECT;
 			
-			static NEARDATA short nocreateam1 = STRANGE_OBJECT;
-			static NEARDATA short nocreateam2 = STRANGE_OBJECT;
+			static short nocreateam1 = STRANGE_OBJECT;
+			static short nocreateam2 = STRANGE_OBJECT;
 		/*
 		 * For random objects, do not create certain overly powerful
 		 * items: wand of wishing, ring of levitation, or the

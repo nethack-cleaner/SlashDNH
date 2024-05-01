@@ -44,7 +44,7 @@ blade would therefore actually look like a cylindrical mirror.
 "black": A lightsaber made with a piece of fossil dark absorbs all
 but the brightest light and casts darkness
 */
-NEARDATA struct colorTextClr LightsaberColor[] = {
+struct colorTextClr LightsaberColor[] = {
 	{"brilliant blue",CLR_BRIGHT_BLUE},	/*MAGICITE_CRYSTAL*/
 	{"twisting rainbow",CLR_WHITE},		/*DILITHIUM_CRYSTAL*/
 	{"coruscating white",CLR_WHITE},	/*DIAMOND*/
@@ -245,8 +245,8 @@ register const char *pref;
 static char *
 nextobuf()
 {
-	static char NEARDATA bufs[NUMOBUF][BUFSZ];
-	static char NEARDATA ibufs[NUMOBUF][BUFSZ];
+	static char bufs[NUMOBUF][BUFSZ];
+	static char ibufs[NUMOBUF][BUFSZ];
 	static int bufidx = 0;
 	static int ibufidx = 0;
 
@@ -3449,7 +3449,7 @@ struct o_range {
 
 
 /* wishable subranges of objects */
-static NEARDATA const struct o_range o_ranges[] = {
+static const struct o_range o_ranges[] = {
 	{ "bag",	TOOL_CLASS,   SACK,	      BAG_OF_TRICKS },
 	{ "lamp",	TOOL_CLASS,   OIL_LAMP,	      MAGIC_LAMP },
 	{ "candle",	TOOL_CLASS,   TALLOW_CANDLE,  WAX_CANDLE },

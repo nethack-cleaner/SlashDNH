@@ -113,9 +113,9 @@ boolean print;
 struct monst *victim;
 boolean candestroy;
 {
-	static NEARDATA const char * const action[] = { "smolder", "rust", "rot", "corrode" };
-	static NEARDATA const char * const msg[] =  { "burnt", "rusted", "rotten", "corroded" };
-	static NEARDATA const char * const destruction[] = { "burn", "rust", "rot", "corrode" };
+	static const char * const action[] = { "smolder", "rust", "rot", "corrode" };
+	static const char * const msg[] =  { "burnt", "rusted", "rotten", "corroded" };
+	static const char * const destruction[] = { "burn", "rust", "rot", "corrode" };
 	boolean vulnerable = FALSE;
 	boolean grprot = FALSE;
 	boolean is_primary = TRUE;
@@ -4260,8 +4260,8 @@ genericptr_t poolcnt;
 }
 
 /* getobj will filter down to cans of grease and known potions of oil */
-static NEARDATA const char oil[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS, 0 };
-static NEARDATA const char disarmpotion[] = { ALL_CLASSES, POTION_CLASS, 0 };
+static const char oil[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS, 0 };
+static const char disarmpotion[] = { ALL_CLASSES, POTION_CLASS, 0 };
 
 /* water disarms, oil will explode */
 static int

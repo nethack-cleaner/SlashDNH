@@ -111,7 +111,7 @@ const struct propname {
 };
 
 /* He is being petrified - dialogue by inmet!tower */
-static NEARDATA const char * const stoned_texts[] = {
+static const char * const stoned_texts[] = {
 	"You are slowing down.",		/* 5 */
 	"Your limbs are stiffening.",		/* 4 */
 	"Your limbs have turned to stone.",	/* 3 */
@@ -135,7 +135,7 @@ stoned_dialogue()
 	exercise(A_DEX, FALSE);
 }
 
-static NEARDATA const char * const golded_texts[] = {
+static const char * const golded_texts[] = {
 	"You are slowing down.",		/* 5 */
 	"Your limbs are stiffening.",		/* 4 */
 	"Your limbs have turned to gold.",	/* 3 */
@@ -192,7 +192,7 @@ phasing_dialogue()
 }
 
 /* He is getting sicker and sicker prior to vomiting */
-static NEARDATA char * const vomiting_texts[] = {
+static char * const vomiting_texts[] = {
 	"are feeling mildly nauseated.",	/* 14 */
 	"feel slightly confused.",		/* 11 */
 	"can't seem to think straight.",	/* 8 */
@@ -201,7 +201,7 @@ static NEARDATA char * const vomiting_texts[] = {
 };
 
 /* He is getting sicker and sicker prior to vomiting */
-static NEARDATA char * const non_vomiting_texts[] = {
+static char * const non_vomiting_texts[] = {
 	"are somehow feeling nauseated.",	/* 14 */
 	"feel slightly confused.",		/* 11 */
 	"can't seem to think straight.",	/* 8 */
@@ -235,7 +235,7 @@ vomiting_dialogue()
 	exercise(A_CON, FALSE);
 }
 
-static NEARDATA const char * const choke_texts[] = {
+static const char * const choke_texts[] = {
 	"You find it hard to breathe.",
 	"You're gasping for air.",
 	"You can no longer breathe.",
@@ -243,7 +243,7 @@ static NEARDATA const char * const choke_texts[] = {
 	"You suffocate."
 };
 
-static NEARDATA const char * const choke_texts2[] = {
+static const char * const choke_texts2[] = {
 	"Your %s is becoming constricted.",
 	"Your blood is having trouble reaching your brain.",
 	"The pressure on your %s increases.",
@@ -251,7 +251,7 @@ static NEARDATA const char * const choke_texts2[] = {
 	"You suffocate."
 };
 
-static NEARDATA const char * const choke_texts3[] = {
+static const char * const choke_texts3[] = {
 	"You can't dislodge your meal.",
 	"You're gasping for air.",
 	"You can no longer breathe.",
@@ -285,7 +285,7 @@ printchokestr:
 	exercise(A_STR, FALSE);
 }
 
-static NEARDATA const char * const slime_texts[] = {
+static const char * const slime_texts[] = {
 	"You are turning a little %s.",           /* 5 */
 	"Your limbs are getting oozy.",              /* 4 */
 	"Your skin begins to peel away.",            /* 3 */

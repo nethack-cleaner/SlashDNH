@@ -9,8 +9,8 @@
 #define martial()	(martial_bonus() || is_bigfoot(youracedata) || \
 		(uarmf && (uarmf->otyp == KICKING_BOOTS || (uarmf->otyp == IMPERIAL_ELVEN_BOOTS && check_imp_mod(uarmf, IEA_KICKING)))))
 
-static NEARDATA struct rm *maploc;
-static NEARDATA const char *gate_str;
+static struct rm *maploc;
+static const char *gate_str;
 
 extern boolean notonhead;	/* for long worms */
 
@@ -20,7 +20,7 @@ static char *FDECL(kickstr, (char *));
 static void FDECL(otransit_msg, (struct obj *, BOOLEAN_P, long));
 static void FDECL(drop_to, (coord *,SCHAR_P));
 
-static NEARDATA struct obj *kickobj;
+static struct obj *kickobj;
 
 static struct attack basickick = { AT_KICK, AD_PHYS, 0, 0 };
 static struct attack basictail = { AT_TAIL, AD_PHYS, 1, 3 };

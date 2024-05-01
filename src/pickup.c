@@ -2126,7 +2126,7 @@ mbag_explodes(obj, depthin)
 
 /* A variable set in use_container(), to be used by the callback routines   */
 /* in_container(), and out_container() from askchain() and use_container(). */
-static NEARDATA struct obj *current_container;
+static struct obj *current_container;
 #define Icebox (current_container->otyp == ICE_BOX)
 
 static boolean
@@ -2490,7 +2490,7 @@ observe_quantum_cat(box, past)
 struct obj *box;
 boolean past;
 {
-    static NEARDATA const char sc[] = "Schroedinger's Cat";
+    static const char sc[] = "Schroedinger's Cat";
     struct obj *deadcat;
     struct monst *livecat;
     xchar ox, oy;
@@ -2532,7 +2532,7 @@ open_coffin(box, past)
 struct obj *box;
 boolean past;
 {
-//    static NEARDATA const char sc[] = "Schroedinger's Cat";
+//    static const char sc[] = "Schroedinger's Cat";
 //		Would be nice to name the vampire and put the name on the coffin. But not today.
     struct monst *vampire;
     xchar ox, oy;

@@ -3375,28 +3375,28 @@ goodfruit:
 }
 
 
-static NEARDATA const char *menutype[] = {
+static const char *menutype[] = {
 	"traditional", "combination", "partial", "full"
 };
 
-static NEARDATA const char *burdentype[] = {
+static const char *burdentype[] = {
 	"unencumbered", "burdened", "stressed",
 	"strained", "overtaxed", "overloaded"
 };
 
-static NEARDATA const char *pokedexsections[] = {
+static const char *pokedexsections[] = {
 	"stats", "generation", "weight", "resists", "conveys",
 	"movement", "thinking", "biology", "mechanics", "race", "vision", "attacks"/*, "summary"*/
 };
 
-static NEARDATA const char *runmodes[] = {
+static const char *runmodes[] = {
 	"teleport", "run", "walk", "crawl"
 };
-static NEARDATA const char *delay_lengths[] = {
+static const char *delay_lengths[] = {
 	"none", "short", "normal"
 };
 
-static NEARDATA const char *sortltype[] = {
+static const char *sortltype[] = {
 	"none", "loot", "full"
 };
 

@@ -22,7 +22,7 @@ static void FDECL(keter_gone, (BOOLEAN_P));
 extern const struct shclass shtypes[];	/* defined in shknam.c */
 //extern struct obj *thrownobj;		/* defined in dothrow.c */
 
-static NEARDATA long int followmsg;	/* last time of follow message */
+static long int followmsg;	/* last time of follow message */
 
 static long FDECL(addupbill, (struct monst *));
 static void FDECL(setallstolen, (struct obj *));
@@ -4685,16 +4685,16 @@ struct obj *obj;
 
 
 
-static NEARDATA const char identify_types[] = { ALL_CLASSES, 0 };
-static NEARDATA const char weapon_types[] = { WEAPON_CLASS, TOOL_CLASS, 0 };
-static NEARDATA const char armor_types[] = { ARMOR_CLASS, 0 };
+static const char identify_types[] = { ALL_CLASSES, 0 };
+static const char weapon_types[] = { WEAPON_CLASS, TOOL_CLASS, 0 };
+static const char armor_types[] = { ARMOR_CLASS, 0 };
 
 /*
 ** FUNCTION shk_identify
 **
 ** Pay the shopkeeper to identify an item.
 */
-static NEARDATA const char ident_chars[] = "bp";
+static const char ident_chars[] = "bp";
 
 static void
 shk_identify(slang, shkp)
@@ -5508,10 +5508,10 @@ shk_armor_works(slang, shkp)
 **
 ** Charge something (for a price!)
 */
-static NEARDATA const char wand_types[] = { WAND_CLASS, 0 };
-static NEARDATA const char tool_types[] = { TOOL_CLASS, 0 };
-static NEARDATA const char ring_types[] = { RING_CLASS, 0 };
-static NEARDATA const char spbook_types[] = { SPBOOK_CLASS, 0 };
+static const char wand_types[] = { WAND_CLASS, 0 };
+static const char tool_types[] = { TOOL_CLASS, 0 };
+static const char ring_types[] = { RING_CLASS, 0 };
+static const char spbook_types[] = { SPBOOK_CLASS, 0 };
 
 static void
 shk_charge(slang, shkp)

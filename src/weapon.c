@@ -62,7 +62,7 @@ static void FDECL(mon_ignite_lightsaber, (struct obj *, struct monst *));
 static void FDECL(give_may_advance_msg, (int));
 
 
-static NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
+static const short skill_names_indices[P_NUM_SKILLS] = {
 	0,                DAGGER,         KNIFE,        AXE,
 	PICK_AXE,         SHORT_SWORD,    BROADSWORD,   LONG_SWORD,
 	TWO_HANDED_SWORD, SCIMITAR,       PN_SABER,     CLUB,
@@ -87,7 +87,7 @@ static NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 };
 
 /* note: entry [0] isn't used */
-static NEARDATA const char * const odd_skill_names[] = {
+static const char * const odd_skill_names[] = {
     "no skill",
     "bare hands",		/* use barehands_or_martial[] instead */
     "two weapon combat",
@@ -125,7 +125,7 @@ static NEARDATA const char * const odd_skill_names[] = {
     "shield",
 };
 /* indexed vis `is_martial() */
-static NEARDATA const char * const barehands_or_martial[] = {
+static const char * const barehands_or_martial[] = {
     "bare handed combat", "martial arts"
 };
 
@@ -155,7 +155,7 @@ static char *FDECL(max_skill_level_name, (int,char *));
 static void FDECL(skill_advance, (int));
 
 
-static NEARDATA const char kebabable[] = {
+static const char kebabable[] = {
 	S_XORN, S_DRAGON, S_JABBERWOCK, S_NAGA, S_GIANT, '\0'
 };
 
@@ -1525,7 +1525,7 @@ struct monst *mtmp;
 	return obest;
 }
 
-static NEARDATA const int rwep[] =
+static const int rwep[] =
 {	
 	RAZOR_WIRE/*damage plus lost turns*/, 
 	BANDS/*lost turns*/, 
@@ -1561,7 +1561,7 @@ static NEARDATA const int rwep[] =
 	CREAM_PIE/*0*/
 };
 
-static NEARDATA const int pwep[] =
+static const int pwep[] =
 {	
 	FORCE_PIKE,/*3d6+6/3d8+8*/
 	GOLD_BLADED_VIBROSPEAR,/*2d6+3/2d8+3*/
@@ -1791,7 +1791,7 @@ register struct monst *mtmp;
 }
 
 /* Weapons in order of preference */
-static const NEARDATA short hwep[] = {
+static const short hwep[] = {
 	  CORPSE,  /* cockatrice corpse */
 	  KAMEREL_VAJRA /*quite a lot plus elect plus blindness*/,
 	  GOLD_BLADED_VIBROZANBATO,/*2d16+8/2d8+4d6+10*/
@@ -1897,7 +1897,7 @@ static const NEARDATA short hwep[] = {
 	  WORM_TOOTH/*1d2/1d2*/
 	};
 
-static const NEARDATA short hpwep[] = {
+static const short hpwep[] = {
 	  CORPSE,  /* cockatrice corpse */
 	  KAMEREL_VAJRA /*quite a lot plus elect plus blindness*/,
 	  GOLD_BLADED_VIBROZANBATO,/*2d16+8/2d8+4d6+10*/

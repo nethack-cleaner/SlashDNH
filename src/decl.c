@@ -17,24 +17,24 @@ int locknum = 0;		/* max num of simultaneous users */
 char *catmore = 0;		/* default pager */
 #endif
 
-NEARDATA int bases[MAXOCLASSES] = DUMMY;
+int bases[MAXOCLASSES] = DUMMY;
 
 long has_loaded_bones = 0L;
 
 long last_clear_screen = 0L;
 
-NEARDATA int multi = 0;
+int multi = 0;
 char multi_txt[BUFSZ] = DUMMY;
 #if 0
-NEARDATA int warnlevel = 0;		/* used by movemon and dochugw */
+int warnlevel = 0;		/* used by movemon and dochugw */
 #endif
-NEARDATA int nroom = 0;
-NEARDATA int nsubroom = 0;
-NEARDATA int occtime = 0;
+int nroom = 0;
+int nsubroom = 0;
+int occtime = 0;
 
 int x_maze_max, y_maze_max;	/* initialized in main, used in mkmaze.c */
 
-NEARDATA int in_doagain = 0;
+int in_doagain = 0;
 
 /*
  *	The following structure will be initialized at startup time with
@@ -45,16 +45,16 @@ struct dgn_topology dungeon_topology = {DUMMY};
 #include "quest.h"
 struct q_score	quest_status = DUMMY;
 
-NEARDATA int smeq[MAXNROFROOMS+1] = DUMMY;
-NEARDATA int doorindex = 0;
-NEARDATA int altarindex = 0;
+int smeq[MAXNROFROOMS+1] = DUMMY;
+int doorindex = 0;
+int altarindex = 0;
 
-NEARDATA char *save_cm = 0;
-NEARDATA int killer_format = 0;
+char *save_cm = 0;
+int killer_format = 0;
 const char *killer = 0;
 const char *delayed_killer = 0;
 #ifdef GOLDOBJ
-NEARDATA long done_money = 0;
+long done_money = 0;
 #endif
 char killer_buf[BUFSZ] = DUMMY;
 
@@ -64,15 +64,15 @@ boolean saving_game = FALSE; /*The game is currently saving, so don't update the
 
 const char *nomovemsg = 0;
 const char nul[40] = DUMMY;			/* contains zeros */
-NEARDATA char plname[PL_NSIZ] = DUMMY;		/* player name */
-NEARDATA char pl_character[PL_CSIZ] = DUMMY;
-NEARDATA char pl_race = '\0';
+char plname[PL_NSIZ] = DUMMY;		/* player name */
+char pl_character[PL_CSIZ] = DUMMY;
+char pl_race = '\0';
 
-NEARDATA char pl_fruit[PL_FSIZ] = DUMMY;
-NEARDATA int current_fruit = 0;
-NEARDATA struct fruit *ffruit = (struct fruit *)0;
+char pl_fruit[PL_FSIZ] = DUMMY;
+int current_fruit = 0;
+struct fruit *ffruit = (struct fruit *)0;
 
-NEARDATA char tune[6] = DUMMY;
+char tune[6] = DUMMY;
 
 const char *occtxt = DUMMY;
 const char quitchars[] = " \r\n\033";
@@ -81,7 +81,7 @@ const char ynchars[] = "yn";
 const char ynqchars[] = "ynq";
 const char ynaqchars[] = "ynaq";
 const char ynNaqchars[] = "yn#aq";
-NEARDATA long yn_number = 0L;
+long yn_number = 0L;
 
 const char disclosure_options[] = "iavgc";
 
@@ -90,7 +90,7 @@ const char disclosure_options[] = "iavgc";
 
 struct linfo level_info[MAXLINFO];
 
-NEARDATA struct sinfo program_state;
+struct sinfo program_state;
 
 /* 'rogue'-like direction commands (cmd.c) */
 const char qykbd_dir[] = "hykulnjb><";       /* qwerty layout */
@@ -102,55 +102,55 @@ const schar ydir[10] = {  0,-1,-1,-1, 0, 1, 1, 1, 0, 0 };
 const schar zdir[10] = {  0, 0, 0, 0, 0, 0, 0, 0, 1,-1 };
 char misc_cmds[] = {'g', 'G', 'F', 'm', 'M', '\033', '\001'};
 
-NEARDATA schar tbx = 0, tby = 0;	/* mthrowu: target */
+schar tbx = 0, tby = 0;	/* mthrowu: target */
 
 /* for xname handling of multiple shot missile volleys:
    number of shots, index of current one, validity check, shoot vs throw */
-NEARDATA struct multishot m_shot = { 0, 0, STRANGE_OBJECT, FALSE };
+struct multishot m_shot = { 0, 0, STRANGE_OBJECT, FALSE };
 
-NEARDATA struct dig_info digging;
+struct dig_info digging;
 
-NEARDATA dungeon dungeons[MAXDUNGEON];	/* ini'ed by init_dungeon() */
-NEARDATA s_level *sp_levchn;
-NEARDATA stairway upstair = { 0, 0, 0, 0}, dnstair = { 0, 0, 0, 0};
-NEARDATA stairway upladder = { 0, 0, 0, 0}, dnladder = { 0, 0, 0, 0};
-NEARDATA stairway sstairs = { 0, 0, 0, 0};
-NEARDATA dest_area updest = { 0, 0, 0, 0, 0, 0, 0, 0 };
-NEARDATA dest_area dndest = { 0, 0, 0, 0, 0, 0, 0, 0 };
-NEARDATA coord inv_pos = { 0, 0 };
+dungeon dungeons[MAXDUNGEON];	/* ini'ed by init_dungeon() */
+s_level *sp_levchn;
+stairway upstair = { 0, 0, 0, 0}, dnstair = { 0, 0, 0, 0};
+stairway upladder = { 0, 0, 0, 0}, dnladder = { 0, 0, 0, 0};
+stairway sstairs = { 0, 0, 0, 0};
+dest_area updest = { 0, 0, 0, 0, 0, 0, 0, 0 };
+dest_area dndest = { 0, 0, 0, 0, 0, 0, 0, 0 };
+coord inv_pos = { 0, 0 };
 
-NEARDATA boolean in_mklev = FALSE;
-NEARDATA boolean stoned = FALSE;	/* done to monsters hit by 'c' */
-NEARDATA boolean golded = FALSE;	/* done to monsters hit by Mammon's breath */
-NEARDATA boolean glassed = FALSE;	/* done to monsters hit by Baalphegor's breath */
-NEARDATA boolean unweapon = FALSE;
-NEARDATA boolean mrg_to_wielded = FALSE;
+boolean in_mklev = FALSE;
+boolean stoned = FALSE;	/* done to monsters hit by 'c' */
+boolean golded = FALSE;	/* done to monsters hit by Mammon's breath */
+boolean glassed = FALSE;	/* done to monsters hit by Baalphegor's breath */
+boolean unweapon = FALSE;
+boolean mrg_to_wielded = FALSE;
 boolean mon_ranged_gazeonly = FALSE;
 			 /* weapon picked is merged with wielded one */
-NEARDATA struct obj *current_wand = 0;	/* wand currently zapped/applied */
+struct obj *current_wand = 0;	/* wand currently zapped/applied */
 
-NEARDATA boolean in_steed_dismounting = FALSE;
+boolean in_steed_dismounting = FALSE;
 
-NEARDATA coord bhitpos = DUMMY;
-NEARDATA struct door doors[DOORMAX] = {DUMMY};
-NEARDATA struct altar altars[ALTARMAX] = {DUMMY};
+coord bhitpos = DUMMY;
+struct door doors[DOORMAX] = {DUMMY};
+struct altar altars[ALTARMAX] = {DUMMY};
 
-NEARDATA struct mkroom rooms[(MAXNROFROOMS+1)*2] = {DUMMY};
-NEARDATA struct mkroom* subrooms = &rooms[MAXNROFROOMS+1];
+struct mkroom rooms[(MAXNROFROOMS+1)*2] = {DUMMY};
+struct mkroom* subrooms = &rooms[MAXNROFROOMS+1];
 struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level;		/* level map */
 struct trap *ftrap = (struct trap *)0;
-NEARDATA struct monst youmonst = DUMMY;
-NEARDATA struct permonst upermonst = DUMMY;
-NEARDATA struct flag flags = DUMMY;
-NEARDATA struct instance_flags iflags = DUMMY;
-NEARDATA struct you u = DUMMY;
+struct monst youmonst = DUMMY;
+struct permonst upermonst = DUMMY;
+struct flag flags = DUMMY;
+struct instance_flags iflags = DUMMY;
+struct you u = DUMMY;
 
 /* objects that have been stored in a magic chest */
-NEARDATA struct obj *magic_chest_objs[10] = {0};
+struct obj *magic_chest_objs[10] = {0};
 
-NEARDATA struct obj *invent = (struct obj *)0,
+struct obj *invent = (struct obj *)0,
 	*uwep = (struct obj *)0, *uarm = (struct obj *)0,
 	*uswapwep = (struct obj *)0,
 	*uquiver = (struct obj *)0, /* quiver */
@@ -164,7 +164,7 @@ NEARDATA struct obj *invent = (struct obj *)0,
 	*uball = (struct obj *)0,
 	*urope = (struct obj *)0;
 
-NEARDATA struct obj *urings[URINGS_SIZE] = {0};
+struct obj *urings[URINGS_SIZE] = {0};
 
 #ifdef TEXTCOLOR
 /*
@@ -196,46 +196,46 @@ const int shield_static[SHIELD_COUNT] = {
 //    S_ss1, S_ss2, S_ss3, S_ss2, S_ss1, S_ss2, S_ss4,
 };
 
-NEARDATA struct spell spl_book[MAXSPELL + 1] = {DUMMY};
+struct spell spl_book[MAXSPELL + 1] = {DUMMY};
 
-NEARDATA long moves = 1L, monstermoves = 1L;
+long moves = 1L, monstermoves = 1L;
 	 /* These diverge when player is Fast */
-NEARDATA long nonce = 0L;
-NEARDATA long wailmsg = 0L;
+long nonce = 0L;
+long wailmsg = 0L;
 
 boolean goat_seenonce = FALSE;
 
 /* objects that are moving to another dungeon level */
-NEARDATA struct obj *migrating_objs = (struct obj *)0;
+struct obj *migrating_objs = (struct obj *)0;
 /* objects not yet paid for */
-NEARDATA struct obj *billobjs = (struct obj *)0;
+struct obj *billobjs = (struct obj *)0;
 
 /* used to zero all elements of a struct obj */
-NEARDATA struct obj zeroobj = DUMMY;
+struct obj zeroobj = DUMMY;
 
 /* used to zero out union any */
-NEARDATA anything zeroany = (anything) 0;
+anything zeroany = (anything) 0;
 
-NEARDATA char inherited[PL_PSIZ] = DUMMY;
+char inherited[PL_PSIZ] = DUMMY;
 
 /* originally from dog.c */
-NEARDATA char dogname[PL_PSIZ] = DUMMY;
-NEARDATA char catname[PL_PSIZ] = DUMMY;
-NEARDATA char parrotname[PL_PSIZ] = DUMMY;
-NEARDATA char monkeyname[PL_PSIZ] = DUMMY;
-NEARDATA char spidername[PL_PSIZ] = DUMMY;
-NEARDATA char lizardname[PL_PSIZ] = DUMMY;
-NEARDATA char dragonname[PL_PSIZ] = DUMMY;
-NEARDATA char horsename[PL_PSIZ] = DUMMY;
-NEARDATA char whisperername[PL_PSIZ] = DUMMY;
-NEARDATA char ratname[PL_PSIZ] = DUMMY;
+char dogname[PL_PSIZ] = DUMMY;
+char catname[PL_PSIZ] = DUMMY;
+char parrotname[PL_PSIZ] = DUMMY;
+char monkeyname[PL_PSIZ] = DUMMY;
+char spidername[PL_PSIZ] = DUMMY;
+char lizardname[PL_PSIZ] = DUMMY;
+char dragonname[PL_PSIZ] = DUMMY;
+char horsename[PL_PSIZ] = DUMMY;
+char whisperername[PL_PSIZ] = DUMMY;
+char ratname[PL_PSIZ] = DUMMY;
 char preferred_pet;	/* '\0', 'c', 'd', 'n' (none) */
 /* monsters that went down/up together with @ */
-NEARDATA struct monst *mydogs = (struct monst *)0;
+struct monst *mydogs = (struct monst *)0;
 /* monsters that are moving to another dungeon level */
-NEARDATA struct monst *migrating_mons = (struct monst *)0;
+struct monst *migrating_mons = (struct monst *)0;
 
-NEARDATA struct mvitals mvitals[NUMMONS];
+struct mvitals mvitals[NUMMONS];
 
 /* originally from end.c */
 #ifdef DUMP_LOG
@@ -246,7 +246,7 @@ char dump_fn[PL_PSIZ] = DUMMY;
 #endif
 #endif /* DUMP_LOG */
 
-NEARDATA struct c_color_names c_color_names = {
+struct c_color_names c_color_names = {
 	"black", "amber", "golden",
 	"light blue", "red", "green",
 	"silver", "blue", "purple",
@@ -329,12 +329,12 @@ const struct material materials[] = {
 };
 
 /* Vision */
-NEARDATA boolean vision_full_recalc = 0;
-NEARDATA char	 **viz_array = 0;/* used in cansee() and couldsee() macros */
+boolean vision_full_recalc = 0;
+char	 **viz_array = 0;/* used in cansee() and couldsee() macros */
 
 /* Global windowing data, defined here for multi-window-system support */
-NEARDATA winid WIN_MESSAGE = WIN_ERR, WIN_STATUS = WIN_ERR;
-NEARDATA winid WIN_MAP = WIN_ERR, WIN_INVEN = WIN_ERR;
+winid WIN_MESSAGE = WIN_ERR, WIN_STATUS = WIN_ERR;
+winid WIN_MAP = WIN_ERR, WIN_INVEN = WIN_ERR;
 char toplines[TBUFSZ];
 /* Windowing stuff that's really tty oriented, but present for all ports */
 struct tc_gbl_data tc_gbl_data = { 0,0, 0,0 };	/* AS,AE, LI,CO */

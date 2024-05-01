@@ -165,12 +165,12 @@ int mkobjflags;
 
 
 static const int ANGELTWOHANDERCUT = 4;
-static NEARDATA int angelwepsbase[] = {
+static int angelwepsbase[] = {
 	SABER, LONG_SWORD, LONG_SWORD, SABER,
 	TWO_HANDED_SWORD, GLAIVE, LANCE,
 	LUCERN_HAMMER,
 };
-static NEARDATA int angelweps[] = {
+static int angelweps[] = {
 	ART_DEMONBANE, ART_SUNSWORD, ART_SWORD_OF_ERATHAOL, ART_SABER_OF_SABAOTH,
 	ART_SWORD_OF_ONOEL, ART_GLAIVE_OF_SHAMSIEL, ART_LANCE_OF_URIEL,
 	ART_HAMMER_OF_BARQUIEL,
@@ -15317,8 +15317,8 @@ static int
 align_shift(ptr)
 register struct permonst *ptr;
 {
-    static NEARDATA long oldmoves = 0L;	/* != 1, starting value of moves */
-    static NEARDATA s_level *lev;
+    static long oldmoves = 0L;	/* != 1, starting value of moves */
+    static s_level *lev;
     register int alshift;
 
     if(oldmoves != moves) {
@@ -15339,7 +15339,7 @@ register struct permonst *ptr;
     return alshift;
 }
 
-static NEARDATA struct {
+static struct {
 	int choice_count;
 	int mchoices[SPECIAL_PM];	/* not at ALL sure the monsters fit into a char, and in this age trying to save such a
 								   small amount of memory seems outdated */
@@ -17509,7 +17509,7 @@ struct monst *mtmp;
 }
 
 
-static NEARDATA char syms[] = {
+static char syms[] = {
 	MAXOCLASSES, MAXOCLASSES+1, RING_CLASS, WAND_CLASS, WEAPON_CLASS,
 	FOOD_CLASS, COIN_CLASS, SCROLL_CLASS, POTION_CLASS, ARMOR_CLASS,
 	AMULET_CLASS, TOOL_CLASS, ROCK_CLASS, GEM_CLASS, SPBOOK_CLASS,

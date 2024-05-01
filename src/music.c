@@ -89,7 +89,7 @@ struct songspell {
 
 /* songs based on enchantment spells must be the first ones on list, because of
    SNG_LAST_ENCHANTMENT */
-NEARDATA const struct songspell songs[] = {
+const struct songspell songs[] = {
 	/* sp_id		name	    level turns instr1		instr2 */
 	{ 0,				"None",				0, 1,	0,				0 },
 	{ SPE_CAUSE_FEAR,	"Fear",				1, 6,	DRUM,	TOOLED_HORN },
@@ -115,16 +115,16 @@ NEARDATA const struct songspell songs[] = {
 */
 };
 
-static NEARDATA schar song_delay;	/* moves left for this song */
+static schar song_delay;	/* moves left for this song */
 struct obj *song_instr;			/* musical instrument being played */
 int instr_otyp;					/* type of musical instrument being played */
 uchar song_played = SNG_NONE;	/* song being played (songs[] index)*/
 boolean song_penalty;			/* instrument penalty (see do_play_instrument) */
-static NEARDATA int petsing;		/* effect of pets singing with the player */
-static NEARDATA int monsing;		/* effect of monsters countersinging against the player */
-static NEARDATA long petsing_lastcheck = 0L; /* last time pets were checked */
-static NEARDATA long monsing_lastcheck = 0L; /* last time monsters were checked */
-static NEARDATA char msgbuf[BUFSZ];
+static int petsing;		/* effect of pets singing with the player */
+static int monsing;		/* effect of monsters countersinging against the player */
+static long petsing_lastcheck = 0L; /* last time pets were checked */
+static long monsing_lastcheck = 0L; /* last time monsters were checked */
+static char msgbuf[BUFSZ];
 
 
 /*

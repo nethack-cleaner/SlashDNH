@@ -7,9 +7,9 @@
 
 #include "hack.h"
 
-static NEARDATA schar delay;		/* moves left for this spell */
-static NEARDATA struct obj *book;	/* last/current book being xscribed */
-static NEARDATA int RoSbook;		/* Read spell or Study Wards?" */
+static schar delay;		/* moves left for this spell */
+static struct obj *book;	/* last/current book being xscribed */
+static int RoSbook;		/* Read spell or Study Wards?" */
 
 #define READ_SPELL 1
 #define STUDY_WARD 2

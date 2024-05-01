@@ -249,7 +249,7 @@ moverock()
 		lastmovetime = 0;
 #else
 		/* note: reset to zero after save/restore cycle */
-		static NEARDATA long lastmovetime;
+		static long lastmovetime;
 #endif
 		if (!u.usteed) {
 		  if (moves > lastmovetime+2 || moves < lastmovetime)
@@ -464,7 +464,7 @@ register xchar ox, oy;
 	newsym(ox, oy);
 }
 
-static NEARDATA const char fell_on_sink[] = "fell onto a sink";
+static const char fell_on_sink[] = "fell onto a sink";
 
 static void
 dosinkfall()

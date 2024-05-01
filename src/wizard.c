@@ -28,7 +28,7 @@ static void FDECL(aglaopesong, (struct monst *));
 
 static int xprime = 0, yprime = 0;
 
-static NEARDATA const int nasties[] = {
+static const int nasties[] = {
 	/* neutral */
 	PM_COCKATRICE, PM_ETTIN, PM_STALKER, PM_MINOTAUR, 
 	PM_OWLBEAR, PM_PURPLE_WORM, PM_XAN, PM_UMBER_HULK, 
@@ -52,7 +52,7 @@ static NEARDATA const int nasties[] = {
 	PM_GREEN_STEEL_GOLEM, PM_MAID, PM_HELLCAT
 	};
 
-static NEARDATA const unsigned wizapp[] = {
+static const unsigned wizapp[] = {
 	PM_HUMAN, PM_MARID, PM_VAMPIRE,
 	PM_RED_DRAGON, PM_TROLL, PM_UMBER_HULK,
 	PM_XORN, PM_XAN, PM_COCKATRICE,

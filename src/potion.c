@@ -7,8 +7,8 @@
 
 boolean notonhead = FALSE;
 
-static NEARDATA int nothing, unkn;
-static NEARDATA const char beverages[] = { POTION_CLASS, 0 };
+static int nothing, unkn;
+static const char beverages[] = { POTION_CLASS, 0 };
 
 static long FDECL(itimeout, (long));
 static void NDECL(ghost_from_bottle);

@@ -262,7 +262,7 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
 
 #endif
 
-static NEARDATA int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
+static int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
 
 static const char *NDECL(rank);
 

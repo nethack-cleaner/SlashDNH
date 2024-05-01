@@ -2506,11 +2506,11 @@ struct monst *mon;
 /* TRUE iff monster can be blinded by the given attack */
 /* Note: may return TRUE when mdef is blind (e.g. new cream-pie attack) */
 boolean
-can_blnd(magr, mdef, aatyp, obj)
-struct monst *magr;		/* NULL == no specific aggressor */
-struct monst *mdef;
-uchar aatyp;
-struct obj *obj;		/* aatyp == AT_WEAP, AT_SPIT */
+can_blnd(
+	struct monst *magr,		/* NULL == no specific aggressor */
+	struct monst *mdef,
+	int aatyp,
+	struct obj *obj)		/* aatyp == AT_WEAP, AT_SPIT */
 {
 	boolean is_you = (mdef == &youmonst);
 	boolean check_visor = FALSE;
@@ -2762,11 +2762,10 @@ int dtyp;
 /* returns the maximum damage a defender can do to the attacker via
  * a passive defense */
 int
-max_passive_dmg(mdef, magr)
-    register struct monst *mdef, *magr;
+max_passive_dmg(struct monst *mdef, struct monst *magr)
 {
     int	i, dmg = 0;
-    uchar adtyp;
+    int adtyp;
 
     for(i = 0; i < NATTK; i++)
 	if(mdef->data->mattk[i].aatyp == AT_NONE ||

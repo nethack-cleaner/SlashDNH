@@ -6,7 +6,7 @@
 #define GODLIST_H
 
 #define MINIONS(...) _MINIONS(__VA_ARGS__)
-#define _MINIONS(...) {FIRST_TWENTY(dummy, ##__VA_ARGS__, \
+#define _MINIONS(...) {FIRST_TWENTY(dummy __VA_OPT__(,) __VA_ARGS__,	\
 	NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,\
 	NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM,NON_PM)}
 #define FIRST_TWENTY(dummy, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, \

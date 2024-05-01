@@ -79,7 +79,7 @@ for row in range(0, MAXARG//10+1):
 	f.write('\\\n')
 f.write("\tN, ...) N\n\n")
 
-f.write("#define NARGS(...) _GET_NTH_ARG(dummy, ##__VA_ARGS__,\\\n")
+f.write("#define NARGS(...) _GET_NTH_ARG(dummy __VA_OPT__(,) __VA_ARGS__,\\\n")
 for row in range(MAXARG//10, -1, -1):
 	f.write('\t')
 	for n in range(9, -1, -1):
@@ -88,7 +88,7 @@ for row in range(MAXARG//10, -1, -1):
 f.write("\t)\n\n")
 
 f.write("#define CALL_MACRO_X_FOR_EACH(x, ...)\\\n")
-f.write("\t_GET_NTH_ARG(dummy, ##__VA_ARGS__,\\\n")
+f.write("\t_GET_NTH_ARG(dummy __VA_OPT__(,) __VA_ARGS__,\\\n")
 for row in range(MAXARG//10, -1, -1):
 	f.write('\t')
 	for n in range(9, -1, -1):

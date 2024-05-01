@@ -3127,32 +3127,34 @@ int godnum;
 				}
 				break;
 			case 2: // identify an item
-				boolean found_ring = FALSE;
-				if (uwep && not_fully_identified(uwep)) identify(uwep);
-				else if (uswapwep && not_fully_identified(uswapwep)) identify(uswapwep);
-				else if (uamul && not_fully_identified(uamul)) identify(uamul);
-				else {
-					for (int i = 0; i < URINGS_SIZE; i++) {
-						if (urings[i] && not_fully_identified(urings[i])) {
-							identify(urings[i]);
-							found_ring = TRUE;
-							break;
+				{
+					boolean found_ring = FALSE;
+					if (uwep && not_fully_identified(uwep)) identify(uwep);
+					else if (uswapwep && not_fully_identified(uswapwep)) identify(uswapwep);
+					else if (uamul && not_fully_identified(uamul)) identify(uamul);
+					else {
+						for (int i = 0; i < URINGS_SIZE; i++) {
+							if (urings[i] && not_fully_identified(urings[i])) {
+								identify(urings[i]);
+								found_ring = TRUE;
+								break;
+							}
 						}
 					}
-				}
-				if (found_ring) break;
-				else if (uarmc && not_fully_identified(uarmc)) identify(uarmc);
-				else if (uarm && not_fully_identified(uarm)) identify(uarm);
-				else if (uarmu && not_fully_identified(uarmu)) identify(uarmu);
-				else if (uarmh && not_fully_identified(uarmh)) identify(uarmh);
-				else if (uarmg && not_fully_identified(uarmg)) identify(uarmf);
-				else if (uarmf && not_fully_identified(uarmf)) identify(uarmf);
-				else if (uarms && not_fully_identified(uarms)) identify(uarms);
-				else {
-					for(otmp=invent; otmp; otmp=otmp->nobj)
-					if (not_fully_identified(otmp)){
-						identify(otmp);
-						break;
+					if (found_ring) break;
+					else if (uarmc && not_fully_identified(uarmc)) identify(uarmc);
+					else if (uarm && not_fully_identified(uarm)) identify(uarm);
+					else if (uarmu && not_fully_identified(uarmu)) identify(uarmu);
+					else if (uarmh && not_fully_identified(uarmh)) identify(uarmh);
+					else if (uarmg && not_fully_identified(uarmg)) identify(uarmf);
+					else if (uarmf && not_fully_identified(uarmf)) identify(uarmf);
+					else if (uarms && not_fully_identified(uarms)) identify(uarms);
+					else {
+						for(otmp=invent; otmp; otmp=otmp->nobj)
+							if (not_fully_identified(otmp)){
+								identify(otmp);
+								break;
+							}
 					}
 				}
 				break;

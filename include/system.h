@@ -33,7 +33,7 @@ extern char *FDECL(tgoto, (const char *,int,int));
  * This is the type of signal handling functions.
  */
 #ifndef SIG_RET_TYPE
-# define SIG_RET_TYPE void (*)()
+# define SIG_RET_TYPE void (*)(int)
 #endif
 
 #endif /* SYSTEM_H */

@@ -499,7 +499,7 @@ xchar
 }
 
 boolean
-check_region(xchar x, xchar y, uchar adtyp)
+check_region(xchar x, xchar y, int adtyp)
 {
 	int i;
 	for (i = 0; i < n_regions; i++) {

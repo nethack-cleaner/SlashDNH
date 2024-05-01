@@ -29,7 +29,7 @@ static char * get_mg_description_of_monster_type(struct monst *, char *);
 static char * get_mw_description_of_monster_type(struct monst *, char *);
 static char * get_mf_description_of_monster_type(struct monst *, char *);
 static char * get_speed_description_of_monster_type(struct monst *, char *);
-static char * get_description_of_damage_prefix(uchar, uchar);
+static char * get_description_of_damage_prefix(int, int);
 static char * get_description_of_ancient_breath(struct monst *, char *);
 static int generate_list_of_resistances(struct monst *, char *, int);
 #ifdef PORT_HELP
@@ -2265,7 +2265,7 @@ get_speed_description_of_monster_type(struct monst * mtmp, char * description)
 }
 
 char *
-get_description_of_attack_type(uchar id)
+get_description_of_attack_type(int id)
 {
 	switch (id){
 	//case AT_ANY: return "fake attack; dmgtype_fromattack wildcard";
@@ -2324,7 +2324,7 @@ get_description_of_attack_type(uchar id)
 }
 
 char *
-get_description_of_damage_type(uchar id)
+get_description_of_damage_type(int id)
 {
 	switch (id){
 	//case AD_ANY: return "fake damage; attacktype_fordmg wildcard";
@@ -2518,7 +2518,7 @@ get_description_of_damage_type(uchar id)
 }
 
 char *
-get_description_of_damage_prefix(uchar aatyp, uchar adtyp)
+get_description_of_damage_prefix(int aatyp, int adtyp)
 {
 	switch (aatyp)
 	{

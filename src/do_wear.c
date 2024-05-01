@@ -2930,11 +2930,7 @@ find_dr()
  * Includes effectiveness vs magr (optional)
  */
 int
-slot_udr(slot, magr, depth, aatyp)
-int slot;
-struct monst *magr;
-int depth;
-uchar aatyp;
+slot_udr(int slot, struct monst *magr, int depth, int aatyp)
 {
 	/* DR addition: bas + sqrt(nat^2 + arm^2) */
 	int bas_udr; /* base DR:    magical-ish   */
@@ -3077,19 +3073,13 @@ uchar aatyp;
 }
 
 int
-roll_udr(magr, aatyp)
-struct monst *magr;
-uchar aatyp;
+roll_udr(struct monst *magr, int aatyp)
 {
 	return roll_udr_detail(magr, 0, 0, aatyp);
 }
 
 int
-roll_udr_detail(magr, slot, depth, aatyp)
-struct monst *magr;
-int slot;
-int depth;
-uchar aatyp;
+roll_udr_detail(struct monst *magr, int slot, int depth, int aatyp)
 {
 	int udr;
 	int cap = 10;

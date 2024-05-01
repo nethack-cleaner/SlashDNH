@@ -219,7 +219,7 @@
 	_50, _51, _52, _53, _54, _55, _56, _57, _58, _59, \
 	N, ...) N
 
-#define NARGS(...) _GET_NTH_ARG(dummy, ##__VA_ARGS__,\
+#define NARGS(...) _GET_NTH_ARG(dummy __VA_OPT__(,) __VA_ARGS__,\
 	59, 58, 57, 56, 55, 54, 53, 52, 51, 50, \
 	49, 48, 47, 46, 45, 44, 43, 42, 41, 40, \
 	39, 38, 37, 36, 35, 34, 33, 32, 31, 30, \
@@ -229,7 +229,7 @@
 	)
 
 #define CALL_MACRO_X_FOR_EACH(x, ...)\
-	_GET_NTH_ARG(dummy, ##__VA_ARGS__,\
+	_GET_NTH_ARG(dummy __VA_OPT__(,) __VA_ARGS__,\
 	_fe_59, _fe_58, _fe_57, _fe_56, _fe_55, _fe_54, _fe_53, _fe_52, _fe_51, _fe_50, \
 	_fe_49, _fe_48, _fe_47, _fe_46, _fe_45, _fe_44, _fe_43, _fe_42, _fe_41, _fe_40, \
 	_fe_39, _fe_38, _fe_37, _fe_36, _fe_35, _fe_34, _fe_33, _fe_32, _fe_31, _fe_30, \

@@ -1419,7 +1419,7 @@ dogaze()
 	char qbuf[QBUFSZ];
 	int i;
 	int dmg = 0;
-	uchar adtyp = 0;
+	int adtyp = 0;
 	uchar damn = 0;
 	uchar damd = 0;
 	const int elementalgaze[] = {AD_FIRE,AD_COLD,AD_ELEC};

@@ -7,7 +7,7 @@
 
 #include "macromagic.h"
 /* we need to set these *before* makedefs.c or else it won't be getting the right number of arguments */
-#define PROPS(...) {FIRST_TEN(dummy, ##__VA_ARGS__, 0,0,0,0,0,0,0,0,0,0)}
+#define PROPS(...) {FIRST_TEN(dummy __VA_OPT__(,) __VA_ARGS__, 0,0,0,0,0,0,0,0,0,0)}
 #define FIRST_TEN(dummy, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, ...) a1, a2, a3, a4, a5, a6, a7, a8, a9, a10
 
 #define NO_MONS()									 0,   0,   0,   0,   0,   0,   0,   0,   0

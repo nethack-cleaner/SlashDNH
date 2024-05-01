@@ -32,7 +32,7 @@ typedef boolean FDECL((*callback_proc), (genericptr_t, genericptr_t));
 
 struct region_arg {
 	int damage;
-	uchar adtyp;	
+	int adtyp;
 };
 
 typedef struct {

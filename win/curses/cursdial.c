@@ -17,11 +17,11 @@ typedef struct nhmi {
     winid wid;                  /* NetHack window id */
     int glyph;                  /* Menu glyphs */
     anything identifier;        /* Value returned if item selected */
-    CHAR_P accelerator;         /* Character used to select item from menu */
-    CHAR_P group_accel;         /* Group accelerator for menu item, if any */
+    char accelerator;           /* Character used to select item from menu */
+    char group_accel;           /* Group accelerator for menu item, if any */
     int attr;                   /* Text attributes for item */
     const char *str;            /* Text of menu item */
-    BOOLEAN_P presel;           /* Whether menu item should be preselected */
+    boolean presel;             /* Whether menu item should be preselected */
     boolean selected;           /* Whether item is currently selected */
     int page_num;               /* Display page number for entry */
     int line_num;               /* Line number on page where entry begins */
@@ -148,7 +148,7 @@ curses_line_input_dialog(const char *prompt, char *answer, int buffer)
 
 int
 curses_character_input_dialog(const char *prompt, const char *choices,
-                              CHAR_P def)
+                              char def)
 {
     WINDOW *askwin = NULL;
     int answer, count, maxwidth, map_height, map_width;
@@ -309,7 +309,7 @@ curses_character_input_dialog(const char *prompt, const char *choices,
 /* Return an extended command from the user */
 
 int
-curses_ext_cmd()
+curses_ext_cmd(void)
 {
     int count, letter, prompt_width, startx, starty, winx, winy;
     int messageh, messagew, maxlen = BUFSZ - 1;
@@ -495,9 +495,9 @@ curses_create_nhmenu(winid wid)
 /* Add a menu item to the given menu window */
 
 void
-curses_add_nhmenu_item(winid wid, int glyph, const ANY_P * identifier,
-                       CHAR_P accelerator, CHAR_P group_accel, int attr,
-                       const char *str, BOOLEAN_P presel)
+curses_add_nhmenu_item(winid wid, int glyph, const anything * identifier,
+                       char accelerator, char group_accel, int attr,
+                       const char *str, boolean presel)
 {
     char *new_str;
     nhmenu_item *new_item, *current_items, *menu_item_ptr;
@@ -576,13 +576,13 @@ curses_finalize_nhmenu(winid wid, const char *prompt)
 /* Display a nethack menu, and return a selection, if applicable */
 
 int
-curses_display_nhmenu(winid wid, int how, MENU_ITEM_P ** _selected)
+curses_display_nhmenu(winid wid, int how, menu_item ** _selected)
 {
     nhmenu *current_menu = get_menu(wid);
     nhmenu_item *menu_item_ptr;
     int num_chosen, count;
     WINDOW *win;
-    MENU_ITEM_P *selected = NULL;
+    menu_item *selected = NULL;
 
     *_selected = NULL;
 
@@ -622,7 +622,7 @@ curses_display_nhmenu(winid wid, int how, MENU_ITEM_P ** _selected)
     curses_destroy_win(win);
 
     if (num_chosen > 0) {
-        selected = (MENU_ITEM_P *) malloc(num_chosen * sizeof (MENU_ITEM_P));
+        selected = (menu_item *) malloc(num_chosen * sizeof (menu_item));
         count = 0;
 
         menu_item_ptr = current_menu->entries;

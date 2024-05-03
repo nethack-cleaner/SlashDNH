@@ -25,7 +25,7 @@ E void NDECL(moveloop);
 E void NDECL(stop_occupation);
 E void NDECL(display_gamewindows);
 E void NDECL(newgame);
-E void FDECL(welcome, (BOOLEAN_P));
+E void FDECL(welcome, (boolean));
 E time_t NDECL(get_realtime);
 E void NDECL(dogoat);
 E void FDECL(dogoat_mon, (struct monst *));
@@ -2083,8 +2083,8 @@ E void VDECL(There, (const char *,...)) PRINTF_F(1,2);
 E void VDECL(verbalize, (const char *,...)) PRINTF_F(1,2);
 E void VDECL(raw_printf, (const char *,...)) PRINTF_F(1,2);
 E void VDECL(impossible, (const char *,...)) PRINTF_F(1,2);
-E const char *FDECL(align_str, (ALIGNTYP_P));
-E const char *FDECL(align_str_proper, (ALIGNTYP_P));
+E const char *FDECL(align_str, (aligntyp));
+E const char *FDECL(align_str_proper, (aligntyp));
 E void FDECL(mdrslotline, (struct monst *));
 E void FDECL(mstatusline, (struct monst *));
 E void NDECL(ustatusline);
@@ -3023,7 +3023,7 @@ E boolean FDECL(bimanual, (struct obj *, struct permonst *));
 /* ### windows.c ### */
 
 E void FDECL(choose_windows, (const char *));
-E char FDECL(genl_message_menu, (CHAR_P,int,const char *));
+E char FDECL(genl_message_menu, (char,int,const char *));
 E void FDECL(genl_preference_update, (const char *));
 
 /* ### wizard.c ### */

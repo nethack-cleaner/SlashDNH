@@ -50,8 +50,7 @@ static void FDECL(invisible_twin_act, (struct monst *));
 extern const int monstr[];
 
 static void
-digcrater(mtmp)
-	struct monst *mtmp;
+digcrater(struct monst *mtmp)
 {
 	int x,y,i,j;
 	struct trap *ttmp;
@@ -76,8 +75,7 @@ digcrater(mtmp)
 }
 
 static void
-digcloudcrater(mtmp)
-	struct monst *mtmp;
+digcloudcrater(struct monst *mtmp)
 {
 	int x,y,i,j;
 	struct trap *ttmp;
@@ -93,8 +91,7 @@ digcloudcrater(mtmp)
 }
 
 static void
-digXchasm(mtmp)
-	struct monst *mtmp;
+digXchasm(struct monst *mtmp)
 {
 	int x,y;
 	struct trap *ttmp;
@@ -205,8 +202,7 @@ digXchasm(mtmp)
 }
 
 static void
-digYchasm(mtmp)
-	struct monst *mtmp;
+digYchasm(struct monst *mtmp)
 {
 	int x,y;
 	struct trap *ttmp;
@@ -387,7 +383,7 @@ hpnotify_format_str(char *str)
 
 static
 void
-androidUpkeep()
+androidUpkeep(void)
 {
 	//Pay unusual upkeep here, possibly pass out
 	if(uandroid && !u.usleep){
@@ -439,7 +435,7 @@ androidUpkeep()
 
 static
 void
-mercurial_repair()
+mercurial_repair(void)
 {
 	struct obj * uequip[] = WORN_SLOTS;
 	int i;
@@ -466,7 +462,7 @@ mercurial_repair()
 
 static
 void
-clothes_bite_you()
+clothes_bite_you(void)
 {
 	struct obj * uequip[] = WORN_SLOTS;
 	int i;
@@ -490,9 +486,7 @@ static long prev_dgl_extrainfo = 0;
  * main game loop
  */
 int
-you_action_cost(actiontype, affect_game_state)
-int actiontype;
-boolean affect_game_state;
+you_action_cost(int actiontype, boolean affect_game_state)
 {
 	int actiontypes_remaining = actiontype; 
 	int current_action, current_cost, highest_cost = 0;
@@ -659,7 +653,7 @@ boolean affect_game_state;
 }
 
 void
-you_calc_movement()
+you_calc_movement(void)
 {
 	int moveamt = 0;
 	int nmonsclose,nmonsnear,enkispeedlim;
@@ -875,7 +869,7 @@ you_calc_movement()
 /* perform 1 turn's worth of time-dependent hp modification, mostly silently */
 /* NOTES: can rehumanize(), can print You("pass out from exertion!") if moving when overloaded at 1 hp */
 void
-you_regen_hp()
+you_regen_hp(void)
 {
 	int wtcap = near_capacity();
 	int perX = 0;
@@ -1193,7 +1187,7 @@ you_regen_hp()
 
 /* perform 1 turn's worth of time-dependent power modification, silently */
 void
-you_regen_pw()
+you_regen_pw(void)
 {
 	int wtcap = near_capacity();
 	int perX = 0;
@@ -1364,7 +1358,7 @@ you_regen_pw()
 
 /* perform 1 turn's worth of time-dependent sanity modification, silently */
 void
-you_regen_san()
+you_regen_san(void)
 {
 	// Threshold levels based on wis.
 	int reglevel = ACURR(A_WIS);
@@ -1481,7 +1475,7 @@ you_regen_san()
 }
 
 void
-moveloop()
+moveloop(void)
 {
 	int abort_lev, i, j;
     struct monst *mtmp, *nxtmon;
@@ -3397,7 +3391,7 @@ karemade:
 
 
 void
-stop_occupation()
+stop_occupation(void)
 {
 	struct monst *mtmp;
 	
@@ -3424,7 +3418,7 @@ stop_occupation()
 
 
 void
-display_gamewindows()
+display_gamewindows(void)
 {
     curses_stupid_hack = 0;
     WIN_MESSAGE = create_nhwindow(NHW_MESSAGE);
@@ -3443,7 +3437,7 @@ display_gamewindows()
 }
 
 void
-newgame()
+newgame(void)
 {
 	int i;
 
@@ -3606,8 +3600,7 @@ newgame()
 }
 
 static int
-find_preset_inherited(name)
-	char * name;
+find_preset_inherited(char *name)
 {
 	int i;
 	char * aname;
@@ -3630,7 +3623,7 @@ find_preset_inherited(name)
 
 
 static int
-do_inheritance_menu()
+do_inheritance_menu(void)
 {
 	winid tmpwin;
 	int n, how, i;
@@ -3674,8 +3667,7 @@ do_inheritance_menu()
 
 /* show "welcome [back] to nethack" message at program startup */
 void
-welcome(new_game)
-boolean new_game;	/* false => restoring an old game */
+welcome(boolean new_game)	/* false => restoring an old game */
 {
     char buf[BUFSZ];
     char racebuf[BUFSZ];
@@ -3763,7 +3755,7 @@ boolean new_game;	/* false => restoring an old game */
 
 #ifdef POSITIONBAR
 static void
-do_positionbar()
+do_positionbar(void)
 {
 	static char pbar[COLNO];
 	char *p;
@@ -3776,7 +3768,7 @@ do_positionbar()
 		*p++ = upstair.sx;
 	}
 	if (sstairs.sx && (cmap_at_stair(sstairs) == S_upstair || cmap_at_stair(sstairs) == S_upladder) 
-		|| cmap_at_stair(sstairs) == S_brupstair)) {
+		|| cmap_at_stair(sstairs) == S_brupstair) {
 		*p++ = '<';
 		*p++ = sstairs.sx;
 	}
@@ -3787,7 +3779,7 @@ do_positionbar()
 		*p++ = dnstair.sx;
 	}
 	if (sstairs.sx && (cmap_at_stair(sstairs) == S_dnstair || cmap_at_stair(sstairs) == S_dnladder) 
-		|| cmap_at_stair(sstairs) == S_brdnstair)) {
+		|| cmap_at_stair(sstairs) == S_brdnstair) {
 		*p++ = '>';
 		*p++ = sstairs.sx;
 	}
@@ -3826,7 +3818,7 @@ get_realtime(void)
 
 static
 void
-printBodies(){
+printBodies(void){
 	FILE *rfile;
 	register int i, j;
 	char pbuf[BUFSZ];
@@ -3870,7 +3862,7 @@ printBodies(){
 
 static
 void
-printSanAndInsight(){
+printSanAndInsight(void){
 	FILE *rfile;
 	register int i, j;
 	char pbuf[BUFSZ];
@@ -3899,7 +3891,7 @@ printSanAndInsight(){
 
 static
 void
-printDPR(){
+printDPR(void){
 	FILE *rfile;
 	register int i, j, avdm, mdm, avgperhit, maxperhit;
 	char pbuf[BUFSZ];
@@ -3943,7 +3935,7 @@ printDPR(){
 
 static
 void
-printMons(){
+printMons(void){
 	FILE *rfile;
 	register int i;
 	char pbuf[BUFSZ*100];
@@ -4230,7 +4222,7 @@ printMons(){
 
 static
 void
-printMonNames(){
+printMonNames(void){
 	FILE *rfile;
 	register int i;
 	rfile = fopen_datafile("wikiNames.txt", "w", SCOREPREFIX);
@@ -4245,9 +4237,7 @@ printMonNames(){
 
 static
 void
-resFlags(buf, rflags)
-	char *buf;
-	unsigned int rflags;
+resFlags(char *buf, unsigned int rflags)
 {
 	int i;
 	boolean b = FALSE;
@@ -4278,9 +4268,7 @@ resFlags(buf, rflags)
 
 static
 void
-printAttacks(buf, ptr)
-	char *buf;
-	struct permonst *ptr;
+printAttacks(char *buf, struct permonst *ptr)
 {
 	int i;
 	struct attack *attk;
@@ -4333,7 +4321,7 @@ printAttacks(buf, ptr)
 }
 
 static void
-cthulhu_mind_blast()
+cthulhu_mind_blast(void)
 {
 	struct monst *mon, *nmon;
 	int nd = 1;
@@ -4377,8 +4365,7 @@ cthulhu_mind_blast()
 }
 
 void
-spot_monster(mon)
-struct monst *mon;
+spot_monster(struct monst *mon)
 {
 	if(couldsee(mon->mx, mon->my) &&
 		distmin(mon->mx, mon->my, u.ux, u.uy) <= BOLT_LIM &&
@@ -4404,7 +4391,7 @@ struct monst *mon;
 }
 
 static void
-sense_nearby_monsters()
+sense_nearby_monsters(void)
 {
 	int dx, dy;
 	struct monst *mtmp;
@@ -4452,8 +4439,7 @@ sense_nearby_monsters()
 
 static
 void
-unseen_actions(mon)
-struct monst *mon;
+unseen_actions(struct monst *mon)
 {
 	//Note: May cause mon to change its state, including moving to a different monster chain.
 	if(mon->mux == u.uz.dnum && mon->muy == u.uz.dlevel && mon->mtyp == PM_BLESSED)
@@ -4484,8 +4470,7 @@ static int goatkids[] = {PM_SMALL_GOAT_SPAWN, PM_GOAT_SPAWN, PM_GIANT_GOAT_SPAWN
 						 PM_QUICKLING, PM_DRYAD, PM_NAIAD, PM_OREAD, PM_YUKI_ONNA, PM_DEMINYMPH};
 static
 void
-blessed_spawn(mon)
-struct monst *mon;
+blessed_spawn(struct monst *mon)
 {
 	struct monst *mtmp;
 	xchar xlocale, ylocale, xyloc;
@@ -4502,8 +4487,7 @@ struct monst *mon;
 }
 
 void
-alkilith_spawn(mon)
-struct monst *mon;
+alkilith_spawn(struct monst *mon)
 {
 	struct monst *mtmp;
 	xchar xlocale, ylocale, xyloc;
@@ -4554,8 +4538,7 @@ static int witchspawns[] = {PM_APPRENTICE_WITCH, PM_APPRENTICE_WITCH, PM_APPRENT
 						 PM_LARGE_CAT, PM_PANTHER, PM_TIGER, PM_GIANT_RAT, PM_ENORMOUS_RAT, PM_RODENT_OF_UNUSUAL_SIZE};
 static
 void
-good_neighbor(mon)
-struct monst *mon;
+good_neighbor(struct monst *mon)
 {
 	struct monst *mtmp;
 	xchar xlocale, ylocale, xyloc;
@@ -4631,8 +4614,7 @@ struct monst *mon;
 
 static
 void
-good_neighbor_visible(mon)
-struct monst *mon;
+good_neighbor_visible(struct monst *mon)
 {
 	struct monst *mtmp;
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon){
@@ -4712,8 +4694,7 @@ static int toughpharaohspawns[] = {PM_COBRA, PM_SERPENT_NECKED_LIONESS, PM_HUNTI
 
 static
 void
-dark_pharaoh(mon)
-struct monst *mon;
+dark_pharaoh(struct monst *mon)
 {
 	struct monst *mtmp;
 	xchar xlocale, ylocale, xyloc;
@@ -4826,8 +4807,7 @@ struct monst *mon;
 
 static
 void
-dark_pharaoh_visible(mon)
-struct monst *mon;
+dark_pharaoh_visible(struct monst *mon)
 {
 	struct monst *mtmp;
 	xchar xlocale, ylocale;
@@ -4952,8 +4932,7 @@ struct monst *mon;
 
 static
 void
-polyp_pickup(mon)
-struct monst *mon;
+polyp_pickup(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	register struct monst *mtmp, *mtmp0 = 0, *mtmp2;
@@ -5016,8 +4995,7 @@ struct monst *mon;
 
 static
 void
-unbodied_heal(mon)
-struct monst *mon;
+unbodied_heal(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	register struct monst *mtmp, *mtmp0 = 0, *mtmp2;
@@ -5081,8 +5059,7 @@ struct monst *mon;
 
 static
 void
-goat_sacrifice(mon)
-struct monst *mon;
+goat_sacrifice(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	struct monst *mtmp, *mtmp0 = 0, *mtmp2;
@@ -5186,8 +5163,7 @@ struct monst *mon;
 
 static
 void
-palid_stranger(mon)
-struct monst *mon;
+palid_stranger(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	struct monst *mtmp, *mtmp0 = 0, *mtmp2;
@@ -5273,8 +5249,7 @@ struct monst *mon;
 
 static
 void
-sib_follow(mon)
-struct monst *mon;
+sib_follow(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	struct monst *mtmp, *mtmp0 = 0, *mtmp2;
@@ -5322,8 +5297,7 @@ struct monst *mon;
 }
 
 void
-invisible_twin_act(mon)
-struct monst *mon;
+invisible_twin_act(struct monst *mon)
 {
 	//No actions while "dead"
 	if(mon->mvar_twin_lifesaved)
@@ -5380,14 +5354,13 @@ struct monst *mon;
 }
 
 void
-dogoat()
+dogoat(void)
 {
 	dogoat_mon(&youmonst);
 }
 
 void
-dogoat_mon(magr)
-struct monst *magr;
+dogoat_mon(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5537,8 +5510,7 @@ struct monst *magr;
 }
 
 void
-dochaos_mon(magr)
-struct monst *magr;
+dochaos_mon(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5628,8 +5600,7 @@ struct monst *magr;
 }
 
 void
-dohost_mon(magr)
-struct monst *magr;
+dohost_mon(struct monst *magr)
 {
 	struct monst *mdef;
 	struct monst *nmon;
@@ -5840,8 +5811,7 @@ struct monst *magr;
 }
 
 void
-donachash(magr)
-struct monst *magr;
+donachash(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5904,8 +5874,7 @@ struct monst *magr;
 }
 
 void
-dosnake(magr)
-struct monst *magr;
+dosnake(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5989,8 +5958,7 @@ struct monst *magr;
 }
 
 boolean
-doyog(magr)
-struct monst *magr;
+doyog(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6074,8 +6042,7 @@ struct monst *magr;
 }
 
 void
-dokraken_mon(magr)
-struct monst *magr;
+dokraken_mon(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6152,8 +6119,7 @@ struct monst *magr;
 }
 
 void
-dotailslap(magr)
-struct monst *magr;
+dotailslap(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6226,8 +6192,7 @@ struct monst *magr;
 }
 
 void
-dovines(magr)
-struct monst *magr;
+dovines(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6299,8 +6264,7 @@ struct monst *magr;
 }
 
 void
-dostarblades(magr)
-struct monst *magr;
+dostarblades(struct monst *magr)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6379,8 +6343,7 @@ struct monst *magr;
 }
 
 void
-dostorm(magr)
-struct monst *magr;
+dostorm(struct monst *magr)
 {
 	struct monst *mdef;
 	boolean youagr = (magr == &youmonst);

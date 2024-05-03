@@ -10,14 +10,7 @@
 /// Malloc path and use the path pointer to return it
 
 boolean
-a_star(x, y, gx, gy, mmflags, max_length, path)
-int x;
-int y;
-int gx;
-int gy;
-long mmflags;
-int max_length;
-struct pathNode **path;
+a_star(int x, int y, int gx, int gy, long mmflags, int max_length, struct pathNode **path)
 {
 	struct mapNode closed[COLNO][ROWNO];
 	(void) memset((genericptr_t) closed, 0, sizeof(closed));
@@ -205,13 +198,7 @@ nextnode->propagate = propagate;
 
 
 boolean
-path_exists(x, y, gx, gy, mvflags, max_length)
-int x;
-int y;
-int gx;
-int gy;
-long mvflags;
-int max_length;
+path_exists(int x, int y, int gx, int gy, long mvflags, int max_length)
 {
 	return a_star(x, y, gx, gy, mvflags, max_length, (struct pathNode **) 0);
 }

@@ -19,9 +19,8 @@ static void FDECL(topl_putsym, (glyph_t));
 static void NDECL(remember_topl);
 static void FDECL(removetopl, (int));
 
-
 int
-tty_doprev_message()
+tty_doprev_message(void)
 {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
@@ -118,8 +117,7 @@ tty_doprev_message()
 
 
 static void
-redotoplin(str)
-    const char *str;
+redotoplin(const char *str)
 {
 	int otoplin = ttyDisplay->toplin;
 	home();
@@ -138,7 +136,7 @@ redotoplin(str)
 }
 
 static void
-remember_topl()
+remember_topl(void)
 {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
     int idx = cw->maxrow;
@@ -154,9 +152,7 @@ remember_topl()
     cw->maxcol = cw->maxrow = (idx + 1) % cw->rows;
 }
 
-void
-addtopl(s)
-const char *s;
+void addtopl(const char *s)
 {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
@@ -168,7 +164,7 @@ const char *s;
 
 
 void
-more()
+more(void)
 {
     struct WinDesc *cw = wins[WIN_MESSAGE];
 
@@ -208,8 +204,7 @@ more()
 }
 
 void
-update_topl(bp)
-	register const char *bp;
+update_topl(const char *bp)
 {
 	register char *tl, *otl;
 	register int n0;
@@ -257,8 +252,7 @@ update_topl(bp)
 
 static
 void
-topl_putsym(c)
-    glyph_t c;
+topl_putsym(glyph_t c)
 {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
@@ -289,16 +283,14 @@ topl_putsym(c)
 }
 
 void
-putsyms(str)
-    const char *str;
+putsyms(const char *str)
 {
     while(*str)
 	topl_putsym(*str++);
 }
 
 static void
-removetopl(n)
-register int n;
+removetopl(int n)
 {
     /* assume addtopl() has been done, so ttyDisplay->toplin is already set */
     while (n-- > 0) putsyms("\b \b");
@@ -307,9 +299,7 @@ register int n;
 extern char erase_char;		/* from xxxtty.c; don't need kill_char */
 
 char
-tty_yn_function(query,resp, def)
-const char *query,*resp;
-char def;
+tty_yn_function(const char *query, const char *resp, char def)
 /*
  *   Generic yes/no function. 'def' is the default (returned by space or
  *   return; 'esc' returns 'q', or 'n', or the default, depending on

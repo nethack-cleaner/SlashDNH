@@ -21,9 +21,7 @@ int lastmsg = -1;
 
 
 void
-msgpline_add(typ, pattern)
-     int typ;
-     char *pattern;
+msgpline_add(int typ, char *pattern)
 {
     int errnum;
     char errbuf[80];
@@ -52,7 +50,7 @@ msgpline_add(typ, pattern)
 }
 
 void
-msgpline_free()
+msgpline_free(void)
 {
     struct _plinemsg *tmp = pline_msg;
     struct _plinemsg *tmp2;
@@ -70,8 +68,7 @@ msgpline_free()
 }
 
 int
-msgpline_type(msg)
-     const char *msg;
+msgpline_type(const char *msg)
 {
     struct _plinemsg *tmp = pline_msg;
     while (tmp) {
@@ -160,8 +157,7 @@ static char *you_buf = 0;
 static int you_buf_siz = 0;
 
 static char *
-You_buf(siz)
-int siz;
+You_buf(int siz)
 {
 	if (siz > you_buf_siz) {
 		if (you_buf) free((genericptr_t) you_buf);
@@ -172,7 +168,7 @@ int siz;
 }
 
 void
-free_youbuf()
+free_youbuf(void)
 {
 	if (you_buf) free((genericptr_t) you_buf),  you_buf = (char *)0;
 	you_buf_siz = 0;
@@ -388,8 +384,7 @@ const char * const hallu_alignments[] = {
 };
 
 const char *
-align_str(alignment)
-    aligntyp alignment;
+align_str(aligntyp alignment)
 {
 	if (Hallucination) {
 		return hallu_alignments[rn2(SIZE(hallu_alignments))];
@@ -426,8 +421,7 @@ align_str(alignment)
 }
 
 const char *
-align_str_proper(alignment)
-    aligntyp alignment;
+align_str_proper(aligntyp alignment)
 {
 	if(Role_if(PM_EXILE) && Is_astralevel(&u.uz)){
 		switch ((int)alignment) {
@@ -474,8 +468,7 @@ align_str_proper(alignment)
 	}
 
 void
-mdrslotline(mtmp)
-register struct monst *mtmp;
+mdrslotline(struct monst *mtmp)
 {
 	int slot;
 	int base, nat_dr, armac;
@@ -523,8 +516,7 @@ register struct monst *mtmp;
 }
 
 void
-mstatusline(mtmp)
-register struct monst *mtmp;
+mstatusline(struct monst *mtmp)
 {
 	aligntyp alignment;
 	char info[BUFSZ], monnambuf[BUFSZ];
@@ -622,7 +614,7 @@ register struct monst *mtmp;
 }
 
 void
-ustatusline()
+ustatusline(void)
 {
 	char info[BUFSZ];
 
@@ -700,7 +692,7 @@ ustatusline()
 }
 
 void
-self_invis_message()
+self_invis_message(void)
 {
 	if(Role_if(PM_PIRATE)){
 	pline("%s %s.",
@@ -717,8 +709,7 @@ self_invis_message()
 }
 
 const char *
-replace(st, orig, repl)
-const char *st, *orig, *repl;
+replace(const char *st, const char *orig, const char *repl)
 {
 	static char retval[TBUFSZ];
 	char buffer[TBUFSZ];
@@ -744,8 +735,7 @@ const char *st, *orig, *repl;
 
 /*Ben Collver's fixes*/
 const char *
-piratesay(orig)
-const char *orig;
+piratesay(const char *orig)
 {
 		orig = replace(orig,"You","Ye");
 		orig = replace(orig,"you","ye");

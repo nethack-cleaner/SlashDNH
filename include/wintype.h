@@ -17,15 +17,12 @@ typedef union any {
     schar a_schar;
     /* add types as needed */
 } anything;
-#define ANY_P union any /* avoid typedef in prototypes */
-			/* (buggy old Ultrix compiler) */
 
 /* menu return list */
 typedef struct mi {
     anything item;		/* identifier */
     long count;			/* count */
 } menu_item;
-#define MENU_ITEM_P struct mi
 
 /* select_menu() "how" argument types */
 #define PICK_NONE 0	/* user picks nothing (display only) */

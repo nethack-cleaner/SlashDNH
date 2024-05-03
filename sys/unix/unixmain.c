@@ -14,9 +14,7 @@
 #include <fcntl.h>
 #endif
 
-#if !defined(__sgi) && !defined(_M_UNIX)
 extern struct passwd *FDECL(getpwuid,(uid_t));
-#endif
 extern struct passwd *FDECL(getpwnam,(const char *));
 static void FDECL(chdirx, (const char *,BOOLEAN_P));
 static boolean NDECL(whoami);
@@ -25,10 +23,6 @@ static void NDECL(init_fuzzer_child);
 #endif
 static void FDECL(process_options, (int, char **));
 
-#ifdef _M_UNIX
-extern void NDECL(check_sco_console);
-extern void NDECL(init_sco_cons);
-#endif
 #ifdef __linux__
 extern void NDECL(check_linux_console);
 extern void NDECL(init_linux_cons);
@@ -140,9 +134,6 @@ char *argv[];
 	 */
 	chdirx(dir,1);
 
-#ifdef _M_UNIX
-	check_sco_console();
-#endif
 #ifdef __linux__
 	check_linux_console();
 #endif
@@ -153,9 +144,6 @@ char *argv[];
 	initoptions();
 	init_nhwindows(&argc,argv);
 	exact_username = whoami();
-#ifdef _M_UNIX
-	init_sco_cons();
-#endif
 #ifdef __linux__
 	init_linux_cons();
 #endif

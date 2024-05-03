@@ -5,11 +5,6 @@
 #ifndef TRADSTDC_H
 #define TRADSTDC_H
 
-
-#ifdef NOVOID
-#define void int
-#endif
-
 /*
  * Borland C provides enough ANSI C compatibility in its Borland C++
  * mode to warrant this.  But it does not set __STDC__ unless it compiles
@@ -19,7 +14,6 @@
 #if defined(__STDC__) && !defined(NOTSTDC)
 #define NHSTDC
 #endif
-
 
 /*
  * ANSI X3J11 detection.
@@ -81,12 +75,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 /* generic pointer, always a macro; genericptr_t is usually a typedef */
 # define genericptr	void *
 
-# if !defined(NHSTDC)
-#   define const
-#   define signed
-#   define volatile
-#  endif
-
 /*
  * Suppress `const' if necessary and not handled elsewhere.
  * Don't use `#if defined(xxx) && !defined(const)'
@@ -122,7 +110,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 typedef genericptr genericptr_t;	/* (void *) or (char *) */
 #endif
 
-
 /*
  * According to ANSI, prototypes for old-style declarations must widen the
  * arguments to int.  However, the MSDOS compilers accept shorter arguments
@@ -132,43 +119,11 @@ typedef genericptr genericptr_t;	/* (void *) or (char *) */
  * prototypes to match the standard and thus lose the typechecking.
  */
 
-
 #ifndef UNWIDENED_PROTOTYPES
 # if defined(NHSTDC)
 # define WIDENED_PROTOTYPES
 # endif
 #endif
-
-#if 0
-/* The problem below is still the case through 4.0.5F, but the suggested
- * compiler flags in the Makefiles suppress the nasty messages, so we don't
- * need to be quite so drastic.
- */
-#if defined(__sgi) && !defined(__GNUC__)
-/*
- * As of IRIX 4.0.1, /bin/cc claims to be an ANSI compiler, but it thinks
- * it's impossible for a prototype to match an old-style definition with
- * unwidened argument types.  Thus, we have to turn off all NetHack
- * prototypes, and avoid declaring several system functions, since the system
- * include files have prototypes and the compiler also complains that
- * prototyped and unprototyped declarations don't match.
- */
-# undef NDECL
-# undef FDECL
-# undef VDECL
-# define NDECL(f)	f()
-# define FDECL(f,p)	f()
-# define VDECL(f,p)	f()
-#endif
-#endif
-
-
-	/* MetaWare High-C defaults to unsigned chars */
-	/* AIX 3.2 needs this also */
-#if defined(__HC__)
-# undef signed
-#endif
-
 
 /*
  * Allow gcc2 to check parameters of printf-like calls with -Wformat;

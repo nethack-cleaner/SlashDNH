@@ -661,7 +661,6 @@ cl_eos(void)			/* free after Robert Viduya */
 
 
 #  ifndef COLOR_BLACK	/* trust include file */
-#   ifndef _M_UNIX	/* guess BGR */
 #define COLOR_BLACK   0
 #define COLOR_BLUE    1
 #define COLOR_GREEN   2
@@ -670,16 +669,6 @@ cl_eos(void)			/* free after Robert Viduya */
 #define COLOR_MAGENTA 5
 #define COLOR_YELLOW  6
 #define COLOR_WHITE   7
-#   else		/* guess RGB */
-#define COLOR_BLACK   0
-#define COLOR_RED     1
-#define COLOR_GREEN   2
-#define COLOR_YELLOW  3
-#define COLOR_BLUE    4
-#define COLOR_MAGENTA 5
-#define COLOR_CYAN    6
-#define COLOR_WHITE   7
-#   endif
 #  endif
 
 /* Mapping data for the six terminfo colors that resolve to pairs of nethack

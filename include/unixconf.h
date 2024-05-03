@@ -6,45 +6,11 @@
 #ifndef UNIXCONF_H
 #define UNIXCONF_H
 
-/*
- * Some include files are in a different place under SYSV
- *	BSD		   SYSV
- * <sys/time.h>		<time.h>
- * <sgtty.h>		<termio.h>
- *
- * Some routines are called differently
- * index		strchr
- * rindex		strrchr
- *
- */
-
-/* define exactly one of the following four choices */
-/* #define BSD 1 */	/* define for 4.n/Free/Open/Net BSD  */
-			/* also for relatives like SunOS 4.x, DG/UX, and */
-			/* older versions of Linux */
-/* #define ULTRIX */	/* define for Ultrix v3.0 or higher (but not lower) */
-			/* Use BSD for < v3.0 */
-			/* "ULTRIX" not to be confused with "ultrix" */
-			/* of Linux */
-/* #define HPUX */	/* Hewlett-Packard's Unix, version 6.5 or higher */
-			/* use SYSV for < v6.5 */
-
 /*#define FUZZER_TIMEOUT 60*/
 
 /* define any of the following that are appropriate */
-/*#define SVR4*/		/* use in addition to SYSV for System V Release 4 */
-			/* including Solaris 2+ */
 #define NETWORK		/* if running on a networked system */
 			/* e.g. Suns sharing a playground through NFS */
-/* #define SUNOS4 */	/* SunOS 4.x */
-/* #define CYGWIN32 */	/* Unix on Win32 -- use with case sensitive defines */
-/* #define GENIX */	/* Yet Another Unix Clone */
-/* #define HISX */	/* Bull Unix for XPS Machines */
-/* #define BOS */	/* Bull Open Software - Unix for DPX/2 Machines */
-/* #define UNIXPC */	/* use in addition to SYSV for AT&T 7300/3B1 */
-/* #define AIX_31 */	/* In AIX 3.1 (IBM RS/6000) use BSD ioctl's to gain
-			 * job control (note that AIX is SYSV otherwise)
-			 * Also define this for AIX 3.2 */
 
 #define TERMINFO	/* uses terminfo rather than termcap */
 			/* Should be defined for most SYSV, SVR4 (including
@@ -168,15 +134,6 @@
  * The remainder of the file should not need to be changed.
  */
 
-#ifdef _AUX_SOURCE
-# ifdef AUX /* gcc ? */
-#  define _SYSV_SOURCE
-#  define _BSD_SOURCE
-#else
-#  define AUX
-# endif
-#endif /* _AUX_SOURCE */
-
 # ifndef POSIX_JOB_CONTROL
 #  define POSIX_JOB_CONTROL
 # endif
@@ -192,12 +149,9 @@
  * equivalent for NetHack's purposes.  POSIX_JOB_CONTROL should work on
  * various recent SYSV versions (with possibly tweaks to unixtty.c again).
  */
-#ifndef POSIX_JOB_CONTROL
-#endif
-#if defined(BSD_JOB_CONTROL) || defined(POSIX_JOB_CONTROL) || defined(AUX)
+#if defined(BSD_JOB_CONTROL) || defined(POSIX_JOB_CONTROL)
 /*#define SUSPEND*/		/* let ^Z suspend the game */
 #endif
-
 
 #include <time.h>
 
@@ -214,12 +168,12 @@
 
 #include <sys/wait.h>
 
-# ifndef index	/* some systems seem to do this for you */
-#define index	strchr
-# endif
-# ifndef rindex
-#define rindex	strrchr
-# endif
+#ifndef index	/* some systems seem to do this for you */
+# define index	strchr
+#endif
+#ifndef rindex
+# define rindex	strrchr
+#endif
 
 /* Use the high quality random number routines. */
 #define Rand()	random()
@@ -227,15 +181,6 @@
 #ifdef TIMED_DELAY
 # define msleep(k) usleep((k)*1000)
 #endif
-
-#ifdef hc	/* older versions of the MetaWare High-C compiler define this */
-# ifdef __HC__
-#  undef __HC__
-# endif
-# define __HC__ hc
-# undef hc
-#endif
-
 
 #endif /* UNIXCONF_H */
 #endif /* UNIX */

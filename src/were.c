@@ -244,7 +244,7 @@ were_transform(struct monst *mon, int pm)
 	/* recheck if monster is a lightsource */
 	del_light_source(mon->light);
 	if (emits_light_mon(mon)) {
-		new_light_source(LS_MONSTER, (genericptr_t)mon, emits_light_mon(mon));
+		new_light_source(LS_MONSTER, (void *)mon, emits_light_mon(mon));
 	}
 	newsym(mon->mx,mon->my);
 
@@ -283,7 +283,7 @@ were_transform(struct monst *mon, int pm)
 				set_mon_data(ltnt, elemtypes[rn2(4)]);
 				newsym(ltnt->mx,ltnt->my);
 				if (emits_light_mon(ltnt))
-					new_light_source(LS_MONSTER, (genericptr_t)ltnt, emits_light_mon(ltnt));
+					new_light_source(LS_MONSTER, (void *)ltnt, emits_light_mon(ltnt));
 			}
 		}
 		m_dowear(mon, TRUE);

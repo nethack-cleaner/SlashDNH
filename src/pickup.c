@@ -494,7 +494,7 @@ menu_pickup:
 		if (res < 0) break;	/* can't continue */
 		n_picked += res;
 	    }
-	    if (pick_list) free((genericptr_t)pick_list);
+	    if (pick_list) free((void *)pick_list);
 
 	} else {
 	    /* old style interface */
@@ -1680,13 +1680,13 @@ lootcont:
 			for (i = 0; i < n; i++) {
 				timepassed |= do_loot_cont(pick_list[i].item.a_obj, TRUE);
 				if (multi < 0) {/* chest trap, stop looting */
-					free((genericptr_t) pick_list);
+					free((void *) pick_list);
 					return MOVE_STANDARD;
 				}
 			}
 			}
 			if (pick_list)
-			free((genericptr_t) pick_list);
+			free((void *) pick_list);
 			if (n != 0) c = 'y';
 		} else {
 			for (cobj = level.objects[cc.x][cc.y]; cobj; cobj = nobj) {
@@ -3769,7 +3769,7 @@ menu_loot(int retry, struct obj *container, boolean put_in)
 	    else
 		add_valid_menu_class(pick_list[i].item.a_int);
 	}
-	free((genericptr_t) pick_list);
+	free((void *) pick_list);
     }
 
     if (loot_everything) {
@@ -3817,7 +3817,7 @@ menu_loot(int retry, struct obj *container, boolean put_in)
 			break;
 		    }
 		}
-		free((genericptr_t)pick_list);
+		free((void *)pick_list);
 	}
     }
     return n_looted;
@@ -3865,7 +3865,7 @@ in_or_out_menu(const char *prompt, struct obj *obj, boolean outokay, boolean ino
     destroy_nhwindow(win);
     if (n > 0) {
 	n = pick_list[0].item.a_int;
-	free((genericptr_t) pick_list);
+	free((void *) pick_list);
     }
     return n;
 }
@@ -3942,7 +3942,7 @@ dotip(void)
 				if (n > 1 && otmp == &dummyobj)
 					otmp = pick_list[1].item.a_obj;
 				if (pick_list)
-					free((genericptr_t) pick_list);
+					free((void *) pick_list);
 				if (otmp && otmp != &dummyobj) {
 					tipcontainer(otmp);
 					return MOVE_STANDARD;

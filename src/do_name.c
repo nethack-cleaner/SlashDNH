@@ -281,7 +281,7 @@ getpos(coord *cc, boolean force, const char *goal)
 	    if (!index(quitchars, c)) {
 		char matching[MAXPCHARS];
 		int pass, lo_x, lo_y, hi_x, hi_y, k = 0;
-		(void)memset((genericptr_t)matching, 0, sizeof matching);
+		(void)memset((void *)matching, 0, sizeof matching);
 		for (sidx = 1; sidx < MAXPCHARS; sidx++)
 		    if (c == defsyms[sidx].sym || c == (int)showsyms[sidx])
 			matching[sidx] = (char) ++k;
@@ -868,7 +868,7 @@ docall(register struct obj *obj)
 
 	/* clear old name */
 	str1 = &(objects[obj->otyp].oc_uname);
-	if(*str1) free((genericptr_t)*str1);
+	if(*str1) free((void *)*str1);
 
 	/* strip leading and trailing spaces; uncalls item if all spaces */
 	(void)mungspaces(buf);

@@ -131,8 +131,8 @@ readlibdir(library *lp)		/* library pointer to fill in */
 	lp->dir[i].fname = sp;
 	if (fscanf(lp->fdata, "%c%s %ld\n",
 			&lp->dir[i].handling, sp, &lp->dir[i].foffset) != 3) {
-	    free((genericptr_t) lp->dir);
-	    free((genericptr_t) lp->sspace);
+	    free((void *) lp->dir);
+	    free((void *) lp->sspace);
 	    lp->dir = (libdir *) 0;
 	    lp->sspace = (char *) 0;
 	    return FALSE;
@@ -205,8 +205,8 @@ void
 close_library(library *lp)
 {
     (void) fclose(lp->fdata);
-    free((genericptr_t) lp->dir);
-    free((genericptr_t) lp->sspace);
+    free((void *) lp->dir);
+    free((void *) lp->sspace);
 
     (void) memset((char *)lp, 0, sizeof(library));
 }
@@ -414,7 +414,7 @@ dlb_fopen(const char *name, const char *mode)
 	}
     else {
 	/* can't find anything */
-		free((genericptr_t) dp);
+		free((void *) dp);
 		dp = (dlb *) 0;
 	}
 
@@ -430,7 +430,7 @@ dlb_fclose(dlb *dp)
 	if (dp->fp) ret = fclose(dp->fp);
 	else ret = do_dlb_fclose(dp);
 
-	free((genericptr_t) dp);
+	free((void *) dp);
     }
     return ret;
 }

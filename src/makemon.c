@@ -13227,7 +13227,7 @@ clone_mon(struct monst *mon, xchar x, xchar y) /* clone's preferred location or 
 	/* duplicate timers */
 	if (mon->timed) {
 		m2->timed = (struct timer *) 0;
-		copy_timers(mon->timed, TIMER_MONSTER, (genericptr_t)m2);
+		copy_timers(mon->timed, TIMER_MONSTER, (void *)m2);
 	}
 
 	/* place the monster -- we want to do this before any display things happen */
@@ -13253,7 +13253,7 @@ clone_mon(struct monst *mon, xchar x, xchar y) /* clone's preferred location or 
 
 	/* handle monster lightsources */
 	if (emits_light_mon(m2))
-	    new_light_source(LS_MONSTER, (genericptr_t)m2, emits_light_mon(m2));
+	    new_light_source(LS_MONSTER, (void *)m2, emits_light_mon(m2));
 
 	/* not all clones caused by player are tame or peaceful */
 	if (!flags.mon_moving) {
@@ -13949,7 +13949,7 @@ makemon_core(struct permonst *ptr, register int x, register int y, register int 
 		mtmp->mextra_p->esum_p->staleptr = 0;
 		mtmp->mextra_p->esum_p->permanent = 1;
 		mtmp->mextra_p->esum_p->sticky = 0;
-		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (genericptr_t)mtmp);
+		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (void *)mtmp);
 	}
 
 	if (is_horror(ptr)) {
@@ -14976,7 +14976,7 @@ makemon_core(struct permonst *ptr, register int x, register int y, register int 
 		m_initgrp(mtmp, mtmp->mx, mtmp->my, groupsz);
 	}
 	if ((ct = emits_light_mon(mtmp)) > 0)
-		new_light_source(LS_MONSTER, (genericptr_t)mtmp, ct);
+		new_light_source(LS_MONSTER, (void *)mtmp, ct);
 	mitem = 0;	/* extra inventory item for this monster */
 
 	if ((mcham = pm_to_cham(mndx)) != CHAM_ORDINARY) {

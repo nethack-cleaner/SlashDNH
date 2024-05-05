@@ -18,7 +18,7 @@
 extern int monstr[];
 
 static boolean FDECL(restrap,(struct monst *));
-static int FDECL(scent_callback,(genericptr_t, int, int));
+static int FDECL(scent_callback,(void *, int, int));
 static void FDECL(dead_familiar,(long));
 static void FDECL(clothes_bite_mon,(struct monst *));
 static void FDECL(emit_healing, (struct monst *));
@@ -3132,7 +3132,7 @@ mon_can_see_you(struct monst *looker)
 }
 
 static int
-scent_callback(genericptr_t data, int x, int y)
+scent_callback(void * data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     boolean *shouldsmell = (boolean *)data;
@@ -4099,7 +4099,7 @@ replmon(register struct monst *mtmp, register struct monst *mtmp2)
 	place_wsegs(mtmp2); /* locations to mtmp2 not mtmp. */
     if (emits_light_mon(mtmp2)) {
 	/* since this is so rare, we don't have any `mon_move_light_source' */
-	new_light_source(LS_MONSTER, (genericptr_t)mtmp2, emits_light_mon(mtmp2));
+	new_light_source(LS_MONSTER, (void *)mtmp2, emits_light_mon(mtmp2));
 	/* here we rely on the fact that `mtmp' hasn't actually been deleted */
 	del_light_source(mtmp->light);
     }
@@ -4727,7 +4727,7 @@ lifesaved_monster(struct monst *mtmp)
 				set_template(mtmp, 0);
 				del_light_source(mtmp->light);
 				if (emits_light_mon(mtmp))
-					new_light_source(LS_MONSTER, (genericptr_t)mtmp, emits_light_mon(mtmp));
+					new_light_source(LS_MONSTER, (void *)mtmp, emits_light_mon(mtmp));
 			}
 			break;
 		case LSVD_PLY:
@@ -7537,7 +7537,7 @@ newcham(
 		if(olddata->mtyp == PM_MASKED_QUEEN)
 			set_template(mtmp, ILLUMINATED);
 		/* now add lightsource */
-		new_light_source(LS_MONSTER, (genericptr_t)mtmp, emits_light_mon(mtmp));
+		new_light_source(LS_MONSTER, (void *)mtmp, emits_light_mon(mtmp));
 	}
 	if (!mtmp->perminvis || pm_invisible(olddata))
 	    mtmp->perminvis = pm_invisible(mdat);
@@ -8158,7 +8158,7 @@ mark_mon_as_summoned(struct monst *mon, struct monst *summoner, int duration, in
 	if (!get_mx(mon, MX_ESUM)) {
 		impossible("%s not made as summon, fixing", m_monnam(mon));
 		add_mx(mon, MX_ESUM);
-		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (genericptr_t)mon);
+		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (void *)mon);
 	}
 	/* sanity-check */
 	if (summoner && DEADMONSTER(summoner)) {
@@ -8210,7 +8210,7 @@ mark_mon_as_summoned(struct monst *mon, struct monst *summoner, int duration, in
 			otmp->oextra_p->esum_p->permanent = (duration == ESUMMON_PERMANENT);
 			otmp->oextra_p->esum_p->staleptr = 0;
 			/* add timer to obj */
-			start_timer(duration, TIMER_OBJECT, DESUMMON_OBJ, (genericptr_t)otmp);
+			start_timer(duration, TIMER_OBJECT, DESUMMON_OBJ, (void *)otmp);
 		}
 		else {
 			/* already marked as summoned -- double-check it's the right mon */
@@ -8510,7 +8510,7 @@ void
 add_byakhee_to_obj(struct obj *obj)
 {
 	if(obj->obyak < 3){
-		if(!obj->olarva && !obj->obyak) start_timer(4+d(2,4), TIMER_OBJECT, LARVAE_DIE, (genericptr_t)obj);
+		if(!obj->olarva && !obj->obyak) start_timer(4+d(2,4), TIMER_OBJECT, LARVAE_DIE, (void *)obj);
 		obj->obyak++;
 	}
 }
@@ -8605,7 +8605,7 @@ obj_vitality_damage(struct obj *obj)
 			}
 		}
 		if(obj->olarva < 3){
-			if(!obj->olarva && !obj->obyak) start_timer(4+d(2,4), TIMER_OBJECT, LARVAE_DIE, (genericptr_t)obj);
+			if(!obj->olarva && !obj->obyak) start_timer(4+d(2,4), TIMER_OBJECT, LARVAE_DIE, (void *)obj);
 			obj->olarva++;
 			return TRUE;
 		}

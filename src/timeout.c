@@ -18,7 +18,7 @@ static void NDECL(slime_dialogue);
 static void NDECL(slip_or_trip);
 static void FDECL(see_lamp_flicker, (struct obj *, const char *));
 static void FDECL(lantern_message, (struct obj *));
-static void FDECL(cleanup_burn, (genericptr_t,long));
+static void FDECL(cleanup_burn, (void *,long));
 
 
 /* used by wizard mode #timeout and #wizintrinsic; order by 'interest'
@@ -1041,12 +1041,12 @@ attach_bomb_blow_timeout(struct obj *bomb, int fuse, boolean yours)
 	bomb->yours = yours;
 	bomb->oarmed = TRUE;
 
-	(void) start_timer((long)fuse, TIMER_OBJECT, BOMB_BLOW, (genericptr_t)bomb);
+	(void) start_timer((long)fuse, TIMER_OBJECT, BOMB_BLOW, (void *)bomb);
 }
 
 /* timer callback routine: detonate the explosives */
 void
-bomb_blow(genericptr_t arg, long timeout)
+bomb_blow(void * arg, long timeout)
 {
 	struct obj *bomb;
 	xchar x,y;
@@ -1165,7 +1165,7 @@ attach_egg_hatch_timeout(struct obj *egg)
 	    if (rnd(i) > 150) {
 		/* egg will hatch */
 		(void) start_timer((long)i, TIMER_OBJECT,
-						HATCH_EGG, (genericptr_t)egg);
+						HATCH_EGG, (void *)egg);
 		break;
 	    }
 }
@@ -1180,7 +1180,7 @@ kill_egg(struct obj *egg)
 
 /* timer callback routine: hatch the given egg */
 void
-hatch_egg(genericptr_t arg, long timeout)
+hatch_egg(void * arg, long timeout)
 {
 	struct obj *egg;
 	struct monst *mon, *mon2;
@@ -1336,7 +1336,7 @@ hatch_egg(genericptr_t arg, long timeout)
 		    /* replace ordinary egg timeout with a short one */
 		    (void) stop_timer(HATCH_EGG, egg->timed);
 		    (void) start_timer((long)rnd(12), TIMER_OBJECT,
-					HATCH_EGG, (genericptr_t)egg);
+					HATCH_EGG, (void *)egg);
 		}
 	    } else if (carried(egg)) {
 		useup(egg);
@@ -1375,7 +1375,7 @@ attach_fig_transform_timeout(struct obj *figurine)
 	i = rnd(9000) + 200;
 	/* figurine will transform */
 	(void) start_timer((long)i, TIMER_OBJECT,
-				FIG_TRANSFORM, (genericptr_t)figurine);
+				FIG_TRANSFORM, (void *)figurine);
 }
 
 /* give a fumble message */
@@ -1498,7 +1498,7 @@ lantern_message(struct obj *obj)
  * See begin_burn() for meanings of obj->age and obj->spe.
  */
 void
-burn_object(genericptr_t arg, long timeout)
+burn_object(void * arg, long timeout)
 {
 	struct obj *obj = (struct obj *) arg;
 	boolean canseeit, many, menorah, need_newsym;
@@ -1549,7 +1549,7 @@ burn_object(genericptr_t arg, long timeout)
 				}
 			}
 			else if (obj->otyp == STICK_OF_DYNAMITE) {
-				bomb_blow((genericptr_t)obj, timeout);
+				bomb_blow((void *)obj, timeout);
 				return;
 			}
 		}
@@ -2079,7 +2079,7 @@ burn_object(genericptr_t arg, long timeout)
 		break;
 	    case STICK_OF_DYNAMITE:
 		end_burn(obj, FALSE);
-		bomb_blow((genericptr_t) obj, timeout);
+		bomb_blow((void *) obj, timeout);
 		return;
 	    default:
 		impossible("burn_object: unexpeced obj %s", xname(obj));
@@ -2391,7 +2391,7 @@ begin_burn(struct obj *obj)
 	
 	if (do_timer) {
 	    if (start_timer(turns, TIMER_OBJECT,
-					BURN_OBJECT, (genericptr_t)obj)) {
+					BURN_OBJECT, (void *)obj)) {
 		obj->lamplit = 1;
 		obj->age -= turns;
 		if (carried(obj) && !already_lit)
@@ -2406,7 +2406,7 @@ begin_burn(struct obj *obj)
 	    xchar x, y;
 		if (already_lit)	/* to give an error if already_lit != actually had an ls */
 			del_light_source(obj->light);
-		if(radius) new_light_source(LS_OBJECT, (genericptr_t)obj, radius);
+		if(radius) new_light_source(LS_OBJECT, (void *)obj, radius);
 	}
 }
 
@@ -2455,7 +2455,7 @@ extern boolean saving_game;
  * Cleanup a burning object if timer stopped.
  */
 static void
-cleanup_burn(genericptr_t arg, long expire_time)
+cleanup_burn(void * arg, long expire_time)
 {
     struct obj *obj = (struct obj *)arg;
     if (!obj->lamplit) {
@@ -2593,7 +2593,7 @@ update_skull_mon(struct monst *mon, struct obj *obj)
 
 /* callback procs to desummon monsters/objects */
 void
-desummon_mon(genericptr_t arg, long timeout)
+desummon_mon(void * arg, long timeout)
 {
 	struct monst * mon = (struct monst *)arg;
 	if (DEADMONSTER(mon)) {
@@ -2633,7 +2633,7 @@ desummon_mon(genericptr_t arg, long timeout)
 }
 
 void
-cleanup_msummon(genericptr_t arg, long timeout)
+cleanup_msummon(void * arg, long timeout)
 {
 	struct monst * mon = (struct monst *)arg;
 	/* if we are stopping the timer because mon died or vanished, reduce tax on summoner */
@@ -2647,7 +2647,7 @@ cleanup_msummon(genericptr_t arg, long timeout)
 }
 
 void
-desummon_obj(genericptr_t arg, long timeout)
+desummon_obj(void * arg, long timeout)
 {
 	struct obj * otmp = (struct obj *)arg;
 	if(get_ox(otmp, OX_ESUM) && otmp->oextra_p->esum_p->permanent) {
@@ -2668,7 +2668,7 @@ desummon_obj(genericptr_t arg, long timeout)
 }
 
 void
-larvae_die(genericptr_t arg, long timeout)
+larvae_die(void * arg, long timeout)
 {
 	struct obj * otmp = (struct obj *)arg;
 	if(otmp->olarva > 0){
@@ -2703,7 +2703,7 @@ larvae_die(genericptr_t arg, long timeout)
  *
  * General:
  *	boolean start_timer(long timeout,short kind,short func_index,
- *							genericptr_t arg)
+ *							void * arg)
  *		Start a timer of kind 'kind' that will expire at time
  *		monstermoves+'timeout'.  Call the function at 'func_index'
  *		in the timeout table using argument 'arg'.  Return TRUE if
@@ -2711,13 +2711,13 @@ larvae_die(genericptr_t arg, long timeout)
  *		"sooner" to "later".  If an object, increment the object's
  *		timer count.
  *
- *	long stop_timer(short func_index, genericptr_t arg)
+ *	long stop_timer(short func_index, void * arg)
  *		Stop a timer specified by the (func_index, arg) pair.  This
  *		assumes that such a pair is unique.  Return the time the
  *		timer would have gone off.  If no timer is found, return 0.
  *		If an object, decrement the object's timer count.
  *
- *	void copy_timers(struct timer *src_timer, int tmtype, genericptr_t dest)
+ *	void copy_timers(struct timer *src_timer, int tmtype, void * dest)
  *		Duplicate all timers on src and attach them to dest.
  *
  *	void stop_all_timers(timer_element * tm)
@@ -2816,7 +2816,7 @@ print_queue(winid win, timer_element *base)
 	    Sprintf(buf, " %4ld   %4ld  %-6s %s(%s) %d",
 		curr->timeout, curr->tid, kind_name(curr->kind),
 		timeout_funcs[curr->func_index].name,
-		fmt_ptr((genericptr_t)curr->arg, arg_address),
+		fmt_ptr((void *)curr->arg, arg_address),
 		curr->timerflags);
 	    putstr(win, 0, buf);
 	}
@@ -2899,7 +2899,7 @@ timer_sanity_check(void)
 	    struct obj *obj = (struct obj *) curr->arg;
 	    if (obj->timed == 0) {
 		pline("timer sanity: untimed obj %s, timer %ld",
-		      fmt_ptr((genericptr_t)obj, obj_address), curr->tid);
+		      fmt_ptr((void *)obj, obj_address), curr->tid);
 	    }
 	}
 }
@@ -3024,7 +3024,7 @@ run_timers(void)
 		timer_base = curr->next;
 		rem_locchain_tm(curr, owner_tm(curr->kind, curr->arg));
 		(*timeout_funcs[curr->func_index].f)(curr->arg, curr->timeout);
-		free((genericptr_t) curr);
+		free((void *) curr);
     }
 }
 
@@ -3032,7 +3032,7 @@ run_timers(void)
  * Start a timer.  Return TRUE if successful.
  */
 timer_element *
-start_timer(long when, short tmtype, short func_index, genericptr_t owner)
+start_timer(long when, short tmtype, short func_index, void * owner)
 {
     timer_element *gnu;
 	timer_element *curr;
@@ -3087,7 +3087,7 @@ stop_timer(short func_index, timer_element *chain)
 		(*timeout_funcs[doomed->func_index].cleanup)(doomed->arg, timeout);
 	/* remove from owner */
 	rem_locchain_tm(doomed, owner_tm(doomed->kind, doomed->arg));
-	free((genericptr_t) doomed);
+	free((void *) doomed);
 	return timeout;
 }
 void
@@ -3168,7 +3168,7 @@ save_timers(struct timer *tm, int fd, int mode)
 	int count = 0;
 	for (curr = tm; curr; curr = curr->tnxt) {
 		if (perform_bwrite(mode))
-			bwrite(fd, (genericptr_t)curr, sizeof(struct timer));
+			bwrite(fd, (void *)curr, sizeof(struct timer));
 	}
 	if (release_data(mode))
 		stop_all_timers(tm);
@@ -3176,14 +3176,14 @@ save_timers(struct timer *tm, int fd, int mode)
 }
 
 void
-rest_timers(int tmtype, genericptr_t owner, struct timer *tm, int fd, boolean ghostly, long adjust)
+rest_timers(int tmtype, void * owner, struct timer *tm, int fd, boolean ghostly, long adjust)
 {
 	boolean hastnxt;
 
 	*owner_tm(tmtype, owner) = (struct timer *)0;
 	do {
 		tm = (struct timer *)alloc(sizeof(struct timer));
-		mread(fd, (genericptr_t) tm, sizeof(struct timer));
+		mread(fd, (void *) tm, sizeof(struct timer));
 		add_procchain_tm(tm);
 		hastnxt = tm->tnxt != (struct timer *)0;
 		/* possibly adjust timer */
@@ -3229,7 +3229,7 @@ get_timer(timer_element *chain, short func)
 /* Duplicates a specific timer onto dest.
  */
 void
-copy_timer(timer_element *src_timer, int tmtype, genericptr_t dest)
+copy_timer(timer_element *src_timer, int tmtype, void * dest)
 {
 	timer_element * tmp;
 	if (src_timer) {
@@ -3243,7 +3243,7 @@ copy_timer(timer_element *src_timer, int tmtype, genericptr_t dest)
  * Duplicate all timers on the given chain onto dest.
  */
 void
-copy_timers(timer_element *src_timer, int tmtype, genericptr_t dest)
+copy_timers(timer_element *src_timer, int tmtype, void * dest)
 {
     timer_element *curr;
 	timer_element *tmp;

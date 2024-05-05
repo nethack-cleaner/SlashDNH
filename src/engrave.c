@@ -3876,16 +3876,16 @@ save_engravings(int fd, int mode)
 	while (ep) {
 	    ep2 = ep->nxt_engr;
 	    if (((ep->engr_lth && ep->engr_txt[0]) || ep->ward_id) && perform_bwrite(mode)) {
-			bwrite(fd, (genericptr_t)&(ep->engr_lth), sizeof(ep->engr_lth));
-			bwrite(fd, (genericptr_t)ep, sizeof(struct engr) + ep->engr_lth);
-			bwrite(fd, (genericptr_t)&(ep->engr_time), sizeof(long));
+			bwrite(fd, (void *)&(ep->engr_lth), sizeof(ep->engr_lth));
+			bwrite(fd, (void *)ep, sizeof(struct engr) + ep->engr_lth);
+			bwrite(fd, (void *)&(ep->engr_time), sizeof(long));
 	    }
 	    if (release_data(mode))
 			dealloc_engr(ep);
 	    ep = ep2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t)&no_more_engr, sizeof no_more_engr);
+	    bwrite(fd, (void *)&no_more_engr, sizeof no_more_engr);
 	if (release_data(mode))
 	    head_engr = 0;
 }
@@ -3898,10 +3898,10 @@ rest_engravings(int fd)
 
 	head_engr = 0;
 	while(1) {
-		mread(fd, (genericptr_t) &lth, sizeof(unsigned));
+		mread(fd, (void *) &lth, sizeof(unsigned));
 		if(lth == 0) return;
 		ep = newengr(lth);
-		mread(fd, (genericptr_t) ep, sizeof(struct engr) + lth);
+		mread(fd, (void *) ep, sizeof(struct engr) + lth);
 		ep->nxt_engr = head_engr;
 		head_engr = ep;
 		ep->engr_txt = (char *) (ep + 1);	/* Andreas Bormann */
@@ -3909,7 +3909,7 @@ rest_engravings(int fd)
 		 * normal levels as the player must have finished engraving
 		 * to be able to move again */
 		// ep->engr_time = moves;
-		mread(fd, (genericptr_t) &(ep->engr_time), sizeof(long));
+		mread(fd, (void *) &(ep->engr_time), sizeof(long));
 	}
 }
 

@@ -22,7 +22,7 @@ struct container {
 	struct container *next;
 	xchar x, y;
 	short what;
-	genericptr_t list;
+	void * list;
 };
 
 #define CONS_OBJ   0
@@ -45,7 +45,7 @@ struct ls_t {
     short range;	/* source's current range */
     short flags;
     short lstype;		/* type of light source */
-    genericptr_t owner;	/* source's identifier */
+    void * owner;	/* source's identifier */
 };
 
 #endif /* LEV_H */

@@ -33,7 +33,7 @@ create_explode_region(void)
 }
 
 static void
-add_location_to_explode_region(int x, int y, genericptr_t _reg)
+add_location_to_explode_region(int x, int y, void * _reg)
 {
     ExplodeRegion *reg = _reg;
     int i;
@@ -45,9 +45,9 @@ add_location_to_explode_region(int x, int y, genericptr_t _reg)
 	reg->alocations = reg->alocations ? 2 * reg->alocations : 32;
 	new = (ExplodeLocation *)
 		alloc(reg->alocations * sizeof(ExplodeLocation));
-	(void) memcpy((genericptr_t)new, (genericptr_t)reg->locations,
+	(void) memcpy((void *)new, (void *)reg->locations,
 		reg->nlocations * sizeof(ExplodeLocation));
-	free((genericptr_t)reg->locations);
+	free((void *)reg->locations);
 	reg->locations = new;
     }
     reg->locations[reg->nlocations].x = x;
@@ -112,8 +112,8 @@ set_blast_symbols(ExplodeRegion *reg)
 static void
 free_explode_region(ExplodeRegion *reg)
 {
-    free((genericptr_t)reg->locations);
-    free((genericptr_t)reg);
+    free((void *)reg->locations);
+    free((void *)reg);
 }
 
 /* This is the "do-it-all" explosion command */
@@ -185,7 +185,7 @@ explode_full(
 	}
 	else
 	{	// use circles
-		do_clear_area(x, y, radius, add_location_to_explode_region, (genericptr_t)(area));
+		do_clear_area(x, y, radius, add_location_to_explode_region, (void *)(area));
 	}
 
 	do_explode(x, y, area, adtyp, olet, dam, color, dest, yours, pa);
@@ -1065,7 +1065,7 @@ scatter(
 			place_object(stmp->obj, x, y);
 			stackobj(stmp->obj);
 		}
-		free((genericptr_t)stmp);
+		free((void *)stmp);
 		newsym(x,y);
 	}
 
@@ -1126,7 +1126,7 @@ static void FDECL(grenade_effects, (struct obj *,xchar,xchar,
 	ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,boolean));
 
 static int
-grenade_fiery_callback(genericptr_t data, int x, int y)
+grenade_fiery_callback(void * data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     struct grenade_callback *gc = (struct grenade_callback *)data;
@@ -1139,7 +1139,7 @@ grenade_fiery_callback(genericptr_t data, int x, int y)
 }
 
 static int
-grenade_gas_callback(genericptr_t data, int x, int y)
+grenade_gas_callback(void * data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     struct grenade_callback *gc = (struct grenade_callback *)data;
@@ -1149,7 +1149,7 @@ grenade_gas_callback(genericptr_t data, int x, int y)
 }
 
 static int
-grenade_dig_callback(genericptr_t data, int x, int y)
+grenade_dig_callback(void * data, int x, int y)
 {
     struct grenade_callback *gc = (struct grenade_callback *)data;
     if (dig_check(BY_OBJECT, FALSE, x, y))
@@ -1243,7 +1243,7 @@ grenade_effects(
 	    r++;
 	    no_gas /= 2;
 	}
-	xpathto(r, x, y, grenade_gas_callback, (genericptr_t)&gc);
+	xpathto(r, x, y, grenade_gas_callback, (void *)&gc);
     }
     if (no_fiery) {
 	/* r = floor(log2(n))+1 */
@@ -1252,7 +1252,7 @@ grenade_effects(
 	    r++;
 	    no_fiery /= 2;
 	}
-	xpathto(r, x, y, grenade_fiery_callback, (genericptr_t)&gc);
+	xpathto(r, x, y, grenade_fiery_callback, (void *)&gc);
     }
     if (no_dig) {
 	/* r = floor(log2(n))+1 */
@@ -1261,7 +1261,7 @@ grenade_effects(
 	    r++;
 	    no_dig /= 2;
 	}
-	xpathto(r, x, y, grenade_dig_callback, (genericptr_t)&gc);
+	xpathto(r, x, y, grenade_dig_callback, (void *)&gc);
     }
 }
 

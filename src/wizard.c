@@ -22,7 +22,7 @@ static struct obj *FDECL(on_ground, (short));
 static boolean FDECL(you_have, (long int));
 static long FDECL(target_on, (long int,struct monst *));
 static long FDECL(strategy, (struct monst *));
-static void FDECL(wizgush, (int, int, genericptr_t));
+static void FDECL(wizgush, (int, int, void *));
 static void NDECL(dowizgush);
 static void FDECL(aglaopesong, (struct monst *));
 
@@ -1260,7 +1260,7 @@ dowizgush(void) /* Gushing forth along LOS from (u.ux, u.uy) and random other sp
 	
 	xprime = u.ux;
 	yprime = u.uy;
-	do_clear_area(u.ux, u.uy, 9, wizgush, (genericptr_t)&madepool);
+	do_clear_area(u.ux, u.uy, 9, wizgush, (void *)&madepool);
 	pline("Water sprays all over you.");
 	water_damage(invent, FALSE, FALSE, level.flags.lethe, &youmonst);
 	for(cx = 0; cx < COLNO; cx++){
@@ -1269,14 +1269,14 @@ dowizgush(void) /* Gushing forth along LOS from (u.ux, u.uy) and random other sp
 				madepool = 0;
 				xprime = cx;
 				yprime = cy;
-				do_clear_area(cx, cy, 9, wizgush, (genericptr_t)&madepool);
+				do_clear_area(cx, cy, 9, wizgush, (void *)&madepool);
 			}
 		}
 	}
 }
 
 static void
-wizgush(int cx, int cy, genericptr_t poolcnt)
+wizgush(int cx, int cy, void * poolcnt)
 {
 	register struct monst *mtmp;
 	register struct trap *ttmp;

@@ -14,7 +14,7 @@ extern const int monstr[];
 
 /* #define DEBUG */	/* uncomment for debugging */
 
-static void FDECL(Fread, (genericptr_t,int,int,dlb *));
+static void FDECL(Fread, (void *,int,int,dlb *));
 static struct qtmsg * FDECL(construct_qtlist, (long));
 static const char * NDECL(intermed);
 static const char * NDECL(neminame);
@@ -52,7 +52,7 @@ dump_qtlist(void)	/* dump the character msg list to check appearance */
 #endif /* DEBUG */
 
 static void
-Fread(genericptr_t ptr, int size, int nitems, dlb *stream)
+Fread(void * ptr, int size, int nitems, dlb *stream)
 {
 	int cnt;
 
@@ -77,7 +77,7 @@ construct_qtlist(long hdr_offset)
 	/*
 	 * Load up the list.
 	 */
-	Fread((genericptr_t)msg_list, n_msgs*sizeof(struct qtmsg), 1, msg_file);
+	Fread((void *)msg_list, n_msgs*sizeof(struct qtmsg), 1, msg_file);
 
 	msg_list[n_msgs].msgnum = -1;
 	return(msg_list);
@@ -137,9 +137,9 @@ unload_qtlist(void)
 	if (msg_file)
 	    (void) dlb_fclose(msg_file),  msg_file = 0;
 	if (qt_list.common)
-	    free((genericptr_t) qt_list.common),  qt_list.common = 0;
+	    free((void *) qt_list.common),  qt_list.common = 0;
 	if (qt_list.chrole)
-	    free((genericptr_t) qt_list.chrole),  qt_list.chrole = 0;
+	    free((void *) qt_list.chrole),  qt_list.chrole = 0;
 	return;
 }
 

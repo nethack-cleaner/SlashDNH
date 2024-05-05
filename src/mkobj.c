@@ -446,7 +446,7 @@ splitobj(struct obj *obj, long num)
 		cpy_ox(obj, otmp, ox_id);
 		
 	if (obj->unpaid) splitbill(obj,otmp);
-	if (obj->timed) copy_timers(obj->timed, TIMER_OBJECT, (genericptr_t)otmp);
+	if (obj->timed) copy_timers(obj->timed, TIMER_OBJECT, (void *)otmp);
 	if (obj_sheds_light(obj)) obj_split_light_source(obj, otmp);
 	return otmp;
 }
@@ -501,7 +501,7 @@ duplicate_obj(struct obj *obj)
 		cpy_ox(obj, otmp, ox_id);
 	
 	otmp->unpaid = 0;
-	if (obj->timed) copy_timers(obj->timed, TIMER_OBJECT, (genericptr_t)otmp);
+	if (obj->timed) copy_timers(obj->timed, TIMER_OBJECT, (void *)otmp);
 	if (obj_sheds_light(obj)) obj_split_light_source(obj, otmp);
 	return otmp;
 }
@@ -660,7 +660,7 @@ mksobj(int otyp, int mkflags)
 		otmp->oextra_p->esum_p->staleptr = 0;
 		otmp->oextra_p->esum_p->permanent = 1;
 		otmp->oextra_p->esum_p->sticky = 1; /* mark as unfinished -- add_to_minv will detect this and attach it automatically */
-		start_timer(ESUMMON_PERMANENT, TIMER_OBJECT, DESUMMON_OBJ, (genericptr_t)otmp);
+		start_timer(ESUMMON_PERMANENT, TIMER_OBJECT, DESUMMON_OBJ, (void *)otmp);
 	}
 
 	fix_object(otmp);
@@ -1843,7 +1843,7 @@ start_corpse_timeout(struct obj *body)
 	
 	if (body->norevive) body->norevive = 0;
 //	pline("Starting timer %d on %s", action, xname(body));
-	(void) start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
+	(void) start_timer(when, TIMER_OBJECT, action, (void *)body);
 }
 
 void
@@ -2212,7 +2212,7 @@ handle_material_specials(struct obj *obj, int oldmat, int newmat)
 	/* is_evaporable() is no good because we also need to ask using the previous material state */
 	if (newmat == SHADOWSTEEL && oldmat != SHADOWSTEEL){
 		start_timer(1, TIMER_OBJECT,
-			LIGHT_DAMAGE, (genericptr_t)obj);
+			LIGHT_DAMAGE, (void *)obj);
 	}
 	else if (oldmat == SHADOWSTEEL) {/* Or turn it off, if the object used to be made of shadowsteel.*/
 		stop_timer(LIGHT_DAMAGE, obj->timed);
@@ -2903,7 +2903,7 @@ save_mtraits(struct obj *obj, struct monst *mtmp)
 		mextra_bundle = bundle_mextra(mtmp, &lth);
 		/* save the whole monster followed by its mextrabundle */
 		tmp2 = tmp = malloc(lth + sizeof(struct monst));
-		memcpy(tmp2, (genericptr_t) mtmp, sizeof(struct monst));
+		memcpy(tmp2, (void *) mtmp, sizeof(struct monst));
 		tmp2 = tmp2 + sizeof(struct monst);
 		memcpy(tmp2, mextra_bundle, lth);
 		lth += sizeof(struct monst);
@@ -2912,12 +2912,12 @@ save_mtraits(struct obj *obj, struct monst *mtmp)
 	}
 	else {
 		mextra_bundle = malloc(sizeof(struct monst));
-		memcpy(mextra_bundle, (genericptr_t) mtmp, sizeof(struct monst));
+		memcpy(mextra_bundle, (void *) mtmp, sizeof(struct monst));
 		lth = sizeof(struct monst);
 	}
 	/* attach it to obj */
 	add_ox_l(obj, OX_EMON, lth);
-	memcpy((genericptr_t)EMON(obj), mextra_bundle, lth);
+	memcpy((void *)EMON(obj), mextra_bundle, lth);
 	free(mextra_bundle);
 	/* invalidate pointers */
 	/* m_id is needed to know if this is a revived quest leader */
@@ -2949,7 +2949,7 @@ get_mtraits(struct obj *obj, boolean copyof)
 	if (mtmp) {
 		if (copyof) {
 			mnew = malloc(sizeof(struct monst));	/* allocate memory for the monster */
-			memcpy((genericptr_t)mnew, (genericptr_t)mtmp, sizeof(struct monst));
+			memcpy((void *)mnew, (void *)mtmp, sizeof(struct monst));
 
 			/* we may also need to copy mextra */
 			if (mnew->mextra_p) {
@@ -3192,7 +3192,7 @@ obj_timer_checks(
     }
     /* now re-start the timer with the appropriate modifications */ 
     if (restart_timer)
-	(void) start_timer(tleft, TIMER_OBJECT, action, (genericptr_t)otmp);
+	(void) start_timer(tleft, TIMER_OBJECT, action, (void *)otmp);
 }
 
 #undef ON_ICE
@@ -3638,9 +3638,9 @@ dealloc_obj(struct obj *obj)
 		rem_all_ox(obj);
 
 	if (obj->mp)
-		free((genericptr_t) obj->mp);
+		free((void *) obj->mp);
 
-    free((genericptr_t) obj);
+    free((void *) obj);
 }
 
 int
@@ -3731,7 +3731,7 @@ obj_sanity_check(void)
     for (obj = fobj; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_FLOOR) {
 	    pline("%s obj %s %s@(%d,%d): %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		where_name(obj->where),
 		obj->ox, obj->oy, doname(obj));
 	}
@@ -3744,7 +3744,7 @@ obj_sanity_check(void)
 	    for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
 		if (obj->where != OBJ_FLOOR) {
 		    pline("%s obj %s %s@(%d,%d): %s\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
+			fmt_ptr((void *)obj, obj_address),
 			where_name(obj->where),
 			obj->ox, obj->oy, doname(obj));
 		}
@@ -3753,7 +3753,7 @@ obj_sanity_check(void)
     for (obj = invent; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_INVENT) {
 	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		where_name(obj->where), doname(obj));
 	}
 	check_contained(obj, mesg);
@@ -3763,7 +3763,7 @@ obj_sanity_check(void)
     for (obj = migrating_objs; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_MIGRATING) {
 	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		where_name(obj->where), doname(obj));
 	}
 	check_contained(obj, mesg);
@@ -3773,7 +3773,7 @@ obj_sanity_check(void)
     for (obj = level.buriedobjlist; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_BURIED) {
 	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		where_name(obj->where), doname(obj));
 	}
 	check_contained(obj, mesg);
@@ -3783,13 +3783,13 @@ obj_sanity_check(void)
     for (obj = billobjs; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_ONBILL) {
 	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		where_name(obj->where), doname(obj));
 	}
 	/* shouldn't be a full container on the bill */
 	if (obj->cobj) {
 	    pline("%s obj %s contains %s! %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
+		fmt_ptr((void *)obj, obj_address),
 		something, doname(obj));
 	}
     }
@@ -3799,14 +3799,14 @@ obj_sanity_check(void)
 	for (obj = mon->minvent; obj; obj = obj->nobj) {
 	    if (obj->where != OBJ_MINVENT) {
 		pline("%s obj %s %s: %s\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
+			fmt_ptr((void *)obj, obj_address),
 			where_name(obj->where), doname(obj));
 	    }
 	    if (obj->ocarry != mon) {
 		pline("%s obj %s (%s) not held by mon %s (%s)\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
+			fmt_ptr((void *)obj, obj_address),
 			doname(obj),
-			fmt_ptr((genericptr_t)mon, mon_address),
+			fmt_ptr((void *)mon, mon_address),
 			mon_nam(mon));
 	    }
 	    check_contained(obj, mesg);
@@ -3835,12 +3835,12 @@ check_contained(struct obj *container, const char *mesg)
     for (obj = container->cobj; obj; obj = obj->nobj) {
 	if (obj->where != OBJ_CONTAINED)
 	    pline("contained %s obj %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj1_address),
+		fmt_ptr((void *)obj, obj1_address),
 		where_name(obj->where));
 	else if (obj->ocontainer != container)
 	    pline("%s obj %s not in container %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj1_address),
-		fmt_ptr((genericptr_t)container, obj2_address));
+		fmt_ptr((void *)obj, obj1_address),
+		fmt_ptr((void *)container, obj2_address));
     }
 }
 #endif /* WIZARD */

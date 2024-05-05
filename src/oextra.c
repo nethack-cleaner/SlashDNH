@@ -82,7 +82,7 @@ rem_ox(struct obj *otmp, int ox_id)
 	}
 
 	/* dealloc ox_p */
-	free((genericptr_t)ox_p);
+	free((void *)ox_p);
 	otmp->oextra_p->eindex[ox_id] = (void *)0;
 	
 	/* if all of oextra_p is 0, dealloc its oextra entirely */
@@ -93,7 +93,7 @@ rem_ox(struct obj *otmp, int ox_id)
 			foundany = TRUE;
 	if (!foundany) {
 		/* dealloc oextra_p */
-		free((genericptr_t)(otmp->oextra_p));
+		free((void *)(otmp->oextra_p));
 		otmp->oextra_p = (union oextra *)0;
 	}
 	return;
@@ -309,7 +309,7 @@ rest_oextra(struct obj *otmp, int fd, boolean ghostly)
 	otmp->oextra_p = (union oextra *)0;
 
 	/* determine what components are being read */
-	mread(fd, (genericptr_t) &toread, sizeof(int));
+	mread(fd, (void *) &toread, sizeof(int));
 	
 	/* read those components */
 	for (i = 0; i < NUM_OX; i++) {
@@ -318,7 +318,7 @@ rest_oextra(struct obj *otmp, int fd, boolean ghostly)
 		/* get length to read */
 		len = ox_list[i].s_size;
 		if (len == -1) {	// was saved
-			mread(fd, (genericptr_t) &len, sizeof(long));
+			mread(fd, (void *) &len, sizeof(long));
 		}
 
 		/* allocate component */
@@ -357,7 +357,7 @@ relink_ox(struct obj *specific_otmp)
 				/* restore stale pointer -- id==0 is assumed to be player */
 				if (otmp->oextra_p->esum_p->summoner) {
 					nid = otmp->oextra_p->esum_p->sm_id;
-					otmp->oextra_p->esum_p->summoner = (genericptr_t) (nid ? find_mid(nid, FM_EVERYWHERE) : &youmonst);
+					otmp->oextra_p->esum_p->summoner = (void *) (nid ? find_mid(nid, FM_EVERYWHERE) : &youmonst);
 					if (!otmp->oextra_p->esum_p->summoner) {
 						/* instead of panicking, just make the item poof when timers get next run,
 						 * which is the intended behaviour if a summoned item is separated from its summoner  */

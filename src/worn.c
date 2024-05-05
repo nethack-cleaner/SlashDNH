@@ -2398,7 +2398,7 @@ magic_negation(struct monst *mon)
 }
 
 void
-light_damage(genericptr_t arg, long timeout)
+light_damage(void * arg, long timeout)
 {
 	struct obj *obj = (struct obj *) arg;;
  	xchar x = 0, y = 0;
@@ -2409,7 +2409,7 @@ light_damage(genericptr_t arg, long timeout)
 	
 	if(obj->shopOwned){
 		start_timer(1, TIMER_OBJECT,
-					LIGHT_DAMAGE, (genericptr_t)obj);
+					LIGHT_DAMAGE, (void *)obj);
 		return;
 	}
 
@@ -2420,13 +2420,13 @@ light_damage(genericptr_t arg, long timeout)
 		if (dimness(x, y) > 0){
 			if(obj->oeroded && obj->oerodeproof) obj->oeroded--;
 			start_timer(1, TIMER_OBJECT,
-						LIGHT_DAMAGE, (genericptr_t)obj);
+						LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		if(obj->oeroded < 2){
 			obj->oeroded++;
 			start_timer(1, TIMER_OBJECT,
-						LIGHT_DAMAGE, (genericptr_t)obj);
+						LIGHT_DAMAGE, (void *)obj);
 			return;
 		}else{
 			if(obj->otyp == NOBLE_S_DRESS){
@@ -2448,14 +2448,14 @@ light_damage(genericptr_t arg, long timeout)
 			){
 			if (obj->oeroded && obj->oerodeproof) obj->oeroded--;
 			start_timer(1, TIMER_OBJECT,
-				LIGHT_DAMAGE, (genericptr_t)obj);
+				LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		/* otherwise, damage and eventually destroy it */
 		if (obj->oeroded < 2){
 			obj->oeroded++;
 			start_timer(1, TIMER_OBJECT,
-				LIGHT_DAMAGE, (genericptr_t)obj);
+				LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		else {
@@ -2491,7 +2491,7 @@ light_damage(genericptr_t arg, long timeout)
 		}
 		
 		if (Invis){
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		
@@ -2501,19 +2501,19 @@ light_damage(genericptr_t arg, long timeout)
 			if(obj->oeroded && obj->oerodeproof && 
 				((!u.uswallow ? (dimness(u.ux, u.uy) > 0) : (uswallow_indark())) || in_container))
 				obj->oeroded--;
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 
 		if (in_container){
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 
 		if(obj->oeroded < 2){
 			obj->oeroded++;
 			Your("%s degrade%s.",xname(obj),(obj->quan > 1L ? "" : "s"));
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			stop_occupation();
 			if(flags.run) nomul(0, NULL);
 			return;
@@ -2521,7 +2521,7 @@ light_damage(genericptr_t arg, long timeout)
 
 		/* artifacts are durable - they will never evaporate entirely, though they're not immune to degrading */
 		if (obj->oartifact) {
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 
@@ -2600,7 +2600,7 @@ light_damage(genericptr_t arg, long timeout)
 				objects[armor->otyp].a_can;
 		}
 		if (obj->ocarry->perminvis || obj->ocarry->minvis){
-			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+			start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		if ((dimness(x, y) > 0) || ((rn2(3) < armpro) && rn2(50))){
@@ -2608,13 +2608,13 @@ light_damage(genericptr_t arg, long timeout)
 				&& (dimness(x, y) > 0)
 			) obj->oeroded--;
 			start_timer(1, TIMER_OBJECT,
-						LIGHT_DAMAGE, (genericptr_t)obj);
+						LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 		if(obj->oeroded < 2){
 			obj->oeroded++;
 			start_timer(1, TIMER_OBJECT,
-						LIGHT_DAMAGE, (genericptr_t)obj);
+						LIGHT_DAMAGE, (void *)obj);
 			return;
 		}
 	    if (obj == MON_WEP(obj->ocarry)) {
@@ -2676,7 +2676,7 @@ light_damage(genericptr_t arg, long timeout)
 		}
 	} else {
 		/* otherwise timer stops and never restarts */
-		start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (genericptr_t)obj);
+		start_timer(1, TIMER_OBJECT, LIGHT_DAMAGE, (void *)obj);
 		return;
 	}
 

@@ -12,7 +12,7 @@ extern void NDECL(autoquiver);
 extern int FDECL(gem_accept, (struct monst *, struct obj *));
 extern void FDECL(check_shop_obj, (struct obj *, xchar, xchar, boolean));
 extern void FDECL(breakmsg, (struct obj *, boolean));
-static boolean FDECL(mhurtle_step, (genericptr_t,int,int));
+static boolean FDECL(mhurtle_step, (void *,int,int));
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
 
 
@@ -305,8 +305,8 @@ boolean
 walk_path(
 	coord *src_cc,
 	coord *dest_cc,
-	boolean FDECL((*check_proc), (genericptr_t, int, int)),
-	genericptr_t arg)
+	boolean FDECL((*check_proc), (void *, int, int)),
+	void * arg)
 {
     int x, y, dx, dy, x_change, y_change, err, i, prev_x, prev_y;
     boolean keep_going = TRUE;
@@ -386,7 +386,7 @@ walk_path(
  *	o let jumps go over boulders
  */
 boolean
-hurtle_step(genericptr_t arg, int x, int y)
+hurtle_step(void * arg, int x, int y)
 {
     int ox, oy, *range = (int *)arg;
     struct obj *obj;
@@ -514,7 +514,7 @@ hurtle_step(genericptr_t arg, int x, int y)
 }
 
 static boolean
-mhurtle_step(genericptr_t arg, int x, int y)
+mhurtle_step(void * arg, int x, int y)
 {
 	struct monst *mon = (struct monst *)arg;
 
@@ -586,7 +586,7 @@ hurtle(int dx, int dy, int range, boolean verbose, boolean do_nomul)
     /* this setting of cc is only correct if dx and dy are [-1,0,1] only */
     cc.x = u.ux + (dx * range);
     cc.y = u.uy + (dy * range);
-    (void) walk_path(&uc, &cc, hurtle_step, (genericptr_t)&range);
+    (void) walk_path(&uc, &cc, hurtle_step, (void *)&range);
 	teleds(u.ux, u.uy, TRUE);
 }
 
@@ -623,7 +623,7 @@ mhurtle(struct monst *mon, int dx, int dy, int range, boolean huge)
 	mc.y = mon->my;
 	cc.x = mon->mx + (dx * range);
 	cc.y = mon->my + (dy * range);
-	(void) walk_path(&mc, &cc, mhurtle_step, (genericptr_t)mon);
+	(void) walk_path(&mc, &cc, mhurtle_step, (void *)mon);
 	return;
 }
 

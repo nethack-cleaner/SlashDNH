@@ -368,7 +368,7 @@ polyself(boolean forcecontrol)
 	    del_light_source((&youmonst)->light);
 	    if (new_light == 1) ++new_light;  /* otherwise it's undetectable */
 	    if (new_light)
-			new_light_source(LS_MONSTER, (genericptr_t)&youmonst, new_light);
+			new_light_source(LS_MONSTER, (void *)&youmonst, new_light);
 	}
 	if (is_pool(u.ux,u.uy, FALSE) && was_floating && !(Levitation || Flying) &&
 		!breathless(youmonst.data) && !amphibious(youmonst.data) &&

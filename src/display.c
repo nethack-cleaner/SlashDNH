@@ -121,7 +121,7 @@
 static void FDECL(display_monster,(xchar,xchar,struct monst *,int,xchar));
 static int FDECL(swallow_to_glyph, (int, int));
 static void FDECL(display_warning,(struct monst *));
-static int FDECL(you_scent_callback,(genericptr_t, int, int));
+static int FDECL(you_scent_callback,(void *, int, int));
 static void FDECL(map_invisible_core,(xchar, xchar, boolean));
 
 static int FDECL(check_pos, (int, int, int));
@@ -919,7 +919,7 @@ show_mem:
 #undef is_worm_tail
 
 static int
-you_scent_callback(genericptr_t data, int x, int y)
+you_scent_callback(void * data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     struct seekspot *smelltarget = (struct seekspot *)data;
@@ -1027,7 +1027,7 @@ tmp_at(int x, int y)
 	case DISP_FREEMEM:  /* in case game ends with tmp_at() in progress */
 	    while (tglyph) {
 		tmp = tglyph->prev;
-		if (tglyph != &tgfirst) free((genericptr_t)tglyph);
+		if (tglyph != &tgfirst) free((void *)tglyph);
 		tglyph = tmp;
 	    }
 	    return;
@@ -1056,7 +1056,7 @@ tmp_at(int x, int y)
 	    }
 	 /* tglyph->sidx = 0; -- about to be freed, so not necessary */
 	    tmp = tglyph->prev;
-	    if (tglyph != &tgfirst) free((genericptr_t)tglyph);
+	    if (tglyph != &tgfirst) free((void *)tglyph);
 	    tglyph = tmp;
 	    break;
 

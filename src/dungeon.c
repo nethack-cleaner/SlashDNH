@@ -46,7 +46,7 @@ struct lchoice {
 	char menuletter;
 };
 
-static void FDECL(Fread, (genericptr_t, int, int, dlb *));
+static void FDECL(Fread, (void *, int, int, dlb *));
 static int FDECL(dname_to_dnum, (const char *));
 static int FDECL(find_branch, (const char *, struct proto_dungeon *));
 static int FDECL(parent_dnum, (const char *, struct proto_dungeon *));
@@ -138,27 +138,27 @@ save_dungeon(int fd, boolean perform_write, boolean free_data)
     int    count;
 
     if (perform_write) {
-	bwrite(fd, (genericptr_t) &n_dgns, sizeof n_dgns);
-	bwrite(fd, (genericptr_t) dungeons, sizeof(dungeon) * (unsigned)n_dgns);
-	bwrite(fd, (genericptr_t) &dungeon_topology, sizeof dungeon_topology);
-	bwrite(fd, (genericptr_t) tune, sizeof tune);
+	bwrite(fd, (void *) &n_dgns, sizeof n_dgns);
+	bwrite(fd, (void *) dungeons, sizeof(dungeon) * (unsigned)n_dgns);
+	bwrite(fd, (void *) &dungeon_topology, sizeof dungeon_topology);
+	bwrite(fd, (void *) tune, sizeof tune);
 
 	for (count = 0, curr = branches; curr; curr = curr->next)
 	    count++;
-	bwrite(fd, (genericptr_t) &count, sizeof(count));
+	bwrite(fd, (void *) &count, sizeof(count));
 
 	for (curr = branches; curr; curr = curr->next)
-	    bwrite(fd, (genericptr_t) curr, sizeof (branch));
+	    bwrite(fd, (void *) curr, sizeof (branch));
 
 	count = maxledgerno();
-	bwrite(fd, (genericptr_t) &count, sizeof count);
-	bwrite(fd, (genericptr_t) level_info,
+	bwrite(fd, (void *) &count, sizeof count);
+	bwrite(fd, (void *) level_info,
 			(unsigned)count * sizeof (struct linfo));
-	bwrite(fd, (genericptr_t) &inv_pos, sizeof inv_pos);
+	bwrite(fd, (void *) &inv_pos, sizeof inv_pos);
 
 	for (count = 0, curr_ms = mapseenchn; curr_ms; curr_ms = curr_ms->next)
 		count++;
-	bwrite(fd, (genericptr_t) &count, sizeof(count));
+	bwrite(fd, (void *) &count, sizeof(count));
 
 	for (curr_ms = mapseenchn; curr_ms; curr_ms = curr_ms->next)
 		save_mapseen(fd, curr_ms);
@@ -167,14 +167,14 @@ save_dungeon(int fd, boolean perform_write, boolean free_data)
     if (free_data) {
 		for (curr = branches; curr; curr = next) {
 			next = curr->next;
-			free((genericptr_t) curr);
+			free((void *) curr);
 		}
 		branches = 0;
 		for (curr_ms = mapseenchn; curr_ms; curr_ms = next_ms) {
 			next_ms = curr_ms->next;
 			if (curr_ms->custom)
-				free((genericptr_t)curr_ms->custom);
-			free((genericptr_t) curr_ms);
+				free((void *)curr_ms->custom);
+			free((void *) curr_ms);
 		}
 		mapseenchn = 0;
     }
@@ -188,17 +188,17 @@ restore_dungeon(int fd)
 	mapseen *curr_ms, *last_ms;
     int    count, i;
 
-    mread(fd, (genericptr_t) &n_dgns, sizeof(n_dgns));
-    mread(fd, (genericptr_t) dungeons, sizeof(dungeon) * (unsigned)n_dgns);
-    mread(fd, (genericptr_t) &dungeon_topology, sizeof dungeon_topology);
-    mread(fd, (genericptr_t) tune, sizeof tune);
+    mread(fd, (void *) &n_dgns, sizeof(n_dgns));
+    mread(fd, (void *) dungeons, sizeof(dungeon) * (unsigned)n_dgns);
+    mread(fd, (void *) &dungeon_topology, sizeof dungeon_topology);
+    mread(fd, (void *) tune, sizeof tune);
 
     last = branches = (branch *) 0;
 
-    mread(fd, (genericptr_t) &count, sizeof(count));
+    mread(fd, (void *) &count, sizeof(count));
     for (i = 0; i < count; i++) {
 	curr = (branch *) alloc(sizeof(branch));
-	mread(fd, (genericptr_t) curr, sizeof(branch));
+	mread(fd, (void *) curr, sizeof(branch));
 	curr->next = (branch *) 0;
 	if (last)
 	    last->next = curr;
@@ -207,13 +207,13 @@ restore_dungeon(int fd)
 	last = curr;
     }
 
-    mread(fd, (genericptr_t) &count, sizeof(count));
+    mread(fd, (void *) &count, sizeof(count));
     if (count >= MAXLINFO)
 	panic("level information count larger (%d) than allocated size", count);
-    mread(fd, (genericptr_t) level_info, (unsigned)count*sizeof(struct linfo));
-    mread(fd, (genericptr_t) &inv_pos, sizeof inv_pos);
+    mread(fd, (void *) level_info, (unsigned)count*sizeof(struct linfo));
+    mread(fd, (void *) &inv_pos, sizeof inv_pos);
 
-	mread(fd, (genericptr_t) &count, sizeof(count));
+	mread(fd, (void *) &count, sizeof(count));
 	last_ms = (mapseen *) 0;
 	for (i = 0; i < count; i++) {
 		curr_ms = load_mapseen(fd);
@@ -227,7 +227,7 @@ restore_dungeon(int fd)
 }
 
 static void
-Fread(genericptr_t ptr, int size, int nitems, dlb *stream)
+Fread(void * ptr, int size, int nitems, dlb *stream)
 {
 	int cnt;
 
@@ -843,7 +843,7 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	}
 
 	/* validate the data's version against the program's version */
-	Fread((genericptr_t) &vers_info, sizeof vers_info, 1, dgn_file);
+	Fread((void *) &vers_info, sizeof vers_info, 1, dgn_file);
 	/* we'd better clear the screen now, since when error messages come from
 	 * check_version() they will be printed using pline(), which doesn't
 	 * mix with the raw messages that might be already on the screen
@@ -858,12 +858,12 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	 * dungeon arrays.
 	 */
 	sp_levchn = (s_level *) 0;
-	Fread((genericptr_t)&n_dgns, sizeof(int), 1, dgn_file);
+	Fread((void *)&n_dgns, sizeof(int), 1, dgn_file);
 	if (n_dgns >= MAXDUNGEON)
 	    panic("init_dungeons: too many dungeons");
 
 	for (i = 0; i < n_dgns; i++) {
-	    Fread((genericptr_t)&pd.tmpdungeon[i],
+	    Fread((void *)&pd.tmpdungeon[i],
 				    sizeof(struct tmpdungeon), 1, dgn_file);
 
 	    if ((pd.tmpdungeon[i].alternates > 0 && !select_alternate(i, &pd))
@@ -872,11 +872,11 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 
 			/* skip over any levels or branches */
 			for(j = 0; j < pd.tmpdungeon[i].levels; j++)
-				Fread((genericptr_t)&pd.tmplevel[cl], sizeof(struct tmplevel),
+				Fread((void *)&pd.tmplevel[cl], sizeof(struct tmplevel),
 								1, dgn_file);
 
 			for(j = 0; j < pd.tmpdungeon[i].branches; j++)
-				Fread((genericptr_t)&pd.tmpbranch[cb],
+				Fread((void *)&pd.tmpbranch[cb],
 						sizeof(struct tmpbranch), 1, dgn_file);
 			n_dgns--; i--;
 			continue;
@@ -986,7 +986,7 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	     * special levels until they are all placed.
 	     */
 	    for(; cl < pd.n_levs; cl++) {
-			Fread((genericptr_t)&pd.tmplevel[cl],
+			Fread((void *)&pd.tmplevel[cl],
 						sizeof(struct tmplevel), 1, dgn_file);
 			init_level(i, cl, &pd);
 	    }
@@ -1023,7 +1023,7 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	    if (pd.n_brs > BRANCH_LIMIT)
 		panic("init_dungeon: too many branches");
 	    for(; cb < pd.n_brs; cb++)
-		Fread((genericptr_t)&pd.tmpbranch[cb],
+		Fread((void *)&pd.tmpbranch[cb],
 					sizeof(struct tmpbranch), 1, dgn_file);
 	}
 	(void) dlb_fclose(dgn_file);
@@ -2133,7 +2133,7 @@ print_dungeon(
 			destroy_nhwindow(win);
 			if (n > 0)
 				idx = selected[0].item.a_int - 1;
-			free((genericptr_t) selected);
+			free((void *) selected);
 		}
 		else {
 			/* only one choice; don't bother showing it */
@@ -2240,7 +2240,7 @@ donamelevel(void)
 
 	len = strlen(nbuf) + 1;
 	if (mptr->custom) {
-		free((genericptr_t)mptr->custom);
+		free((void *)mptr->custom);
 		mptr->custom = (char *)0;
 		mptr->custom_lth = 0;
 	}
@@ -2284,11 +2284,11 @@ forget_mapseen(int ledger_no)
 		/* custom names are erased, not forgotten until revisted */
 		if (mptr->custom) {
 			mptr->custom_lth = 0;
-			free((genericptr_t)mptr->custom);
+			free((void *)mptr->custom);
 			mptr->custom = (char *)0;
 		}
 
-		memset((genericptr_t) mptr->rooms, 0, sizeof(mptr->rooms));
+		memset((void *) mptr->rooms, 0, sizeof(mptr->rooms));
 	}
 }
 
@@ -2306,7 +2306,7 @@ rm_mapseen(int ledger_num)
         return;
 
     if (mptr->custom)
-        free((genericptr_t) mptr->custom);
+        free((void *) mptr->custom);
 
     if (mprev) {
         mprev->next = mptr->next;
@@ -2330,14 +2330,14 @@ save_mapseen(int fd, mapseen *mptr)
 		count++;
 	}
 
-	bwrite(fd, (genericptr_t) &count, sizeof(int));
-	bwrite(fd, (genericptr_t) &mptr->lev, sizeof(d_level));
-	bwrite(fd, (genericptr_t) &mptr->feat, sizeof(mapseen_feat));
-	bwrite(fd, (genericptr_t) &mptr->custom_lth, sizeof(unsigned));
+	bwrite(fd, (void *) &count, sizeof(int));
+	bwrite(fd, (void *) &mptr->lev, sizeof(d_level));
+	bwrite(fd, (void *) &mptr->feat, sizeof(mapseen_feat));
+	bwrite(fd, (void *) &mptr->custom_lth, sizeof(unsigned));
 	if (mptr->custom_lth)
-		bwrite(fd, (genericptr_t) mptr->custom, 
+		bwrite(fd, (void *) mptr->custom, 
 		sizeof(char) * mptr->custom_lth);
-	bwrite(fd, (genericptr_t) &mptr->rooms, sizeof(mptr->rooms));
+	bwrite(fd, (void *) &mptr->rooms, sizeof(mptr->rooms));
 }
 
 static mapseen *
@@ -2348,7 +2348,7 @@ load_mapseen(int fd)
 	branch *curr;
 
 	load = (mapseen *) alloc(sizeof(mapseen));
-	mread(fd, (genericptr_t) &branchnum, sizeof(int));
+	mread(fd, (void *) &branchnum, sizeof(int));
 
 	count = 0;
 	for (curr = branches; curr; curr = curr->next) {
@@ -2357,15 +2357,15 @@ load_mapseen(int fd)
 	}
 	load->br = curr;
 
-	mread(fd, (genericptr_t) &load->lev, sizeof(d_level));
-	mread(fd, (genericptr_t) &load->feat, sizeof(mapseen_feat));
-	mread(fd, (genericptr_t) &load->custom_lth, sizeof(unsigned));
+	mread(fd, (void *) &load->lev, sizeof(d_level));
+	mread(fd, (void *) &load->feat, sizeof(mapseen_feat));
+	mread(fd, (void *) &load->custom_lth, sizeof(unsigned));
 	if (load->custom_lth > 0) {
 		load->custom = (char *) alloc(sizeof(char) * load->custom_lth);
-		mread(fd, (genericptr_t) load->custom, 
+		mread(fd, (void *) load->custom, 
 			sizeof(char) * load->custom_lth);
 	} else load->custom = (char *) 0;
-	mread(fd, (genericptr_t) &load->rooms, sizeof(load->rooms));
+	mread(fd, (void *) &load->rooms, sizeof(load->rooms));
 
 	return load;
 }
@@ -2385,7 +2385,7 @@ remdun_mapseen(int dnum)
 	for (; mptr; prev = mptr, mptr = mptr->next) {
 		if (mptr->lev.dnum == dnum) {
 			prev->next = mptr->next;
-			free((genericptr_t) mptr);
+			free((void *) mptr);
 			mptr = prev;
 		}
 	}
@@ -2402,7 +2402,7 @@ init_mapseen(d_level *lev)
 	mapseen *old;
 	
 	init = (mapseen *) alloc(sizeof(mapseen));
-	(void) memset((genericptr_t)init, 0, sizeof(mapseen));
+	(void) memset((void *)init, 0, sizeof(mapseen));
 	init->lev.dnum = lev->dnum;
 	init->lev.dlevel = lev->dlevel;
 
@@ -2476,7 +2476,7 @@ recalc_mapseen(void)
 	if (!(mptr = find_mapseen(&u.uz))) return;
 
 	/* reset all features */
-	memset((genericptr_t) &mptr->feat, 0, sizeof(mapseen_feat));
+	memset((void *) &mptr->feat, 0, sizeof(mapseen_feat));
 
 	/* track rooms the hero is in */
 	for (x = 0; x < sizeof(u.urooms); x++) {

@@ -1650,7 +1650,7 @@ launch_obj(short otyp, struct trap *trap, int style)
 	   next dig attempt never thinks you're resuming previous effort */
 	if ((otyp == BOULDER || otyp == STATUE) &&
 	    singleobj->ox == digging.pos.x && singleobj->oy == digging.pos.y)
-	    (void) memset((genericptr_t)&digging, 0, sizeof digging);
+	    (void) memset((void *)&digging, 0, sizeof digging);
 
 	dist = distmin(x1,y1,x2,y2);
 	bhitpos.x = x1;
@@ -4147,11 +4147,11 @@ dowebgush(int cx, int cy, int radius)
 	
 	webxprime = cx;
 	webyprime = cy;
-	do_clear_area(cx, cy, radius, webgush, (genericptr_t)&madeweb);
+	do_clear_area(cx, cy, radius, webgush, (void *)&madeweb);
 }
 
 void
-webgush(int cx, int cy, genericptr_t poolcnt)
+webgush(int cx, int cy, void * poolcnt)
 {
 	register struct monst *mtmp;
 	register struct trap *ttmp;

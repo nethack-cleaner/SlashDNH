@@ -372,7 +372,7 @@ tty_player_selection(void)
 	    
 	    if (pick4u != 'y' && pick4u != 'n') {
 give_up:	/* Quit */
-		if (selected) free((genericptr_t) selected);
+		if (selected) free((void *) selected);
 		bail((char *)0);
 		/*NOTREACHED*/
 		return;
@@ -446,7 +446,7 @@ give_up:	/* Quit */
 		    goto give_up;		/* Selected quit */
 
 		flags.initrole = selected[0].item.a_int - 1;
-		free((genericptr_t) selected),	selected = 0;
+		free((void *) selected),	selected = 0;
 	    }
 	    (void)  root_plselection_prompt(plbuf, QBUFSZ - 1,
 			flags.initrole, flags.initrace, flags.descendant, flags.initgend, flags.initalign);
@@ -516,7 +516,7 @@ give_up:	/* Quit */
 			goto give_up;		/* Selected quit */
 
 		    k = selected[0].item.a_int - 1;
-		    free((genericptr_t) selected),	selected = 0;
+		    free((void *) selected),	selected = 0;
 		}
 		flags.initrace = k;
 	    }
@@ -587,7 +587,7 @@ give_up:	/* Quit */
 			goto give_up;		/* Selected quit */
 
 		    k = selected[0].item.a_int - 1;
-		    free((genericptr_t) selected),	selected = 0;
+		    free((void *) selected),	selected = 0;
 		}
 		flags.initgend = k;
 	    }
@@ -660,7 +660,7 @@ give_up:	/* Quit */
 			goto give_up;		/* Selected quit */
 
 		    k = selected[0].item.a_int - 1;
-		    free((genericptr_t) selected),	selected = 0;
+		    free((void *) selected),	selected = 0;
 		}
 		flags.initalign = k;
 	    }
@@ -731,7 +731,7 @@ give_up:	/* Quit */
 			goto give_up;		/* Selected quit */
 
 		    k = selected[0].item.a_int - 1;
-		    free((genericptr_t) selected),	selected = 0;
+		    free((void *) selected),	selected = 0;
 		}
 		flags.initspecies = k;
 	    }
@@ -769,7 +769,7 @@ give_up:	/* Quit */
 			goto give_up;		/* Selected quit */
 
 		k = selected[0].item.a_int - 1;
-		free((genericptr_t) selected),	selected = 0;
+		free((void *) selected),	selected = 0;
 		flags.descendant = k;
 	    }
 	    (void)  root_plselection_prompt(plbuf, QBUFSZ - 1,
@@ -883,7 +883,7 @@ tty_exit_nhwindows(const char *str)
 	if (wins[i] && (i != BASE_WINDOW)) {
 #ifdef FREE_ALL_MEMORY
 	    free_window_info(wins[i], TRUE);
-	    free((genericptr_t) wins[i]);
+	    free((void *) wins[i]);
 #endif
 	    wins[i] = 0;
 	}
@@ -1021,14 +1021,14 @@ free_window_info(struct WinDesc *cw, boolean free_data)
 	    cw->maxrow = cw->rows;		/* topl data */
 	for(i=0; i<cw->maxrow; i++)
 	    if(cw->data[i]) {
-		free((genericptr_t)cw->data[i]);
+		free((void *)cw->data[i]);
 		cw->data[i] = (char *)0;
 		if (cw->datlen) cw->datlen[i] = 0;
 	    }
 	if (free_data) {
-	    free((genericptr_t)cw->data);
+	    free((void *)cw->data);
 	    cw->data = (char **)0;
-	    if (cw->datlen) free((genericptr_t)cw->datlen);
+	    if (cw->datlen) free((void *)cw->datlen);
 	    cw->datlen = (short *)0;
 	    cw->rows = 0;
 	}
@@ -1038,17 +1038,17 @@ free_window_info(struct WinDesc *cw, boolean free_data)
 	tty_menu_item *temp;
 	while ((temp = cw->mlist) != 0) {
 	    cw->mlist = cw->mlist->next;
-	    if (temp->str) free((genericptr_t)temp->str);
-	    free((genericptr_t)temp);
+	    if (temp->str) free((void *)temp->str);
+	    free((void *)temp);
 	}
     }
     if (cw->plist) {
-	free((genericptr_t)cw->plist);
+	free((void *)cw->plist);
 	cw->plist = 0;
     }
     cw->plist_size = cw->npages = cw->nitems = cw->how = 0;
     if(cw->morestr) {
-	free((genericptr_t)cw->morestr);
+	free((void *)cw->morestr);
 	cw->morestr = 0;
     }
 }
@@ -1564,7 +1564,7 @@ process_menu_window(winid window, struct WinDesc *cw)
 
     } /* while */
     cw->morestr = msave;
-    free((genericptr_t)morestr);
+    free((void *)morestr);
 }
 
 static void
@@ -1751,7 +1751,7 @@ tty_destroy_nhwindow(winid window)
 	clear_screen();
 
     free_window_info(cw, TRUE);
-    free((genericptr_t)cw);
+    free((void *)cw);
     wins[window] = 0;
 }
 
@@ -1993,7 +1993,7 @@ tty_putstr(winid window, int attr, const char *str)
 	    tty_display_nhwindow(window, TRUE);
 	    for(i=0; i<cw->maxrow; i++)
 		if(cw->data[i]){
-		    free((genericptr_t)cw->data[i]);
+		    free((void *)cw->data[i]);
 		    cw->data[i] = 0;
 		}
 	    cw->maxrow = cw->cury = 0;
@@ -2007,14 +2007,14 @@ tty_putstr(winid window, int attr, const char *str)
 	    for(i=0; i<cw->maxrow; i++)
 		tmp[i] = cw->data[i];
 	    if(cw->data)
-		free((genericptr_t)cw->data);
+		free((void *)cw->data);
 	    cw->data = tmp;
 
 	    for(i=cw->maxrow; i<cw->rows; i++)
 		cw->data[i] = 0;
 	}
 	if(cw->data[cw->cury])
-	    free((genericptr_t)cw->data[cw->cury]);
+	    free((void *)cw->data[cw->cury]);
 	n0 = strlen(str) + 1;
 	ob = cw->data[cw->cury] = (char *)alloc((unsigned)n0 + 1);
 	*ob++ = (char)(attr + 1);	/* avoid nuls, for convenience */
@@ -2214,7 +2214,7 @@ tty_end_menu(winid window, const char *prompt)
 
     /* make sure page list is large enough */
     if (cw->plist_size < cw->npages+1 /*need 1 slot beyond last*/) {
-	if (cw->plist) free((genericptr_t)cw->plist);
+	if (cw->plist) free((void *)cw->plist);
 	cw->plist_size = cw->npages + 1;
 	cw->plist = (tty_menu_item **)
 			alloc(cw->plist_size * sizeof(tty_menu_item *));
@@ -2663,7 +2663,7 @@ tty_nhgetch(void)
     } else {
 #ifdef UNIX
     i = ((++nesting == 1) ? tgetch() :
-	 (read(fileno(stdin), (genericptr_t)&nestbuf,1) == 1 ? (int)nestbuf :
+	 (read(fileno(stdin), (void *)&nestbuf,1) == 1 ? (int)nestbuf :
 								EOF));
     --nesting;
 #else

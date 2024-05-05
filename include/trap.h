@@ -35,7 +35,7 @@ struct trap {
 
 extern struct trap *ftrap;
 #define newtrap()	(struct trap *) alloc(sizeof(struct trap))
-#define dealloc_trap(trap) free((genericptr_t) (trap))
+#define dealloc_trap(trap) free((void *) (trap))
 
 /* what vl to use */
 #define trapv_launch(ttyp)	((ttyp) == ROLLING_BOULDER_TRAP)

@@ -13,7 +13,7 @@ boolean
 a_star(int x, int y, int gx, int gy, long mmflags, int max_length, struct pathNode **path)
 {
 	struct mapNode closed[COLNO][ROWNO];
-	(void) memset((genericptr_t) closed, 0, sizeof(closed));
+	(void) memset((void *) closed, 0, sizeof(closed));
 	int hx, hy;
 	int i, j;
 	int nxtx, nxty;

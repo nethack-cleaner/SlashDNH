@@ -372,8 +372,8 @@ init_artifacts(void)
 	artidisco = malloc(sizeof(int) * (nrofartifacts));
 	artilist = malloc(sizeof(struct artifact) * (1+nrofartifacts+1));
 	
-	(void) memset((genericptr_t) artinstance, 0, sizeof(struct artinstance) * (1+nrofartifacts+1));
-	(void) memset((genericptr_t) artidisco, 0, sizeof(int) * (nrofartifacts));
+	(void) memset((void *) artinstance, 0, sizeof(struct artinstance) * (1+nrofartifacts+1));
+	(void) memset((void *) artidisco, 0, sizeof(int) * (nrofartifacts));
 	memcpy(artilist, base_artilist, sizeof(struct artifact) * (1+nrofartifacts+1));
 	hack_artifacts();
 }
@@ -381,12 +381,12 @@ init_artifacts(void)
 void
 save_artifacts(int fd)
 {
-	bwrite(fd, (genericptr_t) &nrofartifacts, sizeof(int));
-	bwrite(fd, (genericptr_t) artinstance, sizeof(struct artinstance) * (1+nrofartifacts+1));
-	bwrite(fd, (genericptr_t) artidisco, sizeof(int) * (nrofartifacts));
-	bwrite(fd, (genericptr_t) artilist, sizeof(struct artifact) * (1+nrofartifacts+1));
+	bwrite(fd, (void *) &nrofartifacts, sizeof(int));
+	bwrite(fd, (void *) artinstance, sizeof(struct artinstance) * (1+nrofartifacts+1));
+	bwrite(fd, (void *) artidisco, sizeof(int) * (nrofartifacts));
+	bwrite(fd, (void *) artilist, sizeof(struct artifact) * (1+nrofartifacts+1));
 	if(nrofartifacts > NROFARTIFACTS) {
-		bwrite(fd, (genericptr_t) artiextranames, sizeof(char)*PL_PSIZ*(nrofartifacts - NROFARTIFACTS));
+		bwrite(fd, (void *) artiextranames, sizeof(char)*PL_PSIZ*(nrofartifacts - NROFARTIFACTS));
 	}
 }
 
@@ -394,14 +394,14 @@ void
 restore_artifacts(int fd)
 {
 	extern const struct artifact base_artilist[];
-	mread(fd, (genericptr_t) &nrofartifacts, sizeof(int));
+	mread(fd, (void *) &nrofartifacts, sizeof(int));
 
 	artinstance = malloc(sizeof(struct artinstance) * (1+nrofartifacts+1));
 	artidisco = malloc(sizeof(int) * (nrofartifacts));
 	artilist = malloc(sizeof(struct artifact) * (1+nrofartifacts+1));
-	mread(fd, (genericptr_t) artinstance, sizeof(struct artinstance) * (1+nrofartifacts+1));
-	mread(fd, (genericptr_t) artidisco, sizeof(int) * (nrofartifacts));
-	mread(fd, (genericptr_t) artilist, sizeof(struct artifact) * (1+nrofartifacts+1));
+	mread(fd, (void *) artinstance, sizeof(struct artinstance) * (1+nrofartifacts+1));
+	mread(fd, (void *) artidisco, sizeof(int) * (nrofartifacts));
+	mread(fd, (void *) artilist, sizeof(struct artifact) * (1+nrofartifacts+1));
 	/*Fixup name pointers*/
 	for(int i = 0; i <= NROFARTIFACTS; i++){
 		artilist[i].name = base_artilist[i].name;
@@ -412,7 +412,7 @@ restore_artifacts(int fd)
 		int i, j;
 		for(i=NROFARTIFACTS, j=0; i < nrofartifacts; i++, j++) {
 			artiextranames[j] = malloc(sizeof(char)*PL_PSIZ);
-			mread(fd, (genericptr_t) artiextranames[j], sizeof(char)*PL_PSIZ);
+			mread(fd, (void *) artiextranames[j], sizeof(char)*PL_PSIZ);
 			artilist[i+1].name = artiextranames[j];
 		}
 	}
@@ -467,13 +467,13 @@ add_artifact(void)
 	}
 
 	/* fill with default values */
-	memset((genericptr_t) &(artinstance[nrofartifacts]), 0, sizeof(struct artinstance));
+	memset((void *) &(artinstance[nrofartifacts]), 0, sizeof(struct artinstance));
 	artidisco[nrofartifacts-1] = 0;
-	memcpy((genericptr_t) &(artilist[nrofartifacts]), (genericptr_t)artilist, sizeof(struct artifact));
+	memcpy((void *) &(artilist[nrofartifacts]), (void *)artilist, sizeof(struct artifact));
 	artilist[nrofartifacts].name = artiextranames[nrofartifacts-NROFARTIFACTS-1];
 	// name will be written front-forwards and we don't have to worry about old data
 	/* re-zero terminator */
-	memset((genericptr_t) &(artilist[nrofartifacts+1]), 0, sizeof(struct artifact));
+	memset((void *) &(artilist[nrofartifacts+1]), 0, sizeof(struct artifact));
 
 	return &(artilist[nrofartifacts]);
 }
@@ -11009,8 +11009,8 @@ arti_invoke(struct obj *obj)
 								mtmp->m_lev = 27;
 								mtmp->mhpmax = hd_size(mtmp->data)*26 + rn2(hd_size(mtmp->data));
 								mtmp->mhp = mtmp->mhpmax;
-								do_clear_area(mtmp->mx,mtmp->my, 4, set_lit, (genericptr_t)0);
-								do_clear_area(u.ux,u.uy, 4, set_lit, (genericptr_t)0);
+								do_clear_area(mtmp->mx,mtmp->my, 4, set_lit, (void *)0);
+								do_clear_area(u.ux,u.uy, 4, set_lit, (void *)0);
 								doredraw();
 								if(flags.verbose) You("are frightened to death, and unable to move.");
 								nomul(-4, "being frightened to death");

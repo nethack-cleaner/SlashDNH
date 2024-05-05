@@ -2540,7 +2540,7 @@ jump(int magic) /* 0=Physical, otherwise skill level */
 	    if (temp < 0) temp = -temp;
 	    if (range < temp)
 		range = temp;
-	    (void) walk_path(&uc, &cc, hurtle_step, (genericptr_t)&range);
+	    (void) walk_path(&uc, &cc, hurtle_step, (void *)&range);
 
 	    teleds(cc.x, cc.y, TRUE);
 	    nomul(-1, "jumping around");
@@ -2899,7 +2899,7 @@ use_unicorn_horn(struct obj *obj)
  * Timer callback routine: turn figurine into monster
  */
 void
-fig_transform(genericptr_t arg, long timeout)
+fig_transform(void * arg, long timeout)
 {
 	struct obj *figurine = (struct obj *)arg;
 	struct monst *mtmp;
@@ -2924,7 +2924,7 @@ fig_transform(genericptr_t arg, long timeout)
 	    !figurine_location_checks(figurine,&cc, TRUE)) {
 		/* reset the timer to try again later */
 		(void) start_timer((long)rnd(5000), TIMER_OBJECT,
-				FIG_TRANSFORM, (genericptr_t)figurine);
+				FIG_TRANSFORM, (void *)figurine);
 		return;
 	}
 
@@ -3155,7 +3155,7 @@ x_uses_crystal_skull(struct obj **optr, struct monst *master, coord *cc)
 			mtmp = christen_monst(mtmp, ONAME(obj));
 		mtmp->movement = NORMAL_SPEED;
 		add_mx(mtmp, MX_ESUM);
-		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (genericptr_t)mtmp);
+		start_timer(ESUMMON_PERMANENT, TIMER_MONSTER, DESUMMON_MON, (void *)mtmp);
 		for(oinv = obj->cobj; oinv; oinv = oinv->nobj){
 			//Invalid items that are in the skull (possibly as a result of special cases) are skipped and handled later.
 			if(oinv->otyp == TREPHINATION_KIT || ensouled_item(oinv))
@@ -5136,7 +5136,7 @@ use_grapple(struct obj *obj)
 			rn2(P_SKILL(typ) > P_SKILLED ? 20 : 2)
 		)
 			tohit = selected[0].item.a_int - 1;
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 	    destroy_nhwindow(tmpwin);
 	}
 
@@ -5238,11 +5238,11 @@ use_crook(struct obj *obj)
 			tohit = selected[0].item.a_int - 1;
 		}
 		else {
-			free((genericptr_t)selected);
+			free((void *)selected);
 			destroy_nhwindow(tmpwin);
 			return MOVE_CANCELLED;
 		}
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 	    destroy_nhwindow(tmpwin);
 	}
 

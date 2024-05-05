@@ -9294,7 +9294,7 @@ save_room(int fd, struct mkroom *r)
 	 * of writing the whole structure. That is I should not write
 	 * the subrooms pointers, but who cares ?
 	 */
-	bwrite(fd, (genericptr_t) r, sizeof(struct mkroom));
+	bwrite(fd, (void *) r, sizeof(struct mkroom));
 	for(i=0; i<r->nsubrooms; i++)
 	    save_room(fd, r->sbrooms[i]);
 }
@@ -9309,7 +9309,7 @@ save_rooms(int fd)
 	short i;
 
 	/* First, write the number of rooms */
-	bwrite(fd, (genericptr_t) &nroom, sizeof(nroom));
+	bwrite(fd, (void *) &nroom, sizeof(nroom));
 	for(i=0; i<nroom; i++)
 	    save_room(fd, &rooms[i]);
 }
@@ -9319,7 +9319,7 @@ rest_room(int fd, struct mkroom *r)
 {
 	short i;
 
-	mread(fd, (genericptr_t) r, sizeof(struct mkroom));
+	mread(fd, (void *) r, sizeof(struct mkroom));
 	for(i=0; i<r->nsubrooms; i++) {
 		r->sbrooms[i] = &subrooms[nsubroom];
 		rest_room(fd, &subrooms[nsubroom]);
@@ -9337,7 +9337,7 @@ rest_rooms(int fd)
 {
 	short i;
 
-	mread(fd, (genericptr_t) &nroom, sizeof(nroom));
+	mread(fd, (void *) &nroom, sizeof(nroom));
 	nsubroom = 0;
 	for(i = 0; i<nroom; i++) {
 	    rest_room(fd, &rooms[i]);

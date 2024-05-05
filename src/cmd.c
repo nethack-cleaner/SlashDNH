@@ -372,7 +372,7 @@ extcmd_via_menu(void)	/* here after # - now show pick-list of possible commands 
 	    destroy_nhwindow(win);
 	    if (n==1) {
 		if (matchlevel > (QBUFSZ - 2)) {
-			free((genericptr_t)pick_list);
+			free((void *)pick_list);
 #ifdef DEBUG
 			impossible("Too many characters (%d) entered in extcmd_via_menu()",
 				matchlevel);
@@ -381,7 +381,7 @@ extcmd_via_menu(void)	/* here after # - now show pick-list of possible commands 
 		} else {
 			cbuf[matchlevel++] = pick_list[0].item.a_char;
 			cbuf[matchlevel] = '\0';
-			free((genericptr_t)pick_list);
+			free((void *)pick_list);
 		}
 	    } else {
 		if (matchlevel) {
@@ -2248,7 +2248,7 @@ wiz_makemap(void)
 	    reset_pick();
 
 	if (on_level(&digging.level, &u.uz))
-	    (void) memset((genericptr_t) &digging, 0, sizeof (struct dig_info));
+	    (void) memset((void *) &digging, 0, sizeof (struct dig_info));
 	iflags.travelcc.x = iflags.travelcc.y = -1;
 
 	u.utrap = 0;
@@ -2658,7 +2658,7 @@ do_naming(int typ)
 
       if (pick_list) {
 	n = (pick_list[0].item.a_int - 1);
-	free((genericptr_t) pick_list);
+	free((void *) pick_list);
       } else return MOVE_CANCELLED;
     } else {
       n = (typ - 1);
@@ -4461,7 +4461,7 @@ wiz_port_debug(void)
 		destroy_nhwindow(win);
 		if (n > 0) {
 			n = pick_list[0].item.a_int - 1;
-			free((genericptr_t) pick_list);
+			free((void *) pick_list);
 			/* execute the function */
 			(*menu_selections[n].fn)();
 		}

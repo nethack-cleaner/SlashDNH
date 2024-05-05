@@ -33,7 +33,7 @@ static void FDECL(p_glow2,(struct obj *,const char *));
 static void FDECL(randomize,(int *, int));
 static void FDECL(forget_single_object, (int));
 static void FDECL(maybe_tame, (struct monst *,struct obj *));
-static void FDECL(ranged_set_lightsources, (int, int, genericptr_t));
+static void FDECL(ranged_set_lightsources, (int, int, void *));
 static int FDECL(read_tile, (struct obj *));
 static int FDECL(study_word, (struct obj *));
 static int NDECL(learn_word);
@@ -1523,7 +1523,7 @@ forget_single_object(int obj_id)
 	objects[obj_id].oc_name_known = 0;
 	objects[obj_id].oc_pre_discovered = 0;	/* a discovery when relearned */
 	if (objects[obj_id].oc_uname) {
-	    free((genericptr_t)objects[obj_id].oc_uname);
+	    free((void *)objects[obj_id].oc_uname);
 	    objects[obj_id].oc_uname = 0;
 	}
 	undiscover_object(obj_id);	/* after clearing oc_name_known */
@@ -3056,7 +3056,7 @@ wand_explode(register struct obj *obj)
  * Low-level lit-field update routine.
  */
 void
-set_lit(int x, int y, genericptr_t val)
+set_lit(int x, int y, void * val)
 {
 	if (val)
 	    levl[x][y].lit = 1;
@@ -3069,7 +3069,7 @@ set_lit(int x, int y, genericptr_t val)
 // lights/snuffs simple lightsources lying at the location, lighting assumes this is triggered by the player for shk purposes
 // this could also be added to set_lit, I suppose
 void
-ranged_set_lightsources(int x, int y, genericptr_t val)
+ranged_set_lightsources(int x, int y, void * val)
 {
 	if (val) {
 		struct obj *ispe = mksobj(SPE_LIGHT, NO_MKOBJ_FLAGS);
@@ -3152,7 +3152,7 @@ do_it:
 		for(rx = rooms[rnum].lx-1; rx <= rooms[rnum].hx+1; rx++)
 		    for(ry = rooms[rnum].ly-1; ry <= rooms[rnum].hy+1; ry++)
 			set_lit(rx, ry,
-				(genericptr_t)(on ? &is_lit : (char *)0));
+				(void *)(on ? &is_lit : (char *)0));
 		rooms[rnum].rlit = on;
 	    }
 	    /* hallways remain dark on the rogue level */
@@ -3160,7 +3160,7 @@ do_it:
 #endif
 	    do_clear_area(u.ux,u.uy,
 		((obj && obj->oclass==SCROLL_CLASS && obj->blessed) ? 9 : 5) * (permanent_darkness ? 3 : 2) / 2, permanent_darkness ? ranged_set_lightsources :
-		set_lit, (genericptr_t)(on ? &is_lit : (char *)0));
+		set_lit, (void *)(on ? &is_lit : (char *)0));
 
 	/*
 	 *  If we are not blind, then force a redraw on all positions in sight

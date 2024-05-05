@@ -633,8 +633,8 @@ savebones(struct obj *corpse)
 	c = (char) (strlen(bonesid) + 1);
 
 	store_version(fd);
-	bwrite(fd, (genericptr_t) &c, sizeof c);
-	bwrite(fd, (genericptr_t) bonesid, (unsigned) c);	/* DD.nnn */
+	bwrite(fd, (void *) &c, sizeof c);
+	bwrite(fd, (void *) bonesid, (unsigned) c);	/* DD.nnn */
 	savefruitchn(fd, WRITE_SAVE | FREE_SAVE);
 	update_mlstmv();	/* update monsters for eventual restoration */
 	savelev(fd, ledger_no(&u.uz), WRITE_SAVE | FREE_SAVE);
@@ -680,8 +680,8 @@ getbones(void)
 			}
 		}
 #endif
-		mread(fd, (genericptr_t) &c, sizeof c);	/* length incl. '\0' */
-		mread(fd, (genericptr_t) oldbonesid, (unsigned) c); /* DD.nnn */
+		mread(fd, (void *) &c, sizeof c);	/* length incl. '\0' */
+		mread(fd, (void *) oldbonesid, (unsigned) c); /* DD.nnn */
 		if (strcmp(bonesid, oldbonesid) != 0) {
 			char errbuf[BUFSZ];
 

@@ -1405,7 +1405,7 @@ dochug(register struct monst *mtmp)
 			pline("The darkness hurts!");
 			mdamageu(mtmp,d(8,levl[u.ux][u.uy].lit?4:2));
 		}
-	    do_clear_area(mtmp->mx,mtmp->my, 5, set_lit, (genericptr_t)0);
+	    do_clear_area(mtmp->mx,mtmp->my, 5, set_lit, (void *)0);
 		vision_full_recalc = 1;
 	    if(mtmp->mtyp == PM_HEDROW_WARRIOR) mtmp->mspec_used += d(4,4);
 		else mtmp->mspec_used += max(10 - mtmp->m_lev,2);
@@ -1440,7 +1440,7 @@ dochug(register struct monst *mtmp)
 		 * it is or isn't a null ptr, and if it isn't, illuminates, so we get this horrible looking code that
 		 * technically works exactly as it should.
 		 */
-	    do_clear_area(mtmp->mx,mtmp->my, 5, set_lit, (genericptr_t)1);
+	    do_clear_area(mtmp->mx,mtmp->my, 5, set_lit, (void *)1);
 		vision_full_recalc = 1;
 		if(cansee(mtmp->mx,mtmp->my) && !resists_blnd(&youmonst)){
 			You("are blinded by %s radiance!", s_suffix(mon_nam(mtmp)));

@@ -1940,7 +1940,7 @@ menu_identify(int id_limit)
 			u.uconduct.IDs++;
 		}
 	    first = 0;
-	    free((genericptr_t) pick_list);
+	    free((void *) pick_list);
 	    mark_synch(); /* Before we loop to pop open another menu */
 	} else if (n < 0) {
 	    if (n == -1) pline("That was all.");
@@ -2121,7 +2121,7 @@ itemactions(struct obj *obj)
 	/* (a)pply: tools, eucalyptus, cream pie, oil, hooks/whips
 	   Exceptions: applying stones is on V; breaking wands is on V;
 	   equipment-tools are on W; tin openers are on w. */
-	any.a_void = (genericptr_t)doapply;
+	any.a_void = (void *)doapply;
 	/* Rather a mess for 'a', as it means so many different things
 	   with so many different objects */
 	if (obj->otyp == CREAM_PIE)
@@ -2199,7 +2199,7 @@ itemactions(struct obj *obj)
 				"Light or extinguish this oil", MENU_UNSELECTED);
 #if 0 /* TODO */
 	else if (obj->oclass == POTION_CLASS) {
-		any.a_void = (genericptr_t) dodip;
+		any.a_void = (void *) dodip;
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Dip something into this potion", MENU_UNSELECTED);
 	}
@@ -2309,11 +2309,11 @@ itemactions(struct obj *obj)
 		add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE,
 				"Shatter this pyramid", MENU_UNSELECTED);
 	/* d: drop item, works on everything */
-	any.a_void = (genericptr_t)dodrop;
+	any.a_void = (void *)dodrop;
 	add_menu(win, NO_GLYPH, &any, 'd', 0, ATR_NONE,
 			"Drop this item", MENU_UNSELECTED);
 	/* e: eat item; eat.c provides is_edible to check */
-	any.a_void = (genericptr_t)doeat;
+	any.a_void = (void *)doeat;
 	if (obj->otyp == TIN && uwep && uwep->otyp == TIN_OPENER)
 		add_menu(win, NO_GLYPH, &any, 'e', 0, ATR_NONE,
 				"Open and eat this tin with your tin opener", MENU_UNSELECTED);
@@ -2324,7 +2324,7 @@ itemactions(struct obj *obj)
 		add_menu(win, NO_GLYPH, &any, 'e', 0, ATR_NONE,
 				"Eat this item", MENU_UNSELECTED);
 	/* E: engrave with item */
-	any.a_void = (genericptr_t)doengrave;
+	any.a_void = (void *)doengrave;
 	if (obj->otyp == TOWEL)
 		add_menu(win, NO_GLYPH, &any, 'E', 0, ATR_NONE,
 				"Wipe the floor with this towel", MENU_UNSELECTED);
@@ -2336,29 +2336,29 @@ itemactions(struct obj *obj)
 		add_menu(win, NO_GLYPH, &any, 'E', 0, ATR_NONE,
 				"Write on the floor with this object", MENU_UNSELECTED);
 	/* I: describe item, works on any items whose actual name is known */
-	any.a_void = (genericptr_t)dotypeinv;
+	any.a_void = (void *)dotypeinv;
 	if (objects[obj->otyp].oc_name_known)
 		add_menu(win, NO_GLYPH, &any, 'I', 0, ATR_NONE,
 				"Describe this item", MENU_UNSELECTED);
 	/* p: pay for unpaid items */
-	any.a_void = (genericptr_t)dopay;
+	any.a_void = (void *)dopay;
 	if ((mtmp = shop_keeper(*in_rooms(u.ux, u.uy, SHOPBASE))) &&
 			inhishop(mtmp) && obj->unpaid)
 		add_menu(win, NO_GLYPH, &any, 'p', 0, ATR_NONE,
 				"Buy this unpaid item", MENU_UNSELECTED);
 	/* q: drink item; strangely, this one seems to have no exceptions */
-	any.a_void = (genericptr_t)dodrink;
+	any.a_void = (void *)dodrink;
 	if (obj->oclass == POTION_CLASS)
 		add_menu(win, NO_GLYPH, &any, 'q', 0, ATR_NONE,
 				"Quaff this potion", MENU_UNSELECTED);
 	/* Q: quiver throwable item
 	   (Why are weapons not designed for throwing included, I wonder?) */
-	any.a_void= (genericptr_t)dowieldquiver;
+	any.a_void= (void *)dowieldquiver;
 	if (obj->oclass == GEM_CLASS || obj->oclass == WEAPON_CLASS)
 		add_menu(win, NO_GLYPH, &any, 'Q', 0, ATR_NONE,
 				"Quiver this item for easy throwing", MENU_UNSELECTED);
 	/* r: read item */
-	any.a_void = (genericptr_t)doread;
+	any.a_void = (void *)doread;
 	if (obj->otyp == FORTUNE_COOKIE)
 		add_menu(win, NO_GLYPH, &any, 'r', 0, ATR_NONE,
 				"Read the message inside this cookie", MENU_UNSELECTED);
@@ -2410,7 +2410,7 @@ itemactions(struct obj *obj)
 				add_menu(win, NO_GLYPH, &any, 'r', 0, ATR_NONE,
 				(mvitals[PM_ACERERAK].died > 0) ? "Inspect the twin blades" : "Inspect the blade", MENU_UNSELECTED);
 	/* R: rub */
-	any.a_void = (genericptr_t)dorub;
+	any.a_void = (void *)dorub;
 	if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP)
 		add_menu(win, NO_GLYPH, &any, 'R', 0, ATR_NONE,
 				"Rub this lamp", MENU_UNSELECTED);
@@ -2423,20 +2423,20 @@ itemactions(struct obj *obj)
 				"Rub something on this stone", MENU_UNSELECTED);
 #endif
 	/* t: throw item, works on everything */
-	any.a_void = (genericptr_t)dothrow;
+	any.a_void = (void *)dothrow;
 	add_menu(win, NO_GLYPH, &any, 't', 0, ATR_NONE,
 			"Throw this item", MENU_UNSELECTED);
 	/* T: unequip worn item */
 	if ((obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL))) {
 	    if ((obj->owornmask & (W_ARMOR)))
-		any.a_void = (genericptr_t)dotakeoff;
+		any.a_void = (void *)dotakeoff;
 	    if ((obj->owornmask & (W_RING | W_AMUL | W_TOOL)))
-		any.a_void = (genericptr_t)doremring;
+		any.a_void = (void *)doremring;
 	    add_menu(win, NO_GLYPH, &any, 'T', 0, ATR_NONE,
 		     "Unequip this equipment", MENU_UNSELECTED);
 	}
 	/* V: invoke, rub, or break */
-	any.a_void = (genericptr_t)doinvoke;
+	any.a_void = (void *)doinvoke;
 	if ((obj->otyp == FAKE_AMULET_OF_YENDOR && !obj->known) ||
 			obj->oartifact || objects[obj->otyp].oc_unique ||
 			(obj->otyp == RIN_WISHES && objects[obj->otyp].oc_name_known && (obj->owornmask & W_RING)) ||
@@ -2447,7 +2447,7 @@ itemactions(struct obj *obj)
 	/* w: hold in hands, works on everything but with different
 	   advice text; not mentioned for things that are already
 	   wielded */
-	any.a_void = (genericptr_t)dowield;
+	any.a_void = (void *)dowield;
 	if (obj == uwep) {}
 	else if (obj->oclass == WEAPON_CLASS || is_weptool(obj))
 		add_menu(win, NO_GLYPH, &any, 'w', 0, ATR_NONE,
@@ -2460,42 +2460,42 @@ itemactions(struct obj *obj)
 				"Hold this item in your hands", MENU_UNSELECTED);
 	/* W: Equip this item */
 	if (!(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL))) {
-	    any.a_void = (genericptr_t)dowear;
+	    any.a_void = (void *)dowear;
 	    if (obj->oclass == ARMOR_CLASS)
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Wear this armor", MENU_UNSELECTED);
 	    else if (obj->oclass == RING_CLASS || obj->otyp == MEAT_RING) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put this ring on", MENU_UNSELECTED);
 	    } else if (obj->oclass == AMULET_CLASS) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put this amulet on", MENU_UNSELECTED);
 	    } else if (obj->otyp == TOWEL || obj->otyp == BLINDFOLD || obj->otyp == R_LYEHIAN_FACEPLATE || obj->otyp == ANDROID_VISOR) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Use this to blindfold yourself", MENU_UNSELECTED);
 	    } else if (obj->otyp == LENSES || obj->otyp == SUNGLASSES) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put these lenses on", MENU_UNSELECTED);
 	    } else if (obj->otyp == SOUL_LENS) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put this lens on", MENU_UNSELECTED);
 	    } else if (obj->otyp == MASK || obj->otyp == LIVING_MASK) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put this mask on", MENU_UNSELECTED);
 	    } else if (obj->otyp == NIGHT_VISION_GOGGLES) {
-		any.a_void = (genericptr_t)doputon;
+		any.a_void = (void *)doputon;
 		add_menu(win, NO_GLYPH, &any, 'W', 0, ATR_NONE,
 				"Put these goggles on", MENU_UNSELECTED);
 	    }
 	}
 	/* x: Swap main and readied weapon */
-	any.a_void = (genericptr_t)doswapweapon;
+	any.a_void = (void *)doswapweapon;
 	if (obj == uwep && uswapwep)
 		add_menu(win, NO_GLYPH, &any, 'x', 0, ATR_NONE,
 				"Swap this with your alternate weapon", MENU_UNSELECTED);
@@ -2506,13 +2506,13 @@ itemactions(struct obj *obj)
 		add_menu(win, NO_GLYPH, &any, 'x', 0, ATR_NONE,
 				"Swap this with your main weapon", MENU_UNSELECTED);
 	/* z: Zap wand */
-	any.a_void = (genericptr_t)dozap;
+	any.a_void = (void *)dozap;
 	if (obj->oclass == WAND_CLASS)
 		add_menu(win, NO_GLYPH, &any, 'z', 0, ATR_NONE,
 				"Zap this wand to release its magic", MENU_UNSELECTED);
 	/* S: Sacrifice object (should be > but that causes problems) */
 #if 0 /* TODO */
-	any.a_void = (genericptr_t)doterrain;
+	any.a_void = (void *)doterrain;
 	if (IS_ALTAR(levl[u.ux][u.uy].typ) && !u.uswallow) {
 		if (obj->otyp == CORPSE)
 			add_menu(win, NO_GLYPH, &any, 'S', 0, ATR_NONE,
@@ -2530,7 +2530,7 @@ itemactions(struct obj *obj)
 	n = select_menu(win, PICK_ONE, &selected);
 	destroy_nhwindow(win);
 	if (n == 1) feedback_fn = (int NDECL((*)))selected[0].item.a_void;
-	if (n == 1) free((genericptr_t) selected);
+	if (n == 1) free((void *) selected);
 
 	if (!feedback_fn) return 0;
 #if 0
@@ -4642,7 +4642,7 @@ nextclass:
 	if (n > 0) {
 	    ret = selected[0].item.a_char;
 	    if (out_cnt) *out_cnt = selected[0].count;
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 	} else
 	    ret = !n ? '\0' : '\033';	/* cancelled */
 #ifdef DUMP_LOG
@@ -4884,7 +4884,7 @@ dotypeinv(void)
 		n = query_category(prompt, invent, i, &pick_list, PICK_ONE);
 		if (!n) return MOVE_CANCELLED;
 		this_type = c = pick_list[0].item.a_int;
-		free((genericptr_t) pick_list);
+		free((void *) pick_list);
 	    }
 	}
 	if (traditional) {
@@ -4960,7 +4960,7 @@ dotypeinv(void)
 	if (query_objlist((char *) 0, invent,
 		    (flags.invlet_constant ? USE_INVLET : 0)|INVORDER_SORT,
 		    &pick_list, PICK_NONE, this_type_only) > 0)
-	    free((genericptr_t)pick_list);
+	    free((void *)pick_list);
 	return MOVE_CANCELLED;
 }
 
@@ -5535,7 +5535,7 @@ let_to_name(char let, boolean unpaid, boolean showsym)
 
 	len = strlen(class_name) + (unpaid ? sizeof "unpaid_" : sizeof "") + 10;
 	if (len > invbufsiz) {
-	    if (invbuf) free((genericptr_t)invbuf);
+	    if (invbuf) free((void *)invbuf);
 	    invbufsiz = len + 10; /* add slop to reduce incremental realloc */
 	    invbuf = (char *) alloc(invbufsiz);
 	}
@@ -5559,7 +5559,7 @@ rand_class_name(void)
 	   class_name = bogusclasses[name];
 	   len = strlen(class_name);
 	   if (len > invbufsiz) {
-			if (invbuf) free((genericptr_t)invbuf);
+			if (invbuf) free((void *)invbuf);
 			invbufsiz = len + 10; /* add slop to reduce incremental realloc */
 			invbuf = (char *) alloc(invbufsiz);
 	   }
@@ -5570,7 +5570,7 @@ rand_class_name(void)
 void
 free_invbuf(void)
 {
-	if (invbuf) free((genericptr_t)invbuf),  invbuf = (char *)0;
+	if (invbuf) free((void *)invbuf),  invbuf = (char *)0;
 	invbufsiz = 0;
 }
 
@@ -5836,7 +5836,7 @@ invdisp_nothing(const char *hdr, const char *txt)
 	add_menu(win, NO_GLYPH, &any, 0, 0, ATR_NONE, txt, MENU_UNSELECTED);
 	end_menu(win, (char *)0);
 	if (select_menu(win, PICK_NONE, &selected) > 0)
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 	destroy_nhwindow(win);
 	return;
 }
@@ -5929,7 +5929,7 @@ display_minventory(struct monst *mon, int dflags, char *title)
 
 	if (n > 0) {
 	    ret = selected[0].item.a_obj;
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 #ifndef GOLDOBJ
 	    /*
 	     * Unfortunately, we can't return a pointer to our temporary
@@ -5966,7 +5966,7 @@ display_cinventory(struct obj *obj)
 	}
 	if (n > 0) {
 	    ret = selected[0].item.a_obj;
-	    free((genericptr_t)selected);
+	    free((void *)selected);
 	} else
 	    ret = (struct obj *) 0;
 	return ret;
@@ -6007,7 +6007,7 @@ display_binventory(int x, int y, boolean as_if_seen)
 	    if (query_objlist("Things that are buried here:",
 			      level.buriedobjlist, INVORDER_SORT,
 			      &selected, PICK_NONE, only_here) > 0)
-		free((genericptr_t)selected);
+		free((void *)selected);
 	    only.x = only.y = 0;
 	}
 	return n;

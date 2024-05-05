@@ -200,7 +200,7 @@ projectile(
 		if (thrownobj->oartifact)
 			delay += rnz(10);
 		stop_timer(RETURN_AMMO, thrownobj->timed);	// if it's already timed to do so, replace old timer
-		start_timer(delay, TIMER_OBJECT, RETURN_AMMO, (genericptr_t)thrownobj);
+		start_timer(delay, TIMER_OBJECT, RETURN_AMMO, (void *)thrownobj);
 	}
 
 	/* determine if thrownobj should return (like Mjollnir) */
@@ -3726,7 +3726,7 @@ mthrow(struct monst *magr, struct obj *ammo, struct obj *launcher, int tarx, int
  * returns arg (obj) to player's inventory
  */
 void
-return_ammo(genericptr_t arg, long timeout)
+return_ammo(void * arg, long timeout)
 {
 	struct obj *ammo = (struct obj *) arg;
 

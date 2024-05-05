@@ -274,7 +274,7 @@ static boolean FDECL(cursed_object_at, (int, int));
 
 static xchar gtyp, gx, gy;	/* type and position of dog's current goal */
 
-static void FDECL(wantdoor, (int, int, genericptr_t));
+static void FDECL(wantdoor, (int, int, void *));
 
 static boolean
 cursed_object_at(int x, int y)
@@ -947,7 +947,7 @@ dog_goal(struct monst *mtmp, struct edog *edog, int after, int udist, int whappr
 		    int fardist = FARAWAY * FARAWAY;
 		    gx = gy = FARAWAY; /* random */
 		    do_clear_area(omx, omy, 9, wantdoor,
-				  (genericptr_t)&fardist);
+				  (void *)&fardist);
 
 		    /* here gx == FARAWAY e.g. when dog is in a vault */
 		    if (gx == FARAWAY || (gx == omx && gy == omy)) {
@@ -1507,7 +1507,7 @@ can_reach_location(struct monst *mon, xchar mx, xchar my, xchar fx, xchar fy)
 
 /*ARGSUSED*/	/* do_clear_area client */
 static void
-wantdoor(int x, int y, genericptr_t distance)
+wantdoor(int x, int y, void * distance)
 {
     int ndist;
 

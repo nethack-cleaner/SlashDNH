@@ -10,7 +10,7 @@ static void NDECL(dowatersnakes);
 static void NDECL(dowaterdemon);
 static void NDECL(dowaternymph);
 static void NDECL(dolavademon);
-static void FDECL(gush, (int,int,genericptr_t));
+static void FDECL(gush, (int,int,void *));
 static void NDECL(dofindgem);
 static void FDECL(blowupforge, (int, int));
 
@@ -119,7 +119,7 @@ dogushforth( /* Gushing forth along LOS from (u.ux, u.uy) */
 {
 	int madepool = 0;
 
-	do_clear_area(u.ux, u.uy, 7, gush, (genericptr_t)&madepool);
+	do_clear_area(u.ux, u.uy, 7, gush, (void *)&madepool);
 	if (!madepool) {
 	    if (drinking)
 		Your("thirst is quenched.");
@@ -129,7 +129,7 @@ dogushforth( /* Gushing forth along LOS from (u.ux, u.uy) */
 }
 
 static void
-gush(int x, int y, genericptr_t poolcnt)
+gush(int x, int y, void * poolcnt)
 {
 	register struct monst *mtmp;
 	register struct trap *ttmp;

@@ -432,7 +432,7 @@ fixup_special(void)
 	    break;
 	}
 
-	if (r->rname.str) free((genericptr_t) r->rname.str),  r->rname.str = 0;
+	if (r->rname.str) free((void *) r->rname.str),  r->rname.str = 0;
     }
 
     /* place dungeon branch if not placed above */
@@ -1096,12 +1096,12 @@ fixup_special(void)
 	}
 	if(*str)
 	    pline("%s", str);
-	free((genericptr_t)lev_message);
+	free((void *)lev_message);
 	lev_message = 0;
     }
 
     if (lregions)
-	free((genericptr_t) lregions),  lregions = 0;
+	free((void *) lregions),  lregions = 0;
     num_lregions = 0;
 }
 
@@ -2117,7 +2117,7 @@ movebubbles(void)
 			    cons->x = x;
 			    cons->y = y;
 			    cons->what = CONS_OBJ;
-			    cons->list = (genericptr_t) olist;
+			    cons->list = (void *) olist;
 			    cons->next = b->cons;
 			    b->cons = cons;
 			}
@@ -2130,7 +2130,7 @@ movebubbles(void)
 			    cons->x = x;
 			    cons->y = y;
 			    cons->what = CONS_MON;
-			    cons->list = (genericptr_t) mon;
+			    cons->list = (void *) mon;
 
 			    cons->next = b->cons;
 			    b->cons = cons;
@@ -2151,7 +2151,7 @@ movebubbles(void)
 			    cons->x = x;
 			    cons->y = y;
 			    cons->what = CONS_HERO;
-			    cons->list = (genericptr_t) 0;
+			    cons->list = (void *) 0;
 
 			    cons->next = b->cons;
 			    b->cons = cons;
@@ -2164,7 +2164,7 @@ movebubbles(void)
 			    cons->x = x;
 			    cons->y = y;
 			    cons->what = CONS_TRAP;
-			    cons->list = (genericptr_t) btrap;
+			    cons->list = (void *) btrap;
 
 			    cons->next = b->cons;
 			    b->cons = cons;
@@ -2239,13 +2239,13 @@ save_waterlevel(int fd, int mode)
 	if (perform_bwrite(mode)) {
 	    int n = 0;
 	    for (b = bbubbles; b; b = b->next) ++n;
-	    bwrite(fd, (genericptr_t)&n, sizeof (int));
-	    bwrite(fd, (genericptr_t)&xmin, sizeof (int));
-	    bwrite(fd, (genericptr_t)&ymin, sizeof (int));
-	    bwrite(fd, (genericptr_t)&xmax, sizeof (int));
-	    bwrite(fd, (genericptr_t)&ymax, sizeof (int));
+	    bwrite(fd, (void *)&n, sizeof (int));
+	    bwrite(fd, (void *)&xmin, sizeof (int));
+	    bwrite(fd, (void *)&ymin, sizeof (int));
+	    bwrite(fd, (void *)&xmax, sizeof (int));
+	    bwrite(fd, (void *)&ymax, sizeof (int));
 	    for (b = bbubbles; b; b = b->next)
-		bwrite(fd, (genericptr_t)b, sizeof (struct bubble));
+		bwrite(fd, (void *)b, sizeof (struct bubble));
 	}
 	if (release_data(mode))
 	    unsetup_waterlevel();
@@ -2260,17 +2260,17 @@ restore_waterlevel(int fd)
 	if (!Is_waterlevel(&u.uz)) return;
 
 	set_wportal();
-	mread(fd,(genericptr_t)&n,sizeof(int));
-	mread(fd,(genericptr_t)&xmin,sizeof(int));
-	mread(fd,(genericptr_t)&ymin,sizeof(int));
-	mread(fd,(genericptr_t)&xmax,sizeof(int));
-	mread(fd,(genericptr_t)&ymax,sizeof(int));
+	mread(fd,(void *)&n,sizeof(int));
+	mread(fd,(void *)&xmin,sizeof(int));
+	mread(fd,(void *)&ymin,sizeof(int));
+	mread(fd,(void *)&xmax,sizeof(int));
+	mread(fd,(void *)&ymax,sizeof(int));
 	// pline("bubble size: %d",n);
 	if(n > 0){
 		for (i = 0; i < n; i++) {
 			btmp = b;
 			b = (struct bubble *)alloc(sizeof(struct bubble));
-			mread(fd,(genericptr_t)b,sizeof(struct bubble));
+			mread(fd,(void *)b,sizeof(struct bubble));
 			if (bbubbles) {
 				btmp->next = b;
 				b->prev = btmp;
@@ -2366,7 +2366,7 @@ unsetup_waterlevel(void)
 
 	for (b = bbubbles; b; b = bb) {
 		bb = b->next;
-		free((genericptr_t)b);
+		free((void *)b);
 	}
 	bbubbles = ebubbles = (struct bubble *)0;
 }
@@ -2410,7 +2410,7 @@ mk_bubble(int x, int y, int n)
 	b->dx = 1 - rn2(3);
 	b->dy = 1 - rn2(3);
     /* y dimension is the length of bitmap data - see bmask above */
-    (void) memcpy((genericptr_t) b->bm, (genericptr_t) bmask[n],
+    (void) memcpy((void *) b->bm, (void *) bmask[n],
                   (bmask[n][1] + 2) * sizeof(b->bm[0]));
 	b->cons = 0;
     if (!bbubbles)
@@ -2548,7 +2548,7 @@ mv_bubble(struct bubble *b, int dx, int dy, boolean ini)
 		    impossible("mv_bubble: unknown bubble contents");
 		    break;
 	    }
-	    free((genericptr_t)cons);
+	    free((void *)cons);
 	}
 	b->cons = 0;
 

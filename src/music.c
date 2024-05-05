@@ -626,7 +626,7 @@ songs_menu(struct obj *instr)
 	else
 		song = SNG_NONE;
 	/*  if (song > 0) song--; */
-	free((genericptr_t)selected);
+	free((void *)selected);
 	destroy_nhwindow(tmpwin);
 	
 	return song;

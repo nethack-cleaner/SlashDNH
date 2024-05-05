@@ -87,7 +87,7 @@ rem_mx(struct monst *mtmp, int mx_id)
 	}
 
 	/* dealloc mx_p */
-	free((genericptr_t)mx_p);
+	free((void *)mx_p);
 	mtmp->mextra_p->eindex[mx_id] = (void *)0;
 	
 	/* if all of mextra_p is 0, dealloc its mextra entirely */
@@ -98,7 +98,7 @@ rem_mx(struct monst *mtmp, int mx_id)
 			foundany = TRUE;
 	if (!foundany) {
 		/* dealloc mextra_p */
-		free((genericptr_t)(mtmp->mextra_p));
+		free((void *)(mtmp->mextra_p));
 		mtmp->mextra_p = (union mextra *)0;
 	}
 	return;
@@ -314,7 +314,7 @@ rest_mextra(struct monst *mtmp, int fd, boolean ghostly)
 	mtmp->mextra_p = (union mextra *)0;
 
 	/* determine what components are being read */
-	mread(fd, (genericptr_t) &toread, sizeof(int));
+	mread(fd, (void *) &toread, sizeof(int));
 	
 	/* read those components */
 	for (i = 0; i < NUM_MX; i++) {
@@ -323,7 +323,7 @@ rest_mextra(struct monst *mtmp, int fd, boolean ghostly)
 		/* get length to read */
 		len = mx_list[i].s_size;
 		if (len == -1) {	// was saved
-			mread(fd, (genericptr_t) &len, sizeof(long));
+			mread(fd, (void *) &len, sizeof(long));
 		}
 
 		/* allocate component */
@@ -379,7 +379,7 @@ relink_mx(struct monst *specific_mtmp)
 				/* restore stale pointer -- id==0 is assumed to be player */
 				if (mtmp->mextra_p->esum_p->summoner) {
 					nid = mtmp->mextra_p->esum_p->sm_id;
-					mtmp->mextra_p->esum_p->summoner = (genericptr_t) (nid ? find_mid(nid, FM_EVERYWHERE) : &youmonst);
+					mtmp->mextra_p->esum_p->summoner = (void *) (nid ? find_mid(nid, FM_EVERYWHERE) : &youmonst);
 					if (!mtmp->mextra_p->esum_p->summoner) {
 						/* instead of panicking, just make the monster poof when timers get next run,
 						 * which is the intended behaviour if a summoned monster is separated from its summoner  */

@@ -589,7 +589,7 @@ curses_choose_character(void)
             panic("Impossible menu selection");
             break;
         }
-        free((genericptr_t) selected);
+        free((void *) selected);
         selected = 0;
         flags.tutorial = 1;
     }

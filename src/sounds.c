@@ -1870,7 +1870,7 @@ asGuardian:
 					for(tmpm = fmon; tmpm; tmpm = tmpm->nmon){
 						if(tmpm != mtmp && !DEADMONSTER(tmpm) && mtmp->mrevived){
 							if(mtmp->minvis && tmpm->perminvis && !get_timer(mtmp->timed, DESUMMON_MON)){
-								start_timer(5L, TIMER_MONSTER, DESUMMON_MON, (genericptr_t)tmpm);
+								start_timer(5L, TIMER_MONSTER, DESUMMON_MON, (void *)tmpm);
 							}
 						}
 					}

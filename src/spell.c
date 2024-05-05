@@ -1794,7 +1794,7 @@ expel_summons(void)
 
 
 static void
-cast_extra_healing_at(int x, int y, genericptr_t arg)
+cast_extra_healing_at(int x, int y, void * arg)
 {
 	struct monst * mtmp = m_u_at(x, y);
 	if (mtmp == &youmonst)
@@ -1807,7 +1807,7 @@ static void
 cast_mass_healing(struct obj *otmp)
 {
 	int radius = 2 + P_SKILL(P_HEALING_SPELL) + !!Spellboost;
-	do_clear_area(u.ux, u.uy, radius, cast_extra_healing_at, (genericptr_t)otmp);
+	do_clear_area(u.ux, u.uy, radius, cast_extra_healing_at, (void *)otmp);
 }
 
 /* attempting to cast a forgotten spell will cause disorientation */
@@ -1906,7 +1906,7 @@ sightwedge(int dx, int dy, int x1, int y1, int x2, int y2)
 }
 
 void
-damningdark(int x, int y, genericptr_t val)
+damningdark(int x, int y, void * val)
 {
 	int nd = *((int *)val);
 	struct monst *mon=m_at(x,y);
@@ -2076,7 +2076,7 @@ stargate(void)
 			return MOVE_CANCELLED;
 		}
 		i = selected[0].item.a_int - 1;
-		free((genericptr_t)selected);
+		free((void *)selected);
 	} else
 	i = last_ok_dungeon;	/* also first & only OK dungeon */
 	destroy_nhwindow(tmpwin);
@@ -3656,7 +3656,7 @@ spiriteffects(int power, boolean atme)
 		break;
 		case PWR_DAMNING_DARKNESS:
 			You("call on the wrath of shadow.");
-			do_clear_area(u.ux, u.uy, dsize, damningdark, (genericptr_t) &dsize);
+			do_clear_area(u.ux, u.uy, dsize, damningdark, (void *) &dsize);
 			vision_full_recalc = 1;	/* lighting changed */
 			doredraw();
 		break;

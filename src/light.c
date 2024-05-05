@@ -101,7 +101,7 @@ rem_chain_ls(struct ls_t *ls)
 void
 new_light_source(
 	int lstype,			/* is it attached to a mon or an obj? */
-	genericptr_t owner,	/* pointer to mon/obj this is attached to */
+	void * owner,	/* pointer to mon/obj this is attached to */
 	int range			/* range of ls */)
 {
     struct ls_t *ls;
@@ -515,7 +515,7 @@ void
 save_lightsource(struct ls_t *ls, int fd, int mode)
 {
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t)ls, sizeof(struct ls_t));
+	    bwrite(fd, (void *)ls, sizeof(struct ls_t));
 	if (release_data(mode))
 		del_light_source(ls);
 	return;
@@ -524,13 +524,13 @@ save_lightsource(struct ls_t *ls, int fd, int mode)
 void
 rest_lightsource(
 	int lstype,
-	genericptr_t owner,
+	void * owner,
 	struct ls_t *ls,
 	int fd,
 	boolean ghostly	/* unused */)
 {
 	ls = (struct ls_t *)alloc(sizeof(struct ls_t));
-	mread(fd, (genericptr_t) ls, sizeof(struct ls_t));
+	mread(fd, (void *) ls, sizeof(struct ls_t));
 	add_chain_ls(ls);
 	/* relink owner */
 	ls->owner = owner;
@@ -634,7 +634,7 @@ obj_split_light_source(struct obj *src, struct obj *dest)
 		return;
 
 	/* make a new ls on dest */
-	new_light_source(LS_OBJECT, (genericptr_t)dest, src->light->range);
+	new_light_source(LS_OBJECT, (void *)dest, src->light->range);
 	dest->lamplit = 1;		/* now an active light source */
 
 	/* split candles may emit less light than original group */
@@ -705,7 +705,7 @@ candle_light_range(struct obj *obj)
 }
 
 #ifdef WIZARD
-extern char *FDECL(fmt_ptr, (const genericptr, char *));  /* from alloc.c */
+extern char *FDECL(fmt_ptr, (const void *, char *));  /* from alloc.c */
 
 int
 wiz_light_sources(void)

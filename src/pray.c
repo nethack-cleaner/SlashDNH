@@ -4742,7 +4742,7 @@ init_gods(void)
 void
 save_gods(int fd)
 {
-	bwrite(fd, (genericptr_t) godlist, sizeof(struct god) * (MAX_GOD+1));
+	bwrite(fd, (void *) godlist, sizeof(struct god) * (MAX_GOD+1));
 }
 
 void
@@ -4752,7 +4752,7 @@ restore_gods(int fd)
 	int i;
 
 	godlist = malloc(sizeof(struct god) * (MAX_GOD+1));
-	mread(fd, (genericptr_t) godlist, sizeof(struct god) * (MAX_GOD+1));
+	mread(fd, (void *) godlist, sizeof(struct god) * (MAX_GOD+1));
 	/* fix name pointers -- assumes that god names do NOT get changed during the game */
 	for (i=1; i<MAX_GOD+1; i++)
 		godlist[i].name = base_godlist[i].name;

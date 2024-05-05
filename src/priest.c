@@ -516,8 +516,8 @@ intemple(register int roomno)
 				priest->m_lev = 27;
 				priest->mhp = 8*26 + rn2(8);
 				priest->mhpmax = priest->mhp;
-				do_clear_area(priest->mx,priest->my, 4, set_lit, (genericptr_t)0);
-				do_clear_area(u.ux,u.uy, 4, set_lit, (genericptr_t)0);
+				do_clear_area(priest->mx,priest->my, 4, set_lit, (void *)0);
+				do_clear_area(u.ux,u.uy, 4, set_lit, (void *)0);
 				doredraw();
 				newsym(priest->mx, priest->my);
 			} else {
@@ -570,8 +570,8 @@ intemple(register int roomno)
 				mtmp->m_lev = 27;
 				mtmp->mhpmax = 8*26 + rn2(8);
 				mtmp->mhp = mtmp->mhpmax;
-				do_clear_area(mtmp->mx,mtmp->my, 4, set_lit, (genericptr_t)0);
-				do_clear_area(u.ux,u.uy, 4, set_lit, (genericptr_t)0);
+				do_clear_area(mtmp->mx,mtmp->my, 4, set_lit, (void *)0);
+				do_clear_area(u.ux,u.uy, 4, set_lit, (void *)0);
 				doredraw();
 				if(flags.verbose) You("are frightened to death, and unable to move.");
 				nomul(-4, "being frightened to death");

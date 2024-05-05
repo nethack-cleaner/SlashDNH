@@ -390,7 +390,7 @@ full:
 #define EPATHTO_X(xy)		((xy) % COLNO)
 
 void
-xpathto(int r, register xchar xx, register xchar yy, int (*func)(genericptr_t, int, int), genericptr_t data)
+xpathto(int r, register xchar xx, register xchar yy, int (*func)(void *, int, int), void * data)
 {
     int i, j, dir, xy, x, y;
     int path_len, postype;
@@ -401,7 +401,7 @@ xpathto(int r, register xchar xx, register xchar yy, int (*func)(genericptr_t, i
       /* N, S, E, W, NW, NE, SE, SW */
       { -COLNO, COLNO, 1, -1, -COLNO-1, -COLNO+1, COLNO+1, COLNO-1};
     map = (unsigned char *)alloc(COLNO * (ROWNO + 2) + 1);
-    (void) memset((genericptr_t)map, EPATHTO_INACCESSIBLE, COLNO * (ROWNO + 2) + 1);
+    (void) memset((void *)map, EPATHTO_INACCESSIBLE, COLNO * (ROWNO + 2) + 1);
     for(i = 1; i < COLNO; i++)
 	for(j = 0; j < ROWNO; j++)
 	    map[EPATHTO_XY(i, j)] = EPATHTO_UNSEEN;
@@ -437,7 +437,7 @@ xpathto(int r, register xchar xx, register xchar yy, int (*func)(genericptr_t, i
 	else
 	    nd = n;
     }
-    free((genericptr_t)map);
+    free((void *)map);
 }
 
 /*
@@ -1171,7 +1171,7 @@ branch_tele(void)
 		return FALSE;
 	}
 	i = selected[0].item.a_int - 1;
-	free((genericptr_t)selected);
+	free((void *)selected);
 	} else
 	i = last_ok_dungeon;	/* also first & only OK dungeon */
 	destroy_nhwindow(tmpwin);

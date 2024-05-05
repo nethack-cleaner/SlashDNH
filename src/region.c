@@ -19,14 +19,14 @@ static int max_regions = 0;
 
 #define NO_CALLBACK (-1)
 
-boolean FDECL(inside_generic_cloud, (genericptr,genericptr));
-boolean FDECL(expire_generic_cloud, (genericptr,genericptr));
-boolean FDECL(inside_gas_cloud, (genericptr,genericptr));
-boolean FDECL(expire_gas_cloud, (genericptr,genericptr));
-boolean FDECL(inside_fog_cloud, (genericptr,genericptr));
-boolean FDECL(expire_fog_cloud, (genericptr,genericptr));
-boolean FDECL(inside_dust_cloud, (genericptr,genericptr));
-boolean FDECL(expire_dust_cloud, (genericptr,genericptr));
+boolean FDECL(inside_generic_cloud, (void *,void *));
+boolean FDECL(expire_generic_cloud, (void *,void *));
+boolean FDECL(inside_gas_cloud, (void *,void *));
+boolean FDECL(expire_gas_cloud, (void *,void *));
+boolean FDECL(inside_fog_cloud, (void *,void *));
+boolean FDECL(expire_fog_cloud, (void *,void *));
+boolean FDECL(inside_dust_cloud, (void *,void *));
+boolean FDECL(expire_dust_cloud, (void *,void *));
 boolean FDECL(inside_rect, (NhRect *,int,int));
 boolean FDECL(inside_region, (NhRegion *,int,int));
 NhRegion *FDECL(create_region, (NhRect *,int));
@@ -47,7 +47,7 @@ void FDECL(replace_mon_regions, (struct monst *,struct monst *));
 void FDECL(remove_mon_from_regions, (struct monst *));
 NhRegion *FDECL(create_msg_region, (xchar,xchar,xchar,xchar,
 				    const char *,const char *));
-boolean FDECL(enter_force_field, (genericptr,genericptr));
+boolean FDECL(enter_force_field, (void *,void *));
 NhRegion *FDECL(create_force_field, (xchar,xchar,int,int));
 #endif
 
@@ -147,9 +147,9 @@ add_rect_to_reg(NhRegion *reg, NhRect *rect)
 
     tmp_rect = (NhRect *) alloc(sizeof (NhRect) * (reg->nrects + 1));
     if (reg->nrects > 0) {
-	(void) memcpy((genericptr_t) tmp_rect, (genericptr_t) reg->rects,
+	(void) memcpy((void *) tmp_rect, (void *) reg->rects,
 		      (sizeof (NhRect) * reg->nrects));
-	free((genericptr_t) reg->rects);
+	free((void *) reg->rects);
     }
     tmp_rect[reg->nrects] = *rect;
     reg->nrects++;
@@ -180,7 +180,7 @@ add_mon_to_reg(NhRegion *reg, struct monst *mon)
 	if (reg->max_monst > 0) {
 	    for (i = 0; i < reg->max_monst; i++)
 		tmp_m[i] = reg->monsters[i];
-	    free((genericptr_t) reg->monsters);
+	    free((void *) reg->monsters);
 	}
 	reg->monsters = tmp_m;
 	reg->max_monst += MONST_INC;
@@ -246,7 +246,7 @@ clone_region(NhRegion *reg)
     if (reg->n_monst > 0) {
 	ret_reg->monsters = (unsigned *)
 				alloc((sizeof (unsigned)) * reg->n_monst);
-	(void) memcpy((genericptr_t) ret_reg->monsters, (genericptr_t) reg->monsters,
+	(void) memcpy((void *) ret_reg->monsters, (void *) reg->monsters,
 		      sizeof (unsigned) * reg->n_monst);
     } else
 	ret_reg->monsters = NULL;
@@ -263,10 +263,10 @@ free_region(NhRegion *reg)
 {
     if (reg) {
 	if (reg->rects)
-	    free((genericptr_t) reg->rects);
+	    free((void *) reg->rects);
 	if (reg->monsters)
-	    free((genericptr_t) reg->monsters);
-	free((genericptr_t) reg);
+	    free((void *) reg->monsters);
+	free((void *) reg);
     }
 }
 
@@ -284,9 +284,9 @@ add_region(NhRegion *reg)
 	tmp_reg = regions;
 	regions = (NhRegion **)alloc(sizeof (NhRegion *) * (max_regions + 10));
 	if (max_regions > 0) {
-	    (void) memcpy((genericptr_t) regions, (genericptr_t) tmp_reg,
+	    (void) memcpy((void *) regions, (void *) tmp_reg,
 			  max_regions * sizeof (NhRegion *));
-	    free((genericptr_t) tmp_reg);
+	    free((void *) tmp_reg);
 	}
 	max_regions += 10;
     }
@@ -350,7 +350,7 @@ clear_regions(void)
 	free_region(regions[i]);
     n_regions = 0;
     if (max_regions > 0)
-	free((genericptr_t) regions);
+	free((void *) regions);
     max_regions = 0;
     regions = NULL;
 }
@@ -371,7 +371,7 @@ run_regions(void)
     for (i = n_regions - 1; i >= 0; i--) {
 	if (regions[i]->ttl == 0) {
 	    if ((f_indx = regions[i]->expire_f) == NO_CALLBACK ||
-		(*callbacks[f_indx])(regions[i], (genericptr_t) 0))
+		(*callbacks[f_indx])(regions[i], (void *) 0))
 		remove_region(regions[i]);
 	}
     }
@@ -384,7 +384,7 @@ run_regions(void)
 	/* Check if player is inside region */
 	f_indx = regions[i]->inside_f;
 	if (f_indx != NO_CALLBACK && hero_inside(regions[i]))
-	    (void) (*callbacks[f_indx])(regions[i], (genericptr_t) 0);
+	    (void) (*callbacks[f_indx])(regions[i], (void *) 0);
 	/* Check if any monster is inside region */
 	if (f_indx != NO_CALLBACK) {
 	    for (j = 0; j < regions[i]->n_monst; j++) {
@@ -441,14 +441,14 @@ in_out_region(xchar x, xchar y)
 	if (inside_region(regions[i], x, y)
 	    && !hero_inside(regions[i]) && !regions[i]->attach_2_u) {
 	    if ((f_indx = regions[i]->can_enter_f) != NO_CALLBACK)
-		if (!(*callbacks[f_indx])(regions[i], (genericptr_t) 0))
+		if (!(*callbacks[f_indx])(regions[i], (void *) 0))
 		    return FALSE;
 	} else
 	    if (hero_inside(regions[i])
 		&& !inside_region(regions[i], x, y)
 		&& !regions[i]->attach_2_u) {
 	    if ((f_indx = regions[i]->can_leave_f) != NO_CALLBACK)
-		if (!(*callbacks[f_indx])(regions[i], (genericptr_t) 0))
+		if (!(*callbacks[f_indx])(regions[i], (void *) 0))
 		    return FALSE;
 	}
     }
@@ -461,7 +461,7 @@ in_out_region(xchar x, xchar y)
 	    if (regions[i]->leave_msg != NULL)
 		pline1(regions[i]->leave_msg);
 	    if ((f_indx = regions[i]->leave_f) != NO_CALLBACK)
-		(void) (*callbacks[f_indx])(regions[i], (genericptr_t) 0);
+		(void) (*callbacks[f_indx])(regions[i], (void *) 0);
 	}
 
     /* Callbacks for the regions we do enter */
@@ -472,7 +472,7 @@ in_out_region(xchar x, xchar y)
 	    if (regions[i]->enter_msg != NULL)
 		pline1(regions[i]->enter_msg);
 	    if ((f_indx = regions[i]->enter_f) != NO_CALLBACK)
-		(void) (*callbacks[f_indx])(regions[i], (genericptr_t) 0);
+		(void) (*callbacks[f_indx])(regions[i], (void *) 0);
 	}
     return TRUE;
 }
@@ -639,39 +639,39 @@ save_regions(int fd, int mode)
 
     if (!perform_bwrite(mode)) goto skip_lots;
 
-    bwrite(fd, (genericptr_t) &moves, sizeof (moves));	/* timestamp */
-    bwrite(fd, (genericptr_t) &n_regions, sizeof (n_regions));
+    bwrite(fd, (void *) &moves, sizeof (moves));	/* timestamp */
+    bwrite(fd, (void *) &n_regions, sizeof (n_regions));
     for (i = 0; i < n_regions; i++) {
-	bwrite(fd, (genericptr_t) &regions[i]->bounding_box, sizeof (NhRect));
-	bwrite(fd, (genericptr_t) &regions[i]->nrects, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->bounding_box, sizeof (NhRect));
+	bwrite(fd, (void *) &regions[i]->nrects, sizeof (short));
 	for (j = 0; j < regions[i]->nrects; j++)
-	    bwrite(fd, (genericptr_t) &regions[i]->rects[j], sizeof (NhRect));
-	bwrite(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (boolean));
+	    bwrite(fd, (void *) &regions[i]->rects[j], sizeof (NhRect));
+	bwrite(fd, (void *) &regions[i]->attach_2_u, sizeof (boolean));
 	n = 0;
-	bwrite(fd, (genericptr_t) &regions[i]->attach_2_m, sizeof (unsigned));
+	bwrite(fd, (void *) &regions[i]->attach_2_m, sizeof (unsigned));
 	n = regions[i]->enter_msg != NULL ? strlen(regions[i]->enter_msg) : 0;
-	bwrite(fd, (genericptr_t) &n, sizeof n);
+	bwrite(fd, (void *) &n, sizeof n);
 	if (n > 0)
-	    bwrite(fd, (genericptr_t) regions[i]->enter_msg, n);
+	    bwrite(fd, (void *) regions[i]->enter_msg, n);
 	n = regions[i]->leave_msg != NULL ? strlen(regions[i]->leave_msg) : 0;
-	bwrite(fd, (genericptr_t) &n, sizeof n);
+	bwrite(fd, (void *) &n, sizeof n);
 	if (n > 0)
-	    bwrite(fd, (genericptr_t) regions[i]->leave_msg, n);
-	bwrite(fd, (genericptr_t) &regions[i]->ttl, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->expire_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->can_enter_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->enter_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->can_leave_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->leave_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->inside_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->player_flags, sizeof (boolean));
-	bwrite(fd, (genericptr_t) &regions[i]->n_monst, sizeof (short));
+	    bwrite(fd, (void *) regions[i]->leave_msg, n);
+	bwrite(fd, (void *) &regions[i]->ttl, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->expire_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->can_enter_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->enter_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->can_leave_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->leave_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->inside_f, sizeof (short));
+	bwrite(fd, (void *) &regions[i]->player_flags, sizeof (boolean));
+	bwrite(fd, (void *) &regions[i]->n_monst, sizeof (short));
 	for (j = 0; j < regions[i]->n_monst; j++)
-	    bwrite(fd, (genericptr_t) &regions[i]->monsters[j],
+	    bwrite(fd, (void *) &regions[i]->monsters[j],
 	     sizeof (unsigned));
-	bwrite(fd, (genericptr_t) &regions[i]->visible, sizeof (boolean));
-	bwrite(fd, (genericptr_t) &regions[i]->glyph, sizeof (int));
-	bwrite(fd, (genericptr_t) &regions[i]->arg, sizeof (struct region_arg));
+	bwrite(fd, (void *) &regions[i]->visible, sizeof (boolean));
+	bwrite(fd, (void *) &regions[i]->glyph, sizeof (int));
+	bwrite(fd, (void *) &regions[i]->arg, sizeof (struct region_arg));
     }
 
 skip_lots:
@@ -690,61 +690,61 @@ rest_regions(
     char *msg_buf;
 
     clear_regions();		/* Just for security */
-    mread(fd, (genericptr_t) &tmstamp, sizeof (tmstamp));
+    mread(fd, (void *) &tmstamp, sizeof (tmstamp));
     if (ghostly) tmstamp = 0;
     else tmstamp = (moves - tmstamp);
-    mread(fd, (genericptr_t) &n_regions, sizeof (n_regions));
+    mread(fd, (void *) &n_regions, sizeof (n_regions));
     max_regions = n_regions;
     if (n_regions > 0)
 	regions = (NhRegion **) alloc(sizeof (NhRegion *) * n_regions);
     for (i = 0; i < n_regions; i++) {
 	regions[i] = (NhRegion *) alloc(sizeof (NhRegion));
-	mread(fd, (genericptr_t) &regions[i]->bounding_box, sizeof (NhRect));
-	mread(fd, (genericptr_t) &regions[i]->nrects, sizeof (short));
+	mread(fd, (void *) &regions[i]->bounding_box, sizeof (NhRect));
+	mread(fd, (void *) &regions[i]->nrects, sizeof (short));
 
 	if (regions[i]->nrects > 0)
 	    regions[i]->rects = (NhRect *)
 				  alloc(sizeof (NhRect) * regions[i]->nrects);
 	for (j = 0; j < regions[i]->nrects; j++)
-	    mread(fd, (genericptr_t) &regions[i]->rects[j], sizeof (NhRect));
-	mread(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (boolean));
-	mread(fd, (genericptr_t) &regions[i]->attach_2_m, sizeof (unsigned));
+	    mread(fd, (void *) &regions[i]->rects[j], sizeof (NhRect));
+	mread(fd, (void *) &regions[i]->attach_2_u, sizeof (boolean));
+	mread(fd, (void *) &regions[i]->attach_2_m, sizeof (unsigned));
 
-	mread(fd, (genericptr_t) &n, sizeof n);
+	mread(fd, (void *) &n, sizeof n);
 	if (n > 0) {
 	    msg_buf = (char *) alloc(n + 1);
-	    mread(fd, (genericptr_t) msg_buf, n);
+	    mread(fd, (void *) msg_buf, n);
 	    msg_buf[n] = '\0';
 	    regions[i]->enter_msg = (const char *) msg_buf;
 	} else
 	    regions[i]->enter_msg = NULL;
 
-	mread(fd, (genericptr_t) &n, sizeof n);
+	mread(fd, (void *) &n, sizeof n);
 	if (n > 0) {
 	    msg_buf = (char *) alloc(n + 1);
-	    mread(fd, (genericptr_t) msg_buf, n);
+	    mread(fd, (void *) msg_buf, n);
 	    msg_buf[n] = '\0';
 	    regions[i]->leave_msg = (const char *) msg_buf;
 	} else
 	    regions[i]->leave_msg = NULL;
 
-	mread(fd, (genericptr_t) &regions[i]->ttl, sizeof (short));
+	mread(fd, (void *) &regions[i]->ttl, sizeof (short));
 	/* check for expired region */
 	if (regions[i]->ttl >= 0)
 	    regions[i]->ttl =
 		(regions[i]->ttl > tmstamp) ? regions[i]->ttl - (short)tmstamp : 0;
-	mread(fd, (genericptr_t) &regions[i]->expire_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->can_enter_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->enter_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->can_leave_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->leave_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->inside_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->player_flags, sizeof (boolean));
+	mread(fd, (void *) &regions[i]->expire_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->can_enter_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->enter_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->can_leave_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->leave_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->inside_f, sizeof (short));
+	mread(fd, (void *) &regions[i]->player_flags, sizeof (boolean));
 	if (ghostly) {	/* settings pertained to old player */
 	    clear_hero_inside(regions[i]);
 	    clear_heros_fault(regions[i]);
 	}
-	mread(fd, (genericptr_t) &regions[i]->n_monst, sizeof (short));
+	mread(fd, (void *) &regions[i]->n_monst, sizeof (short));
 	if (regions[i]->n_monst > 0)
 	    regions[i]->monsters =
 		(unsigned *) alloc(sizeof (unsigned) * regions[i]->n_monst);
@@ -752,11 +752,11 @@ rest_regions(
 	    regions[i]->monsters = NULL;
 	regions[i]->max_monst = regions[i]->n_monst;
 	for (j = 0; j < regions[i]->n_monst; j++)
-	    mread(fd, (genericptr_t) &regions[i]->monsters[j],
+	    mread(fd, (void *) &regions[i]->monsters[j],
 		  sizeof (unsigned));
-	mread(fd, (genericptr_t) &regions[i]->visible, sizeof (boolean));
-	mread(fd, (genericptr_t) &regions[i]->glyph, sizeof (int));
-	mread(fd, (genericptr_t) &regions[i]->arg, sizeof (struct region_arg));
+	mread(fd, (void *) &regions[i]->visible, sizeof (boolean));
+	mread(fd, (void *) &regions[i]->glyph, sizeof (int));
+	mread(fd, (void *) &regions[i]->arg, sizeof (struct region_arg));
     }
     /* remove expired regions, do not trigger the expire_f callback (yet!);
        also update monster lists if this data is coming from a bones file */
@@ -820,7 +820,7 @@ create_msg_region(xchar x, xchar y, xchar w, xchar h, const char *msg_enter, con
  *--------------------------------------------------------------*/
 
 boolean
-enter_force_field(genericptr_t p1, genericptr_t p2)
+enter_force_field(void * p1, void * p2)
 {
     struct monst *mtmp;
 
@@ -882,7 +882,7 @@ boolean yours
  *--------------------------------------------------------------*/
 
 boolean
-expire_generic_cloud(genericptr_t p1, genericptr_t p2)
+expire_generic_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     int damage;
@@ -911,7 +911,7 @@ expire_generic_cloud(genericptr_t p1, genericptr_t p2)
     return TRUE;		/* OK, it's gone, you can free it! */
 }
 boolean
-inside_generic_cloud(genericptr_t p1, genericptr_t p2)
+inside_generic_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     struct monst *mdef;
@@ -947,7 +947,7 @@ inside_generic_cloud(genericptr_t p1, genericptr_t p2)
  * region life after some mods...
  */
 boolean
-expire_gas_cloud(genericptr_t p1, genericptr_t p2)
+expire_gas_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     int damage;
@@ -967,7 +967,7 @@ expire_gas_cloud(genericptr_t p1, genericptr_t p2)
     return TRUE;		/* OK, it's gone, you can free it! */
 }
 boolean
-inside_gas_cloud(genericptr_t p1, genericptr_t p2)
+inside_gas_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     struct monst *mtmp;
@@ -1101,13 +1101,13 @@ create_gas_cloud(xchar x, xchar y, int radius, int damage, boolean yours)
 }
 
 boolean
-expire_fog_cloud(genericptr_t p1, genericptr_t p2)
+expire_fog_cloud(void * p1, void * p2)
 {
     return TRUE;		/* OK, it's gone, you can free it! */
 }
 
 boolean
-inside_fog_cloud(genericptr_t p1, genericptr_t p2)
+inside_fog_cloud(void * p1, void * p2)
 {
     return FALSE;		/* Monster is still alive */
 }
@@ -1151,7 +1151,7 @@ create_fog_cloud(xchar x, xchar y, int radius, int damage, boolean yours)
 }
 
 boolean
-expire_dust_cloud(genericptr_t p1, genericptr_t p2)
+expire_dust_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     int nx, ny;
@@ -1185,7 +1185,7 @@ expire_dust_cloud(genericptr_t p1, genericptr_t p2)
 }
 
 boolean
-inside_dust_cloud(genericptr_t p1, genericptr_t p2)
+inside_dust_cloud(void * p1, void * p2)
 {
     NhRegion *reg;
     struct monst *mtmp;

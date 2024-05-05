@@ -60,13 +60,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 
 #define VDECL(f,p)	f p
 
-/* generic pointer, always a macro; genericptr_t is usually a typedef */
-#define genericptr	void *
-
-#ifndef genericptr_t
-typedef genericptr genericptr_t; /* (void *) */
-#endif
-
 /*
  * Allow gcc2 to check parameters of printf-like calls with -Wformat;
  * append this to a prototype declaration (see pline() in extern.h).

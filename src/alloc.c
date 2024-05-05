@@ -11,13 +11,13 @@
 #include "config.h"
 
 #if defined(MONITOR_HEAP) || defined(WIZARD)
-char *FDECL(fmt_ptr, (const genericptr,char *));
+char *FDECL(fmt_ptr, (const void *,char *));
 #endif
 
 #ifdef MONITOR_HEAP
 #undef alloc
 #undef free
-extern void FDECL(free,(genericptr_t));
+extern void FDECL(free,(void *));
 static void NDECL(heapmon_init);
 
 static FILE *heaplog = 0;
@@ -41,7 +41,7 @@ alloc(unsigned int lth)
 	if(lth) dummy = 0;	/* make sure arg is used */
 	return(&dummy);
 #else
-	register genericptr_t ptr;
+	register void * ptr;
 
 	ptr = malloc(lth);
 #ifndef MONITOR_HEAP
@@ -57,7 +57,7 @@ alloc(unsigned int lth)
 
 # ifdef MONITOR_PTR_FMT
 #  define PTR_FMT "%p"
-#  define PTR_TYP genericptr_t
+#  define PTR_TYP void *
 # else
 #  define PTR_FMT "%06lx"
 #  define PTR_TYP unsigned long
@@ -65,7 +65,7 @@ alloc(unsigned int lth)
 
 /* format a pointer for display purposes; caller supplies the result buffer */
 char *
-fmt_ptr(const genericptr ptr, char *buf)
+fmt_ptr(const void * ptr, char *buf)
 {
 	Sprintf(buf, PTR_FMT, (PTR_TYP)ptr);
 	return buf;
@@ -96,7 +96,7 @@ nhalloc(unsigned int lth, const char *file, int line)
 	if (!tried_heaplog) heapmon_init();
 	if (heaplog)
 		(void) fprintf(heaplog, "+%5u %s %4d %s\n", lth,
-				fmt_ptr((genericptr_t)ptr, ptr_address),
+				fmt_ptr((void *)ptr, ptr_address),
 				line, file);
 	/* potential panic in alloc() was deferred til here */
 	if (!ptr) panic("Cannot get %u bytes, line %d of %s",
@@ -106,14 +106,14 @@ nhalloc(unsigned int lth, const char *file, int line)
 }
 
 void
-nhfree(genericptr_t ptr, const char *file, int line)
+nhfree(void * ptr, const char *file, int line)
 {
 	char ptr_address[20];
 
 	if (!tried_heaplog) heapmon_init();
 	if (heaplog)
 		(void) fprintf(heaplog, "-      %s %4d %s\n",
-				fmt_ptr((genericptr_t)ptr, ptr_address),
+				fmt_ptr((void *)ptr, ptr_address),
 				line, file);
 
 	free(ptr);

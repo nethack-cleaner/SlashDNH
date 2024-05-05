@@ -165,9 +165,9 @@ void FDECL(yy_init_buffer, (YY_BUFFER_STATE,FILE *));
 void FDECL(yy_flush_buffer, (YY_BUFFER_STATE));
 #define YY_FLUSH_BUFFER yy_flush_buffer( yy_current_buffer )
 
-static genericptr_t FDECL(yy_flex_alloc, (yy_size_t));
-static genericptr_t FDECL(yy_flex_realloc2, (genericptr_t,yy_size_t,int));
-static void FDECL(yy_flex_free, (genericptr_t));
+static void * FDECL(yy_flex_alloc, (yy_size_t));
+static void * FDECL(yy_flex_realloc2, (void *,yy_size_t,int));
+static void FDECL(yy_flex_free, (void *));
 
 #define yy_new_buffer yy_create_buffer
 
@@ -424,8 +424,8 @@ char *yytext;
 
 #ifdef FLEX_SCANNER
 #define YY_MALLOC_DECL \
-	       genericptr_t FDECL(malloc, (size_t)); \
-	       genericptr_t FDECL(realloc, (genericptr_t,size_t));
+	       void * FDECL(malloc, (size_t)); \
+	       void * FDECL(realloc, (void *,size_t));
 #endif
 
 
@@ -980,7 +980,7 @@ yy_get_next_buffer(void)
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					yy_flex_realloc2( (genericptr_t) b->yy_ch_buf,
+					yy_flex_realloc2( (void *) b->yy_ch_buf,
 							 b->yy_buf_size + 2, old_size );
 				}
 			else
@@ -1280,9 +1280,9 @@ yy_delete_buffer(YY_BUFFER_STATE b)
 		yy_current_buffer = (YY_BUFFER_STATE) 0;
 
 	if ( b->yy_is_our_buffer )
-		yy_flex_free( (genericptr_t) b->yy_ch_buf );
+		yy_flex_free( (void *) b->yy_ch_buf );
 
-	yy_flex_free( (genericptr_t) b );
+	yy_flex_free( (void *) b );
 	}
 
 
@@ -1369,18 +1369,18 @@ yy_fatal_error(const char msg[])
 
 
 
-static genericptr_t 
+static void * 
 yy_flex_alloc(yy_size_t size)
 	{
-	return (genericptr_t) alloc((unsigned)size);
+	return (void *) alloc((unsigned)size);
 	}
 
 /* we want to avoid use of realloc(), so we require that caller supply the
    size of the old block of memory */
-static genericptr_t 
-yy_flex_realloc2(genericptr_t ptr, yy_size_t size, int old_size)
+static void * 
+yy_flex_realloc2(void * ptr, yy_size_t size, int old_size)
 	{
-	genericptr_t outptr = yy_flex_alloc(size);
+	void * outptr = yy_flex_alloc(size);
 
 	if (ptr) {
 	    char *p = (char *) outptr, *q = (char *) ptr;
@@ -1392,7 +1392,7 @@ yy_flex_realloc2(genericptr_t ptr, yy_size_t size, int old_size)
 	}
 
 static void
-yy_flex_free(genericptr_t ptr)
+yy_flex_free(void * ptr)
 	{
 	free( ptr );
 	}

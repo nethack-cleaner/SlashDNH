@@ -28,7 +28,7 @@ static boolean FDECL(place_niche,(struct mkroom *,int*,int*,int*));
 static void FDECL(makeniche,(int));
 static void NDECL(make_niches);
 
-static int FDECL( CFDECLSPEC do_comp,(const genericptr,const genericptr));
+static int FDECL( CFDECLSPEC do_comp,(const void *,const void *));
 
 static void FDECL(dosdoor,(xchar,xchar,struct mkroom *,int));
 static void FDECL(join,(int,int,boolean));
@@ -47,10 +47,10 @@ boolean goldseen;
 boolean wantanmivault, wantasepulcher;
 static boolean made_branch;	/* used only during level creation */
 
-/* Args must be (const genericptr) so that qsort will always be happy. */
+/* Args must be (const void *) so that qsort will always be happy. */
 
 static int CFDECLSPEC 
-do_comp(const genericptr vx, const genericptr vy)
+do_comp(const void * vx, const void * vy)
 {
 #ifdef LINT
 /* lint complains about possible pointer alignment problems, but we know
@@ -97,7 +97,7 @@ gotit:
 void
 sort_rooms(void)
 {
-	qsort((genericptr_t) rooms, (unsigned)nroom, sizeof(struct mkroom), do_comp);
+	qsort((void *) rooms, (unsigned)nroom, sizeof(struct mkroom), do_comp);
 }
 
 static void
@@ -893,8 +893,8 @@ clear_level_structures(void)
 		*lev++ = zerorm;
 	    }
 	}
-	(void) memset((genericptr_t)level.objects, 0, sizeof(level.objects));
-	(void) memset((genericptr_t)level.monsters, 0, sizeof(level.monsters));
+	(void) memset((void *)level.objects, 0, sizeof(level.objects));
+	(void) memset((void *)level.monsters, 0, sizeof(level.monsters));
 	level.objlist = (struct obj *)0;
 	level.buriedobjlist = (struct obj *)0;
 	level.monlist = (struct monst *)0;

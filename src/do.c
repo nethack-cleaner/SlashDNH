@@ -806,7 +806,7 @@ menu_drop(int retry)
 	    else
 		add_valid_menu_class(pick_list[i].item.a_int);
 	}
-	free((genericptr_t) pick_list);
+	free((void *) pick_list);
     } else if (flags.menu_style == MENU_COMBINATION) {
 	unsigned ggoresults = 0;
 	all_categories = FALSE;
@@ -850,7 +850,7 @@ menu_drop(int retry)
 		}
 		n_dropped += drop(otmp);
 	    }
-	    free((genericptr_t) pick_list);
+	    free((void *) pick_list);
 	}
     }
 
@@ -1346,8 +1346,8 @@ goto_level(d_level *newlevel, boolean at_stairs, boolean falling, int portal)
 
 	/* set default level change destination areas */
 	/* the special level code may override these */
-	(void) memset((genericptr_t) &updest, 0, sizeof updest);
-	(void) memset((genericptr_t) &dndest, 0, sizeof dndest);
+	(void) memset((void *) &updest, 0, sizeof updest);
+	(void) memset((void *) &dndest, 0, sizeof dndest);
 
 	if (!(level_info[new_ledger].flags & LFILE_EXISTS)) {
 remake:
@@ -1947,9 +1947,9 @@ deferred_goto(void)
 	}
 	u.utotype = 0;		/* our caller keys off of this */
 	if (dfr_pre_msg)
-	    free((genericptr_t)dfr_pre_msg),  dfr_pre_msg = 0;
+	    free((void *)dfr_pre_msg),  dfr_pre_msg = 0;
 	if (dfr_post_msg)
-	    free((genericptr_t)dfr_post_msg),  dfr_post_msg = 0;
+	    free((void *)dfr_post_msg),  dfr_post_msg = 0;
 }
 
 
@@ -2076,7 +2076,7 @@ revive_corpse(struct obj *corpse, int different)
 				pline("%s rises from the dead!", chewed ?
 					Adjmonnam(mtmp, "bite-covered") : Monnam(mtmp));
 		}
-		start_timer(0, TIMER_MONSTER, REVIVE_PICKUP, (genericptr_t)mtmp);
+		start_timer(0, TIMER_MONSTER, REVIVE_PICKUP, (void *)mtmp);
 		break;
 
 	    case OBJ_MINVENT:		/* probably a nymph's */
@@ -2131,7 +2131,7 @@ revive_corpse(struct obj *corpse, int different)
 /* Revive the corpse via a timeout. */
 /*ARGSUSED*/
 void
-revive_mon(genericptr_t arg, long timeout)
+revive_mon(void * arg, long timeout)
 {
     struct obj *body = (struct obj *) arg;
 
@@ -2155,7 +2155,7 @@ revive_mon(genericptr_t arg, long timeout)
  * all bhito effects finish in the case of a wand affecting a rider corpse
  */
 void
-revive_mon_pickup(genericptr_t arg, long timeout)
+revive_mon_pickup(void * arg, long timeout)
 {
 	struct monst *mtmp = (struct monst *) arg;
 
@@ -2217,7 +2217,7 @@ static const int shades[] =
 /* Revive the corpse as a mold via a timeout. */
 /*ARGSUSED*/
 void
-moldy_corpse(genericptr_t arg, long timeout)
+moldy_corpse(void * arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2303,7 +2303,7 @@ moldy_corpse(genericptr_t arg, long timeout)
 /* Revive the corpse as a slime via a timeout. */
 /*ARGSUSED*/
 void
-slimy_corpse(genericptr_t arg, long timeout)
+slimy_corpse(void * arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2361,7 +2361,7 @@ slimy_corpse(genericptr_t arg, long timeout)
 /* Revive the corpse as a shade via a timeout. */
 /*ARGSUSED*/
 void
-shady_corpse(genericptr_t arg, long timeout)
+shady_corpse(void * arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2432,7 +2432,7 @@ shady_corpse(genericptr_t arg, long timeout)
 /* Revive the corpse as a zombie via a timeout. */
 /*ARGSUSED*/
 void
-zombie_corpse(genericptr_t arg, long timeout)
+zombie_corpse(void * arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2495,7 +2495,7 @@ zombie_corpse(genericptr_t arg, long timeout)
 }
 
 void
-yellow_corpse(genericptr_t arg, long timeout)
+yellow_corpse(void * arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;

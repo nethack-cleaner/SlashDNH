@@ -1360,7 +1360,7 @@ vanish_dogs(void)
 				else if(weakdog->mtame > curmon->mtame) weakdog = curmon;
 			}
 		}
-		if(weakdog && numdogs > dog_limit()) start_timer(5L, TIMER_MONSTER, DESUMMON_MON, (genericptr_t)weakdog);
+		if(weakdog && numdogs > dog_limit()) start_timer(5L, TIMER_MONSTER, DESUMMON_MON, (void *)weakdog);
 	} while(weakdog && numdogs > dog_limit());
 }
 

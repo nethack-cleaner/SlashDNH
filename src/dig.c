@@ -327,7 +327,7 @@ dig(void)
 
 		if (digging.effort > 250) {
 		    (void) dighole(FALSE);
-		    (void) memset((genericptr_t)&digging, 0, sizeof digging);
+		    (void) memset((void *)&digging, 0, sizeof digging);
 		    return MOVE_FINISHED_OCCUPATION;	/* done with digging */
 		}
 
@@ -2482,9 +2482,9 @@ bury_an_obj(struct obj *otmp)
 	} else if ((under_ice ? otmp->oclass == POTION_CLASS : is_organic(otmp))
 		&& !obj_resists(otmp, 0, 100)) {
 	    (void) start_timer((under_ice ? 0L : 250L) + (long)rnd(250),
-			       TIMER_OBJECT, ROT_ORGANIC, (genericptr_t)otmp);
+			       TIMER_OBJECT, ROT_ORGANIC, (void *)otmp);
 	} else if(otmp->otyp == HOLY_SYMBOL_OF_THE_BLACK_MOTHE && !Infuture){
-	    (void) start_timer(250L + (long)rnd(250), TIMER_OBJECT, ROT_ORGANIC, (genericptr_t)otmp);
+	    (void) start_timer(250L + (long)rnd(250), TIMER_OBJECT, ROT_ORGANIC, (void *)otmp);
 	}
 	add_to_buried(otmp);
 	return(otmp2);
@@ -2542,7 +2542,7 @@ unearth_objs(int x, int y)
 /* ARGSUSED */
 void
 rot_organic(
-	genericptr_t arg,
+	void * arg,
 	long timeout	/* unused */)
 {
 	struct obj *obj = (struct obj *) arg;
@@ -2593,7 +2593,7 @@ rot_organic(
  */
 void
 rot_corpse(
-	genericptr_t arg,
+	void * arg,
 	long timeout	/* unused */)
 {
 	xchar x = 0, y = 0;

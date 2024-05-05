@@ -1958,7 +1958,7 @@ no_unwear:
 	/* copy OX structures */
 	mov_all_ox(obj, otmp);
 	/* copy not otyp-related timers */
-	copy_timer(get_timer(obj->timed, DESUMMON_OBJ), TIMER_OBJECT, (genericptr_t)otmp);
+	copy_timer(get_timer(obj->timed, DESUMMON_OBJ), TIMER_OBJECT, (void *)otmp);
 
 	/* ** we are now done adjusting the object ** */
 

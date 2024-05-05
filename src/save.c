@@ -168,7 +168,7 @@ dosave0(void)
 
 	store_version(fd);
 #ifdef STORE_PLNAME_IN_FILE
-	bwrite(fd, (genericptr_t) plname, PL_NSIZ);
+	bwrite(fd, (void *) plname, PL_NSIZ);
 #endif
 	ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
 	usteed_id = (u.usteed ? u.usteed->m_id : 0);
@@ -205,7 +205,7 @@ dosave0(void)
 		minit();	/* ZEROCOMP */
 		getlev(ofd, hackpid, ltmp, FALSE);
 		(void) close(ofd);
-		bwrite(fd, (genericptr_t) &ltmp, sizeof ltmp); /* level number*/
+		bwrite(fd, (void *) &ltmp, sizeof ltmp); /* level number*/
 		savelev(fd, ltmp, WRITE_SAVE | FREE_SAVE);     /* actual level*/
 		delete_levelfile(ltmp);
 	}
@@ -233,18 +233,18 @@ savegamestate(register int fd, register int mode)
 
 
 	uid = getuid();
-	bwrite(fd, (genericptr_t) &uid, sizeof uid);
+	bwrite(fd, (void *) &uid, sizeof uid);
 	flags.end_around = has_loaded_bones;
-	bwrite(fd, (genericptr_t) &flags, sizeof(struct flag));
-	bwrite(fd, (genericptr_t) &u, sizeof(struct you));
-	bwrite(fd, (genericptr_t) &youmonst, sizeof(struct monst));
+	bwrite(fd, (void *) &flags, sizeof(struct flag));
+	bwrite(fd, (void *) &u, sizeof(struct you));
+	bwrite(fd, (void *) &youmonst, sizeof(struct monst));
 	if (youmonst.light)
 		save_lightsource(youmonst.light, fd, mode);
 	
 	/* save random monsters*/
-	bwrite(fd, (genericptr_t) &mons[PM_SHAMBLING_HORROR], sizeof(struct permonst));
-	bwrite(fd, (genericptr_t) &mons[PM_STUMBLING_HORROR], sizeof(struct permonst));
-	bwrite(fd, (genericptr_t) &mons[PM_WANDERING_HORROR], sizeof(struct permonst));
+	bwrite(fd, (void *) &mons[PM_SHAMBLING_HORROR], sizeof(struct permonst));
+	bwrite(fd, (void *) &mons[PM_STUMBLING_HORROR], sizeof(struct permonst));
+	bwrite(fd, (void *) &mons[PM_WANDERING_HORROR], sizeof(struct permonst));
 
 	if (CHAIN_IN_MON) {
 		uchain->nobj = bc_objs;
@@ -271,30 +271,30 @@ savegamestate(register int fd, register int mode)
 	    migrating_objs = 0;
 	    migrating_mons = 0;
 	}
-	bwrite(fd, (genericptr_t) mvitals, sizeof(mvitals));
+	bwrite(fd, (void *) mvitals, sizeof(mvitals));
 
 	save_dungeon(fd, (boolean)!!perform_bwrite(mode),
 			 (boolean)!!release_data(mode));
 	savelevchn(fd, mode);
-	bwrite(fd, (genericptr_t) &moves, sizeof moves);
-	bwrite(fd, (genericptr_t) &monstermoves, sizeof monstermoves);
-	bwrite(fd, (genericptr_t) &quest_status, sizeof(struct q_score));
-	bwrite(fd, (genericptr_t) spl_book,
+	bwrite(fd, (void *) &moves, sizeof moves);
+	bwrite(fd, (void *) &monstermoves, sizeof monstermoves);
+	bwrite(fd, (void *) &quest_status, sizeof(struct q_score));
+	bwrite(fd, (void *) spl_book,
 				sizeof(struct spell) * (MAXSPELL + 1));
 	save_oracles(fd, mode);
 	if(ustuck_id)
-	    bwrite(fd, (genericptr_t) &ustuck_id, sizeof ustuck_id);
+	    bwrite(fd, (void *) &ustuck_id, sizeof ustuck_id);
 	if(usteed_id)
-	    bwrite(fd, (genericptr_t) &usteed_id, sizeof usteed_id);
-	bwrite(fd, (genericptr_t) pl_character, sizeof pl_character);
-	bwrite(fd, (genericptr_t) pl_fruit, sizeof pl_fruit);
-	bwrite(fd, (genericptr_t) &current_fruit, sizeof current_fruit);
+	    bwrite(fd, (void *) &usteed_id, sizeof usteed_id);
+	bwrite(fd, (void *) pl_character, sizeof pl_character);
+	bwrite(fd, (void *) pl_fruit, sizeof pl_fruit);
+	bwrite(fd, (void *) &current_fruit, sizeof current_fruit);
 	savefruitchn(fd, mode);
 	savenames(fd, mode);
 	save_waterlevel(fd, mode);
-	bwrite(fd, (genericptr_t) &achieve, sizeof achieve);
+	bwrite(fd, (void *) &achieve, sizeof achieve);
 	realtime = get_realtime();
-	bwrite(fd, (genericptr_t) &realtime, sizeof realtime);
+	bwrite(fd, (void *) &realtime, sizeof realtime);
 	bflush(fd);
 }
 
@@ -333,7 +333,7 @@ savestateinlock(void)
 		    return;
 		}
 
-		(void) read(fd, (genericptr_t) &hpid, sizeof(hpid));
+		(void) read(fd, (void *) &hpid, sizeof(hpid));
 		if (hackpid != hpid) {
 		    Sprintf(whynot,
 			    "Level #0 pid (%d) doesn't match ours (%d)!",
@@ -351,15 +351,15 @@ savestateinlock(void)
 		    done(TRICKED);
 		    return;
 		}
-		(void) write(fd, (genericptr_t) &hackpid, sizeof(hackpid));
+		(void) write(fd, (void *) &hackpid, sizeof(hackpid));
 		if (flags.ins_chkpt) {
 		    int currlev = ledger_no(&u.uz);
 
-		    (void) write(fd, (genericptr_t) &currlev, sizeof(currlev));
+		    (void) write(fd, (void *) &currlev, sizeof(currlev));
 		    save_savefile_name(fd);
 		    store_version(fd);
 #ifdef STORE_PLNAME_IN_FILE
-		    bwrite(fd, (genericptr_t) plname, PL_NSIZ);
+		    bwrite(fd, (void *) plname, PL_NSIZ);
 #endif
 		    ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
 		    usteed_id = (u.usteed ? u.usteed->m_id : 0);
@@ -390,8 +390,8 @@ savelev(int fd, int lev, int mode)
 	if(fd < 0) panic("Save on bad file!");	/* impossible */
 	if (lev >= 0 && lev <= maxledgerno())
 	    level_info[lev].flags |= VISITED;
-	bwrite(fd,(genericptr_t) &hackpid,sizeof(hackpid));
-	bwrite(fd,(genericptr_t) &lev,sizeof(lev));
+	bwrite(fd,(void *) &hackpid,sizeof(hackpid));
+	bwrite(fd,(void *) &lev,sizeof(lev));
 #ifdef RLECOMP
 	{
 	    /* perform run-length encoding of rm structs */
@@ -423,8 +423,8 @@ savelev(int fd, int lev, int mode)
 			/* the run has been broken,
 			 * write out run-length encoding */
 		    writeout:
-			bwrite(fd, (genericptr_t)&match, sizeof(uchar));
-			bwrite(fd, (genericptr_t)rgrm, sizeof(struct rm));
+			bwrite(fd, (void *)&match, sizeof(uchar));
+			bwrite(fd, (void *)rgrm, sizeof(struct rm));
 			/* start encoding again. we have at least 1 rm
 			 * in the next run, viz. this one. */
 			match = 1;
@@ -433,26 +433,26 @@ savelev(int fd, int lev, int mode)
 		}
 	    }
 	    if (match > 0) {
-		bwrite(fd, (genericptr_t)&match, sizeof(uchar));
-		bwrite(fd, (genericptr_t)rgrm, sizeof(struct rm));
+		bwrite(fd, (void *)&match, sizeof(uchar));
+		bwrite(fd, (void *)rgrm, sizeof(struct rm));
 	    }
 	}
 #else
-	bwrite(fd,(genericptr_t) levl,sizeof(levl));
+	bwrite(fd,(void *) levl,sizeof(levl));
 #endif /* RLECOMP */
 
-	bwrite(fd,(genericptr_t) &monstermoves,sizeof(monstermoves));
-	bwrite(fd,(genericptr_t) &upstair,sizeof(stairway));
-	bwrite(fd,(genericptr_t) &dnstair,sizeof(stairway));
-	bwrite(fd,(genericptr_t) &upladder,sizeof(stairway));
-	bwrite(fd,(genericptr_t) &dnladder,sizeof(stairway));
-	bwrite(fd,(genericptr_t) &sstairs,sizeof(stairway));
-	bwrite(fd,(genericptr_t) &updest,sizeof(dest_area));
-	bwrite(fd,(genericptr_t) &dndest,sizeof(dest_area));
-	bwrite(fd,(genericptr_t) &level.flags,sizeof(level.flags));
-	bwrite(fd, (genericptr_t) doors, sizeof(doors));
-	bwrite(fd,(genericptr_t) &altarindex, sizeof(int));
-	bwrite(fd, (genericptr_t) altars, sizeof(altars));
+	bwrite(fd,(void *) &monstermoves,sizeof(monstermoves));
+	bwrite(fd,(void *) &upstair,sizeof(stairway));
+	bwrite(fd,(void *) &dnstair,sizeof(stairway));
+	bwrite(fd,(void *) &upladder,sizeof(stairway));
+	bwrite(fd,(void *) &dnladder,sizeof(stairway));
+	bwrite(fd,(void *) &sstairs,sizeof(stairway));
+	bwrite(fd,(void *) &updest,sizeof(dest_area));
+	bwrite(fd,(void *) &dndest,sizeof(dest_area));
+	bwrite(fd,(void *) &level.flags,sizeof(level.flags));
+	bwrite(fd, (void *) doors, sizeof(doors));
+	bwrite(fd,(void *) &altarindex, sizeof(int));
+	bwrite(fd, (void *) altars, sizeof(altars));
 	save_rooms(fd);	/* no dynamic memory to reclaim */
 
 	/* from here on out, saving also involves allocated memory cleanup */
@@ -556,7 +556,7 @@ bflush(  /* flush run and buffer */
 }
 
 void
-bwrite(int fd, genericptr_t loc, register unsigned num)
+bwrite(int fd, void * loc, register unsigned num)
 {
     register unsigned char *bp = (unsigned char *)loc;
 
@@ -633,7 +633,7 @@ bflush(int fd)
 }
 
 void
-bwrite(register int fd, register genericptr_t loc, register unsigned num)
+bwrite(register int fd, register void * loc, register unsigned num)
 {
 	boolean failed;
 
@@ -685,14 +685,14 @@ savelevchn(register int fd, register int mode)
 
 	for (tmplev = sp_levchn; tmplev; tmplev = tmplev->next) cnt++;
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &cnt, sizeof(int));
+	    bwrite(fd, (void *) &cnt, sizeof(int));
 
 	for (tmplev = sp_levchn; tmplev; tmplev = tmplev2) {
 	    tmplev2 = tmplev->next;
 	    if (perform_bwrite(mode))
-		bwrite(fd, (genericptr_t) tmplev, sizeof(s_level));
+		bwrite(fd, (void *) tmplev, sizeof(s_level));
 	    if (release_data(mode))
-		free((genericptr_t) tmplev);
+		free((void *) tmplev);
 	}
 	if (release_data(mode))
 	    sp_levchn = 0;
@@ -708,15 +708,15 @@ savedamage(register int fd, register int mode)
 	for (tmp_dam = damageptr; tmp_dam; tmp_dam = tmp_dam->next)
 	    xl++;
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &xl, sizeof(xl));
+	    bwrite(fd, (void *) &xl, sizeof(xl));
 
 	while (xl--) {
 	    if (perform_bwrite(mode))
-		bwrite(fd, (genericptr_t) damageptr, sizeof(*damageptr));
+		bwrite(fd, (void *) damageptr, sizeof(*damageptr));
 	    tmp_dam = damageptr;
 	    damageptr = damageptr->next;
 	    if (release_data(mode))
-		free((genericptr_t)tmp_dam);
+		free((void *)tmp_dam);
 	}
 	if (release_data(mode))
 	    level.damagelist = 0;
@@ -733,13 +733,13 @@ saveobjchn(register int fd, register struct obj *otmp, register int mode)
 	while(otmp) {
 	    otmp2 = otmp->nobj;
 	    if (perform_bwrite(mode)) {
-			bwrite(fd, (genericptr_t) &zero, sizeof(int));
-			bwrite(fd, (genericptr_t) otmp, sizeof(struct obj));
+			bwrite(fd, (void *) &zero, sizeof(int));
+			bwrite(fd, (void *) otmp, sizeof(struct obj));
 			if(otmp->mp){
-				bwrite(fd, (genericptr_t) otmp->mp, (unsigned) sizeof(struct mask_properties));
-//				bwrite(fd, (genericptr_t) otmp->mp->mskacurr, sizeof(struct attribs));
-//				bwrite(fd, (genericptr_t) otmp->mp->mskaexe, sizeof(struct attribs));
-//				bwrite(fd, (genericptr_t) otmp->mp->mskamask, sizeof(struct attribs));
+				bwrite(fd, (void *) otmp->mp, (unsigned) sizeof(struct mask_properties));
+//				bwrite(fd, (void *) otmp->mp->mskacurr, sizeof(struct attribs));
+//				bwrite(fd, (void *) otmp->mp->mskaexe, sizeof(struct attribs));
+//				bwrite(fd, (void *) otmp->mp->mskamask, sizeof(struct attribs));
 			}
 	    }
 		if (otmp->oextra_p)
@@ -760,7 +760,7 @@ saveobjchn(register int fd, register struct obj *otmp, register int mode)
 	    otmp = otmp2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
+	    bwrite(fd, (void *) &minusone, sizeof(int));
 }
 
 static void
@@ -772,13 +772,13 @@ savemonchn(register int fd, register struct monst *mtmp, register int mode)
 	struct permonst *monbegin = &mons[0];
 
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &monbegin, sizeof(monbegin));
+	    bwrite(fd, (void *) &monbegin, sizeof(monbegin));
 
 	while (mtmp) {
 	    mtmp2 = mtmp->nmon;
 	    if (perform_bwrite(mode)) {
-		bwrite(fd, (genericptr_t) &zero, sizeof(int));
-		bwrite(fd, (genericptr_t) mtmp, sizeof(struct monst));
+		bwrite(fd, (void *) &zero, sizeof(int));
+		bwrite(fd, (void *) mtmp, sizeof(struct monst));
 	    }
 		if(mtmp->mextra_p)
 			save_mextra(mtmp, fd, mode);
@@ -793,7 +793,7 @@ savemonchn(register int fd, register struct monst *mtmp, register int mode)
 	    mtmp = mtmp2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
+	    bwrite(fd, (void *) &minusone, sizeof(int));
 }
 
 static void
@@ -805,7 +805,7 @@ savetrapchn(register int fd, register struct trap *trap, register int mode)
 	while (trap) {
 	    trap2 = trap->ntrap;
 	    if (perform_bwrite(mode))
-		bwrite(fd, (genericptr_t) trap, sizeof(struct trap));
+		bwrite(fd, (void *) trap, sizeof(struct trap));
 		if (trap->ammo)
 			saveobjchn(fd, trap->ammo, mode);
 	    if (release_data(mode))
@@ -813,7 +813,7 @@ savetrapchn(register int fd, register struct trap *trap, register int mode)
 	    trap = trap2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &zerotrap, sizeof(struct trap));
+	    bwrite(fd, (void *) &zerotrap, sizeof(struct trap));
 }
 
 /* save all the fruit names and ID's; this is used only in saving whole games
@@ -831,13 +831,13 @@ savefruitchn(register int fd, register int mode)
 	while (f1) {
 	    f2 = f1->nextf;
 	    if (f1->fid >= 0 && perform_bwrite(mode))
-		bwrite(fd, (genericptr_t) f1, sizeof(struct fruit));
+		bwrite(fd, (void *) f1, sizeof(struct fruit));
 	    if (release_data(mode))
 		dealloc_fruit(f1);
 	    f1 = f2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t) &zerofruit, sizeof(struct fruit));
+	    bwrite(fd, (void *) &zerofruit, sizeof(struct fruit));
 	if (release_data(mode))
 	    ffruit = 0;
 }
@@ -849,7 +849,7 @@ free_percent_color_options(const struct percent_color_option *list_head)
 {
     if (list_head == NULL) return;
     free_percent_color_options(list_head->next);
-    free((genericptr_t)list_head);
+    free((void *)list_head);
 }
 
 void
@@ -857,8 +857,8 @@ free_text_color_options(const struct text_color_option *list_head)
 {
     if (list_head == NULL) return;
     free_text_color_options(list_head->next);
-    free((genericptr_t)list_head->text);
-    free((genericptr_t)list_head);
+    free((void *)list_head->text);
+    free((void *)list_head);
 }
 
 void

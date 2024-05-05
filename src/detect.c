@@ -17,8 +17,8 @@ static boolean FDECL(check_map_spot, (int,int,char,unsigned));
 static boolean FDECL(clear_stale_map, (char,unsigned));
 static void FDECL(sense_trap, (struct trap *,xchar,xchar,int));
 static void FDECL(show_map_spot, (int,int));
-static void FDECL(findone,(int,int,genericptr_t));
-static void FDECL(openone,(int,int,genericptr_t));
+static void FDECL(findone,(int,int,void *));
+static void FDECL(openone,(int,int,void *));
 static boolean unconstrain_map(void);
 static void reconstrain_map(void);
 static void map_redisplay(void);
@@ -1388,7 +1388,7 @@ cvt_sdoor_to_door(struct rm *lev)
 
 
 static void
-findone(int zx, int zy, genericptr_t num)
+findone(int zx, int zy, void * num)
 {
 	register struct trap *ttmp;
 	register struct monst *mtmp;
@@ -1432,7 +1432,7 @@ findone(int zx, int zy, genericptr_t num)
 }
 
 static void
-openone(int zx, int zy, genericptr_t num)
+openone(int zx, int zy, void * num)
 {
 	register struct trap *ttmp;
 	register struct obj *otmp;
@@ -1488,7 +1488,7 @@ findit(void)	/* returns number of things found */
 	int num = 0;
 
 	if(u.uswallow) return(0);
-	do_clear_area(u.ux, u.uy, BOLT_LIM, findone, (genericptr_t) &num);
+	do_clear_area(u.ux, u.uy, BOLT_LIM, findone, (void *) &num);
 	return(num);
 }
 
@@ -1506,7 +1506,7 @@ openit(void)	/* returns number of things found and opened */
 		return(-1);
 	}
 
-	do_clear_area(u.ux, u.uy, BOLT_LIM, openone, (genericptr_t) &num);
+	do_clear_area(u.ux, u.uy, BOLT_LIM, openone, (void *) &num);
 	return(num);
 }
 
@@ -1951,7 +1951,7 @@ doterrain(void)
     if (n > 1 && which == 1)
         which = sel[1].item.a_int;
     if (n > 0)
-        free((genericptr_t) sel);
+        free((void *) sel);
 
     switch (which) {
     case 1: /* known map */

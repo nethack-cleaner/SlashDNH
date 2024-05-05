@@ -372,10 +372,4 @@ extern coord bhitpos;	/* place where throw or zap hits or stops */
 #define AC_VALUE(AC)	((AC) >= -10 ? (AC) : (u.sealsActive&SEAL_BALAM || activeFightingForm(FFORM_SORESU) || is_ancient_body_ent(youracedata, u.ent_species)) ? min_ints(ROLL_NEG10(AC),ROLL_NEG10(AC)) : ROLL_NEG10(AC))
 #define MONSTER_AC_VALUE(AC)	((AC) >= -10 ? (AC) : ROLL_NEG10(AC))
 
-/* The function argument to qsort() requires a particular
- * calling convention under WINCE which is not the default
- * in that environment.
- */
-# define CFDECLSPEC
- 
 #endif /* HACK_H */

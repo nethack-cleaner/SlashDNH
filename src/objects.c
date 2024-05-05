@@ -1895,7 +1895,7 @@ OBJECT(("lava ball","splash of lava"),
 #  define OBJECTS_PASS_2_
 #include "objects.c"
 
-void NDECL(objects_init);
+void objects_init(void);
 
 /* dummy routine used to force linkage */
 void

@@ -15,12 +15,12 @@
 #include <unistd.h>
 
 /* We can't just include term.h, since some of the macro names (bell) conflict. */
-extern int FDECL(tgetent, (char *,const char *));
-extern void FDECL(tputs, (const char *,int,int (*)()));
-extern int FDECL(tgetnum, (const char *));
-extern int FDECL(tgetflag, (const char *));
-extern char *FDECL(tgetstr, (const char *,char **));
-extern char *FDECL(tgoto, (const char *,int,int));
+extern int tgetent(char *,const char *);
+extern void tputs(const char *,int,int (*)());
+extern int tgetnum(const char *);
+extern int tgetflag(const char *);
+extern char *tgetstr(const char *,char **);
+extern char *tgoto(const char *,int,int);
 
 #if defined(RANDOM) && defined(random)
 # undef random

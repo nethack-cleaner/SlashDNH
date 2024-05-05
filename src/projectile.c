@@ -1,27 +1,27 @@
 #include "hack.h"
 #include "xhity.h"
 
-static void FDECL(do_digging_projectile, (struct monst *, struct obj *, int, int));
-static void FDECL(destroy_projectile, (struct monst *, struct obj *));
-static void FDECL(end_projectile, (struct monst *, struct monst *, struct obj **, struct obj *, boolean, boolean));
-static int FDECL(projectile_attack, (struct monst *, struct monst *, struct obj **, void *, int, int*, int*, int*, int*, boolean));
-static void FDECL(quest_art_swap, (struct obj **, struct monst *));
-static void FDECL(sho_obj_return, (struct obj *, int, int));
-static void FDECL(return_thrownobj, (struct monst *, struct obj *));
-static void FDECL(toss_up, (struct obj *, boolean));
-static int FDECL(calc_multishot, (struct monst *, struct obj *, struct obj *, int));
-static int FDECL(calc_range, (struct monst *, struct obj *, struct obj *, int *));
-static int FDECL(uthrow, (struct obj *, struct obj *, int, boolean));
-static boolean FDECL(misthrow, (struct monst *, struct obj *, struct obj *, boolean, int *, int *, int *));
-static struct obj * FDECL(blaster_ammo, (struct obj *));
+static void do_digging_projectile(struct monst *, struct obj *, int, int);
+static void destroy_projectile(struct monst *, struct obj *);
+static void end_projectile(struct monst *, struct monst *, struct obj **, struct obj *, boolean, boolean);
+static int projectile_attack(struct monst *, struct monst *, struct obj **, void *, int, int*, int*, int*, int*, boolean);
+static void quest_art_swap(struct obj **, struct monst *);
+static void sho_obj_return(struct obj *, int, int);
+static void return_thrownobj(struct monst *, struct obj *);
+static void toss_up(struct obj *, boolean);
+static int calc_multishot(struct monst *, struct obj *, struct obj *, int);
+static int calc_range(struct monst *, struct obj *, struct obj *, int *);
+static int uthrow(struct obj *, struct obj *, int, boolean);
+static boolean misthrow(struct monst *, struct obj *, struct obj *, boolean, int *, int *, int *);
+static struct obj * blaster_ammo(struct obj *);
 
 /* grab some functions from dothrow.c */
-extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
-extern int FDECL(gem_accept, (struct monst *, struct obj *));
-extern void FDECL(check_shop_obj, (struct obj *, xchar, xchar, boolean));
-extern void FDECL(breakmsg, (struct obj *, boolean));
-extern void FDECL(breakobj, (struct obj *, xchar, xchar, boolean, boolean));
-extern void NDECL(autoquiver);
+extern boolean quest_arti_hits_leader(struct obj *, struct monst *);
+extern int gem_accept(struct monst *, struct obj *);
+extern void check_shop_obj(struct obj *, xchar, xchar, boolean);
+extern void breakmsg(struct obj *, boolean);
+extern void breakobj(struct obj *, xchar, xchar, boolean, boolean);
+extern void autoquiver(void);
 
 /* some damn global variables because passing these as parameters would be a lot to add for something so rarely used.
  * The player threw an object, these save what the player's state was just prior to throwing so it can be restored */

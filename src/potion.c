@@ -10,9 +10,9 @@ boolean notonhead = FALSE;
 static int nothing, unkn;
 static const char beverages[] = { POTION_CLASS, 0 };
 
-static long FDECL(itimeout, (long));
-static void NDECL(ghost_from_bottle);
-static short FDECL(mixtype, (struct obj *,struct obj *));
+static long itimeout(long);
+static void ghost_from_bottle(void);
+static short mixtype(struct obj *,struct obj *);
 
 #define polypotion(obj) \
 	((obj)->otyp == POT_POLYMORPH || \

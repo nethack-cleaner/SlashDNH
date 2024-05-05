@@ -38,8 +38,8 @@ const char * const enc_stat_abbrev2[] = {
 	"Ovld"
 };
 
-static void NDECL(bot1);
-static void NDECL(bot2);
+static void bot1(void);
+static void bot2(void);
 
 long get_status_duration(long long mask) {
 	switch (mask) {
@@ -257,7 +257,7 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
 
 static int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
 
-static const char *NDECL(rank);
+static const char *rank(void);
 
 
 /* convert experience level (1..30) to rank index (0..8) */

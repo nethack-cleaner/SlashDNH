@@ -8,12 +8,12 @@
 
 
 
-static void FDECL(mkshobj_at, (const struct shclass *,int,int));
-static void FDECL(nameshk, (struct monst *,const char * const *));
-static int  FDECL(shkinit, (const struct shclass *,struct mkroom *));
+static void mkshobj_at(const struct shclass *,int,int);
+static void nameshk(struct monst *,const char * const *);
+static int  shkinit(const struct shclass *,struct mkroom *);
 
 /* WAC init shk services */
-static void FDECL(init_shk_services, (struct monst *));
+static void init_shk_services(struct monst *);
 static const char * const shkliquors[] = {
     /* Ukraine */
     "Njezjin", "Tsjernigof", "Ossipewsk", "Gorlowka",

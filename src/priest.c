@@ -9,8 +9,8 @@
 #define ALGN_SINNED	(-4)	/* worse than strayed */
 
 
-static boolean FDECL(histemple_at,(struct monst *,xchar,xchar));
-static boolean FDECL(has_shrine,(struct monst *));
+static boolean histemple_at(struct monst *,xchar,xchar);
+static boolean has_shrine(struct monst *);
 
 static const char tools[] = { TOOL_CLASS, 0 };
 /*

@@ -11,21 +11,21 @@
 extern const int monstr[];
 extern void you_aggravate(struct monst *);
 
-static int NDECL(prayer_done);
-static struct obj *NDECL(worst_cursed_item);
-static int NDECL(in_trouble);
-static void FDECL(fix_worst_trouble,(int));
-static void FDECL(pleased,(int));
-static void FDECL(god_zaps_you, (int));
-static void FDECL(fry_by_god, (int));
-static void FDECL(consume_offering,(struct obj *));
-static void FDECL(eat_offering,(struct obj *, boolean, int));
-static void FDECL(burn_offering,(struct obj *, boolean));
-static boolean FDECL(water_prayer,(boolean));
-static boolean FDECL(blocked_boulder,(int,int));
-static void NDECL(lawful_god_gives_angel);
-static void FDECL(god_gives_pet,(int));
-static void FDECL(god_gives_benefit,(int));
+static int prayer_done(void);
+static struct obj *worst_cursed_item(void);
+static int in_trouble(void);
+static void fix_worst_trouble(int);
+static void pleased(int);
+static void god_zaps_you(int);
+static void fry_by_god(int);
+static void consume_offering(struct obj *);
+static void eat_offering(struct obj *, boolean, int);
+static void burn_offering(struct obj *, boolean);
+static boolean water_prayer(boolean);
+static boolean blocked_boulder(int,int);
+static void lawful_god_gives_angel(void);
+static void god_gives_pet(int);
+static void god_gives_benefit(int);
 
 /* simplify a few tests */
 #define Cursed_obj(obj,typ) ((obj) && (obj)->otyp == (typ) && (obj)->cursed)

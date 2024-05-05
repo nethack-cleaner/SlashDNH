@@ -8,17 +8,17 @@
 
 #include "lev.h"	/* for checking save modes */
 
-static void NDECL(stoned_dialogue);
-static void NDECL(golded_dialogue);
-static void NDECL(gillyweed_dialogue);
-static void NDECL(phasing_dialogue);
-static void NDECL(vomiting_dialogue);
-static void NDECL(choke_dialogue);
-static void NDECL(slime_dialogue);
-static void NDECL(slip_or_trip);
-static void FDECL(see_lamp_flicker, (struct obj *, const char *));
-static void FDECL(lantern_message, (struct obj *));
-static void FDECL(cleanup_burn, (void *,long));
+static void stoned_dialogue(void);
+static void golded_dialogue(void);
+static void gillyweed_dialogue(void);
+static void phasing_dialogue(void);
+static void vomiting_dialogue(void);
+static void choke_dialogue(void);
+static void slime_dialogue(void);
+static void slip_or_trip(void);
+static void see_lamp_flicker(struct obj *, const char *);
+static void lantern_message(struct obj *);
+static void cleanup_burn(void *,long);
 
 
 /* used by wizard mode #timeout and #wizintrinsic; order by 'interest'
@@ -2736,12 +2736,12 @@ larvae_die(void * arg, long timeout)
  */
 
 #ifdef WIZARD
-static const char *FDECL(kind_name, (short));
-static void FDECL(print_queue, (winid, timer_element *));
+static const char *kind_name(short);
+static void print_queue(winid, timer_element *);
 #endif
-static void FDECL(add_procchain_tm, (timer_element *));
-static void FDECL(rem_procchain_tm, (timer_element *));
-static void FDECL(rem_locchain_tm, (timer_element *, timer_element **));
+static void add_procchain_tm(timer_element *);
+static void rem_procchain_tm(timer_element *);
+static void rem_locchain_tm(timer_element *, timer_element **);
 
 /* ordered timer list */
 static timer_element *timer_base;		/* head of timer procchain */

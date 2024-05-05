@@ -6,16 +6,16 @@
 #include "hack.h"
 #include "xhity.h"
 
-static int NDECL(moverock);
-static void NDECL(sigilfloat);
-static int FDECL(still_chewing,(xchar,xchar));
-static int FDECL(invocation_distmin,(xchar, xchar));
-static void NDECL(dosinkfall);
-static boolean FDECL(findtravelpath, (boolean));
-static boolean FDECL(monstinroom, (struct permonst *,int));
+static int moverock(void);
+static void sigilfloat(void);
+static int still_chewing(xchar,xchar);
+static int invocation_distmin(xchar, xchar);
+static void dosinkfall(void);
+static boolean findtravelpath(boolean);
+static boolean monstinroom(struct permonst *,int);
 
-static void FDECL(move_update, (boolean));
-static struct obj * FDECL(all_items, (boolean, int *, boolean));
+static void move_update(boolean);
+static struct obj * all_items(boolean, int *, boolean);
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 

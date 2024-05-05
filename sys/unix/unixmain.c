@@ -14,21 +14,21 @@
 #include <fcntl.h>
 #endif
 
-extern struct passwd *FDECL(getpwuid,(uid_t));
-extern struct passwd *FDECL(getpwnam,(const char *));
-static void FDECL(chdirx, (const char *,boolean));
-static boolean NDECL(whoami);
+extern struct passwd *getpwuid(uid_t);
+extern struct passwd *getpwnam(const char *);
+static void chdirx(const char *,boolean);
+static boolean whoami(void);
 #ifdef FUZZER_TIMEOUT
-static void NDECL(init_fuzzer_child);
+static void init_fuzzer_child(void);
 #endif
-static void FDECL(process_options, (int, char **));
+static void process_options(int, char **);
 
 #ifdef __linux__
-extern void NDECL(check_linux_console);
-extern void NDECL(init_linux_cons);
+extern void check_linux_console(void);
+extern void init_linux_cons(void);
 #endif
 
-static void NDECL(wd_message);
+static void wd_message(void);
 #ifdef WIZARD
 static boolean wiz_error_flag = FALSE;
 #endif

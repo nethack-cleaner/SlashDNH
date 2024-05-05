@@ -9,7 +9,7 @@
 #include "xhity.h"
 
 /*	These routines provide basic data for any type of monster. */
-static void FDECL(set_template_data, (struct permonst *, struct permonst *, int));
+static void set_template_data(struct permonst *, struct permonst *, int);
 
 char * nameless_horror_name;
 

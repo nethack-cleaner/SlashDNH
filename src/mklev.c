@@ -17,27 +17,27 @@
 /* croom->lx etc are schar (width <= int), so % arith ensures that */
 /* conversion of result to int is reasonable */
 
-static void NDECL(makevtele);
-static void NDECL(clear_level_structures);
-static void NDECL(makelevel);
-static void NDECL(mineralize);
-static boolean FDECL(bydoor,(xchar,xchar));
-static struct mkroom *FDECL(find_branch_room, (coord *));
-static struct mkroom *FDECL(pos_to_room, (xchar, xchar));
-static boolean FDECL(place_niche,(struct mkroom *,int*,int*,int*));
-static void FDECL(makeniche,(int));
-static void NDECL(make_niches);
+static void makevtele(void);
+static void clear_level_structures(void);
+static void makelevel(void);
+static void mineralize(void);
+static boolean bydoor(xchar,xchar);
+static struct mkroom *find_branch_room(coord *);
+static struct mkroom *pos_to_room(xchar, xchar);
+static boolean place_niche(struct mkroom *,int*,int*,int*);
+static void makeniche(int);
+static void make_niches(void);
 
-static int FDECL( CFDECLSPEC do_comp,(const void *,const void *));
+static int do_comp(const void *,const void *);
 
-static void FDECL(dosdoor,(xchar,xchar,struct mkroom *,int));
-static void FDECL(join,(int,int,boolean));
-static void FDECL(do_room_or_subroom, (struct mkroom *,int,int,int,int,
-				       boolean,schar,boolean,boolean));
-static void NDECL(makerooms);
-static void FDECL(finddpos,(coord *,xchar,xchar,xchar,xchar));
-static void FDECL(mkinvpos, (xchar,xchar,int));
-static void FDECL(mk_knox_portal, (xchar,xchar));
+static void dosdoor(xchar,xchar,struct mkroom *,int);
+static void join(int,int,boolean);
+static void do_room_or_subroom(struct mkroom *,int,int,int,int,
+			       boolean,schar,boolean,boolean);
+static void makerooms(void);
+static void finddpos(coord *,xchar,xchar,xchar,xchar);
+static void mkinvpos(xchar,xchar,int);
+static void mk_knox_portal(xchar,xchar);
 
 #define create_vault()	create_room(-1, -1, 2, 2, -1, -1, VAULT, TRUE)
 #define init_vault()	vault_x = -1
@@ -49,7 +49,7 @@ static boolean made_branch;	/* used only during level creation */
 
 /* Args must be (const void *) so that qsort will always be happy. */
 
-static int CFDECLSPEC 
+static int
 do_comp(const void * vx, const void * vy)
 {
 #ifdef LINT

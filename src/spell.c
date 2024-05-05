@@ -15,34 +15,34 @@ static int RoSbook;		/* Read spell or Study Wards?" */
 #define STUDY_WARD 2
 #define MAINTAINED_SPELL_PW_MULTIPLIER 3
 #define MAINTAINED_SPELL_HUNGER_MULTIPLIER 1
-static int NDECL(purifying_blast);
-static int NDECL(stargate);
-static struct permonst * NDECL(choose_crystal_summon);
-static int FDECL(spell_let_to_idx, (char));
-static boolean FDECL(check_spirit_let, (char));
-static boolean FDECL(cursed_book, (struct obj *bp));
-static boolean FDECL(confused_book, (struct obj *));
-static void FDECL(deadbook, (struct obj *));
-static int NDECL(learn);
-static boolean FDECL(getspell, (int *, int));
-static boolean FDECL(getspirit, (int *));
-static boolean FDECL(spiritLets, (char *, int));
-static int FDECL(dospiritmenu, (int, int *, int));
-static boolean FDECL(dospellmenu, (int,int *));
-static void FDECL(describe_spell, (int));
-static int NDECL(throwspell);
-static void NDECL(cast_protection);
-static void NDECL(cast_abjuration);
-static void FDECL(cast_mass_healing, (struct obj *));
-static boolean FDECL(sightwedge, (int,int, int,int, int,int));
-static void FDECL(spell_backfire, (int));
-static int FDECL(spellhunger, (int));
-static char * FDECL(splknowpct, (int));
-static int FDECL(isqrt, (int));
-static boolean FDECL(run_maintained_spell, (int));
-static boolean FDECL(can_maintain_spell, (int));
+static int purifying_blast(void);
+static int stargate(void);
+static struct permonst * choose_crystal_summon(void);
+static int spell_let_to_idx(char);
+static boolean check_spirit_let(char);
+static boolean cursed_book(struct obj *bp);
+static boolean confused_book(struct obj *);
+static void deadbook(struct obj *);
+static int learn(void);
+static boolean getspell(int *, int);
+static boolean getspirit(int *);
+static boolean spiritLets(char *, int);
+static int dospiritmenu(int, int *, int);
+static boolean dospellmenu(int,int *);
+static void describe_spell(int);
+static int throwspell(void);
+static void cast_protection(void);
+static void cast_abjuration(void);
+static void cast_mass_healing(struct obj *);
+static boolean sightwedge(int,int, int,int, int,int);
+static void spell_backfire(int);
+static int spellhunger(int);
+static char * splknowpct(int);
+static int isqrt(int);
+static boolean run_maintained_spell(int);
+static boolean can_maintain_spell(int);
 
-long FDECL(doreadstudy, (const char *));
+long doreadstudy(const char *);
 
 struct spirit_power {
 	const long owner;

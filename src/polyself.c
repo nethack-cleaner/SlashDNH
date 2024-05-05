@@ -12,13 +12,13 @@
 
 #include "hack.h"
 
-static void FDECL(polyman, (const char *,const char *));
-static void NDECL(uunstick);
-static int FDECL(armor_to_dragon,(int));
-static void NDECL(newman);
-static short NDECL(doclockmenu);
-static short NDECL(dodroidmenu);
-static void FDECL(worddescriptions, (int));
+static void polyman(const char *,const char *);
+static void uunstick(void);
+static int armor_to_dragon(int);
+static void newman(void);
+static short doclockmenu(void);
+static short dodroidmenu(void);
+static void worddescriptions(int);
 
 /* assumes u.umonnum is set already */
 void

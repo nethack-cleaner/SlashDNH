@@ -9,11 +9,11 @@
 #include "dlb.h"
 #include "xhity.h"
 
-static boolean FDECL(is_swallow_sym, (int));
-static int FDECL(append_str, (char *, const char *));
-static struct monst * FDECL(lookat, (int, int, char *, char *, char *));
-static int FDECL(do_look, (boolean));
-static boolean FDECL(help_menu, (int *));
+static boolean is_swallow_sym(int);
+static int append_str(char *, const char *);
+static struct monst * lookat(int, int, char *, char *, char *);
+static int do_look(boolean);
+static boolean help_menu(int *);
 static char * get_description_of_monster_type(struct monst *, char *);
 static char * get_generation_description_of_monster_type(struct monst *, char *);
 static char * get_weight_description_of_monster_type(struct monst *, char *);
@@ -33,7 +33,7 @@ static char * get_description_of_damage_prefix(int, int);
 static char * get_description_of_ancient_breath(struct monst *, char *);
 static int generate_list_of_resistances(struct monst *, char *, int);
 #ifdef PORT_HELP
-extern void NDECL(port_help);
+extern void port_help(void);
 #endif
 
 extern const int monstr[];

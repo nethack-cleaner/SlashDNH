@@ -25,87 +25,87 @@
  * module you are trying to debug) or things are going to get rather
  * hard to link :-)
  */
-extern int NDECL(wiz_debug_cmd);
+extern int wiz_debug_cmd(void);
 #endif
 
-static int NDECL((*timed_occ_fn));
+static int (*timed_occ_fn)(void);
 
-static int NDECL(use_reach_attack);
-static int NDECL(psionic_craze);
-static int NDECL(dotelekinesis);
-static int NDECL(lavaify);
-static int NDECL(doprev_message);
-static int NDECL(timed_occupation);
-static int NDECL(doextcmd);
-static int NDECL(doability);
-static int NDECL(domonability);
-static int FDECL(ability_menu, (boolean, boolean));
-static int NDECL(domountattk);
-static int NDECL(hasfightingforms);
-static int NDECL(doMysticForm);
-static int NDECL(doLightsaberForm);
-static int NDECL(doKnightForm);
-static int NDECL(dofightingform);
-static int NDECL(doMabilForm);
-static int NDECL(dooverview_or_wiz_where);
-static int NDECL(doclearinvissyms);
-# ifdef WIZARD
-static int NDECL(wiz_bind);
-static int NDECL(wiz_mutate);
-static int NDECL(wiz_cult);
-static int NDECL(wiz_mk_mapglyphdump);
-static int NDECL(wiz_wish);
-static int NDECL(wiz_identify);
-static int NDECL(wiz_map);
-//static int NDECL(wiz_makemap);
-static int NDECL(wiz_genesis);
-static int NDECL(wiz_where);
-static int NDECL(wiz_detect);
-static int NDECL(wiz_panic);
-static int NDECL(wiz_polyself);
-static int NDECL(wiz_level_tele);
-static int NDECL(wiz_level_change);
-static int NDECL(wiz_show_seenv);
-static int NDECL(wiz_show_vision);
-static int NDECL(wiz_mon_polycontrol);
-static int NDECL(wiz_show_wmodes);
-static int NDECL(wiz_showkills);	/* showborn patch */
-static int NDECL(wiz_setinsight);
-static int NDECL(wiz_setsanity);
-static int FDECL(getvalue, (const char *));
-extern void FDECL(list_vanquished, (int, boolean)); /* showborn patch */
-#ifdef DEBUG_MIGRATING_MONS
-static int NDECL(wiz_migrate_mons);
-#endif
-static void FDECL(count_obj, (struct obj *, long *, long *, boolean, boolean));
-static void FDECL(obj_chain, (winid, const char *, struct obj *, long *, long *));
-static void FDECL(magic_chest_obj_chain, (winid, const char *, long *, long *));
-static void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
-static void FDECL(mon_chain, (winid, const char *, struct monst *, long *, long *));
-static void FDECL(contained, (winid, const char *, long *, long *));
-static int NDECL(wiz_show_stats);
-#  ifdef PORT_DEBUG
-static int NDECL(wiz_port_debug);
-#  endif
-# endif
-static int NDECL(enter_explore_mode);
-
-static void FDECL(bind_key, (uchar, char*));
-static void NDECL(init_bind_list);
-static void NDECL(change_bind_list);
+static int use_reach_attack(void);
+static int psionic_craze(void);
+static int dotelekinesis(void);
+static int lavaify(void);
+static int doprev_message(void);
+static int timed_occupation(void);
+static int doextcmd(void);
+static int doability(void);
+static int domonability(void);
+static int ability_menu(boolean, boolean);
+static int domountattk(void);
+static int hasfightingforms(void);
+static int doMysticForm(void);
+static int doLightsaberForm(void);
+static int doKnightForm(void);
+static int dofightingform(void);
+static int doMabilForm(void);
+static int dooverview_or_wiz_where(void);
+static int doclearinvissyms(void);
 #ifdef WIZARD
-//static void NDECL(add_debug_extended_commands); //Moved to extern.h
+static int wiz_bind(void);
+static int wiz_mutate(void);
+static int wiz_cult(void);
+static int wiz_mk_mapglyphdump(void);
+static int wiz_wish(void);
+static int wiz_identify(void);
+static int wiz_map(void);
+//static int wiz_makemap(void);
+static int wiz_genesis(void);
+static int wiz_where(void);
+static int wiz_detect(void);
+static int wiz_panic(void);
+static int wiz_polyself(void);
+static int wiz_level_tele(void);
+static int wiz_level_change(void);
+static int wiz_show_seenv(void);
+static int wiz_show_vision(void);
+static int wiz_mon_polycontrol(void);
+static int wiz_show_wmodes(void);
+static int wiz_showkills(void);	/* showborn patch */
+static int wiz_setinsight(void);
+static int wiz_setsanity(void);
+static int getvalue(const char *);
+extern void list_vanquished(int, boolean); /* showborn patch */
+#ifdef DEBUG_MIGRATING_MONS
+static int wiz_migrate_mons(void);
+#endif
+static void count_obj(struct obj *, long *, long *, boolean, boolean);
+static void obj_chain(winid, const char *, struct obj *, long *, long *);
+static void magic_chest_obj_chain(winid, const char *, long *, long *);
+static void mon_invent_chain(winid, const char *, struct monst *, long *, long *);
+static void mon_chain(winid, const char *, struct monst *, long *, long *);
+static void contained(winid, const char *, long *, long *);
+static int wiz_show_stats(void);
+# ifdef PORT_DEBUG
+static int wiz_port_debug(void);
+# endif
+#endif
+static int enter_explore_mode(void);
+
+static void bind_key(uchar, char*);
+static void init_bind_list(void);
+static void change_bind_list(void);
+#ifdef WIZARD
+//static void add_debug_extended_commands(void); //Moved to extern.h
 #endif /* WIZARD */
 
 #ifdef UNIX
-static void NDECL(end_of_input);
+static void end_of_input(void);
 #endif
 
 static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
-static char *NDECL(parse);
-static boolean FDECL(help_dir, (char,const char *));
+static char *parse(void);
+static boolean help_dir(char,const char *);
 
 
 static int
@@ -151,7 +151,7 @@ reset_occupations(void)
  * function times out by its own means.
  */
 void
-set_occupation(int NDECL ((*fn)), const char *txt, int xtime)
+set_occupation(int (*fn)(void), const char *txt, int xtime)
 {
 	if (xtime) {
 		occupation = timed_occupation;
@@ -164,7 +164,7 @@ set_occupation(int NDECL ((*fn)), const char *txt, int xtime)
 }
 
 
-static char NDECL(popch);
+static char popch(void);
 
 /* Provide a means to redo the last command.  The flag `in_doagain' is set
  * to true while redoing the command.  This flag is tested in commands that
@@ -3913,7 +3913,7 @@ rhack(register char *cmd)
 
 	    if (keytab->bind_cmd != NULL) {
 		struct ext_func_tab *extcmd = keytab->bind_cmd;
-		int res, NDECL((*func));
+		int res, (*func)(void);
 
 		if (u.uburied && !extcmd->can_if_buried) {
 		    You_cant("do that while you are buried!");
@@ -4441,9 +4441,9 @@ wiz_port_debug(void)
 	int num_menu_selections;
 	struct menu_selection_struct {
 		char *menutext;
-		void NDECL((*fn));
+		void (*fn)(void);
 	} menu_selections[] = {
-		{(char *)0, (void NDECL((*)))0}		/* array terminator */
+		{(char *)0, (void (*)(void))0}		/* array terminator */
 	};
 
 	num_menu_selections = SIZE(menu_selections) - 1;

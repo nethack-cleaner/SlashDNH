@@ -5,17 +5,17 @@
 #include "hack.h"
 
 
-static struct monst *NDECL(findgd);
+static struct monst *findgd(void);
 
 #define g_monnam(mtmp) \
 	x_monnam(mtmp, ARTICLE_NONE, (char *)0, SUPPRESS_IT, FALSE)
 
 
-static boolean FDECL(clear_fcorr, (struct monst *,boolean));
-static void FDECL(restfakecorr,(struct monst *));
-static boolean FDECL(in_fcorridor, (struct monst *,int,int));
-static void FDECL(move_gold,(struct obj *,int));
-static void FDECL(wallify_vault,(struct monst *));
+static boolean clear_fcorr(struct monst *,boolean);
+static void restfakecorr(struct monst *);
+static boolean in_fcorridor(struct monst *,int,int);
+static void move_gold(struct obj *,int);
+static void wallify_vault(struct monst *);
 
 static boolean
 clear_fcorr(register struct monst *grd, register boolean forceshow)

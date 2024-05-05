@@ -7,11 +7,11 @@
 #include "artifact.h"
 
 
-//static void FDECL(do_oname, (struct obj *));//moved to extern.h
-static void FDECL(getpos_help, (boolean,const char *));
+//static void do_oname(struct obj *);//moved to extern.h
+static void getpos_help(boolean,const char *);
 
-static void FDECL(mod_template_desc, (struct monst *, struct permonst *, char *, boolean, int, boolean));
-static boolean FDECL(maybe_append_injury_desc, (struct monst *, char *));
+static void mod_template_desc(struct monst *, struct permonst *, char *, boolean, int, boolean);
+static boolean maybe_append_injury_desc(struct monst *, char *);
 
 extern const char what_is_an_unknown_object[];		/* from pager.c */
 

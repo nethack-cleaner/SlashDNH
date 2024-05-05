@@ -8,12 +8,12 @@
 
 #include "xhity.h"
 
-extern void NDECL(autoquiver);
-extern int FDECL(gem_accept, (struct monst *, struct obj *));
-extern void FDECL(check_shop_obj, (struct obj *, xchar, xchar, boolean));
-extern void FDECL(breakmsg, (struct obj *, boolean));
-static boolean FDECL(mhurtle_step, (void *,int,int));
-extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
+extern void autoquiver(void);
+extern int gem_accept(struct monst *, struct obj *);
+extern void check_shop_obj(struct obj *, xchar, xchar, boolean);
+extern void breakmsg(struct obj *, boolean);
+static boolean mhurtle_step(void *,int,int);
+extern boolean quest_arti_hits_leader(struct obj *, struct monst *);
 
 
 static const char toss_objs[] =
@@ -305,7 +305,7 @@ boolean
 walk_path(
 	coord *src_cc,
 	coord *dest_cc,
-	boolean FDECL((*check_proc), (void *, int, int)),
+	boolean (*check_proc)(void *, int, int),
 	void * arg)
 {
     int x, y, dx, dy, x_change, y_change, err, i, prev_x, prev_y;

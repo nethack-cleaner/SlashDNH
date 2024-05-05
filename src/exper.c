@@ -5,10 +5,10 @@
 #include "hack.h"
 #include "artifact.h"
 
-static void NDECL(binderdown);
-static void NDECL(acudown);
-static void NDECL(acuup);
-static int FDECL(enermod, (int));
+static void binderdown(void);
+static void acudown(void);
+static void acuup(void);
+static int enermod(int);
 
 static long expUps[] = {
 0,		//1

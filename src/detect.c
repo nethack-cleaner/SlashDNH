@@ -12,13 +12,13 @@
 
 extern boolean known;	/* from read.c */
 
-static void FDECL(do_dknown_of, (struct obj *));
-static boolean FDECL(check_map_spot, (int,int,char,unsigned));
-static boolean FDECL(clear_stale_map, (char,unsigned));
-static void FDECL(sense_trap, (struct trap *,xchar,xchar,int));
-static void FDECL(show_map_spot, (int,int));
-static void FDECL(findone,(int,int,void *));
-static void FDECL(openone,(int,int,void *));
+static void do_dknown_of(struct obj *);
+static boolean check_map_spot(int,int,char,unsigned);
+static boolean clear_stale_map(char,unsigned);
+static void sense_trap(struct trap *,xchar,xchar,int);
+static void show_map_spot(int,int);
+static void findone(int,int,void *);
+static void openone(int,int,void *);
 static boolean unconstrain_map(void);
 static void reconstrain_map(void);
 static void map_redisplay(void);

@@ -8,17 +8,17 @@
 #include "lev.h"
 #include "artifact.h"
 
-static void FDECL(trycall, (struct obj *));
-static void FDECL(dosinkring, (struct obj *));
+static void trycall(struct obj *);
+static void dosinkring(struct obj *);
 
-static int NDECL(wipeoff);
+static int wipeoff(void);
 
-static int FDECL(menu_drop, (int));
-static int NDECL(currentlevel_rewrite);
-static void NDECL(final_level);
-static boolean NDECL(no_spirits);
+static int menu_drop(int);
+static int currentlevel_rewrite(void);
+static void final_level(void);
+static boolean no_spirits(void);
 
-/* static boolean FDECL(badspot, (xchar,xchar)); */
+/* static boolean badspot(xchar,xchar); */
 
 
 static const char drop_types[] =

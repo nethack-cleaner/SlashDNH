@@ -5,18 +5,18 @@
 #include "hack.h"
 #include "lev.h"	/* save & restore info */
 
-static void FDECL(setgemprobs, (d_level*));
-static void FDECL(shuffle,(int,int,boolean));
-static void NDECL(shuffle_all);
-static int FDECL(find_otyp_of_desc, (const char *, const char **, int, int, boolean(*)(int)));
-static void NDECL(randomize_nonmatwands);
-static boolean FDECL(interesting_to_discover,(int));
+static void setgemprobs(d_level*);
+static void shuffle(int,int,boolean);
+static void shuffle_all(void);
+static int find_otyp_of_desc(const char *, const char **, int, int, boolean(*)(int));
+static void randomize_nonmatwands(void);
+static boolean interesting_to_discover(int);
 
 
 static short disco[NUM_OBJECTS] = DUMMY;
 
 #ifdef USE_TILES
-static void NDECL(shuffle_tiles);
+static void shuffle_tiles(void);
 extern short glyph2tile[];	/* from tile.c */
 
 /* Shuffle tile assignments to match descriptions, so a red potion isn't
@@ -285,7 +285,7 @@ int
 find_otyp_of_desc(
 	const char *str, const char **strs,
 	int lbound, int ubound,
-	boolean FDECL((*extracondition), (int)))
+	boolean (*extracondition)(int))
 /* extracondition CANNOT call find_otyp_of_desc() */
 {
 	register int i;

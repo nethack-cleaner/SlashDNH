@@ -155,19 +155,19 @@ static int yy_start = 0;	/* start state number */
  */
 static int yy_did_buffer_switch_on_eof;
 
-void FDECL(yyrestart, (FILE *));
+void yyrestart(FILE *);
 
-void FDECL(yy_switch_to_buffer, (YY_BUFFER_STATE));
-void NDECL(yy_load_buffer_state);
-YY_BUFFER_STATE FDECL(yy_create_buffer, (FILE *,int));
-void FDECL(yy_delete_buffer, (YY_BUFFER_STATE));
-void FDECL(yy_init_buffer, (YY_BUFFER_STATE,FILE *));
-void FDECL(yy_flush_buffer, (YY_BUFFER_STATE));
+void yy_switch_to_buffer(YY_BUFFER_STATE);
+void yy_load_buffer_state(void);
+YY_BUFFER_STATE yy_create_buffer(FILE *,int);
+void yy_delete_buffer(YY_BUFFER_STATE);
+void yy_init_buffer(YY_BUFFER_STATE,FILE *);
+void yy_flush_buffer(YY_BUFFER_STATE);
 #define YY_FLUSH_BUFFER yy_flush_buffer( yy_current_buffer )
 
-static void * FDECL(yy_flex_alloc, (yy_size_t));
-static void * FDECL(yy_flex_realloc2, (void *,yy_size_t,int));
-static void FDECL(yy_flex_free, (void *));
+static void * yy_flex_alloc(yy_size_t);
+static void * yy_flex_realloc2(void *,yy_size_t,int);
+static void yy_flex_free(void *);
 
 #define yy_new_buffer yy_create_buffer
 
@@ -193,10 +193,10 @@ typedef int yy_state_type;
 extern char *yytext;
 #define yytext_ptr yytext
 
-static yy_state_type NDECL(yy_get_previous_state);
-static yy_state_type FDECL(yy_try_NUL_trans, (yy_state_type));
-static int NDECL(yy_get_next_buffer);
-static void FDECL(yy_fatal_error, (const char *));
+static yy_state_type yy_get_previous_state(void);
+static yy_state_type yy_try_NUL_trans(yy_state_type);
+static int yy_get_next_buffer(void);
+static void yy_fatal_error(const char *);
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up yytext.
@@ -702,12 +702,12 @@ char *yytext;
 
 #ifdef FLEX_SCANNER
 #define YY_MALLOC_DECL \
-	      void * FDECL(malloc, (size_t)); \
-	      void * FDECL(realloc, (void *,size_t));
+	      void * malloc(size_t); \
+	      void * realloc(void *,size_t);
 #endif
 
-void FDECL(init_yyin, (FILE *));
-void FDECL(init_yyout, (FILE *));
+void init_yyin(FILE *);
+void init_yyout(FILE *);
 
 /*
  * This doesn't always get put in lev_comp.h
@@ -727,16 +727,16 @@ static int map_cnt = 0;
  */
 
 #ifndef YY_SKIP_YYWRAP
-extern int NDECL(yywrap);
+extern int yywrap(void);
 #endif
 
 #ifndef YY_NO_UNPUT
-static void FDECL(yyunput, (int,char *));
+static void yyunput(int,char *);
 #endif
 
 
 #ifndef YY_NO_INPUT
-static int NDECL(input);
+static int input(void);
 #endif
 
 /* Amount of stuff to slurp up with each read. */
@@ -811,7 +811,7 @@ static int NDECL(input);
 				(yytext[yyleng - 1] == '\n'); \
 	YY_USER_ACTION
 
-int NDECL(yylex);
+int yylex(void);
 int
 yylex(void)
 	{
@@ -1894,7 +1894,7 @@ yy_delete_buffer(YY_BUFFER_STATE b)
 
 #ifndef YY_ALWAYS_INTERACTIVE
 #ifndef YY_NEVER_INTERACTIVE
-extern int FDECL(isatty, (int));
+extern int isatty(int);
 #endif
 #endif
 

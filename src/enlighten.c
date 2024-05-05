@@ -6,15 +6,15 @@
 #include "mutations.h"
 #include "artifact.h"
 
-static void FDECL(enlght_line, (const char *,const char *,const char *, boolean, long));
-static void FDECL(put_or_dump, (const char *, boolean));
-static char *FDECL(enlght_combatinc, (const char *,int,int,char *));
-static int NDECL(minimal_enlightenment);
-static void NDECL(resistances_enlightenment);
-static void NDECL(signs_enlightenment);
-static void NDECL(spirits_enlightenment);
-static void NDECL(mutations_enlightenment);
-static void NDECL(genocide_enlightenment);
+static void enlght_line(const char *,const char *,const char *, boolean, long);
+static void put_or_dump(const char *, boolean);
+static char *enlght_combatinc(const char *,int,int,char *);
+static int minimal_enlightenment(void);
+static void resistances_enlightenment(void);
+static void signs_enlightenment(void);
+static void spirits_enlightenment(void);
+static void mutations_enlightenment(void);
+static void genocide_enlightenment(void);
 
 #define DOATTRIB_RESISTS	1
 #define DOATTRIB_ARMOR		2

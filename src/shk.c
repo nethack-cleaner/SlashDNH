@@ -13,8 +13,8 @@
 #define PAY_SKIP  (-1)
 #define PAY_BROKE (-2)
 
-static void FDECL(call_keter, (struct monst *,boolean));
-static void FDECL(keter_gone, (boolean));
+static void call_keter(struct monst *,boolean);
+static void keter_gone(boolean);
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 #define no_cheat      ((ACURR(A_CHA) - rnl(3)) > 7)
@@ -24,57 +24,52 @@ extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 static long int followmsg;	/* last time of follow message */
 
-static long FDECL(addupbill, (struct monst *));
-static void FDECL(setallstolen, (struct obj *));
-static void FDECL(setallpaid, (struct obj *));
-static struct bill_x *FDECL(onbill, (struct obj *, struct monst *, boolean));
-static struct monst *FDECL(next_shkp, (struct monst *, boolean, boolean));
-static long FDECL(shop_debt, (struct eshk *));
-static char *FDECL(shk_owns, (char *,struct obj *));
-static char *FDECL(mon_owns, (char *,struct obj *));
-static void FDECL(clear_unpaid,(struct obj *));
-static long FDECL(check_credit, (long, struct monst *));
-static void FDECL(pay, (long, struct monst *));
-static long FDECL(get_cost, (struct obj *, struct monst *));
-static long FDECL(set_cost, (struct obj *, struct monst *));
-static const char *FDECL(shk_embellish, (struct obj *, long));
-static long FDECL(cost_per_charge, (struct monst *,struct obj *,boolean));
-static long FDECL(cheapest_item, (struct monst *));
-static int FDECL(dopayobj, (struct monst *, struct bill_x *,
-			    struct obj **, int, boolean));
-static long FDECL(stolen_container, (struct obj *, struct monst *, long,
-				     boolean));
-static void FDECL(shk_names_obj,
-		 (struct monst *,struct obj *,const char *,long,const char *));
-static struct obj *FDECL(bp_to_obj, (struct bill_x *));
-static boolean FDECL(inherits, (struct monst *,int,int));
-static void FDECL(set_repo_loc, (struct eshk *));
-static boolean NDECL(angry_shk_exists);
-static void FDECL(rile_shk, (struct monst *));
-static void FDECL(rouse_shk, (struct monst *,boolean));
-static void FDECL(remove_damage, (struct monst *, boolean));
-static void FDECL(sub_one_frombill, (struct obj *, struct monst *));
-static void FDECL(add_one_tobill, (struct obj *, boolean));
-static void FDECL(dropped_container, (struct obj *, struct monst *,
-				      boolean));
-static void FDECL(add_to_billobjs, (struct obj *));
-static void FDECL(bill_box_content, (struct obj *, boolean, boolean,
-				     struct monst *));
-static boolean FDECL(rob_shop, (struct monst *, struct obj *));
+static long addupbill(struct monst *);
+static void setallstolen(struct obj *);
+static void setallpaid(struct obj *);
+static struct bill_x *onbill(struct obj *, struct monst *, boolean);
+static struct monst *next_shkp(struct monst *, boolean, boolean);
+static long shop_debt(struct eshk *);
+static char *shk_owns(char *,struct obj *);
+static char *mon_owns(char *,struct obj *);
+static void clear_unpaid(struct obj *);
+static long check_credit(long, struct monst *);
+static void pay(long, struct monst *);
+static long get_cost(struct obj *, struct monst *);
+static long set_cost(struct obj *, struct monst *);
+static const char *shk_embellish(struct obj *, long);
+static long cost_per_charge(struct monst *,struct obj *,boolean);
+static long cheapest_item(struct monst *);
+static int dopayobj(struct monst *, struct bill_x *, struct obj **, int, boolean);
+static long stolen_container(struct obj *, struct monst *, long, boolean);
+static void shk_names_obj(struct monst *,struct obj *,const char *,long,const char *);
+static struct obj *bp_to_obj(struct bill_x *);
+static boolean inherits(struct monst *,int,int);
+static void set_repo_loc(struct eshk *);
+static boolean angry_shk_exists(void);
+static void rile_shk(struct monst *);
+static void rouse_shk(struct monst *,boolean);
+static void remove_damage(struct monst *, boolean);
+static void sub_one_frombill(struct obj *, struct monst *);
+static void add_one_tobill(struct obj *, boolean);
+static void dropped_container(struct obj *, struct monst *, boolean);
+static void add_to_billobjs(struct obj *);
+static void bill_box_content(struct obj *, boolean, boolean, struct monst *);
+static boolean rob_shop(struct monst *, struct obj *);
 
 #define NOBOUND         (-1)    /* No lower/upper limit to charge       */
-static void NDECL(shk_other_services);
-static void FDECL(shk_identify, (char *, struct monst *));
-static void FDECL(shk_uncurse, (char *, struct monst *));
-static void FDECL(shk_appraisal, (char *, struct monst *));
-static void FDECL(shk_weapon_works, (char *, struct monst *));
-static void FDECL(shk_armor_works, (char *, struct monst *));
-static void FDECL(shk_charge, (char *, struct monst *));
-static void FDECL(shk_guide, (char *, struct monst *));
-static void FDECL(shk_wind, (char *, struct monst *));
-static boolean FDECL(shk_obj_match, (struct obj *, struct monst *));
-static boolean FDECL(shk_offer_price, (char *, long, struct monst *));
-static void FDECL(shk_smooth_charge, (int *, int, int));
+static void shk_other_services(void);
+static void shk_identify(char *, struct monst *);
+static void shk_uncurse(char *, struct monst *);
+static void shk_appraisal(char *, struct monst *);
+static void shk_weapon_works(char *, struct monst *);
+static void shk_armor_works(char *, struct monst *);
+static void shk_charge(char *, struct monst *);
+static void shk_guide(char *, struct monst *);
+static void shk_wind(char *, struct monst *);
+static boolean shk_obj_match(struct obj *, struct monst *);
+static boolean shk_offer_price(char *, long, struct monst *);
+static void shk_smooth_charge(int *, int, int);
 
 /*
 	invariants: obj->unpaid iff onbill(obj) [unless bp->useup]

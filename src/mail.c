@@ -33,50 +33,50 @@
  *			 random intervals.
  */
 
-static boolean FDECL(md_start,(coord *));
-static boolean FDECL(md_stop,(coord *, coord *));
-static boolean FDECL(md_rush,(struct monst *,int,int));
-static void FDECL(newmail, (struct mail_info *));
+static boolean md_start(coord *);
+static boolean md_stop(coord *, coord *);
+static boolean md_rush(struct monst *,int,int);
+static void newmail(struct mail_info *);
 
 int mailckfreq = 0;
 
 extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
 
 
-# if !defined(UNIX) && !defined(LAN_MAIL)
+#if !defined(UNIX) && !defined(LAN_MAIL)
 int mustgetmail = -1;
-# endif
+#endif
 
 
-# ifdef UNIX
+#ifdef UNIX
 #include <sys/stat.h>
 #include <pwd.h>
 /* DON'T trust all Unices to declare getpwuid() in <pwd.h> */
 /* DO trust all SVR4 to typedef uid_t in <sys/types.h> (probably to a long) */
-extern struct passwd *FDECL(getpwuid,(uid_t));
+extern struct passwd *getpwuid(uid_t);
 static struct stat omstat,nmstat;
 static char *mailbox = (char *)0;
 static long laststattime;
 
-# if !defined(MAILPATH) && defined(AMS)	/* Just a placeholder for AMS */
-#  define MAILPATH "/dev/null"
-# endif
-# if !defined(MAILPATH)
-#  define MAILPATH "/var/spool/mail/"
-# endif
-# if !defined(MAILPATH) && defined(__FreeBSD__)
-#  define MAILPATH "/var/mail/"
-# endif
-# if !defined(MAILPATH)
-#  define MAILPATH "/usr/mail/"
-# endif
+#if !defined(MAILPATH) && defined(AMS)	/* Just a placeholder for AMS */
+# define MAILPATH "/dev/null"
+#endif
+#if !defined(MAILPATH)
+# define MAILPATH "/var/spool/mail/"
+#endif
+#if !defined(MAILPATH) && defined(__FreeBSD__)
+# define MAILPATH "/var/mail/"
+#endif
+#if !defined(MAILPATH)
+# define MAILPATH "/usr/mail/"
+#endif
 
 void
 getmailstatus(void)
 {
 	if(!mailbox && !(mailbox = nh_getenv("MAIL"))) {
-#  ifdef MAILPATH
-#   ifdef AMS
+#ifdef MAILPATH
+# ifdef AMS
 	        struct passwd ppasswd;
 
 		(void) memcpy(&ppasswd, getpwuid(getuid()), sizeof(struct passwd));
@@ -86,26 +86,26 @@ getmailstatus(void)
 		     Strcat(mailbox, AMS_MAILBOX);
 		} else
 		  return;
-#   else
+# else
 		const char *pw_name = getpwuid(getuid())->pw_name;
 		mailbox = (char *) alloc(sizeof(MAILPATH)+strlen(pw_name));
 		Strcpy(mailbox, MAILPATH);
 		Strcat(mailbox, pw_name);
-#  endif /* AMS */
-#  else
+#endif /* AMS */
+#else
 		return;
-#  endif
+#endif
 	}
 	if(stat(mailbox, &omstat)){
-#  ifdef PERMANENT_MAILBOX
+#ifdef PERMANENT_MAILBOX
 		pline("Cannot get status of MAIL=\"%s\".", mailbox);
 		mailbox = 0;
-#  else
+#else
 		omstat.st_mtime = 0;
-#  endif
+#endif
 	}
 }
-# endif /* UNIX */
+#endif /* UNIX */
 
 
 /*

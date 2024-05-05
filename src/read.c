@@ -25,19 +25,19 @@ static const char readable[] =
 static const char all_count[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
 static const int random_cloud_types[] = { AD_FIRE, AD_COLD, AD_ELEC, AD_ACID};
 
-static void FDECL(wand_explode, (struct obj *));
-static void NDECL(do_class_genocide);
-static void FDECL(stripspe,(struct obj *));
-static void FDECL(p_glow1,(struct obj *));
-static void FDECL(p_glow2,(struct obj *,const char *));
-static void FDECL(randomize,(int *, int));
-static void FDECL(forget_single_object, (int));
-static void FDECL(maybe_tame, (struct monst *,struct obj *));
-static void FDECL(ranged_set_lightsources, (int, int, void *));
-static int FDECL(read_tile, (struct obj *));
-static int FDECL(study_word, (struct obj *));
-static int NDECL(learn_word);
-static void FDECL(learn_spell_aphanactonan, (int));
+static void wand_explode(struct obj *);
+static void do_class_genocide(void);
+static void stripspe(struct obj *);
+static void p_glow1(struct obj *);
+static void p_glow2(struct obj *,const char *);
+static void randomize(int *, int);
+static void forget_single_object(int);
+static void maybe_tame(struct monst *,struct obj *);
+static void ranged_set_lightsources(int, int, void *);
+static int read_tile(struct obj *);
+static int study_word(struct obj *);
+static int learn_word(void);
+static void learn_spell_aphanactonan(int);
 
 int
 doread(void)

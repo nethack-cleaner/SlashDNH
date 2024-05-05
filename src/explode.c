@@ -117,8 +117,7 @@ free_explode_region(ExplodeRegion *reg)
 }
 
 /* This is the "do-it-all" explosion command */
-static void FDECL(do_explode,
-	(int,int,ExplodeRegion *,int,int,int,int,int,boolean, struct permonst *));
+static void do_explode(int,int,ExplodeRegion *,int,int,int,int,int,boolean, struct permonst *);
 
 /* Note: I had to choose one of three possible kinds of "type" when writing
  * this function: a wand type (like in zap.c), an adtyp, or an object type.
@@ -1122,8 +1121,7 @@ struct grenade_callback {
     boolean isyou;
 };
 
-static void FDECL(grenade_effects, (struct obj *,xchar,xchar,
-	ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,boolean));
+static void grenade_effects(struct obj *,xchar,xchar,ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,boolean);
 
 static int
 grenade_fiery_callback(void * data, int x, int y)

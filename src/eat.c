@@ -11,33 +11,33 @@
 #define debugpline	if (wizard) pline
 #endif
 
-static int NDECL(eatmdone);
-static int NDECL(eatfood);
-static void FDECL(costly_tin, (const char*));
-static int NDECL(opentin);
-static int NDECL(windclock);
-static int FDECL(clockwork_eat_menu, (boolean,boolean));
+static int eatmdone(void);
+static int eatfood(void);
+static void costly_tin(const char*);
+static int opentin(void);
+static int windclock(void);
+static int clockwork_eat_menu(boolean,boolean);
 
-static const char *FDECL(food_xname, (struct obj *,boolean));
-static void FDECL(choke, (struct obj *));
-static void NDECL(recalc_wt);
-static struct obj *FDECL(touchfood, (struct obj *));
-static void NDECL(do_reset_eat);
-static void FDECL(done_eating, (boolean));
-static void FDECL(givit, (int,struct permonst *,short,boolean));
-static void FDECL(start_tin, (struct obj *));
-static int FDECL(eatcorpse, (struct obj *));
-static void FDECL(start_eating, (struct obj *));
-static void FDECL(fprefx, (struct obj *));
-static void FDECL(accessory_has_effect, (struct obj *));
-static void FDECL(fpostfx, (struct obj *));
-static int NDECL(bite);
-static int FDECL(edibility_prompts, (struct obj *));
-static int FDECL(rottenfood, (struct obj *));
-static void NDECL(eatspecial);
-static void FDECL(eataccessory, (struct obj *));
-static const char *FDECL(foodword, (struct obj *));
-static boolean FDECL(maybe_cannibal, (int,boolean));
+static const char *food_xname(struct obj *,boolean);
+static void choke(struct obj *);
+static void recalc_wt(void);
+static struct obj *touchfood(struct obj *);
+static void do_reset_eat(void);
+static void done_eating(boolean);
+static void givit(int,struct permonst *,short,boolean);
+static void start_tin(struct obj *);
+static int eatcorpse(struct obj *);
+static void start_eating(struct obj *);
+static void fprefx(struct obj *);
+static void accessory_has_effect(struct obj *);
+static void fpostfx(struct obj *);
+static int bite(void);
+static int edibility_prompts(struct obj *);
+static int rottenfood(struct obj *);
+static void eatspecial(void);
+static void eataccessory(struct obj *);
+static const char *foodword(struct obj *);
+static boolean maybe_cannibal(int,boolean);
 
 char msgbuf[BUFSZ];
 int etype;			/* Clockwork's eat type */

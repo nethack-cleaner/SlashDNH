@@ -4,9 +4,9 @@
 
 #include "hack.h"
 
-static int NDECL(picklock);
-static int NDECL(forcelock);
-static int NDECL(forcedoor);
+static int picklock(void);
+static int forcelock(void);
+static int forcedoor(void);
 
 	//Through me you pass into the city of woe;
 	//Through me you pass into eternal pain;
@@ -42,9 +42,9 @@ struct xlock_s {
 } xlock;
 
 
-static const char *NDECL(lock_action);
-static boolean FDECL(obstructed,(int,int));
-static void FDECL(chest_shatter_msg, (struct obj *));
+static const char *lock_action(void);
+static boolean obstructed(int,int);
+static void chest_shatter_msg(struct obj *);
 
 boolean
 is_box_picking_context(void) {

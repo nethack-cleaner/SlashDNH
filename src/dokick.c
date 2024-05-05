@@ -14,11 +14,11 @@ static const char *gate_str;
 
 extern boolean notonhead;	/* for long worms */
 
-static void FDECL(kick_monster, (xchar, xchar));
-static int FDECL(kick_object, (xchar, xchar));
-static char *FDECL(kickstr, (char *));
-static void FDECL(otransit_msg, (struct obj *, boolean, long));
-static void FDECL(drop_to, (coord *,schar));
+static void kick_monster(xchar, xchar);
+static int kick_object(xchar, xchar);
+static char *kickstr(char *);
+static void otransit_msg(struct obj *, boolean, long);
+static void drop_to(coord *,schar);
 
 static struct obj *kickobj;
 

@@ -8,12 +8,12 @@
 
 extern char bones[];	/* from files.c */
 
-static boolean FDECL(no_bones_level_core, (d_level *, boolean));
-static boolean FDECL(no_bones_level, (d_level *));
-static void FDECL(goodfruit, (int));
-static void FDECL(resetobjs,(struct obj *,boolean));
-static void FDECL(drop_upon_death, (struct monst *, struct obj *, int, int));
-static void FDECL(sanitize_name, (char *namebuf));
+static boolean no_bones_level_core(d_level *, boolean);
+static boolean no_bones_level(d_level *);
+static void goodfruit(int);
+static void resetobjs(struct obj *,boolean);
+static void drop_upon_death(struct monst *, struct obj *, int, int);
+static void sanitize_name(char *namebuf);
 
 static boolean
 no_bones_level_core(d_level *lev, boolean recursed)

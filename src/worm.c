@@ -14,10 +14,10 @@ struct wseg {
     xchar  wx, wy;	/* the segment's position */
 };
 
-static void FDECL(toss_wsegs, (struct wseg *,boolean));
-static void FDECL(shrink_worm, (int));
-static void FDECL(random_dir, (xchar,xchar,xchar *,xchar *));
-static struct wseg *FDECL(create_worm_tail, (int));
+static void toss_wsegs(struct wseg *,boolean);
+static void shrink_worm(int);
+static void random_dir(xchar,xchar,xchar *,xchar *);
+static struct wseg *create_worm_tail(int);
 
 /*  Description of long worm implementation.
  *

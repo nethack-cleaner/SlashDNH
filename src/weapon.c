@@ -12,7 +12,7 @@
 #include "xhity.h"
 
 #ifdef DUMP_LOG
-static int FDECL(enhance_skill, (boolean));
+static int enhance_skill(boolean);
 #endif
 
 /* Categories whose names don't come from OBJ_NAME(objects[type])
@@ -57,9 +57,9 @@ static int FDECL(enhance_skill, (boolean));
 							hates_holy_mon(mon))
 
 
-static void FDECL(mon_ignite_lightsaber, (struct obj *, struct monst *));
+static void mon_ignite_lightsaber(struct obj *, struct monst *);
 
-static void FDECL(give_may_advance_msg, (int));
+static void give_may_advance_msg(int);
 
 
 static const short skill_names_indices[P_NUM_SKILLS] = {
@@ -143,15 +143,15 @@ give_may_advance_msg(int skill)
 }
 
 
-static boolean FDECL(can_advance, (int, boolean));
-static boolean FDECL(could_advance, (int));
-static boolean FDECL(peaked_skill, (int));
-static int FDECL(slots_required, (int));
+static boolean can_advance(int, boolean);
+static boolean could_advance(int);
+static boolean peaked_skill(int);
+static int slots_required(int);
 
 
-static char *FDECL(skill_level_name, (int,char *));
-static char *FDECL(max_skill_level_name, (int,char *));
-static void FDECL(skill_advance, (int));
+static char *skill_level_name(int,char *);
+static char *max_skill_level_name(int,char *);
+static void skill_advance(int);
 
 
 static const char kebabable[] = {
@@ -1427,8 +1427,8 @@ dmgval(struct obj *otmp, struct monst *mon, int spec, struct monst *magr)
 
 
 
-static struct obj *FDECL(oselect, (struct monst *,int,int));
-static struct obj *FDECL(oselectBoulder, (struct monst *));
+static struct obj *oselect(struct monst *,int,int);
+static struct obj *oselectBoulder(struct monst *);
 #define Oselect(x, spot) if ((otmp = oselect(mtmp, x, spot)) != 0) return(otmp);
 
 static struct obj *

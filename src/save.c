@@ -18,14 +18,14 @@ extern boolean saving_game;
 
 
 #ifdef ZEROCOMP
-static void FDECL(bputc, (int));
+static void bputc(int);
 #endif
-static void FDECL(savelevchn, (int,int));
-static void FDECL(savedamage, (int,int));
-static void FDECL(saveobjchn, (int,struct obj *,int));
-static void FDECL(savemonchn, (int,struct monst *,int));
-static void FDECL(savetrapchn, (int,struct trap *,int));
-static void FDECL(savegamestate, (int,int));
+static void savelevchn(int,int);
+static void savedamage(int,int);
+static void saveobjchn(int,struct obj *,int);
+static void savemonchn(int,struct monst *,int);
+static void savetrapchn(int,struct trap *,int);
+static void savegamestate(int,int);
 
 #if defined(UNIX)
 #define HUP	if (!program_state.done_hup)

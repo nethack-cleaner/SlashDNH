@@ -10,28 +10,26 @@ extern const char * const destroy_strings[];	/* from xhityhelpers.c */
 
 static boolean rolling_boulder_in_progress;
 
-static void FDECL(dofiretrap, (struct obj *));
-static void NDECL(domagictrap);
-static boolean FDECL(emergency_disrobe,(boolean *));
-static int FDECL(untrap_prob, (struct trap *ttmp));
-static void FDECL(move_into_trap, (struct trap *));
-static int FDECL(try_disarm, (struct trap *,boolean));
-static int FDECL(disarm_holdingtrap, (struct trap *));
-static int FDECL(disarm_rust_trap, (struct trap *));
-static int FDECL(disarm_fire_trap, (struct trap *));
-static int FDECL(disarm_magic_trap, (struct trap *));
-static int FDECL(disarm_landmine, (struct trap *));
-static int FDECL(disarm_squeaky_board, (struct trap *));
-static int FDECL(disarm_shooting_trap, (struct trap *));
-static boolean FDECL(try_lift, (struct monst *, struct trap *, int, boolean));
-static int FDECL(help_monster_out, (struct monst *, struct trap *));
-static boolean FDECL(thitm, (struct monst *,int,boolean));
-static int FDECL(mkroll_launch,
-			(struct trap *,xchar,xchar,short,long));
-static boolean FDECL(isclearpath,(coord *, int, schar, schar));
-static int FDECL(steedintrap, (struct trap *, struct obj *));
-static boolean FDECL(keep_saddle_with_steedcorpse,
-			(unsigned, struct obj *, struct obj *));
+static void dofiretrap(struct obj *);
+static void domagictrap(void);
+static boolean emergency_disrobe(boolean *);
+static int untrap_prob(struct trap *ttmp);
+static void move_into_trap(struct trap *);
+static int try_disarm(struct trap *,boolean);
+static int disarm_holdingtrap(struct trap *);
+static int disarm_rust_trap(struct trap *);
+static int disarm_fire_trap(struct trap *);
+static int disarm_magic_trap(struct trap *);
+static int disarm_landmine(struct trap *);
+static int disarm_squeaky_board(struct trap *);
+static int disarm_shooting_trap(struct trap *);
+static boolean try_lift(struct monst *, struct trap *, int, boolean);
+static int help_monster_out(struct monst *, struct trap *);
+static boolean thitm(struct monst *,int,boolean);
+static int mkroll_launch(struct trap *,xchar,xchar,short,long);
+static boolean isclearpath(coord *, int, schar, schar);
+static int steedintrap(struct trap *, struct obj *);
+static boolean keep_saddle_with_steedcorpse(unsigned, struct obj *, struct obj *);
 
 
 static const char * const a_your[2] = { "a", "your" };

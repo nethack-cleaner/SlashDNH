@@ -33,24 +33,24 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 };
 
 #ifndef NO_SIGNAL
-static void FDECL(done_intr, (int));
+static void done_intr(int);
 # if defined(UNIX)
-static void FDECL(done_hangup, (int));
+static void done_hangup(int);
 # endif
 #endif
-static void FDECL(disclose,(int,boolean));
-static void FDECL(get_valuables, (struct obj *));
-static void FDECL(sort_valuables, (struct valuable_data *,int));
-static void FDECL(artifact_score, (struct obj *,boolean,winid));
-static void FDECL(savelife, (int));
-void FDECL(list_vanquished, (char,boolean));
+static void disclose(int,boolean);
+static void get_valuables(struct obj *);
+static void sort_valuables(struct valuable_data *,int);
+static void artifact_score(struct obj *,boolean,winid);
+static void savelife(int);
+void list_vanquished(char,boolean);
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
-extern void NDECL(dump_spells);
-void FDECL(do_vanquished, (char, boolean, boolean));
+extern void dump_spells(void);
+void do_vanquished(char, boolean, boolean);
 #endif /* DUMP_LOG */
-static boolean FDECL(should_query_disclose_option, (int,char *));
+static boolean should_query_disclose_option(int,char *);
 
 #define nethack_exit exit
 

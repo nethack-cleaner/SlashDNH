@@ -5,10 +5,10 @@
 #include "hack.h"
 
 
-static const char *NDECL(dev_name);
-static void FDECL(get_mplname, (struct monst *, char *, boolean));
-static void FDECL(get_mplname_culture, (struct monst *, char *));
-static void FDECL(mk_mplayer_armor, (struct monst *, int));
+static const char *dev_name(void);
+static void get_mplname(struct monst *, char *, boolean);
+static void get_mplname_culture(struct monst *, char *);
+static void mk_mplayer_armor(struct monst *, int);
 
 /* These are the names of those who
  * contributed to the development of NetHack 3.2/3.3/3.4.

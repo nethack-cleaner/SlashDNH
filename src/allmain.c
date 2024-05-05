@@ -14,37 +14,37 @@
 #endif
 
 #ifdef POSITIONBAR
-static void NDECL(do_positionbar);
+static void do_positionbar(void);
 #endif
 
-static void NDECL(mercurial_repair);
-static void NDECL(clothes_bite_you);
-static void NDECL(androidUpkeep);
-static void NDECL(printMons);
-static void NDECL(printMonNames);
-static void NDECL(printDPR);
-static void NDECL(printBodies);
-static void NDECL(printSanAndInsight);
-static void FDECL(printAttacks, (char *,struct permonst *));
-static void FDECL(resFlags, (char *,unsigned int));
-static int FDECL(find_preset_inherited, (char *));
-static int NDECL(do_inheritance_menu);
-static void FDECL(spot_monster, (struct monst *));
-static void NDECL(sense_nearby_monsters);
-static void NDECL(cthulhu_mind_blast);
-static void FDECL(unseen_actions, (struct monst *));
-static void FDECL(blessed_spawn, (struct monst *));
-static void FDECL(alkilith_spawn, (struct monst *));
-static void FDECL(good_neighbor, (struct monst *));
-static void FDECL(dark_pharaoh, (struct monst *));
-static void FDECL(dark_pharaoh_visible, (struct monst *));
-static void FDECL(good_neighbor_visible, (struct monst *));
-static void FDECL(polyp_pickup, (struct monst *));
-static void FDECL(unbodied_heal, (struct monst *));
-static void FDECL(goat_sacrifice, (struct monst *));
-static void FDECL(palid_stranger, (struct monst *));
-static void FDECL(sib_follow, (struct monst *));
-static void FDECL(invisible_twin_act, (struct monst *));
+static void mercurial_repair(void);
+static void clothes_bite_you(void);
+static void androidUpkeep(void);
+static void printMons(void);
+static void printMonNames(void);
+static void printDPR(void);
+static void printBodies(void);
+static void printSanAndInsight(void);
+static void printAttacks(char *,struct permonst *);
+static void resFlags(char *,unsigned int);
+static int find_preset_inherited(char *);
+static int do_inheritance_menu(void);
+static void spot_monster(struct monst *);
+static void sense_nearby_monsters(void);
+static void cthulhu_mind_blast(void);
+static void unseen_actions(struct monst *);
+static void blessed_spawn(struct monst *);
+static void alkilith_spawn(struct monst *);
+static void good_neighbor(struct monst *);
+static void dark_pharaoh(struct monst *);
+static void dark_pharaoh_visible(struct monst *);
+static void good_neighbor_visible(struct monst *);
+static void polyp_pickup(struct monst *);
+static void unbodied_heal(struct monst *);
+static void goat_sacrifice(struct monst *);
+static void palid_stranger(struct monst *);
+static void sib_follow(struct monst *);
+static void invisible_twin_act(struct monst *);
 
 
 extern const int monstr[];

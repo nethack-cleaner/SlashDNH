@@ -6,15 +6,15 @@
 #include "prop.h"
 #include "artifact.h"
 
-static void FDECL(mkbox_cnts,(struct obj *));
-static void FDECL(obj_timer_checks,(struct obj *, xchar, xchar, int));
-static void FDECL(handle_material_specials, (struct obj *, int, int));
-static void FDECL(init_obj_material, (struct obj *));
-static void FDECL(container_weight, (struct obj *));
+static void mkbox_cnts(struct obj *);
+static void obj_timer_checks(struct obj *, xchar, xchar, int);
+static void handle_material_specials(struct obj *, int, int);
+static void init_obj_material(struct obj *);
+static void container_weight(struct obj *);
 #ifdef WIZARD
-static const char *FDECL(where_name, (int));
-static void FDECL(check_contained, (struct obj *,const char *));
-static int FDECL(maid_clean, (struct monst *, struct obj *));
+static const char *where_name(int);
+static void check_contained(struct obj *,const char *);
+static int maid_clean(struct monst *, struct obj *);
 #endif
 
 //extern struct obj *thrownobj;		/* defined in dothrow.c */

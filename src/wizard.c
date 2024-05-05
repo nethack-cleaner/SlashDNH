@@ -15,16 +15,16 @@
 extern const int monstr[];
 
 
-static short FDECL(which_arti, (long int));
-static struct monst *FDECL(other_mon_has_arti, (struct monst *,short));
-static boolean FDECL(rightful_owner, (struct monst *,short, struct monst *));
-static struct obj *FDECL(on_ground, (short));
-static boolean FDECL(you_have, (long int));
-static long FDECL(target_on, (long int,struct monst *));
-static long FDECL(strategy, (struct monst *));
-static void FDECL(wizgush, (int, int, void *));
-static void NDECL(dowizgush);
-static void FDECL(aglaopesong, (struct monst *));
+static short which_arti(long int);
+static struct monst *other_mon_has_arti(struct monst *,short);
+static boolean rightful_owner(struct monst *,short, struct monst *);
+static struct obj *on_ground(short);
+static boolean you_have(long int);
+static long target_on(long int,struct monst *);
+static long strategy(struct monst *);
+static void wizgush(int, int, void *);
+static void dowizgush(void);
+static void aglaopesong(struct monst *);
 
 static int xprime = 0, yprime = 0;
 

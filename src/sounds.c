@@ -45,22 +45,22 @@ const int nurseprices[] = {
 };
 
 
-static const char *FDECL(DantalionRace,(int));
-int FDECL(dobinding,(int, int));
-int * FDECL(spirit_skills, (int));
-static int FDECL(doyochlolmenu, (struct monst *));
-static int NDECL(doblessmenu);
-static int NDECL(donursemenu);
-static int NDECL(dorendermenu);
-static int FDECL(dodollmenu, (struct monst *));
-static int FDECL(dotatmenu, (const char *));
-static int FDECL(doportalmenu, (const char *));
-static int FDECL(dosmithmenu, (const char *));
-static int FDECL(dodyemenu, (const char *));
-static boolean FDECL(smith_offer_price, (long charge, struct monst *));
-static boolean FDECL(nurse_services,(struct monst *));
-static boolean FDECL(render_services,(struct monst *));
-static boolean FDECL(buy_dolls,(struct monst *));
+static const char *DantalionRace(int);
+int dobinding(int, int);
+int * spirit_skills(int);
+static int doyochlolmenu(struct monst *);
+static int doblessmenu(void);
+static int donursemenu(void);
+static int dorendermenu(void);
+static int dodollmenu(struct monst *);
+static int dotatmenu(const char *);
+static int doportalmenu(const char *);
+static int dosmithmenu(const char *);
+static int dodyemenu(const char *);
+static boolean smith_offer_price(long charge, struct monst *);
+static boolean nurse_services(struct monst *);
+static boolean render_services(struct monst *);
+static boolean buy_dolls(struct monst *);
 
 static const char tools[] = { TOOL_CLASS, 0 };
 static const char models[] = { TOOL_CLASS, FOOD_CLASS, 0 };
@@ -68,7 +68,7 @@ static const char armors[] = { ARMOR_CLASS, 0 };
 
 
 
-static int FDECL(mon_in_room, (struct monst *,int));
+static int mon_in_room(struct monst *,int);
 
 //I am Buer, X,
 static const char *buerTitles[] = {
@@ -7204,7 +7204,7 @@ spiritSkill(int p_skill)
 }
 #ifdef USER_SOUNDS
 
-extern void FDECL(play_usersound, (const char*, int));
+extern void play_usersound(const char*, int);
 
 typedef struct audio_mapping_rec {
 #ifdef USER_SOUNDS_REGEX

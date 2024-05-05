@@ -5,45 +5,43 @@
 #ifndef DECL_H
 #define DECL_H
 
-#define E extern
+extern int (*occupation)(void);
+extern int (*afternmv)(void);
 
-E int NDECL((*occupation));
-E int NDECL((*afternmv));
-
-E const char *hname;
-E int hackpid;
+extern const char *hname;
+extern int hackpid;
 #if defined(UNIX)
-E int locknum;
+extern int locknum;
 #endif
 #ifdef DEF_PAGER
-E char *catmore;
+extern char *catmore;
 #endif	/* DEF_PAGER */
 
-E char SAVEF[];
+extern char SAVEF[];
 
-E int bases[MAXOCLASSES];
+extern int bases[MAXOCLASSES];
 
-E long has_loaded_bones;
+extern long has_loaded_bones;
 
-E long last_clear_screen;
+extern long last_clear_screen;
 
-E int multi;
-E char multi_txt[BUFSZ];
+extern int multi;
+extern char multi_txt[BUFSZ];
 #if 0
-E int warnlevel;
+extern int warnlevel;
 #endif
-E int nroom;
-E int nsubroom;
-E int occtime;
+extern int nroom;
+extern int nsubroom;
+extern int occtime;
 
 #define WARNCOUNT 6			/* number of different warning levels */
-E uchar warnsyms[WARNCOUNT];
+extern uchar warnsyms[WARNCOUNT];
 
-E int x_maze_max, y_maze_max;
+extern int x_maze_max, y_maze_max;
 
-E int in_doagain;
+extern int in_doagain;
 
-E struct dgn_topology {		/* special dungeon levels for speed */
+extern struct dgn_topology {		/* special dungeon levels for speed */
 	/*Dungeons of Doom*/
     d_level	d_village_level;	
  	int village_variant;
@@ -395,43 +393,43 @@ E struct dgn_topology {		/* special dungeon levels for speed */
 #define mineend_level           (dungeon_topology.d_mineend_level)
 #define sokoend_level           (dungeon_topology.d_sokoend_level)
 
-E stairway dnstair, upstair;		/* stairs up and down */
+extern stairway dnstair, upstair;		/* stairs up and down */
 #define xdnstair	(dnstair.sx)
 #define ydnstair	(dnstair.sy)
 #define xupstair	(upstair.sx)
 #define yupstair	(upstair.sy)
 
-E stairway dnladder, upladder;		/* ladders up and down */
+extern stairway dnladder, upladder;		/* ladders up and down */
 #define xdnladder	(dnladder.sx)
 #define ydnladder	(dnladder.sy)
 #define xupladder	(upladder.sx)
 #define yupladder	(upladder.sy)
 
-E stairway sstairs;
+extern stairway sstairs;
 
-E dest_area updest, dndest;	/* level-change destination areas */
+extern dest_area updest, dndest;	/* level-change destination areas */
 
-E coord inv_pos;
-E dungeon dungeons[];
-E s_level *sp_levchn;
+extern coord inv_pos;
+extern dungeon dungeons[];
+extern s_level *sp_levchn;
 #define dunlev_reached(x)	(dungeons[(x)->dnum].dunlev_ureached)
 
 #include "quest.h"
-E struct q_score quest_status;
+extern struct q_score quest_status;
 
-E char pl_character[PL_CSIZ];
-E char pl_race;		/* character's race */
+extern char pl_character[PL_CSIZ];
+extern char pl_race;		/* character's race */
 
-E char pl_fruit[PL_FSIZ];
-E int current_fruit;
-E struct fruit *ffruit;
+extern char pl_fruit[PL_FSIZ];
+extern int current_fruit;
+extern struct fruit *ffruit;
 
-E char tune[6];
+extern char tune[6];
 
 #define MAXLINFO (MAXDUNGEON * MAXLEVEL)
-E struct linfo level_info[MAXLINFO];
+extern struct linfo level_info[MAXLINFO];
 
-E struct sinfo {
+extern struct sinfo {
 	int gameover;		/* self explanatory? */
 	int stopprint;		/* inhibit further end of game disclosure */
 #if defined(UNIX)
@@ -446,61 +444,61 @@ E struct sinfo {
 #endif
 } program_state;
 
-E boolean restoring;
+extern boolean restoring;
 
-E const char quitchars[];
-E const char vowels[];
-E const char ynchars[];
-E const char ynqchars[];
-E const char ynaqchars[];
-E const char ynNaqchars[];
-E long yn_number;
+extern const char quitchars[];
+extern const char vowels[];
+extern const char ynchars[];
+extern const char ynqchars[];
+extern const char ynaqchars[];
+extern const char ynNaqchars[];
+extern long yn_number;
 
-E const char disclosure_options[];
+extern const char disclosure_options[];
 
-E int smeq[];
-E int doorindex;
-E int altarindex;
-E char *save_cm;
+extern int smeq[];
+extern int doorindex;
+extern int altarindex;
+extern char *save_cm;
 #define KILLED_BY_AN	 0
 #define KILLED_BY	 1
 #define NO_KILLER_PREFIX 2
-E int killer_format;
-E const char *killer;
-E const char *delayed_killer;
+extern int killer_format;
+extern const char *killer;
+extern const char *delayed_killer;
 #ifdef GOLDOBJ
-E long done_money;
+extern long done_money;
 #endif
-E char killer_buf[BUFSZ];
+extern char killer_buf[BUFSZ];
 
-E long killer_flags;
+extern long killer_flags;
 
 #ifdef DUMP_LOG
-E char dump_fn[];		/* dumpfile name (dump patch) */
+extern char dump_fn[];		/* dumpfile name (dump patch) */
 #endif
-E const char *configfile;
-E char plname[PL_NSIZ];
-E char inherited[];
-E char dogname[];
-E char catname[];
-E char horsename[];
-E char lizardname[];
-E char spidername[];
-E char dragonname[];
-E char parrotname[];
-E char monkeyname[];
-E char whisperername[];
-E char ratname[];
-E char preferred_pet;
-E const char *occtxt;			/* defined when occupation != NULL */
-E const char *nomovemsg;
-E const char nul[];
-E char lock[];
+extern const char *configfile;
+extern char plname[PL_NSIZ];
+extern char inherited[];
+extern char dogname[];
+extern char catname[];
+extern char horsename[];
+extern char lizardname[];
+extern char spidername[];
+extern char dragonname[];
+extern char parrotname[];
+extern char monkeyname[];
+extern char whisperername[];
+extern char ratname[];
+extern char preferred_pet;
+extern const char *occtxt;			/* defined when occupation != NULL */
+extern const char *nomovemsg;
+extern const char nul[];
+extern char lock[];
 
-E const char qykbd_dir[], qzkbd_dir[], ndir[];
-E char const *sdir;
-E const schar xdir[], ydir[], zdir[];
-E char misc_cmds[];
+extern const char qykbd_dir[], qzkbd_dir[], ndir[];
+extern char const *sdir;
+extern const schar xdir[], ydir[], zdir[];
+extern char misc_cmds[];
 
 #define DORUSH			misc_cmds[0]
 #define DORUN			misc_cmds[1]
@@ -513,11 +511,11 @@ E char misc_cmds[];
 /* the number of miscellaneous commands */
 # define MISC_CMD_COUNT		7
 
-E schar tbx, tby;		/* set in mthrowu.c */
+extern schar tbx, tby;		/* set in mthrowu.c */
 
-E struct multishot { int n, i; short o; boolean s; struct obj * x;} m_shot;
+extern struct multishot { int n, i; short o; boolean s; struct obj * x;} m_shot;
 
-E struct dig_info {		/* apply.c, hack.c */
+extern struct dig_info {		/* apply.c, hack.c */
 	int	effort;
 	d_level level;
 	coord	pos;
@@ -525,48 +523,48 @@ E struct dig_info {		/* apply.c, hack.c */
 	boolean down, chew, warned, quiet;
 } digging;
 
-E long moves, monstermoves;
-E long nonce;
-E long wailmsg;
-E boolean goat_seenonce;
+extern long moves, monstermoves;
+extern long nonce;
+extern long wailmsg;
+extern boolean goat_seenonce;
 
-E boolean in_mklev;
-E boolean stoned;
-E boolean golded;
-E boolean glassed;
-E boolean unweapon;
-E boolean mrg_to_wielded;
-E boolean mon_ranged_gazeonly;
-E struct obj *current_wand;
+extern boolean in_mklev;
+extern boolean stoned;
+extern boolean golded;
+extern boolean glassed;
+extern boolean unweapon;
+extern boolean mrg_to_wielded;
+extern boolean mon_ranged_gazeonly;
+extern struct obj *current_wand;
 
-E boolean in_steed_dismounting;
+extern boolean in_steed_dismounting;
 
-E const int shield_static[];
+extern const int shield_static[];
 
 #include "spell.h"
-E struct spell spl_book[];	/* sized in decl.c */
+extern struct spell spl_book[];	/* sized in decl.c */
 
 #include "color.h"
 #ifdef TEXTCOLOR
-E const int zapcolors[];
+extern const int zapcolors[];
 #endif
 
-E const char def_oc_syms[MAXOCLASSES];	/* default class symbols */
-E uchar oc_syms[MAXOCLASSES];		/* current class symbols */
-E const char def_monsyms[MAXMCLASSES];	/* default class symbols */
-E uchar monsyms[MAXMCLASSES];		/* current class symbols */
+extern const char def_oc_syms[MAXOCLASSES];	/* default class symbols */
+extern uchar oc_syms[MAXOCLASSES];		/* current class symbols */
+extern const char def_monsyms[MAXMCLASSES];	/* default class symbols */
+extern uchar monsyms[MAXMCLASSES];		/* current class symbols */
 
 #include "obj.h"
-E struct obj *magic_chest_objs[10];
-E struct obj *invent,
+extern struct obj *magic_chest_objs[10];
+extern struct obj *invent,
 	*uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
 	*uarmu,				/* under-wear, so to speak */
 	*uskin, *uamul, *ublindf,
 	*uwep, *uswapwep, *uquiver;
 
 #define URINGS_SIZE 8
-E struct obj *urings[URINGS_SIZE]; /* init'd and defined in decl.c */
-E const long long ring_index_to_wornmask[URINGS_SIZE]; /* init'd and defined in worn.c */
+extern struct obj *urings[URINGS_SIZE]; /* init'd and defined in decl.c */
+extern const long long ring_index_to_wornmask[URINGS_SIZE]; /* init'd and defined in worn.c */
 #define uleft  (urings[0])
 #define uright (urings[1])
 
@@ -575,20 +573,20 @@ E const long long ring_index_to_wornmask[URINGS_SIZE]; /* init'd and defined in 
 #define WORN_SLOTS { uarm, uarmc, uarmf, uarmh, uarmg, uarms, uarmu, uamul, ublindf, uwep, uswapwep, uquiver, \
 			urings[0], urings[1], urings[2], urings[3], urings[4], urings[5], urings[6], urings[7] }
 
-E struct obj *urope;		/* defined only when entangled */
-E struct obj *uchain;		/* defined only when punished */
-E struct obj *uball;
-E struct obj *migrating_objs;
-E struct obj *billobjs;
-E struct obj zeroobj;		/* init'd and defined in decl.c */
-E anything zeroany;   /* init'd and defined in decl.c */
+extern struct obj *urope;		/* defined only when entangled */
+extern struct obj *uchain;		/* defined only when punished */
+extern struct obj *uball;
+extern struct obj *migrating_objs;
+extern struct obj *billobjs;
+extern struct obj zeroobj;		/* init'd and defined in decl.c */
+extern anything zeroany;   /* init'd and defined in decl.c */
 
 #include "mutations.h"
 #include "you.h"
-E struct you u;
+extern struct you u;
 
 #include "gods.h"
-E struct god * godlist;
+extern struct god * godlist;
 
 #include "onames.h"
 #include "gnames.h"
@@ -596,14 +594,14 @@ E struct god * godlist;
 #include "pm.h"
 #endif
 
-E struct monst youmonst;	/* init'd and defined in decl.c */
-E struct monst *mydogs, *migrating_mons;
+extern struct monst youmonst;	/* init'd and defined in decl.c */
+extern struct monst *mydogs, *migrating_mons;
 
-E struct permonst upermonst;	/* init'd in decl.c, 
+extern struct permonst upermonst;	/* init'd in decl.c, 
 					 * defined in polyself.c 
 					 */
 
-E struct mvitals {
+extern struct mvitals {
 	uchar	born; /*How many of this monster have been created in a way that respects extinction*/
 	uchar	died; /*How many of this monster have died of any cause*/
 	uchar	killed; /*How many of this monster have died at the PC's hands*/
@@ -615,7 +613,7 @@ E struct mvitals {
 	Bitfield(insightkill,1);
 } mvitals[NUMMONS];
 
-E struct c_color_names {
+extern struct c_color_names {
     const char	*const c_black, *const c_amber, *const c_golden,
 		*const c_light_blue,*const c_red, *const c_green,
 		*const c_silver, *const c_blue, *const c_purple,
@@ -634,9 +632,9 @@ E struct c_color_names {
 #define NH_YELLOW		c_color_names.c_yellow
 
 /* The names of the colors used for gems, etc. */
-E const char *c_obj_colors[];
+extern const char *c_obj_colors[];
 
-E struct c_common_strings {
+extern struct c_common_strings {
     const char	*const c_nothing_happens, *const c_thats_enough_tries,
 		*const c_silly_thing_to, *const c_shudder_for_moment,
 		*const c_something, *const c_Something,
@@ -656,7 +654,7 @@ E struct c_common_strings {
 #define the_your	   c_common_strings.c_the_your
 
 /* material strings */
-E const struct material materials[];
+extern const struct material materials[];
 
 /* Monster name articles */
 #define ARTICLE_NONE	0
@@ -672,12 +670,12 @@ E const struct material materials[];
 #define EXACT_NAME		0x0F
 
 /* Vision */
-E boolean vision_full_recalc;	/* TRUE if need vision recalc */
-E char **viz_array;		/* could see/in sight row pointers */
+extern boolean vision_full_recalc;	/* TRUE if need vision recalc */
+extern char **viz_array;		/* could see/in sight row pointers */
 
 /* Window system stuff */
-E winid WIN_MESSAGE, WIN_STATUS;
-E winid WIN_MAP, WIN_INVEN;
+extern winid WIN_MESSAGE, WIN_STATUS;
+extern winid WIN_MAP, WIN_INVEN;
 
 /* pline (et al) for a single string argument (suppress compiler warning) */
 #define pline1(cstr) pline("%s", cstr)
@@ -688,9 +686,9 @@ E winid WIN_MAP, WIN_INVEN;
 #define Sprintf1(buf, cstr) Sprintf(buf, "%s", cstr)
 #define panic1(cstr) panic("%s", cstr)
 
-E char toplines[];
+extern char toplines[];
 #ifndef TCAP_H
-E struct tc_gbl_data {	/* also declared in tcap.h */
+extern struct tc_gbl_data {	/* also declared in tcap.h */
     char *tc_AS, *tc_AE;	/* graphics start and end (tty font swapping) */
     int   tc_LI,  tc_CO;	/* lines and columns */
 } tc_gbl_data;
@@ -701,7 +699,7 @@ E struct tc_gbl_data {	/* also declared in tcap.h */
 #endif
 
 /* xxxexplain[] is in drawing.c */
-E const char * const monexplain[], invisexplain[], * const objexplain[], * const oclass_names[];
+extern const char * const monexplain[], invisexplain[], * const objexplain[], * const oclass_names[];
 
 /* Some systems want to use full pathnames for some subsets of file names,
  * rather than assuming that they're all in the current directory.  This
@@ -730,9 +728,9 @@ E const char * const monexplain[], invisexplain[], * const objexplain[], * const
 #define PREFIXES_IN_USE
 #endif
 
-E char *fqn_prefix[PREFIX_COUNT];
+extern char *fqn_prefix[PREFIX_COUNT];
 #ifdef PREFIXES_IN_USE
-E char *fqn_prefix_names[PREFIX_COUNT];
+extern char *fqn_prefix_names[PREFIX_COUNT];
 #endif
 
 struct autopickup_exception {
@@ -838,9 +836,9 @@ struct u_achieve {
 #define ACHIEVE_NUMBER	64
 };
 
-E struct u_achieve achieve;
+extern struct u_achieve achieve;
 
-E struct realtime_data {
+extern struct realtime_data {
   time_t realtime;    /* Amount of actual playing time up until the last time
                        * the game was restored. */
   time_t restoretime; /* The time that the game was started or restored. */
@@ -849,7 +847,7 @@ E struct realtime_data {
 
 
 #ifdef SIMPLE_MAIL
-E int mailckfreq;
+extern int mailckfreq;
 #endif
 
 
@@ -861,7 +859,7 @@ struct _plinemsg {
     struct _plinemsg *next;
 };
 
-E struct _plinemsg *pline_msg;
+extern struct _plinemsg *pline_msg;
 
 #define MSGTYP_NORMAL  0
 #define MSGTYP_NOREP   1
@@ -873,14 +871,12 @@ E struct _plinemsg *pline_msg;
 
 /* FIXME: These should be integrated into objclass and permonst structs,
    but that invalidates saves */
-E glyph_t objclass_unicode_codepoint[NUM_OBJECTS];
-E glyph_t permonst_unicode_codepoint[NUMMONS];
+extern glyph_t objclass_unicode_codepoint[NUM_OBJECTS];
+extern glyph_t permonst_unicode_codepoint[NUMMONS];
 
 
-E boolean curses_stupid_hack;
+extern boolean curses_stupid_hack;
 
 #define LIGHTSABER_MAX_CHARGE 150000
-
-#undef E
 
 #endif /* DECL_H */

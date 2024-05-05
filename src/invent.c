@@ -9,34 +9,33 @@
 #define NOINVSYM	'#'
 #define CONTAINED_SYM	'>'	/* designator for inside a container */
 
-static void NDECL(reorder_invent);
-static boolean FDECL(mergable,(struct obj *,struct obj *));
-static void FDECL(invdisp_nothing, (const char *,const char *));
-static boolean FDECL(worn_wield_only, (struct obj *));
-static boolean FDECL(only_here, (struct obj *));
-static void FDECL(compactify,(char *));
-static boolean FDECL(taking_off, (const char *));
-static boolean FDECL(putting_on, (const char *));
-static int FDECL(ckunpaid,(struct obj *));
-static int FDECL(ckvalidcat,(struct obj *));
+static void reorder_invent(void);
+static boolean mergable(struct obj *,struct obj *);
+static void invdisp_nothing(const char *,const char *);
+static boolean worn_wield_only(struct obj *);
+static boolean only_here(struct obj *);
+static void compactify(char *);
+static boolean taking_off(const char *);
+static boolean putting_on(const char *);
+static int ckunpaid(struct obj *);
+static int ckvalidcat(struct obj *);
 #ifdef DUMP_LOG
-static char FDECL(display_pickinv,
-		 (const char *,boolean, long *, boolean, boolean));
+static char display_pickinv(const char *,boolean, long *, boolean, boolean);
 #else
-static char FDECL(display_pickinv, (const char *,boolean, long *));
+static char display_pickinv(const char *,boolean, long *);
 #endif /* DUMP_LOG */
-static boolean FDECL(this_type_only, (struct obj *));
-static void NDECL(dounpaid);
-static struct obj *FDECL(find_unpaid,(struct obj *,struct obj **));
-static void FDECL(menu_identify, (int));
-static boolean FDECL(tool_in_use, (struct obj *));
-static char FDECL(obj_to_let,(struct obj *));
-static int FDECL(u_material_next_to_skin,(int));
-static int FDECL(u_bcu_next_to_skin,(int));
-static int FDECL(mon_material_next_to_skin,(struct monst *, int));
-static int FDECL(mon_bcu_next_to_skin,(struct monst *, int));
-static int FDECL(itemactions,(struct obj *));
-static boolean FDECL(describe_spear_point, (char *, struct obj *));
+static boolean this_type_only(struct obj *);
+static void dounpaid(void);
+static struct obj *find_unpaid(struct obj *,struct obj **);
+static void menu_identify(int);
+static boolean tool_in_use(struct obj *);
+static char obj_to_let(struct obj *);
+static int u_material_next_to_skin(int);
+static int u_bcu_next_to_skin(int);
+static int mon_material_next_to_skin(struct monst *, int);
+static int mon_bcu_next_to_skin(struct monst *, int);
+static int itemactions(struct obj *);
+static boolean describe_spear_point(char *, struct obj *);
 
 
 static int lastinvnr = 51;	/* 0 ... 51 (never saved&restored) */
@@ -1604,13 +1603,13 @@ static const char removeables[] =
 int
 ggetobj(
 	const char *word,
-	int FDECL((*fn),(struct obj *)),
+	int (*fn)(struct obj *),
 	int mx,
 	boolean combo,		/* combination menu flag */
 	unsigned *resultflags)
 {
-	int FDECL((*ckfn),(struct obj *)) = (int FDECL((*),(struct obj *))) 0;
-	boolean FDECL((*filter),(struct obj *)) = (boolean FDECL((*),(struct obj *))) 0;
+	int (*ckfn)(struct obj *) = (int (*)(struct obj *)) 0;
+	boolean (*filter)(struct obj *) = (boolean (*)(struct obj *)) 0;
 	boolean takeoff, ident, allflag, m_seen;
 	int itemcount;
 #ifndef GOLDOBJ
@@ -1801,8 +1800,8 @@ askchain(
 	struct obj **objchn,
 	const char *olets,	/* olets is an Obj Class char array */
 	int allflag,
-	int FDECL((*fn),(struct obj *)),
-	int FDECL((*ckfn),(struct obj *)),
+	int (*fn)(struct obj *),
+	int (*ckfn)(struct obj *),
 	int mx,
 	const char *word)
 {
@@ -2109,7 +2108,7 @@ itemactions(struct obj *obj)
 {
 	winid win;
 	int n;
-	int NDECL((*feedback_fn)) = 0;
+	int (*feedback_fn)(void) = 0;
 	anything any;
 	menu_item *selected = 0;
 
@@ -2529,7 +2528,7 @@ itemactions(struct obj *obj)
 
 	n = select_menu(win, PICK_ONE, &selected);
 	destroy_nhwindow(win);
-	if (n == 1) feedback_fn = (int NDECL((*)))selected[0].item.a_void;
+	if (n == 1) feedback_fn = (int (*)(void))selected[0].item.a_void;
 	if (n == 1) free((void *) selected);
 
 	if (!feedback_fn) return 0;
@@ -4895,7 +4894,7 @@ dotypeinv(void)
 #ifndef GOLDOBJ
 					      (u.ugold != 0),
 #endif
-					      (boolean FDECL((*),(struct obj *))) 0, &itemcount);
+					      (boolean (*)(struct obj *)) 0, &itemcount);
 	    if (unpaid_count) {
 		Strcat(types, "u");
 		class_count++;

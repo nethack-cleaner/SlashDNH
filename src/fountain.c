@@ -6,13 +6,13 @@
 
 #include "hack.h"
 
-static void NDECL(dowatersnakes);
-static void NDECL(dowaterdemon);
-static void NDECL(dowaternymph);
-static void NDECL(dolavademon);
-static void FDECL(gush, (int,int,void *));
-static void NDECL(dofindgem);
-static void FDECL(blowupforge, (int, int));
+static void dowatersnakes(void);
+static void dowaterdemon(void);
+static void dowaternymph(void);
+static void dolavademon(void);
+static void gush(int,int,void *);
+static void dofindgem(void);
+static void blowupforge(int, int);
 
 void
 floating_above(const char *what)

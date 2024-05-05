@@ -24,7 +24,7 @@ static const char valk_steeds[] = {
 	S_DOG,  '\0'
 };
 
-static boolean FDECL(landing_spot, (coord *, int, int));
+static boolean landing_spot(coord *, int, int);
 
 /* caller has decided that hero can't reach something while mounted */
 void

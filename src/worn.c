@@ -6,15 +6,15 @@
 #include "hack.h"
 #include "artifact.h"
 
-void FDECL(mon_block_extrinsic, (struct monst *, struct obj *, int, boolean, boolean));
-boolean FDECL(mon_gets_extrinsic, (struct monst *, int, struct obj *));
-static void FDECL(update_mon_intrinsic, (struct monst *,struct obj *,int,boolean,boolean));
-static void FDECL(m_dowear_type, (struct monst *,long, boolean, boolean));
-static int NDECL(def_beastmastery);
-static int NDECL(def_vilya);
-static int NDECL(def_narya);
-static int NDECL(def_lomya);
-static int NDECL(def_mountedCombat);
+void mon_block_extrinsic(struct monst *, struct obj *, int, boolean, boolean);
+boolean mon_gets_extrinsic(struct monst *, int, struct obj *);
+static void update_mon_intrinsic(struct monst *,struct obj *,int,boolean,boolean);
+static void m_dowear_type(struct monst *,long, boolean, boolean);
+static int def_beastmastery(void);
+static int def_vilya(void);
+static int def_narya(void);
+static int def_lomya(void);
+static int def_mountedCombat(void);
 
 const struct worn {
 	long long w_mask;

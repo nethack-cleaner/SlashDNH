@@ -17,14 +17,14 @@
 
 extern int monstr[];
 
-static boolean FDECL(restrap,(struct monst *));
-static int FDECL(scent_callback,(void *, int, int));
-static void FDECL(dead_familiar,(long));
-static void FDECL(clothes_bite_mon,(struct monst *));
-static void FDECL(emit_healing, (struct monst *));
+static boolean restrap(struct monst *);
+static int scent_callback(void *, int, int);
+static void dead_familiar(long);
+static void clothes_bite_mon(struct monst *);
+static void emit_healing(struct monst *);
 int scentgoalx, scentgoaly;
 
-static void FDECL(kill_eggs, (struct obj *));
+static void kill_eggs(struct obj *);
 
 static const char *nyar_description[] = {
 /* 0*/	"a titanic tri-radial monster crowned with a massive crimson tentacle",
@@ -76,14 +76,14 @@ const char *warnings[] = {
 	"white", "pink", "red", "ruby", "purple", "black"
 };
 
-static void NDECL(warn_effects);
+static void warn_effects(void);
 #endif /* 0 */
 
-static struct obj *FDECL(make_corpse,(struct monst *));
-static void FDECL(m_detach, (struct monst *, struct permonst *));
-static void FDECL(lifesaved_monster, (struct monst *));
+static struct obj *make_corpse(struct monst *);
+static void m_detach(struct monst *, struct permonst *);
+static void lifesaved_monster(struct monst *);
 
-static double FDECL(atanGerald, (double x));
+static double atanGerald(double x);
 
 static double
 atanGerald(double x)

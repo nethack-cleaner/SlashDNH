@@ -18,15 +18,15 @@ struct monst zeromonst;
 		(mptr->mlet == S_HUMAN && Role_if(role_pm) && \
 		  (mptr->mtyp == urole.ldrnum || mptr->msound == MS_NEMESIS))
 
-static int FDECL(makemon_set_template, (struct permonst **, int, boolean));
-static int FDECL(makemon_get_permonst_faction, (struct permonst *, int, int, int, int));
-static void FDECL(makemon_set_monster_faction, (struct monst *));
-static boolean FDECL(uncommon, (int));
-static int FDECL(align_shift, (struct permonst *));
-static struct permonst * NDECL(roguemonst);
-static boolean FDECL(wrong_elem_type, (struct permonst *));
-static void FDECL(m_initweap,(struct monst *, int, int, boolean, boolean, int));
-static void FDECL(m_initinv,(struct monst *, int, int, boolean, boolean));
+static int makemon_set_template(struct permonst **, int, boolean);
+static int makemon_get_permonst_faction(struct permonst *, int, int, int, int);
+static void makemon_set_monster_faction(struct monst *);
+static boolean uncommon(int);
+static int align_shift(struct permonst *);
+static struct permonst * roguemonst(void);
+static boolean wrong_elem_type(struct permonst *);
+static void m_initweap(struct monst *, int, int, boolean, boolean, int);
+static void m_initinv(struct monst *, int, int, boolean, boolean);
 
 extern const int monstr[];
 int curhouse = 0;
@@ -15635,7 +15635,7 @@ rndmonst(void)
 /* select a random monster type for a shapeshifter to turn into */
 /* optional: give a function that takes an mtyp and returns TRUE if it meets conditions */
 int
-rndshape(boolean FDECL((*extra_req), (int)))
+rndshape(boolean (*extra_req)(int))
 {
 	register struct permonst *ptr;
 	register int mndx, ct;

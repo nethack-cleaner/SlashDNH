@@ -9,45 +9,42 @@
 #include "hack.h"
 #include "artifact.h"
 
-static void FDECL(simple_look, (struct obj *,boolean));
+static void simple_look(struct obj *,boolean);
 #ifndef GOLDOBJ
-static boolean FDECL(query_classes, (char *,boolean *,boolean *,
-		const char *,struct obj *,boolean,boolean,int *));
+static boolean query_classes(char *,boolean *,boolean *,const char *,struct obj *,boolean,boolean,int *);
 #else
-static boolean FDECL(query_classes, (char *,boolean *,boolean *,
-		const char *,struct obj *,boolean,int *));
+static boolean query_classes(char *,boolean *,boolean *,const char *,struct obj *,boolean,int *);
 #endif
-static void FDECL(check_here, (boolean));
-static boolean FDECL(n_or_more, (struct obj *));
-static boolean FDECL(all_but_uchain, (struct obj *));
+static void check_here(boolean);
+static boolean n_or_more(struct obj *);
+static boolean all_but_uchain(struct obj *);
 #if 0 /* not used */
-static boolean FDECL(allow_cat_no_uchain, (struct obj *));
+static boolean allow_cat_no_uchain(struct obj *);
 #endif
-static int FDECL(autopick, (struct obj*, int, menu_item **));
-static int FDECL(count_categories, (struct obj *,int));
-static long FDECL(carry_count,
-		      (struct obj *,struct obj *,long,boolean,int *,int *));
-static int FDECL(lift_object, (struct obj *,struct obj *,long *,boolean));
-static boolean FDECL(mbag_explodes, (struct obj *,int));
-static int FDECL(in_container,(struct obj *));
-static int FDECL(ck_bag,(struct obj *));
-static int FDECL(out_container,(struct obj *));
-static long FDECL(mbag_item_gone, (int,struct obj *));
-static int FDECL(menu_loot, (int, struct obj *, boolean));
-static int FDECL(in_or_out_menu, (const char *,struct obj *, boolean, boolean));
-static void FDECL(tipcontainer, (struct obj *));
-static int NDECL(tiphat);
-static int FDECL(container_at, (int, int, boolean));
-static boolean FDECL(able_to_loot, (int, int, boolean));
-static boolean FDECL(mon_beside, (int, int));
-static int FDECL(use_lightsaber, (struct obj *));
-static int FDECL(use_socketed, (struct obj *));
-static char NDECL(pick_gemstone);
-static char NDECL(pick_spearhead);
-static char NDECL(pick_crystal);
-static char NDECL(pick_bullet);
-static struct obj * FDECL(pick_creatures_armor, (struct monst *, int *));
-static struct obj * FDECL(pick_armor_for_creature, (struct monst *));
+static int autopick(struct obj*, int, menu_item **);
+static int count_categories(struct obj *,int);
+static long carry_count(struct obj *,struct obj *,long,boolean,int *,int *);
+static int lift_object(struct obj *,struct obj *,long *,boolean);
+static boolean mbag_explodes(struct obj *,int);
+static int in_container(struct obj *);
+static int ck_bag(struct obj *);
+static int out_container(struct obj *);
+static long mbag_item_gone(int,struct obj *);
+static int menu_loot(int, struct obj *, boolean);
+static int in_or_out_menu(const char *,struct obj *, boolean, boolean);
+static void tipcontainer(struct obj *);
+static int tiphat(void);
+static int container_at(int, int, boolean);
+static boolean able_to_loot(int, int, boolean);
+static boolean mon_beside(int, int);
+static int use_lightsaber(struct obj *);
+static int use_socketed(struct obj *);
+static char pick_gemstone(void);
+static char pick_spearhead(void);
+static char pick_crystal(void);
+static char pick_bullet(void);
+static struct obj * pick_creatures_armor(struct monst *, int *);
+static struct obj * pick_armor_for_creature(struct monst *);
 
 /* define for query_objlist() and autopickup() */
 #define FOLLOW(curr, flags) \
@@ -109,7 +106,7 @@ collect_obj_classes(
 	char ilets[],
 	struct obj *otmp,
 	boolean here, boolean incl_gold,
-	boolean FDECL((*filter),(struct obj *)),
+	boolean (*filter)(struct obj *),
 	int *itemcount)
 #else
 int
@@ -117,7 +114,7 @@ collect_obj_classes(
 	char ilets[],
 	struct obj *otmp,
 	boolean here,
-	boolean FDECL((*filter),(struct obj *)),
+	boolean (*filter)(struct obj *),
 	int *itemcount)
 #endif
 {
@@ -186,7 +183,7 @@ query_classes(
 #ifndef GOLDOBJ
 				     incl_gold,
 #endif
-				     (boolean FDECL((*),(struct obj *))) 0, &itemcount);
+				     (boolean (*)(struct obj *)) 0, &itemcount);
 	if (iletct == 0) {
 		return FALSE;
 	} else if (iletct == 1) {
@@ -713,7 +710,7 @@ query_objlist(
 	int qflags,				/* options to control the query */
 	menu_item **pick_list,			/* return list of items picked */
 	int how,				/* type of query */
-	boolean FDECL((*allow), (struct obj *)))	/* allow function */
+	boolean (*allow)(struct obj *))	/* allow function */
 {
 	int i, j;
 	int n;
@@ -3622,7 +3619,7 @@ ask_again2:
 			if (askchain((struct obj **)&current_container->cobj,
 				     (one_by_one ? (char *)0 : select),
 				     allflag, out_container,
-				     (int FDECL((*),(struct obj *)))0,
+				     (int (*)(struct obj *))0,
 				     0, "nodot"))
 			    used = 1;
 		    } else if (menu_on_request < 0) {

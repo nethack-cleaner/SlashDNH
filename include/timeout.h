@@ -6,7 +6,7 @@
 #define TIMEOUT_H
 
 /* generic timeout function */
-typedef void FDECL((*timeout_proc), (void *, long));
+typedef void (*timeout_proc)(void *, long);
 
 /* kind of timer */
 #define TIMER_OBJECT	1	/* event follows a object */

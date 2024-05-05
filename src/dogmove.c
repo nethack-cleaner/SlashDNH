@@ -11,21 +11,20 @@
 extern boolean notonhead;
 extern struct obj *propellor;
 
-int FDECL(extra_pref, (struct monst *, struct obj *));
+int extra_pref(struct monst *, struct obj *);
 
-extern boolean FDECL(would_prefer_hwep,(struct monst *,struct obj *));
-extern boolean FDECL(would_prefer_rwep,(struct monst *,struct obj *));
+extern boolean would_prefer_hwep(struct monst *,struct obj *);
+extern boolean would_prefer_rwep(struct monst *,struct obj *);
 
 #define DOG_SATIATED 3000
 
 
-static boolean FDECL(dog_hunger,(struct monst *,struct edog *));
-static int FDECL(dog_invent,(struct monst *,struct edog *,int));
-static int FDECL(dog_goal,(struct monst *,struct edog *,int,int,int));
+static boolean dog_hunger(struct monst *,struct edog *);
+static int dog_invent(struct monst *,struct edog *,int);
+static int dog_goal(struct monst *,struct edog *,int,int,int);
 
-static boolean FDECL(can_reach_location,(struct monst *,xchar,xchar,
-    xchar,xchar));
-static boolean FDECL(could_reach_item,(struct monst *, xchar,xchar));
+static boolean can_reach_location(struct monst *,xchar,xchar,xchar,xchar);
+static boolean could_reach_item(struct monst *, xchar,xchar);
 
 /*
  * See if this armor is better than what we're wearing.
@@ -270,11 +269,11 @@ drop_envy(register struct monst *mon)
 static const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, BED_CLASS, 0 };
 
 
-static boolean FDECL(cursed_object_at, (int, int));
+static boolean cursed_object_at(int, int);
 
 static xchar gtyp, gx, gy;	/* type and position of dog's current goal */
 
-static void FDECL(wantdoor, (int, int, void *));
+static void wantdoor(int, int, void *);
 
 static boolean
 cursed_object_at(int x, int y)

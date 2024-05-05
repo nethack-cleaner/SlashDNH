@@ -7,17 +7,17 @@
 
 extern void you_aggravate(struct monst *);
 
-static int FDECL(choose_magic_spell, (int,int,boolean));
-static int FDECL(choose_clerical_spell, (int,int,boolean,boolean));
-static int FDECL(choose_psionic_spell, (int,int,boolean));
-static int FDECL(elemspell, (struct monst *, struct monst *, struct attack *, int, int));
-static boolean FDECL(is_undirected_spell,(int));
-static boolean FDECL(is_directed_attack_spell,(int));
-static boolean FDECL(is_aoe_attack_spell	 ,(int));
-static boolean FDECL(is_buff_spell			 ,(int));
-static boolean FDECL(is_summon_spell		 ,(int));
-static boolean FDECL(is_debuff_spell		 ,(int));
-static boolean FDECL(spell_would_be_useless, (struct monst *, struct monst *, int, int, int));
+static int choose_magic_spell(int,int,boolean);
+static int choose_clerical_spell(int,int,boolean,boolean);
+static int choose_psionic_spell(int,int,boolean);
+static int elemspell(struct monst *, struct monst *, struct attack *, int, int);
+static boolean is_undirected_spell(int);
+static boolean is_directed_attack_spell(int);
+static boolean is_aoe_attack_spell(int);
+static boolean is_buff_spell(int);
+static boolean is_summon_spell(int);
+static boolean is_debuff_spell(int);
+static boolean spell_would_be_useless(struct monst *, struct monst *, int, int, int);
 
 
 /* feedback when frustrated creature couldn't cast a spell */

@@ -19,39 +19,38 @@ static int max_regions = 0;
 
 #define NO_CALLBACK (-1)
 
-boolean FDECL(inside_generic_cloud, (void *,void *));
-boolean FDECL(expire_generic_cloud, (void *,void *));
-boolean FDECL(inside_gas_cloud, (void *,void *));
-boolean FDECL(expire_gas_cloud, (void *,void *));
-boolean FDECL(inside_fog_cloud, (void *,void *));
-boolean FDECL(expire_fog_cloud, (void *,void *));
-boolean FDECL(inside_dust_cloud, (void *,void *));
-boolean FDECL(expire_dust_cloud, (void *,void *));
-boolean FDECL(inside_rect, (NhRect *,int,int));
-boolean FDECL(inside_region, (NhRegion *,int,int));
-NhRegion *FDECL(create_region, (NhRect *,int));
-void FDECL(add_rect_to_reg, (NhRegion *,NhRect *));
-void FDECL(add_mon_to_reg, (NhRegion *,struct monst *));
-void FDECL(remove_mon_from_reg, (NhRegion *,struct monst *));
-boolean FDECL(mon_in_region, (NhRegion *,struct monst *));
+boolean inside_generic_cloud(void *,void *);
+boolean expire_generic_cloud(void *,void *);
+boolean inside_gas_cloud(void *,void *);
+boolean expire_gas_cloud(void *,void *);
+boolean inside_fog_cloud(void *,void *);
+boolean expire_fog_cloud(void *,void *);
+boolean inside_dust_cloud(void *,void *);
+boolean expire_dust_cloud(void *,void *);
+boolean inside_rect(NhRect *,int,int);
+boolean inside_region(NhRegion *,int,int);
+NhRegion *create_region(NhRect *,int);
+void add_rect_to_reg(NhRegion *,NhRect *);
+void add_mon_to_reg(NhRegion *,struct monst *);
+void remove_mon_from_reg(NhRegion *,struct monst *);
+boolean mon_in_region(NhRegion *,struct monst *);
 
 #if 0
-NhRegion *FDECL(clone_region, (NhRegion *));
+NhRegion *clone_region(NhRegion *);
 #endif
-void FDECL(free_region, (NhRegion *));
-void FDECL(add_region, (NhRegion *));
-void FDECL(remove_region, (NhRegion *));
+void free_region(NhRegion *);
+void add_region(NhRegion *);
+void remove_region(NhRegion *);
 
 #if 0
-void FDECL(replace_mon_regions, (struct monst *,struct monst *));
-void FDECL(remove_mon_from_regions, (struct monst *));
-NhRegion *FDECL(create_msg_region, (xchar,xchar,xchar,xchar,
-				    const char *,const char *));
-boolean FDECL(enter_force_field, (void *,void *));
-NhRegion *FDECL(create_force_field, (xchar,xchar,int,int));
+void replace_mon_regions(struct monst *,struct monst *);
+void remove_mon_from_regions(struct monst *);
+NhRegion *create_msg_region(xchar,xchar,xchar,xchar,const char *,const char *);
+boolean enter_force_field(void *,void *);
+NhRegion *create_force_field(xchar,xchar,int,int);
 #endif
 
-static void FDECL(reset_region_mids, (NhRegion *));
+static void reset_region_mids(NhRegion *);
 
 static callback_proc callbacks[] = {
 #define INSIDE_GENERIC_CLOUD 0

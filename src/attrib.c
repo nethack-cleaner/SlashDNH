@@ -242,8 +242,8 @@ const struct innate {
 		     {	 0, 0, 0, 0 } };
 
 #define	next_check u.exerchkturn
-static void NDECL(exerper);
-static void FDECL(postadjabil, (long long *));
+static void exerper(void);
+static void postadjabil(long long *);
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
 boolean

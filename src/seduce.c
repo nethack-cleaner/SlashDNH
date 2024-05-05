@@ -2,25 +2,25 @@
 
 #include "seduce.h"
 
-# ifdef SEDUCE
-static void FDECL(mayberem, (struct obj *, const char *, boolean));
-static void FDECL(lrdmayberem, (struct obj *, const char *, boolean));
-static void FDECL(mlcmayberem, (struct obj *, const char *, boolean));
-static void FDECL(mayberem_common, (struct obj *, const char *, boolean));
-static void FDECL(sflmayberem, (struct obj *, const char *, boolean));
-static void FDECL(palemayberem, (struct obj *, const char *, boolean));
-static boolean FDECL(sedu_helpless, (struct monst *));
-static int FDECL(sedu_refuse, (struct monst *));
-static boolean FDECL(sedu_roll, (struct monst *, boolean));
-static void FDECL(sedu_payment, (struct monst *));
-static void FDECL(sedu_undress, (struct monst *));
-static void FDECL(sedu_adornment_ring, (struct monst *));
-static void FDECL(sedu_knife, (struct monst *));
-static void FDECL(sedu_wornout, (struct monst *, boolean));
-static void FDECL(sedu_timestandsstill, (struct monst *, boolean));
-static int FDECL(sedu_select_effect, (struct monst *, boolean));
-static void FDECL(seduce_effect, (struct monst *, int));
-# endif
+#ifdef SEDUCE
+static void mayberem(struct obj *, const char *, boolean);
+static void lrdmayberem(struct obj *, const char *, boolean);
+static void mlcmayberem(struct obj *, const char *, boolean);
+static void mayberem_common(struct obj *, const char *, boolean);
+static void sflmayberem(struct obj *, const char *, boolean);
+static void palemayberem(struct obj *, const char *, boolean);
+static boolean sedu_helpless(struct monst *);
+static int sedu_refuse(struct monst *);
+static boolean sedu_roll(struct monst *, boolean);
+static void sedu_payment(struct monst *);
+static void sedu_undress(struct monst *);
+static void sedu_adornment_ring(struct monst *);
+static void sedu_knife(struct monst *);
+static void sedu_wornout(struct monst *, boolean);
+static void sedu_timestandsstill(struct monst *, boolean);
+static int sedu_select_effect(struct monst *, boolean);
+static void seduce_effect(struct monst *, int);
+#endif
 
 static const char tools[] = { TOOL_CLASS, 0 };
 
@@ -1089,7 +1089,7 @@ sedu_undress(struct monst *mon)
 		}
 	}
 	else {
-		void FDECL((*undressfunc), (register struct obj *, const char *, boolean)) = 0;
+		void (*undressfunc)(register struct obj *, const char *, boolean) = 0;
 		boolean helpless = unconscious();
 
 		/* message and select correct function */

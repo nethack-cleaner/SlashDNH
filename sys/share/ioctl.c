@@ -23,8 +23,8 @@ struct termios termio;
 #endif
 
 #ifdef __linux__
-extern void NDECL(linux_mapon);
-extern void NDECL(linux_mapoff);
+extern void linux_mapon(void);
+extern void linux_mapoff(void);
 #endif
 
 void

@@ -33,24 +33,24 @@
 #include "skills.h"
 
 
-static void FDECL(awaken_monsters,(int));
-static void FDECL(put_monsters_to_sleep,(int));
-static void FDECL(charm_snakes,(int));
-static void FDECL(calm_nymphs,(int));
-static void FDECL(charm_monsters,(int));
-static int FDECL(do_improvisation,(struct obj *));
-static void FDECL(tame_song,(int));
-static void FDECL(sleep_song,(int));
-static void FDECL(scary_song,(int));
-static void FDECL(confusion_song,(int));
-static void FDECL(cancel_song,(int));
-static void FDECL(rally_song,(int));
-static unsigned char FDECL(songs_menu,(struct obj *));
-static int NDECL(play_song);
-static void FDECL(slowness_song,(int));
-static void FDECL(haste_song,(int));
-static void FDECL(heal_song,(int));
-static void FDECL(encourage_pets,(int));
+static void awaken_monsters(int);
+static void put_monsters_to_sleep(int);
+static void charm_snakes(int);
+static void calm_nymphs(int);
+static void charm_monsters(int);
+static int do_improvisation(struct obj *);
+static void tame_song(int);
+static void sleep_song(int);
+static void scary_song(int);
+static void confusion_song(int);
+static void cancel_song(int);
+static void rally_song(int);
+static unsigned char songs_menu(struct obj *);
+static int play_song(void);
+static void slowness_song(int);
+static void haste_song(int);
+static void heal_song(int);
+static void encourage_pets(int);
 
 
 

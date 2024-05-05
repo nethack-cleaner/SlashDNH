@@ -9,13 +9,13 @@
 
 static boolean did_dig_msg;
 
-static void NDECL(fakerocktrap);
-static void NDECL(openfakedoor);
-static boolean NDECL(rm_waslit);
-static void FDECL(mkcavepos, (xchar,xchar,int,boolean,boolean));
-static void FDECL(mkcavearea, (boolean));
-static int FDECL(dig_typ, (struct obj *,xchar,xchar));
-static int NDECL(dig);
+static void fakerocktrap(void);
+static void openfakedoor(void);
+static boolean rm_waslit(void);
+static void mkcavepos(xchar,xchar,int,boolean,boolean);
+static void mkcavearea(boolean);
+static int dig_typ(struct obj *,xchar,xchar);
+static int dig(void);
 
 /* Indices returned by dig_typ() */
 #define DIGTYP_UNDIGGABLE 0

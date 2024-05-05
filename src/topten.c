@@ -56,25 +56,24 @@ struct toptenentry {
 	char death[DTHSZ+1];
 } *tt_head;
 
-static void FDECL(topten_print, (const char *));
-static void FDECL(topten_print_bold, (const char *));
-static xchar FDECL(observable_depth, (d_level *));
-static void NDECL(outheader);
-static void FDECL(outentry, (int,struct toptenentry *,boolean));
-static void FDECL(readentry, (FILE *,struct toptenentry *));
-static void FDECL(writeentry, (FILE *,struct toptenentry *));
+static void topten_print(const char *);
+static void topten_print_bold(const char *);
+static xchar observable_depth(d_level *);
+static void outheader(void);
+static void outentry(int,struct toptenentry *,boolean);
+static void readentry(FILE *,struct toptenentry *);
+static void writeentry(FILE *,struct toptenentry *);
 #ifdef XLOGFILE
-static void FDECL(munge_xlstring, (char *dest, char *src, int n));
-static void FDECL(write_xlentry, (FILE *,struct toptenentry *));
+static void munge_xlstring(char *dest, char *src, int n);
+static void write_xlentry(FILE *,struct toptenentry *);
 #endif
-static void FDECL(free_ttlist, (struct toptenentry *));
-static int FDECL(classmon, (char *,boolean));
-static int FDECL(score_wanted,
-		(boolean, int,struct toptenentry *,int,const char **,int));
-/*static long FDECL(encodeconduct, (void));*/
-static long FDECL(encodeachieve, (void));
-static void FDECL(writeachieveX, (char *));
-static long FDECL(encode_xlogflags, (void));
+static void free_ttlist(struct toptenentry *);
+static int classmon(char *,boolean);
+static int score_wanted(boolean, int,struct toptenentry *,int,const char **,int);
+/*static long encodeconduct(void);*/
+static long encodeachieve(void);
+static void writeachieveX(char *);
+static long encode_xlogflags(void);
 
 /* must fit with end.c; used in rip.c */
 const char * const killed_by_prefix[] = {

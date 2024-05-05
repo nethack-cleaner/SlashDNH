@@ -6,7 +6,7 @@
 #include "artifact.h"
 #include "xhity.h"
 
-int NDECL(dohomesit);
+int dohomesit(void);
 
 void
 take_gold(void)

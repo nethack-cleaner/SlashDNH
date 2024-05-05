@@ -13,12 +13,12 @@
 #endif
 
 
-int FDECL(recover_main, (int, char **));
-int FDECL(restore_savefile, (char *, const char *));
-static void FDECL(set_levelfile_name, (int));
-static int FDECL(open_levelfile, (int, const char *));
-static int FDECL(create_savefile, (const char *));
-void FDECL(copy_bytes, (int,int));
+int recover_main(int, char **);
+int restore_savefile(char *, const char *);
+static void set_levelfile_name(int);
+static int open_levelfile(int, const char *);
+static int create_savefile(const char *);
+void copy_bytes(int,int);
 
 #define Fprintf	(void)fprintf
 
@@ -31,7 +31,7 @@ void FDECL(copy_bytes, (int,int));
 #endif
 
 #if defined(EXEPATH)
-char *FDECL(exepath, (char *));
+char *exepath(char *);
 #endif
 
 char savename[SAVESIZE]; /* holds relative path of save file from playground */

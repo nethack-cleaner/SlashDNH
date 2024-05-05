@@ -20,62 +20,61 @@ static const char apply_all[] = { ALL_CLASSES, CHAIN_CLASS, 0 };
 #define TREPH_THOUGHTS 1
 #define TREPH_CRYSTALS 2
 
-static int FDECL(use_camera, (struct obj *));
-static int FDECL(do_present_item, (struct obj *));
-static int FDECL(use_towel, (struct obj *));
-static boolean FDECL(its_dead, (int,int,int *,struct obj*));
-static int FDECL(use_stethoscope, (struct obj *));
-static void FDECL(use_whistle, (struct obj *));
-static void FDECL(use_leash, (struct obj *));
-static int FDECL(use_mirror, (struct obj **));
-static void FDECL(use_candelabrum, (struct obj *));
-static void FDECL(use_candle, (struct obj **));
-static void FDECL(use_lamp, (struct obj *));
-static int FDECL(swap_aegis, (struct obj *));
-static int FDECL(aesculapius_poke, (struct obj *));
-static int FDECL(ilmater_touch, (struct obj *));
-static int FDECL(use_rakuyo, (struct obj *));
-static int FDECL(use_mercy_blade, (struct obj *));
-static int FDECL(use_force_blade, (struct obj *));
-static void FDECL(light_cocktail, (struct obj *));
-static void FDECL(light_torch, (struct obj *));
-static void FDECL(use_trephination_kit, (struct obj *));
-static void FDECL(use_tinning_kit, (struct obj *));
-static int FDECL(use_figurine, (struct obj **));
-static int FDECL(use_crystal_skull, (struct obj **));
-static void FDECL(use_grease, (struct obj *));
-static void FDECL(vape, (struct obj *));
-static void FDECL(use_trap, (struct obj *));
-static void FDECL(use_stone, (struct obj *));
-static int FDECL(use_sensor, (struct obj *));
-static int NDECL(sensorMenu);
-static int FDECL(use_hypospray, (struct obj *));
-static int FDECL(use_droven_cloak, (struct obj **));
-static int FDECL(use_darkweavers_cloak, (struct obj *));
-static int NDECL(set_trap);		/* occupation callback */
-static int FDECL(use_pole, (struct obj *));
-static int FDECL(use_cream_pie, (struct obj *));
-static int FDECL(use_grapple, (struct obj *));
-static int FDECL(use_crook, (struct obj *));
-static int FDECL(use_dilithium, (struct obj *));
-static int FDECL(use_doll, (struct obj *));
-static int FDECL(use_doll_tear, (struct obj *));
-static int FDECL(use_pyramid, (struct obj *));
-static int FDECL(use_vortex, (struct obj *));
-static int FDECL(use_rift, (struct obj *));
-static int FDECL(do_break_wand, (struct obj *));
-static int FDECL(do_flip_coin, (struct obj *));
-static void FDECL(soul_crush_consequence, (struct obj *));
-static int FDECL(do_soul_coin, (struct obj *));
-static boolean FDECL(figurine_location_checks,
-				(struct obj *, coord *, boolean));
-static boolean NDECL(uhave_graystone);
-static int FDECL(do_carve_obj, (struct obj *));
-static int FDECL(pick_rune, (boolean));
-static void FDECL(describe_rune, (int));
-static char NDECL(pick_carvee);
-static int FDECL(res_engine_menu, (struct obj *));
-static int NDECL(dotrephination_options);
+static int use_camera(struct obj *);
+static int do_present_item(struct obj *);
+static int use_towel(struct obj *);
+static boolean its_dead(int,int,int *,struct obj*);
+static int use_stethoscope(struct obj *);
+static void use_whistle(struct obj *);
+static void use_leash(struct obj *);
+static int use_mirror(struct obj **);
+static void use_candelabrum(struct obj *);
+static void use_candle(struct obj **);
+static void use_lamp(struct obj *);
+static int swap_aegis(struct obj *);
+static int aesculapius_poke(struct obj *);
+static int ilmater_touch(struct obj *);
+static int use_rakuyo(struct obj *);
+static int use_mercy_blade(struct obj *);
+static int use_force_blade(struct obj *);
+static void light_cocktail(struct obj *);
+static void light_torch(struct obj *);
+static void use_trephination_kit(struct obj *);
+static void use_tinning_kit(struct obj *);
+static int use_figurine(struct obj **);
+static int use_crystal_skull(struct obj **);
+static void use_grease(struct obj *);
+static void vape(struct obj *);
+static void use_trap(struct obj *);
+static void use_stone(struct obj *);
+static int use_sensor(struct obj *);
+static int sensorMenu(void);
+static int use_hypospray(struct obj *);
+static int use_droven_cloak(struct obj **);
+static int use_darkweavers_cloak(struct obj *);
+static int set_trap(void);		/* occupation callback */
+static int use_pole(struct obj *);
+static int use_cream_pie(struct obj *);
+static int use_grapple(struct obj *);
+static int use_crook(struct obj *);
+static int use_dilithium(struct obj *);
+static int use_doll(struct obj *);
+static int use_doll_tear(struct obj *);
+static int use_pyramid(struct obj *);
+static int use_vortex(struct obj *);
+static int use_rift(struct obj *);
+static int do_break_wand(struct obj *);
+static int do_flip_coin(struct obj *);
+static void soul_crush_consequence(struct obj *);
+static int do_soul_coin(struct obj *);
+static boolean figurine_location_checks(struct obj *, coord *, boolean);
+static boolean uhave_graystone(void);
+static int do_carve_obj(struct obj *);
+static int pick_rune(boolean);
+static void describe_rune(int);
+static char pick_carvee(void);
+static int res_engine_menu(struct obj *);
+static int dotrephination_options(void);
 
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
@@ -107,8 +106,8 @@ use_camera(struct obj *obj)
 	} else if (!u.dx && !u.dy) {
 		(void) zapyourself(obj, TRUE);
 	} else if ((mtmp = bhit(u.dx, u.dy, COLNO, FLASHED_LIGHT,
-				(int FDECL((*),(struct monst *,struct obj *)))0,
-				(int FDECL((*),(struct obj *,struct obj *)))0,
+				(int (*)(struct monst *,struct obj *))0,
+				(int (*)(struct obj *,struct obj *))0,
 				obj, NULL)) != 0) {
 		obj->ox = u.ux,  obj->oy = u.uy;
 		(void) flash_hits_mon(mtmp, obj);
@@ -1056,8 +1055,8 @@ use_mirror(struct obj **obj_p)
 		return MOVE_STANDARD;
 	}
 	mtmp = bhit(u.dx, u.dy, COLNO, INVIS_BEAM,
-		    (int FDECL((*),(struct monst *,struct obj *)))0,
-		    (int FDECL((*),(struct obj *,struct obj *)))0,
+		    (int (*)(struct monst *,struct obj *))0,
+		    (int (*)(struct obj *,struct obj *))0,
 		    obj, NULL);
 	if (!mtmp || !haseyes(mtmp->data))
 		return MOVE_STANDARD;

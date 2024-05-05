@@ -5,8 +5,8 @@
 #include "hack.h"
 #include "artifact.h"
 
-static void NDECL(test_readobjnam);
-static void NDECL(test_levelgen);
+static void test_readobjnam(void);
+static void test_levelgen(void);
 
 #define TEST_READOBJNAM 1
 #define TEST_LEVELGEN 2

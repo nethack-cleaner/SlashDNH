@@ -19,23 +19,23 @@ extern boolean lifehunt_sneak_attacking;
 extern struct attack grapple;
 
 //duplicates of other functions, created due to problems with the linker
-static void NDECL(cast_protection);
-static int NDECL(throweffect);
-static void FDECL(awaken_monsters,(int));
+static void cast_protection(void);
+static int throweffect(void);
+static void awaken_monsters(int);
 
-static void FDECL(do_item_blast, (int));
-static void FDECL(nitocris_sarcophagous, (struct obj *));
-static void FDECL(fulvous_desk, (struct obj *));
+static void do_item_blast(int);
+static void nitocris_sarcophagous(struct obj *);
+static void fulvous_desk(struct obj *);
 
-int FDECL(donecromenu, (const char *,struct obj *));
-int FDECL(dopetmenu, (const char *,struct obj *));
-int FDECL(dosongmenu, (const char *,struct obj *));
-int FDECL(dolordsmenu, (const char *,struct obj *));
-int FDECL(doannulmenu, (const char *,struct obj *));
-int FDECL(doselfpoisonmenu, (const char *,struct obj *));
-int FDECL(doartificemenu, (const char *,struct obj *));
-int FDECL(doprismaticmenu, (const char *,struct obj *));
-int FDECL(doillithidmenu, (const char *,struct obj *));
+int donecromenu(const char *,struct obj *);
+int dopetmenu(const char *,struct obj *);
+int dosongmenu(const char *,struct obj *);
+int dolordsmenu(const char *,struct obj *);
+int doannulmenu(const char *,struct obj *);
+int doselfpoisonmenu(const char *,struct obj *);
+int doartificemenu(const char *,struct obj *);
+int doprismaticmenu(const char *,struct obj *);
+int doillithidmenu(const char *,struct obj *);
 
 
 static schar delay;		/* moves left for this spell */
@@ -60,18 +60,18 @@ static int demons[] = {PM_QUASIT, PM_MANES, PM_QUASIT,
 					  PM_BALROG, PM_VROCK, PM_HEZROU};
 
 
-static int NDECL(read_necro);
-static int NDECL(read_lost);
+static int read_necro(void);
+static int read_lost(void);
 
-static int FDECL(select_gift_artifact, (aligntyp));
-static int FDECL(select_floor_artifact, (struct obj *));
+static int select_gift_artifact(aligntyp);
+static int select_floor_artifact(struct obj *);
 
-static int FDECL(arti_invoke, (struct obj*));
-static boolean FDECL(Mb_hit, (struct monst *magr,struct monst *mdef,
-				  struct obj *,int *,int,boolean,char *,char *));
-static boolean FDECL(voidPen_hit, (struct monst *magr,struct monst *mdef,
-				  struct obj *,int *,int,boolean,char *));
-static boolean FDECL(narrow_voidPen_hit, (struct monst *mdef, struct obj *));
+static int arti_invoke(struct obj*);
+static boolean Mb_hit(struct monst *magr,struct monst *mdef,
+		      struct obj *,int *,int,boolean,char *,char *);
+static boolean voidPen_hit(struct monst *magr,struct monst *mdef,
+			   struct obj *,int *,int,boolean,char *);
+static boolean narrow_voidPen_hit(struct monst *mdef, struct obj *);
 
 /* coordinate effects from spec_dbon() with messages in artifact_hit() */
 static int spec_dbon_applies = 0;
@@ -85,7 +85,7 @@ int nrofartifacts;
 /* and a pointer to space for randarts' names */
 char ** artiextranames;
 
-static boolean FDECL(attacks, (int,struct obj *));
+static boolean attacks(int,struct obj *);
 
 const int elements[4] = {AD_PHYS, AD_FIRE, AD_COLD, AD_ELEC};
 const int explType[4] = {0, EXPL_FIERY, EXPL_FROSTY, EXPL_MAGICAL};

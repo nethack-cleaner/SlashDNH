@@ -13,7 +13,7 @@
 
 /*VARARGS1*/
 boolean panicking;
-void VDECL(panic, (char *,...));
+void panic(char *,...);
 
 void
 panic VA_DECL(char *,str)

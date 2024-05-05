@@ -506,7 +506,7 @@ fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, boolean cas
  *	- determination of what files are "very old"
  */
 
-static struct tm *NDECL(getlt);
+static struct tm *getlt(void);
 
 void
 setrandom(void)

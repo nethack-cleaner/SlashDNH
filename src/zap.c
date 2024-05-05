@@ -21,17 +21,17 @@ extern boolean notonhead;	/* for long worms */
 
 /* kludge to use mondied instead of killed */
 extern boolean m_using;
-static void FDECL(polyuse, (struct obj*, int, int));
-static struct obj * FDECL(poly_obj_core, (struct obj *, int));
-static void FDECL(create_polymon, (struct obj *, int));
-static boolean FDECL(zap_updown, (struct obj *));
-static boolean FDECL(zap_reflect, (struct monst *, struct zapdata *));
-static int FDECL(zapdamage, (struct monst *, struct monst *, struct zapdata *));
-static int FDECL(zhit, (struct monst *, struct monst *, struct zapdata *));
-static boolean FDECL(zap_steed, (struct obj *));
+static void polyuse(struct obj*, int, int);
+static struct obj * poly_obj_core(struct obj *, int);
+static void create_polymon(struct obj *, int);
+static boolean zap_updown(struct obj *);
+static boolean zap_reflect(struct monst *, struct zapdata *);
+static int zapdamage(struct monst *, struct monst *, struct zapdata *);
+static int zhit(struct monst *, struct monst *, struct zapdata *);
+static boolean zap_steed(struct obj *);
 
-static void FDECL(backfire, (struct obj *));
-static int FDECL(spell_hit_bonus, (int));
+static void backfire(struct obj *);
+static int spell_hit_bonus(int);
 
 #define is_hero_spell(type)	((type) >= 10 && (type) < 20)
 #define wand_damage_die(skill)	(((skill) > 1) ? (2*(skill) + 4) : 6)
@@ -2343,7 +2343,7 @@ smell:
 int
 bhitpile(
 	struct obj *obj,
-	int FDECL((*fhito), (struct obj *,struct obj *)),
+	int (*fhito)(struct obj *,struct obj *),
 	int tx, int ty)
 {
     int hitanything = 0;
@@ -3559,8 +3559,8 @@ struct monst *
 bhit(
 	int ddx, int ddy, int range,		/* direction and range */
 	int weapon,				/* see values in hack.h */
-	int FDECL((*fhitm), (struct monst *, struct obj *)),	/* fns called when mon/obj hit */
-	int FDECL((*fhito), (struct obj *, struct obj *)),
+	int (*fhitm)(struct monst *, struct obj *),	/* fns called when mon/obj hit */
+	int (*fhito)(struct obj *, struct obj *),
 	struct obj *obj,			/* object tossed/used */
 	boolean *obj_destroyed)			/* has object been deallocated? Pointer to boolean, may be NULL */
 {

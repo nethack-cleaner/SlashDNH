@@ -20,7 +20,7 @@
 #define C(color)
 #endif
 
-void NDECL(monst_init);
+void monst_init(void);
 
 
 #define MON(nam,sym,lvl,gen,def,atk,siz,mr1,mr2,flgm,flgt,flgf,flgb,flgg,flga,flgv,flgw,col) \

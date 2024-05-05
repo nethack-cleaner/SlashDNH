@@ -464,7 +464,7 @@ const char * const symbol_names[MAXPCHARS] = {
 #ifdef ASCIIGRAPH
 
 #ifdef CURSES_GRAPHICS
-void NDECL((*cursesgraphics_mode_callback)) = 0;
+void (*cursesgraphics_mode_callback)(void) = 0;
 #endif
 
 static glyph_t ibm_graphics[MAXPCHARS] = {
@@ -586,7 +586,7 @@ static glyph_t ibm_graphics[MAXPCHARS] = {
 #endif  /* ASCIIGRAPH */
 
 #ifdef TERMLIB
-void NDECL((*decgraphics_mode_callback)) = 0;  /* set in tty_start_screen() */
+void (*decgraphics_mode_callback)(void) = 0;  /* set in tty_start_screen() */
 
 static glyph_t dec_graphics[MAXPCHARS] = {
 /* 0*/	g_FILLER(S_stone),

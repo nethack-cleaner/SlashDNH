@@ -11,13 +11,13 @@
 #define SCHAR_LIM 255
 #define NUMOBUF 12
 
-static char *FDECL(strprepend,(char *,const char *));
-static boolean FDECL(wishymatch, (const char *,const char *,boolean));
-static char *NDECL(nextobuf);
-static void FDECL(add_erosion_words, (struct obj *, char *));
+static char *strprepend(char *,const char *);
+static boolean wishymatch(const char *,const char *,boolean);
+static char *nextobuf(void);
+static void add_erosion_words(struct obj *, char *);
 char * doxname(struct obj *, boolean, boolean, boolean, boolean);
-char * FDECL(xname2, (struct obj *,boolean));
-boolean FDECL(an_bool, (const char *));
+char * xname2(struct obj *,boolean);
+boolean an_bool(const char *);
 
 #define useJNames (Role_if(PM_SAMURAI) || (Role_if(PM_MADMAN) && Race_if(PM_YUKI_ONNA)))
 struct Jitem {
@@ -221,7 +221,7 @@ static struct Jitem Pirate_items[] = {
 	{0, "" }
 };
 
-static const char *FDECL(Alternate_item_name,(int i, struct Jitem * ));
+static const char *Alternate_item_name(int i, struct Jitem * );
 
 
 static char *
@@ -591,7 +591,7 @@ obj_is_pname(register struct obj *obj)
  * or doname() instead.
  */
 char *
-distant_name(struct obj *obj, char *FDECL((*func), (struct obj *)))
+distant_name(struct obj *obj, char *(*func)(struct obj *))
 {
 	char *str;
 
@@ -2694,7 +2694,7 @@ killer_xname(struct obj *obj)
  * Used if only one of a collection of objects is named (e.g. in eat.c).
  */
 const char *
-singular(struct obj *otmp, char *FDECL((*func), (struct obj *)))
+singular(struct obj *otmp, char *(*func)(struct obj *))
 {
 	long savequan;
 	char *nam;

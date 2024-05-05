@@ -11,12 +11,12 @@ extern boolean notonhead;
 extern struct attack noattack;
 
 
-static int FDECL(disturb,(struct monst *));
-static void FDECL(distfleeck,(struct monst *,int *,int *,int *));
-static int FDECL(m_arrival, (struct monst *));
-static void FDECL(watch_on_duty,(struct monst *));
-void FDECL(ford_rises,(struct monst *));
-boolean FDECL(check_shore,(int, int));
+static int disturb(struct monst *);
+static void distfleeck(struct monst *,int *,int *,int *);
+static int m_arrival(struct monst *);
+static void watch_on_duty(struct monst *);
+void ford_rises(struct monst *);
+boolean check_shore(int, int);
 
 
 boolean

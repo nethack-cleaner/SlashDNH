@@ -43,24 +43,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 #endif /* NEED_VARARGS */
 
 /*
- * Used for robust ANSI parameter forward declarations:
- * int VDECL(sprintf, (char *, const char *, ...));
- *
- * NDECL() is used for functions with zero arguments;
- * FDECL() is used for functions with a fixed number of arguments;
- * VDECL() is used for functions with a variable number of arguments.
- *
- * These are no longer needed since a standard C compiler is required
- * and overlay support was dropped, but they're kept anyway.
- */
-
-#define NDECL(f)	f(void)
-
-#define FDECL(f,p)	f p
-
-#define VDECL(f,p)	f p
-
-/*
  * Allow gcc2 to check parameters of printf-like calls with -Wformat;
  * append this to a prototype declaration (see pline() in extern.h).
  */

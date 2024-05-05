@@ -46,38 +46,38 @@ struct lchoice {
 	char menuletter;
 };
 
-static void FDECL(Fread, (void *, int, int, dlb *));
-static int FDECL(dname_to_dnum, (const char *));
-static int FDECL(find_branch, (const char *, struct proto_dungeon *));
-static int FDECL(parent_dnum, (const char *, struct proto_dungeon *));
-static int FDECL(level_range, (int,int,int,int,struct proto_dungeon *,int *));
-static int FDECL(parent_dlevel, (const char *, struct proto_dungeon *));
-static int FDECL(correct_branch_type, (struct tmpbranch *));
-static branch *FDECL(add_branch, (int, int, struct proto_dungeon *));
-static void FDECL(add_level, (s_level *));
-static void FDECL(init_level, (int,int,struct proto_dungeon *));
-static int FDECL(possible_places, (int, boolean *, struct proto_dungeon *));
-static int FDECL(pick_level, (boolean *, int));
-static boolean FDECL(place_level, (int, struct proto_dungeon *));
-static boolean FDECL(select_alternate, (int, struct proto_dungeon *));
+static void Fread(void *, int, int, dlb *);
+static int dname_to_dnum(const char *);
+static int find_branch(const char *, struct proto_dungeon *);
+static int parent_dnum(const char *, struct proto_dungeon *);
+static int level_range(int,int,int,int,struct proto_dungeon *,int *);
+static int parent_dlevel(const char *, struct proto_dungeon *);
+static int correct_branch_type(struct tmpbranch *);
+static branch *add_branch(int, int, struct proto_dungeon *);
+static void add_level(s_level *);
+static void init_level(int,int,struct proto_dungeon *);
+static int possible_places(int, boolean *, struct proto_dungeon *);
+static int pick_level(boolean *, int);
+static boolean place_level(int, struct proto_dungeon *);
+static boolean select_alternate(int, struct proto_dungeon *);
 #ifdef WIZARD
-static const char *FDECL(br_string, (int));
-static void FDECL(print_branch, (winid, int, int, int, boolean, struct lchoice *));
+static const char *br_string(int);
+static void print_branch(winid, int, int, int, boolean, struct lchoice *);
 #endif
 
 mapseen *mapseenchn = (struct mapseen *)0;
-static void FDECL(free_mapseen, (mapseen *));
-static mapseen *FDECL(load_mapseen, (int));
-static void FDECL(save_mapseen, (int, mapseen *));
-static mapseen *FDECL(find_mapseen, (d_level *));
-static void FDECL(print_mapseen, (winid,mapseen *,boolean));
-static boolean FDECL(interest_mapseen, (mapseen *));
-static char *FDECL(seen_string, (xchar, const char *));
-static const char *FDECL(br_string2, (branch *));
+static void free_mapseen(mapseen *);
+static mapseen *load_mapseen(int);
+static void save_mapseen(int, mapseen *);
+static mapseen *find_mapseen(d_level *);
+static void print_mapseen(winid,mapseen *,boolean);
+static boolean interest_mapseen(mapseen *);
+static char *seen_string(xchar, const char *);
+static const char *br_string2(branch *);
 
 #ifdef DEBUG
 #define DD	dungeons[i]
-static void NDECL(dumpit);
+static void dumpit(void);
 
 static void
 dumpit(void)
@@ -574,7 +574,7 @@ pick_level(
 }
 
 #ifdef DDEBUG
-static void FDECL(indent,(int));
+static void indent(int);
 
 static void
 indent(int d)

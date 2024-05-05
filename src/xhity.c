@@ -17,22 +17,22 @@ struct poisoninfo {
 	int poisdmg;
 };
 
-static void FDECL(wildmiss, (struct monst *, struct attack *, struct obj *, boolean));
-static boolean FDECL(u_surprise, (struct monst *, boolean));
-static struct attack * FDECL(getnextspiritattack, (boolean));
-static void FDECL(xswingsy, (struct monst *, struct monst *, struct obj *, boolean));
-static void FDECL(xyhitmsg, (struct monst *, struct monst *, struct attack *));
-static void FDECL(noises, (struct monst *, struct attack *));
-static void FDECL(xymissmsg, (struct monst *, struct monst *, struct attack *, int, boolean));
-static int FDECL(do_weapon_multistriking_effects, (struct monst *, struct monst *, struct attack *, struct obj *, int));
-static int FDECL(xcastmagicy, (struct monst *, struct monst *, struct attack *, int));
-static int FDECL(xtinkery, (struct monst *, struct monst *, struct attack *, int));
-static int FDECL(xexplodey, (struct monst *, struct monst *, struct attack *, int));
-static int FDECL(hmoncore, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj **, void *, int, int, int, boolean, int, boolean, int));
-static void FDECL(add_silvered_art_sear_adjectives, (char *, struct obj*));
-static void FDECL(calculate_poison, (struct monst *, struct monst *, struct attack *, struct obj *, struct obj *, struct poisoninfo *));
-static int FDECL(shadow_strike, (struct monst *));
-static int FDECL(xpassivehity, (struct monst *, struct monst *, struct attack *, struct attack *, struct obj *, int, int, struct permonst *, boolean));
+static void wildmiss(struct monst *, struct attack *, struct obj *, boolean);
+static boolean u_surprise(struct monst *, boolean);
+static struct attack * getnextspiritattack(boolean);
+static void xswingsy(struct monst *, struct monst *, struct obj *, boolean);
+static void xyhitmsg(struct monst *, struct monst *, struct attack *);
+static void noises(struct monst *, struct attack *);
+static void xymissmsg(struct monst *, struct monst *, struct attack *, int, boolean);
+static int do_weapon_multistriking_effects(struct monst *, struct monst *, struct attack *, struct obj *, int);
+static int xcastmagicy(struct monst *, struct monst *, struct attack *, int);
+static int xtinkery(struct monst *, struct monst *, struct attack *, int);
+static int xexplodey(struct monst *, struct monst *, struct attack *, int);
+static int hmoncore(struct monst *, struct monst *, struct attack *, struct attack *, struct obj **, void *, int, int, int, boolean, int, boolean, int);
+static void add_silvered_art_sear_adjectives(char *, struct obj*);
+static void calculate_poison(struct monst *, struct monst *, struct attack *, struct obj *, struct obj *, struct poisoninfo *);
+static int shadow_strike(struct monst *);
+static int xpassivehity(struct monst *, struct monst *, struct attack *, struct attack *, struct obj *, int, int, struct permonst *, boolean);
 
 /* for long worms */
 extern boolean notonhead;

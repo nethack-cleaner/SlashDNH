@@ -4,9 +4,9 @@
 
 #include "hack.h"
 
-static int NDECL(stealarm);
+static int stealarm(void);
 
-static const char *FDECL(equipname, (struct obj *));
+static const char *equipname(struct obj *);
 
 static const char *
 equipname(register struct obj *otmp)
@@ -634,8 +634,8 @@ mdrop_special_objs(struct monst *mon)
 
 static struct obj *propellor;
 
-extern boolean FDECL(would_prefer_hwep,(struct monst *,struct obj *));
-extern boolean FDECL(would_prefer_rwep,(struct monst *,struct obj *));
+extern boolean would_prefer_hwep(struct monst *,struct obj *);
+extern boolean would_prefer_rwep(struct monst *,struct obj *);
 
 /* release the objects the creature is carrying */
 void

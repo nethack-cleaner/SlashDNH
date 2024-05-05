@@ -7,7 +7,7 @@
 
 struct ext_func_tab {
 	const char *ef_txt, *ef_desc;
-	int NDECL((*ef_funct));
+	int (*ef_funct)(void);
 	boolean can_if_buried;
 	boolean autocomplete;
 

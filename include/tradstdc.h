@@ -6,16 +6,6 @@
 #define TRADSTDC_H
 
 /*
- * Borland C provides enough ANSI C compatibility in its Borland C++
- * mode to warrant this.  But it does not set __STDC__ unless it compiles
- * in its ANSI keywords only mode, which prevents use of <dos.h> and
- * far pointer use.
- */
-#if defined(__STDC__) && !defined(NOTSTDC)
-#define NHSTDC
-#endif
-
-/*
  * ANSI X3J11 detection.
  * Makes substitutes for compatibility with the old C standard.
  */
@@ -52,8 +42,6 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
 
 #endif /* NEED_VARARGS */
 
-#if defined(NHSTDC)
-
 /*
  * Used for robust ANSI parameter forward declarations:
  * int VDECL(sprintf, (char *, const char *, ...));
@@ -61,68 +49,22 @@ void foo VA_DECL(int, arg)  --macro expansion has a hidden opening brace
  * NDECL() is used for functions with zero arguments;
  * FDECL() is used for functions with a fixed number of arguments;
  * VDECL() is used for functions with a variable number of arguments.
- * Separate macros are needed because ANSI will mix old-style declarations
- * with prototypes, except in the case of varargs, and the OVERLAY-specific
- * trampoli.* mechanism conflicts with the ANSI <<f(void)>> syntax.
+ *
+ * These are no longer needed since a standard C compiler is required
+ * and overlay support was dropped, but they're kept anyway.
  */
 
-# define NDECL(f)	f(void) /* overridden later if USE_TRAMPOLI set */
+#define NDECL(f)	f(void)
 
-# define FDECL(f,p)	f p
+#define FDECL(f,p)	f p
 
-# define VDECL(f,p)	f p
+#define VDECL(f,p)	f p
 
 /* generic pointer, always a macro; genericptr_t is usually a typedef */
-# define genericptr	void *
-
-/*
- * Suppress `const' if necessary and not handled elsewhere.
- * Don't use `#if defined(xxx) && !defined(const)'
- * because some compilers choke on `defined(const)'.
- * This has been observed with Lattice, MPW, and High C.
- */
-
-#else /* NHSTDC */	/* a "traditional" C  compiler */
-
-# define NDECL(f)	f()
-# define FDECL(f,p)	f()
-# define VDECL(f,p)	f()
-
-#  define genericptr	void *
-
-/*
- * Traditional C compilers don't have "signed", "const", or "volatile".
- */
-# define signed
-# define const
-# define volatile
-
-#endif /* NHSTDC */
-
-/*
- * Used for definitions of functions which take no arguments to force
- * an explicit match with the NDECL prototype.  Needed in some cases
- * (MS Visual C 2005) for functions called through pointers.
- */
-#define VOID_ARGS void
+#define genericptr	void *
 
 #ifndef genericptr_t
-typedef genericptr genericptr_t;	/* (void *) or (char *) */
-#endif
-
-/*
- * According to ANSI, prototypes for old-style declarations must widen the
- * arguments to int.  However, the MSDOS compilers accept shorter arguments
- * (char, short, etc.) in prototypes and do typechecking with them.  Therefore
- * this mess to allow the better typechecking while also allowing some
- * prototypes for the ANSI compilers so people quit trying to fix the
- * prototypes to match the standard and thus lose the typechecking.
- */
-
-#ifndef UNWIDENED_PROTOTYPES
-# if defined(NHSTDC)
-# define WIDENED_PROTOTYPES
-# endif
+typedef genericptr genericptr_t; /* (void *) */
 #endif
 
 /*

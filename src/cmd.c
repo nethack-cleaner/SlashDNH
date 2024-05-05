@@ -2218,7 +2218,7 @@ wiz_identify(void)
 
 /* #wizmakemap - discard current dungeon level and replace with a new one */
 int
-wiz_makemap(VOID_ARGS)
+wiz_makemap(void)
 {
     if (wizard) {
 	struct monst *mtmp;
@@ -2715,11 +2715,7 @@ do_naming_ddocall(void)
  *   UNMETA and UNCTRL are the opposite of M/C and return the key for a given
  *     meta/ctrl code. */
 #ifndef M
-# ifndef NHSTDC
-#  define M(c)		(0x80 | (c))
-# else
-#  define M(c)		((c) - 128)
-# endif /* NHSTDC */
+# define M(c)		((c) - 128)
 #endif
 #define ISMETA(c) (((c) & 0x80) != 0)
 #define UNMETA(c) ((c) & 0x7f)

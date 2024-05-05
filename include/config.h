@@ -10,31 +10,13 @@
 /*
  * Section 1:	Operating and window systems selection.
  *		Select the version of the OS you are using.
- *		For "UNIX" select BSD, ULTRIX, SYSV, or HPUX in unixconf.h.
- *		A "VMS" option is not needed since the VMS C-compilers
- *		provide it (no need to change sec#1, vmsconf.h handles it).
  */
 
 #define UNIX		/* delete if no fork(), exec() available */
 
-/* #define MSDOS */	/* in case it's not auto-detected */
-
-/* #define OS2 */	/* define for OS/2 */
-
-/* #define TOS */	/* define for Atari ST/TT */
-
-/* #define STUPID */	/* avoid some complicated expressions if
-			   your C compiler chokes on them */
 /* #define MINIMAL_TERM */
 			/* if a terminal handles highlighting or tabs poorly,
 			   try this define, used in pager.c and termcap.c */
-/* #define ULTRIX_CC20 */
-			/* define only if using cc v2.0 on a DECstation */
-/* #define ULTRIX_PROTO */
-			/* define for Ultrix 4.0 (or higher) on a DECstation;
-			 * if you get compiler errors, don't define this. */
-			/* Hint: if you're not developing code, don't define
-			   ULTRIX_PROTO. */
 
 #include "config1.h"	/* should auto-detect MSDOS, MAC, AMIGA, and WIN32 */
 
@@ -123,7 +105,6 @@
  */
 #define INSURANCE	/* allow crashed game recovery */
 
-
 /*
  * If you define HACKDIR, then this will be the default playground;
  * otherwise it will be the current directory.
@@ -154,20 +135,6 @@
  *		For example, both schar and uchar should be short ints on
  *		the AT&T 3B2/3B5/etc. family.
  */
-
-/*
- * Uncomment the following line if your compiler doesn't understand the
- * 'void' type (and thus would give all sorts of compile errors without
- * this definition).
- */
-/* #define NOVOID */			/* define if no "void" data type. */
-
-/*
- * Uncomment the following line if your compiler falsely claims to be
- * a standard C compiler (i.e., defines __STDC__ without cause).
- * Examples are Apollo's cc (in some versions) and possibly SCO UNIX's rcc.
- */
-/* #define NOTSTDC */			/* define for lying compilers */
 
 #include "tradstdc.h"
 
@@ -212,26 +179,6 @@ typedef long glyph_t;
 /* #define STRNCMPI */	/* compiler/library has the strncmpi function */
 
 /*
- * There are various choices for the NetHack vision system.  There is a
- * choice of two algorithms with the same behavior.  Defining VISION_TABLES
- * creates huge (60K) tables at compile time, drastically increasing data
- * size, but runs slightly faster than the alternate algorithm.  (MSDOS in
- * particular cannot tolerate the increase in data size; other systems can
- * flip a coin weighted to local conditions.)
- *
- * If VISION_TABLES is not defined, things will be faster if you can use
- * MACRO_CPATH.  Some cpps, however, cannot deal with the size of the
- * functions that have been macroized.
- */
-
-/* #define VISION_TABLES */ /* use vision tables generated at compile time */
-#ifndef VISION_TABLES
-# ifndef NO_MACRO_CPATH
-#  define MACRO_CPATH	/* use clear_path macros instead of functions */
-# endif
-#endif
-
-/*
  * Section 4:  THE FUN STUFF!!!
  *
  * Conditional compilation of special options are controlled here.
@@ -246,7 +193,7 @@ typedef long glyph_t;
 #define SEDUCE		/* Succubi/incubi seduction, by KAA, suggested by IM */
 /* difficulty */
 /* I/O */
-# define CLIPPING	/* allow smaller screens -- ERS */
+#define CLIPPING	/* allow smaller screens -- ERS */
 
 /*
  * Section 5:  EXPERIMENTAL STUFF

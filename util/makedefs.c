@@ -63,8 +63,6 @@ const char *DGN_O_FILE = "dungeon.pdf";
 #define MON_STR_C	"monstr.c"
 #define QTXT_I_FILE	"quest.txt"
 #define QTXT_O_FILE	"quest.dat"
-#define VIS_TAB_H	"vis_tab.h"
-#define VIS_TAB_C	"vis_tab.c"
 	/* locations for those files */
 #   define INCLUDE_TEMPLATE	"../include/%s"
 #   define SOURCE_TEMPLATE	"../src/%s"
@@ -92,9 +90,6 @@ static struct version_info version;
 #define FAR_OFF_TABLE_STRING "0xff"	/* for the far table */
 
 #define sign(z) ((z) < 0 ? -1 : ((z) ? 1 : 0))
-#ifdef VISION_TABLES
-static char xclear[MAX_ROW][MAX_COL];
-#endif
 /*-end of vision defs-*/
 
 static char	in_line[256], filename[60];
@@ -106,11 +101,7 @@ static char	in_line[256], filename[60];
 char *file_prefix="";
 #endif
 
-#ifdef MACsansMPWTOOL
-int FDECL(main, (void));
-#else
 int FDECL(main, (int,char **));
-#endif
 void FDECL(do_makedefs, (char *));
 void NDECL(do_objs);
 void NDECL(do_data);
@@ -123,7 +114,6 @@ void NDECL(do_gods);
 void NDECL(do_questtxt);
 void NDECL(do_rumors);
 void NDECL(do_oracles);
-void NDECL(do_vision);
 
 extern void NDECL(monst_init);		/* monst.c */
 extern void NDECL(objects_init);	/* objects.c */
@@ -151,46 +141,12 @@ static void FDECL(do_qt_text, (char *));
 static void NDECL(adjust_qt_hdrs);
 static void NDECL(put_qt_hdrs);
 
-#ifdef VISION_TABLES
-static void NDECL(H_close_gen);
-static void NDECL(H_far_gen);
-static void NDECL(C_close_gen);
-static void NDECL(C_far_gen);
-static int FDECL(clear_path, (int,int,int,int));
-#endif
-
 static char *FDECL(tmpdup, (const char *));
 static char *FDECL(limit, (char *,int));
 static char *FDECL(eos, (char *));
 
 /* input, output, tmp */
 static FILE *ifp, *ofp, *tfp;
-
-
-
-#ifdef MACsansMPWTOOL
-int
-main(void)
-{
-    const char *def_options = "odegmvpqrhz";
-    char buf[100];
-    int len;
-
-    printf("Enter options to run: [%s] ", def_options);
-    fflush(stdout);
-    fgets(buf, 100, stdin);
-    len = strlen(buf);
-    if (len <= 1)
-	Strcpy(buf, def_options);
-    else
-	buf[len-1] = 0;			/* remove return */
-
-    do_makedefs(buf);
-    exit(EXIT_SUCCESS);
-    return 0;
-}
-
-#else /* ! MAC */
 
 int
 main(int argc, char *argv[])
@@ -216,8 +172,6 @@ main(int argc, char *argv[])
 	/*NOTREACHED*/
 	return 0;
 }
-
-#endif
 
 void
 do_makedefs(char *options)
@@ -279,9 +233,6 @@ do_makedefs(char *options)
 				break;
 		case 'h':
 		case 'H':	do_oracles();
-				break;
-		case 'z':
-		case 'Z':	do_vision();
 				break;
 
 		default:	Fprintf(stderr,	"Unknown option '%c'.\n",
@@ -508,11 +459,7 @@ do_date(int verinfo)
 	Fprintf(ofp,"#define BUILD_TIME (%ldL)\n", clocktim);
 	Fprintf(ofp,"\n");
 	}
-#ifdef NHSTDC
 	ul_sfx = "UL";
-#else
-	ul_sfx = "L";
-#endif
 	Fprintf(ofp,"#define VERSION_NUMBER 0x%08llx%s\n",
 		version.incarnation, ul_sfx);
 	Fprintf(ofp,"#define VERSION_FEATURES 0x%08llx%s\n",
@@ -641,9 +588,6 @@ static const char *build_opts[] = {
 #endif
 #ifdef PREFIXES_IN_USE
 		"variable playground",
-#endif
-#ifdef VISION_TABLES
-		"vision tables",
 #endif
 #ifdef WIN_EDGE
 		"win_edge",
@@ -1734,367 +1678,6 @@ eos(char *str)
     while (*str) str++;
     return str;
 }
-
-/*
- * macro used to control vision algorithms:
- *      VISION_TABLES => generate tables
- */
-
-void
-do_vision(void)
-{
-#ifdef VISION_TABLES
-    int i, j;
-
-    /* Everything is clear.  xclear may be malloc'ed.
-     * Block the upper left corner (BLOCK_HEIGHTxBLOCK_WIDTH)
-     */
-    for (i = 0; i < MAX_ROW; i++)
-	for (j = 0; j < MAX_COL; j++)
-	    if (i < BLOCK_HEIGHT && j < BLOCK_WIDTH)
-		xclear[i][j] = '\000';
-	    else
-		xclear[i][j] = '\001';
-#endif /* VISION_TABLES */
-
-    SpinCursor(3);
-
-    /*
-     * create the include file, "vis_tab.h"
-     */
-    filename[0]='\0';
-#ifdef FILE_PREFIX
-    Strcat(filename, file_prefix);
-#endif
-    Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
-    if (!(ofp = fopen(filename, WRTMODE))) {
-	perror(filename);
-	exit(EXIT_FAILURE);
-    }
-    Fprintf(ofp,"%s",Dont_Edit_Code);
-    Fprintf(ofp,"#ifdef VISION_TABLES\n");
-#ifdef VISION_TABLES
-    H_close_gen();
-    H_far_gen();
-#endif /* VISION_TABLES */
-    Fprintf(ofp,"\n#endif /* VISION_TABLES */\n");
-    Fclose(ofp);
-
-    SpinCursor(3);
-
-    /*
-     * create the source file, "vis_tab.c"
-     */
-    filename[0]='\0';
-#ifdef FILE_PREFIX
-    Strcat(filename, file_prefix);
-#endif
-    Sprintf(filename, SOURCE_TEMPLATE, VIS_TAB_C);
-    if (!(ofp = fopen(filename, WRTMODE))) {
-	perror(filename);
-	Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
-	Unlink(filename);
-	exit(EXIT_FAILURE);
-    }
-    Fprintf(ofp,"%s",Dont_Edit_Code);
-    Fprintf(ofp,"#include \"config.h\"\n");
-    Fprintf(ofp,"#ifdef VISION_TABLES\n");
-    Fprintf(ofp,"#include \"vis_tab.h\"\n");
-
-    SpinCursor(3);
-
-#ifdef VISION_TABLES
-    C_close_gen();
-    C_far_gen();
-    Fprintf(ofp,"\nvoid vis_tab_init() { return; }\n");
-#endif /* VISION_TABLES */
-
-    SpinCursor(3);
-
-    Fprintf(ofp,"\n#endif /* VISION_TABLES */\n");
-    Fprintf(ofp,"\n/*vis_tab.c*/\n");
-
-    Fclose(ofp);
-    return;
-}
-
-#ifdef VISION_TABLES
-
-/*--------------  vision tables  --------------*\
- *
- *  Generate the close and far tables.  This is done by setting up a
- *  fake dungeon and moving our source to different positions relative
- *  to a block and finding the first/last visible position.  The fake
- *  dungeon is all clear execpt for the upper left corner (BLOCK_HEIGHT
- *  by BLOCK_WIDTH) is blocked.  Then we move the source around relative
- *  to the corner of the block.  For each new position of the source
- *  we check positions on rows "kittycorner" from the source.  We check
- *  positions until they are either in sight or out of sight (depends on
- *  which table we are generating).  The picture below shows the setup
- *  for the generation of the close table.  The generation of the far
- *  table would switch the quadrants of the '@' and the "Check rows
- *  here".
- *
- *
- *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
- *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
- *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,, Check rows here ,,,,,,,,,,,,
- *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
- *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
- *  ...............................
- *  ...............................
- *  .........@.....................
- *  ...............................
- *
- *      Table generation figure (close_table).  The 'X's are blocked points.
- *      The 'B' is a special blocked point.  The '@' is the source.  The ','s
- *      are the target area.  The '.' are just open areas.
- *
- *
- *  Example usage of close_table[][][].
- *
- *  The table is as follows:
- *
- *      dy = |row of '@' - row of 'B'|  - 1
- *      dx = |col of '@' - col of 'B'|
- *
- *  The first indices are the deltas from the source '@' and the block 'B'.
- *  You must check for the value inside the abs value bars being zero.  If
- *  so then the block is on the same row and you don't need to do a table
- *  lookup.  The last value:
- *
- *      dcy = |row of block - row to be checked|
- *
- *  Is the value of the first visible spot on the check row from the
- *  block column.  So
- *
- *  first visible col = close_table[dy][dx][dcy] + col of 'B'
- *
-\*--------------  vision tables  --------------*/
-
-static void
-H_close_gen(void)
-{
-    Fprintf(ofp,"\n/* Close */\n");
-    Fprintf(ofp,"#define CLOSE_MAX_SB_DY %2d\t/* |src row - block row| - 1\t*/\n",
-	    TEST_HEIGHT-1);
-    Fprintf(ofp,"#define CLOSE_MAX_SB_DX %2d\t/* |src col - block col|\t*/\n",
-	    TEST_WIDTH);
-    Fprintf(ofp,"#define CLOSE_MAX_BC_DY %2d\t/* |block row - check row|\t*/\n",
-	    TEST_HEIGHT);
-    Fprintf(ofp,"typedef struct {\n");
-    Fprintf(ofp,"    unsigned char close[CLOSE_MAX_SB_DX][CLOSE_MAX_BC_DY];\n");
-    Fprintf(ofp,"} close2d;\n");
-    Fprintf(ofp,"extern close2d close_table[CLOSE_MAX_SB_DY];\n");
-    return;
-}
-
-static void
-H_far_gen(void)
-{
-    Fprintf(ofp,"\n/* Far */\n");
-    Fprintf(ofp,"#define FAR_MAX_SB_DY %2d\t/* |src row - block row|\t*/\n",
-	    TEST_HEIGHT);
-    Fprintf(ofp,"#define FAR_MAX_SB_DX %2d\t/* |src col - block col| - 1\t*/\n",
-	    TEST_WIDTH-1);
-    Fprintf(ofp,"#define FAR_MAX_BC_DY %2d\t/* |block row - check row| - 1\t*/\n",
-	    TEST_HEIGHT-1);
-    Fprintf(ofp,"typedef struct {\n");
-    Fprintf(ofp,"    unsigned char far_q[FAR_MAX_SB_DX][FAR_MAX_BC_DY];\n");
-    Fprintf(ofp,"} far2d;\n");
-    Fprintf(ofp,"extern far2d far_table[FAR_MAX_SB_DY];\n");
-    return;
-}
-
-static void
-C_close_gen(void)
-{
-    int i,dx,dy;
-    int src_row, src_col;	/* source */
-    int block_row, block_col;	/* block */
-    int this_row;
-    int no_more;
-    const char *delim;
-
-    block_row = BLOCK_HEIGHT-1;
-    block_col = BLOCK_WIDTH-1;
-
-    Fprintf(ofp,"\n#ifndef FAR_TABLE_ONLY\n");
-    Fprintf(ofp,"\nclose2d close_table[CLOSE_MAX_SB_DY] = {\n");
-#ifndef no_vision_progress
-    Fprintf(stderr,"\nclose:");
-#endif
-
-    for (dy = 1; dy < TEST_HEIGHT; dy++) {
-	src_row = block_row + dy;
-	Fprintf(ofp, "/* DY = %2d (- 1)*/\n  {{\n", dy);
-#ifndef no_vision_progress
-	Fprintf(stderr," %2d",dy),  (void)fflush(stderr);
-#endif
-	for (dx = 0; dx < TEST_WIDTH; dx++) {
-	    src_col = block_col - dx;
-	    Fprintf(ofp, "  /*%2d*/ {", dx);
-
-	    no_more = 0;
-	    for (this_row = 0; this_row < TEST_HEIGHT; this_row++) {
-		delim = (this_row < TEST_HEIGHT - 1) ? "," : "";
-		if (no_more) {
-		    Fprintf(ofp, "%s%s", CLOSE_OFF_TABLE_STRING, delim);
-		    continue;
-		}
-		SpinCursor(3);
-
-		/* Find the first column that we can see. */
-		for (i = block_col+1; i < MAX_COL; i++) {
-		    if (clear_path(src_row,src_col,block_row-this_row,i))
-			break;
-		}
-
-		if (i == MAX_COL) no_more = 1;
-		Fprintf(ofp, "%2d%s", i - block_col, delim);
-	    }
-	    Fprintf(ofp, "}%s", (dx < TEST_WIDTH - 1) ? ",\n" : "\n");
-	}
-	Fprintf(ofp,"  }},\n");
-    }
-
-    Fprintf(ofp,"}; /* close_table[] */\n");		/* closing brace for table */
-    Fprintf(ofp,"#endif /* !FAR_TABLE_ONLY */\n");
-#ifndef no_vision_progress
-    Fprintf(stderr,"\n");
-#endif
-    return;
-}
-
-static void
-C_far_gen(void)
-{
-    int i,dx,dy;
-    int src_row, src_col;	/* source */
-    int block_row, block_col;	/* block */
-    int this_row;
-    const char *delim;
-
-    block_row = BLOCK_HEIGHT-1;
-    block_col = BLOCK_WIDTH-1;
-
-    Fprintf(ofp,"\n#ifndef CLOSE_TABLE_ONLY\n");
-    Fprintf(ofp,"\nfar2d far_table[FAR_MAX_SB_DY] = {\n");
-#ifndef no_vision_progress
-    Fprintf(stderr,"\n_far_:");
-#endif
-
-    for (dy = 0; dy < TEST_HEIGHT; dy++) {
-	src_row = block_row - dy;
-	Fprintf(ofp, "/* DY = %2d */\n  {{\n", dy);
-#ifndef no_vision_progress
-	Fprintf(stderr," %2d",dy),  (void)fflush(stderr);
-#endif
-	for (dx = 1; dx < TEST_WIDTH; dx++) {
-	    src_col = block_col + dx;
-	    Fprintf(ofp, "  /*%2d(-1)*/ {", dx);
-
-	    for (this_row = block_row+1; this_row < block_row+TEST_HEIGHT;
-								this_row++) {
-		delim = (this_row < block_row + TEST_HEIGHT - 1) ? "," : "";
-
-		SpinCursor(3);
-		/* Find first col that we can see. */
-		for (i = 0; i <= block_col; i++) {
-		    if (clear_path(src_row,src_col,this_row,i)) break;
-		}
-
-		if (block_col-i < 0)
-		    Fprintf(ofp, "%s%s", FAR_OFF_TABLE_STRING, delim);
-		else
-		    Fprintf(ofp, "%2d%s", block_col - i, delim);
-	    }
-	    Fprintf(ofp, "}%s", (dx < TEST_WIDTH - 1) ? ",\n" : "\n");
-	}
-	Fprintf(ofp,"  }},\n");
-    }
-
-    Fprintf(ofp,"}; /* far_table[] */\n");	/* closing brace for table */
-    Fprintf(ofp,"#endif /* !CLOSE_TABLE_ONLY */\n");
-#ifndef no_vision_progress
-    Fprintf(stderr,"\n");
-#endif
-    return;
-}
-
-/*
- *  "Draw" a line from the hero to the given location.  Stop if we hit a
- *  wall.
- *
- *  Generalized integer Bresenham's algorithm (fast line drawing) for
- *  all quadrants.  From _Procedural Elements for Computer Graphics_, by
- *  David F. Rogers.  McGraw-Hill, 1985.
- *
- *  I have tried a little bit of optimization by pulling compares out of
- *  the inner loops.
- *
- *  NOTE:  This had better *not* be called from a position on the
- *  same row as the hero.
- */
-static int
-clear_path(int you_row, int you_col, int y2, int x2)
-{
-    int dx, dy, s1, s2;
-    register int i, error, x, y, dxs, dys;
-
-    x  = you_col;		y  = you_row;
-    dx = abs(x2-you_col);	dy = abs(y2-you_row);
-    s1 = sign(x2-you_col);	s2 = sign(y2-you_row);
-
-    if (s1 == 0) {	/* same column */
-	if (s2 == 1) {	/* below (larger y2 value) */
-	    for (i = you_row+1; i < y2; i++)
-		if (!xclear[i][you_col]) return 0;
-	} else {	/* above (smaller y2 value) */
-	    for (i = y2+1; i < you_row; i++)
-		if (!xclear[i][you_col]) return 0;
-	}
-	return 1;
-    }
-
-    /*
-     *  Lines at 0 and 90 degrees have been weeded out.
-     */
-    if (dy > dx) {
-	error = dx; dx = dy; dy = error;	/* swap the values */
-	dxs = dx << 1;		/* save the shifted values */
-	dys = dy << 1;
-	error = dys - dx;	/* NOTE: error is used as a temporary above */
-
-	for (i = 0; i < dx; i++) {
-	    if (!xclear[y][x]) return 0;	/* plot point */
-
-	    while (error >= 0) {
-		x += s1;
-		error -= dxs;
-	    }
-	    y += s2;
-	    error += dys;
-	}
-    } else {
-	dxs = dx << 1;		/* save the shifted values */
-	dys = dy << 1;
-	error = dys - dx;
-
-	for (i = 0; i < dx; i++) {
-	    if (!xclear[y][x]) return 0;	/* plot point */
-
-	    while (error >= 0) {
-		y += s2;
-		error -= dxs;
-	    }
-	    x += s1;
-	    error += dys;
-	}
-    }
-    return 1;
-}
-#endif /* VISION_TABLES */
 
 #ifdef STRICT_REF_DEF
 struct flag flags;

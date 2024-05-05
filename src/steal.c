@@ -136,7 +136,7 @@ unsigned int stealoid;		/* object to be stolen */
 unsigned int stealmid;		/* monster doing the stealing */
 
 static int
-stealarm(VOID_ARGS)
+stealarm(void)
 {
 	register struct monst *mtmp;
 	register struct obj *otmp;

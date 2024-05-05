@@ -1756,7 +1756,7 @@ no_opener:
 }
 
 int
-Hear_again(VOID_ARGS)		/* called when waking up after fainting */
+Hear_again(void)		/* called when waking up after fainting */
 {
 	flags.soundok = 1;
 	return 0;
@@ -4115,7 +4115,7 @@ lesshungry(	/* called after eating (and after drinking fruit juice) */
 }
 
 int
-unfaint(VOID_ARGS)
+unfaint(void)
 {
 	(void) Hear_again();
 	if(u.uhs > FAINTING)

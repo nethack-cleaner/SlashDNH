@@ -7,6 +7,7 @@
 #include "curswins.h"
 #include "func_tab.h"
 #include <ctype.h>
+#include <strings.h>
 
 /* Dialog windows for curses interface */
 

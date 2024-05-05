@@ -22,6 +22,7 @@ CPPFLAGS += -Iinclude
 CPPFLAGS += -Wall
 #CPPFLAGS += -Wdeprecated-non-prototype
 CPPFLAGS += -Wold-style-definition
+CPPFLAGS += -Wold-style-declaration
 CPPFLAGS += -Wno-comment
 CPPFLAGS += -Wno-unused-variable
 CPPFLAGS += -Wno-misleading-indentation

@@ -113,7 +113,7 @@ uptodate(int fd, const char *name)
 void
 store_version(int fd)
 {
-	const static struct version_info version_data = {
+	static const struct version_info version_data = {
 			VERSION_NUMBER, VERSION_FEATURES,
 			VERSION_SANITY1, VERSION_SANITY2
 	};

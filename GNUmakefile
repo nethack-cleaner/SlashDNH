@@ -11,17 +11,18 @@ PYTHON = python3
 CFLAGS = -g3
 
 # gprof flags
-# LDFLAGS += -pg -Wno-knr-promoted-parameter
-LDFLAGS += -Wno-knr-promoted-parameter
+# LDFLAGS += -pg
+LDFLAGS += 
 
 GAMELIBS = -lncurses -lm
 
 -include local.mk
 
-CPPFLAGS += -Wno-knr-promoted-parameter
 CPPFLAGS += -Iinclude
 CPPFLAGS += -DDLB
 CPPFLAGS += -Wall
+#CPPFLAGS += -Wdeprecated-non-prototype
+CPPFLAGS += -Wold-style-definition
 CPPFLAGS += -Wno-comment
 CPPFLAGS += -Wno-unused-variable
 CPPFLAGS += -Wno-misleading-indentation

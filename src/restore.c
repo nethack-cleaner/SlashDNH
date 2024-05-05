@@ -409,9 +409,7 @@ restgamestate(
 	if (youmonst.light)
 		rest_lightsource(LS_MONSTER, &youmonst, youmonst.light, fd, FALSE);
 	init_uasmon();
-#ifdef CLIPPING
 	cliparound(u.ux, u.uy);
-#endif
 	/* reload random monster*/
 	{
 	extern int monstr[];

@@ -22,16 +22,11 @@ extern short glyph2tile[];
 
 #ifdef TTY_GRAPHICS
 
-
-
 #ifndef NO_TERMS
 #include "tcap.h"
 #endif
 
 #include "wintty.h"
-
-#ifdef CLIPPING		/* might want SIGWINCH */
-#endif
 
 extern char mapped_menu_cmds[]; /* from options.c */
 
@@ -66,9 +61,7 @@ struct window_procs tty_procs = {
     tty_update_inventory,
     tty_mark_synch,
     tty_wait_synch,
-#ifdef CLIPPING
     tty_cliparound,
-#endif
 #ifdef POSITIONBAR
     tty_update_positionbar,
 #endif
@@ -118,11 +111,9 @@ boolean in_character_selection = FALSE;
 extern struct menucoloring *menu_colorings;
 #endif
 
-#ifdef CLIPPING
 static boolean clipping = FALSE;	/* clipping on? */
 static int clipx = 0, clipxmax = 0;
 static int clipy = 0, clipymax = 0;
-#endif /* CLIPPING */
 
 
 #if defined(ASCIIGRAPH) && !defined(NO_TERMS)
@@ -209,7 +200,7 @@ bail(const char *mesg)
     /*NOTREACHED*/
 }
 
-#if defined(SIGWINCH) && defined(CLIPPING)
+#ifdef SIGWINCH
 static void
 winch(int sig)
 {
@@ -233,7 +224,6 @@ winch(int sig)
 	    WIN_STATUS = tty_create_nhwindow(NHW_STATUS);
 
 	    if(u.ux) {
-#ifdef CLIPPING
 		if(CO < COLNO || LI < ROWNO+3) {
 		    setclipped();
 		    tty_cliparound(u.ux, u.uy);
@@ -241,7 +231,6 @@ winch(int sig)
 		    clipping = FALSE;
 		    clipx = clipy = 0;
 		}
-#endif
 		i = ttyDisplay->toplin;
 		ttyDisplay->toplin = 0;
 		docrt();
@@ -307,7 +296,7 @@ tty_init_nhwindows(int *argcp, char **argv)
 
     ttyDisplay->lastwin = WIN_ERR;
 
-#if defined(SIGWINCH) && defined(CLIPPING)
+#ifdef SIGWINCH
     (void) signal(SIGWINCH, winch);
 #endif
 
@@ -1790,12 +1779,10 @@ tty_curs(winid window, int x, int y)
     x += cw->offx;
     y += cw->offy;
 
-#ifdef CLIPPING
     if(clipping && window == WIN_MAP) {
 	x -= clipx;
 	y -= clipy;
     }
-#endif
 
     if (y == cy && x == cx)
 	return;
@@ -1875,11 +1862,7 @@ compress_str(const char *str)
 		register char *bp1 = cbuf;
 
 		do {
-#ifdef CLIPPING
 			if(*bp0 != ' ' || bp0[1] != ' ')
-#else
-			if(*bp0 != ' ' || bp0[1] != ' ' || bp0[2] != ' ')
-#endif
 				*bp1++ = *bp0;
 		} while(*bp0++);
 	} else
@@ -2400,20 +2383,15 @@ docorner(int xmin, int ymax)
     register int y;
     register struct WinDesc *cw = wins[WIN_MAP];
 
-#if defined(SIGWINCH) && defined(CLIPPING)
+#ifdef SIGWINCH
     if(ymax > LI) ymax = LI;		/* can happen if window gets smaller */
 #endif
     for (y = 0; y < ymax; y++) {
 	tty_curs(BASE_WINDOW, xmin,y);	/* move cursor */
 	cl_end();			/* clear to end of line */
-#ifdef CLIPPING
 	if (y<(int) cw->offy || y+clipy > ROWNO)
 		continue; /* only refresh board */
 	row_refresh(xmin+clipx-(int)cw->offx,COLNO-1,y+clipy-(int)cw->offy);
-#else
-	if (y<cw->offy || y > ROWNO) continue; /* only refresh board  */
-	row_refresh(xmin-(int)cw->offx,COLNO-1,y-(int)cw->offy);
-#endif
     }
 
     end_glyphout();
@@ -2473,7 +2451,6 @@ g_putch(int in_ch)
     return;
 }
 
-#ifdef CLIPPING
 void
 setclipped(void)
 {
@@ -2511,7 +2488,6 @@ tty_cliparound(int x, int y)
 		(void) doredraw();
 	}
 }
-#endif /* CLIPPING */
 
 
 /*
@@ -2531,12 +2507,10 @@ tty_print_glyph(winid window, xchar x, xchar y, int glyph)
     int	    color, bgcolor=NO_COLOR;
     unsigned bgcolor_ret;
     
-#ifdef CLIPPING
     if(clipping) {
 	if(x <= clipx || y < clipy || x >= clipxmax || y >= clipymax)
 	    return;
     }
-#endif
     /* map glyph to character and color */
     mapglyph(glyph, &ch, &color, &bgcolor_ret, x, y);
 

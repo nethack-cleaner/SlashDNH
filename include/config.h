@@ -186,7 +186,6 @@ typedef long glyph_t;
 #define SEDUCE		/* Succubi/incubi seduction, by KAA, suggested by IM */
 /* difficulty */
 /* I/O */
-#define CLIPPING	/* allow smaller screens -- ERS */
 
 /*
  * Section 5:  EXPERIMENTAL STUFF

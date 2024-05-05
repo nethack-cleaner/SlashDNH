@@ -3338,10 +3338,8 @@ karemade:
 	    sanity_check();
 #endif
 
-#ifdef CLIPPING
 	/* just before rhack */
 	cliparound(u.ux, u.uy);
-#endif
 
 	u.umoved = FALSE;
 	u.uattked = FALSE;

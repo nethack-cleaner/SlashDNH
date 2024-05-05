@@ -41,9 +41,7 @@ struct window_procs curses_procs = {
     curses_update_inventory,
     curses_mark_synch,
     curses_wait_synch,
-#ifdef CLIPPING
     curses_cliparound,
-#endif
 #ifdef POSITIONBAR
     donull,
 #endif

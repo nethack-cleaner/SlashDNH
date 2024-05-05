@@ -32,9 +32,7 @@ struct window_procs {
     void NDECL((*win_update_inventory));
     void NDECL((*win_mark_synch));
     void NDECL((*win_wait_synch));
-#ifdef CLIPPING
     void FDECL((*win_cliparound), (int, int));
-#endif
 #ifdef POSITIONBAR
     void FDECL((*win_update_positionbar), (char *));
 #endif
@@ -92,9 +90,7 @@ extern struct window_procs windowprocs;
 #define update_inventory (*windowprocs.win_update_inventory)
 #define mark_synch (*windowprocs.win_mark_synch)
 #define wait_synch (*windowprocs.win_wait_synch)
-#ifdef CLIPPING
 #define cliparound (*windowprocs.win_cliparound)
-#endif
 #ifdef POSITIONBAR
 #define update_positionbar (*windowprocs.win_update_positionbar)
 #endif

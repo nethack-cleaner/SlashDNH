@@ -1295,9 +1295,7 @@ u_on_newpos(int x, int y)
 {
 	u.ux = x;
 	u.uy = y;
-#ifdef CLIPPING
 	cliparound(u.ux, u.uy);
-#endif
 	/* ridden steed always shares hero's location */
 	if (u.usteed) u.usteed->mx = u.ux, u.usteed->my = u.uy;
 }

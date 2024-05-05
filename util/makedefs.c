@@ -549,9 +549,6 @@ static const char *build_opts[] = {
 #ifdef REINCARNATION
 		"rogue level",
 #endif
-#ifdef CLIPPING
-		"screen clipping",
-#endif
 #ifdef NO_TERMS
 # ifdef SCREEN_BIOS
 		"screen control via BIOS",

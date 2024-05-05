@@ -591,7 +591,7 @@ obj_is_pname(register struct obj *obj)
  * or doname() instead.
  */
 char *
-distant_name(struct obj *obj, char *FDECL((*func), (OBJ_P)))
+distant_name(struct obj *obj, char *FDECL((*func), (struct obj *)))
 {
 	char *str;
 
@@ -2694,7 +2694,7 @@ killer_xname(struct obj *obj)
  * Used if only one of a collection of objects is named (e.g. in eat.c).
  */
 const char *
-singular(struct obj *otmp, char *FDECL((*func), (OBJ_P)))
+singular(struct obj *otmp, char *FDECL((*func), (struct obj *)))
 {
 	long savequan;
 	char *nam;

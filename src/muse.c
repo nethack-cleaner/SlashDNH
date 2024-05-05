@@ -26,8 +26,8 @@ static void FDECL(mreadmsg, (struct monst *,struct obj *));
 static void FDECL(mquaffmsg, (struct monst *,struct obj *));
 static int FDECL(mbhitm, (struct monst *,struct obj *,struct monst *));
 static void FDECL(mbhit,
-	(struct monst *,int,int FDECL((*),(MONST_P,OBJ_P,MONST_P)),
-	int FDECL((*),(OBJ_P,OBJ_P)),struct obj *));
+	(struct monst *,int,int FDECL((*),(struct monst *,struct obj *,struct monst *)),
+	int FDECL((*),(struct obj *,struct obj *)),struct obj *));
 void FDECL(you_aggravate, (struct monst *));
 static void FDECL(mon_consume_unstone, (struct monst *,struct obj *,
 	boolean,boolean));
@@ -1436,8 +1436,8 @@ static void
 mbhit(
 	struct monst *mon,	/* monster shooting the wand */
 	register int range,	/* direction and range */
-	int FDECL((*fhitm),(MONST_P,OBJ_P,MONST_P)),
-	int FDECL((*fhito),(OBJ_P,OBJ_P)), /* fns called when mon/obj hit */
+	int FDECL((*fhitm),(struct monst *,struct obj *,struct monst *)),
+	int FDECL((*fhito),(struct obj *,struct obj *)), /* fns called when mon/obj hit */
 	struct obj *obj)	/* 2nd arg to fhitm/fhito */
 {
 	register struct monst *mtmp;

@@ -1604,13 +1604,13 @@ static const char removeables[] =
 int
 ggetobj(
 	const char *word,
-	int FDECL((*fn),(OBJ_P)),
+	int FDECL((*fn),(struct obj *)),
 	int mx,
 	boolean combo,		/* combination menu flag */
 	unsigned *resultflags)
 {
-	int FDECL((*ckfn),(OBJ_P)) = (int FDECL((*),(OBJ_P))) 0;
-	boolean FDECL((*filter),(OBJ_P)) = (boolean FDECL((*),(OBJ_P))) 0;
+	int FDECL((*ckfn),(struct obj *)) = (int FDECL((*),(struct obj *))) 0;
+	boolean FDECL((*filter),(struct obj *)) = (boolean FDECL((*),(struct obj *))) 0;
 	boolean takeoff, ident, allflag, m_seen;
 	int itemcount;
 #ifndef GOLDOBJ
@@ -1801,8 +1801,8 @@ askchain(
 	struct obj **objchn,
 	const char *olets,	/* olets is an Obj Class char array */
 	int allflag,
-	int FDECL((*fn),(OBJ_P)),
-	int FDECL((*ckfn),(OBJ_P)),
+	int FDECL((*fn),(struct obj *)),
+	int FDECL((*ckfn),(struct obj *)),
 	int mx,
 	const char *word)
 {
@@ -4895,7 +4895,7 @@ dotypeinv(void)
 #ifndef GOLDOBJ
 					      (u.ugold != 0),
 #endif
-					      (boolean FDECL((*),(OBJ_P))) 0, &itemcount);
+					      (boolean FDECL((*),(struct obj *))) 0, &itemcount);
 	    if (unpaid_count) {
 		Strcat(types, "u");
 		class_count++;

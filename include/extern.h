@@ -1175,12 +1175,12 @@ E boolean FDECL(is_worn, (struct obj *));
 E struct obj *FDECL(g_at, (int,int));
 E struct obj *FDECL(mkgoldobj, (long));
 E struct obj *FDECL(getobj, (const char *,const char *));
-E int FDECL(ggetobj, (const char *,int (*)(OBJ_P),int,boolean,unsigned *));
+E int FDECL(ggetobj, (const char *,int (*)(struct obj *),int,boolean,unsigned *));
 E void FDECL(fully_identify_obj, (struct obj *));
 E int FDECL(identify, (struct obj *));
 E void FDECL(identify_pack, (int));
-E int FDECL(askchain, (struct obj **,const char *,int,int (*)(OBJ_P),
-			int (*)(OBJ_P),int,const char *));
+E int FDECL(askchain, (struct obj **,const char *,int,int (*)(struct obj *),
+			int (*)(struct obj *),int,const char *));
 E void FDECL(prinv, (const char *,struct obj *,long));
 E char *FDECL(xprname, (struct obj *,const char *,char,boolean,long,long));
 E int NDECL(ddoinv);
@@ -1944,7 +1944,7 @@ E char *FDECL(obj_descname, (struct obj *));
 E char *FDECL(simple_typename, (int));
 E char *FDECL(artiadjusted_objnam, (char *, int));
 E boolean FDECL(obj_is_pname, (struct obj *));
-E char *FDECL(distant_name, (struct obj *,char *(*)(OBJ_P)));
+E char *FDECL(distant_name, (struct obj *,char *(*)(struct obj *)));
 E char *FDECL(fruitname, (boolean));
 E char *FDECL(xname, (struct obj *));
 E const char *FDECL(material_name, (struct obj *, boolean));
@@ -1959,7 +1959,7 @@ E char *FDECL(cxname, (struct obj *));
 E char *FDECL(xname_bland, (struct obj *));
 E char *FDECL(cxname2, (struct obj *));
 E char *FDECL(killer_xname, (struct obj *));
-E const char *FDECL(singular, (struct obj *,char *(*)(OBJ_P)));
+E const char *FDECL(singular, (struct obj *,char *(*)(struct obj *)));
 E char *FDECL(an, (const char *));
 E char *FDECL(An, (const char *));
 E char *FDECL(The, (const char *));
@@ -2040,10 +2040,10 @@ E void FDECL(open_giants_sack, (struct obj *, boolean));
 E void FDECL(kill_giants_sack, (struct obj *));
 #ifdef GOLDOBJ
 E int FDECL(collect_obj_classes,
-	(char *,struct obj *,boolean,boolean FDECL((*),(OBJ_P)), int *));
+	(char *,struct obj *,boolean,boolean FDECL((*),(struct obj *)), int *));
 #else
 E int FDECL(collect_obj_classes,
-	(char *,struct obj *,boolean,boolean,boolean FDECL((*),(OBJ_P)), int *));
+	(char *,struct obj *,boolean,boolean,boolean FDECL((*),(struct obj *)), int *));
 #endif
 E void FDECL(add_valid_menu_class, (int));
 E boolean FDECL(allow_all, (struct obj *));
@@ -2054,7 +2054,7 @@ E int FDECL(pickup_object, (struct obj *, long, boolean));
 E int FDECL(query_category, (const char *, struct obj *, int,
 				menu_item **, int));
 E int FDECL(query_objlist, (const char *, struct obj *, int,
-				menu_item **, int, boolean (*)(OBJ_P)));
+				menu_item **, int, boolean (*)(struct obj *)));
 E struct obj *FDECL(pick_obj, (struct obj *));
 E int NDECL(encumber_msg);
 E int NDECL(doloot);

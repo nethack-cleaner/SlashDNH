@@ -109,7 +109,7 @@ collect_obj_classes(
 	char ilets[],
 	struct obj *otmp,
 	boolean here, boolean incl_gold,
-	boolean FDECL((*filter),(OBJ_P)),
+	boolean FDECL((*filter),(struct obj *)),
 	int *itemcount)
 #else
 int
@@ -117,7 +117,7 @@ collect_obj_classes(
 	char ilets[],
 	struct obj *otmp,
 	boolean here,
-	boolean FDECL((*filter),(OBJ_P)),
+	boolean FDECL((*filter),(struct obj *)),
 	int *itemcount)
 #endif
 {
@@ -186,7 +186,7 @@ query_classes(
 #ifndef GOLDOBJ
 				     incl_gold,
 #endif
-				     (boolean FDECL((*),(OBJ_P))) 0, &itemcount);
+				     (boolean FDECL((*),(struct obj *))) 0, &itemcount);
 	if (iletct == 0) {
 		return FALSE;
 	} else if (iletct == 1) {
@@ -713,7 +713,7 @@ query_objlist(
 	int qflags,				/* options to control the query */
 	menu_item **pick_list,			/* return list of items picked */
 	int how,				/* type of query */
-	boolean FDECL((*allow), (OBJ_P)))	/* allow function */
+	boolean FDECL((*allow), (struct obj *)))	/* allow function */
 {
 	int i, j;
 	int n;
@@ -3622,7 +3622,7 @@ ask_again2:
 			if (askchain((struct obj **)&current_container->cobj,
 				     (one_by_one ? (char *)0 : select),
 				     allflag, out_container,
-				     (int FDECL((*),(OBJ_P)))0,
+				     (int FDECL((*),(struct obj *)))0,
 				     0, "nodot"))
 			    used = 1;
 		    } else if (menu_on_request < 0) {

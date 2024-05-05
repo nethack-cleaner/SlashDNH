@@ -7,7 +7,7 @@
 #include "artifact.h"
 
 static void FDECL(mkbox_cnts,(struct obj *));
-static void FDECL(obj_timer_checks,(struct obj *, XCHAR_P, XCHAR_P, int));
+static void FDECL(obj_timer_checks,(struct obj *, xchar, xchar, int));
 static void FDECL(handle_material_specials, (struct obj *, int, int));
 static void FDECL(init_obj_material, (struct obj *));
 static void FDECL(container_weight, (struct obj *));
@@ -257,10 +257,7 @@ static const struct icp bow_materials[] = {
 
 
 struct obj *
-mkobj_at(let, x, y, mkflags)
-char let;
-int x, y;
-int mkflags;
+mkobj_at(char let, int x, int y, int mkflags)
 {
 	struct obj *otmp;
 
@@ -272,9 +269,7 @@ int mkflags;
 }
 
 struct obj *
-mksobj_at(otyp, x, y, mkflags)
-int otyp, x, y;
-int mkflags;
+mksobj_at(int otyp, int x, int y, int mkflags)
 {
 	struct obj *otmp;
 
@@ -286,9 +281,7 @@ int mkflags;
 }
 
 struct obj *
-mkobj(oclass, mkflags)
-char oclass;
-int mkflags;
+mkobj(char oclass, int mkflags)
 {
 	int tprob, i, prob = rnd(1000);
 
@@ -317,8 +310,7 @@ int mkflags;
 }
 
 static void
-mkbox_cnts(box)
-struct obj *box;
+mkbox_cnts(struct obj *box)
 {
 	register int n;
 	register int min = 0;
@@ -396,7 +388,7 @@ struct obj *box;
 }
 
 int
-rndmonnum()	/* select a random, common monster type */
+rndmonnum(void)	/* select a random, common monster type */
 {
 	register struct permonst *ptr;
 	register int	i;
@@ -421,9 +413,7 @@ rndmonnum()	/* select a random, common monster type */
  * in the nobj chain (and nexthere chain when on the floor).
  */
 struct obj *
-splitobj(obj, num)
-struct obj *obj;
-long num;
+splitobj(struct obj *obj, long num)
 {
 	struct obj *otmp;
 
@@ -467,8 +457,7 @@ long num;
  * in the nobj chain (and nexthere chain when on the floor).
  */
 struct obj *
-duplicate_obj(obj)
-struct obj *obj;
+duplicate_obj(struct obj *obj)
 {
 	struct obj *otmp;
 
@@ -527,9 +516,7 @@ struct obj *obj;
  * not actually moving something.
  */
 void
-replace_object(obj, otmp)
-struct obj *obj;
-struct obj *otmp;
+replace_object(struct obj *obj, struct obj *otmp)
 {
     otmp->where = obj->where;
     switch (obj->where) {
@@ -589,8 +576,7 @@ struct obj *otmp;
  * usage of an object.
  */
 void
-bill_dummy_object(otmp)
-register struct obj *otmp;
+bill_dummy_object(register struct obj *otmp)
 {
 	register struct obj *dummy;
 
@@ -617,9 +603,7 @@ register struct obj *otmp;
 
 
 struct obj *
-mksobj(otyp, mkflags)
-int otyp;
-int mkflags;
+mksobj(int otyp, int mkflags)
 {
 	int mndx, tryct;
 	struct obj *otmp;
@@ -1624,9 +1608,7 @@ int mkflags;
 }
 
 void
-size_and_shape_to_fit(obj, mon)
-struct obj *obj;
-struct monst *mon;
+size_and_shape_to_fit(struct obj *obj, struct monst *mon)
 {
 	struct permonst *ptr = mon->data;
 	if (Is_dragon_scales(obj)){
@@ -1665,8 +1647,7 @@ struct monst *mon;
 }
 
 void
-doMaskStats(mask)
-	struct obj *mask;
+doMaskStats(struct obj *mask)
 {
 	mask->mp = malloc(sizeof(struct mask_properties));
 	if(is_mplayer(&mons[mask->corpsenm])){
@@ -1698,8 +1679,7 @@ doMaskStats(mask)
  * This takes the age of the corpse into consideration as of 3.4.0.
  */
 void
-start_corpse_timeout(body)
-	struct obj *body;
+start_corpse_timeout(struct obj *body)
 {
 	long when; 		/* rot away when this old */
 	long corpse_age;	/* age of corpse          */
@@ -1867,8 +1847,7 @@ start_corpse_timeout(body)
 }
 
 void
-bless(otmp)
-register struct obj *otmp;
+bless(register struct obj *otmp)
 {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
@@ -1887,8 +1866,7 @@ register struct obj *otmp;
 }
 
 void
-unbless(otmp)
-register struct obj *otmp;
+unbless(register struct obj *otmp)
 {
 	otmp->blessed = 0;
 	if (carried(otmp) && confers_luck(otmp))
@@ -1901,8 +1879,7 @@ register struct obj *otmp;
 }
 
 void
-curse(otmp)
-register struct obj *otmp;
+curse(register struct obj *otmp)
 {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
@@ -1956,8 +1933,7 @@ register struct obj *otmp;
 }
 
 void
-uncurse(otmp)
-register struct obj *otmp;
+uncurse(register struct obj *otmp)
 {
 	otmp->cursed = 0;
 	if (carried(otmp) && confers_luck(otmp))
@@ -1974,9 +1950,7 @@ register struct obj *otmp;
 
 
 void
-blessorcurse(otmp, chance)
-register struct obj *otmp;
-register int chance;
+blessorcurse(register struct obj *otmp, register int chance)
 {
 	if(otmp->blessed || otmp->cursed) return;
 
@@ -1992,17 +1966,14 @@ register int chance;
 
 
 int
-bcsign(otmp)
-register struct obj *otmp;
+bcsign(register struct obj *otmp)
 {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
 
 /* set the size of an object, making sure the object is proper */
 void
-set_obj_size(obj, size)
-struct obj* obj;
-int size;
+set_obj_size(struct obj *obj, int size)
 {
 	/* check bad cases */
 	if (!obj) {
@@ -2018,9 +1989,7 @@ int size;
 
 /* set the quantity of an object, making sure to update its weight */
 void
-set_obj_quan(obj, quan)
-struct obj* obj;
-int quan;
+set_obj_quan(struct obj *obj, int quan)
 {
 	/* check bad cases */
 	if (!obj) {
@@ -2040,9 +2009,8 @@ int quan;
 
 /* Return the appropriate random material list for a given object,
  * or NULL if there isn't an appropriate list. */
-const struct icp*
-material_list(obj)
-struct obj* obj;
+const struct icp *
+material_list(struct obj *obj)
 {
     unsigned short otyp = obj->otyp;
     int default_material = objects[otyp].oc_material;
@@ -2204,9 +2172,7 @@ struct obj* obj;
  * Used by wishing code
  */
 void
-maybe_set_material(obj, mat)
-struct obj *obj;
-int mat;
+maybe_set_material(struct obj *obj, int mat)
 {
 	const struct icp* random_mat_list;
 
@@ -2240,9 +2206,7 @@ int mat;
  * 
  */
 void
-handle_material_specials(obj, oldmat, newmat)
-struct obj* obj;
-int oldmat, newmat;
+handle_material_specials(struct obj *obj, int oldmat, int newmat)
 {
 	/* start the timer for shadowsteel objects */
 	/* is_evaporable() is no good because we also need to ask using the previous material state */
@@ -2272,8 +2236,7 @@ int oldmat, newmat;
  *   wishing to re-randomize the material of an object
  */
 void
-init_obj_material(obj)
-struct obj* obj;
+init_obj_material(struct obj *obj)
 {
 	int otyp = obj->otyp;
 	const struct icp* random_mat_list;
@@ -2310,8 +2273,7 @@ struct obj* obj;
 
 /* attempts to randomly give obj a rare material */
 void
-rand_interesting_obj_material(obj)
-struct obj * obj;
+rand_interesting_obj_material(struct obj *obj)
 {
 	const struct icp* random_mat_list;
 	int tries = 0;
@@ -2347,9 +2309,7 @@ struct obj * obj;
  */
 
 void
-set_material_gm(obj, mat)
-struct obj *obj;
-int mat;
+set_material_gm(struct obj *obj, int mat)
 {
 	int oldmat = obj->obj_material;
 
@@ -2378,9 +2338,7 @@ int mat;
  */
 
 void
-set_material(obj, mat)
-struct obj *obj;
-int mat;
+set_material(struct obj *obj, int mat)
 {
 	struct monst *owner = 0;
 	long mask = 0;
@@ -2659,8 +2617,7 @@ int mat;
  *	   container's weight.
  */
 int
-weight(obj)
-register struct obj *obj;
+weight(register struct obj *obj)
 {
 	int wt = objects[obj->otyp].oc_weight;
 	int base_mat = (obj->oartifact && artilist[obj->oartifact].material != MT_DEFAULT && artilist[obj->oartifact].weight != WT_DEFAULT) ? artilist[obj->oartifact].material : objects[obj->otyp].oc_material;
@@ -2766,8 +2723,7 @@ register struct obj *obj;
 static int treefruits[] = {APPLE,ORANGE,PEAR,BANANA,EUCALYPTUS_LEAF};
 
 struct obj *
-rnd_treefruit_at(x,y)
-int x, y;
+rnd_treefruit_at(int x, int y)
 {
 	struct obj *otmp;
 	if(Is_zuggtmoy_level(&u.uz)){
@@ -2817,10 +2773,7 @@ int x, y;
 }
 
 struct obj *
-mkgold_core(amount, x, y, new)
-long amount;
-int x, y;
-boolean new;
+mkgold_core(long amount, int x, int y, boolean new)
 {
     register struct obj *gold = g_at(x,y);
 
@@ -2839,9 +2792,7 @@ boolean new;
 }
 
 struct obj *
-mkgold(amount, x, y)
-long amount;
-int x, y;
+mkgold(long amount, int x, int y)
 {
 	struct obj *gold;
 	gold = mkgold_core(amount, x, y, TRUE);
@@ -2878,12 +2829,13 @@ int x, y;
  * resurrection.
  */
 struct obj *
-mkcorpstat(objtype, mtmp, ptr, x, y, init)
-int objtype;	/* CORPSE or STATUE */
-struct monst *mtmp;
-struct permonst *ptr;
-int x, y;
-boolean init;
+mkcorpstat(
+	int objtype,	/* CORPSE or STATUE */
+	struct monst *mtmp,
+	struct permonst *ptr,
+	int x,
+	int y,
+	boolean init)
 {
 	register struct obj *otmp;
 	int mkobjflags = (init ? NO_MKOBJ_FLAGS : MKOBJ_NOINIT);
@@ -2929,9 +2881,7 @@ boolean init;
  * a lasting association between the two.
  */
 struct obj *
-obj_attach_mid(obj, mid)
-struct obj *obj;
-unsigned mid;
+obj_attach_mid(struct obj *obj, unsigned mid)
 {
     if (!mid || !obj) return (struct obj *)0;
 
@@ -2942,9 +2892,7 @@ unsigned mid;
 }
 
 struct obj *
-save_mtraits(obj, mtmp)
-struct obj *obj;
-struct monst *mtmp;
+save_mtraits(struct obj *obj, struct monst *mtmp)
 {
 	long lth, namelth;
 
@@ -2990,9 +2938,7 @@ struct monst *mtmp;
  * into the monst chains.
  */
 struct monst *
-get_mtraits(obj, copyof)
-struct obj *obj;
-boolean copyof;
+get_mtraits(struct obj *obj, boolean copyof)
 {
 	struct monst *mtmp = (struct monst *)0;
 	struct monst *mnew = (struct monst *)0;
@@ -3024,9 +2970,10 @@ boolean copyof;
 
 /* make an object named after someone listed in the scoreboard file */
 struct obj *
-mk_tt_object(objtype, x, y)
-int objtype; /* CORPSE or STATUE */
-register int x, y;
+mk_tt_object(
+	int objtype, /* CORPSE or STATUE */
+	register int x,
+	register int y)
 {
 	register struct obj *otmp, *otmp2;
 	int mkobjflags = NO_MKOBJ_FLAGS;
@@ -3043,11 +2990,12 @@ register int x, y;
 
 /* make a new corpse or statue, uninitialized if a statue (i.e. no books) */
 struct obj *
-mk_named_object(objtype, ptr, x, y, nm)
-int objtype;	/* CORPSE or STATUE */
-struct permonst *ptr;
-int x, y;
-const char *nm;
+mk_named_object(
+	int objtype,	/* CORPSE or STATUE */
+	struct permonst *ptr,
+	int x,
+	int y,
+	const char *nm)
 {
 	struct obj *otmp;
 
@@ -3059,8 +3007,7 @@ const char *nm;
 }
 
 boolean
-is_flammable(otmp)
-register struct obj *otmp;
+is_flammable(register struct obj *otmp)
 {
 	int otyp = otmp->otyp;
 	int omat = otmp->obj_material;
@@ -3084,8 +3031,7 @@ register struct obj *otmp;
 }
 
 boolean
-is_rottable(otmp)
-register struct obj *otmp;
+is_rottable(register struct obj *otmp)
 {
 	int otyp = otmp->otyp;
 
@@ -3101,9 +3047,7 @@ register struct obj *otmp;
 
 /* put the object at the given location */
 void
-place_object(otmp, x, y)
-register struct obj *otmp;
-int x, y;
+place_object(register struct obj *otmp, int x, int y)
 {
     register struct obj *otmp2;
 
@@ -3142,9 +3086,7 @@ int x, y;
  * Also used for starting ice effects too. [zap.c]
  */
 void
-obj_ice_effects(x, y, do_buried)
-int x, y;
-boolean do_buried;
+obj_ice_effects(int x, int y, boolean do_buried)
 {
 	struct obj *otmp;
 
@@ -3168,8 +3110,7 @@ boolean do_buried;
  * restarted etc.
  */
 long
-peek_at_iced_corpse_age(otmp)
-struct obj *otmp;
+peek_at_iced_corpse_age(struct obj *otmp)
 {
     long age, retval = otmp->age;
     
@@ -3188,10 +3129,11 @@ struct obj *otmp;
 }
 
 static void
-obj_timer_checks(otmp, x, y, force)
-struct obj *otmp;
-xchar x, y;
-int force;	/* 0 = no force so do checks, <0 = force off, >0 force on */
+obj_timer_checks(
+	struct obj *otmp,
+	xchar x,
+	xchar y,
+	int force	/* 0 = no force so do checks, <0 = force off, >0 force on */)
 {
     long tleft = 0L;
     short action = ROT_CORPSE;
@@ -3257,8 +3199,7 @@ int force;	/* 0 = no force so do checks, <0 = force off, >0 force on */
 #undef ROT_ICE_ADJUSTMENT
 
 void
-remove_object(otmp)
-register struct obj *otmp;
+remove_object(register struct obj *otmp)
 {
     xchar x = otmp->ox;
     xchar y = otmp->oy;
@@ -3284,8 +3225,7 @@ register struct obj *otmp;
 
 /* extra handling on extracting an object from a (non magic chest) container */
 void
-uncontain(obj)
-struct obj * obj;
+uncontain(struct obj *obj)
 {
 	if (is_gemable_lightsaber(obj->ocontainer) && obj->ocontainer->lamplit)
 		end_burn(obj->ocontainer, TRUE);
@@ -3293,8 +3233,7 @@ struct obj * obj;
 
 /* throw away all of a monster's inventory */
 void
-discard_minvent(mtmp)
-struct monst *mtmp;
+discard_minvent(struct monst *mtmp)
 {
     struct obj *otmp;
 
@@ -3307,8 +3246,7 @@ struct monst *mtmp;
 /* Extract self, including from monster or player worn equipment */
 
 void
-obj_extract_and_unequip_self(obj)
-struct obj *obj;
+obj_extract_and_unequip_self(struct obj *obj)
 {
 	struct monst *mon;
 	long unwornmask;
@@ -3357,8 +3295,7 @@ struct obj *obj;
  *	OBJ_MAGIC_CHEST	magic chest chains
  */
 void
-obj_extract_self(obj)
-    struct obj *obj;
+obj_extract_self(struct obj *obj)
 {
     switch (obj->where) {
 	case OBJ_FREE:
@@ -3405,8 +3342,7 @@ obj_extract_self(obj)
 
 /* Extract the given object from the chain, following nobj chain. */
 void
-extract_nobj(obj, head_ptr)
-    struct obj *obj, **head_ptr;
+extract_nobj(struct obj *obj, struct obj **head_ptr)
 {
     struct obj *curr, *prev;
 
@@ -3461,8 +3397,7 @@ void extract_magic_chest_nobj(struct obj *obj)
  * in tandem with extract_nobj, which does set it.
  */
 void
-extract_nexthere(obj, head_ptr)
-    struct obj *obj, **head_ptr;
+extract_nexthere(struct obj *obj, struct obj **head_ptr)
 {
     struct obj *curr, *prev;
 
@@ -3486,9 +3421,7 @@ extract_nexthere(obj, head_ptr)
  * Otherwise 0 is returned.
  */
 int
-add_to_minv(mon, obj)
-    struct monst *mon;
-    struct obj *obj;
+add_to_minv(struct monst *mon, struct obj *obj)
 {
     struct obj *otmp;
 
@@ -3523,9 +3456,7 @@ add_to_minv(mon, obj)
  * If she decides to throw it out, useup is called and 1 is returned.
  */
 int
-maid_clean(mon, obj)
-    struct monst *mon;
-    struct obj *obj;
+maid_clean(struct monst *mon, struct obj *obj)
 {
 	if(objects[obj->otyp].oc_unique || obj->oartifact)
 		return 0;
@@ -3625,8 +3556,7 @@ add_to_magic_chest(struct obj *obj,int key)
  * The input obj may be deleted in the process.
  */
 struct obj *
-add_to_container(container, obj)
-    struct obj *container, *obj;
+add_to_container(struct obj *container, struct obj *obj)
 {
     struct obj *otmp;
 
@@ -3648,8 +3578,7 @@ add_to_container(container, obj)
 }
 
 void
-add_to_migration(obj)
-    struct obj *obj;
+add_to_migration(struct obj *obj)
 {
     if (obj->where != OBJ_FREE)
 	panic("add_to_migration: obj not free");
@@ -3661,8 +3590,7 @@ add_to_migration(obj)
 }
 
 void
-add_to_buried(obj)
-    struct obj *obj;
+add_to_buried(struct obj *obj)
 {
     if (obj->where != OBJ_FREE)
 	panic("add_to_buried: obj not free");
@@ -3674,8 +3602,7 @@ add_to_buried(obj)
 
 /* Recalculate the weight of this container and all of _its_ containers. */
 static void
-container_weight(container)
-    struct obj *container;
+container_weight(struct obj *container)
 {
     container->owt = weight(container);
     if (container->where == OBJ_CONTAINED)
@@ -3691,8 +3618,7 @@ container_weight(container)
  * them to be deallocated.
  */
 void
-dealloc_obj(obj)
-    struct obj *obj;
+dealloc_obj(struct obj *obj)
 {
     if (obj->where != OBJ_FREE)
 		panic("dealloc_obj: obj not free");
@@ -3718,9 +3644,9 @@ dealloc_obj(obj)
 }
 
 int
-hornoplenty(horn, tipping)
-struct obj *horn;
-boolean tipping; /* caller emptying entire contents; affects shop handling */
+hornoplenty(
+	struct obj *horn,
+	boolean tipping /* caller emptying entire contents; affects shop handling */)
 {
     int objcount = 0;
 
@@ -3793,7 +3719,7 @@ boolean tipping; /* caller emptying entire contents; affects shop handling */
 #ifdef WIZARD
 /* Check all object lists for consistency. */
 void
-obj_sanity_check()
+obj_sanity_check(void)
 {
     int x, y;
     struct obj *obj;
@@ -3894,17 +3820,14 @@ static const char *obj_state_names[NOBJ_STATES] = {
 };
 
 static const char *
-where_name(where)
-    int where;
+where_name(int where)
 {
     return (where<0 || where>=NOBJ_STATES) ? "unknown" : obj_state_names[where];
 }
 
 /* obj sanity check: check objs contained by container */
 static void
-check_contained(container, mesg)
-    struct obj *container;
-    const char *mesg;
+check_contained(struct obj *container, const char *mesg)
 {
     struct obj *obj;
     char obj1_address[20], obj2_address[20];

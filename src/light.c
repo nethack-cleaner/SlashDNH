@@ -50,7 +50,7 @@ static struct ls_t *light_base = 0;
 static void FDECL(add_chain_ls, (struct ls_t *));
 static void FDECL(rem_chain_ls, (struct ls_t *));
 static void FDECL(write_ls, (int, struct ls_t *));
-static int FDECL(maybe_write_ls, (int, int, BOOLEAN_P));
+static int FDECL(maybe_write_ls, (int, int, boolean));
 
 /* imported from vision.c, for small circles */
 extern char circle_data[];
@@ -63,8 +63,7 @@ extern int circle_start[];
 
 /* adds an existing light source to the processing chain */
 void
-add_chain_ls(ls)
-struct ls_t * ls;
+add_chain_ls(struct ls_t *ls)
 {
 	struct ls_t * lstmp;
 	/* check for duplicates */
@@ -81,8 +80,7 @@ struct ls_t * ls;
 
 /* removes a light source from the procesing chain */
 void
-rem_chain_ls(ls)
-struct ls_t * ls;
+rem_chain_ls(struct ls_t *ls)
 {
 	struct ls_t * lstmp;
 	if (light_base == ls) {
@@ -101,10 +99,10 @@ struct ls_t * ls;
 /* Create a new light source.  */
 /* If a lightsource is already attached to (type, id), replace it (with a warning) */
 void
-new_light_source(lstype, owner, range)
-	int lstype;			/* is it attached to a mon or an obj? */
-    genericptr_t owner;	/* pointer to mon/obj this is attached to */
-	int range;			/* range of ls */
+new_light_source(
+	int lstype,			/* is it attached to a mon or an obj? */
+	genericptr_t owner,	/* pointer to mon/obj this is attached to */
+	int range			/* range of ls */)
 {
     struct ls_t *ls;
 	boolean duplicate = FALSE;
@@ -152,8 +150,7 @@ new_light_source(lstype, owner, range)
  * Delete light source.
  */
 void
-del_light_source(ls)
-struct ls_t * ls;
+del_light_source(struct ls_t *ls)
 {
 	/* check it exists */
 	if (!ls) return;
@@ -170,8 +167,7 @@ struct ls_t * ls;
 
 /* Mark locations that are temporarily lit via mobile light sources. */
 void
-do_light_sources(cs_rows)
-    char **cs_rows;
+do_light_sources(char **cs_rows)
 {
     int x, y, min_x, max_x, max_y, offset;
     char *limits;
@@ -453,7 +449,7 @@ do_light_sources(cs_rows)
  * ex) Orthos binding, ex) shadowsteel equipment
  */
 boolean
-uswallow_indark()
+uswallow_indark(void)
 {
 	if (!u.uswallow || !u.ustuck) {
 		return (dimness(u.ux, u.uy) > 0);
@@ -497,9 +493,7 @@ uswallow_indark()
 #define mon_is_local(mon)	((mon)->mx > 0)
 
 struct monst *
-find_mid(nid, fmflags)
-unsigned nid;
-unsigned fmflags;
+find_mid(unsigned nid, unsigned fmflags)
 {
 	struct monst *mtmp;
 
@@ -518,10 +512,7 @@ unsigned fmflags;
 }
 
 void
-save_lightsource(ls, fd, mode)
-struct ls_t * ls;
-int fd;
-int mode;
+save_lightsource(struct ls_t *ls, int fd, int mode)
 {
 	if (perform_bwrite(mode))
 	    bwrite(fd, (genericptr_t)ls, sizeof(struct ls_t));
@@ -531,12 +522,12 @@ int mode;
 }
 
 void
-rest_lightsource(lstype, owner, ls, fd, ghostly)
-int lstype;
-genericptr_t owner;
-struct ls_t * ls;
-int fd;
-boolean ghostly;	/* unused */
+rest_lightsource(
+	int lstype,
+	genericptr_t owner,
+	struct ls_t *ls,
+	int fd,
+	boolean ghostly	/* unused */)
 {
 	ls = (struct ls_t *)alloc(sizeof(struct ls_t));
 	mread(fd, (genericptr_t) ls, sizeof(struct ls_t));
@@ -549,7 +540,7 @@ boolean ghostly;	/* unused */
 
 /* return true if there exist any light sources */
 boolean
-any_light_source()
+any_light_source(void)
 {
     return light_base != (struct ls_t *) 0;
 }
@@ -559,8 +550,7 @@ any_light_source()
  * only for burning light sources.
  */
 void
-snuff_light_source(x, y)
-    int x, y;
+snuff_light_source(int x, int y)
 {
     struct ls_t *ls, *nls;
     struct obj *obj;
@@ -585,8 +575,7 @@ snuff_light_source(x, y)
 
 /* Return TRUE if object is currently shedding any light or darkness. */
 boolean
-obj_sheds_light(obj)
-struct obj *obj;
+obj_sheds_light(struct obj *obj)
 {
 	return (obj->lamplit && (						/* lamplit is sometimes off for even eternal lightsources */
 		obj_is_burning(obj) ||						/* standard lightsources that must be lit */
@@ -597,8 +586,7 @@ struct obj *obj;
 
 /* Return TRUE if object's light should in theory never go out */
 boolean
-obj_eternal_light(obj)
-struct obj * obj;
+obj_eternal_light(struct obj *obj)
 {
 	return (
 		arti_light(obj) ||							/* artifact lightsource */
@@ -612,8 +600,7 @@ struct obj * obj;
 /* Return TRUE if sheds light AND will be snuffed by end_burn(). */
 /* These _usually_ may also be ended by snuff_light_source(), the overlap is close enough to not warrant a 2nd function */
 boolean
-obj_is_burning(obj)
-    struct obj *obj;
+obj_is_burning(struct obj *obj)
 {
     return (obj->lamplit &&
 		 (	ignitable(obj)					/* lightsource uses a flame */
@@ -625,8 +612,7 @@ obj_is_burning(obj)
 }
 
 boolean
-litsaber(obj)
-	struct obj *obj;
+litsaber(struct obj *obj)
 {
 	if(obj->oartifact == ART_INFINITY_S_MIRRORED_ARC){
 		return infinity_s_mirrored_arc_litness(obj);
@@ -641,8 +627,7 @@ litsaber(obj)
 
 /* copy the light source attached to src, and attach it to dest */
 void
-obj_split_light_source(src, dest)
-    struct obj *src, *dest;
+obj_split_light_source(struct obj *src, struct obj *dest)
 {
 	/* safety check */
 	if (!src->light)
@@ -665,8 +650,7 @@ obj_split_light_source(src, dest)
 /* light source `src' has been folded into light source `dest';
    used for merging lit candles and adding candle(s) to lit candelabrum */
 void
-obj_merge_light_sources(src, dest)
-struct obj *src, *dest;
+obj_merge_light_sources(struct obj *src, struct obj *dest)
 {
     struct ls_t *ls;
 
@@ -683,8 +667,7 @@ struct obj *src, *dest;
 /* Candlelight is proportional to the number of candles;
    minimum range is 2 rather than 1 for playability. */
 int
-candle_light_range(obj)
-struct obj *obj;
+candle_light_range(struct obj *obj)
 {
     int radius;
 
@@ -725,7 +708,7 @@ struct obj *obj;
 extern char *FDECL(fmt_ptr, (const genericptr, char *));  /* from alloc.c */
 
 int
-wiz_light_sources()
+wiz_light_sources(void)
 {
     winid win;
     char buf[BUFSZ], arg_address[20];

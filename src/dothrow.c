@@ -10,8 +10,8 @@
 
 extern void NDECL(autoquiver);
 extern int FDECL(gem_accept, (struct monst *, struct obj *));
-extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
-extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
+extern void FDECL(check_shop_obj, (struct obj *, xchar, xchar, boolean));
+extern void FDECL(breakmsg, (struct obj *, boolean));
 static boolean FDECL(mhurtle_step, (genericptr_t,int,int));
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
 
@@ -69,9 +69,7 @@ static const char * const Ronnie_ray_gun[] = {
 
 
 int
-zap_raygun(raygun, shots, shotlimit)
-struct obj *raygun;
-int shots, shotlimit;
+zap_raygun(struct obj *raygun, int shots, int shotlimit)
 {
 	int cost;
 	boolean clicky = FALSE;
@@ -181,9 +179,7 @@ int shots, shotlimit;
 }
 
 int
-zap_flamethrower(obj, shots, shotlimit)
-struct obj *obj;
-int shots, shotlimit;
+zap_flamethrower(struct obj *obj, int shots, int shotlimit)
 {
 	int cost = 1;
 	
@@ -236,7 +232,7 @@ int shots, shotlimit;
 /* KMH -- Automatically fill quiver */
 /* Suggested by Jeffrey Bay <jbay@convex.hp.com> */
 void
-autoquiver()
+autoquiver(void)
 {
 	struct obj *otmp, *oammo = 0, *omissile = 0, *omisc = 0, *altammo = 0;
 
@@ -306,11 +302,11 @@ autoquiver()
  * before the failed callback.
  */
 boolean
-walk_path(src_cc, dest_cc, check_proc, arg)
-    coord *src_cc;
-    coord *dest_cc;
-    boolean FDECL((*check_proc), (genericptr_t, int, int));
-    genericptr_t arg;
+walk_path(
+	coord *src_cc,
+	coord *dest_cc,
+	boolean FDECL((*check_proc), (genericptr_t, int, int)),
+	genericptr_t arg)
 {
     int x, y, dx, dy, x_change, y_change, err, i, prev_x, prev_y;
     boolean keep_going = TRUE;
@@ -390,9 +386,7 @@ walk_path(src_cc, dest_cc, check_proc, arg)
  *	o let jumps go over boulders
  */
 boolean
-hurtle_step(arg, x, y)
-    genericptr_t arg;
-    int x, y;
+hurtle_step(genericptr_t arg, int x, int y)
 {
     int ox, oy, *range = (int *)arg;
     struct obj *obj;
@@ -520,9 +514,7 @@ hurtle_step(arg, x, y)
 }
 
 static boolean
-mhurtle_step(arg, x, y)
-    genericptr_t arg;
-    int x, y;
+mhurtle_step(genericptr_t arg, int x, int y)
 {
 	struct monst *mon = (struct monst *)arg;
 
@@ -549,10 +541,7 @@ mhurtle_step(arg, x, y)
  * kick or throw and be only.
  */
 void
-hurtle(dx, dy, range, verbose, do_nomul)
-    int dx, dy, range;
-    boolean verbose;
-    boolean do_nomul;
+hurtle(int dx, int dy, int range, boolean verbose, boolean do_nomul)
 {
     coord uc, cc;
 
@@ -604,10 +593,7 @@ hurtle(dx, dy, range, verbose, do_nomul)
 /* Move a monster through the air for a few squares.
  */
 void
-mhurtle(mon, dx, dy, range, huge)
-	struct monst *mon;
-	int dx, dy, range;
-	boolean huge;
+mhurtle(struct monst *mon, int dx, int dy, int range, boolean huge)
 {
     coord mc, cc;
 
@@ -642,10 +628,7 @@ mhurtle(mon, dx, dy, range, huge)
 }
 
 void
-check_shop_obj(obj, x, y, broken)
-register struct obj *obj;
-register xchar x, y;
-register boolean broken;
+check_shop_obj(struct obj *obj, xchar x, xchar y, boolean broken)
 {
 	struct monst *shkp = shop_keeper(*u.ushops);
 
@@ -677,9 +660,7 @@ register boolean broken;
 	}
 }
 boolean
-quest_arti_hits_leader(obj,mon)
-struct obj *obj;
-struct monst *mon;
+quest_arti_hits_leader(struct obj *obj, struct monst *mon)
 {
 	if(obj->oartifact && is_quest_artifact(obj) && (mon->mtyp == urole.ldrnum)) return TRUE;
 	else if(Race_if(PM_ELF)){
@@ -702,9 +683,7 @@ struct monst *mon;
 }
 
 int
-gem_accept(mon, obj)
-register struct monst *mon;
-register struct obj *obj;
+gem_accept(register struct monst *mon, register struct obj *obj)
 {
 	char buf[BUFSZ];
 	boolean is_buddy = sgn(mon->data->maligntyp) == sgn(u.ualign.type);
@@ -812,10 +791,10 @@ nopick:
  * Return 0 if the object didn't break, 1 if the object broke.
  */
 int
-hero_breaks(obj, x, y, from_invent)
-struct obj *obj;
-xchar x, y;		/* object location (ox, oy may not be right) */
-boolean from_invent;	/* thrown or dropped by player; maybe on shop bill */
+hero_breaks(
+	struct obj *obj,
+	xchar x, xchar y, /* object location (ox, oy may not be right) */
+	boolean from_invent) /* thrown or dropped by player; maybe on shop bill */
 {
 	boolean in_view = !Blind;
 	if (!breaktest(obj)) return 0;
@@ -830,9 +809,9 @@ boolean from_invent;	/* thrown or dropped by player; maybe on shop bill */
  * Return 0 if the object doesn't break, 1 if the object broke.
  */
 int
-breaks(obj, x, y)
-struct obj *obj;
-xchar x, y;		/* object location (ox, oy may not be right) */
+breaks(
+	struct obj *obj,
+	xchar x, xchar y) /* object location (ox, oy may not be right) */
 {
 	boolean in_view = Blind ? FALSE : cansee(x, y);
 
@@ -847,11 +826,11 @@ xchar x, y;		/* object location (ox, oy may not be right) */
  * and break messages have been delivered prior to getting here.
  */
 void
-breakobj(obj, x, y, hero_caused, from_invent)
-struct obj *obj;
-xchar x, y;		/* object location (ox, oy may not be right) */
-boolean hero_caused;	/* is this the hero's fault? */
-boolean from_invent;
+breakobj(
+	struct obj *obj,
+	xchar x, xchar y, /* object location (ox, oy may not be right) */
+	boolean hero_caused,	/* is this the hero's fault? */
+	boolean from_invent)
 {
 	switch (obj->oclass == POTION_CLASS ? POT_WATER : obj->otyp) {
 		case MIRROR:
@@ -967,8 +946,7 @@ boolean from_invent;
  * Return 0 if the object isn't going to break, 1 if it is.
  */
 boolean
-breaktest(obj)
-struct obj *obj;
+breaktest(struct obj *obj)
 {
 	if (obj_resists(obj, 0, 100)) return 0;
 	if (is_shatterable(obj) && !obj->oerodeproof)
@@ -990,9 +968,7 @@ struct obj *obj;
 }
 
 void
-breakmsg(obj, in_view)
-struct obj *obj;
-boolean in_view;
+breakmsg(struct obj *obj, boolean in_view)
 {
 	const char *to_pieces;
 

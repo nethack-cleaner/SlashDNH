@@ -22,10 +22,7 @@ static boolean FDECL(spell_would_be_useless, (struct monst *, struct monst *, in
 
 /* feedback when frustrated creature couldn't cast a spell */
 void
-cursetxt(magr, mdef, undirected)
-struct monst * magr;
-struct monst * mdef;
-boolean undirected;
+cursetxt(struct monst *magr, struct monst *mdef, boolean undirected)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -76,10 +73,7 @@ boolean undirected;
 
 /* default spell selection for mages */
 static int
-choose_magic_spell(spellval,mid,hostile)
-int spellval;
-int mid;
-boolean hostile;
+choose_magic_spell(int spellval, int mid, boolean hostile)
 {
 	/* Alternative spell lists: since the alternative lists contain spells that aren't
 		yet implemented for m vs m combat, non-hostile monsters always use the vanilla 
@@ -256,11 +250,7 @@ boolean hostile;
 
 /* default spell selection for priests/monks */
 static int
-choose_clerical_spell(spellnum,mid,hostile,quake)
-int spellnum;
-int mid;
-boolean hostile;
-boolean quake;
+choose_clerical_spell(int spellnum, int mid, boolean hostile, boolean quake)
 {
 	/* Alternative spell lists:
 		Alternate list slection is based on the monster's ID number, which is
@@ -312,10 +302,7 @@ boolean quake;
 
 /* default spell selection for psychic-flavored casters */
 static int
-choose_psionic_spell(spellnum,mid,hostile)
-int spellnum;
-int mid;
-boolean hostile;
+choose_psionic_spell(int spellnum, int mid, boolean hostile)
 {
     switch (spellnum) {
      case 18:
@@ -348,9 +335,7 @@ boolean hostile;
 
 /* ...but first, check for monster-specific spells */
 static int
-choose_magic_special(mtmp, type)
-struct monst *mtmp;
-unsigned int type;
+choose_magic_special(struct monst *mtmp, unsigned int type)
 {
 	int clrc_spell_power;
 	int wzrd_spell_power;
@@ -2172,12 +2157,7 @@ const char * spellname[] =
  * Does not consider whether or not magr should be able to cast at mdef (line of sight, range)
  */
 int
-xcasty(magr, mdef, attk, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int tarx;
-int tary;
+xcasty(struct monst *magr, struct monst *mdef, struct attack *attk, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -2502,12 +2482,7 @@ int tary;
  * Returns MM_MISS only if the spellcasting failed silently and took no time at all
  */
 int
-elemspell(magr, mdef, attk, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int tarx;
-int tary;
+elemspell(struct monst *magr, struct monst *mdef, struct attack *attk, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3010,13 +2985,13 @@ int tary;
  * handles all of mvu, mvm, uvm.
  */
 int
-cast_spell(magr, mdef, attk, spell, tarx, tary)
-struct monst * magr;
-struct monst * mdef;	/* optional */
-struct attack * attk;
-int spell;
-int tarx;
-int tary;
+cast_spell(
+	struct monst *magr,
+	struct monst *mdef,	/* optional */
+	struct attack *attk,
+	int spell,
+	int tarx,
+	int tary)
 {
 	/* validate */
 	if (!magr) {
@@ -6563,8 +6538,7 @@ int tary;
 
 /* spells that do not appear to have a target when cast, and may be cast with none of (mdef, tarx, tary) */
 boolean
-is_undirected_spell(spellnum)
-int spellnum;
+is_undirected_spell(int spellnum)
 {
 	if ((is_buff_spell(spellnum) && !(
 		spellnum == MASS_CURE_FAR ||
@@ -6581,8 +6555,7 @@ int spellnum;
 /* Directed attack spells need a target (mdef), and by extension need to see its location (tarx, tary) */
 /* they cannot be used against warded creatures */
 boolean
-is_directed_attack_spell(spellnum)
-int spellnum;
+is_directed_attack_spell(int spellnum)
 {
 	switch (spellnum)
 	{
@@ -6637,8 +6610,7 @@ int spellnum;
 /* AOE attack spells only need a location (tarx, tary) */
 /* they can be used against warded creatures */
 boolean
-is_aoe_attack_spell(spellnum)
-int spellnum;
+is_aoe_attack_spell(int spellnum)
 {
 	switch (spellnum)
 	{
@@ -6675,8 +6647,7 @@ int spellnum;
 /* Buff spells need neither a target nor a location */
 /* some of them may use a location, even if it's not strictly necessary */
 boolean
-is_buff_spell(spellnum)
-int spellnum;
+is_buff_spell(int spellnum)
 {
 	switch (spellnum)
 	{
@@ -6700,8 +6671,7 @@ int spellnum;
 /* almost all summoning spells may only be used against the player */
 /* creatures are summoned at the targeted location */
 boolean
-is_summon_spell(spellnum)
-int spellnum;
+is_summon_spell(int spellnum)
 {
 	switch (spellnum)
 	{
@@ -6726,8 +6696,7 @@ int spellnum;
 /* several debuff spells only work against the player */
 /* they cannot be used against warded creatures */
 boolean
-is_debuff_spell(spellnum)
-int spellnum;
+is_debuff_spell(int spellnum)
 {
 	switch (spellnum)
 	{
@@ -6765,12 +6734,7 @@ int spellnum;
 
 /* Note that spells that are not implemented for all of uvm/mvm/mvu handle those cases gracefully in cast_spell */
 boolean
-spell_would_be_useless(magr, mdef, spellnum, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-int spellnum;
-int tarx;
-int tary;
+spell_would_be_useless(struct monst *magr, struct monst *mdef, int spellnum, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -7158,8 +7122,7 @@ int tary;
 }
 
 int
-needs_familiar(mon)
-struct monst *mon;
+needs_familiar(struct monst *mon)
 {
 	struct monst *mtmp;
 	if(!is_witch_mon(mon))
@@ -7175,8 +7138,7 @@ struct monst *mon;
  */
 
 int
-pick_tannin(mon)
-struct monst *mon;
+pick_tannin(struct monst *mon)
 {
 	switch(mon->mtyp){
 		case PM_PALE_NIGHT:

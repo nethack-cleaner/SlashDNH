@@ -16,11 +16,7 @@ extern struct attack noattack;
 ///////////////////////////////////////////////////////////////////////////////
 /* unhide creatures, possibly with message, before they make an attack */
 void
-xmakingattack(magr, mdef, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
+xmakingattack(struct monst *magr, struct monst *mdef, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -33,12 +29,7 @@ int tary;
 ///////////////////////////////////////////////////////////////////////////////
 
 boolean
-magr_can_attack_mdef(magr, mdef, tarx, tary, active)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
-boolean active;
+magr_can_attack_mdef(struct monst *magr, struct monst *mdef, int tarx, int tary, boolean active)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -133,9 +124,9 @@ boolean active;
  * 2 : bloodthirsty forced attack (a la Stormbringer, not 'F')
  */
 int
-attack_checks(mdef, wep)
-struct monst * mdef;
-struct obj * wep;	/* uwep for attack(), null for kick_monster() */
+attack_checks(
+	struct monst *mdef,
+	struct obj *wep)	/* uwep for attack(), null for kick_monster() */
 {
 	/* if you're close enough to attack, alert any waiting monster */
 	mdef->mstrategy &= ~STRAT_WAITMASK;
@@ -300,8 +291,7 @@ struct obj * wep;	/* uwep for attack(), null for kick_monster() */
  * returns TRUE if because of the player's madness, they cannot attack mon.
  */
 boolean
-madness_cant_attack(mon)
-struct monst * mon;
+madness_cant_attack(struct monst *mon)
 {
 	if (mon->female && humanoid_torso(mon->data) && roll_madness(MAD_SANCTITY)){
 		You("can't bring yourself to strike %s!", mon_nam(mon));
@@ -347,8 +337,7 @@ struct monst * mon;
 
 /* Note: caller must ascertain mtmp is mimicking... */
 void
-stumble_onto_mimic(mtmp)
-struct monst *mtmp;
+stumble_onto_mimic(struct monst *mtmp)
 {
 	const char *fmt = "Wait!  That's %s!",
 		   *generic = "a monster",
@@ -393,8 +382,7 @@ struct monst *mtmp;
  * It is unchivalrous for a knight to attack the defenseless or from behind.
  */
 void
-check_caitiff(mtmp)
-struct monst *mtmp;
+check_caitiff(struct monst *mtmp)
 {
 	//Animals and mindless creatures are always considered fair game
 	if(mindless_mon(mtmp) || is_animal(mtmp->data))
@@ -452,9 +440,7 @@ struct monst *mtmp;
  * will need to be smarter about whether to break out of the theft loop.
  */
 void
-steal_it(mdef, mattk)
-struct monst *mdef;
-struct attack *mattk;
+steal_it(struct monst *mdef, struct attack *mattk)
 {
 	struct obj *otmp, *stealoid, **minvent_ptr;
 	long unwornmask;
@@ -562,15 +548,13 @@ struct attack *mattk;
  * Monster is attacking something. Use xattacky().
  */
 int
-mattacku(mtmp)
-register struct monst *mtmp;
+mattacku(register struct monst *mtmp)
 {
 	return xattacky(mtmp, &youmonst, mtmp->mux, mtmp->muy);
 }
 
 int
-mattackm(magr, mdef)
-register struct monst *magr, *mdef;
+mattackm(register struct monst *magr, register struct monst *mdef)
 {
 	/* this needs both attacker and defender, currently */
 	if (!magr || !mdef)
@@ -590,8 +574,8 @@ register struct monst *magr, *mdef;
  * digest the hero.
  */
 int
-fightm(mtmp)		/* have monsters fight each other */
-	register struct monst *mtmp;
+fightm(		/* have monsters fight each other */
+	register struct monst *mtmp)
 {
 	register struct monst *mon, *nmon;
 	int result, has_u_swallowed;
@@ -678,10 +662,10 @@ fightm(mtmp)		/* have monsters fight each other */
  * The player's engulfer "lets" them leave
  */
 void
-expels(mtmp, mdat, message)
-register struct monst *mtmp;
-register struct permonst *mdat; /* if mtmp is polymorphed, mdat != mtmp->data */
-boolean message;
+expels(
+	register struct monst *mtmp,
+	register struct permonst *mdat, /* if mtmp is polymorphed, mdat != mtmp->data */
+	boolean message)
 {
 	if (message) {
 		if (is_animal(mdat))
@@ -743,8 +727,7 @@ boolean message;
  * Some kind of monster mdat tries to make the player ill
  */
 boolean
-diseasemu(mdat)
-struct permonst *mdat;
+diseasemu(struct permonst *mdat)
 {
 	if (Sick_resistance) {
 		You_feel("a slight illness.");
@@ -762,7 +745,7 @@ struct permonst *mdat;
  *  called when your intrinsic speed is taken away
  */
 void
-u_slow_down()
+u_slow_down(void)
 {
 	if (HFast){
 		HFast = 0L;
@@ -783,9 +766,7 @@ u_slow_down()
  * works for both player and monster attackers
  */
 const char *
-mpoisons_subj(mtmp, mattk)
-struct monst *mtmp;
-struct attack *mattk;
+mpoisons_subj(struct monst *mtmp, struct attack *mattk)
 {
 	if (mattk->aatyp == AT_WEAP || mattk->aatyp == AT_XWEP || mattk->aatyp == AT_DEVA || mattk->aatyp == AT_MARI) {
 		struct obj *mwep = (mtmp == &youmonst) ? uwep : MON_WEP(mtmp);
@@ -854,9 +835,7 @@ struct attack *mattk;
  * `mon' is hit by a sleep attack; return 1 if it's affected, 0 otherwise
  */
 int
-sleep_monst(mon, amt, how)
-struct monst *mon;
-int amt, how;
+sleep_monst(struct monst *mon, int amt, int how)
 {
 	if (resists_sleep(mon) ||
 		(how >= 0 && resist(mon, (char)how, 0, NOTELL))) {
@@ -881,8 +860,7 @@ int amt, how;
  * sleeping grabber releases, engulfer doesn't; don't use for paralysis!
  */
 void
-slept_monst(mon)
-struct monst *mon;
+slept_monst(struct monst *mon)
 {
 	if ((mon->msleeping || !mon->mcanmove) && mon == u.ustuck &&
 		!sticks(&youmonst) && !u.uswallow) {
@@ -899,9 +877,7 @@ struct monst *mon;
  * Monster damages player's armor
  */
 void
-hurtarmor(attk, candestroy)
-int attk;
-boolean candestroy;
+hurtarmor(int attk, boolean candestroy)
 {
 	int	hurt;
 
@@ -959,13 +935,10 @@ boolean candestroy;
 /* hurtmarmor()
  * 
  * modified from hurtarmor()
- * Something (you/monster) daamges a monster's armor
+ * Something (you/monster) damages a monster's armor
  */
 void
-hurtmarmor(mdef, attk, candestroy)
-struct monst *mdef;
-int attk;
-boolean candestroy;
+hurtmarmor(struct monst *mdef, int attk, boolean candestroy)
 {
 	int	hurt;
 	struct obj *target;
@@ -1031,8 +1004,7 @@ boolean candestroy;
  *   ex) gloves makes claw attacks not touch a cockatrice
  */
 long
-attk_protection(aatyp)
-int aatyp;
+attk_protection(int aatyp)
 {
 	long w_mask = 0L;
 
@@ -1101,9 +1073,7 @@ int aatyp;
  *   ex) silver gloves make punches do silver-searing damage
  */
 long
-attk_equip_slot(mon, aatyp)
-struct monst *mon;
-int aatyp;
+attk_equip_slot(struct monst *mon, int aatyp)
 {
 	/* some worn armor may be involved depending on the attack type */
 	long slot = 0L;
@@ -1156,11 +1126,7 @@ int aatyp;
  * returns TRUE if [attk] will touch [mdef]
  */
 boolean
-badtouch(magr, mdef, attk, weapon)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
+badtouch(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon)
 {
 	long slot = attk_protection(attk->aatyp);
 	boolean youagr = (magr == &youmonst);
@@ -1211,13 +1177,7 @@ struct obj * weapon;
  *  - eating a fatal corpse
  */
 boolean
-safe_attack(magr, mdef, attk, weapon, pa, pd)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
-struct permonst * pa;
-struct permonst * pd;
+safe_attack(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon, struct permonst *pa, struct permonst *pd)
 {
 	long slot = attk_protection(attk->aatyp);
 	boolean youagr = (magr == &youmonst);
@@ -1255,7 +1215,7 @@ struct permonst * pd;
  * returns the accuracy bonus a pet/mount gets from the player's skill
  */
 int
-beastmastery()
+beastmastery(void)
 {
 	int bm;
 	switch (P_SKILL(P_BEAST_MASTERY)) {
@@ -1275,13 +1235,13 @@ beastmastery()
 }
 
 int
-narya()
+narya(void)
 {
 	return (ACURR(A_CHA) - 11)/2;
 }
 
 int
-mountedCombat()
+mountedCombat(void)
 {
 	int bm;
 	switch (P_SKILL(P_RIDING)) {
@@ -1305,8 +1265,7 @@ mountedCombat()
  * This includes only silver items, not jade
  */
 boolean
-obj_silver_searing(obj)
-struct obj * obj;
+obj_silver_searing(struct obj *obj)
 {
 	if (!obj)
 		return FALSE;
@@ -1332,8 +1291,7 @@ struct obj * obj;
  * This includes only jade items, not silver
  */
 boolean
-obj_jade_searing(obj)
-struct obj * obj;
+obj_jade_searing(struct obj *obj)
 {
 	if (!obj)
 		return FALSE;
@@ -1362,10 +1320,7 @@ struct obj * obj;
  * 
  */
 int
-hatesobjdmg(mdef, otmp, magr)
-struct monst * mdef;
-struct obj * otmp;
-struct monst * magr;
+hatesobjdmg(struct monst *mdef, struct obj *otmp, struct monst *magr)
 {
 	//boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -1718,11 +1673,7 @@ struct monst * magr;
  * (like Sunsword)
  */
 int
-hits_insubstantial(magr, mdef, attk, weapon)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
+hits_insubstantial(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -1888,12 +1839,7 @@ struct obj * weapon;
  * Returns TRUE if either activated, causing a miss and printing a message
  */
 boolean
-miss_via_insubstantial(magr, mdef, attk, weapon, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
-int vis;
+miss_via_insubstantial(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -1993,10 +1939,7 @@ const char * const destroy_strings[] = {	/* also used in trap.c */
 * while voiding the return.
 */
 int
-destroy_item(mtmp, osym, dmgtyp)
-struct monst * mtmp;
-int osym;
-int dmgtyp;
+destroy_item(struct monst *mtmp, int osym, int dmgtyp)
 {
 	boolean youdef = mtmp == &youmonst;
 	struct permonst * data = (youdef) ? youracedata : mtmp->data;
@@ -2177,11 +2120,7 @@ int dmgtyp;
 /* Spun out into own function becase 1) it's a lot and 2) it may be useful elsewhere */
 
 int
-android_braindamage(dmg, magr, mdef, vis)
-int dmg;
-struct monst *magr;
-struct monst *mdef;
-boolean vis;
+android_braindamage(int dmg, struct monst *magr, struct monst *mdef, boolean vis)
 {
 	boolean youdef = mdef == &youmonst;
 	boolean youagr = magr == &youmonst;
@@ -2496,8 +2435,7 @@ boolean vis;
 }
 
 boolean
-nearby_targets(magr)
-struct monst *magr;
+nearby_targets(struct monst *magr)
 {
 	struct monst *mon;
 	int x = x(magr),
@@ -2522,8 +2460,7 @@ struct monst *magr;
 }
 
 boolean
-adjacent_targets(magr)
-struct monst *magr;
+adjacent_targets(struct monst *magr)
 {
 	struct monst *mon;
 	int x = x(magr),
@@ -2549,9 +2486,7 @@ struct monst *magr;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 boolean
-wearing_dragon_armor(mtmp, dragontype)
-struct monst * mtmp;
-int dragontype;
+wearing_dragon_armor(struct monst *mtmp, int dragontype)
 {
 	struct obj * otmp;
 	
@@ -2574,13 +2509,7 @@ int dragontype;
 /* Club-claw insight weapons strike additional targets if your insight is high enough to perceive the claw */
 ///////////////////////////////////////////////////////////////////////////////
 int
-hit_with_cclaw(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_cclaw(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;
@@ -2703,13 +2632,7 @@ struct attack * attk;
 /* Isamusei hit additional targets, if your insight is high enough to percieve the distortions */
 ///////////////////////////////////////////////////////////////////////////////
 int
-hit_with_iwarp(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_iwarp(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;
@@ -2926,13 +2849,7 @@ struct attack * attk;
 /* Rakuyo hit additional targets, if your insight is high enough to percieve the blood */
 ///////////////////////////////////////////////////////////////////////////////
 int
-hit_with_rblood(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_rblood(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;
@@ -2982,13 +2899,7 @@ struct attack * attk;
 /* Blade-dancing monsters hit multiple targets                               */
 ///////////////////////////////////////////////////////////////////////////////
 int
-hit_with_dance(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_dance(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;
@@ -3072,13 +2983,7 @@ struct attack * attk;
 /* Mercurial weapons may strike behind primary target if the wielder is powerful enough */
 /////////////////////////////////////////////////////////////////////////////////////////
 int
-hit_with_cclaw_streaming(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_cclaw_streaming(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;
@@ -3152,13 +3057,7 @@ struct attack * attk;
 /* Mercurial weapons may strike behind primary target if the wielder is powerful enough */
 /////////////////////////////////////////////////////////////////////////////////////////
 int
-hit_with_streaming(magr, otmp, tarx, tary, tohitmod, attk)
-struct monst * magr;
-struct obj * otmp;
-int tarx;
-int tary;
-int tohitmod;
-struct attack * attk;
+hit_with_streaming(struct monst *magr, struct obj *otmp, int tarx, int tary, int tohitmod, struct attack *attk)
 {
 	int subresult = 0;
 	boolean youagr = magr == &youmonst;

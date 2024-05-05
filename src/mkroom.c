@@ -86,8 +86,7 @@ extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 
 static boolean
-isbig(sroom)
-register struct mkroom *sroom;
+isbig(register struct mkroom *sroom)
 {
 	register int area = (sroom->hx - sroom->lx + 1)
 			   * (sroom->hy - sroom->ly + 1);
@@ -95,17 +94,14 @@ register struct mkroom *sroom;
 }
 
 static int
-int_sqrt(num)
-int num;
+int_sqrt(int num)
 {
 	return((int)( sqrt(num) ));
 }
 
 /* Returns true if room has both an X and Y size of at least x. */
 static boolean
-atleastxspace(sroom, x)
-register struct mkroom *sroom;
-int x;
+atleastxspace(register struct mkroom *sroom, int x)
 {
 	return((boolean)( ((sroom->hx - sroom-> lx)+1) >= x &&
 		(((sroom->hy - sroom->ly)+1) >=x ) ));
@@ -113,22 +109,20 @@ int x;
 
 /* Returns true if room has both an X and Y size of at least five. */
 boolean
-isspacious(sroom)
-register struct mkroom *sroom;
+isspacious(register struct mkroom *sroom)
 {
 	return atleastxspace(sroom, 5);
 }
 
 /* Returns true if room has both an X and Y size of at least four. */
 static boolean
-issemispacious(sroom)
-register struct mkroom *sroom;
+issemispacious(register struct mkroom *sroom)
 {
 	return atleastxspace(sroom, 4);
 }
 
 void
-mksepulcher()
+mksepulcher(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -181,9 +175,8 @@ mksepulcher()
 	}
 }
 
-static
-void
-mklolthsepulcher()
+static void
+mklolthsepulcher(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -228,7 +221,7 @@ mklolthsepulcher()
 }
 
 void
-mkmivault()
+mkmivault(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -378,8 +371,7 @@ int misc_anc_vault[] = {
 			};
 
 int
-get_vault_misc(vn)
-int vn;
+get_vault_misc(int vn)
 {
 	int type;
 	if(vn < LIMIT_VN_RANGE_1_TANNINIM){
@@ -410,8 +402,7 @@ int vn;
 }
 
 void
-mkmivaultitem(container)
-    struct obj *container;
+mkmivaultitem(struct obj *container)
 {
 	struct obj *otmp;
 	int try_limit = 100;
@@ -437,7 +428,7 @@ mkmivaultitem(container)
 }
 
 struct obj *
-mkjewel()
+mkjewel(void)
 {
 	int tries = 500;
 	struct obj *otmp = 0;
@@ -451,7 +442,7 @@ mkjewel()
 }
 
 struct obj *
-mklolthvaultitem()
+mklolthvaultitem(void)
 {
 	struct obj *otmp;
 	int try_limit = 1000;
@@ -538,8 +529,7 @@ mklolthvaultitem()
 }
 
 struct obj *
-mk_jrt_obj(oclass)
-int oclass;
+mk_jrt_obj(int oclass)
 {
 	switch(oclass){
 		case WEAPON_CLASS:{
@@ -574,9 +564,7 @@ int oclass;
 }
 
 struct obj *
-mk_v_obj(oclass, vn)
-int oclass;
-int vn;
+mk_v_obj(int oclass, int vn)
 {
 	if(vn == VN_JRT){
 		return mk_jrt_obj(oclass);
@@ -587,8 +575,7 @@ int vn;
 }
 
 struct obj *
-mkhellvaultitem(vn)
-int vn;
+mkhellvaultitem(int vn)
 {
 	struct obj *otmp;
 	int try_limit = 1000;
@@ -641,10 +628,7 @@ int vn;
 }
 
 void
-mkhellvaultitem_cnt(container, vn, bury)
-struct obj *container;
-int vn;
-boolean bury;
+mkhellvaultitem_cnt(struct obj *container, int vn, boolean bury)
 {
 	struct obj *otmp;
 	
@@ -656,9 +640,8 @@ boolean bury;
 	else add_to_container(container, otmp);
 }
 
-static
-void
-mkmivaultlolth()
+static void
+mkmivaultlolth(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -775,9 +758,8 @@ mkmivaultlolth()
 	}
 }
 
-static
-void
-mkvaultlolth()
+static void
+mkvaultlolth(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -836,9 +818,8 @@ mkvaultlolth()
 	}
 }
 
-static
-void
-mklolthgnoll()
+static void
+mklolthgnoll(void)
 {
 	int x,y,tries=0;
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -979,9 +960,8 @@ mklolthgnoll()
 }
 
 
-static
-void
-mklolthgarden()
+static void
+mklolthgarden(void)
 {
 	int x,y,tries=0, width= rn1(4,5), height=rn1(4,5);
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -1109,9 +1089,8 @@ mklolthgarden()
 }
 
 
-static
-void
-mklolthtroll()
+static void
+mklolthtroll(void)
 {
 	int x,y,tries=0, width= 6, height=6;
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -1228,9 +1207,8 @@ mklolthtroll()
 }
 
 
-static
-void
-mklolthtemple()
+static void
+mklolthtemple(void)
 {
 	int x,y,tries=0, width= 7, height=7;
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -1366,9 +1344,8 @@ mklolthtemple()
 	}
 }
 
-static
-void
-mklolthcell()
+static void
+mklolthcell(void)
 {
 	int x,y,tries=0, width= 3, height=3;
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -1445,9 +1422,8 @@ mklolthcell()
 	}
 }
 
-static
-void
-mklolthtreasure()
+static void
+mklolthtreasure(void)
 {
 	int x,y,tries=0, width= 5, height=5;
 	int i,j, rmtypb = nroom+ROOMOFFSET, trycount, madedoor;
@@ -1585,9 +1561,8 @@ mklolthtreasure()
 }
 
 
-static
-void
-mklolthup()
+static void
+mklolthup(void)
 {
 	int x,y,tries=0,madedoor,trycount;
 	int i,j, width=5, height=5;
@@ -1712,9 +1687,8 @@ mklolthup()
 	}
 }
 
-static
-void
-mklolthdown()
+static void
+mklolthdown(void)
 {
 	int x,y,tries=0, madedoor, trycount;
 	int i,j, width=5, height=5;
@@ -1845,9 +1819,8 @@ static const int serpents[] = {PM_PYTHON, PM_COBRA, PM_PIT_VIPER, PM_PYTHON, PM_
 	PM_MARILITH
 	};
 
-static
-void
-mkkamereltowers()
+static void
+mkkamereltowers(void)
 {
 	int x=0,y=0,tx, ty, tries=0;
 	int i,j, c, edge;
@@ -2245,9 +2218,8 @@ mkkamereltowers()
 	}
 }
 
-static
-void
-mkminorspire()
+static void
+mkminorspire(void)
 {
 	int x,y,ix, iy, tries=0;
 	int i,j, c;
@@ -2403,9 +2375,8 @@ mkminorspire()
 
 int yog_list[] = {PM_KOBOLD_SHAMAN, PM_ORC_SHAMAN, PM_GNOMISH_WIZARD, PM_HEDROW_WIZARD, PM_DWARF_CLERIC, PM_ELF_LADY};
 
-static
-void
-mksentenelclearing()
+static void
+mksentenelclearing(void)
 {
 	int x,y,ix, iy, tries=0;
 	int i,j, c;
@@ -2505,9 +2476,8 @@ mksentenelclearing()
 	}
 }
 
-static
-void
-mkfishingvillage()
+static void
+mkfishingvillage(void)
 {
 	int x=0,y=0,tx, ty, tries=0;
 	int i,j, c, edge;
@@ -2574,10 +2544,8 @@ mkfishingvillage()
 	mkwell(left);
 }
 
-static
-void
-mkfishinghut(left)
-	int left;
+static void
+mkfishinghut(int left)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -2682,10 +2650,8 @@ mkfishinghut(left)
 	}
 }
 
-static
-void
-mkwell(left)
-	int left;
+static void
+mkwell(int left)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -2751,9 +2717,8 @@ mkwell(left)
 	}
 }
 
-static
-void
-mkpluhomestead()
+static void
+mkpluhomestead(void)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -2808,10 +2773,8 @@ mkpluhomestead()
 	}
 }
 
-static
-void
-mkpluroom(width)
-int width;
+static void
+mkpluroom(int width)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -2952,10 +2915,8 @@ int width;
 	}
 }
 
-static
-void
-mkfountainsquare(left)
-int left;
+static void
+mkfountainsquare(int left)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -2993,9 +2954,8 @@ int left;
 	}
 }
 
-static
-void
-mktowntree()
+static void
+mktowntree(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -3023,10 +2983,8 @@ mktowntree()
 	}
 }
 
-static
-void
-mksumbuilding(width)
-int width;
+static void
+mksumbuilding(int width)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -3166,12 +3124,8 @@ int width;
 	}
 }
 
-static
-void
-mkelfhut(background, foreground, left)
-int background;
-int foreground;
-int left;
+static void
+mkelfhut(int background, int foreground, int left)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -3247,13 +3201,8 @@ int left;
 	}
 }
 
-static
-void
-mkelfforge(background, foreground, left, mithril)
-int background;
-int foreground;
-int left;
-char mithril;
+static void
+mkelfforge(int background, int foreground, int left, char mithril)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -3327,9 +3276,8 @@ char mithril;
 	}
 }
 
-static
-void
-mkelffountain()
+static void
+mkelffountain(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -3366,10 +3314,8 @@ mkelffountain()
 	}
 }
 
-static
-void
-orc_cave_spawn_at(x, y, w)
-int x, y, w;
+static void
+orc_cave_spawn_at(int x, int y, int w)
 {
 	struct monst *mon;
 	struct obj *obj;
@@ -3417,10 +3363,8 @@ int x, y, w;
 	}
 }
 
-static
-void
-drow_shanty_spawn_at(x, y, w)
-int x, y, w;
+static void
+drow_shanty_spawn_at(int x, int y, int w)
 {
 	struct monst *mon;
 	int mtyp = 0;
@@ -3643,27 +3587,20 @@ int x, y, w;
 	}
 }
 
-static
-void
-mkdrowshanty(width)
-int width;
+static void
+mkdrowshanty(int width)
 {
 	mkshantyorcave(PM_DROW, TRUE, width);
 }
 
 void
-mkorccave(width)
-int width;
+mkorccave(int width)
 {
 	mkshantyorcave(PM_ORC, FALSE, width);
 }
 
-static
-void
-mkshantyorcave(spawntype, doors, width)
-int spawntype;
-boolean doors;
-int width;
+static void
+mkshantyorcave(int spawntype, boolean doors, int width)
 {
 	int x,y,tries=0;
 	int i,j, pathto = 0;
@@ -3780,10 +3717,8 @@ int width;
 	}
 }
 
-static
-void
-mkwraithclearing(right)
-int right;
+static void
+mkwraithclearing(int right)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -3846,9 +3781,8 @@ int right;
 	}
 }
 
-static
-void
-mkstonepillars()
+static void
+mkstonepillars(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -3885,8 +3819,7 @@ mkstonepillars()
 }
 
 void
-mkmordorfossil(typ)
-int typ;
+mkmordorfossil(int typ)
 {
 	int x, y, tries = 0, good = FALSE;
 	struct obj *otmp;
@@ -3931,9 +3864,8 @@ int typ;
 	}
 }
 	
-static
-void
-mklavapool()
+static void
+mklavapool(void)
 {
 	int x,y,ix, iy;
 	int i,j, c;
@@ -3975,10 +3907,8 @@ mklavapool()
 #define FORMIAN_CAMP2	2
 #define THRIAE_CAMP		3
 
-static
-void
-mkcamp(type)
-	int type;
+static void
+mkcamp(int type)
 {
 	int x,y,tries=0;
 	int r = 4;
@@ -4070,9 +4000,8 @@ mkcamp(type)
 	}
 }
 
-static
-void
-mkpluvillage()
+static void
+mkpluvillage(void)
 {
 	int x,y,tries=0, roomtypb;
 	int i,j, n,ni;
@@ -4470,10 +4399,8 @@ struct roomcon{
 	struct roomcon *right;
 };
 
-static
-void
-connectRight(curroom)
-	struct roomcon *curroom;
+static void
+connectRight(struct roomcon *curroom)
 {
 	curroom->status |= LINKED_RIGHT;
 	curroom->right->status |= LINKED_LEFT;
@@ -4491,10 +4418,8 @@ connectRight(curroom)
 	}
 }
 
-static
-void
-connectLeft(curroom)
-	struct roomcon *curroom;
+static void
+connectLeft(struct roomcon *curroom)
 {
 	curroom->status |= LINKED_LEFT;
 	curroom->left->status |= LINKED_RIGHT;
@@ -4512,10 +4437,8 @@ connectLeft(curroom)
 	}
 }
 
-static
-void
-connectInner(inroom)
-	struct roomcon *inroom;
+static void
+connectInner(struct roomcon *inroom)
 {
 	struct roomcon *curroom = inroom;
 	curroom->status |= INSIDE_CONNECTED;
@@ -4542,9 +4465,8 @@ connectInner(inroom)
 	}
 }
 
-static
-void
-mkferrufort()
+static void
+mkferrufort(void)
 {
 	int wallln = rn2(2) ? 4 : 3;
 	int x=0,y=0,tx, ty, tries=0;
@@ -4852,9 +4774,8 @@ nestbreak:
 	}
 }
 
-static
-void
-mkferrutower()
+static void
+mkferrutower(void)
 {
 	int x,y,tries=0, roomtypb = nroom;
 	int i,j;
@@ -4928,9 +4849,8 @@ mkferrutower()
 	}
 }
 
-static
-void
-mkferrubarracks()
+static void
+mkferrubarracks(void)
 {
 	int x,y,tries=0, roomtypb = nroom;
 	int i,j;
@@ -5049,9 +4969,8 @@ char timaresh_template_small[12][12] =
  {'v','.','-','-','-','-','-','.','.'},
  {'v','.','.','.','.','.','.','.','v'}};
 
-static
-void
-mktimaresh()
+static void
+mktimaresh(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -5218,9 +5137,8 @@ mktimaresh()
 	}
 }
 
-static
-void
-mkinvertzigg()
+static void
+mkinvertzigg(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -5384,10 +5302,8 @@ mkinvertzigg()
 	}
 }
 
-static
-void
-mkmch(typ)
-int typ;
+static void
+mkmch(int typ)
 {
 	//Note: See SCP-2406 for the inspiration for this.
 	int x, y, tries = 0, ncrew, good = FALSE;
@@ -5539,10 +5455,8 @@ int typ;
 	}
 }
 
-static
-void
-mkwrk(typ)
-int typ;
+static void
+mkwrk(int typ)
 {
 	int x, y, tries = 0, good = FALSE;
 	struct obj *otmp;
@@ -5710,10 +5624,8 @@ int typ;
 	}
 }
 
-static
-void
-mkaph(junked)
-int junked;
+static void
+mkaph(int junked)
 {
 	int x, y, i, tries = 0, good = FALSE;
 	struct obj *otmp;
@@ -5786,10 +5698,8 @@ int junked;
 	}
 }
 
-static
-void
-mklostitem(typ)
-int typ;
+static void
+mklostitem(int typ)
 {
 	int x, y, tries = 0, good = FALSE;
 	struct obj *otmp;
@@ -5816,8 +5726,7 @@ int typ;
 }
 
 void
-mklawfossil(typ)
-int typ;
+mklawfossil(int typ)
 {
 	int x, y, tries = 0, good = FALSE;
 	struct obj *otmp;
@@ -5836,9 +5745,8 @@ int typ;
 	}
 }
 
-static
-void
-mk_kobold_bastion()
+static void
+mk_kobold_bastion(void)
 {
 	int x,y,tries=0, roomtypb = nroom;
 	int i,j;
@@ -5926,9 +5834,8 @@ static int kobold_prisoners[] = {
 	PM_GNOMISH_WIZARD
 };
 
-static
-void
-mk_kobold_prison()
+static void
+mk_kobold_prison(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -5990,9 +5897,8 @@ mk_kobold_prison()
 	}
 }
 
-static
-void
-mk_kobold_pool()
+static void
+mk_kobold_pool(void)
 {
 	int x,y,tries=0;
 	int i,j;
@@ -6045,7 +5951,7 @@ mk_kobold_pool()
 
 
 void
-place_lolth_vaults()
+place_lolth_vaults(void)
 {
 	int num, i;
 	//"portal room" upstairs with 4 vrocks
@@ -6092,7 +5998,7 @@ place_lolth_vaults()
 }
 
 void
-place_elfquest_forest_features()
+place_elfquest_forest_features(void)
 {
 	if(Is_qhome(&u.uz)){
 		int i = d(1,4);
@@ -6134,7 +6040,7 @@ place_elfquest_forest_features()
 }
 
 void
-place_chaos_forest_features()
+place_chaos_forest_features(void)
 {
 	if(In_mordor_forest(&u.uz)){
 		int i = 6 + d(2,6);
@@ -6184,7 +6090,7 @@ place_chaos_forest_features()
 }
 
 void
-place_drow_healer_features()
+place_drow_healer_features(void)
 {
 	int i;
 	int j = 12;
@@ -6215,7 +6121,8 @@ place_drow_healer_features()
 
 
 
-void place_swamp_features(){
+void
+place_swamp_features(void){
 	if(!rn2(4)) mk_kobold_bastion();
 	if(!rn2(3)) mk_kobold_prison();
 	if(!rn2(3)) mk_kobold_pool();
@@ -6235,7 +6142,7 @@ void place_swamp_features(){
 }
 
 void
-place_neutral_features()
+place_neutral_features(void)
 {
 	if(!rn2(20)){
 		mkkamereltowers();
@@ -6283,7 +6190,7 @@ place_neutral_features()
 }
 
 void
-place_sum_all_features()
+place_sum_all_features(void)
 {
 	mktimaresh();
 	int n = 1 + !rn2(3) + rn2(2);
@@ -6326,7 +6233,7 @@ place_sum_all_features()
 }
 
 void
-place_law_features()
+place_law_features(void)
 {
 	int n;
 	if(Is_path(&u.uz)){
@@ -6395,9 +6302,9 @@ place_law_features()
 }
 
 void
-mkroom(roomtype)
+mkroom(
 /* make and stock a room of a given type */
-int	roomtype;
+	int roomtype)
 {
     if (roomtype >= SHOPBASE)
 		mkshop();	/* someday, we should be able to specify shop type */
@@ -6427,7 +6334,7 @@ int	roomtype;
 }
 
 static void
-mkshop()
+mkshop(void)
 {
 	register struct mkroom *sroom;
 	int i = -1;
@@ -6559,8 +6466,7 @@ gottype:
 }
 
 struct mkroom *
-pick_room(nostairs, fullwalls)
-register boolean nostairs, fullwalls;
+pick_room(register boolean nostairs, register boolean fullwalls)
 /* pick an unused room, preferably with few doors */
 {
 	register struct mkroom *sroom;
@@ -6599,8 +6505,7 @@ register boolean nostairs, fullwalls;
  * Some special rooms can be made in places that don't have full walls.
  */
 boolean
-special_room_requires_full_walls(type)
-int type;
+special_room_requires_full_walls(int type)
 {
 	switch (type)
 	{
@@ -6619,8 +6524,7 @@ int type;
 }
 
 static void
-mkzoo(type)
-int type;
+mkzoo(int type)
 {
 	register struct mkroom *sroom;
 	boolean fullwalls = special_room_requires_full_walls(type);
@@ -6632,8 +6536,7 @@ int type;
 }
 
 static boolean
-cell_spot(sx, sy)
-int sx,sy;
+cell_spot(int sx, int sy)
 {
 	int i,j;
 	for(i=sx-1;i<sx+2;i++)
@@ -6646,9 +6549,7 @@ int sx,sy;
 }
 
 struct monst *
-prisoner(kingtype, sx, sy)
-int kingtype;
-int sx,sy;
+prisoner(int kingtype, int sx, int sy)
 {
 	int mtyp = NON_PM;
 	struct monst *mon;
@@ -7133,11 +7034,7 @@ int sx,sy;
 }
 
 static void
-mkcell(sx, sy, chest, kingtype, dx, dy)
-int sx,sy;
-struct obj *chest;
-int kingtype;
-int dx,dy;
+mkcell(int sx, int sy, struct obj *chest, int kingtype, int dx, int dy)
 {
 	struct monst *mon;
 	struct obj *obj;
@@ -7171,10 +7068,7 @@ int dx,dy;
 }
 
 static void
-mkneucell(sx, sy, chest, dx, dy)
-int sx,sy;
-struct obj *chest;
-int dx,dy;
+mkneucell(int sx, int sy, struct obj *chest, int dx, int dy)
 {
 	struct monst *mon;
 	struct obj *obj;
@@ -7229,8 +7123,7 @@ int dx,dy;
 }
 
 void
-fill_zoo(sroom)
-struct mkroom *sroom;
+fill_zoo(struct mkroom *sroom)
 {
 	struct monst *mon;
 	register int sx,sy,i;
@@ -7694,11 +7587,7 @@ struct mkroom *sroom;
 
 /* make a swarm of undead around mm */
 void
-mkundead(mm, revive_corpses, mm_flags, mfaction)
-coord *mm;
-boolean revive_corpses;
-int mm_flags;
-long mfaction;
+mkundead(coord *mm, boolean revive_corpses, int mm_flags, long mfaction)
 {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
 	struct permonst *mdat;
@@ -7726,11 +7615,7 @@ long mfaction;
 
 /* make a swarm of undead around mm */
 void
-mk_yellow_undead(mm, revive_corpses, mm_flags, mfaction)
-coord *mm;
-boolean revive_corpses;
-int mm_flags;
-long mfaction;
+mk_yellow_undead(coord *mm, boolean revive_corpses, int mm_flags, long mfaction)
 {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
 	struct permonst *mdat;
@@ -7756,7 +7641,7 @@ long mfaction;
 }
 
 static struct permonst *
-morguemon()
+morguemon(void)
 {
 	register int i = rn2(100), hd = rn2(level_difficulty());
 
@@ -7772,7 +7657,7 @@ morguemon()
 }
 
 static struct permonst *
-antholemon()
+antholemon(void)
 {
 	int mtyp;
 
@@ -7798,8 +7683,8 @@ antholemon()
  * @author Pasi Kallinen
  */
 static void
-mkgarden(croom)
-struct mkroom *croom; /* NULL == choose random room */
+mkgarden(
+	struct mkroom *croom /* NULL == choose random room */)
 {
     register int tryct = 0;
     boolean maderoom = FALSE;
@@ -7889,8 +7774,8 @@ struct mkroom *croom; /* NULL == choose random room */
 }
 
 static void
-mklibrary(croom)
-struct mkroom *croom; /* NULL == choose random room */
+mklibrary(
+	struct mkroom *croom /* NULL == choose random room */)
 {
     register int tryct = 0;
     boolean maderoom = FALSE;
@@ -7943,8 +7828,8 @@ struct mkroom *croom; /* NULL == choose random room */
 }
 
 static void
-mkarmory(croom)
-struct mkroom *croom; /* NULL == choose random room */
+mkarmory(
+	struct mkroom *croom /* NULL == choose random room */)
 {
     register int tryct = 0;
 	register struct obj *otmp;
@@ -8028,7 +7913,7 @@ struct mkroom *croom; /* NULL == choose random room */
 }
 
 static void
-mkswamp()	/* Michiel Huisjes & Fred de Wilde */
+mkswamp(void)	/* Michiel Huisjes & Fred de Wilde */
 {
 	register struct mkroom *sroom;
 	register int sx,sy,i,eelct = 0;
@@ -8076,7 +7961,7 @@ mkswamp()	/* Michiel Huisjes & Fred de Wilde */
 }
 
 static void
-mkriver()	/* John Harris */
+mkriver(void)	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
 	register int x, y;
@@ -8129,7 +8014,7 @@ mkriver()	/* John Harris */
 }
 
 static void
-mkneuriver()	/* John Harris */
+mkneuriver(void)	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
 	register int x, y;
@@ -8182,7 +8067,7 @@ mkneuriver()	/* John Harris */
 }
 
 static void
-mkforest12river()	/* John Harris */
+mkforest12river(void)	/* John Harris */
 {
 	register int center, width, prog, fill, edge;
 	register int x, y;
@@ -8211,7 +8096,7 @@ mkforest12river()	/* John Harris */
 
 /* This isn't currently used anywhere. It liquifies the whole level. */
 static void
-mksea()	/* John Harris */
+mksea(void)	/* John Harris */
 {
 	register int x, y;
 	/*level.flags.has_river = 1;*/
@@ -8223,9 +8108,10 @@ mksea()	/* John Harris */
 }
 
 static void
-liquify(x, y, edge)
-register int x, y;
-register int edge; /* Allows room walls to intrude slightly into river. */
+liquify(
+	register int x,
+	register int y,
+	register int edge /* Allows room walls to intrude slightly into river. */)
 {
 	register int typ = levl[x][y].typ;
 	register int monster = PM_JELLYFISH;
@@ -8262,9 +8148,10 @@ register int edge; /* Allows room walls to intrude slightly into river. */
 }
 
 static void
-neuliquify(x, y, edge)
-register int x, y;
-register int edge; /* Allows room walls to intrude slightly into river. */
+neuliquify(
+	register int x,
+	register int y,
+	register int edge /* Allows room walls to intrude slightly into river. */)
 {
 	register int typ = levl[x][y].typ;
 	register int monster = PM_JELLYFISH;
@@ -8303,9 +8190,10 @@ register int edge; /* Allows room walls to intrude slightly into river. */
 }
 
 static void
-chaliquify(x, y, edge)
-register int x, y;
-register int edge; /* Allows room walls to intrude slightly into river. */
+chaliquify(
+	register int x,
+	register int y,
+	register int edge /* Allows room walls to intrude slightly into river. */)
 {
 	register int typ = levl[x][y].typ;
 	register int monster = PM_JELLYFISH;
@@ -8345,8 +8233,7 @@ register int edge; /* Allows room walls to intrude slightly into river. */
 }
 
 coord *
-shrine_pos(roomno)
-int roomno;
+shrine_pos(int roomno)
 {
 	static coord buf;
 	struct mkroom *troom = &rooms[roomno - ROOMOFFSET];
@@ -8357,7 +8244,7 @@ int roomno;
 }
 
 static void
-mkisland() /* John Harris, modified from mktemple & mkshop,
+mkisland(void) /* John Harris, modified from mktemple & mkshop,
 				with ideas and aid from Pasi Kallinen.*/
 {
 	register struct mkroom *sroom;
@@ -8490,7 +8377,7 @@ mkisland() /* John Harris, modified from mktemple & mkshop,
 }
 
 void
-mkpoolroom()
+mkpoolroom(void)
 {
 	struct mkroom *sroom;
 	int x, y;
@@ -8525,7 +8412,7 @@ mkpoolroom()
 }
 
 void
-mkslabroom()
+mkslabroom(void)
 {
 	struct mkroom *sroom;
 	int x, y, lx, ly;
@@ -8584,7 +8471,7 @@ mkslabroom()
 }
 
 void
-mkhellvaultroom()
+mkhellvaultroom(void)
 {
 	struct mkroom *sroom;
 	int x, y, lx, ly;
@@ -8628,9 +8515,7 @@ mkhellvaultroom()
 }
 
 static void
-mksgardenstatueat(x,y)
-	int x;
-	int y;
+mksgardenstatueat(int x, int y)
 {
 	struct trap *t;
 	struct obj *otmp;
@@ -8654,7 +8539,7 @@ mksgardenstatueat(x,y)
 }
 
 static void
-mksgarden()
+mksgarden(void)
 {
 	register struct mkroom *sroom;
 	register int x, y;
@@ -8696,7 +8581,7 @@ mksgarden()
 }
 
 static void
-mktemple()
+mktemple(void)
 {
 	register struct mkroom *sroom;
 	coord *shrine_spot;
@@ -8721,8 +8606,7 @@ mktemple()
 }
 
 boolean
-nexttodoor(sx,sy)
-register int sx, sy;
+nexttodoor(register int sx, register int sy)
 {
 	register int dx, dy;
 	register struct rm *lev;
@@ -8736,8 +8620,7 @@ register int sx, sy;
 }
 
 boolean
-has_dnstairs(sroom)
-register struct mkroom *sroom;
+has_dnstairs(register struct mkroom *sroom)
 {
 	if (sroom == dnstairs_room)
 		return TRUE;
@@ -8747,8 +8630,7 @@ register struct mkroom *sroom;
 }
 
 boolean
-has_upstairs(sroom)
-register struct mkroom *sroom;
+has_upstairs(register struct mkroom *sroom)
 {
 	if (sroom == upstairs_room)
 		return TRUE;
@@ -8759,32 +8641,26 @@ register struct mkroom *sroom;
 
 
 int
-somex(croom)
-register struct mkroom *croom;
+somex(register struct mkroom *croom)
 {
 	return rn2(croom->hx-croom->lx+1) + croom->lx;
 }
 
 int
-somey(croom)
-register struct mkroom *croom;
+somey(register struct mkroom *croom)
 {
 	return rn2(croom->hy-croom->ly+1) + croom->ly;
 }
 
 boolean
-inside_room(croom, x, y)
-struct mkroom *croom;
-xchar x, y;
+inside_room(struct mkroom *croom, xchar x, xchar y)
 {
 	return((boolean)(x >= croom->lx-1 && x <= croom->hx+1 &&
 		y >= croom->ly-1 && y <= croom->hy+1));
 }
 
 boolean
-somexy(croom, c)
-struct mkroom *croom;
-coord *c;
+somexy(struct mkroom *croom, coord *c)
 {
 	int try_cnt = 0;
 	int i;
@@ -8840,8 +8716,7 @@ you_lose:	;
  */
 
 struct mkroom *
-search_special(type)
-schar type;
+search_special(schar type)
 {
 	register struct mkroom *croom;
 
@@ -8860,8 +8735,7 @@ schar type;
 
 
 struct permonst *
-courtmon(kingnum)
-	int kingnum;
+courtmon(int kingnum)
 {
 	int i;
 	switch(kingnum){
@@ -9283,7 +9157,7 @@ courtmon(kingnum)
 }
 
 struct permonst *
-mivaultmon()
+mivaultmon(void)
 {
 	switch(rn2(22)){
 		case 0:
@@ -9372,8 +9246,8 @@ static struct soldier_squad_probabilities {
 };
 
 static struct permonst *
-squadmon(lev)		/* return soldier types appropriate for the current branch. */
-d_level *lev;
+squadmon(		/* return soldier types appropriate for the current branch. */
+	d_level *lev)
 {
 	int sel_prob, i, cpro, mndx;
 	struct soldier_squad_probabilities *squadies;
@@ -9412,9 +9286,7 @@ gotone:
  */
 
 static void
-save_room(fd, r)
-int	fd;
-struct mkroom *r;
+save_room(int fd, struct mkroom *r)
 {
 	short i;
 	/*
@@ -9432,8 +9304,7 @@ struct mkroom *r;
  */
 
 void
-save_rooms(fd)
-int fd;
+save_rooms(int fd)
 {
 	short i;
 
@@ -9444,9 +9315,7 @@ int fd;
 }
 
 static void
-rest_room(fd, r)
-int fd;
-struct mkroom *r;
+rest_room(int fd, struct mkroom *r)
 {
 	short i;
 
@@ -9464,8 +9333,7 @@ struct mkroom *r;
  */
 
 void
-rest_rooms(fd)
-int	fd;
+rest_rooms(int fd)
 {
 	short i;
 

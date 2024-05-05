@@ -18,7 +18,7 @@ static int NDECL(currentlevel_rewrite);
 static void NDECL(final_level);
 static boolean NDECL(no_spirits);
 
-/* static boolean FDECL(badspot, (XCHAR_P,XCHAR_P)); */
+/* static boolean FDECL(badspot, (xchar,xchar)); */
 
 
 static const char drop_types[] =
@@ -26,7 +26,7 @@ static const char drop_types[] =
 
 /* 'd' command: drop one inventory item */
 int
-dodrop()
+dodrop(void)
 {
 #ifndef GOLDOBJ
 	int result, i = (invent || u.ugold) ? 0 : (SIZE(drop_types) - 1);
@@ -53,10 +53,7 @@ dodrop()
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
 boolean
-boulder_hits_pool(otmp, rx, ry, pushing)
-struct obj *otmp;
-register int rx, ry;
-boolean pushing;
+boulder_hits_pool(struct obj *otmp, register int rx, register int ry, boolean pushing)
 {
 	if (!otmp || !is_boulder(otmp))
 	    impossible("Not a boulder?");
@@ -129,10 +126,7 @@ boolean pushing;
  * away.
  */
 boolean
-flooreffects(obj,x,y,verb)
-struct obj *obj;
-int x,y;
-const char *verb;
+flooreffects(struct obj *obj, int x, int y, const char *verb)
 {
 	struct trap *t;
 	struct monst *mtmp;
@@ -261,8 +255,8 @@ const char *verb;
 
 
 void
-doaltarobj(obj)  /* obj is an object dropped on an altar */
-	register struct obj *obj;
+doaltarobj(  /* obj is an object dropped on an altar */
+	register struct obj *obj)
 {
 	if (Blind || Misotheism)
 		return;
@@ -337,20 +331,17 @@ doaltarobj(obj)  /* obj is an object dropped on an altar */
 	}
 }
 
-static
-void
-trycall(obj)
-register struct obj *obj;
+static void
+trycall(register struct obj *obj)
 {
 	if(!objects[obj->otyp].oc_name_known &&
 	   !objects[obj->otyp].oc_uname)
 	   docall(obj);
 }
 
-static
-void
-dosinkring(obj)  /* obj is a ring being dropped over a kitchen sink */
-register struct obj *obj;
+static void
+dosinkring(  /* obj is a ring being dropped over a kitchen sink */
+	register struct obj *obj)
 {
 	register struct obj *otmp,*otmp2;
 	register boolean ideed = TRUE;
@@ -522,9 +513,7 @@ giveback:
 
 /* some common tests when trying to drop or throw items */
 boolean
-canletgo(obj,word)
-register struct obj *obj;
-register const char *word;
+canletgo(register struct obj *obj, register const char *word)
 {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
@@ -565,8 +554,7 @@ register const char *word;
 
 
 int
-drop(obj)
-struct obj *obj;
+drop(struct obj *obj)
 {
 	if(!obj) return(0);
 	if(!canletgo(obj,"drop"))
@@ -626,8 +614,7 @@ struct obj *obj;
 /* Called in several places - may produce output */
 /* eg ship_object() and dropy() -> sellobj() both produce output */
 void
-dropx(obj)
-register struct obj *obj;
+dropx(register struct obj *obj)
 {
 #ifndef GOLDOBJ
 	if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
@@ -645,8 +632,7 @@ register struct obj *obj;
 }
 
 void
-dropy(obj)
-register struct obj *obj;
+dropy(register struct obj *obj)
 {
 	if (obj == uwep) setuwep((struct obj *)0);
 	if (obj == uquiver) setuqwep((struct obj *)0);
@@ -705,8 +691,7 @@ register struct obj *obj;
 /* things that must change when not held; recurse into containers.
    Called for both player and monsters */
 void
-obj_no_longer_held(obj)
-struct obj *obj;
+obj_no_longer_held(struct obj *obj)
 {
 	if (!obj) {
 	    return;
@@ -746,8 +731,7 @@ struct obj *obj;
 }
 
 boolean
-obj_summon_out(obj)
-struct obj *obj;
+obj_summon_out(struct obj *obj)
 {
 	for(struct monst *mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 		if(get_mx(mtmp, MX_ESUM))
@@ -759,7 +743,7 @@ struct obj *obj;
 
 /* 'D' command: drop several things */
 int
-doddrop()
+doddrop(void)
 {
 	int result = 0;
 
@@ -780,8 +764,7 @@ doddrop()
 
 /* Drop things from the hero's inventory, using a menu. */
 static int
-menu_drop(retry)
-int retry;
+menu_drop(int retry)
 {
     int n, i, n_dropped = 0;
     long cnt;
@@ -895,7 +878,7 @@ enum AcuItemsCheck {
 static boolean at_ladder = FALSE;
 
 int
-dodown()
+dodown(void)
 {
 	struct trap *trap = 0;
 	boolean stairs_down = ((u.ux == xdnstair && u.uy == ydnstair) ||
@@ -1011,7 +994,7 @@ dodown()
 }
 
 int
-doup()
+doup(void)
 {
 	if( (u.ux != xupstair || u.uy != yupstair)
 	     && (!xupladder || u.ux != xupladder || u.uy != yupladder)
@@ -1095,7 +1078,7 @@ doup()
 * Disclaimer, I do not endorse this code or know if it works and I refuse to read it so we are sticking with it.
 */
 int
-acu_asc_items_check()
+acu_asc_items_check(void)
 {
 	struct obj *otmp;
 	int missing_items = ACU_MISSING_STAFF | ACU_MISSING_FLUID;
@@ -1131,7 +1114,7 @@ d_level save_dlevel = {0, 0};
 
 /* check that we can write out the current level */
 static int
-currentlevel_rewrite()
+currentlevel_rewrite(void)
 {
 	register int fd;
 	char whynot[BUFSZ];
@@ -1158,7 +1141,7 @@ currentlevel_rewrite()
 
 #ifdef INSURANCE
 void
-save_currentstate()
+save_currentstate(void)
 {
 	int fd;
 
@@ -1187,10 +1170,7 @@ register xchar x, y;
 */
 
 void
-goto_level(newlevel, at_stairs, falling, portal)
-d_level *newlevel;
-boolean at_stairs, falling;
-int portal;
+goto_level(d_level *newlevel, boolean at_stairs, boolean falling, int portal)
 {
 	int fd, l_idx;
 	int new_ledger;
@@ -1771,7 +1751,7 @@ misc_levelport:
 }
 
 static boolean
-no_spirits()
+no_spirits(void)
 {
 	struct monst *mtmp;
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon){
@@ -1783,7 +1763,7 @@ no_spirits()
 }
 
 static void
-final_level()
+final_level(void)
 {
 	struct monst *mtmp;
 	struct obj *otmp;
@@ -1911,13 +1891,7 @@ static int dfr_post_san = 0;
 
 /* change levels at the end of this turn, after monsters finish moving */
 void
-schedule_goto(tolev, at_stairs, falling, portal_flag, pre_msg, post_msg, post_dmg, post_san)
-d_level *tolev;
-boolean at_stairs, falling;
-int portal_flag;
-const char *pre_msg, *post_msg;
-int post_dmg;
-int post_san;
+schedule_goto(d_level *tolev, boolean at_stairs, boolean falling, int portal_flag, const char *pre_msg, const char *post_msg, int post_dmg, int post_san)
 {
 	int typmask = 0100;		/* non-zero triggers `deferred_goto' */
 	if(Is_nowhere(&u.uz) && !flags.phasing) return;
@@ -1944,7 +1918,7 @@ int post_san;
 
 /* handle something like portal ejection */
 void
-deferred_goto()
+deferred_goto(void)
 {
 	if (!on_level(&u.uz, &u.utolev)) {
 	    d_level dest;
@@ -1985,9 +1959,7 @@ deferred_goto()
  */
 
 boolean
-revive_corpse(corpse, different)
-struct obj *corpse;
-int different;
+revive_corpse(struct obj *corpse, int different)
 {
     struct monst *mtmp, *mcarry;
     boolean is_uwep, chewed;
@@ -2159,9 +2131,7 @@ int different;
 /* Revive the corpse via a timeout. */
 /*ARGSUSED*/
 void
-revive_mon(arg, timeout)
-genericptr_t arg;
-long timeout;
+revive_mon(genericptr_t arg, long timeout)
 {
     struct obj *body = (struct obj *) arg;
 
@@ -2185,9 +2155,7 @@ long timeout;
  * all bhito effects finish in the case of a wand affecting a rider corpse
  */
 void
-revive_mon_pickup(arg, timeout)
-genericptr_t arg;
-long timeout;
+revive_mon_pickup(genericptr_t arg, long timeout)
 {
 	struct monst *mtmp = (struct monst *) arg;
 
@@ -2249,9 +2217,7 @@ static const int shades[] =
 /* Revive the corpse as a mold via a timeout. */
 /*ARGSUSED*/
 void
-moldy_corpse(arg, timeout)
-genericptr_t arg;
-long timeout;
+moldy_corpse(genericptr_t arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2337,9 +2303,7 @@ long timeout;
 /* Revive the corpse as a slime via a timeout. */
 /*ARGSUSED*/
 void
-slimy_corpse(arg, timeout)
-genericptr_t arg;
-long timeout;
+slimy_corpse(genericptr_t arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2397,9 +2361,7 @@ long timeout;
 /* Revive the corpse as a shade via a timeout. */
 /*ARGSUSED*/
 void
-shady_corpse(arg, timeout)
-genericptr_t arg;
-long timeout;
+shady_corpse(genericptr_t arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2470,9 +2432,7 @@ long timeout;
 /* Revive the corpse as a zombie via a timeout. */
 /*ARGSUSED*/
 void
-zombie_corpse(arg, timeout)
-genericptr_t arg;
-long timeout;
+zombie_corpse(genericptr_t arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2535,9 +2495,7 @@ long timeout;
 }
 
 void
-yellow_corpse(arg, timeout)
-genericptr_t arg;
-long timeout;
+yellow_corpse(genericptr_t arg, long timeout)
 {
 	int pmtype, oldtyp, oldquan;
 	struct obj *body = (struct obj *) arg;
@@ -2600,7 +2558,7 @@ long timeout;
 }
 
 int
-donull()
+donull(void)
 {
 	static long lastreped = -13; // counter to tell if you recently tried to repair yourself/meditate
 	u.unull = TRUE;
@@ -2651,7 +2609,7 @@ donull()
 
 
 static int
-wipeoff()
+wipeoff(void)
 {
 	if(u.ucreamed < 4)	u.ucreamed = 0;
 	else			u.ucreamed -= 4;
@@ -2671,7 +2629,7 @@ wipeoff()
 }
 
 int
-dowipe()
+dowipe(void)
 {
 	if(u.ucreamed)  {
 		static char buf[39];
@@ -2688,9 +2646,7 @@ dowipe()
 }
 
 void
-set_wounded_legs(side, timex)
-register long side;
-register int timex;
+set_wounded_legs(register long side, register int timex)
 {
 	/* KMH -- STEED
 	 * If you are riding, your steed gets the wounded legs instead.
@@ -2710,7 +2666,7 @@ register int timex;
 }
 
 void
-heal_legs()
+heal_legs(void)
 {
 	if(Wounded_legs) {
 		if (ATEMP(A_DEX) < 0) {
@@ -2735,7 +2691,7 @@ heal_legs()
 }
 
 int
-dowait()
+dowait(void)
 {
 	struct monst *mtmp;
 	if (!getdir("Indicate pet that should wait, or '.' for all.")) return MOVE_CANCELLED;
@@ -2760,7 +2716,7 @@ dowait()
 }
 
 int
-docome()
+docome(void)
 {
 	struct monst *mtmp;
 	if (!getdir("Indicate pet that should come with you, or '.' for all.")) return MOVE_CANCELLED;
@@ -2786,7 +2742,7 @@ docome()
 
 
 int
-doattack()
+doattack(void)
 {
 	struct monst *mtmp;
 	if (!getdir("Indicate pet that should engage in battle, or '.' for all.")) return MOVE_CANCELLED;
@@ -2818,7 +2774,7 @@ doattack()
 
 
 int
-dopassive()
+dopassive(void)
 {
 	struct monst *mtmp;
 	if (!getdir("Indicate pet that should not engage foes, or '.' for all.")) return MOVE_CANCELLED;
@@ -2844,14 +2800,14 @@ dopassive()
 
 
 int
-dodownboy()
+dodownboy(void)
 {
 	u.peaceful_pets = TRUE;
 	return MOVE_INSTANT;
 }
 
 int
-dosickem()
+dosickem(void)
 {
 	u.peaceful_pets = FALSE;
 	return MOVE_INSTANT;

@@ -49,8 +49,7 @@ struct zapdata tzapdat;	/* temporary zap data -- assumes there is only 1 zap hap
 /* adtyp  -- AD_TYPE damage type, defined in monattk.h */
 /* olet  -- O_CLASS type -- wand, spell, corpse (breath attack), weapon (raygun) */
 char *
-flash_type(adtyp, ztyp)
-int adtyp, ztyp;
+flash_type(int adtyp, int ztyp)
 {
 	switch (ztyp)
 	{
@@ -151,8 +150,7 @@ int adtyp, ztyp;
 
 /* returns the colour each zap should be */
 int
-zap_glyph_color(adtyp)
-int adtyp;
+zap_glyph_color(int adtyp)
 {
 	switch (adtyp)
 	{
@@ -209,8 +207,7 @@ int adtyp;
 }
 
 int
-wand_adtype(wand)
-int wand;
+wand_adtype(int wand)
 {
 	switch (wand)
 	{
@@ -229,9 +226,7 @@ int wand;
 /* Routines for IMMEDIATE wands and spells. */
 /* bhitm: monster mtmp was hit by the effect of wand or spell otmp */
 int
-bhitm(mtmp, otmp)
-struct monst *mtmp;
-struct obj *otmp;
+bhitm(struct monst *mtmp, struct obj *otmp)
 {
 	boolean wake = TRUE;	/* Most 'zaps' should wake monster */
 	boolean reveal_invis = FALSE;
@@ -601,8 +596,7 @@ struct obj *otmp;
 }
 
 void
-probe_monster(mtmp)
-struct monst *mtmp;
+probe_monster(struct monst *mtmp)
 {
 	struct obj *otmp;
 
@@ -612,10 +606,11 @@ struct monst *mtmp;
 	mdrslotline(mtmp);
 	
 #ifndef GOLDOBJ
-	if (mtmp->minvent || mtmp->mgold) {
+	if (mtmp->minvent || mtmp->mgold)
 #else
-	if (mtmp->minvent) {
+	if (mtmp->minvent)
 #endif
+	{
 	    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		otmp->dknown = 1;	/* treat as "seen" */
 	    (void) display_minventory(mtmp, MINV_ALL, (char *)0);
@@ -637,10 +632,7 @@ struct monst *mtmp;
  * is not available or subject to the constraints above.
  */
 boolean
-get_obj_location(obj, xp, yp, locflags)
-struct obj *obj;
-xchar *xp, *yp;
-int locflags;
+get_obj_location(struct obj *obj, xchar *xp, xchar *yp, int locflags)
 {
 	switch (obj->where) {
 	    case OBJ_INVENT:
@@ -682,10 +674,10 @@ int locflags;
 }
 
 boolean
-get_mon_location(mon, xp, yp, locflags)
-struct monst *mon;
-xchar *xp, *yp;
-int locflags;	/* non-zero means get location even if monster is buried */
+get_mon_location(
+	struct monst *mon,
+	xchar *xp, xchar *yp,
+	int locflags) /* non-zero means get location even if monster is buried */
 {
 	if (mon == &youmonst) {
 	    *xp = u.ux;
@@ -703,9 +695,7 @@ int locflags;	/* non-zero means get location even if monster is buried */
 
 /* used by revive() and animate_statue() */
 struct monst *
-montraits(obj,cc)
-struct obj *obj;
-coord *cc;
+montraits(struct obj *obj, coord *cc)
 {
 	struct monst *mtmp = (struct monst *)0;
 	struct monst *mtmp2 = (struct monst *)0;
@@ -790,10 +780,7 @@ coord *cc;
  * if applicable.
  */
 struct monst *
-get_container_location(obj, loc, container_nesting)
-struct obj *obj;
-int *loc;
-int *container_nesting;
+get_container_location(struct obj *obj, int *loc, int *container_nesting)
 {
 	if (!obj || !loc)
 		return 0;
@@ -815,9 +802,7 @@ int *container_nesting;
  * successful.  Note: this does NOT use up the corpse if it fails.
  */
 struct monst *
-revive(obj, dolls)
-struct obj *obj;
-boolean dolls;
+revive(struct obj *obj, boolean dolls)
 {
 	struct monst *mtmp = (struct monst *)0;
 	struct obj *container = (struct obj *)0;
@@ -1022,8 +1007,7 @@ boolean dolls;
 }
 
 void
-revive_egg(obj)
-struct obj *obj;
+revive_egg(struct obj *obj)
 {
 	/*
 	 * Note: generic eggs with corpsenm set to NON_PM will never hatch.
@@ -1035,8 +1019,7 @@ struct obj *obj;
 
 /* try to revive all corpses and eggs carried by `mon' */
 int
-unturn_dead(mon)
-struct monst *mon;
+unturn_dead(struct monst *mon)
 {
 	struct obj *otmp, *otmp2;
 	struct monst *mtmp2;
@@ -1073,8 +1056,7 @@ struct monst *mon;
 static const char charged_objs[] = { WAND_CLASS, WEAPON_CLASS, ARMOR_CLASS, 0 };
 
 void
-costly_cancel(obj)
-register struct obj *obj;
+costly_cancel(register struct obj *obj)
 {
 	char objroom;
 	struct monst *shkp = (struct monst *)0;
@@ -1105,8 +1087,7 @@ register struct obj *obj;
 
 /* cancel obj, possibly carried by you or a monster */
 void
-cancel_item(obj)
-register struct obj *obj;
+cancel_item(register struct obj *obj)
 {
 	register boolean holy = (obj->otyp == POT_WATER && obj->blessed);
 	
@@ -1267,8 +1248,7 @@ register struct obj *obj;
  * possibly carried by you or a monster
  */
 boolean
-drain_scorpion(obj)
-struct obj *obj;
+drain_scorpion(struct obj *obj)
 {
 	int cprops = 0;
 	int i;
@@ -1315,8 +1295,7 @@ struct obj *obj;
 }
 
 boolean
-drain_item(obj)
-struct obj *obj;
+drain_item(struct obj *obj)
 {
 	/* Is this a charged/enchanted object? */
 	if (!obj || (!objects[obj->otyp].oc_charged &&
@@ -1373,8 +1352,7 @@ struct obj *obj;
  * possibly carried by you or a monster
  */
 boolean
-damage_item(obj)
-register struct obj *obj;
+damage_item(struct obj *obj)
 {
 	/* Is this a charged/enchanted object? */
 	if (!obj || (!objects[obj->otyp].oc_charged &&
@@ -1428,9 +1406,9 @@ register struct obj *obj;
 
 
 boolean
-obj_resists(obj, ochance, achance)
-struct obj *obj;
-int ochance, achance;	/* percent chance for ordinary objects, artifacts */
+obj_resists(
+	struct obj *obj,
+	int ochance, int achance) /* percent chance for ordinary objects, artifacts */
 {
 	if (is_asc_obj(obj) ||
 	    (obj->otyp == CORPSE && is_rider(&mons[obj->corpsenm]))
@@ -1444,8 +1422,7 @@ int ochance, achance;	/* percent chance for ordinary objects, artifacts */
 }
 
 boolean
-obj_shudders(obj)
-struct obj *obj;
+obj_shudders(struct obj *obj)
 {
 	int	zap_odds;
 
@@ -1470,9 +1447,7 @@ struct obj *obj;
  * at the top of the pile.
  */
 static void
-polyuse(objhdr, mat, minwt)
-    struct obj *objhdr;
-    int mat, minwt;
+polyuse(struct obj *objhdr, int mat, int minwt)
 {
     register struct obj *otmp, *otmp2;
 
@@ -1508,9 +1483,7 @@ polyuse(objhdr, mat, minwt)
  * a golem of the kind okind.
  */
 static void
-create_polymon(obj, okind)
-    struct obj *obj;
-    int okind;
+create_polymon(struct obj *obj, int okind)
 {
 	struct permonst *mdat = (struct permonst *)0;
 	struct monst *mtmp;
@@ -1600,8 +1573,7 @@ create_polymon(obj, okind)
 
 /* Assumes obj is on the floor. */
 void
-do_osshock(obj)
-struct obj *obj;
+do_osshock(struct obj *obj)
 {
 	long i;
 
@@ -1649,8 +1621,7 @@ struct obj *obj;
  * Replaces obj in chains, returing a pointer to the new object.
  */
 struct obj *
-randpoly_obj(obj)
-struct obj * obj;
+randpoly_obj(struct obj *obj)
 {
 	int new_otyp = STRANGE_OBJECT;	// default to random
 	struct obj * otmp;				// new object
@@ -1840,9 +1811,7 @@ struct obj * obj;
  * Returns a pointer to the new object.
  */
 struct obj *
-poly_obj(obj, id)
-struct obj * obj;
-int id;
+poly_obj(struct obj *obj, int id)
 {
 	struct obj * otmp;
 	if (id == STRANGE_OBJECT) {
@@ -1860,9 +1829,7 @@ int id;
  * does not destroy obj, caller must do so.
  */
 struct obj *
-poly_obj_core(obj, id)
-struct obj *obj;
-int id;
+poly_obj_core(struct obj *obj, int id)
 {
 	struct obj *otmp;
 	xchar ox, oy;
@@ -2040,8 +2007,7 @@ no_unwear:
  * non-zero if the wand/spell had any effect.
  */
 int
-bhito(obj, otmp)
-struct obj *obj, *otmp;
+bhito(struct obj *obj, struct obj *otmp)
 {
 	int res = 1;	/* affected object by default */
 	struct obj *item;
@@ -2375,10 +2341,10 @@ smell:
 
 /* returns nonzero if something was hit */
 int
-bhitpile(obj,fhito,tx,ty)
-    struct obj *obj;
-    int FDECL((*fhito), (OBJ_P,OBJ_P));
-    int tx, ty;
+bhitpile(
+	struct obj *obj,
+	int FDECL((*fhito), (OBJ_P,OBJ_P)),
+	int tx, int ty)
 {
     int hitanything = 0;
     register struct obj *otmp, *next_obj;
@@ -2415,9 +2381,9 @@ bhitpile(obj,fhito,tx,ty)
  * if (rn2(100) < zapcost(wand, magr)) spe--;
  */
 int
-zapcostchance(wand, magr)
-struct obj * wand;		/* wand being zapped */
-struct monst * magr;	/* creature zapping the wand (if any) */
+zapcostchance(
+	struct obj *wand,       /* wand being zapped */
+	struct monst *magr)	/* creature zapping the wand (if any) */
 {
 	int base;	/* base chance */
 	switch (wand->otyp)
@@ -2440,8 +2406,7 @@ struct monst * magr;	/* creature zapping the wand (if any) */
  * added by GAN 11/03/86
  */
 int
-zappable(wand)
-register struct obj *wand;
+zappable(register struct obj *wand)
 {
 	if(wand->oclass == WAND_CLASS){
 		if(wand->oartifact && wand->spe < 1 && wand->age < moves){
@@ -2486,8 +2451,7 @@ register struct obj *wand;
  * added by GAN 11/03/86
  */
 void
-zapnodir(obj)
-register struct obj *obj;
+zapnodir(register struct obj *obj)
 {
 	boolean known = FALSE;
 
@@ -2568,8 +2532,7 @@ register struct obj *obj;
 }
 
 static void
-backfire(otmp)
-struct obj *otmp;
+backfire(struct obj *otmp)
 {
 	otmp->in_use = TRUE;	/* in case losehp() is fatal */
 	pline("%s suddenly explodes!", The(xname(otmp)));
@@ -2580,7 +2543,7 @@ struct obj *otmp;
 static const char zap_syms[] = { ARMOR_CLASS, WAND_CLASS, TOOL_CLASS, RING_CLASS, 0 };
 
 int
-dozap()
+dozap(void)
 {
 	register struct obj *obj;
 	int damage;
@@ -2628,9 +2591,7 @@ dozap()
 }
 
 int
-zapyourself(obj, ordinary)
-struct obj *obj;
-boolean ordinary;
+zapyourself(struct obj *obj, boolean ordinary)
 {
 	int	damage = 0;
 	char buf[BUFSZ];
@@ -2997,8 +2958,7 @@ boolean ordinary;
  * Return FALSE if the steed was not hit by the wand.
  */
 static boolean
-zap_steed(obj)
-struct obj *obj;	/* wand or spell */
+zap_steed(struct obj *obj)	/* wand or spell */
 {
 	int steedhit = FALSE;
 	
@@ -3063,11 +3023,10 @@ struct obj *obj;	/* wand or spell */
  * Monster gaze attacks pass in the number of invetory items to cancel
  */
 boolean
-cancel_monst(mdef, obj, youattack, allow_cancel_kill, self_cancel, gaze_cancel)
-register struct monst	*mdef;
-register struct obj	*obj;
-boolean			youattack, allow_cancel_kill, self_cancel;
-int gaze_cancel;
+cancel_monst(
+	struct monst *mdef, struct obj *obj,
+	boolean youattack, boolean allow_cancel_kill,
+	boolean self_cancel, int gaze_cancel)
 {
 	boolean	youdefend = (mdef == &youmonst);
 	static const char writing_vanishes[] =
@@ -3152,8 +3111,7 @@ int gaze_cancel;
 
 /* you've zapped an immediate type wand up or down */
 static boolean
-zap_updown(obj)
-struct obj *obj;	/* wand or spell */
+zap_updown(struct obj *obj)	/* wand or spell */
 {
 	boolean striking = FALSE, disclose = FALSE;
 	int x, y, xx, yy, ptmp;
@@ -3342,8 +3300,7 @@ struct obj *obj;	/* wand or spell */
 /* called for various wand and spell effects - M. Stephenson */
 //the u.d_ variables should have been set via a call to getdir before this is called. -D_E
 void
-weffects(obj)
-register struct	obj	*obj;
+weffects(register struct obj *obj)
 {
 	int otyp = obj->otyp;
 	boolean disclose = FALSE, was_unkn = !objects[otyp].oc_name_known;
@@ -3462,7 +3419,7 @@ register struct	obj	*obj;
  * Generate the to damage bonus for a spell. Based on the hero's intelligence
  */
 int
-spell_damage_bonus()
+spell_damage_bonus(void)
 {
     int tmp, intell;
 	
@@ -3487,7 +3444,7 @@ spell_damage_bonus()
 }
 
 int
-kraubon()
+kraubon(void)
 {
 	int bonus = 0;
 	if(u.ukrau){
@@ -3504,8 +3461,7 @@ kraubon()
  * spell class and dexterity.
  */
 static int
-spell_hit_bonus(adtyp)
-int adtyp;
+spell_hit_bonus(int adtyp)
 {
     int hit_bon = 0;
     int dex = ACURR(A_DEX);
@@ -3547,8 +3503,7 @@ int adtyp;
 }
 
 const char *
-exclam(force)
-register int force;
+exclam(register int force)
 {
 	/* force == 0 occurs e.g. with sleep ray */
 	/* note that large force is usual with wands so that !! would
@@ -3557,10 +3512,10 @@ register int force;
 }
 
 void
-hit(str,mtmp,force)
-register const char *str;
-register struct monst *mtmp;
-register const char *force;		/* usually either "." or "!" */
+hit(
+	register const char *str,
+	register struct monst *mtmp,
+	register const char *force		/* usually either "." or "!" */)
 {
 	if (mtmp == &youmonst) {
 		pline("%s %s you%s", The(str), vtense(str, "hit"), force);
@@ -3576,9 +3531,7 @@ register const char *force;		/* usually either "." or "!" */
 }
 
 void
-miss(str,mtmp)
-register const char *str;
-register struct monst *mtmp;
+miss(register const char *str, register struct monst *mtmp)
 {
 	pline("%s %s %s.", The(str), vtense(str, "miss"),
 		(mtmp == &youmonst) ? "you"
@@ -3603,13 +3556,13 @@ register struct monst *mtmp;
  *  one is revealed for a weapon, but if not a weapon is left up to fhitm().
  */
 struct monst *
-bhit(ddx,ddy,range,weapon,fhitm,fhito,obj,obj_destroyed)
-register int ddx,ddy,range;		/* direction and range */
-int weapon;				/* see values in hack.h */
-int FDECL((*fhitm), (MONST_P, OBJ_P)),	/* fns called when mon/obj hit */
-    FDECL((*fhito), (OBJ_P, OBJ_P));
-struct obj *obj;			/* object tossed/used */
-boolean *obj_destroyed;/* has object been deallocated? Pointer to boolean, may be NULL */
+bhit(
+	int ddx, int ddy, int range,		/* direction and range */
+	int weapon,				/* see values in hack.h */
+	int FDECL((*fhitm), (MONST_P, OBJ_P)),	/* fns called when mon/obj hit */
+	int FDECL((*fhito), (OBJ_P, OBJ_P)),
+	struct obj *obj,			/* object tossed/used */
+	boolean *obj_destroyed)			/* has object been deallocated? Pointer to boolean, may be NULL */
 {
 	struct monst *mtmp;
 	struct trap *trap;
@@ -3791,9 +3744,7 @@ boolean *obj_destroyed;/* has object been deallocated? Pointer to boolean, may b
 
 /* returns TRUE if mdef reflects the a zap with this data */
 boolean
-zap_reflect(mdef, zapdata)
-struct monst * mdef;
-struct zapdata * zapdata;
+zap_reflect(struct monst *mdef, struct zapdata *zapdata)
 {
 	boolean youdef = (mdef == &youmonst);
 	boolean reflect;
@@ -3834,10 +3785,7 @@ struct zapdata * zapdata;
 }
 
 int
-zapdamage(magr, mdef, zapdata)
-struct monst * magr;
-struct monst * mdef;
-struct zapdata * zapdata;
+zapdamage(struct monst *magr, struct monst *mdef, struct zapdata *zapdata)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3909,11 +3857,7 @@ struct zapdata * zapdata;
 
 /* helper to make a basic zap */
 struct zapdata *
-basiczap(zapdat, adtyp, ztyp, ndice)
-struct zapdata * zapdat;
-int adtyp;
-int ztyp;
-int ndice;
+basiczap(struct zapdata *zapdat, int adtyp, int ztyp, int ndice)
 {
 	if (!zapdat) {
 		zapdat = &tzapdat;	/* use temporary global zapdata */
@@ -3930,12 +3874,12 @@ int ndice;
 }
 
 void
-zap(magr, sx, sy, dx, dy, range, zapdata)
-struct monst * magr;		/* causer of zap, may be null */
-int sx, sy;					/* current location of zap (passed sxsy is not hit) */
-int dx, dy;					/* direction of zap */
-int range;					/* range of zap. If 0, uses default of rn1(7,7). */
-struct zapdata * zapdata;	/* lots of flags and data about the zap */
+zap(
+	struct monst *magr,		/* causer of zap, may be null */
+	int sx, int sy,		        /* current location of zap (passed sxsy is not hit) */
+	int dx, int dy,		        /* direction of zap */
+	int range, 			/* range of zap. If 0, uses default of rn1(7,7). */
+	struct zapdata *zapdata) 	/* lots of flags and data about the zap */
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef;
@@ -4286,10 +4230,10 @@ struct zapdata * zapdata;	/* lots of flags and data about the zap */
 /* prints messages and does all zap-hit effects */
 /* CAN MODIFY ZAPDATA */
 int
-zhit(magr, mdef, zapdata)
-struct monst * magr;	/* may be null */
-struct monst * mdef;
-struct zapdata * zapdata;
+zhit(
+	struct monst *magr,	/* may be null */
+	struct monst *mdef,
+	struct zapdata *zapdata)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -4936,9 +4880,9 @@ struct zapdata * zapdata;
 }
 
 int
-flash_hits_mon(mtmp, otmp)
-struct monst *mtmp;
-struct obj *otmp;	/* source of flash */
+flash_hits_mon(
+	struct monst *mtmp,
+	struct obj *otmp)	/* source of flash */
 {
 	int tmp, amt, res = 0, useeit = canseemon(mtmp) && !(mtmp->mundetected || mtmp->mappearance);
 
@@ -4998,10 +4942,10 @@ struct obj *otmp;	/* source of flash */
  * return the number of scrolls and spellbooks burned
  */
 int
-burn_floor_paper(x, y, give_feedback, u_caused)
-int x, y;
-boolean give_feedback;	/* caller needs to decide about visibility checks */
-boolean u_caused;
+burn_floor_paper(
+	int x, int y,
+	boolean give_feedback, /* caller needs to decide about visibility checks */
+	boolean u_caused)
 {
 	struct obj *obj, *obj2;
 	long i, scrquan, delquan;
@@ -5050,10 +4994,10 @@ boolean u_caused;
 
 /* will zap/spell/breath attack score a hit a creature */
 int
-zap_hit(defender, adtyp, phase_armor)
-struct monst * defender;
-int adtyp;	// either a hero-cast AD_TYPE spell, or 0
-boolean phase_armor;
+zap_hit(
+	struct monst *defender,
+	int adtyp,	// either a hero-cast AD_TYPE spell, or 0
+	boolean phase_armor)
 {
     int chance = rn2(20);
     int spell_bonus = adtyp ? spell_hit_bonus(adtyp) : 0;
@@ -5088,9 +5032,7 @@ boolean phase_armor;
 
 /* caller should check !resists_blnd() before calling */
 void
-lightning_blind(mdef, blind_duration)
-struct monst * mdef;
-int blind_duration;
+lightning_blind(struct monst *mdef, int blind_duration)
 {
 	if (Half_phys(mdef))
 		blind_duration = (blind_duration + 1) / 2;
@@ -5111,9 +5053,7 @@ int blind_duration;
 
 
 struct monst *
-delouse(mon, type)
-struct monst *mon;
-int type;
+delouse(struct monst *mon, int type)
 {
 	struct obj *otmp;
 	if(type == AD_STON){
@@ -5182,8 +5122,7 @@ int type;
 }
 
 struct monst *
-delouse_tame(mon)
-struct monst *mon;
+delouse_tame(struct monst *mon)
 {
 	struct monst *mtmp;
 	set_template(mon, 0);
@@ -5209,8 +5148,7 @@ struct monst *mon;
 }
 
 void
-melt_ice(x, y)
-xchar x, y;
+melt_ice(xchar x, xchar y)
 {
 	struct rm *lev = &levl[x][y];
 	struct obj *otmp;
@@ -5248,11 +5186,7 @@ xchar x, y;
  * amount by which range is reduced (the latter is just ignored by fireballs)
  */
 int
-zap_over_floor(x, y, adtyp, olet, yours, shopdamage)
-xchar x, y;
-int adtyp, olet;
-int yours;
-boolean *shopdamage;
+zap_over_floor(xchar x, xchar y, int adtyp, int olet, int yours, boolean *shopdamage)
 {
 	struct monst *mon;
 	struct rm *lev = &levl[x][y];
@@ -5475,8 +5409,7 @@ boolean *shopdamage;
  */
 
 void
-break_boulder(obj)
-struct obj *obj;
+break_boulder(struct obj *obj)
 {
 	switch(obj->otyp){
 		case BOULDER:
@@ -5498,9 +5431,9 @@ struct obj *obj;
 	}
 }
 
+/* fractured by pick-axe or wand of striking */
 void
-fracture_rock(obj)	/* fractured by pick-axe or wand of striking */
-register struct obj *obj;		   /* no texts here! */
+fracture_rock(struct obj *obj)	/* no texts here! */
 {
 	int mat = obj->obj_material;
 
@@ -5524,8 +5457,7 @@ register struct obj *obj;		   /* no texts here! */
 
 /* handle statue hit by striking/force bolt/pick-axe */
 boolean
-break_statue(obj)
-register struct obj *obj;
+break_statue(struct obj *obj)
 {
 	/* [obj is assumed to be on floor, so no get_obj_location() needed] */
 	struct trap *trap = t_at(obj->ox, obj->oy);
@@ -5550,8 +5482,7 @@ register struct obj *obj;
 
 /* handle crate hit by striking/force bolt/pick-axe */
 void
-break_crate(obj)
-register struct obj *obj;
+break_crate(register struct obj *obj)
 {
 	/* [obj is assumed to be on floor, so no get_obj_location() needed] */
 	struct obj *item;
@@ -5567,9 +5498,7 @@ register struct obj *obj;
 
 /* handle mass of stuff being hit by striking/force bolt/pick-axe or burried */
 void
-separate_mass_of_stuff(obj, burial)
-register struct obj *obj;
-boolean burial;
+separate_mass_of_stuff(struct obj *obj, boolean burial)
 {
 	/* [obj is assumed to be on floor, so no get_obj_location() needed] */
 	struct obj *item;
@@ -5625,10 +5554,7 @@ boolean burial;
 
 
 int
-resist(mtmp, oclass, damage, tell)
-struct monst *mtmp;
-char oclass;
-int damage, tell;
+resist(struct monst *mtmp, char oclass, int damage, int tell)
 {
 	int resisted;
 	int alev, dlev;
@@ -5752,7 +5678,7 @@ int damage, tell;
  *   artifacts the player has wished for, and keep track of how many (total) have been earned.
  */
 int
-allow_artwish()
+allow_artwish(void)
 {
 	int n = 1;
 	
@@ -5769,8 +5695,7 @@ allow_artwish()
 }
 
 boolean
-makewish(wishflags)
-int wishflags;		// flags to change messages / effects
+makewish(int wishflags)		// flags to change messages / effects
 {
 	char buf[BUFSZ];
 	char bufcpy[BUFSZ];
@@ -5898,7 +5823,7 @@ retry:
 }
 
 boolean
-dowand_refresh()
+dowand_refresh(void)
 {
 	struct obj *obj;
 	const char wands[] = { WAND_CLASS, 0 };

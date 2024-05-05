@@ -19,9 +19,8 @@ void FDECL(ford_rises,(struct monst *));
 boolean FDECL(check_shore,(int, int));
 
 
-boolean /* TRUE : mtmp died */
-mb_trapped(mtmp)
-register struct monst *mtmp;
+boolean
+mb_trapped(register struct monst *mtmp)
 {
 	if (flags.verbose) {
 	    if (cansee(mtmp->mx, mtmp->my))
@@ -44,8 +43,7 @@ register struct monst *mtmp;
 
 
 static void
-watch_on_duty(mtmp)
-register struct monst *mtmp;
+watch_on_duty(register struct monst *mtmp)
 {
 	int	x, y;
 
@@ -89,8 +87,7 @@ register struct monst *mtmp;
 
 
 int
-dochugw(mtmp)
-	register struct monst *mtmp;
+dochugw(register struct monst *mtmp)
 {
 	register int x = mtmp->mx, y = mtmp->my;
 	boolean already_saw_mon = !occupation ? 0 : canspotmon(mtmp);
@@ -135,9 +132,7 @@ dochugw(mtmp)
 
 
 boolean
-onscary(x, y, mtmp)
-int x, y;
-struct monst *mtmp;
+onscary(int x, int y, struct monst *mtmp)
 {
 	struct obj *alignedfearobj = fear_arti_at(x, y);
 	int wardAt = ward_at(x,y);
@@ -215,9 +210,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryWings(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryWings(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	if(standardUnwardable(mtmp))
@@ -226,9 +219,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryCat(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryCat(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	if(standardUnwardable(mtmp) || catWardInactive)
@@ -243,8 +234,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryTou(mtmp)
-struct monst *mtmp;
+scaryTou(struct monst *mtmp)
 {
 	if(standardUnwardable(mtmp))
 			return FALSE;
@@ -252,24 +242,21 @@ struct monst *mtmp;
 }
 
 boolean
-scaryDre(mtmp)
-struct monst *mtmp;
+scaryDre(struct monst *mtmp)
 {
 	if(standardUnwardable(mtmp))
 		return FALSE;
 	return 	dreWarded(mtmp->data);
 }
 boolean
-scaryVei(mtmp)
-struct monst *mtmp;
+scaryVei(struct monst *mtmp)
 {
 	if(standardUnwardable(mtmp))
 		return FALSE;
 	return 	veiWarded(mtmp->data);
 }
 boolean
-scaryThj(mtmp)
-struct monst *mtmp;
+scaryThj(struct monst *mtmp)
 {
 	if(standardUnwardable(mtmp))
 		return FALSE;
@@ -277,9 +264,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryQueen(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryQueen(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	if(standardUnwardable(mtmp))
@@ -288,9 +273,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryEye(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryEye(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	if(standardUnwardable(mtmp) ||
@@ -303,9 +286,7 @@ struct monst *mtmp;
 }
 
 boolean
-scarySign(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scarySign(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	if(standardUnwardable(mtmp) || (mtmp->mtyp == PM_DEMOGORGON && rn2(3)))
@@ -314,9 +295,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryHam(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryHam(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(standardUnwardable(mtmp))
@@ -325,9 +304,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryHex(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryHex(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(standardUnwardable(mtmp) || mtmp->mpeaceful || 
@@ -340,9 +317,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryPent(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryPent(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(standardUnwardable(mtmp) || 
@@ -355,9 +330,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryCircle(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryCircle(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(standardUnwardable(mtmp))
@@ -366,9 +339,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryGorg(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryGorg(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(gorgUnwardable(mtmp) 
@@ -388,9 +359,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryHept(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryHept(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(heptUnwardable(mtmp) ||
@@ -406,9 +375,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryYellow(complete, mtmp)
-int complete;
-struct monst *mtmp;
+scaryYellow(int complete, struct monst *mtmp)
 {
 	if(complete <= 0) return FALSE;
 	else if(yellowUnwardable(mtmp))
@@ -421,8 +388,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryItem(mtmp)
-struct monst *mtmp;
+scaryItem(struct monst *mtmp)
 {
 	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || is_blind(mtmp) ||
 	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN || 
@@ -439,8 +405,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryLol(mtmp)
-struct monst *mtmp;
+scaryLol(struct monst *mtmp)
 {
   if(Infuture) return FALSE;
   if(u.ualign.type == A_VOID) return FALSE;
@@ -461,8 +426,7 @@ struct monst *mtmp;
 }
 
 boolean
-scaryElb(mtmp)
-struct monst *mtmp;
+scaryElb(struct monst *mtmp)
 {
   if(Infuture) return FALSE;
   if(ELBERETH_HIGH_POWER){
@@ -494,9 +458,7 @@ struct monst *mtmp;
 
 /* regenerate lost hit points */
 void
-mon_regen(mon, digest_meal)
-struct monst *mon;
-boolean digest_meal;
+mon_regen(struct monst *mon, boolean digest_meal)
 {
 	if(mon->mtrapped && t_at(mon->mx, mon->my) && t_at(mon->mx, mon->my)->ttyp == VIVI_TRAP)
 		return;
@@ -715,8 +677,7 @@ boolean digest_meal;
  * jolted awake.
  */
 static int
-disturb(mtmp)
-	register struct monst *mtmp;
+disturb(register struct monst *mtmp)
 {
 	/*
 	 * + Ettins are hard to surprise.
@@ -752,11 +713,7 @@ disturb(mtmp)
  * if first, only adds fleetime if monster isn't already fleeing
  * if fleemsg, prints a message about new flight, otherwise, caller should */
 void
-monflee(mtmp, fleetime, first, fleemsg)
-struct monst *mtmp;
-int fleetime;
-boolean first;
-boolean fleemsg;
+monflee(struct monst *mtmp, int fleetime, boolean first, boolean fleemsg)
 {
 	int j;
 	if (u.ustuck == mtmp) {
@@ -814,9 +771,7 @@ boolean fleemsg;
 }
 
 static void
-distfleeck(mtmp,inrange,nearby,scared)
-register struct monst *mtmp;
-int *inrange, *nearby, *scared;
+distfleeck(register struct monst *mtmp, int *inrange, int *nearby, int *scared)
 {
 	int seescaryx, seescaryy;
 
@@ -862,8 +817,7 @@ int *inrange, *nearby, *scared;
 /* perform a special one-time action for a monster; returns -1 if nothing
    special happened, 0 if monster uses up its turn, 1 if monster is killed */
 static int
-m_arrival(mon)
-struct monst *mon;
+m_arrival(struct monst *mon)
 {
 	mon->mstrategy &= ~STRAT_ARRIVE;	/* always reset */
 
@@ -871,9 +825,7 @@ struct monst *mon;
 }
 
 static void
-jrt_eladrin_spawn_equip(tmpm, mtyp)
-struct monst *tmpm;
-int mtyp;
+jrt_eladrin_spawn_equip(struct monst *tmpm, int mtyp)
 {
 	struct obj *otmp;
 	otmp = mongets(tmpm, KHOPESH, MKOBJ_NOINIT);
@@ -897,9 +849,7 @@ int mtyp;
 }
 
 void
-dracae_eladrin_spawn_equip(mtmp, mtyp)
-struct monst *mtmp;
-int mtyp;
+dracae_eladrin_spawn_equip(struct monst *mtmp, int mtyp)
 {
 	struct obj *otmp;
 	int size = mons[mtyp].msize;
@@ -961,8 +911,7 @@ int mtyp;
  * code. --KAA
  */
 int
-dochug(mtmp)
-register struct monst *mtmp;
+dochug(register struct monst *mtmp)
 {
 	register struct permonst *mdat;
 	struct monst *gazemon, *nxtmon;
@@ -2110,21 +2059,24 @@ register struct monst *mtmp;
 
 /*	Now the actual movement phase	*/
 
-#ifndef GOLDOBJ
-	if(!nearby || (mtmp->mflee && mtmp->mtyp != PM_BANDERSNATCH) || scared ||
-	   mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
-	   (mdat->mlet == S_LEPRECHAUN && !u.ugold && (mtmp->mgold || rn2(2))) ||
-#else
-    if (mdat->mlet == S_LEPRECHAUN) {
+#ifdef GOLDOBJ
+	if (mdat->mlet == S_LEPRECHAUN) {
 	    ygold = findgold(invent);
 	    lepgold = findgold(mtmp->minvent);
 	}
-	if(!nearby || (mtmp->mflee && mtmp->mtyp != PM_BANDERSNATCH) || scared ||
-	   mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
-	   (mdat->mlet == S_LEPRECHAUN && !ygold && (lepgold || rn2(2))) ||
 #endif
-	   (is_wanderer(mdat) && !rn2(4)) || (Conflict && !mtmp->iswiz) ||
-	   (is_blind(mtmp) && !rn2(4)) || mtmp->mpeaceful
+	if(
+#ifndef GOLDOBJ
+        !nearby || (mtmp->mflee && mtmp->mtyp != PM_BANDERSNATCH) || scared ||
+	mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
+	(mdat->mlet == S_LEPRECHAUN && !u.ugold && (mtmp->mgold || rn2(2))) ||
+#else
+	!nearby || (mtmp->mflee && mtmp->mtyp != PM_BANDERSNATCH) || scared ||
+	mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
+	(mdat->mlet == S_LEPRECHAUN && !ygold && (lepgold || rn2(2))) ||
+#endif
+	(is_wanderer(mdat) && !rn2(4)) || (Conflict && !mtmp->iswiz) ||
+	(is_blind(mtmp) && !rn2(4)) || mtmp->mpeaceful
 	) {
 		/* Possibly cast an undirected spell if not attacking you */
 		/* note that most of the time castmu() will pick a directed
@@ -2228,9 +2180,7 @@ register struct monst *mtmp;
 }
 
 boolean
-check_shore(x,y)
-int x;
-int y;
+check_shore(int x, int y)
 {
 	int i;
 	for(i = 1; i < 2; i++){
@@ -2241,8 +2191,7 @@ int y;
 }
 
 void
-ford_rises(guardian)
-struct monst *guardian;
+ford_rises(struct monst *guardian)
 {
 	int elm = rnd(4);
 	int n = 0, i, cn;
@@ -2332,8 +2281,7 @@ static const char gem_class[] = { GEM_CLASS, 0 };
 static const char tool_class[] = { TOOL_CLASS, 0 };
 
 boolean
-itsstuck(mtmp)
-register struct monst *mtmp;
+itsstuck(register struct monst *mtmp)
 {
 	if (sticks(&youmonst) && mtmp==u.ustuck && !u.uswallow) {
 		pline("%s cannot escape from you!", Monnam(mtmp));
@@ -2346,8 +2294,7 @@ register struct monst *mtmp;
  * smith_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
  */
 int
-smith_move(smith)
-register struct monst *smith;
+smith_move(register struct monst *smith)
 {
 	register xchar gx,gy,omx,omy;
 	schar temple;
@@ -2381,9 +2328,7 @@ register struct monst *smith;
  * 3: did not move, and can't do anything else either.
  */
 int
-m_move(mtmp, after)
-register struct monst *mtmp;
-register int after;
+m_move(register struct monst *mtmp, register int after)
 {
 	int appr;
 	xchar gx,gy,nix,niy,chcnt;
@@ -2549,11 +2494,12 @@ not_special:
 
 		if(monsndx(ptr) == PM_LEPRECHAUN && (appr == 1) &&
 #ifndef GOLDOBJ
-		   (mtmp->mgold > u.ugold))
+		   (mtmp->mgold > u.ugold)
 #else
 		   ( (lepgold = findgold(mtmp->minvent)) && 
-                   (lepgold->quan > ((ygold = findgold(invent)) ? ygold->quan : 0L)) ))
+                   (lepgold->quan > ((ygold = findgold(invent)) ? ygold->quan : 0L)) )
 #endif
+		   )
 			appr = -1;
 
 		if(monsndx(ptr) == PM_LUCKSUCKER && (appr == 1) && mtmp->mvar_lucksucker > 0 && u.uluck < mtmp->mvar_lucksucker)
@@ -3251,9 +3197,9 @@ postmov:
 
 /* break iron bars at the given location */
 void
-break_iron_bars(x, y, heard)
-int x, y;			/* coordinates of iron bars */
-boolean heard;		/* print You_hear() message? */
+break_iron_bars(
+	int x, int y,		/* coordinates of iron bars */
+	boolean heard)		/* print You_hear() message? */
 {
 	int numbars;
 	struct obj *obj;
@@ -3279,8 +3225,7 @@ boolean heard;		/* print You_hear() message? */
 
 //Malcolm Ryan's bar eating patch
 void
-dissolve_bars(x, y)
-register int x, y;
+dissolve_bars(int x, int y)
 {
     levl[x][y].typ = (Is_special(&u.uz) || *in_rooms(x,y,0)) ? ROOM : CORR; 
     newsym(x, y);    
@@ -3288,16 +3233,14 @@ register int x, y;
 
 
 boolean
-closed_door(x, y)
-register int x, y;
+closed_door(int x, int y)
 {
 	return((boolean)(IS_DOOR(levl[x][y].typ) &&
 			(levl[x][y].doormask & (D_LOCKED | D_CLOSED))));
 }
 
 boolean
-accessible(x, y)
-register int x, y;
+accessible(int x, int y)
 {
 	return((boolean)(ACCESSIBLE(levl[x][y].typ) && !closed_door(x, y)));
 }
@@ -3305,8 +3248,7 @@ register int x, y;
 
 /* decide where the monster thinks you are standing */
 void
-set_apparxy(mtmp)
-register struct monst *mtmp;
+set_apparxy(register struct monst *mtmp)
 {
 	boolean notseen, gotu = FALSE;
 	register int disp, mx = mtmp->mux, my = mtmp->muy;
@@ -3389,8 +3331,7 @@ found_you:
 }
 
 boolean
-can_ooze(mtmp)
-struct monst *mtmp;
+can_ooze(struct monst *mtmp)
 {
 	struct obj *chain, *obj;
 
@@ -3446,9 +3387,7 @@ struct monst *mtmp;
 }
 
 void
-remove_monster(x, y)
-int x;
-int y;
+remove_monster(int x, int y)
 {
 	struct monst * mtmp = level.monsters[x][y];
 	

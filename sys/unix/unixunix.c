@@ -27,8 +27,7 @@ static struct stat buf;
 
 /* see whether we should throw away this xlock file */
 static int
-veryold(fd)
-int fd;
+veryold(int fd)
 {
 	time_t date;
 
@@ -60,7 +59,7 @@ int fd;
 }
 
 static int
-eraseoldlocks()
+eraseoldlocks(void)
 {
 	register int i;
 
@@ -80,7 +79,7 @@ eraseoldlocks()
 }
 
 void
-getlock()
+getlock(void)
 {
 	register int i = 0, fd, c;
 	const char *fq_lock;
@@ -207,8 +206,8 @@ gotlock:
 }
 
 void
-regularize(s)	/* normalize file name - we don't like .'s, /'s, spaces */
-register char *s;
+regularize(	/* normalize file name - we don't like .'s, /'s, spaces */
+	register char *s)
 {
 	register char *lp;
 
@@ -233,7 +232,7 @@ unsigned msec;				/* milliseconds */
 
 #ifdef SHELL
 int
-dosh()
+dosh(void)
 {
 	register char *str;
 	if(iflags.debug_fuzzer);
@@ -252,8 +251,7 @@ dosh()
 
 #if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
 int
-child(wt)
-int wt;
+child(int wt)
 {
 	register int f;
 	suspend_nhwindows((char *)0);	/* also calls end_screen() */
@@ -306,14 +304,14 @@ uid_t *ruid, *euid, *suid;
     return nh_getresuid(ruid, euid, suid);
 }
 
-uid_t
-(getuid)()
+int
+uid_t(int getuid)(void)
 {
     return nh_getuid();
 }
 
-uid_t
-(geteuid)()
+int
+uid_t(int geteuid)(void)
 {
     return nh_geteuid();
 }
@@ -325,14 +323,14 @@ gid_t *rgid, *egid, *sgid;
     return nh_getresgid(rgid, egid, sgid);
 }
 
-gid_t
-(getgid)()
+int
+gid_t(int getgid)(void)
 {
     return nh_getgid();
 }
 
-gid_t
-(getegid)()
+int
+gid_t(int getegid)(void)
 {
     return nh_getegid();
 }

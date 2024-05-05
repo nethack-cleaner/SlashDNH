@@ -21,7 +21,7 @@ static const char * NDECL(neminame);
 static const char * NDECL(guardname);
 static const char * NDECL(homebase);
 static struct qtmsg * FDECL(msg_in, (struct qtmsg *,int));
-static void FDECL(convert_arg, (CHAR_P));
+static void FDECL(convert_arg, (char));
 static void NDECL(convert_line);
 static void FDECL(deliver_by_pline, (struct qtmsg *));
 static void FDECL(deliver_by_window, (struct qtmsg *,int));
@@ -36,7 +36,7 @@ static char	nambuf[sizeof cvt_buf];
 static void NDECL(dump_qtlist);
 
 static void
-dump_qtlist()	/* dump the character msg list to check appearance */
+dump_qtlist(void)	/* dump the character msg list to check appearance */
 {
 	struct	qtmsg	*msg;
 	long	size;
@@ -52,10 +52,7 @@ dump_qtlist()	/* dump the character msg list to check appearance */
 #endif /* DEBUG */
 
 static void
-Fread(ptr, size, nitems, stream)
-genericptr_t	ptr;
-int	size, nitems;
-dlb	*stream;
+Fread(genericptr_t ptr, int size, int nitems, dlb *stream)
 {
 	int cnt;
 
@@ -67,8 +64,7 @@ dlb	*stream;
 }
 
 static struct qtmsg *
-construct_qtlist(hdr_offset)
-long	hdr_offset;
+construct_qtlist(long hdr_offset)
 {
 	struct qtmsg *msg_list;
 	int	n_msgs;
@@ -88,7 +84,7 @@ long	hdr_offset;
 }
 
 void
-load_qtlist()
+load_qtlist(void)
 {
 
 	int	n_classes, i;
@@ -136,7 +132,7 @@ load_qtlist()
 
 /* called at program exit */
 void
-unload_qtlist()
+unload_qtlist(void)
 {
 	if (msg_file)
 	    (void) dlb_fclose(msg_file),  msg_file = 0;
@@ -148,8 +144,7 @@ unload_qtlist()
 }
 
 short
-quest_info(typ)
-int typ;
+quest_info(int typ)
 {
 	switch (typ) {
 	    case 0:		return (urole.questarti);
@@ -162,7 +157,7 @@ int typ;
 }
 
 const char *
-ldrname()	/* return your role leader's name */
+ldrname(void)	/* return your role leader's name */
 {
 	int i = urole.ldrnum;
 
@@ -173,14 +168,13 @@ ldrname()	/* return your role leader's name */
 }
 
 static const char *
-intermed()	/* return your intermediate target string */
+intermed(void)	/* return your intermediate target string */
 {
 	return (urole.intermed);
 }
 
 boolean
-is_primary_quest_artifact(otmp)
-struct obj *otmp;
+is_primary_quest_artifact(struct obj *otmp)
 {
 	return((boolean)(otmp->oartifact == urole.questarti || 
 		(Race_if(PM_DROW) && (Role_if(PM_PRIEST) || Role_if(PM_ROGUE) || Role_if(PM_RANGER) || Role_if(PM_WIZARD)) && (
@@ -192,8 +186,7 @@ struct obj *otmp;
 }
 
 boolean
-is_quest_artifact(otmp)
-struct obj *otmp;
+is_quest_artifact(struct obj *otmp)
 {
 	return((boolean)(otmp->oartifact == urole.questarti || 
 		(Race_if(PM_DROW) && (Role_if(PM_PRIEST) || Role_if(PM_ROGUE) || Role_if(PM_RANGER) || Role_if(PM_WIZARD)) && 
@@ -215,7 +208,7 @@ struct obj *otmp;
 }
 
 static const char *
-neminame()	/* return your role nemesis' name */
+neminame(void)	/* return your role nemesis' name */
 {
 	int i = urole.neminum;
 
@@ -226,7 +219,7 @@ neminame()	/* return your role nemesis' name */
 }
 
 static const char *
-guardname()	/* return your role leader's guard monster name */
+guardname(void)	/* return your role leader's guard monster name */
 {
 	int i = urole.guardnum;
 
@@ -234,15 +227,13 @@ guardname()	/* return your role leader's guard monster name */
 }
 
 static const char *
-homebase()	/* return your role leader's location */
+homebase(void)	/* return your role leader's location */
 {
 	return(urole.homebase);
 }
 
 static struct qtmsg *
-msg_in(qtm_list, msgnum)
-struct qtmsg *qtm_list;
-int	msgnum;
+msg_in(struct qtmsg *qtm_list, int msgnum)
 {
 	struct qtmsg *qt_msg;
 
@@ -253,8 +244,7 @@ int	msgnum;
 }
 
 static void
-convert_arg(c)
-char c;
+convert_arg(char c)
 {
 	register const char *str;
 
@@ -317,7 +307,7 @@ char c;
 }
 
 static void
-convert_line()
+convert_line(void)
 {
 	char *c, *cc;
 	char xbuf[BUFSZ];
@@ -388,8 +378,7 @@ convert_line()
 }
 
 static void
-deliver_by_pline(qt_msg)
-struct qtmsg *qt_msg;
+deliver_by_pline(struct qtmsg *qt_msg)
 {
 	long	size;
 
@@ -402,9 +391,7 @@ struct qtmsg *qt_msg;
 }
 
 static void
-deliver_by_window(qt_msg, how)
-struct qtmsg *qt_msg;
-int how;
+deliver_by_window(struct qtmsg *qt_msg, int how)
 {
 	long	size;
 	winid datawin = create_nhwindow(how);
@@ -419,8 +406,7 @@ int how;
 }
 
 void
-com_pager(msgnum)
-int	msgnum;
+com_pager(int msgnum)
 {
 	struct qtmsg *qt_msg;
 	
@@ -437,8 +423,7 @@ int	msgnum;
 }
 
 void
-qt_pager(msgnum)
-int	msgnum;
+qt_pager(int msgnum)
 {
 	struct qtmsg *qt_msg;
 
@@ -455,7 +440,7 @@ int	msgnum;
 }
 
 struct permonst *
-qt_montype()
+qt_montype(void)
 {
 	if(Role_if(PM_ANACHRONONAUT)){
 		switch(rn2(7)){
@@ -751,7 +736,7 @@ qt_montype()
 }
 
 struct permonst *
-archipelago_montype()
+archipelago_montype(void)
 {
 	int chance = rn2(100);
 	if(chance < 10){
@@ -774,7 +759,7 @@ archipelago_montype()
 
 }
 struct permonst *
-dismalswamp_montype()
+dismalswamp_montype(void)
 {
 	int chance = rn2(100);
 	if(chance < 40)
@@ -793,7 +778,7 @@ dismalswamp_montype()
 
 }
 struct permonst *
-blackforest_montype()
+blackforest_montype(void)
 {
 	int chance = rn2(100);
 	if(chance < 10)
@@ -817,7 +802,7 @@ blackforest_montype()
 
 }
 struct permonst *
-icecaves_montype()
+icecaves_montype(void)
 {
 	int chance = rn2(100);
 	if(chance < 10)
@@ -838,7 +823,7 @@ icecaves_montype()
 }
 
 struct permonst *
-chaos_montype()
+chaos_montype(void)
 {
 	if(on_level(&chaosf_level,&u.uz)){
 		int chance = d(1,100);
@@ -992,7 +977,7 @@ chaos_montype()
 }
 
 struct permonst *
-chaos2_montype()
+chaos2_montype(void)
 {
 	if(on_level(&elshava_level,&u.uz)){
 		if(rn2(3))
@@ -1038,7 +1023,7 @@ chaos2_montype()
 }
 
 struct permonst *
-chaos3_montype()
+chaos3_montype(void)
 {
 	if(In_mordor_forest(&u.uz)){
 		switch(rn2(20)){
@@ -1203,8 +1188,7 @@ chaos3_montype()
 
 
 struct permonst *
-ford_montype(leftright)
-int leftright;
+ford_montype(int leftright)
 {
 	if(!leftright)
 		leftright = rn2(2) ? 1 : -1;
@@ -1255,7 +1239,7 @@ int leftright;
 }
 
 struct permonst *
-neutral_montype()
+neutral_montype(void)
 {
 	if(u.uz.dnum == neutral_dnum && u.uz.dlevel < sum_of_all_level.dlevel){
 		int chance = rn2(100);
@@ -1377,7 +1361,7 @@ neutral_montype()
 }
 
 struct permonst *
-law_montype()
+law_montype(void)
 {
 	if(on_level(&path1_level,&u.uz)){
 		int chance = d(1,100);

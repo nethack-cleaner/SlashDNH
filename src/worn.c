@@ -8,8 +8,8 @@
 
 void FDECL(mon_block_extrinsic, (struct monst *, struct obj *, int, boolean, boolean));
 boolean FDECL(mon_gets_extrinsic, (struct monst *, int, struct obj *));
-static void FDECL(update_mon_intrinsic, (struct monst *,struct obj *,int,BOOLEAN_P,BOOLEAN_P));
-static void FDECL(m_dowear_type, (struct monst *,long, BOOLEAN_P, BOOLEAN_P));
+static void FDECL(update_mon_intrinsic, (struct monst *,struct obj *,int,boolean,boolean));
+static void FDECL(m_dowear_type, (struct monst *,long, boolean, boolean));
 static int NDECL(def_beastmastery);
 static int NDECL(def_vilya);
 static int NDECL(def_narya);
@@ -139,9 +139,7 @@ uring_art(int art_num)
  * also checks artifact properties
  */
 boolean
-item_has_property(obj, prop)
-struct obj * obj;
-int prop;
+item_has_property(struct obj *obj, int prop)
 {
 	int property_list[LAST_PROP];
 	int i;
@@ -172,10 +170,7 @@ int prop;
  * If called without an obj, uses otyp to give as much info as possible without knowing obj
  */
 void
-get_item_property_list(property_list, obj, otyp)
-int * property_list;
-struct obj* obj;
-int otyp;
+get_item_property_list(int *property_list, struct obj *obj, int otyp)
 {
 	int cur_prop, i, j;
 	boolean got_prop;
@@ -370,9 +365,7 @@ int otyp;
 
 /* Updated to use the extrinsic and blocked fields. */
 void
-setworn(obj, mask)
-register struct obj *obj;
-long mask;
+setworn(register struct obj *obj, long mask)
 {
 	register const struct worn *wp;
 	register struct obj *oobj;
@@ -468,8 +461,7 @@ long mask;
 /* called e.g. when obj is destroyed */
 /* Updated to use the extrinsic and blocked fields. */
 void
-setnotworn(obj)
-register struct obj *obj;
+setnotworn(register struct obj *obj)
 {
 	register const struct worn *wp;
 	register int p;
@@ -508,8 +500,7 @@ register struct obj *obj;
 }
 
 void
-mon_set_minvis(mon)
-struct monst *mon;
+mon_set_minvis(struct monst *mon)
 {
 	mon->perminvis = 1;
 	if (!mon->invis_blkd) {
@@ -522,11 +513,11 @@ struct monst *mon;
 }
 
 void
-mon_adjust_speed(mon, adjust, obj, verbose)
-struct monst *mon;
-int adjust;	/* positive => increase speed, negative => decrease */
-struct obj *obj;	/* item to make known if effect can be seen */
-boolean verbose;
+mon_adjust_speed(
+	struct monst *mon,
+	int adjust,	/* positive => increase speed, negative => decrease */
+	struct obj *obj,	/* item to make known if effect can be seen */
+	boolean verbose)
 {
     boolean give_msg = !in_mklev, petrify = FALSE;
     unsigned int oldspeed = mon->mspeed;
@@ -600,11 +591,7 @@ boolean verbose;
  * assumes single source of each blocked extrinsic
  */
 void
-mon_block_extrinsic(mon, obj, which, on, silently)
-struct monst *mon;
-struct obj *obj;
-int which;
-boolean on, silently;
+mon_block_extrinsic(struct monst *mon, struct obj *obj, int which, boolean on, boolean silently)
 {
 	if (on) {
 		switch (which)
@@ -644,10 +631,7 @@ boolean on, silently;
  * if given an ignored_obj, does not consider it to give any extrinsics
  */
 boolean
-mon_gets_extrinsic(mon, which, ignored_obj)
-struct monst *mon;
-int which;
-struct obj *ignored_obj;
+mon_gets_extrinsic(struct monst *mon, int which, struct obj *ignored_obj)
 {
 	struct obj *otmp;					/* item in mon's inventory */
 	boolean got_prop = FALSE;			/* property to find */
@@ -693,11 +677,7 @@ struct obj *ignored_obj;
 }
 
 static void
-update_mon_intrinsic(mon, obj, which, on, silently)
-struct monst *mon;
-struct obj *obj;
-int which;
-boolean on, silently;
+update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, boolean silently)
 {
     uchar mask;
     struct obj *otmp;
@@ -808,10 +788,7 @@ boolean on, silently;
 
 /* armor put on, taken off, grabbed, or dropped; might be magical variety */
 void
-update_mon_intrinsics(mon, obj, on, silently)
-struct monst *mon;
-struct obj *obj;
-boolean on, silently;
+update_mon_intrinsics(struct monst *mon, struct obj *obj, boolean on, boolean silently)
 {
 	/* dead monsters shouldn't print messages about them no longer getting their intrinsics */
 	if (DEADMONSTER(mon))
@@ -863,9 +840,7 @@ boolean on, silently;
 }
 
 int
-shield_ac_mon(mon, obj)
-struct monst *mon;
-struct obj *obj;
+shield_ac_mon(struct monst *mon, struct obj *obj)
 {
 	int shield_ac = 0;
 	shield_ac += max(0, arm_ac_bonus(obj) + (obj->objsize - mon->data->msize));
@@ -880,9 +855,8 @@ struct obj *obj;
 	return shield_ac;
 }
 
-int 
-base_mac(mon)
-struct monst *mon;
+int
+base_mac(struct monst *mon)
 {
 	int base = 10, armac = 0;
 	struct obj *monwep;
@@ -1030,8 +1004,7 @@ struct monst *mon;
 }
 
 int
-find_mac(mon)
-struct monst *mon;
+find_mac(struct monst *mon)
 {
 	struct obj *obj;
 	int base, armac = 0;
@@ -1106,8 +1079,7 @@ struct monst *mon;
 }
 
 int
-full_mac(mon)
-struct monst *mon;
+full_mac(struct monst *mon)
 {
 	struct obj *obj;
 	int base = 10, armac = 0;
@@ -1246,8 +1218,7 @@ struct monst *mon;
 }
 
 int
-full_marmorac(mon)
-struct monst *mon;
+full_marmorac(struct monst *mon)
 {
 	struct obj *obj;
 	int armac = 0;
@@ -1286,9 +1257,8 @@ struct monst *mon;
 	return 10 - armac;
 }
 
-int 
-base_nat_mdr(mon)
-struct monst *mon;
+int
+base_nat_mdr(struct monst *mon)
 {
 	int base = 0;
 	
@@ -1305,8 +1275,7 @@ struct monst *mon;
 }
 
 int
-base_mdr(mon)
-struct monst *mon;
+base_mdr(struct monst *mon)
 {
 	int base = 0;
 	
@@ -1351,8 +1320,7 @@ struct monst *mon;
 }
 
 int
-avg_spell_mdr(mon)
-struct monst *mon;
+avg_spell_mdr(struct monst *mon)
 {
 	int base = 0;
 	
@@ -1480,14 +1448,7 @@ roll_mdr_detail(struct monst *mon, struct monst *magr, int slot, int depth, int 
  * Includes effectiveness vs magr (optional)
  */
 void
-mon_slot_dr(mon, magr, slot, base_dr_out, armor_dr_out, natural_dr_out, depth)
-struct monst *mon;
-struct monst *magr;
-int slot;
-int *base_dr_out;
-int *armor_dr_out;
-int *natural_dr_out;
-int depth;
+mon_slot_dr(struct monst *mon, struct monst *magr, int slot, int *base_dr_out, int *armor_dr_out, int *natural_dr_out, int depth)
 {
 	/* DR addition: bas + sqrt(nat^2 + arm^2) (not done in this function) */
 	int bas_mdr; /* base DR:    magical-ish   */
@@ -1636,8 +1597,7 @@ int depth;
 }
 
 int
-avg_mdr(mon)
-struct monst *mon;
+avg_mdr(struct monst *mon)
 {
 	int i;
 	int sum = 0;
@@ -1683,8 +1643,7 @@ struct monst *mon;
 }
 
 int
-mdat_avg_mdr(mon)
-struct monst * mon;
+mdat_avg_mdr(struct monst *mon)
 {
 	/* only looks at a monster's base stats with minimal adjustment (and no worn armor) */
 	/* used for pokedex entry */
@@ -1733,9 +1692,7 @@ struct monst * mon;
  */
 
 void
-m_dowear(mon, creation)
-register struct monst *mon;
-boolean creation;
+m_dowear(register struct monst *mon, boolean creation)
 {
 #define RACE_EXCEPTION TRUE
 	/* Note the restrictions here are the same as in dowear in do_wear.c
@@ -1769,11 +1726,7 @@ boolean creation;
 }
 
 static void
-m_dowear_type(mon, flag, creation, racialexception)
-struct monst *mon;
-long flag;
-boolean creation;
-boolean racialexception;
+m_dowear_type(struct monst *mon, long flag, boolean creation, boolean racialexception)
 {
 	struct obj *old, *best, *obj;
 	int m_delay = 0;
@@ -1908,9 +1861,7 @@ outer_break:
 #undef RACE_EXCEPTION
 
 struct obj *
-mon_remove_armor(mon, flag)
-struct monst *mon;
-long flag;
+mon_remove_armor(struct monst *mon, long flag)
 {
 	struct obj *old;
 	int m_delay = 0;
@@ -1935,8 +1886,7 @@ long flag;
 }
 
 boolean
-mon_throw_armor(mon)
-struct monst *mon;
+mon_throw_armor(struct monst *mon)
 {
 	struct obj *old;
 	long flag;
@@ -1987,8 +1937,7 @@ struct monst *mon;
 }
 
 boolean
-mon_strip_armor(mon)
-struct monst *mon;
+mon_strip_armor(struct monst *mon)
 {
 	struct obj *old;
 	long flag;
@@ -2037,9 +1986,7 @@ struct monst *mon;
 }
 
 struct obj *
-which_armor(mon, flag)
-struct monst *mon;
-long flag;
+which_armor(struct monst *mon, long flag)
 {
 	register struct obj *obj;
 
@@ -2050,9 +1997,7 @@ long flag;
 
 /* remove an item of armor and then drop it */
 void
-m_lose_armor(mon, obj)
-struct monst *mon;
-struct obj *obj;
+m_lose_armor(struct monst *mon, struct obj *obj)
 {
 	mon->misc_worn_check &= ~obj->owornmask;
 	if (obj->owornmask)
@@ -2067,7 +2012,7 @@ struct obj *obj;
 
 /* all objects with their bypass bit set should now be reset to normal */
 void
-clear_bypasses()
+clear_bypasses(void)
 {
 	struct obj *otmp, *nobj;
 	struct monst *mtmp;
@@ -2111,17 +2056,14 @@ clear_bypasses()
 }
 
 void
-bypass_obj(obj)
-struct obj *obj;
+bypass_obj(struct obj *obj)
 {
 	obj->bypass = 1;
 	flags.bypasses = TRUE;
 }
 
 void
-mon_break_armor(mon, polyspot)
-struct monst *mon;
-boolean polyspot;
+mon_break_armor(struct monst *mon, boolean polyspot)
 {
 	register struct obj *otmp;
 	struct permonst *mdat = mon->data;
@@ -2275,9 +2217,7 @@ boolean polyspot;
 
 /* bias a monster's preferences towards armor that has special benefits. */
 int
-extra_pref(mon, obj)
-struct monst *mon;
-struct obj *obj;
+extra_pref(struct monst *mon, struct obj *obj)
 {
 	if (!obj)
 		return 0;
@@ -2408,8 +2348,7 @@ struct obj *obj;
  * armor that sufficiently covers the body might be able to block magic 
  */
 int
-magic_negation(mon)
-struct monst *mon;
+magic_negation(struct monst *mon)
 {
 	struct obj *armor;
 	int armpro = 0;
@@ -2459,9 +2398,7 @@ struct monst *mon;
 }
 
 void
-light_damage(arg, timeout)
-genericptr_t arg;
-long timeout;
+light_damage(genericptr_t arg, long timeout)
 {
 	struct obj *obj = (struct obj *) arg;;
  	xchar x = 0, y = 0;
@@ -2748,7 +2685,7 @@ long timeout;
 }
 
 static int
-def_beastmastery()
+def_beastmastery(void)
 {
 	int bm;
 	switch (P_SKILL(P_BEAST_MASTERY)) {
@@ -2765,25 +2702,25 @@ def_beastmastery()
 }
 
 int
-heal_vilya()
+heal_vilya(void)
 {
 	return (ACURR(A_INT) - 11)/2;
 }
 
 static int
-def_vilya()
+def_vilya(void)
 {
 	return (ACURR(A_INT) - 11)/2;
 }
 
 static int
-def_lomya()
+def_lomya(void)
 {
 	return (ACURR(A_WIS) - 11)/2;
 }
 
 int
-lev_lomya()
+lev_lomya(void)
 {
 	int bm = 0;
 	switch (P_SKILL(P_BEAST_MASTERY)) {
@@ -2800,19 +2737,19 @@ lev_lomya()
 }
 
 int
-en_nenya()
+en_nenya(void)
 {
 	return (ACURR(A_WIS) - 11)/2;
 }
 
 static int
-def_narya()
+def_narya(void)
 {
 	return (ACURR(A_CHA) - 11)/2;
 }
 
 int
-heal_mlevel_bonus()
+heal_mlevel_bonus(void)
 {
 	int bm = 0;
 	switch (P_SKILL(P_BEAST_MASTERY)) {
@@ -2837,7 +2774,7 @@ heal_mlevel_bonus()
 }
 
 static int
-def_mountedCombat()
+def_mountedCombat(void)
 {
 	int bm;
 	switch (P_SKILL(P_RIDING)) {

@@ -18,8 +18,8 @@ static int RoSbook;		/* Read spell or Study Wards?" */
 static int NDECL(purifying_blast);
 static int NDECL(stargate);
 static struct permonst * NDECL(choose_crystal_summon);
-static int FDECL(spell_let_to_idx, (CHAR_P));
-static boolean FDECL(check_spirit_let, (CHAR_P));
+static int FDECL(spell_let_to_idx, (char));
+static boolean FDECL(check_spirit_let, (char));
 static boolean FDECL(cursed_book, (struct obj *bp));
 static boolean FDECL(confused_book, (struct obj *));
 static void FDECL(deadbook, (struct obj *));
@@ -137,8 +137,7 @@ static const char where_to_gaze[] = "Where do you want to look?";
 
 /* convert a letter into a number in the range 0..51, or -1 if not a letter */
 static int
-spell_let_to_idx(ilet)
-char ilet;
+spell_let_to_idx(char ilet)
 {
     int indx;
 
@@ -299,8 +298,7 @@ hallu_book(struct obj *spellbook){
 
 /* special effects for The Book of the Dead */
 static void
-deadbook(book2)
-struct obj *book2;
+deadbook(struct obj *book2)
 {
     struct monst *mtmp, *mtmp2;
     coord mm;
@@ -424,7 +422,7 @@ raise_dead:
 }
 
 static int
-learn()
+learn(void)
 {
 	int i;
 	short booktype;
@@ -604,8 +602,8 @@ learn()
 }
 
 int
-further_study(booktype) /* if the player is skilled enough in the book's spell school, they can learn another spell from the orginial tome */
-int booktype;
+further_study( /* if the player is skilled enough in the book's spell school, they can learn another spell from the orginial tome */
+	int booktype)
 {
 	int skill = P_SKILL(spell_skilltype(booktype));
 	int related = 0;
@@ -640,8 +638,7 @@ int booktype;
 }
 
 int
-study_book(spellbook)
-struct obj *spellbook;
+study_book(struct obj *spellbook)
 {
 	register int booktype = spellbook->otyp;
 	register boolean confused = (Confusion != 0);
@@ -832,8 +829,7 @@ struct obj *spellbook;
 
 /* from an SPE_ID get the index of spl_book that casts that spell */
 int
-spellid_to_spellno(spell)
-int spell;
+spellid_to_spellno(int spell)
 {
 	int i;
 	for (i = 0; i < MAXSPELL; i++) {
@@ -845,31 +841,28 @@ int spell;
 }
 
 boolean
-spell_maintained(spell)
-int spell;
+spell_maintained(int spell)
 {
     spell = (spell - SPE_DIG);
     return !!(u.spells_maintained & ((unsigned long long int)1 << spell));
 }
 
 void
-spell_maintain(spell)
-int spell;
+spell_maintain(int spell)
 {
     spell = (spell - SPE_DIG);
     u.spells_maintained |= ((unsigned long long int)1 << spell);
 }
 
 void
-spell_unmaintain(spell)
-int spell;
+spell_unmaintain(int spell)
 {
     spell = (spell - SPE_DIG);
     u.spells_maintained &= ~((unsigned long long int)1 << spell);
 }
 
 void
-run_maintained_spells()
+run_maintained_spells(void)
 {
     int spell;
 	int spell_index;
@@ -945,8 +938,7 @@ run_maintained_spells()
 }
 
 static boolean
-can_maintain_spell(spell)
-int spell;
+can_maintain_spell(int spell)
 {
 	switch (spell)
 	{
@@ -964,8 +956,7 @@ int spell;
 }
 
 static boolean
-run_maintained_spell(spell)
-int spell;
+run_maintained_spell(int spell)
 {
     // /* Find the skill for the given spell type category */
     // int skill = P_SKILL(spell_skilltype(spell));
@@ -1028,8 +1019,7 @@ int spell;
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
 void
-book_disappears(obj)
-struct obj *obj;
+book_disappears(struct obj *obj)
 {
 	if (obj == book) book = (struct obj *)0;
 }
@@ -1038,15 +1028,14 @@ struct obj *obj;
    so the sequence start reading, get interrupted, name the book, resume
    reading would read the "new" book from scratch */
 void
-book_substitution(old_obj, new_obj)
-struct obj *old_obj, *new_obj;
+book_substitution(struct obj *old_obj, struct obj *new_obj)
 {
 	if (old_obj == book) book = new_obj;
 }
 
 /* called from moveloop() */
 void
-age_spells()
+age_spells(void)
 {
 	int i;
 	int timeout = 1;
@@ -1067,8 +1056,7 @@ age_spells()
 }
 
 void
-damage_spells(dmg)
-int dmg;
+damage_spells(int dmg)
 {
 	int i;
 	for (i = 0; i < MAXSPELL && spellid(i) != NO_SPELL; i++)
@@ -1082,9 +1070,7 @@ int dmg;
  * parameter.  Otherwise return FALSE.
  */
 static boolean
-getspell(spell_no, menutype)
-int *spell_no;
-int menutype;
+getspell(int *spell_no, int menutype)
 {
 	int nspells, idx;
 	char ilet, lets[BUFSZ], qbuf[QBUFSZ];
@@ -1133,8 +1119,7 @@ int menutype;
  */
  
 static boolean
-getspirit(power_no)
-	int *power_no;
+getspirit(int *power_no)
 {
 	int nspells, idx;
 	char ilet, lets[BUFSZ], qbuf[QBUFSZ];
@@ -1319,7 +1304,7 @@ static const struct spirit_power spirit_powers[NUMBER_POWERS] = {
 };
 
 int
-pick_council_seal()
+pick_council_seal(void)
 {
 	winid tmpwin;
 	int i, n, how;
@@ -1361,7 +1346,7 @@ pick_council_seal()
 }
 
 int
-pick_gnosis_seal()
+pick_gnosis_seal(void)
 {
 	winid tmpwin;
 	int i, n, how;
@@ -1403,9 +1388,7 @@ pick_gnosis_seal()
 }
 
 static boolean
-spiritLets(lets, respect_timeout)
-	char *lets;
-	int respect_timeout;
+spiritLets(char *lets, int respect_timeout)
 {
 	int i,s;
 	if(flags.timeoutOrder){
@@ -1447,7 +1430,7 @@ spiritLets(lets, respect_timeout)
 
 /* the 'Z' command -- cast a spell */
 int
-docast()
+docast(void)
 {
 	int spell_no;
 	if (getspell(&spell_no, SPELLMENU_CAST))
@@ -1457,7 +1440,7 @@ docast()
 
 /* allow the player to conditionally cast spells via equipped artifacts */
 void
-update_externally_granted_spells()
+update_externally_granted_spells(void)
 {
 	int i, j, n = 0;
 	int exspells[MAXSPELL];
@@ -1521,7 +1504,7 @@ update_externally_granted_spells()
 
 /* the '^f' command -- fire a spirit power */
 int
-dospirit()
+dospirit(void)
 {
 	int power_no;
 	
@@ -1550,8 +1533,7 @@ dospirit()
 }
 
 static boolean
-check_spirit_let(let)
-	char let;
+check_spirit_let(char let)
 {
 	int i;
 	if(let >= 'a' && let <= 'z') i = (int)(let - 'a');
@@ -1571,8 +1553,7 @@ check_spirit_let(let)
  * assumes all spells of a damage type are in the same school
  */
 int
-spell_skill_from_adtype(atype)
-int atype;
+spell_skill_from_adtype(int atype)
 {
 	int spell = 0;
 	switch (atype)
@@ -1602,8 +1583,7 @@ int atype;
 }
 
 int
-spell_adtype(spell)
-int spell;
+spell_adtype(int spell)
 {
 	switch (spell)
 	{
@@ -1633,8 +1613,7 @@ int spell;
 }
 
 const char *
-spelltypemnemonic(skill)
-int skill;
+spelltypemnemonic(int skill)
 {
 	switch (skill) {
 	    case P_ATTACK_SPELL:
@@ -1658,8 +1637,7 @@ int skill;
 }
 
 static int
-spellhunger(energy)
-int energy;
+spellhunger(int energy)
 {
 	int hungr = energy * 2;
 	int intell;
@@ -1697,14 +1675,13 @@ int energy;
 	return hungr;
 }
 int
-spell_skilltype(booktype)
-int booktype;
+spell_skilltype(int booktype)
 {
 	return (objects[booktype].oc_skill);
 }
 
 static void
-cast_protection()
+cast_protection(void)
 {
 	int loglev = 0;
 	int l = u.ulevel;
@@ -1774,7 +1751,7 @@ cast_protection()
  * If they suceeed, non-permanent summons' durations are halved.
  */
 static void
-cast_abjuration()
+cast_abjuration(void)
 {
 	struct monst * mtmp;
 	int i, x, y;
@@ -1800,7 +1777,7 @@ cast_abjuration()
 /* Banish all summoned creatures 
  */
 void
-expel_summons()
+expel_summons(void)
 {
 	struct monst *mtmp, *nmon;
 	int dur;
@@ -1817,9 +1794,7 @@ expel_summons()
 
 
 static void
-cast_extra_healing_at(x, y, arg)
-int x, y;
-genericptr_t arg;
+cast_extra_healing_at(int x, int y, genericptr_t arg)
 {
 	struct monst * mtmp = m_u_at(x, y);
 	if (mtmp == &youmonst)
@@ -1829,8 +1804,7 @@ genericptr_t arg;
 }
 
 static void
-cast_mass_healing(otmp)
-struct obj * otmp;
+cast_mass_healing(struct obj *otmp)
 {
 	int radius = 2 + P_SKILL(P_HEALING_SPELL) + !!Spellboost;
 	do_clear_area(u.ux, u.uy, radius, cast_extra_healing_at, (genericptr_t)otmp);
@@ -1838,8 +1812,7 @@ struct obj * otmp;
 
 /* attempting to cast a forgotten spell will cause disorientation */
 static void
-spell_backfire(spell)
-int spell;
+spell_backfire(int spell)
 {
     long duration = (long)((spellev(spell) + 1) * 3);	 /* 6..24 */
 
@@ -1866,9 +1839,7 @@ int spell;
 }
 
 static boolean
-sightwedge
-(dx,dy,x1,y1,x2,y2)
-int dx,dy,x1,y1,x2,y2;
+sightwedge(int dx, int dy, int x1, int y1, int x2, int y2)
 {
 	boolean gx=FALSE, gy=FALSE;
 	int deltax = x2-x1, deltay = y2-y1;
@@ -1935,9 +1906,7 @@ int dx,dy,x1,y1,x2,y2;
 }
 
 void
-damningdark(x,y,val)
-int x, y;
-genericptr_t val;
+damningdark(int x, int y, genericptr_t val)
 {
 	int nd = *((int *)val);
 	struct monst *mon=m_at(x,y);
@@ -1972,8 +1941,7 @@ genericptr_t val;
 }
 
 static boolean
-masterDoorBox(x,y)
-	int x, y;
+masterDoorBox(int x, int y)
 {
 	struct obj *otmp;
 	char qbuf[QBUFSZ];
@@ -2002,9 +1970,7 @@ masterDoorBox(x,y)
 }
 
 boolean
-tt_findadjacent(cc, mon)
-coord *cc;
-struct monst *mon;
+tt_findadjacent(coord *cc, struct monst *mon)
 {
 	int x, y, spot=0;
 	for(x = mon->mx-1; x <= mon->mx+1; x++){
@@ -2028,7 +1994,7 @@ struct monst *mon;
 }
 
 int
-spiritDsize()
+spiritDsize(void)
 {
     int bonus = 1;
     // if(ublindf && ublindf->oartifact == ART_SOUL_LENS) bonus = 2;
@@ -2044,7 +2010,7 @@ spiritDsize()
 	else return 9 * bonus;
 }
 static int
-purifying_blast()
+purifying_blast(void)
 {
 	struct zapdata zapdata = { 0 };
 	struct monst *mon;
@@ -2078,7 +2044,7 @@ purifying_blast()
 }
 
 static int
-stargate()
+stargate(void)
 {
 	int i, num_ok_dungeons, last_ok_dungeon = 0;
 	d_level newlev;
@@ -2142,9 +2108,7 @@ stargate()
 }
 
 int
-spiriteffects(power, atme)
-	int power;
-	boolean atme;
+spiriteffects(int power, boolean atme)
 {
 	int dsize = spiritDsize();
 	int tmp, weptmp, tchtmp;
@@ -4156,7 +4120,7 @@ spiriteffects(power, atme)
 }
 
 struct permonst *
-choose_crystal_summon()
+choose_crystal_summon(void)
 {
 	winid tmpwin;
 	int i, n, how;
@@ -4198,9 +4162,7 @@ choose_crystal_summon()
 
 /* nudzirath active power for bhit, hits pile */
 int
-nudzirath_hit_pile(pileobj, mirror)
-struct obj * pileobj;
-struct obj * mirror;
+nudzirath_hit_pile(struct obj *pileobj, struct obj *mirror)
 {
 	if (pileobj->otyp == MIRROR) {
 		nudzirath_shatter(pileobj, pileobj->ox, pileobj->oy);
@@ -4211,9 +4173,7 @@ struct obj * mirror;
 }
 /* nudzirath active power for bhit, hits monster */
 int
-nudzirath_hit_mon(mtmp, mirror)
-struct monst * mtmp;
-struct obj * mirror;
+nudzirath_hit_mon(struct monst *mtmp, struct obj *mirror)
 {
 	struct obj * obj;
 	for (obj = mtmp->minvent; obj; obj = obj->nobj) {
@@ -4231,9 +4191,7 @@ struct obj * mirror;
  * We need to manually find (dx,dy) and connect to (u.ux,u.uy) for the major effect
  */
 void
-nudzirath_shatter(otmp, sx, sy)
-struct obj * otmp;
-int sx, sy;
+nudzirath_shatter(struct obj *otmp, int sx, int sy)
 {
 	int dmg, dsize = spiritDsize();
 	int tx = sx, ty = sy;
@@ -4356,8 +4314,7 @@ int sx, sy;
 }
 
 void
-blessedlight(x,y)
-int x, y;
+blessedlight(int x, int y)
 {
 	int nd;
 	int dmod = 1;
@@ -4395,8 +4352,7 @@ int x, y;
 }
 
 int
-wordeffects(spell)
-int spell;
+wordeffects(int spell)
 {
 	int sx = u.ux, sy = u.uy, nd = max(u.ulevel/2, 1);
 	struct monst *mon;
@@ -4548,8 +4504,7 @@ int spell;
 /* returns the Pw cost of spl_book[spell] */
 /* does *not* include Amulet of Yendor cost */
 int
-spellenergy(spell)
-int spell;
+spellenergy(int spell)
 {
 	int energy = spellev(spell) * 5;
 
@@ -4953,7 +4908,7 @@ dothrowspell:
 /* Choose location where spell takes effect. */
 /* returns 1 if the action should happen, 0 otherwise */
 static int
-throwspell()
+throwspell(void)
 {
 	coord cc;
 
@@ -4990,7 +4945,7 @@ throwspell()
 
 /* Choose location where spell takes effect. */
 int
-throwgaze()
+throwgaze(void)
 {
 	coord cc;
 
@@ -5020,8 +4975,7 @@ throwgaze()
 }
 
 void
-losespells(howmuch)
-	int howmuch;
+losespells(int howmuch)
 {
 	int  n;
 
@@ -5032,7 +4986,7 @@ losespells(howmuch)
 
 /* the '+' command -- view known spells */
 int
-dovspell()
+dovspell(void)
 {
 	int spell_no;
 	if (getspell(&spell_no, SPELLMENU_VIEW))
@@ -5041,10 +4995,10 @@ dovspell()
 }
 
 int
-dospiritmenu(action, power_no, respect_timeout)
-int action;	/* SPELLMENU_CAST, SPELLMENU_VIEW, SPELLMENU_DESCRIBE, or power number */
-int *power_no;
-int respect_timeout;
+dospiritmenu(
+	int action,	/* SPELLMENU_CAST, SPELLMENU_VIEW, SPELLMENU_DESCRIBE, or power number */
+	int *power_no,
+	int respect_timeout)
 {
 	winid tmpwin;
 	int n, how;
@@ -5278,8 +5232,7 @@ int respect_timeout;
 }
 
 char *
-splknowpct(spell)
-int spell;
+splknowpct(int spell)
 {
 	static char buf[BUFSZ];
 
@@ -5292,9 +5245,9 @@ int spell;
 }
 
 static boolean
-dospellmenu(splaction, spell_no)
-int splaction;	/* SPELLMENU_CAST, SPELLMENU_VIEW, SPELLMENU_DESCRIBE, SPELLMENU_MAINTAIN, SPELLMENU_PICK, SPELLMENU_QUIVER, or spl_book[] index */
-int *spell_no;
+dospellmenu(
+	int splaction,	/* SPELLMENU_CAST, SPELLMENU_VIEW, SPELLMENU_DESCRIBE, SPELLMENU_MAINTAIN, SPELLMENU_PICK, SPELLMENU_QUIVER, or spl_book[] index */
+	int *spell_no)
 {
 	winid tmpwin;
 	int i, n, how;
@@ -5516,8 +5469,7 @@ int *spell_no;
 
 
 static void
-describe_spell(spellID)
-int spellID;
+describe_spell(int spellID)
 {
 	struct obj *pseudo;
 
@@ -5860,8 +5812,8 @@ int spellID;
 
 
 #ifdef DUMP_LOG
-void 
-dump_spells()
+void
+dump_spells(void)
 {
 	int i;
 	char buf[BUFSZ];
@@ -5890,8 +5842,7 @@ dump_spells()
 
 /* Integer square root function without using floating point. */
 static int
-isqrt(val)
-int val;
+isqrt(int val)
 {
     int rt = 0;
     int odd = 1;
@@ -5904,7 +5855,7 @@ int val;
 }
 
 int
-base_casting_stat()
+base_casting_stat(void)
 {
 	int stat;
 	if(uwep && uwep->oartifact == ART_RITUAL_RINGED_SPEAR){
@@ -5937,8 +5888,7 @@ base_casting_stat()
 }
 
 int
-percent_success(spell)
-int spell;
+percent_success(int spell)
 {
 	/* Intrinsic and learned ability are combined to calculate
 	 * the probability of player's success at cast a given spell.
@@ -6379,8 +6329,7 @@ int spell;
 
 /* Learn a spell during creation of the initial inventory */
 void
-initialspell(obj)
-struct obj *obj;
+initialspell(struct obj *obj)
 {
 	int i;
 
@@ -6402,8 +6351,7 @@ struct obj *obj;
 }
 
 void
-initialforgotwizardspells(num)
-int num;
+initialforgotwizardspells(int num)
 {
 	int spells[num];
 	int found = 0;
@@ -6431,8 +6379,7 @@ int num;
 }
 
 void
-initialforgotpriestspells(num)
-int num;
+initialforgotpriestspells(int num)
 {
 	int candidatespells[] = {SPE_LIGHT, SPE_DETECT_MONSTERS, SPE_DETECT_UNSEEN,
 				  SPE_CURE_BLINDNESS, SPE_EXTRA_HEALING,
@@ -6463,8 +6410,7 @@ int num;
 
 /* Learn a forgotten spell during creation of the initial inventory */
 void
-initialforgotspell(otyp)
-int otyp;
+initialforgotspell(int otyp)
 {
 	int i;
 	knows_object(otyp);
@@ -6487,8 +6433,7 @@ int otyp;
 
 /* Learn a ward during creation of the initial inventory */
 void
-initialward(obj)
-struct obj *obj;
+initialward(struct obj *obj)
 {
 	// WARD_ACHERON			0x0000008L
 	// WARD_QUEEN			0x0000200L
@@ -6554,8 +6499,7 @@ struct obj *obj;
 }
 
 long
-doreadstudy(prompt)
-const char *prompt;
+doreadstudy(const char *prompt)
 {
 	winid tmpwin;
 	int n, how;
@@ -6597,8 +6541,7 @@ const char *prompt;
 
 
 void
-set_spirit_powers(spirits_seal)
-	long spirits_seal;
+set_spirit_powers(long spirits_seal)
 {
 	int i,j;
 	if(spirits_seal==0) return;
@@ -6624,7 +6567,7 @@ set_spirit_powers(spirits_seal)
 }
 
 int
-reorder_spirit_powers()
+reorder_spirit_powers(void)
 {
 	int power_indx = -1;
 	char swaplet;
@@ -6686,7 +6629,7 @@ reorder_spirit_powers()
 }
 
 void
-dopseudonatural()
+dopseudonatural(void)
 {
 	struct monst *mon, *nmon;
 	int tmp, weptmp, tchtmp;
@@ -6710,7 +6653,7 @@ dopseudonatural()
 }
 
 void
-dodestruction()
+dodestruction(void)
 {
 	struct monst *mon, *nmon;
 	int tmp, weptmp, tchtmp;
@@ -6745,7 +6688,7 @@ dodestruction()
 }
 
 boolean
-doreinforce_spell()
+doreinforce_spell(void)
 {
 	int spell_no;
 	if (getspell(&spell_no, SPELLMENU_PICK)){
@@ -6757,7 +6700,7 @@ doreinforce_spell()
 }
 
 boolean
-doreinforce_binding()
+doreinforce_binding(void)
 {
 	int i, j;
 	winid tmpwin;

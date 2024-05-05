@@ -21,7 +21,7 @@ typedef struct {
 } ExplodeRegion;
 
 static ExplodeRegion *
-create_explode_region()
+create_explode_region(void)
 {
     ExplodeRegion *reg;
 
@@ -33,10 +33,9 @@ create_explode_region()
 }
 
 static void
-add_location_to_explode_region(x, y, reg)
-xchar x, y;
-ExplodeRegion *reg;
+add_location_to_explode_region(int x, int y, genericptr_t _reg)
 {
+    ExplodeRegion *reg = _reg;
     int i;
     ExplodeLocation *new;
     for(i = 0; i < reg->nlocations; i++)
@@ -59,15 +58,14 @@ ExplodeRegion *reg;
 }
 
 static int
-compare_explode_location(loc1, loc2)
-ExplodeLocation *loc1, *loc2;
+compare_explode_location(const void *_loc1, const void *_loc2)
 {
+    const ExplodeLocation *loc1 = _loc1, *loc2 = _loc2;
     return loc1->y == loc2->y ? loc1->x - loc2->x : loc1->y - loc2->y;
 }
 
 static void
-set_blast_symbols(reg)
-ExplodeRegion *reg;
+set_blast_symbols(ExplodeRegion *reg)
 {
     int i, j, bitmask;
     /* The index into the blast symbol array is a bitmask containing 4 bits:
@@ -112,8 +110,7 @@ ExplodeRegion *reg;
 }
 
 static void
-free_explode_region(reg)
-ExplodeRegion *reg;
+free_explode_region(ExplodeRegion *reg)
 {
     free((genericptr_t)reg->locations);
     free((genericptr_t)reg);
@@ -121,7 +118,7 @@ ExplodeRegion *reg;
 
 /* This is the "do-it-all" explosion command */
 static void FDECL(do_explode,
-	(int,int,ExplodeRegion *,int,int,int,int,int,BOOLEAN_P, struct permonst *));
+	(int,int,ExplodeRegion *,int,int,int,int,int,boolean, struct permonst *));
 
 /* Note: I had to choose one of three possible kinds of "type" when writing
  * this function: a wand type (like in zap.c), an adtyp, or an object type.
@@ -130,55 +127,33 @@ static void FDECL(do_explode,
  * they don't supply enough information--was it a player or a monster that
  * did it, and with a wand, spell, or breath weapon?  Object types share both
  * these disadvantages....
+ *
+ * Wand types have now been replaced by adtyps everywhere.
  */
 void
-explode(x, y, adtyp, olet, dam, color, radius)
-int x, y;
-int adtyp; /* the same as in zap.c */
-int olet;
-int dam;
-int color;
-int radius;
+explode(int x, int y, int adtyp, int olet, int dam, int color, int radius)
 {
 	explode_full(x, y, adtyp, olet, dam, color, radius, 0, !flags.mon_moving, (struct permonst *) 0);
 }
 
 void
-explode_sound(x, y, adtyp, olet, dam, color, radius, dest)
-int x, y;
-int adtyp; /* the same as in zap.c */
-int olet;
-int dam;
-int color;
-int radius;
-int dest;
+explode_sound(int x, int y, int adtyp, int olet, int dam, int color, int radius, int dest)
 {
 	explode_full(x, y, adtyp, olet, dam, color, radius, dest, !flags.mon_moving, (struct permonst *) 0);
 }
 
 void
-explode_pa(x, y, adtyp, olet, dam, color, radius, pa)
-int x, y;
-int adtyp; /* the same as in zap.c */
-int olet;
-int dam;
-int color;
-int radius;
-struct permonst *pa;
+explode_pa(int x, int y, int adtyp, int olet, int dam, int color, int radius, struct permonst *pa)
 {
 	explode_full(x, y, adtyp, olet, dam, color, radius, 0, !flags.mon_moving, pa);
 }
 
 
 void
-explode_yours(x, y, adtyp, olet, dam, color, radius, yours)
-int x, y;
-int adtyp; /* the same as in zap.c */
-int olet;
-int dam;
-int color;
-int radius;
-boolean yours; /* is it your fault (for killing monsters) */
+explode_yours(
+	int x, int y, int adtyp, int olet,
+	int dam, int color, int radius,
+	boolean yours)	 /* is it your fault (for killing monsters) */
 {
 	/* assumes you don't want sound,
 	 * this is used for not-player-caused explosions on the player's turn,
@@ -188,16 +163,10 @@ boolean yours; /* is it your fault (for killing monsters) */
 }
 
 void
-explode_full(x, y, adtyp, olet, dam, color, radius, dest, yours, pa)
-int x, y;
-int adtyp; /* the same as in zap.c */
-int olet;
-int dam;
-int color;
-int radius;
-int dest;
-boolean yours;
-struct permonst *pa;
+explode_full(
+	int x, int y, int adtyp, int olet,
+	int dam, int color, int radius, int dest,
+	boolean yours, struct permonst *pa)
 {
 	ExplodeRegion *area;
 	area = create_explode_region();
@@ -224,12 +193,7 @@ struct permonst *pa;
 }
 
 void
-splash(x, y, dx, dy, adtyp, olet, dam, color)
-int x, y, dx, dy;
-int adtyp;
-int olet;
-int dam;
-int color;
+splash(int x, int y, int dx, int dy, int adtyp, int olet, int dam, int color)
 {
 	/*
 	Splash pattern:
@@ -259,16 +223,16 @@ int color;
 }
 
 static void
-do_explode(x, y, area, adtyp, olet, dam, color, dest, yours, pa)
-int x, y;
-ExplodeRegion *area;
-int adtyp; /* AD_TYPE and O_CLASS describing the cause of the explosion */
-int olet;
-int dam;
-int color;
-int dest; /* 0 = normal, 1 = silent, 2 = remote, 4 = no sound */	
-boolean yours; /* is it your fault (for killing monsters) */
-struct permonst *pa; /* permonst of the attacker (used for disease) */
+do_explode(
+	int x, int y,
+	ExplodeRegion *area,
+	int adtyp, /* AD_TYPE and O_CLASS describing the cause of the explosion */
+	int olet,
+	int dam,
+	int color,
+	int dest, /* 0 = normal, 1 = silent, 2 = remote, 4 = no sound */	
+	boolean yours, /* is it your fault (for killing monsters) */
+	struct permonst *pa) /* permonst of the attacker (used for disease) */
 {
 	int i, k, damu = dam;
 	boolean starting = 1, silver = FALSE;
@@ -913,13 +877,14 @@ struct scatter_chain {
 
 /* returns number of scattered objects */
 long
-scatter(sx,sy,blastforce,scflags, obj, loss, shkp)
-int sx,sy;				/* location of objects to scatter */
-int blastforce;				/* force behind the scattering	*/
-unsigned int scflags;
-struct obj *obj;			/* only scatter this obj        */
-long *loss;				/* report $ value of damage caused here if non-null */
-struct monst *shkp;		/* shopkeepr that owns the object (may be null) */
+scatter(
+	int sx,
+	int sy,				/* location of objects to scatter */
+	int blastforce,				/* force behind the scattering	*/
+	unsigned int scflags,
+	struct obj *obj,			/* only scatter this obj        */
+	long *loss,				/* report $ value of damage caused here if non-null */
+	struct monst *shkp		/* shopkeepr that owns the object (may be null) */)
 {
 	register struct obj *otmp;
 	register int tmp;
@@ -1121,8 +1086,7 @@ struct monst *shkp;		/* shopkeepr that owns the object (may be null) */
  * For now, just perform a "regular" explosion.
  */
 void
-splatter_burning_oil(x, y)
-    int x, y;
+splatter_burning_oil(int x, int y)
 {
     explode(x, y, AD_FIRE, BURNING_OIL, d(4,4), EXPL_FIERY, 1);
 }
@@ -1130,8 +1094,7 @@ splatter_burning_oil(x, y)
 #define BY_OBJECT       ((struct monst *)0)
 
 static int
-dp(n, p)		/* 0 <= dp(n, p) <= n */
-int n, p;
+dp(int n, int p)		/* 0 <= dp(n, p) <= n */
 {
     int tmp = 0;
     while (n--) tmp += !rn2(p);
@@ -1159,13 +1122,11 @@ struct grenade_callback {
     boolean isyou;
 };
 
-static void FDECL(grenade_effects, (struct obj *,XCHAR_P,XCHAR_P,
-	ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,BOOLEAN_P));
+static void FDECL(grenade_effects, (struct obj *,xchar,xchar,
+	ExplodeRegion *,ExplodeRegion *,ExplodeRegion *,boolean));
 
 static int
-grenade_fiery_callback(data, x, y)
-genericptr_t data;
-int x, y;
+grenade_fiery_callback(genericptr_t data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     struct grenade_callback *gc = (struct grenade_callback *)data;
@@ -1178,9 +1139,7 @@ int x, y;
 }
 
 static int
-grenade_gas_callback(data, x, y)
-genericptr_t data;
-int x, y;
+grenade_gas_callback(genericptr_t data, int x, int y)
 {
     int is_accessible = ZAP_POS(levl[x][y].typ);
     struct grenade_callback *gc = (struct grenade_callback *)data;
@@ -1190,9 +1149,7 @@ int x, y;
 }
 
 static int
-grenade_dig_callback(data, x, y)
-genericptr_t data;
-int x, y;
+grenade_dig_callback(genericptr_t data, int x, int y)
 {
     struct grenade_callback *gc = (struct grenade_callback *)data;
     if (dig_check(BY_OBJECT, FALSE, x, y))
@@ -1201,11 +1158,13 @@ int x, y;
 }
 
 static void
-grenade_effects(source, x, y, fiery_area, gas_area, dig_area, isyou)
-struct obj *source;
-xchar x, y;
-ExplodeRegion *fiery_area, *gas_area, *dig_area;
-boolean isyou;
+grenade_effects(
+	struct obj *source,
+	xchar x, xchar y,
+	ExplodeRegion *fiery_area,
+	ExplodeRegion *gas_area,
+	ExplodeRegion *dig_area,
+	boolean isyou)
 {
     int i, r;
     struct obj *obj, *obj2;
@@ -1311,11 +1270,7 @@ boolean isyou;
  */
 
 void
-grenade_explode(obj, x, y, isyou, dest)
-struct obj *obj;
-int x, y;
-boolean isyou;
-int dest;
+grenade_explode(struct obj *obj, int x, int y, boolean isyou, int dest)
 {
     int i, adtyp;
     boolean shop_damage = FALSE;
@@ -1361,9 +1316,8 @@ int dest;
     if (shop_damage) pay_for_damage("damage", FALSE);
 }
 
-void arm_bomb(obj, yours)
-struct obj *obj;
-boolean yours;
+void
+arm_bomb(struct obj *obj, boolean yours)
 {
 	if (is_grenade(obj)) {
 		attach_bomb_blow_timeout(obj, 
@@ -1375,8 +1329,7 @@ boolean yours;
 }
 
 int
-adtyp_expl_color(adtyp)
-int adtyp;
+adtyp_expl_color(int adtyp)
 {
 	switch(adtyp){
 		case AD_PHYS:

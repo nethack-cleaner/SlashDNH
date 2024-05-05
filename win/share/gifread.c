@@ -525,9 +525,7 @@ int len;
 
 
 boolean
-fopen_gif_file(filename, type)
-const char *filename;
-const char *type;
+fopen_gif_file(const char *filename, const char *type)
 {
 	int i;
 
@@ -640,7 +638,7 @@ pixel (*pixels)[TILE_X];
 }
 
 int
-fclose_gif_file()
+fclose_gif_file(void)
 {
 	int i;
 
@@ -664,9 +662,7 @@ static char *std_args[] = { "tilemap",	/* dummy argv[0] */
 			"other.gif",    "other.txt" };
 
 int
-main(argc, argv)
-int argc;
-char *argv[];
+main(int argc, char *argv[])
 {
 	pixel pixels[TILE_Y][TILE_X];
 

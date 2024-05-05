@@ -73,11 +73,11 @@ static int NDECL(wiz_showkills);	/* showborn patch */
 static int NDECL(wiz_setinsight);
 static int NDECL(wiz_setsanity);
 static int FDECL(getvalue, (const char *));
-extern void FDECL(list_vanquished, (int, BOOLEAN_P)); /* showborn patch */
+extern void FDECL(list_vanquished, (int, boolean)); /* showborn patch */
 #ifdef DEBUG_MIGRATING_MONS
 static int NDECL(wiz_migrate_mons);
 #endif
-static void FDECL(count_obj, (struct obj *, long *, long *, BOOLEAN_P, BOOLEAN_P));
+static void FDECL(count_obj, (struct obj *, long *, long *, boolean, boolean));
 static void FDECL(obj_chain, (winid, const char *, struct obj *, long *, long *));
 static void FDECL(magic_chest_obj_chain, (winid, const char *, long *, long *));
 static void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
@@ -90,7 +90,7 @@ static int NDECL(wiz_port_debug);
 # endif
 static int NDECL(enter_explore_mode);
 
-static void FDECL(bind_key, (UCHAR_P, char*));
+static void FDECL(bind_key, (uchar, char*));
 static void NDECL(init_bind_list);
 static void NDECL(change_bind_list);
 #ifdef WIZARD
@@ -105,18 +105,18 @@ static const char* readchar_queue="";
 static char last_cmd_char='\0';
 
 static char *NDECL(parse);
-static boolean FDECL(help_dir, (CHAR_P,const char *));
+static boolean FDECL(help_dir, (char,const char *));
 
 
 static int
-doprev_message()
+doprev_message(void)
 {
     return nh_doprev_message();
 }
 
 /* Count down by decrementing multi */
 static int
-timed_occupation()
+timed_occupation(void)
 {
 	int result;
 	result = (*timed_occ_fn)();
@@ -140,7 +140,7 @@ timed_occupation()
  *			Setting traps.
  */
 void
-reset_occupations()
+reset_occupations(void)
 {
 	reset_remarm();
 	reset_pick();
@@ -151,10 +151,7 @@ reset_occupations()
  * function times out by its own means.
  */
 void
-set_occupation(fn, txt, xtime)
-int NDECL((*fn));
-const char *txt;
-int xtime;
+set_occupation(int NDECL ((*fn)), const char *txt, int xtime)
 {
 	if (xtime) {
 		occupation = timed_occupation;
@@ -180,7 +177,7 @@ static char pushq[BSIZE], saveq[BSIZE];
 static int phead, ptail, shead, stail;
 
 static char
-popch() {
+popch(void) {
 	/* If occupied, return '\0', letting tgetch know a character should
 	 * be read from the keyboard.  If the character read is not the
 	 * ABORT character (as checked in pcmain.c), that character will be
@@ -192,7 +189,7 @@ popch() {
 }
 
 char
-pgetchar() {		/* curtesy of aeb@cwi.nl */
+pgetchar(void) {		/* curtesy of aeb@cwi.nl */
 	register int ch;
 	
 
@@ -206,8 +203,7 @@ pgetchar() {		/* curtesy of aeb@cwi.nl */
 
 /* A ch == 0 resets the pushq */
 void
-pushch(ch)
-char ch;
+pushch(char ch)
 {
 	if (!ch)
 		phead = ptail = 0;
@@ -220,8 +216,7 @@ char ch;
  * replaying a previous command.
  */
 void
-savech(ch)
-char ch;
+savech(char ch)
 {
 	if (!in_doagain) {
 		if (!ch)
@@ -234,7 +229,7 @@ char ch;
 
 
 static int
-doextcmd()	/* here after # - now read a full-word command */
+doextcmd(void)	/* here after # - now read a full-word command */
 {
 	int idx, retval;
 
@@ -250,7 +245,7 @@ doextcmd()	/* here after # - now read a full-word command */
 }
 
 int
-doextlist()	/* here after #? - now list all full-word commands */
+doextlist(void)	/* here after #? - now list all full-word commands */
 {
 	register const struct ext_func_tab *efp;
 	char	 buf[BUFSZ];
@@ -285,7 +280,7 @@ doextlist()	/* here after #? - now list all full-word commands */
  * controlled via runtime option 'extmenu'
  */
 int
-extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
+extcmd_via_menu(void)	/* here after # - now show pick-list of possible commands */
 {
     const struct ext_func_tab *efp;
     menu_item *pick_list = (menu_item *)0;
@@ -402,22 +397,20 @@ extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
 
 /* #ability command - use standard abilities, maybe polymorphed */
 static int
-doability()
+doability(void)
 {
 	return ability_menu(iflags.quick_m_abilities, TRUE);
 }
 
 /* #monster command - use special monster abilities while polymorphed */
 static int
-domonability()
+domonability(void)
 {
 	return ability_menu(TRUE, FALSE);
 }
 
 static int
-ability_menu(mon_abilities, you_abilities)
-boolean mon_abilities;
-boolean you_abilities;
+ability_menu(boolean mon_abilities, boolean you_abilities)
 {
 	winid tmpwin;
 	int n, how;
@@ -830,7 +823,7 @@ boolean you_abilities;
 }
 
 static int
-lavaify(){
+lavaify(void){
 	struct rm *lev = &levl[u.ux][u.uy];
 	if (!(
 		!isok(u.ux,u.uy) || 
@@ -859,7 +852,7 @@ lavaify(){
 
 /* #mount command - order mount to attack */
 static int
-domountattk()
+domountattk(void)
 {
 	struct monst *mtmp;
 	int new_x,new_y;
@@ -891,7 +884,7 @@ domountattk()
 }
 
 int
-psionic_pulse(){
+psionic_pulse(void){
 	if(u.uen < 5){
 		You("lack the energy.");
 		return MOVE_CANCELLED;
@@ -909,7 +902,7 @@ psionic_pulse(){
 }
 
 static int
-dotelekinesis(){
+dotelekinesis(void){
 	if(u.uen < 15){
 		You("lack the energy.");
 		return MOVE_CANCELLED;
@@ -935,7 +928,7 @@ dotelekinesis(){
 }
 
 static int
-psionic_craze(){
+psionic_craze(void){
 	if(u.uen < 5){
 		You("lack the energy.");
 		return MOVE_CANCELLED;
@@ -973,7 +966,7 @@ psionic_craze(){
 
 
 static int
-use_reach_attack()
+use_reach_attack(void)
 {
 	int typ, max_range = 4, min_range = 1;
 	coord cc;
@@ -1028,7 +1021,7 @@ use_reach_attack()
 	return MOVE_STANDARD;
 }
 int
-doMysticForm()
+doMysticForm(void)
 {
 	doMabilForm();
 	winid tmpwin;
@@ -1109,7 +1102,7 @@ doMysticForm()
 }
 
 int
-doMabilForm()
+doMabilForm(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -1219,7 +1212,8 @@ doMabilForm()
 
 }
 
-int doLightsaberForm()
+int
+doLightsaberForm(void)
 {
 	winid tmpwin;
 	int n, how, i;
@@ -1292,7 +1286,8 @@ int doLightsaberForm()
 	}
 }
 
-int doEldritchKniForm()
+int
+doEldritchKniForm(void)
 {
 	winid tmpwin;
 	int n, how, i, j, damagetype, success_odds, spell_id;
@@ -1382,7 +1377,7 @@ int doEldritchKniForm()
 }
 
 int
-doKnightForm()
+doKnightForm(void)
 {
 	winid tmpwin;
 	int n, how, i;
@@ -1488,7 +1483,7 @@ doKnightForm()
 }
 
 int
-doGithForm()
+doGithForm(void)
 {
 	winid tmpwin;
 	int n, how, i;
@@ -1578,7 +1573,7 @@ doGithForm()
 
 
 int
-hasfightingforms(){
+hasfightingforms(void){
 	/* lotsa shit to go "yo do we have a starblade" */
 	/* copied wholesale from the same usage in mondata.c*/
 	struct attack *attk;
@@ -1679,7 +1674,7 @@ hasfightingforms(){
 
 
 int
-dofightingform()
+dofightingform(void)
 {
 	winid tmpwin;
 	int n, how, i;
@@ -1802,7 +1797,7 @@ dofightingform()
 
 
 int
-dounmaintain()
+dounmaintain(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -1852,7 +1847,7 @@ dounmaintain()
 }
 
 static int
-enter_explore_mode()
+enter_explore_mode(void)
 {
 	char buf[BUFSZ];
 	int really_xplor = FALSE;
@@ -1884,7 +1879,7 @@ enter_explore_mode()
 }
 
 static int
-dooverview_or_wiz_where()
+dooverview_or_wiz_where(void)
 {
 #ifdef WIZARD
 	if (wizard) return wiz_where();
@@ -1895,7 +1890,7 @@ dooverview_or_wiz_where()
 }
 
 static int
-doclearinvissyms()
+doclearinvissyms(void)
 {
 	register int x, y;
 	for (x = 0; x < COLNO; x++)
@@ -1910,7 +1905,7 @@ doclearinvissyms()
 #ifdef WIZARD
 
 static int
-wiz_bind()
+wiz_bind(void)
 {
 	if (wizard) {
 		int tmp;
@@ -1927,7 +1922,7 @@ wiz_bind()
 
 
 static int
-wiz_mutate()
+wiz_mutate(void)
 {
 	if (wizard) {
 		winid tmpwin;
@@ -1993,7 +1988,7 @@ wiz_mutate()
 #define SET_YOG_DEVOTION	11
 
 static int
-wiz_cult()
+wiz_cult(void)
 {
 	if (wizard) {
 		winid tmpwin;
@@ -2187,7 +2182,7 @@ wiz_cult()
 
 
 static int
-wiz_mk_mapglyphdump()
+wiz_mk_mapglyphdump(void)
 {
 #ifdef MAPDUMP_FN
     mk_mapdump(MAPDUMP_FN);
@@ -2197,7 +2192,7 @@ wiz_mk_mapglyphdump()
 
 /* ^W command - wish for something */
 static int
-wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
+wiz_wish(void)	/* Unlimited wishes for debug mode by Paul Polderman */
 {
 	if (wizard) {
 	    boolean save_verbose = flags.verbose;
@@ -2213,7 +2208,7 @@ wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
 
 /* ^I command - identify hero's inventory */
 static int
-wiz_identify()
+wiz_identify(void)
 {
 	if (wizard)	identify_pack(0);
 	else		pline("Unavailable command '^I'.");
@@ -2295,7 +2290,7 @@ wiz_makemap(VOID_ARGS)
 
 /* ^F command - reveal the level map and any traps on it */
 static int
-wiz_map()
+wiz_map(void)
 {
 	if (wizard) {
 	    struct trap *t;
@@ -2326,7 +2321,7 @@ wiz_map()
 
 /* ^G command - generate monster(s); a count prefix will be honored */
 static int
-wiz_genesis()
+wiz_genesis(void)
 {
 	if (wizard)	(void) create_particular(u.ux, u.uy, -1, -1, TRUE, 0, 0, 0, (char *)0);
 	else		pline("Unavailable command '^G'.");
@@ -2335,7 +2330,7 @@ wiz_genesis()
 
 /* ^O command - display dungeon layout */
 static int
-wiz_where()
+wiz_where(void)
 {
 	if (wizard) (void) print_dungeon(FALSE, FALSE, (schar *)0, (int *)0);
 	else	    pline("Unavailable command '^O'.");
@@ -2344,7 +2339,7 @@ wiz_where()
 
 /* ^E command - detect unseen (secret doors, traps, hidden monsters) */
 static int
-wiz_detect()
+wiz_detect(void)
 {
 	if(wizard)  (void) findit();
 	else	    pline("Unavailable command '^E'.");
@@ -2353,7 +2348,7 @@ wiz_detect()
 
 /* ^V command - level teleport */
 static int
-wiz_level_tele()
+wiz_level_tele(void)
 {
 	if (wizard)	level_tele();
 	else		pline("Unavailable command '^V'.");
@@ -2362,7 +2357,7 @@ wiz_level_tele()
 
 /* #monpolycontrol command - choose new form for shapechangers, polymorphees */
 static int
-wiz_mon_polycontrol()
+wiz_mon_polycontrol(void)
 {
     iflags.mon_polycontrol = !iflags.mon_polycontrol;
     pline("Monster polymorph control is %s.",
@@ -2372,7 +2367,7 @@ wiz_mon_polycontrol()
 
 /* #levelchange command - adjust hero's experience level */
 static int
-wiz_level_change()
+wiz_level_change(void)
 {
     char buf[BUFSZ];
     int newlevel;
@@ -2412,7 +2407,7 @@ wiz_level_change()
 
 /* #panic command - test program's panic handling */
 static int
-wiz_panic()
+wiz_panic(void)
 {
 	if (iflags.debug_fuzzer) {
         	u.uhp = u.uhpmax = 1000;
@@ -2427,7 +2422,7 @@ wiz_panic()
 
 /* #polyself command - change hero's form */
 static int
-wiz_polyself()
+wiz_polyself(void)
 {
 	polyself(TRUE);
 	return MOVE_CANCELLED;
@@ -2435,7 +2430,7 @@ wiz_polyself()
 
 /* #seenv command */
 static int
-wiz_show_seenv()
+wiz_show_seenv(void)
 {
 	winid win;
 	int x, y, v, startx, stopx, curx;
@@ -2477,7 +2472,7 @@ wiz_show_seenv()
 
 /* #vision command */
 static int
-wiz_show_vision()
+wiz_show_vision(void)
 {
 	winid win;
 	int x, y, v;
@@ -2514,7 +2509,7 @@ wiz_show_vision()
 
 /* #wmode command */
 static int
-wiz_show_wmodes()
+wiz_show_wmodes(void)
 {
 	winid win;
 	int x,y;
@@ -2545,13 +2540,15 @@ wiz_show_wmodes()
 }
 
 /* #showkills command */
-static int wiz_showkills()		/* showborn patch */
+static int
+wiz_showkills(void)		/* showborn patch */
 {
 	list_vanquished('y', FALSE);
 	return MOVE_CANCELLED;
 }
 
-static int wiz_setinsight()
+static int
+wiz_setinsight(void)
 {
 	char buf[BUFSZ];
 	int newval;
@@ -2577,7 +2574,8 @@ static int wiz_setinsight()
 	return MOVE_INSTANT;
 }
 
-static int wiz_setsanity()
+static int
+wiz_setsanity(void)
 {
 	char buf[BUFSZ];
 	int newval;
@@ -2597,9 +2595,8 @@ static int wiz_setsanity()
 	return MOVE_INSTANT;
 }
 
-static
-int getvalue(str)
-const char *str;
+static int
+getvalue(const char *str)
 {
 	char buf[BUFSZ];
 	int newval;
@@ -2620,8 +2617,7 @@ const char *str;
 #endif /* WIZARD */
 
 int
-do_naming(typ)
-int typ;
+do_naming(int typ)
 {
     winid win;
     anything any;
@@ -2698,14 +2694,14 @@ int typ;
 }
 
 int
-do_naming_mname()
+do_naming_mname(void)
 {
   if (iflags.old_C_behaviour) return do_naming(1);
   return do_naming(0);
 }
 
 int
-do_naming_ddocall()
+do_naming_ddocall(void)
 {
   return do_naming(0);
 }
@@ -2955,9 +2951,7 @@ static struct ext_func_tab debug_extcmdlist[] = {
 };
 
 static void
-bind_key(key, command)
-     uchar key;
-     char* command;
+bind_key(uchar key, char *command)
 {
 	struct ext_func_tab * extcmd;
 
@@ -3132,7 +3126,7 @@ change_bind_list(void)
  * debug_extcmdlist().
  */
 void
-add_debug_extended_commands()
+add_debug_extended_commands(void)
 {
 	int i, j, k, n;
 
@@ -3267,9 +3261,7 @@ dokeylist(void)
 
 /* find the 1st command key that binds to the desired command */
 char *
-find_command_key(command_name, buf)
-const char * command_name;
-char * buf;
+find_command_key(const char *command_name, char *buf)
 {
 	int i;
 	int key;
@@ -3307,12 +3299,7 @@ static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
 static void
-count_obj(chain, total_count, total_size, top, recurse)
-	struct obj *chain;
-	long *total_count;
-	long *total_size;
-	boolean top;
-	boolean recurse;
+count_obj(struct obj *chain, long *total_count, long *total_size, boolean top, boolean recurse)
 {
 	long count, size;
 	struct obj *obj;
@@ -3330,12 +3317,7 @@ count_obj(chain, total_count, total_size, top, recurse)
 }
 
 static void
-obj_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct obj *chain;
-	long *total_count;
-	long *total_size;
+obj_chain(winid win, const char *src, struct obj *chain, long *total_count, long *total_size)
 {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
@@ -3348,11 +3330,7 @@ obj_chain(win, src, chain, total_count, total_size)
 }
 
 static void
-magic_chest_obj_chain(win, src, total_count, total_size)
-	winid win;
-	const char *src;
-	long *total_count;
-	long *total_size;
+magic_chest_obj_chain(winid win, const char *src, long *total_count, long *total_size)
 {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
@@ -3367,12 +3345,7 @@ magic_chest_obj_chain(win, src, total_count, total_size)
 }
 
 static void
-mon_invent_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct monst *chain;
-	long *total_count;
-	long *total_size;
+mon_invent_chain(winid win, const char *src, struct monst *chain, long *total_count, long *total_size)
 {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
@@ -3387,11 +3360,7 @@ mon_invent_chain(win, src, chain, total_count, total_size)
 }
 
 static void
-contained(win, src, total_count, total_size)
-	winid win;
-	const char *src;
-	long *total_count;
-	long *total_size;
+contained(winid win, const char *src, long *total_count, long *total_size)
 {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
@@ -3417,12 +3386,7 @@ contained(win, src, total_count, total_size)
 }
 
 static void
-mon_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct monst *chain;
-	long *total_count;
-	long *total_size;
+mon_chain(winid win, const char *src, struct monst *chain, long *total_count, long *total_size)
 {
 	char buf[BUFSZ];
 	long count, size;
@@ -3442,7 +3406,7 @@ mon_chain(win, src, chain, total_count, total_size)
  * Display memory usage of all monsters and objects on the level.
  */
 static int
-wiz_show_stats()
+wiz_show_stats(void)
 {
 	char buf[BUFSZ];
 	winid win;
@@ -3498,7 +3462,7 @@ wiz_show_stats()
 }
 
 void
-sanity_check()
+sanity_check(void)
 {
 	obj_sanity_check();
 	timer_sanity_check();
@@ -3507,7 +3471,7 @@ sanity_check()
 
 #ifdef DEBUG_MIGRATING_MONS
 static int
-wiz_migrate_mons()
+wiz_migrate_mons(void)
 {
 	int mcount = 0;
 	char inbuf[BUFSZ];
@@ -3536,12 +3500,11 @@ wiz_migrate_mons()
 
 #endif /* WIZARD */
 
+/* a wrapper function for strcmp.  Can this be done more simply? */
 static int
-compare_commands(_cmd1, _cmd2)
-     /* a wrapper function for strcmp.  Can this be done more simply? */
-     void *_cmd1, *_cmd2;
+compare_commands(const void *_cmd1, const void *_cmd2)
 {
-	struct ext_func_tab *cmd1 = _cmd1, *cmd2 = _cmd2;
+	const struct ext_func_tab *cmd1 = _cmd1, *cmd2 = _cmd2;
 
 	return strcmp(cmd1->ef_txt, cmd2->ef_txt);
 }
@@ -3566,8 +3529,7 @@ commands_init(void)
 /* returns a one-byte character from the text (it may massacre the txt
  * buffer) */
 char
-txt2key(txt)
-     char* txt;
+txt2key(char *txt)
 {
 	txt = stripspace(txt);
 	if (!*txt) return 0;
@@ -3613,10 +3575,8 @@ txt2key(txt)
 
 /* returns the text for a one-byte encoding
  * must be shorter than a tab for proper formatting */
-char*
-key2txt(c, txt)
-     char c;
-     char* txt; /* sufficiently long buffer */
+char *
+key2txt(char c, char *txt)	/* sufficiently long buffer */
 {
 	if (c == ' ')
 		Sprintf(txt, "<space>");
@@ -3636,10 +3596,8 @@ key2txt(c, txt)
 }
 
 /* returns the text for a string of one-byte encodings */
-char*
-str2txt(s, txt)
-     char* s;
-     char* txt;
+char *
+str2txt(char *s, char *txt)
 {
 	char* buf = txt;
 	
@@ -3656,9 +3614,8 @@ str2txt(s, txt)
 
 
 /* strips leading and trailing whitespace */
-char*
-stripspace(txt)
-     char* txt;
+char *
+stripspace(char *txt)
 {
 	char* end;
 	while (isspace(*txt)) txt++;
@@ -3668,9 +3625,9 @@ stripspace(txt)
 }
 
 void
-parsebindings(bindings)
+parsebindings(
      /* closely follows parseoptions in options.c */
-     char* bindings;
+	char *bindings)
 {
 	char *bind;
 	char key;
@@ -3708,11 +3665,10 @@ parsebindings(bindings)
 	bindinglist = newbinding;
 }
  
+
+/* closesly follows parsebindings and parseoptions */
 void
-parseautocomplete(autocomplete,condition)
-     /* closesly follows parsebindings and parseoptions */
-     char* autocomplete;
-     boolean condition;
+parseautocomplete(char *autocomplete, boolean condition)
 {
 	register char *autoc;
 	int i;
@@ -3764,7 +3720,7 @@ parseautocomplete(autocomplete,condition)
 
 
 char
-randomkey()
+randomkey(void)
 {
     static unsigned i = 0;
     char c;
@@ -3820,8 +3776,7 @@ randomkey()
 
 
 void
-rhack(cmd)
-register char *cmd;
+rhack(register char *cmd)
 {
 	boolean do_walk, do_rush, prefix_seen, bad_command,
 		firsttime = (cmd == 0);
@@ -4019,8 +3974,7 @@ register char *cmd;
 }
 
 int
-xytod(x, y)	/* convert an x,y pair into a direction code */
-schar x, y;
+xytod(schar x, schar y)	/* convert an x,y pair into a direction code */
 {
 	register int dd;
 
@@ -4031,9 +3985,7 @@ schar x, y;
 }
 
 void
-dtoxy(cc,dd)	/* convert a direction code into an x,y pair */
-coord *cc;
-register int dd;
+dtoxy(coord *cc, register int dd) /* convert a direction code into an x,y pair */
 {
 	cc->x = xdir[dd];
 	cc->y = ydir[dd];
@@ -4041,8 +3993,7 @@ register int dd;
 }
 
 int
-movecmd(sym)	/* also sets u.dz, but returns false for <> */
-char sym;
+movecmd(char sym) /* also sets u.dz, but returns false for <> */
 {
 	register const char *dp;
 	register const char *sdp;
@@ -4071,10 +4022,7 @@ char sym;
  *
  * Returns non-zero if coordinates in cc are valid.
  */
-int get_adjacent_loc(prompt,emsg,x,y,cc)
-const char *prompt, *emsg;
-xchar x,y;
-coord *cc;
+int get_adjacent_loc(const char *prompt, const char *emsg, xchar x, xchar y, coord *cc)
 {
 	xchar new_x, new_y;
 	if (!getdir(prompt)) {
@@ -4094,8 +4042,7 @@ coord *cc;
 }
 
 int
-getdir(s)
-const char *s;
+getdir(const char *s)
 {
 	char dirsym;
 	static char saved_dirsym = '\0'; /* saved direction of the previous call of getdir() */
@@ -4130,9 +4077,7 @@ const char *s;
 }
 
 static boolean
-help_dir(sym, msg)
-char sym;
-const char *msg;
+help_dir(char sym, const char *msg)
 {
 	char ctrl;
 	winid win;
@@ -4211,7 +4156,7 @@ const char *msg;
 
 
 void
-confdir()
+confdir(void)
 {
 	int x;
 	int drunken_value = u.udrunken;
@@ -4227,8 +4172,7 @@ confdir()
 
 
 int
-isok(x,y)
-register int x, y;
+isok(int x, int y)
 {
 	/* x corresponds to curx, so x==1 is the first column. Ach. %% */
 	return x >= 1 && x <= COLNO-1 && y >= 0 && y <= ROWNO-1;
@@ -4240,8 +4184,7 @@ static int last_multi;
  * convert a MAP window position into a movecmd
  */
 const char *
-click_to_cmd(x, y, mod)
-    int x, y, mod;
+click_to_cmd(int x, int y, int mod)
 {
     int dir;
     static char cmd[4];
@@ -4343,7 +4286,7 @@ click_to_cmd(x, y, mod)
 }
 
 static char *
-parse()
+parse(void)
 {
 #ifdef LINT	/* static char in_line[COLNO]; */
 	char in_line[COLNO];
@@ -4409,9 +4352,8 @@ parse()
 
 
 #ifdef UNIX
-static
-void
-end_of_input()
+static void
+end_of_input(void)
 {
 #ifndef NOSAVEONHANGUP
 	if (!program_state.done_hup++ && program_state.something_worth_saving)
@@ -4425,7 +4367,7 @@ end_of_input()
 
 
 char
-readchar()
+readchar(void)
 {
 	register int sym;
 	int x = u.ux, y = u.uy, mod = 0;
@@ -4464,7 +4406,7 @@ readchar()
 }
 
 int
-dotravel()
+dotravel(void)
 {
 	/* Keyboard travel command */
 	static char cmd[2];
@@ -4494,7 +4436,7 @@ dotravel()
 #ifdef PORT_DEBUG
 
 int
-wiz_port_debug()
+wiz_port_debug(void)
 {
 	int n, k;
 	winid win;
@@ -4539,9 +4481,7 @@ wiz_port_debug()
  *   window port causing a buffer overflow there.
  */
 char
-yn_function(plainquery,resp, def)
-const char *plainquery,*resp;
-char def;
+yn_function(const char *plainquery, const char *resp, char def)
 {
 	char qbuf[QBUFSZ];
 	const char *query;

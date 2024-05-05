@@ -240,9 +240,7 @@ static const char *parasitizedDroid[] = {
 
 /* this easily could be a macro, but it might overtax dumb compilers */
 static int
-mon_in_room(mon, rmtyp)
-struct monst *mon;
-int rmtyp;
+mon_in_room(struct monst *mon, int rmtyp)
 {
     int rno = levl[mon->mx][mon->my].roomno;
 
@@ -250,7 +248,7 @@ int rmtyp;
 }
 
 void
-dosounds()
+dosounds(void)
 {
     register struct mkroom *sroom;
     register int hallu, vx, vy;
@@ -546,8 +544,7 @@ static const char * const h_sounds[] = {
 };
 
 const char *
-growl_sound(mtmp)
-register struct monst *mtmp;
+growl_sound(register struct monst *mtmp)
 {
 	const char *ret;
 
@@ -601,8 +598,7 @@ register struct monst *mtmp;
 
 /* the sounds of a seriously abused pet, including player attacking it */
 void
-growl(mtmp)
-register struct monst *mtmp;
+growl(register struct monst *mtmp)
 {
     register const char *growl_verb = 0;
 
@@ -623,8 +619,7 @@ register struct monst *mtmp;
 
 /* the sounds of mistreated pets */
 void
-yelp(mtmp)
-struct monst *mtmp;
+yelp(struct monst *mtmp)
 {
     const char *yelp_verb = 0;
 	const char *yelp_modifier = 0;
@@ -675,8 +670,7 @@ struct monst *mtmp;
 
 /* the sounds of distressed pets */
 void
-whimper(mtmp)
-register struct monst *mtmp;
+whimper(register struct monst *mtmp)
 {
     register const char *whimper_verb = 0;
 
@@ -710,8 +704,7 @@ register struct monst *mtmp;
 
 /* pet makes "I'm hungry" noises */
 void
-beg(mtmp)
-register struct monst *mtmp;
+beg(register struct monst *mtmp)
 {
     if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->mnotlaugh ||
 	    !(carnivorous(mtmp->data) || herbivorous(mtmp->data)))
@@ -760,9 +753,7 @@ static const char *branch_info[] ={
 };
 
 static boolean
-smith_offer_price(charge, shkp)
-	long charge;
-	struct monst *shkp;
+smith_offer_price(long charge, struct monst *shkp)
 {
 	char sbuf[BUFSZ];
 
@@ -803,9 +794,7 @@ smith_offer_price(charge, shkp)
 }
 
 int
-domonnoise(mtmp, chatting)
-struct monst *mtmp;
-boolean chatting;
+domonnoise(struct monst *mtmp, boolean chatting)
 {
 	register const char *pline_msg = 0,	/* Monnam(mtmp) will be prepended */
 			*verbl_msg = 0;	/* verbalize() */
@@ -3146,8 +3135,7 @@ humanoid_sound:
 }
 
 int
-doportalmenu(prompt)
-const char *prompt;
+doportalmenu(const char *prompt)
 {
 	winid tmpwin;
 	int n, how;
@@ -3197,8 +3185,7 @@ const char *prompt;
 		uarmf && uarmf->obj_material == GOLD && uarmg && uarmg->obj_material == GOLD
 
 int
-dotatmenu(prompt)
-const char *prompt;
+dotatmenu(const char *prompt)
 {
 	winid tmpwin;
 	int n, how;
@@ -3334,8 +3321,7 @@ tat_to_name(int tat){
 }
 
 int
-dosmithmenu(prompt)
-const char *prompt;
+dosmithmenu(const char *prompt)
 {
 	winid tmpwin;
 	int n, how;
@@ -3389,8 +3375,7 @@ const char *prompt;
 		MENU_UNSELECTED); 
 
 int
-dodyemenu(prompt)
-const char *prompt;
+dodyemenu(const char *prompt)
 {
 	winid tmpwin;
 	int n, how;
@@ -3474,9 +3459,7 @@ static const short command_chain[][2] = {
 };
 
 boolean
-permon_in_command_chain(follower, commander)
-int follower;
-int commander;
+permon_in_command_chain(int follower, int commander)
 {
 	int i;
 
@@ -3501,9 +3484,7 @@ int commander;
 }
 
 boolean
-mon_in_command_chain(follower, commander)
-struct monst * follower;
-struct monst * commander;
+mon_in_command_chain(struct monst *follower, struct monst *commander)
 {
 	if(has_template(commander, MOLY_TEMPLATE)){
 		if(is_cha_demon(follower->data))
@@ -3525,8 +3506,7 @@ struct monst * commander;
 
 // monster commands its followers to fight stronger
 void
-m_command(commander)
-struct monst * commander;
+m_command(struct monst *commander)
 {
 	struct monst * mtmp;
 	struct monst * nxtmon;
@@ -3690,7 +3670,7 @@ struct monst * commander;
 }
 
 int
-dotalk()
+dotalk(void)
 {
     int result;
     boolean save_soundok = flags.soundok;
@@ -3701,11 +3681,7 @@ dotalk()
 }
 
 int
-dochat(ask_for_dir, dx, dy, dz)
-boolean ask_for_dir;
-int dx;
-int dy;
-int dz;
+dochat(boolean ask_for_dir, int dx, int dy, int dz)
 {
     register struct monst *mtmp;
     register int tx,ty,bindresult;
@@ -4186,7 +4162,7 @@ static const int androCorpses[] = {
 };
 
 int
-binder_nearvoid_slots()
+binder_nearvoid_slots(void)
 {
 	int numSlots;
 	if (Role_if(PM_EXILE)){
@@ -4203,13 +4179,8 @@ binder_nearvoid_slots()
 }
 
 
-static void 
-summon_spirit(seal, ward, mndx, x, y)
-long seal;
-int ward;
-int mndx;
-int x;
-int y;
+static void
+summon_spirit(long seal, int ward, int mndx, int x, int y)
 {
 	makemon(&mons[mndx], x, y, MM_ADJACENTOK);
 	u.spiritSummons |= seal;
@@ -4218,8 +4189,7 @@ int y;
 }
 
 int
-dobinding(tx,ty)
-int tx,ty;
+dobinding(int tx, int ty)
 {
 	struct engr *ep = get_head_engr();
 	int numSlots = binder_nearvoid_slots();
@@ -6455,8 +6425,7 @@ int tx,ty;
 }
 
 int *
-spirit_props(floorID)
-int floorID;
+spirit_props(int floorID)
 {
 #define MAXSPIRITPROPS 3
 	static int propchain[MAXSPIRITPROPS + 1];
@@ -6612,8 +6581,7 @@ int floorID;
 }
 
 int *
-spirit_skills(floorID)
-int floorID;
+spirit_skills(int floorID)
 {
 #define MAXSPIRITSKILLS 5
 	static int skillchain[MAXSPIRITSKILLS+1];
@@ -6752,8 +6720,7 @@ int floorID;
 }
 
 void
-bindspirit(floorID)
-int floorID;
+bindspirit(int floorID)
 {
 	int bindingPeriod = 5000;
 	long sealID = get_sealID(floorID);
@@ -6899,8 +6866,7 @@ int floorID;
 }
 
 void
-councilspirit(floorID)
-	int floorID;
+councilspirit(int floorID)
 {
 	int bindingPeriod = 5000, i;
 	long old_seal = u.spirit[CROWN_SPIRIT], new_seal = get_sealID(floorID);
@@ -6936,8 +6902,7 @@ councilspirit(floorID)
 }
 
 void
-gnosisspirit(floorID)
-	int floorID;
+gnosisspirit(int floorID)
 {
 	int bindingPeriod = 5, i;
 	long new_seal = get_sealID(floorID);
@@ -6965,7 +6930,7 @@ gnosisspirit(floorID)
 }
 
 void
-scatter_seals()
+scatter_seals(void)
 {
 	struct engr *oep = engr_at(u.ux,u.uy);
 	int i;
@@ -6991,8 +6956,7 @@ scatter_seals()
 
 static
 const char *
-DantalionRace(pmon)
-int pmon;
+DantalionRace(int pmon)
 {
 	switch(pmon){
 		case PM_HUMAN:
@@ -7021,8 +6985,7 @@ int pmon;
 }
 
 int
-P_MAX_SKILL(p_skill)
-int p_skill;
+P_MAX_SKILL(int p_skill)
 {
 	return P_MAX_SKILL_CORE(p_skill, TRUE);
 }
@@ -7038,9 +7001,7 @@ int p_skill;
 
 
 int
-P_MAX_SKILL_CORE(p_skill, inc_penalties)
-int p_skill;
-boolean inc_penalties;
+P_MAX_SKILL_CORE(int p_skill, boolean inc_penalties)
 {
 	int maxskill = OLD_P_MAX_SKILL(p_skill);
 	if(p_skill == P_BARE_HANDED_COMBAT){
@@ -7090,16 +7051,13 @@ boolean inc_penalties;
 }
 
 int
-P_SKILL(p_skill)
-int p_skill;
+P_SKILL(int p_skill)
 {
 	return P_SKILL_CORE(p_skill, TRUE);
 }
 
 int
-P_SKILL_CORE(p_skill, inc_penalties)
-int p_skill;
-boolean inc_penalties;
+P_SKILL_CORE(int p_skill, boolean inc_penalties)
 {
 	int curskill = OLD_P_SKILL(p_skill),
 		maxskill = P_MAX_SKILL(p_skill);
@@ -7180,8 +7138,7 @@ boolean inc_penalties;
 }
 
 int
-P_RESTRICTED(p_skill)
-int p_skill;
+P_RESTRICTED(int p_skill)
 {
 	if(p_skill == P_NIMAN){
 		if(uwep && uwep->oartifact == ART_INFINITY_S_MIRRORED_ARC)
@@ -7197,8 +7154,7 @@ int p_skill;
  * "skill unlocked by specific role under specific circumstances"
  */
 boolean
-roleSkill(p_skill)
-int p_skill;
+roleSkill(int p_skill)
 {
 	if (Role_if(PM_KNIGHT)){
 		if (p_skill == P_KNI_SACRED)
@@ -7212,8 +7168,7 @@ int p_skill;
 }
 
 boolean
-spiritSkill(p_skill)
-int p_skill;
+spiritSkill(int p_skill)
 {
 	static long seal_skill_list[P_NUM_SKILLS];
 	static long specialseal_skill_list[P_NUM_SKILLS];
@@ -7268,8 +7223,7 @@ char* sounddir = ".";
 
 /* adds a sound file mapping, returns 0 on failure, 1 on success */
 int
-add_sound_mapping(mapping)
-const char *mapping;
+add_sound_mapping(const char *mapping)
 {
 	char text[256];
 	char filename[256];
@@ -7330,8 +7284,7 @@ const char *mapping;
 }
 
 void
-play_sound_for_message(msg)
-const char* msg;
+play_sound_for_message(const char *msg)
 {
 	audio_mapping* cursor = soundmap;
 
@@ -7350,8 +7303,7 @@ const char* msg;
 #endif /* USER_SOUNDS */
 
 static int
-doyochlolmenu(mon)
-struct monst *mon;
+doyochlolmenu(struct monst *mon)
 {
 	winid tmpwin;
 	int n, how;
@@ -7416,7 +7368,7 @@ struct monst *mon;
 }
 
 static int
-doblessmenu()
+doblessmenu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -7488,7 +7440,7 @@ doblessmenu()
 }
 
 int
-donursemenu()
+donursemenu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -7590,8 +7542,7 @@ donursemenu()
 }
 
 boolean
-nurse_services(nurse)
-struct monst *nurse;
+nurse_services(struct monst *nurse)
 {
 	int service, gold, count = 1, cost;
 	
@@ -7744,7 +7695,7 @@ struct monst *nurse;
 }
 
 int
-dorendermenu()
+dorendermenu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -7819,8 +7770,7 @@ dorendermenu()
 }
 
 boolean
-render_services(render)
-struct monst *render;
+render_services(struct monst *render)
 {
 	int service, gold, count = 1, cost;
 		
@@ -7906,8 +7856,7 @@ struct monst *render;
 }
 
 int
-dodollmenu(dollmaker)
-struct monst *dollmaker;
+dodollmenu(struct monst *dollmaker)
 {
 	winid tmpwin;
 	int n, how;
@@ -7963,8 +7912,7 @@ struct monst *dollmaker;
 }
 
 boolean
-buy_dolls(dollmaker)
-struct monst *dollmaker;
+buy_dolls(struct monst *dollmaker)
 {
 	int dollnum, gold, count = 1, cost, basecost;
 	struct obj *doll;

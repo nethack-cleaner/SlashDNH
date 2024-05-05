@@ -16,9 +16,9 @@ extern const int monstr[];
 
 
 static short FDECL(which_arti, (long int));
-static struct monst *FDECL(other_mon_has_arti, (struct monst *,SHORT_P));
-static boolean FDECL(rightful_owner, (struct monst *,SHORT_P, struct monst *));
-static struct obj *FDECL(on_ground, (SHORT_P));
+static struct monst *FDECL(other_mon_has_arti, (struct monst *,short));
+static boolean FDECL(rightful_owner, (struct monst *,short, struct monst *));
+static struct obj *FDECL(on_ground, (short));
 static boolean FDECL(you_have, (long int));
 static long FDECL(target_on, (long int,struct monst *));
 static long FDECL(strategy, (struct monst *));
@@ -65,7 +65,7 @@ static const unsigned wizapp[] = {
 /* If you've found the Amulet, make the Wizard appear after some time */
 /* Also, give hints about portal locations, if amulet is worn/wielded -dlc */
 void
-amulet()
+amulet(void)
 {
 	struct monst *mtmp;
 	struct trap *ttmp;
@@ -109,8 +109,7 @@ amulet()
 
 
 int
-mon_has_amulet(mtmp)
-register struct monst *mtmp;
+mon_has_amulet(register struct monst *mtmp)
 {
 	register struct obj *otmp;
 
@@ -120,8 +119,7 @@ register struct monst *mtmp;
 }
 
 int
-mon_has_special(mtmp)
-register struct monst *mtmp;
+mon_has_special(register struct monst *mtmp)
 {
 	register struct obj *otmp;
 
@@ -144,8 +142,7 @@ register struct monst *mtmp;
 #define M_Wants(mask)	(mtmp->data->mflagst & (mask))
 
 static short
-which_arti(mask)
-	register long int mask;
+which_arti(register long int mask)
 {
 	switch(mask) {
 	    case MT_WANTSAMUL:	return(AMULET_OF_YENDOR);
@@ -163,9 +160,7 @@ which_arti(mask)
  *	artifacts right now.	[MRS]
  */
 boolean
-mon_has_arti(mtmp, otyp)
-	register struct monst *mtmp;
-	register short	otyp;
+mon_has_arti(register struct monst *mtmp, register short otyp)
 {
 	register struct obj *otmp;
 
@@ -182,9 +177,7 @@ mon_has_arti(mtmp, otyp)
 }
 
 static struct monst *
-other_mon_has_arti(mtmp, otyp)
-	struct monst *mtmp;
-	int otyp;
+other_mon_has_arti(struct monst *mtmp, short otyp)
 {
 	register struct monst *mtmp2;
 
@@ -197,10 +190,7 @@ other_mon_has_arti(mtmp, otyp)
 }
 
 static boolean
-rightful_owner(holder, otyp, seeker)
-	register struct monst *holder;
-	register short	otyp;
-	register struct monst *seeker;
+rightful_owner(register struct monst *holder, register short otyp, register struct monst *seeker)
 {
 	switch(otyp){
 		case AMULET_OF_YENDOR:
@@ -230,8 +220,7 @@ rightful_owner(holder, otyp, seeker)
 }
 
 static struct obj *
-on_ground(otyp)
-	register short	otyp;
+on_ground(register short otyp)
 {
 	register struct obj *otmp;
 
@@ -247,8 +236,7 @@ on_ground(otyp)
 }
 
 static boolean
-you_have(mask)
-	register long int mask;
+you_have(register long int mask)
 {
 	switch(mask) {
 	    case MT_WANTSAMUL:	return(boolean)(u.uhave.amulet);
@@ -262,9 +250,7 @@ you_have(mask)
 }
 
 static long
-target_on(mask, mtmp)
-	register long int mask;
-	register struct monst *mtmp;
+target_on(register long int mask, register struct monst *mtmp)
 {
 	int otyp;
 	struct obj *otmp;
@@ -285,8 +271,7 @@ target_on(mask, mtmp)
 }
 
 static long
-strategy(mtmp)
-	register struct monst *mtmp;
+strategy(register struct monst *mtmp)
 {
 	long strat, dstrat;
 
@@ -352,8 +337,7 @@ strategy(mtmp)
 }
 
 int
-tactics(mtmp)
-	register struct monst *mtmp;
+tactics(register struct monst *mtmp)
 {
 	long strat = strategy(mtmp);
 
@@ -668,7 +652,7 @@ tactics(mtmp)
 }
 
 void
-aggravate()
+aggravate(void)
 {
 	register struct monst *mtmp;
 
@@ -689,7 +673,7 @@ aggravate()
 }
 
 void
-clonewiz()
+clonewiz(void)
 {
 	register struct monst *mtmp2;
 
@@ -707,7 +691,7 @@ clonewiz()
 
 /* also used by newcham() */
 int
-pick_nasty()
+pick_nasty(void)
 {
 	int tries = 0;
 	int mndx;
@@ -722,8 +706,7 @@ pick_nasty()
 /* create some nasty monsters, aligned or neutral with the caster */
 /* a null caster is assumed to be Wizard intervention */
 int
-nasty(mcast)
-	struct monst *mcast;
+nasty(struct monst *mcast)
 {
     register struct monst *mtmp;
     register int i, j, tmp;
@@ -782,7 +765,7 @@ nasty(mcast)
 
 /* create some yellow sign monsters */
 void
-yellow_nasty()
+yellow_nasty(void)
 {
     register struct monst *mtmp;
     register int i, j, tmp, makeindex, maketemplate = YELLOW_TEMPLATE;
@@ -877,7 +860,7 @@ yellow_nasty()
 
 /* create some yellow sign monsters */
 void
-yellow_dead()
+yellow_dead(void)
 {
     register struct monst *mtmp;
     register int makeindex, maketemplate = 0;
@@ -927,7 +910,7 @@ yellow_dead()
 }
 
 boolean
-u_recognize_stars()
+u_recognize_stars(void)
 {
 	if(Role_if(PM_MADMAN))
 		return TRUE;
@@ -947,7 +930,7 @@ u_recognize_stars()
 
 /* The king smites you in one of a variety of ways */
 boolean
-yellow_smite()
+yellow_smite(void)
 {
 	int dmg;
 	struct monst *magr;
@@ -1110,7 +1093,7 @@ yellow_smite()
 
 /*	Let's resurrect the wizard, for some unexpected fun.	*/
 void
-resurrect()
+resurrect(void)
 {
 	struct monst *mtmp, **mmtmp;
 	long elapsed;
@@ -1159,7 +1142,7 @@ resurrect()
 }
 
 void
-illur_resurrect()
+illur_resurrect(void)
 {
 	struct monst *mtmp, **mmtmp;
 	long elapsed;
@@ -1205,7 +1188,7 @@ illur_resurrect()
 }
 
 void
-coa_arrive()
+coa_arrive(void)
 {
 	struct monst *mtmp, **mmtmp;
 	long elapsed;
@@ -1242,7 +1225,7 @@ coa_arrive()
 }
 
 static void
-dowizdarken()
+dowizdarken(void)
 {
 	register struct monst *mtmp;
 	register struct trap *ttmp;
@@ -1271,7 +1254,7 @@ dowizdarken()
 }
 
 void
-dowizgush() /* Gushing forth along LOS from (u.ux, u.uy) and random other spots */
+dowizgush(void) /* Gushing forth along LOS from (u.ux, u.uy) and random other spots */
 {
 	int madepool = 0,cx,cy;
 	
@@ -1293,9 +1276,7 @@ dowizgush() /* Gushing forth along LOS from (u.ux, u.uy) and random other spots 
 }
 
 static void
-wizgush(cx, cy, poolcnt)
-int cx, cy;
-genericptr_t poolcnt;
+wizgush(int cx, int cy, genericptr_t poolcnt)
 {
 	register struct monst *mtmp;
 	register struct trap *ttmp;
@@ -1333,7 +1314,7 @@ genericptr_t poolcnt;
 /*	Here, we make trouble for the poor shmuck who actually	*/
 /*	managed to do in the Wizard.				*/
 void
-intervene()
+intervene(void)
 {
 	if(In_void(&u.uz)) return;
 	int which = Is_astralevel(&u.uz) ? rnd(4) : rn2(6);
@@ -1357,7 +1338,7 @@ intervene()
 }
 
 void
-illur_intervene()
+illur_intervene(void)
 {
 	if(Is_astralevel(&u.uz)) return;
 	if(In_void(&u.uz)) return;
@@ -1376,7 +1357,7 @@ illur_intervene()
 }
 
 boolean
-yello_intervene()
+yello_intervene(void)
 {
 	switch (rnd(5)) {
 	    case 1:	
@@ -1409,7 +1390,7 @@ yello_intervene()
 }
 
 void
-wizdead()
+wizdead(void)
 {
 	flags.no_of_wizards--;
 	if (!u.uevent.udemigod) {
@@ -1557,8 +1538,7 @@ const char * const random_szcult[] = {
 };
 /* Insult or intimidate the player */
 void
-cuss(mtmp)
-register struct monst	*mtmp;
+cuss(register struct monst *mtmp)
 {
 	if (mtmp->iswiz) {
 	    if (!rn2(5))  /* typical bad guy action */
@@ -1620,8 +1600,7 @@ register struct monst	*mtmp;
 }
 
 static void
-aglaopesong(mtmp)
-	struct monst *mtmp;
+aglaopesong(struct monst *mtmp)
 {
 		struct monst *tmpm;
 		struct trap *ttmp;

@@ -39,8 +39,7 @@ const struct mutationtype mutationtypes[] =
 };
 
 void
-confer_mutation(mutation)
-int mutation;
+confer_mutation(int mutation)
 {
 	int i;
 	if(mutation == SHIFTING_MIND){
@@ -60,7 +59,7 @@ int mutation;
 }
 
 boolean
-any_mutation()
+any_mutation(void)
 {
 	for(int i = 0; i < MUTATION_LISTSIZE; i++)
 		if(u.mutations[i])

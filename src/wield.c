@@ -83,8 +83,7 @@ static int FDECL(ready_weapon, (struct obj *, boolean));
  * to print the appropriate messages.
  */
 void
-setuwep(obj)
-register struct obj *obj;
+setuwep(register struct obj *obj)
 {
 	struct obj *olduwep = uwep;
 
@@ -120,9 +119,9 @@ register struct obj *obj;
 }
 
 static int
-ready_weapon(wep, quietly)
-struct obj *wep;
-boolean quietly;	/* hide the basic message saying what you are now wielding */
+ready_weapon(
+	struct obj *wep,
+	boolean quietly	/* hide the basic message saying what you are now wielding */)
 {
 	/* Separated function so swapping works easily */
 	int res = 0;
@@ -229,16 +228,14 @@ boolean quietly;	/* hide the basic message saying what you are now wielding */
 }
 
 void
-setuqwep(obj)
-register struct obj *obj;
+setuqwep(register struct obj *obj)
 {
 	setworn(obj, W_QUIVER);
 	update_inventory();
 }
 
 void
-setuswapwep(obj)
-register struct obj *obj;
+setuswapwep(register struct obj *obj)
 {
 	setworn(obj, W_SWAPWEP);
 	update_inventory();
@@ -255,7 +252,7 @@ static const char bullets[] =	/* (note: different from dothrow.c) */
 	{ ALL_CLASSES, ALLOW_NONE, GEM_CLASS, WEAPON_CLASS, 0 };
 
 int
-dowield()
+dowield(void)
 {
 	register struct obj *wep, *oldwep;
 	int result;
@@ -320,7 +317,7 @@ dowield()
 }
 
 int
-doswapweapon()
+doswapweapon(void)
 {
 	register struct obj *oldwep, *oldswap;
 	int result = MOVE_INSTANT;
@@ -368,7 +365,7 @@ doswapweapon()
 }
 
 int
-dowieldquiver()
+dowieldquiver(void)
 {
 	register struct obj *newquiver;
 	const char *quivee_types = (uslinging() ||
@@ -437,9 +434,7 @@ dowieldquiver()
 }
 /* use to re-wield a returned thrown weapon */
 void
-rewield(obj, slot)
-struct obj * obj;
-long slot;
+rewield(struct obj *obj, long slot)
 {
 	switch (slot) {
 	case W_WEP:
@@ -458,9 +453,9 @@ long slot;
 /* used for #rub and for applying pick-axe, whip, grappling hook, or polearm */
 /* (moved from apply.c) */
 boolean
-wield_tool(obj, verb)
-struct obj *obj;
-const char *verb;	/* "rub",&c */
+wield_tool(
+	struct obj *obj,
+	const char *verb	/* "rub",&c */)
 {
     const char *what;
     boolean more_than_1;
@@ -532,7 +527,7 @@ const char *verb;	/* "rub",&c */
 /*Contains those parts of can_twoweapon() that DON'T change the game state.  Can be called anywhere the code needs to know if the player is capable of wielding two weapons*/
 #define NOT_WEAPON(obj) (obj && !is_weptool(obj) && obj->oclass != WEAPON_CLASS && obj->otyp != STILETTOS && obj->otyp != WIND_AND_FIRE_WHEELS && obj->oartifact != ART_WAND_OF_ORCUS)
 int
-test_twoweapon()
+test_twoweapon(void)
 {
 	struct obj *otmp;
 
@@ -598,7 +593,7 @@ test_twoweapon()
 
 /*Contains those parts of can_twoweapon() that CAN change the game state.  Should only be called when the player commits to wielding two weapons*/
 int
-starting_twoweapon()
+starting_twoweapon(void)
 {
 	struct obj *otmp;
 
@@ -622,7 +617,7 @@ starting_twoweapon()
 }
 
 void
-drop_uswapwep()
+drop_uswapwep(void)
 {
 	char str[BUFSZ];
 	struct obj *obj = uswapwep;
@@ -634,7 +629,7 @@ drop_uswapwep()
 }
 
 int
-dotwoweapon()
+dotwoweapon(void)
 {
 	/* You can always toggle it off */
 	if (u.twoweap) {
@@ -662,7 +657,7 @@ dotwoweapon()
  * 2.  Making an item disappear for a bones pile.
  */
 void
-uwepgone()
+uwepgone(void)
 {
 	if (uwep) {
 		if (artifact_light(uwep) && uwep->lamplit) {
@@ -676,7 +671,7 @@ uwepgone()
 }
 
 void
-uswapwepgone()
+uswapwepgone(void)
 {
 	if (uswapwep) {
 		setworn((struct obj *)0, W_SWAPWEP);
@@ -685,7 +680,7 @@ uswapwepgone()
 }
 
 void
-uqwepgone()
+uqwepgone(void)
 {
 	if (uquiver) {
 		setworn((struct obj *)0, W_QUIVER);
@@ -694,7 +689,7 @@ uqwepgone()
 }
 
 void
-untwoweapon()
+untwoweapon(void)
 {
 	if (u.twoweap) {
 		You("can no longer use two weapons at once.");
@@ -706,10 +701,10 @@ untwoweapon()
 
 /* Maybe rust object, or corrode it if acid damage is called for */
 void
-erode_obj(target, acid_dmg, fade_scrolls)
-struct obj *target;		/* object (e.g. weapon or armor) to erode */
-boolean acid_dmg;
-boolean fade_scrolls;
+erode_obj(
+	struct obj *target,		/* object (e.g. weapon or armor) to erode */
+	boolean acid_dmg,
+	boolean fade_scrolls)
 {
 	int erosion;
 	struct monst *victim;
@@ -796,9 +791,7 @@ boolean fade_scrolls;
 }
 
 int
-chwepon(otmp, amount)
-register struct obj *otmp;
-register int amount;
+chwepon(register struct obj *otmp, register int amount)
 {
 	const char *color = hcolor((amount < 0) ? NH_BLACK : NH_BLUE);
 	const char *xtime;
@@ -916,8 +909,7 @@ register int amount;
 }
 
 int
-welded(obj)
-register struct obj *obj;
+welded(register struct obj *obj)
 {
 	if (obj && obj == uwep 
 		&& will_weld(obj) && !Weldproof
@@ -929,8 +921,7 @@ register struct obj *obj;
 }
 
 void
-weldmsg(obj)
-register struct obj *obj;
+weldmsg(register struct obj *obj)
 {
 	long savewornmask;
 
@@ -943,8 +934,8 @@ register struct obj *obj;
 }
 
 
-int wielder_size_bonus(ptr)
-struct permonst * ptr;
+int
+wielder_size_bonus(struct permonst *ptr)
 {	
 	int wielder_bonus = 0;
 	if(ptr == youracedata){
@@ -971,9 +962,7 @@ struct permonst * ptr;
  * return str multiplier
  */
 double
-bimanual_mod(otmp, mon)
-struct obj * otmp;
-struct monst * mon;
+bimanual_mod(struct obj *otmp, struct monst *mon)
 {
 	boolean youagr = (mon == &youmonst);
 	struct obj *arms = (youagr ? uarms : which_armor(mon, W_ARMS));
@@ -1013,9 +1002,7 @@ struct monst * mon;
 }
 
 boolean
-bimanual(otmp, ptr)
-struct obj * otmp;
-struct permonst * ptr;
+bimanual(struct obj *otmp, struct permonst *ptr)
 {
 	int wielder_size;	/* uses standard MZ_ values */
 	int eff_size;		/* uses standard MZ_ values */

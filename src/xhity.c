@@ -57,9 +57,7 @@ struct attack sala_grab = { AT_HUGS, AD_FIRE, 1, 4 };	/* for sala grab */
 struct attack oct_tent = { AT_TENT, AD_WRAP, 1, 8 };	/* for octopode tentacles */
 
 int
-check_subout(subout_list, subout)
-int *subout_list;
-int subout;
+check_subout(int *subout_list, int subout)
 {
 	if(subout >= MAX_SUBOUT || subout < 1){
 		impossible("Attempting to check subout number %d?", subout);
@@ -69,9 +67,7 @@ int subout;
 }
 
 void
-add_subout(subout_list, subout)
-int *subout_list;
-int subout;
+add_subout(int *subout_list, int subout)
 {
 	if(subout >= MAX_SUBOUT || subout < 1){
 		impossible("Attempting to set subout number %d?", subout);
@@ -80,9 +76,7 @@ int subout;
 }
 
 void
-remove_subout(subout_list, subout)
-int *subout_list;
-int subout;
+remove_subout(int *subout_list, int subout)
 {
 	if(subout >= MAX_SUBOUT || subout < 1){
 		impossible("Attempting to set subout number %d?", subout);
@@ -91,8 +85,7 @@ int subout;
 }
 
 void
-zero_subout(subout_list)
-int *subout_list;
+zero_subout(int *subout_list)
 {
 	for(int i = 0; i < SUBOUT_ARRAY_SIZE; i++)
 		subout_list[i] = 0;
@@ -104,11 +97,7 @@ int *subout_list;
  * determines vis if needed.
  */
 int
-getvis(magr, mdef, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
+getvis(struct monst *magr, struct monst *mdef, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -141,8 +130,7 @@ int tary;
  * TODO: remove old attack() function, rename this one
  */
 boolean
-attack2(mdef)
-struct monst * mdef;
+attack2(struct monst *mdef)
 {
 	int result;
 	int attack_type;	/* uses ATTACKCHECKS defines */
@@ -366,11 +354,7 @@ atk_done:
  * different effects than AT_CLAW attacks, even when with the same adtype.
  */
 int
-xattacky(magr, mdef, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
+xattacky(struct monst *magr, struct monst *mdef, int tarx, int tary)
 {
 	/* if attacker doesn't exist or is trying to attack something that doesn't exist -- must be checked right away */
 	if (!magr || !mdef)
@@ -1337,11 +1321,7 @@ int tary;
  * Prints a message
  */
 void
-wildmiss(magr, attk, otmp, ranged)
-struct monst * magr;
-struct attack * attk;
-struct obj * otmp;
-boolean ranged;
+wildmiss(struct monst *magr, struct attack *attk, struct obj *otmp, boolean ranged)
 {
 	boolean compat = (attk->adtyp == AD_SEDU || attk->adtyp == AD_SSEX || attk->adtyp == AD_LSEX) && could_seduce(magr, &youmonst, (struct attack *)0);
 	
@@ -1430,9 +1410,7 @@ boolean ranged;
  * A monster tried to move onto your square while you were hidden there! Surprise!
  */
 boolean
-u_surprise(mtmp, youseeit)
-struct monst * mtmp;
-boolean youseeit;
+u_surprise(struct monst *mtmp, boolean youseeit)
 {
 	if (u.uundetected) {
 		u.uundetected = 0;
@@ -1557,8 +1535,7 @@ boolean youseeit;
  * Uses a static int to cycle through the attacks, which is reset to 0 when [fresh] is true
  */
 struct attack *
-getnextspiritattack(fresh)
-boolean fresh;
+getnextspiritattack(boolean fresh)
 {
 #define ATTK_AMON		0
 #define ATTK_CHUPOCLOPS	1
@@ -1709,15 +1686,15 @@ boolean fresh;
  * inside the function
  */
 struct attack *
-getattk(magr, mdef, prev_res, indexnum, prev_and_buf, by_the_book, subout, tohitmod)
-struct monst * magr;			/* attacking monster */
-struct monst * mdef;			/* defending monster -- OPTIONAL */
-int * prev_res;					/* results of previous attacks; ignored if by_the_book is true */
-int * indexnum;					/* index number to use, incremented HERE (if actually pulling the attack from the monster's index) */
-struct attack * prev_and_buf;	/* double-duty pointer: 1st, is the previous attack; 2nd, is a pointer to allocated memory */
-boolean by_the_book;			/* if true, gives the "standard" attacks for [magr]. Useful for the pokedex. */
-int * subout;					/* records what attacks have been subbed out */
-int * tohitmod;					/* some attacks are made with decreased accuracy */
+getattk(
+	struct monst *magr,	        /* attacking monster */
+	struct monst *mdef,	        /* defending monster -- OPTIONAL */
+	int *prev_res,			/* results of previous attacks; ignored if by_the_book is true */
+	int *indexnum,		        /* index number to use, incremented HERE (if actually pulling the attack from the monster's index) */
+	struct attack *prev_and_buf,	/* double-duty pointer: 1st, is the previous attack; 2nd, is a pointer to allocated memory */
+	boolean by_the_book,	        /* if true, gives the "standard" attacks for [magr]. Useful for the pokedex. */
+	int *subout,			/* records what attacks have been subbed out */
+	int *tohitmod)			/* some attacks are made with decreased accuracy */
 {
 	struct attack * attk;
 	struct attack prev_attack = *prev_and_buf;
@@ -2696,9 +2673,7 @@ int * tohitmod;					/* some attacks are made with decreased accuracy */
  * prints noises from mvm combat
  */
 void
-noises(magr, attk)
-struct monst * magr;
-struct attack * attk;
+noises(struct monst *magr, struct attack *attk)
 {
 	/* static variable prevent message spam */
 	static boolean far_noise = FALSE;
@@ -2723,12 +2698,7 @@ struct attack * attk;
  * Also stops occupation() for the player
  */
 void
-xymissmsg(magr, mdef, attk, vis, nearmiss)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
-boolean nearmiss;
+xymissmsg(struct monst *magr, struct monst *mdef, struct attack *attk, int vis, boolean nearmiss)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -2782,10 +2752,7 @@ boolean nearmiss;
  * Do not call this if the attack shouldn't be visible!
  */
 void
-xyhitmsg(magr, mdef, attk)
-struct monst *magr;
-struct monst *mdef;
-struct attack *attk;
+xyhitmsg(struct monst *magr, struct monst *mdef, struct attack *attk)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -2996,10 +2963,7 @@ struct attack *attk;
 }
 
 void
-xswingsy(magr, mdef, otmp, ranged)
-struct monst *magr, *mdef;
-struct obj *otmp;
-boolean ranged;
+xswingsy(struct monst *magr, struct monst *mdef, struct obj *otmp, boolean ranged)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3069,11 +3033,7 @@ boolean ranged;
  * Prints messages.
  */
 boolean
-slips_free(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+slips_free(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3155,9 +3115,7 @@ int vis;
  * sets flags.botl when applicable
  */
 void
-heal(mon, amnt)
-struct monst * mon;
-int amnt;
+heal(struct monst *mon, int amnt)
 {
 	*hp(mon) += amnt;
 	if (*hp(mon) > *hpmax(mon))
@@ -3182,11 +3140,11 @@ int amnt;
  * 
  */
 int
-xdamagey(magr, mdef, attk, dmg)
-struct monst * magr;	/* attacker (might not exist) */
-struct monst * mdef;	/* defender */
-struct attack * attk;	/* attack used to deal damage (might not exist) */
-int dmg;				/* damage to deal */
+xdamagey(
+	struct monst *magr,	/* attacker (might not exist) */
+	struct monst *mdef,	/* defender */
+	struct attack *attk,	/* attack used to deal damage (might not exist) */
+	int dmg)		/* damage to deal */
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3309,9 +3267,7 @@ int dmg;				/* damage to deal */
  * 
  */
 int
-xstoney(magr, mdef)
-struct monst * magr;
-struct monst * mdef;
+xstoney(struct monst *magr, struct monst *mdef)
 {
 
 	boolean youagr = (magr == &youmonst);
@@ -3384,12 +3340,7 @@ struct monst * mdef;
  * Assumes defender is alive
  */
 int
-do_weapon_multistriking_effects(magr, mdef, attk, weapon, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
-int vis;
+do_weapon_multistriking_effects(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -3551,15 +3502,15 @@ int vis;
  *
  */
 int
-tohitval(magr, mdef, attk, weapon, vpointer, hmoncode, flat_acc, shield_margin)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj * weapon;
-void * vpointer;				/* additional /whatever/, type based on hmoncode. */
-int hmoncode;					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
-int flat_acc;
-int *shield_margin;
+tohitval(
+	struct monst *magr,
+	struct monst *mdef,
+	struct attack *attk,
+	struct obj *weapon,
+	void *vpointer,				/* additional /whatever/, type based on hmoncode. */
+	int hmoncode,					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
+	int flat_acc,
+	int *shield_margin)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -4187,14 +4138,9 @@ int *shield_margin;
  * Uses MM_ return values
  */
 int
-xmeleehity(magr, mdef, attk, weapon_p, vis, flat_acc, ranged)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct obj ** weapon_p;
-int vis;
-int flat_acc;
-boolean ranged;
+xmeleehity(
+	struct monst *magr, struct monst *mdef, struct attack *attk,
+	struct obj **weapon_p, int vis, int flat_acc, boolean ranged)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -4473,17 +4419,10 @@ boolean ranged;
  * what damage was dealt and who survived.
  */
 int
-xmeleehurty(magr, mdef, attk, originalattk, weapon_p, dohitmsg, flatdmg, dieroll, vis, ranged)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-struct attack * originalattk;
-struct obj ** weapon_p;
-boolean dohitmsg;
-int flatdmg;
-int dieroll;
-int vis;
-boolean ranged;
+xmeleehurty(
+	struct monst *magr, struct monst *mdef, struct attack *attk,
+	struct attack *originalattk, struct obj **weapon_p,
+	boolean dohitmsg, int flatdmg, int dieroll, int vis, boolean ranged)
 {
 	int dmg = 0,					// damage that will be dealt
 		ptmp = 0,					// poison type
@@ -9909,11 +9848,7 @@ boolean ranged;
 }
 
 int
-xcastmagicy(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xcastmagicy(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -9964,11 +9899,7 @@ int vis;
 
 /* tinker, mvu only right now */
 int
-xtinkery(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xtinkery(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -10045,11 +9976,7 @@ int vis;
 }
 
 int
-xengulfhity(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xengulfhity(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	/* don't attempt to eat your steed out from under you */
 	if (mdef == u.usteed)
@@ -10267,11 +10194,11 @@ int vis;
 }
 
 int
-xengulfhurty(magr, mdef, attk, vis)
-struct monst * magr; /* May be NULL if being used for generic cloud damage handling (engulfed by a cloud) */
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xengulfhurty(
+	struct monst *magr, /* May be NULL if being used for generic cloud damage handling (engulfed by a cloud) */
+	struct monst *mdef,
+	struct attack *attk,
+	int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -11144,9 +11071,7 @@ int vis;
 }
 
 boolean
-Curse_res(mon, verbose)
-struct monst *mon;
-boolean verbose;
+Curse_res(struct monst *mon, boolean verbose)
 {
 	struct obj *otmp;
 	static const char mal_aura[] = "feel a malignant aura surround %s.";
@@ -11300,11 +11225,7 @@ boolean verbose;
 }
 
 int
-xexplodey(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xexplodey(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -11610,15 +11531,14 @@ expl_common:
 }
 
 void
-getgazeinfo(aatyp, adtyp, pa, magr, mdef, needs_magr_eyes, needs_mdef_eyes, needs_uncancelled)
-int aatyp;
-int adtyp;
-struct permonst * pa;
-struct monst * magr;
-struct monst * mdef;
-boolean * needs_magr_eyes;
-boolean * needs_mdef_eyes;
-boolean * needs_uncancelled;
+getgazeinfo(
+	int aatyp, int adtyp,
+	struct permonst *pa,
+	struct monst *magr,
+	struct monst *mdef,
+	boolean *needs_magr_eyes,
+	boolean *needs_mdef_eyes,
+	boolean *needs_uncancelled)
 {
 #define maybeset(b, tf) if(b) {*(b)=tf;}
 	boolean adjacent = FALSE;
@@ -11705,8 +11625,7 @@ boolean * needs_uncancelled;
 
 /* still needed to support old AD_SEDU gaze attack */
 boolean
-umetgaze(mtmp)
-struct monst *mtmp;
+umetgaze(struct monst *mtmp)
 {
 	return (canseemon_eyes(mtmp) && couldsee(mtmp->mx, mtmp->my) && !Gaze_immune && multi>=0);
 }
@@ -11721,11 +11640,7 @@ struct monst *mtmp;
  * Otherwise returns MM hitflags as usual.
  */
 int
-xgazey(magr, mdef, attk, vis)
-struct monst * magr;
-struct monst * mdef;
-struct attack * attk;
-int vis;
+xgazey(struct monst *magr, struct monst *mdef, struct attack *attk, int vis)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -13390,17 +13305,17 @@ int vis;
 }
 
 int
-apply_hit_effects(magr, mdef, otmp, msgr, basedmg, plusdmgptr, truedmgptr, dieroll, hittxt, printmessages)
-struct monst * magr;
-struct monst * mdef;
-struct obj * otmp;
-struct obj * msgr;
-int basedmg;
-int * plusdmgptr;
-int * truedmgptr;
-int dieroll;
-boolean * hittxt;
-boolean printmessages;
+apply_hit_effects(
+	struct monst *magr,
+	struct monst *mdef,
+	struct obj *otmp,
+	struct obj *msgr,
+	int basedmg,
+	int *plusdmgptr,
+	int *truedmgptr,
+	int dieroll,
+	boolean *hittxt,
+	boolean printmessages)
 {
 	int result = MM_HIT;
 	int tmpplusdmg;
@@ -13439,10 +13354,7 @@ boolean printmessages;
 
 /* hit mdef with some object that was launched in some way with no attacker of any sort */
 int
-hmon_with_unowned_obj(mdef, obj_p, dieroll)
-struct monst * mdef;
-struct obj ** obj_p;
-int dieroll;
+hmon_with_unowned_obj(struct monst *mdef, struct obj **obj_p, int dieroll)
 {
 	return hmon_general(
 		(struct monst *)0,	/* no attacker */
@@ -13461,12 +13373,7 @@ int dieroll;
 }
 /* hit mdef with a trap */
 int
-hmon_with_trap(mdef, obj_p, trap, type, dieroll)
-struct monst * mdef;
-struct obj ** obj_p;
-struct trap * trap;
-int type;
-int dieroll;
+hmon_with_trap(struct monst *mdef, struct obj **obj_p, struct trap *trap, int type, int dieroll)
 {
 	/* melee traps print their own messages, while ranged traps rely on hmon to print hitmessages */
 	boolean printmsg;
@@ -13501,20 +13408,20 @@ int dieroll;
  * are called after the player hits, while letting hmoncore have messy returns wherever it wants
  */
 int
-hmon_general(magr, mdef, attk, originalattk, weapon_p, vpointer, hmoncode, flatbasedmg, monsdmg, dohitmsg, dieroll, recursed, vis)
-struct monst * magr;			/* attacker */
-struct monst * mdef;			/* defender */
-struct attack * attk;			/* attack structure to use -- if this does not exist, we MUST have a weapon */
-struct attack * originalattk;	/* original attack structure, used for messages */
-struct obj ** weapon_p;			/* pointer to weapon to hit with */
-void * vpointer;				/* additional /whatever/, type based on hmoncode. */
-int hmoncode;					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
-int flatbasedmg;				/* if >0, REPLACE basedmg with this value -- typically used for unusual weapon hits like throwing something upwards */
-int monsdmg;					/* flat damage amount to add onto other effects -- for monster attacks */
-boolean dohitmsg;				/* print hit message? */
-int dieroll;					/* 1-20 accuracy dieroll, used for special effects */
-boolean recursed;				/* True for all but one attacks when 1 object is hitting >1 times in 1 attack. If so, avoid duplicating some messages and effects. */
-int vis;						/* True if action is at all visible to the player */
+hmon_general(
+	struct monst *magr,	        /* attacker */
+	struct monst *mdef,		/* defender */
+	struct attack *attk,		/* attack structure to use -- if this does not exist, we MUST have a weapon */
+	struct attack *originalattk,	/* original attack structure, used for messages */
+	struct obj **weapon_p,		/* pointer to weapon to hit with */
+	void *vpointer,			/* additional /whatever/, type based on hmoncode. */
+	int hmoncode,			/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
+	int flatbasedmg,		/* if >0, REPLACE basedmg with this value -- typically used for unusual weapon hits like throwing something upwards */
+	int monsdmg,			/* flat damage amount to add onto other effects -- for monster attacks */
+	boolean dohitmsg,		/* print hit message? */
+	int dieroll,			/* 1-20 accuracy dieroll, used for special effects */
+	boolean recursed,		/* True for all but one attacks when 1 object is hitting >1 times in 1 attack. If so, avoid duplicating some messages and effects. */
+	int vis)			/* True if action is at all visible to the player */
 {
 	int result;
 	boolean u_anger_guards;
@@ -13543,20 +13450,20 @@ int vis;						/* True if action is at all visible to the player */
 }
 
 int
-hmoncore(magr, mdef, attk, originalattk, weapon_p, vpointer, hmoncode, flatbasedmg, monsdmg, dohitmsg, dieroll, recursed, vis)
-struct monst * magr;			/* attacker */
-struct monst * mdef;			/* defender */
-struct attack * attk;			/* attack structure to use */
-struct attack * originalattk;	/* original attack structure, used for messages */
-struct obj ** weapon_p;			/* pointer to weapon to hit with */
-void * vpointer;				/* additional /whatever/, type based on hmoncode. */
-int hmoncode;					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
-int flatbasedmg;				/* if >0, REPLACE basedmg with this value -- currently unused. SCOPECREEP: use hmon for things like throwing an object upwards */
-int monsdmg;					/* flat damage amount to add onto other effects -- for monster attacks */
-boolean dohitmsg;				/* print hit message? */
-int dieroll;					/* 1-20 accuracy dieroll, used for special effects */
-boolean recursed;				/* True for all but one attacks when 1 object is hitting >1 times in 1 attack. If so, avoid duplicating some messages and effects. */
-int vis;						/* True if action is at all visible to the player */
+hmoncore(
+	struct monst * magr,		/* attacker */
+	struct monst * mdef,		/* defender */
+	struct attack * attk,	        /* attack structure to use */
+	struct attack * originalattk,	/* original attack structure, used for messages */
+	struct obj ** weapon_p,		/* pointer to weapon to hit with */
+void * vpointer,			/* additional /whatever/, type based on hmoncode. */
+	int hmoncode,			/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
+	int flatbasedmg,		/* if >0, REPLACE basedmg with this value -- currently unused. SCOPECREEP: use hmon for things like throwing an object upwards */
+	int monsdmg,			/* flat damage amount to add onto other effects -- for monster attacks */
+	boolean dohitmsg,		/* print hit message? */
+	int dieroll,			/* 1-20 accuracy dieroll, used for special effects */
+	boolean recursed,		/* True for all but one attacks when 1 object is hitting >1 times in 1 attack. If so, avoid duplicating some messages and effects. */
+	int vis)			/* True if action is at all visible to the player */
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -16993,9 +16900,7 @@ int vis;						/* True if action is at all visible to the player */
 }
 
 void
-add_silvered_art_sear_adjectives(buf, otmp)
-char *buf;
-struct obj *otmp;
+add_silvered_art_sear_adjectives(char *buf, struct obj *otmp)
 {
 	switch(otmp->oartifact){
 		default:
@@ -17228,8 +17133,7 @@ calculate_poison(
  * The player attacks [mdef] with one AT_TUCH AD_SHDW attack.
  */
 int
-shadow_strike(mdef)
-struct monst * mdef;
+shadow_strike(struct monst *mdef)
 {
 	static struct attack shadowblade = { AT_ESPR, AD_SHDW, 4, 8 };
 	int tohitmod = 0;	/* necessary to call xmeleehity */
@@ -17252,8 +17156,7 @@ struct monst * mdef;
  * The player makes a shadowblade attack against all adjacent enemies, except for mexclude
  */
 void
-weave_black_web(mexclude)
-struct monst * mexclude;
+weave_black_web(struct monst *mexclude)
 {
 	struct monst *mdef;	/* defender */
 	int i;				/* loop counter */
@@ -17283,15 +17186,15 @@ struct monst * mexclude;
  * Call with [attk] and [endofchain=TRUE] if there is a single attack being made and retaliated against
  */
 int
-xpassivey(magr, mdef, attk, weapon, vis, result, pd, endofchain)
-struct monst * magr;		/* original attacker, being affected by the passive */
-struct monst * mdef;		/* original defender, whose passive is being proced */
-struct attack * attk;		/* attacker's attack */
-struct obj * weapon;		/* attacker's weapon */
-int vis;					/* visiblity of original attack */
-int result;					/* if attack hit / def died / agr died / agr-def moved */
-struct permonst * pd;		/* defender's pd; cannot use mdef->data when player rehumanizes */
-boolean endofchain;			/* if the attacker has finished their attack chain */
+xpassivey(
+	struct monst *magr,		/* original attacker, being affected by the passive */
+	struct monst *mdef,		/* original defender, whose passive is being proced */
+	struct attack *attk,		/* attacker's attack */
+	struct obj *weapon,		/* attacker's weapon */
+	int vis,		        /* visiblity of original attack */
+	int result,			/* if attack hit / def died / agr died / agr-def moved */
+	struct permonst *pd,		/* defender's pd, cannot use mdef->data when player rehumanizes */
+	boolean endofchain)	        /* if the attacker has finished their attack chain */
 {
 	int i;					/* loop counter */
 	int newres;
@@ -17617,16 +17520,16 @@ boolean endofchain;			/* if the attacker has finished their attack chain */
 
 
 int
-xpassivehity(magr, mdef, passive, attk, weapon, vis, result, pd, endofchain)
-struct monst * magr;		/* original attacker, being affected by the passive */
-struct monst * mdef;		/* original defender, whose passive is being proced */
-struct attack * passive;	/* defender's passive being used */
-struct attack * attk;		/* attacker's attack */
-struct obj * weapon;		/* attacker's weapon */
-int vis;					/* visiblity of original attack */
-int result;					/* if attack hit / def died / agr died / agr-def moved */
-struct permonst * pd;		/* defender's pd; cannot use mdef->data when player rehumanizes */
-boolean endofchain;			/* if the passive is occuring at the end of aggressor's attack chain */
+xpassivehity(
+	struct monst *magr,	/* original attacker, being affected by the passive */
+	struct monst *mdef,	/* original defender, whose passive is being proced */
+	struct attack *passive,	/* defender's passive being used */
+	struct attack *attk,	/* attacker's attack */
+	struct obj *weapon,	/* attacker's weapon */
+	int vis,		/* visiblity of original attack */
+	int result,		/* if attack hit / def died / agr died / agr-def moved */
+	struct permonst *pd,	/* defender's pd, cannot use mdef->data when player rehumanizes */
+	boolean endofchain)     /* if the passive is occuring at the end of aggressor's attack chain */
 {
 	int newres;
 	int dmg;
@@ -18316,12 +18219,12 @@ boolean endofchain;			/* if the passive is occuring at the end of aggressor's at
 }
 
 void
-passive_obj2(magr, mdef, otmp, attk, passive)
-struct monst * magr;		/* creature who was attacking first */
-struct monst * mdef;		/* creature whose passive attack is being used */
-struct obj * otmp;			/* object that is being affected by the passive attack */
-struct attack * attk;		/* attack aggressor used, which is now being counterattacked against */
-struct attack * passive;	/* specific passive attack being used */
+passive_obj2(
+	struct monst *magr,	/* creature who was attacking first */
+	struct monst *mdef,	/* creature whose passive attack is being used */
+	struct obj *otmp,	/* object that is being affected by the passive attack */
+	struct attack *attk,    /* attack aggressor used, which is now being counterattacked against */
+	struct attack *passive)	/* specific passive attack being used */
 {
 	int i;
 
@@ -18410,9 +18313,7 @@ struct attack * passive;	/* specific passive attack being used */
 }
 
 void
-wakeup2(mdef, your_fault)
-struct monst * mdef;
-boolean your_fault;
+wakeup2(struct monst *mdef, boolean your_fault)
 {
 	if (mdef == &youmonst)
 	{
@@ -18436,7 +18337,7 @@ boolean your_fault;
  * Returns FALSE if this was cancelled before doing anything.
  */
 int
-android_combo()
+android_combo(void)
 {
 	struct monst * mdef;
 	int vis;
@@ -18897,7 +18798,7 @@ android_combo()
  * and makes it if so.
  */
 void
-movement_combos()
+movement_combos(void)
 {
 	boolean did_combo = FALSE;
 
@@ -18946,8 +18847,7 @@ movement_combos()
 #define peace_check_monk(mon) ((canspotmon(mon) || mon_warning(mon)) && (Hallucination || !mon->mpeaceful) && !nonthreat(mon))
 
 struct monst *
-adjacent_monk_target(arm)
-struct obj *arm;
+adjacent_monk_target(struct obj *arm)
 {
 	struct monst *mon;
 	//Same rules as kicking. Whirly monsters allow moves, solid ones do not.
@@ -18971,8 +18871,7 @@ struct obj *arm;
 }
 
 boolean
-circle_monk_target(arm)
-struct obj *arm;
+circle_monk_target(struct obj *arm)
 {
 	struct monst *mon;
 	int i, j;
@@ -19001,7 +18900,7 @@ struct obj *arm;
 }
 
 boolean
-beam_monk_target()
+beam_monk_target(void)
 {
 	struct monst *mon;
 	int i;
@@ -19038,7 +18937,7 @@ beam_monk_target()
 }
 
 void
-monk_aura_bolt()
+monk_aura_bolt(void)
 {
 	struct zapdata zapdat = { 0 };
 	basiczap(&zapdat, u.ualign.record < -3 ? AD_UNHY : AD_HOLY, ZAP_SPELL, (u.ulevel+2) / 3 );
@@ -19054,8 +18953,7 @@ monk_aura_bolt()
 }
 
 void
-monk_meteor_drive(mdef)
-struct monst *mdef;
+monk_meteor_drive(struct monst *mdef)
 {
 	int tmp, weight = mdef->data->cwt;
 	struct trap *chasm;
@@ -19141,8 +19039,7 @@ struct monst *mdef;
  * Returns TRUE if a move goes off.
  */
 boolean
-perform_monk_move(moveID)
-int moveID;
+perform_monk_move(int moveID)
 {
 	struct monst *mdef;
 #define STILLVALID(mdef) (!DEADMONSTER(mdef) && mdef == m_at(u.ux + u.dx, u.uy + u.dy))
@@ -19234,7 +19131,7 @@ int moveID;
  * Returns the move ID or 0 if no ID can be chosen.
  */
 int
-check_monk_move()
+check_monk_move(void)
 {
 	int i;
 	int dx1 = u.prev_dir.x;
@@ -19342,8 +19239,7 @@ check_monk_move()
  * hits monster at bhitpos with your (mainhand) polearm
  */
 int
-u_pole_pound(mdef)
-struct monst * mdef;
+u_pole_pound(struct monst *mdef)
 {
 	int vis = (VIS_MAGR | VIS_NONE) | (canseemon(mdef) ? VIS_MDEF : 0);
 	int res;
@@ -19361,9 +19257,7 @@ struct monst * mdef;
  * Mummy curses (for use in various contexts). Returns result flags.
  */
 int
-mummy_curses_x(magr, mdef)
-struct monst * magr;
-struct monst * mdef;
+mummy_curses_x(struct monst *magr, struct monst *mdef)
 {
 	int cnum;
 	boolean youagr = (magr == &youmonst);
@@ -19739,11 +19633,7 @@ struct monst * mdef;
 }
 
 int
-reduce_dmg(mdef,dmg,physical,magical)
-struct monst *mdef;
-int dmg;
-boolean physical;
-boolean magical;
+reduce_dmg(struct monst *mdef, int dmg, boolean physical, boolean magical)
 {
 	if (physical && Half_phys(mdef))
 		dmg = (dmg + 1) / 2;

@@ -72,7 +72,7 @@ static long laststattime;
 # endif
 
 void
-getmailstatus()
+getmailstatus(void)
 {
 	if(!mailbox && !(mailbox = nh_getenv("MAIL"))) {
 #  ifdef MAILPATH
@@ -113,8 +113,7 @@ getmailstatus()
  * from newmail() and newphone().
  */
 static boolean
-md_start(startp)
-    coord *startp;
+md_start(coord *startp)
 {
     coord testcc;	/* scratch coordinates */
     int row;		/* current row we are checking */
@@ -214,9 +213,9 @@ retry:
  * its point randomly, which is not what we want.
  */
 static boolean
-md_stop(stopp, startp)
-    coord *stopp;	/* stopping position (we fill it in) */
-    coord *startp;	/* starting positon (read only) */
+md_stop(
+	coord *stopp,	/* stopping position (we fill it in) */
+	coord *startp	/* starting positon (read only) */)
 {
     int x, y, distance, min_distance = -1;
 
@@ -258,9 +257,10 @@ static const char *mail_text[] = {
  * TRUE otherwise.
  */
 static boolean
-md_rush(md,tx,ty)
-    struct monst *md;
-    register int tx, ty;		/* destination of mail daemon */
+md_rush(
+	struct monst *md,
+	register int tx,
+	register int ty		/* destination of mail daemon */)
 {
     struct monst *mon;			/* displaced monster */
     register int dx, dy;		/* direction counters */
@@ -354,8 +354,7 @@ md_rush(md,tx,ty)
 /* Deliver a scroll of mail. */
 /*ARGSUSED*/
 static void
-newmail(info)
-struct mail_info *info;
+newmail(struct mail_info *info)
 {
     struct monst *md;
     coord start, stop;
@@ -405,7 +404,7 @@ give_up:
 # if !defined(UNIX) && !defined(LAN_MAIL)
 
 void
-ckmailstatus()
+ckmailstatus(void)
 {
 	if (u.uswallow || !flags.biff) return;
 	if (mustgetmail < 0) {
@@ -421,8 +420,7 @@ ckmailstatus()
 
 /*ARGSUSED*/
 void
-readmail(otmp)
-struct obj *otmp;
+readmail(struct obj *otmp)
 {
     static char *junk[] = {
     "Please disregard previous letter.",
@@ -443,7 +441,7 @@ struct obj *otmp;
 # ifdef UNIX
 
 void
-ckmailstatus()
+ckmailstatus(void)
 {
 	if (iflags.debug_fuzzer)
 		return;
@@ -485,8 +483,7 @@ ckmailstatus()
 
 /*ARGSUSED*/
 void
-readmail(otmp)
-struct obj *otmp;
+readmail(struct obj *otmp)
 {
 #ifdef DEF_MAILREADER
 	register const char *mr = 0;
@@ -581,7 +578,7 @@ bail:
 # ifdef LAN_MAIL
 
 void
-ckmailstatus()
+ckmailstatus(void)
 {
 	static int laststattime = 0;
 	
@@ -606,8 +603,7 @@ ckmailstatus()
 
 /*ARGSUSED*/
 void
-readmail(otmp)
-struct obj *otmp;
+readmail(struct obj *otmp)
 {
 	lan_mail_read(otmp);
 }
@@ -618,7 +614,7 @@ struct obj *otmp;
 #endif /* MAIL */
 
 void
-ck_server_admin_msg()
+ck_server_admin_msg(void)
 {
 #if defined(SERVER_ADMIN_MSG) && defined(UNIX)
   static struct stat ost,nst;

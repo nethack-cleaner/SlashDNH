@@ -40,7 +40,7 @@ static void FDECL(on_msg, (struct obj *));
 static int NDECL(Cloak_on);
 static int NDECL(Gloves_on);
 static int NDECL(Shield_on);
-static void FDECL(Ring_off_or_gone, (struct obj *, BOOLEAN_P));
+static void FDECL(Ring_off_or_gone, (struct obj *, boolean));
 static int FDECL(select_off, (struct obj *));
 static struct obj *NDECL(do_takeoff);
 static int NDECL(take_off);
@@ -49,8 +49,7 @@ static void FDECL(already_wearing, (const char*));
 static void FDECL(already_wearing2, (const char*, const char*));
 
 void
-off_msg(otmp)
-register struct obj *otmp;
+off_msg(register struct obj *otmp)
 {
 	if(flags.verbose)
 	    You("were wearing %s.", doname(otmp));
@@ -58,8 +57,7 @@ register struct obj *otmp;
 
 /* for items that involve no delay */
 static void
-on_msg(otmp)
-register struct obj *otmp;
+on_msg(register struct obj *otmp)
 {
 	if (flags.verbose) {
 	    char how[BUFSZ];
@@ -80,7 +78,7 @@ register struct obj *otmp;
 
 
 int
-Boots_on()
+Boots_on(void)
 {
     long oldprop;
     long oldprop_spd;
@@ -163,7 +161,7 @@ Boots_on()
 }
 
 int
-Boots_off()
+Boots_off(void)
 {
     int otyp = uarmf->otyp;
     long oldprop = u.uprops[objects[otyp].oc_oprop[0]].extrinsic & ~WORN_BOOTS;
@@ -240,9 +238,8 @@ Boots_off()
     return 0;
 }
 
-static 
-int
-Cloak_on()
+static int
+Cloak_on(void)
 {
     long oldprop;
     if (!uarmc) return 0;
@@ -322,7 +319,7 @@ Cloak_on()
 }
 
 int
-Cloak_off()
+Cloak_off(void)
 {
     int otyp = uarmc->otyp;
 	boolean checkweight = FALSE;
@@ -385,7 +382,7 @@ Cloak_off()
 
 
 int
-Helmet_on()
+Helmet_on(void)
 {
 	boolean already_blind, blind_changed = FALSE;	/* blindness from wearing the helmet was set before this was called, we need a kludge*/
 	struct obj * otmp;
@@ -506,7 +503,7 @@ Helmet_on()
 }
 
 int
-Helmet_off()
+Helmet_off(void)
 {
 	boolean was_blind = Blind, blind_changed = FALSE;
 	struct obj * otmp = uarmh;
@@ -598,9 +595,8 @@ Helmet_off()
     return 0;
 }
 
-static
-int
-Gloves_on()
+static int
+Gloves_on(void)
 {
     long oldprop;
     if (!uarmg) return 0;
@@ -648,7 +644,7 @@ Gloves_on()
 }
 
 int
-Gloves_off()
+Gloves_off(void)
 {
     long oldprop =
 	u.uprops[objects[uarmg->otyp].oc_oprop[0]].extrinsic & ~WORN_GLOVES;
@@ -714,9 +710,8 @@ Gloves_off()
     return 0;
 }
 
-static 
-int
-Shield_on()
+static int
+Shield_on(void)
 {
 /*
     switch (uarms->otyp) {
@@ -744,7 +739,7 @@ Shield_on()
 }
 
 int
-Shield_off()
+Shield_off(void)
 {
     takeoff_mask &= ~W_ARMS;
 /*
@@ -765,7 +760,7 @@ Shield_off()
 }
 
 int
-Shirt_on()
+Shirt_on(void)
 {
 /*
     switch (uarmu->otyp) {
@@ -808,7 +803,7 @@ Shirt_on()
 }
 
 int
-Shirt_off()
+Shirt_off(void)
 {
 	boolean checkweight = FALSE;
 	if (!cancelled_don) adj_abon(uarmu, -uarmu->spe);
@@ -846,7 +841,7 @@ Shirt_off()
  * since worn.c will check it before returning.
  */
 int
-Armor_on()
+Armor_on(void)
 {
 	adj_abon(uarm, uarm->spe);
 	if(uarm->otyp == NOBLE_S_DRESS || uarm->otyp == PLAIN_DRESS) {
@@ -903,7 +898,7 @@ Armor_on()
 }
 
 void
-Armor_gone_or_off_abon()
+Armor_gone_or_off_abon(void)
 {
 	if((uarm->otyp == NOBLE_S_DRESS || uarm->otyp == PLAIN_DRESS) && !cancelled_don) {
 		ABON(A_CHA) -= 1;
@@ -925,7 +920,7 @@ Armor_gone_or_off_abon()
 }
 
 int
-Armor_off()
+Armor_off(void)
 {
 	boolean checkweight = FALSE;
     takeoff_mask &= ~W_ARM;
@@ -965,7 +960,7 @@ Armor_off()
  * taking it off and have life saving, you still die.
  */
 int
-Armor_gone()
+Armor_gone(void)
 {
     takeoff_mask &= ~W_ARM;
 	if(!uarm) {
@@ -978,7 +973,7 @@ Armor_gone()
 }
 
 void
-Amulet_on()
+Amulet_on(void)
 {
     if (!uamul) return;
     switch(uamul->otyp) {
@@ -1041,7 +1036,7 @@ Amulet_on()
 }
 
 void
-Amulet_off()
+Amulet_off(void)
 {
     takeoff_mask &= ~W_AMUL;
 	
@@ -1096,8 +1091,7 @@ Amulet_off()
 }
 
 void
-Ring_on(obj)
-register struct obj *obj;
+Ring_on(register struct obj *obj)
 {
     long oldprop = u.uprops[objects[obj->otyp].oc_oprop[0]].extrinsic;
     int old_attrib, which;
@@ -1233,9 +1227,7 @@ register struct obj *obj;
 }
 
 static void
-Ring_off_or_gone(obj,gone)
-register struct obj *obj;
-boolean gone;
+Ring_off_or_gone(register struct obj *obj, boolean gone)
 {
     long mask = (obj->owornmask & W_RING);
     int old_attrib, which;
@@ -1348,22 +1340,19 @@ boolean gone;
 }
 
 void
-Ring_off(obj)
-struct obj *obj;
+Ring_off(struct obj *obj)
 {
 	Ring_off_or_gone(obj,FALSE);
 }
 
 void
-Ring_gone(obj)
-struct obj *obj;
+Ring_gone(struct obj *obj)
 {
 	Ring_off_or_gone(obj,TRUE);
 }
 
 void
-Blindf_on(otmp)
-register struct obj *otmp;
+Blindf_on(register struct obj *otmp)
 {
 	boolean already_blind = Blind, changed = FALSE;
 	boolean already_extramission = Extramission;
@@ -1411,8 +1400,7 @@ register struct obj *otmp;
 }
 
 void
-Blindf_off(otmp)
-register struct obj *otmp;
+Blindf_off(register struct obj *otmp)
 {
 	boolean was_blind = Blind, changed = FALSE;
 	boolean was_extramission = Extramission;
@@ -1451,7 +1439,7 @@ register struct obj *otmp;
 
 /* called in main to set intrinsics of worn start-up items */
 void
-set_wear()
+set_wear(void)
 {
 	if (uarmu) (void) Shirt_on();
 	if (uarm)  (void) Armor_on();
@@ -1464,8 +1452,8 @@ set_wear()
 
 /* check whether the target object is currently being put on (or taken off) */
 boolean
-donning(otmp)		/* also checks for doffing */
-register struct obj *otmp;
+donning(		/* also checks for doffing */
+	register struct obj *otmp)
 {
  /* long what = (occupation == take_off) ? taking_off : 0L; */
     long long what = taking_off;	/* if nonzero, occupation is implied */
@@ -1497,7 +1485,7 @@ register struct obj *otmp;
 }
 
 void
-cancel_don()
+cancel_don(void)
 {
 	/* the piece of armor we were donning/doffing has vanished, so stop
 	 * wasting time on it (and don't dereference it when donning would
@@ -1517,7 +1505,7 @@ static const char accessories[] = {RING_CLASS, AMULET_CLASS, TOOL_CLASS, FOOD_CL
 
 /* the 'T' command */
 int
-dotakeoff()
+dotakeoff(void)
 {
 	register struct obj *otmp = (struct obj *)0;
 	int armorpieces = 0;
@@ -1593,7 +1581,7 @@ dotakeoff()
 
 /* the 'R' command */
 int
-doremring()
+doremring(void)
 {
 	register struct obj *otmp = 0;
 	int Accessories = 0;
@@ -1653,8 +1641,7 @@ doremring()
 
 /* Check if something worn is cursed _and_ unremovable. */
 int
-cursed(otmp)
-register struct obj *otmp;
+cursed(register struct obj *otmp)
 {
 	/* Curses, like chickens, come home to roost. */
 	if((otmp == uwep) ? welded(otmp) : ((int)otmp->cursed && !Weldproof)) {
@@ -1668,8 +1655,7 @@ register struct obj *otmp;
 }
 
 int
-armoroff(otmp)
-register struct obj *otmp;
+armoroff(register struct obj *otmp)
 {
 	register int delay = -objects[otmp->otyp].oc_delay;
 
@@ -1748,15 +1734,13 @@ register struct obj *otmp;
 }
 
 static void
-already_wearing(cc)
-const char *cc;
+already_wearing(const char *cc)
 {
 	You("are already wearing %s%c", cc, (cc == c_that_) ? '!' : '.');
 }
 
 static void
-already_wearing2(cc1, cc2)
-const char *cc1, *cc2;
+already_wearing2(const char *cc1, const char *cc2)
 {
 	You_cant("wear %s because you're wearing %s there already.", cc1, cc2);
 }
@@ -1769,10 +1753,7 @@ const char *cc1, *cc2;
  * output: mask (otmp's armor type)
  */
 int
-canwearobj(otmp,mask,noisy)
-struct obj *otmp;
-long long *mask;
-boolean noisy;
+canwearobj(struct obj *otmp, long long *mask, boolean noisy)
 {
     int err = 0;
 
@@ -1965,7 +1946,7 @@ boolean noisy;
 
 /* the 'W' command */
 int
-dowear()
+dowear(void)
 {
 	struct obj *otmp;
 	int delay;
@@ -2036,7 +2017,7 @@ dowear()
 }
 
 int
-doputon()
+doputon(void)
 {
 	register struct obj *otmp;
 	long long mask = 0LL;
@@ -2238,15 +2219,14 @@ doputon()
 }
 
 
-int arm_total_bonus(otmp)
-struct obj * otmp;
+int
+arm_total_bonus(struct obj *otmp)
 {
 	return arm_ac_bonus(otmp) + arm_dr_bonus(otmp);
 }
 
 int
-greatest_erosion(otmp)
-struct obj * otmp;
+greatest_erosion(struct obj *otmp)
 {
 	int greatest = 0;
 	if(otmp->oeroded > greatest) greatest = (int) otmp->oeroded;
@@ -2265,10 +2245,7 @@ struct obj * otmp;
  * materials being very close in their defense ratings; see decl.c
  */
 int
-material_def_bonus(otmp, def, ac)
-struct obj * otmp;
-int def;
-boolean ac;
+material_def_bonus(struct obj *otmp, int def, boolean ac)
 {
 	if(def){
 		int curr = materials[otmp->obj_material].defense;
@@ -2311,8 +2288,8 @@ boolean ac;
 	}
 }
 
-int arm_ac_bonus(otmp)
-struct obj * otmp;
+int
+arm_ac_bonus(struct obj *otmp)
 {
 	/* no armor, no defense! */
 	if (!otmp)
@@ -2414,8 +2391,7 @@ struct obj * otmp;
 }
 
 int
-arm_dr_bonus(otmp)
-struct obj * otmp;
+arm_dr_bonus(struct obj *otmp)
 {
 	/* no armor, no defense! */
 	if (!otmp)
@@ -2517,10 +2493,7 @@ struct obj * otmp;
 }
 
 int
-properties_dr(arm, agralign, agrmoral)
-struct obj *arm;
-int agralign;
-int agrmoral;
+properties_dr(struct obj *arm, int agralign, int agrmoral)
 {
 	int bonus = 0;
 	int base = arm_dr_bonus(arm);
@@ -2553,7 +2526,7 @@ int agrmoral;
 
 
 int
-base_uac()
+base_uac(void)
 {
 	int dexbonus = 0;
 	int uac = 10-mons[u.umonnum].nac;
@@ -2752,7 +2725,7 @@ base_uac()
 }
 
 void
-find_ac()
+find_ac(void)
 {
 	int uac;
 	
@@ -2830,7 +2803,8 @@ find_ac()
 	find_dr(); /*Also recalculate the DR*/
 }
 
-int base_nat_udr()
+int
+base_nat_udr(void)
 {
 	int udr = 0;
 
@@ -2871,7 +2845,8 @@ int base_nat_udr()
 	return udr;
 }
 
-int base_udr()
+int
+base_udr(void)
 {
 	int udr = 0;
 	
@@ -2906,7 +2881,7 @@ int base_udr()
 }
 
 void
-find_dr()
+find_dr(void)
 {
 	int udr = 0, i;
 	
@@ -3121,7 +3096,7 @@ roll_udr_detail(struct monst *magr, int slot, int depth, int aatyp)
 }
 
 void
-glibr()
+glibr(void)
 {
 	register struct obj *otmp;
 	int xfl = 0;
@@ -3188,7 +3163,7 @@ glibr()
 }
 
 void
-bumbler()
+bumbler(void)
 {
 	register struct obj *otmp;
 	int xfl = 0;
@@ -3231,8 +3206,7 @@ bumbler()
 }
 
 struct obj *
-some_armor(victim)
-struct monst *victim;
+some_armor(struct monst *victim)
 {
 	register struct obj *otmph, *otmp;
 
@@ -3259,9 +3233,7 @@ struct monst *victim;
 
 /* erode some arbitrary armor worn by the victim */
 void
-erode_armor(victim, acid_dmg)
-struct monst *victim;
-boolean acid_dmg;
+erode_armor(struct monst *victim, boolean acid_dmg)
 {
 	struct obj *otmph = some_armor(victim);
 
@@ -3273,9 +3245,7 @@ boolean acid_dmg;
 
 /* used for praying to check and fix levitation trouble */
 struct obj *
-stuck_ring(ring, otyp)
-struct obj *ring;
-int otyp;
+stuck_ring(struct obj *ring, int otyp)
 {
     if (ring && !(ring->owornmask & W_RING)) {
 	impossible("stuck_ring: ring not worn?");
@@ -3299,7 +3269,7 @@ int otyp;
 
 /* also for praying; find worn item that confers "Unchanging" attribute */
 struct obj *
-cursed_unchanger()
+cursed_unchanger(void)
 {
 	struct obj *otmp;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
@@ -3310,10 +3280,8 @@ cursed_unchanger()
 }
 
 /* occupation callback for 'A' */
-static
-int
-select_off(otmp)
-register struct obj *otmp;
+static int
+select_off(register struct obj *otmp)
 {
 	struct obj *why;
 	char buf[BUFSZ];
@@ -3433,7 +3401,7 @@ register struct obj *otmp;
 }
 
 static struct obj *
-do_takeoff()
+do_takeoff(void)
 {
 	register struct obj *otmp = (struct obj *)0;
 
@@ -3496,9 +3464,8 @@ do_takeoff()
 
 static const char *disrobing = "";
 
-static
-int
-take_off()
+static int
+take_off(void)
 {
 	register int i;
 	register struct obj *otmp;
@@ -3579,7 +3546,7 @@ take_off()
 
 /* clear saved context to avoid inappropriate resumption of interrupted 'A' */
 void
-reset_remarm()
+reset_remarm(void)
 {
 	taking_off = takeoff_mask = 0LL;
 	disrobing = nul;
@@ -3587,7 +3554,7 @@ reset_remarm()
 
 /* the 'A' command -- remove multiple worn items */
 int
-doddoremarm()
+doddoremarm(void)
 {
     int result = 0;
 
@@ -3623,8 +3590,7 @@ doddoremarm()
 }
 
 static int
-menu_remarm(retry)
-int retry;
+menu_remarm(int retry)
 {
     int n, i = 0;
     menu_item *pick_list;
@@ -3666,8 +3632,7 @@ int retry;
 
 /* hit by destroy armor scroll/black dragon breath/monster spell */
 int
-destroy_arm(atmp)
-register struct obj *atmp;
+destroy_arm(register struct obj *atmp)
 {
 	register struct obj *otmp;
 #define DESTROY_ARM(o) ((otmp = (o)) != 0 && \
@@ -3780,9 +3745,7 @@ register struct obj *atmp;
 }
 
 int
-destroy_marm(mtmp, otmp)
-register struct monst *mtmp;
-register struct obj *otmp;
+destroy_marm(register struct monst *mtmp, register struct obj *otmp)
 {
 	/* call the player's version if need be */
 	if (mtmp == &youmonst)
@@ -3837,8 +3800,7 @@ register struct obj *otmp;
 
 /* hit by destroy armor scroll/black dragon breath/monster spell */
 int
-claws_destroy_arm(atmp)
-register struct obj *atmp;
+claws_destroy_arm(register struct obj *atmp)
 {
 	register struct obj *otmp;
 #define DESTROY_ARM(o) ((otmp = (o)) != 0 && \
@@ -3924,9 +3886,7 @@ register struct obj *atmp;
 }
 
 int
-claws_destroy_marm(mtmp, otmp)
-register struct monst *mtmp;
-register struct obj *otmp;
+claws_destroy_marm(register struct monst *mtmp, register struct obj *otmp)
 {
 	/* call the player's version if need be */
 	if (mtmp == &youmonst)
@@ -3980,9 +3940,7 @@ register struct obj *otmp;
 }
 
 int
-teleport_arm(atmp, mdef)
-struct obj *atmp;
-struct monst *mdef;
+teleport_arm(struct obj *atmp, struct monst *mdef)
 {
 	struct obj *otmp;
 #define TELEPORT_ARM(o) ((otmp = (o)) != 0 && \
@@ -4110,9 +4068,7 @@ struct monst *mdef;
 
 
 int
-teleport_steal_arm(magr, atmp)
-struct monst *magr;
-struct obj *atmp;
+teleport_steal_arm(struct monst *magr, struct obj *atmp)
 {
 	struct obj *otmp;
 #define TELEPORT_ARM(o) ((otmp = (o)) != 0 && \
@@ -4201,8 +4157,7 @@ struct obj *atmp;
 }
 
 int
-tent_destroy_arm(atmp)
-struct obj *atmp;
+tent_destroy_arm(struct obj *atmp)
 {
 	struct obj *otmp;
 #define DESTROY_ARM(o) ((otmp = (o)) != 0 && \
@@ -4286,9 +4241,7 @@ struct obj *atmp;
 }
 
 void
-adj_abon(otmp, delta)
-register struct obj *otmp;
-register schar delta;
+adj_abon(register struct obj *otmp, register schar delta)
 {
 	if (uarmh && uarmh == otmp) {
 		if(otmp->otyp == HELM_OF_BRILLIANCE){
@@ -4370,9 +4323,7 @@ register schar delta;
 }
 
 void
-dosymbiotic(magr, armor)
-struct monst *magr;
-struct obj *armor;
+dosymbiotic(struct monst *magr, struct obj *armor)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -4426,9 +4377,7 @@ struct obj *armor;
 }
 
 void
-doscorpion(magr, armor)
-struct monst *magr;
-struct obj *armor;
+doscorpion(struct monst *magr, struct obj *armor)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -4481,9 +4430,7 @@ struct obj *armor;
 }
 
 void
-dodragonhead_roar(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dodragonhead_roar(struct monst *magr, struct obj *wep)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -4529,9 +4476,7 @@ struct obj *wep;
 }
 
 static void
-dodragonhead_bite(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dodragonhead_bite(struct monst *magr, struct obj *wep)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -4594,9 +4539,7 @@ struct obj *wep;
 }
 
 static void
-dodragonhead_breathe(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dodragonhead_breathe(struct monst *magr, struct obj *wep)
 {
 	struct zapdata zapdata;
 	extern const int clockwisex[8];
@@ -4678,10 +4621,7 @@ struct obj *wep;
 }
 
 void
-doliving_dragonhead(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_dragonhead(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if(!invoked){
 		if(rn2(5))
@@ -4706,9 +4646,7 @@ boolean invoked;
 }
 
 void
-doking_scream(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doking_scream(struct monst *magr, struct obj *wep)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -4765,9 +4703,7 @@ struct obj *wep;
 }
 
 void
-doking_bless(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doking_bless(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	
@@ -4790,9 +4726,7 @@ struct obj *wep;
 }
 
 void
-doking_vex(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doking_vex(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -4818,10 +4752,7 @@ struct obj *wep;
 }
 
 void
-doliving_mad_king(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_mad_king(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if(!invoked){
 		if(rn2(5))
@@ -4846,9 +4777,7 @@ boolean invoked;
 }
 
 void
-doringed_awaken(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doringed_awaken(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -4869,9 +4798,7 @@ struct obj *wep;
 }
 
 void
-doringed_nurture(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doringed_nurture(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -4908,9 +4835,7 @@ struct obj *wep;
 }
 
 void
-doringed_companions(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doringed_companions(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -4948,10 +4873,7 @@ struct obj *wep;
 }
 
 void
-doliving_ringed_spear(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_ringed_spear(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if(!invoked){
 		if(rn2(5))
@@ -4976,9 +4898,7 @@ boolean invoked;
 }
 
 void
-dobrass_awaken(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dobrass_awaken(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -4999,11 +4919,7 @@ struct obj *wep;
 }
 
 void
-dobrass_attack(magr, armor, atyp, etyp)
-struct monst *magr;
-struct obj *armor;
-char atyp;
-char etyp;
+dobrass_attack(struct monst *magr, struct obj *armor, char atyp, char etyp)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5065,9 +4981,7 @@ char etyp;
 }
 
 void
-dobrass_nurture(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dobrass_nurture(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -5107,9 +5021,7 @@ struct obj *wep;
 }
 
 void
-dobrass_companions(magr, wep)
-struct monst *magr;
-struct obj *wep;
+dobrass_companions(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = (magr == &youmonst);
 	struct monst *mtmp;
@@ -5147,10 +5059,7 @@ struct obj *wep;
 }
 
 void
-doliving_ringed_armor(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_ringed_armor(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if((invoked
 		|| !rn2(5)
@@ -5184,9 +5093,7 @@ boolean invoked;
 }
 
 void
-doibite_thrash(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doibite_thrash(struct monst *magr, struct obj *wep)
 {
 	int x = x(magr), y = y(magr);
 	int i, j;
@@ -5234,9 +5141,7 @@ struct obj *wep;
 }
 
 void
-doibite_cast(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doibite_cast(struct monst *magr, struct obj *wep)
 {
 	int x = x(magr), y = y(magr);
 	int i, j;
@@ -5325,8 +5230,7 @@ break_outer_loop:
 }
 
 void
-dotwin_cast(magr)
-struct monst *magr;
+dotwin_cast(struct monst *magr)
 {
 	int x = x(magr), y = y(magr);
 	int i, j;
@@ -5448,9 +5352,7 @@ break_outer_loop:
 }
 
 void
-doibite_ghosts(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doibite_ghosts(struct monst *magr, struct obj *wep)
 {
 	boolean youagr = magr == &youmonst;
 	int efcha = youagr ? (ACURR(A_CHA) + 1) : (ACURR_MON(A_CHA, magr) + 1);
@@ -5483,10 +5385,7 @@ struct obj *wep;
 }
 
 void
-doliving_ibite_arm(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_ibite_arm(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if(u.uinsight >= 60 && invoked){
 		//summon ghosts
@@ -5504,11 +5403,7 @@ boolean invoked;
 }
 
 void
-dotsmi_theft(magr, mdef, inventory, artifact)
-struct monst *magr;
-struct monst *mdef;
-struct obj *inventory;
-struct obj *artifact;
+dotsmi_theft(struct monst *magr, struct monst *mdef, struct obj *inventory, struct obj *artifact)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean youdef = (mdef == &youmonst);
@@ -5655,9 +5550,7 @@ struct obj *artifact;
 }
 
 static void
-doesscoo_theft(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doesscoo_theft(struct monst *magr, struct obj *wep)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5733,8 +5626,7 @@ struct obj *wep;
 }
 
 boolean
-floor_magic(magr)
-struct monst *magr;
+floor_magic(struct monst *magr)
 {
 	extern const int clockwisex[8];
 	extern const int clockwisey[8];
@@ -5748,10 +5640,7 @@ struct monst *magr;
 }
 
 void
-doliving_esscoo(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_esscoo(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	if(!invoked){
 		if(rn2(5))
@@ -5763,10 +5652,7 @@ boolean invoked;
 }
 
 void
-doliving_percipient(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_percipient(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -5817,10 +5703,7 @@ boolean invoked;
 }
 
 void
-doliving_fallingstar(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_fallingstar(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	int x = x(magr), y = y(magr);
 	int i, j;
@@ -5891,10 +5774,7 @@ boolean invoked;
 }
 
 void
-doliving_healing_armor(magr, wep, invoked)
-struct monst *magr;
-struct obj *wep;
-boolean invoked;
+doliving_healing_armor(struct monst *magr, struct obj *wep, boolean invoked)
 {
 	boolean proc = FALSE;
 	boolean youagr = magr == &youmonst;
@@ -5934,9 +5814,7 @@ boolean invoked;
 }
 
 void
-doliving_armor_salve(mon, salve)
-struct monst *mon;
-struct obj *salve;
+doliving_armor_salve(struct monst *mon, struct obj *salve)
 {
 	boolean proc = FALSE;
 	boolean yours = (mon == &youmonst);
@@ -5959,9 +5837,7 @@ struct obj *salve;
 }
 
 static void
-doliving_single_attack(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doliving_single_attack(struct monst *magr, struct obj *wep)
 {
 	struct monst *mdef;
 	extern const int clockwisex[8];
@@ -6019,10 +5895,7 @@ struct obj *wep;
 }
 
 static void
-do_orb_attack(magr, atyp, etyp)
-struct monst *magr;
-char atyp;
-char etyp;
+do_orb_attack(struct monst *magr, char atyp, char etyp)
 {
 	struct monst *mdef;
 	int clockwisex[8] = { 0, 1, 1, 1, 0,-1,-1,-1};
@@ -6078,9 +5951,7 @@ char etyp;
 }
 
 static void
-doliving_chaos_orb(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doliving_chaos_orb(struct monst *magr, struct obj *wep)
 {
 	if(rn2(20))
 		return;
@@ -6110,9 +5981,7 @@ struct obj *wep;
 }
 
 void
-doliving(magr, wep)
-struct monst *magr;
-struct obj *wep;
+doliving(struct monst *magr, struct obj *wep)
 {
 	if(wep->oartifact == ART_DRAGONHEAD_SHIELD)
 		doliving_dragonhead(magr, wep, FALSE);

@@ -22,7 +22,7 @@ static void FDECL(worddescriptions, (int));
 
 /* assumes u.umonnum is set already */
 void
-init_uasmon()
+init_uasmon(void)
 {
 	upermonst = mons[(flags.female && urace.femalenum != NON_PM) ? urace.femalenum : urace.malenum];
 	set_uasmon();
@@ -30,14 +30,14 @@ init_uasmon()
 
 /* update the youmonst.data structure pointer */
 void
-set_uasmon()
+set_uasmon(void)
 {
 	set_mon_data(&youmonst, u.umonnum);
 }
 
 /** Returns true if the player monster is genocided. */
 boolean
-is_playermon_genocided()
+is_playermon_genocided(void)
 {
 	return ((mvitals[urole.malenum].mvflags & G_GENOD && !In_quest(&u.uz)) ||
 			(urole.femalenum != NON_PM &&
@@ -49,8 +49,7 @@ is_playermon_genocided()
 
 /* make a (new) human out of the player */
 static void
-polyman(fmt, arg)
-const char *fmt, *arg;
+polyman(const char *fmt, const char *arg)
 {
 	boolean sticky = sticks(&youmonst) && u.ustuck && !u.uswallow,
 		was_mimicking = (youmonst.m_ap_type == M_AP_OBJECT);
@@ -123,7 +122,7 @@ const char *fmt, *arg;
 }
 
 void
-change_sex()
+change_sex(void)
 {
 	/* setting u.umonster for caveman/cavewoman or priest/priestess
 	   swap unintentionally makes `Upolyd' appear to be true */
@@ -155,7 +154,7 @@ change_sex()
 }
 
 static void
-newman()
+newman(void)
 {
 	int tmp, tmpen, oldlvl;
 
@@ -237,8 +236,7 @@ dead: /* we come directly here if their experience level went to 0 or less */
 }
 
 void
-polyself(forcecontrol)
-boolean forcecontrol;
+polyself(boolean forcecontrol)
 {
 	char buf[BUFSZ];
 	int old_light, new_light;
@@ -379,8 +377,8 @@ boolean forcecontrol;
 
 /* (try to) make a mntmp monster out of the player */
 int
-polymon(mntmp)	/* returns 1 if polymorph successful */
-int	mntmp;
+polymon(	/* returns 1 if polymorph successful */
+	int mntmp)
 {
 	boolean sticky = sticks(&youmonst) && u.ustuck && !u.uswallow,
 		was_blind = !!Blind, dochange = FALSE;
@@ -678,7 +676,7 @@ int	mntmp;
 }
 
 void
-break_armor()
+break_armor(void)
 {
     register struct obj *otmp;
 #define special_armor(a) (a->oartifact || is_imperial_elven_armor(a))
@@ -805,8 +803,7 @@ break_armor()
 }
 
 void
-drop_weapon(alone)
-int alone;
+drop_weapon(int alone)
 {
     struct obj *otmp;
     struct obj *otmp2;
@@ -838,7 +835,7 @@ int alone;
 }
 
 void
-rehumanize()
+rehumanize(void)
 {
 	/* You can't revert back while unchanging */
 	if (Unchanging && (u.mh < 1)) {
@@ -870,8 +867,7 @@ rehumanize()
 }
 
 int
-dobreathe(mdat)
-struct permonst *mdat;
+dobreathe(struct permonst *mdat)
 {
 	struct attack mattk;
 	int powermult = 100;
@@ -930,7 +926,7 @@ struct permonst *mdat;
 }
 
 int
-domakewhisperer()
+domakewhisperer(void)
 {
 	const char *petname;
 	struct monst *mtmp;
@@ -978,7 +974,7 @@ domakewhisperer()
 }
 
 int
-dokiai()
+dokiai(void)
 {
 	const char *petname;
 	struct monst *mtmp;
@@ -999,7 +995,7 @@ dokiai()
 }
 
 int
-doelementalbreath()
+doelementalbreath(void)
 {
 	struct monst *mon = 0;
 	int type;
@@ -1050,7 +1046,7 @@ doelementalbreath()
 }
 
 int
-dospit()
+dospit(void)
 {
 	struct obj *otmp;
 
@@ -1063,7 +1059,7 @@ dospit()
 }
 
 int
-doremove()
+doremove(void)
 {
 	if (!Punished) {
 		You("are not chained to anything!");
@@ -1074,7 +1070,7 @@ doremove()
 }
 
 int
-dospinweb()
+dospinweb(void)
 {
 	register struct trap *ttmp = t_at(u.ux,u.uy);
 
@@ -1197,7 +1193,7 @@ dospinweb()
 }
 
 int
-dosummon()
+dosummon(void)
 {
 	int placeholder;
 	if (u.uen < 10) {
@@ -1215,7 +1211,7 @@ dosummon()
 }
 
 int
-dodemonpet()
+dodemonpet(void)
 {
 	int i;
 	struct permonst *pm;
@@ -1256,7 +1252,7 @@ dodemonpet()
 static const char food_types[] = { FOOD_CLASS, 0 };
 
 int
-dovampminion()
+dovampminion(void)
 {
 	struct obj *otmp;
 	struct obj *corpse = (struct obj *)0;
@@ -1304,7 +1300,7 @@ dovampminion()
 }
 
 int
-dotinker()
+dotinker(void)
 {
 	if (u.uen < 10) {
 	    You("lack the energy to tinker.");
@@ -1335,7 +1331,7 @@ dotinker()
 }
 
 int
-dogaze()
+dogaze(void)
 {
 	register struct monst *mtmp;
 	int result = 0;
@@ -1646,7 +1642,7 @@ dogaze()
 #endif
 
 int
-dohide()
+dohide(void)
 {
 	boolean ismimic = youracedata->mlet == S_MIMIC;
 
@@ -1665,7 +1661,7 @@ dohide()
 }
 
 int
-domindblast()
+domindblast(void)
 {
 	struct monst *mtmp, *nmon;
 	int dice = 1, mfdmg;
@@ -1743,7 +1739,7 @@ domindblast()
 }
 
 void
-domindblast_strong()
+domindblast_strong(void)
 {
 	struct monst *mtmp, *nmon;
 	int mfdmg;
@@ -1775,7 +1771,7 @@ domindblast_strong()
 }
 
 int
-dodarken()
+dodarken(void)
 {
 
 	if (u.uen < 10 && u.uen<u.uenmax) {
@@ -1791,7 +1787,7 @@ dodarken()
 }
 
 int
-doclockspeed()
+doclockspeed(void)
 {
 	short newspeed = doclockmenu();
 	if(newspeed == PHASE_ENGINE){
@@ -1837,7 +1833,7 @@ doclockspeed()
 }
 
 int
-doandroid()
+doandroid(void)
 {
 	short newspeed = dodroidmenu();
 	if(newspeed == PHASE_ENGINE){
@@ -1893,8 +1889,7 @@ doandroid()
 }
 
 int
-dowords(splaction)
-int splaction;
+dowords(int splaction)
 {
 	winid tmpwin;
 	int n, how;
@@ -1984,8 +1979,7 @@ int splaction;
 }
 
 static void
-worddescriptions(spellID)
-int spellID;
+worddescriptions(int spellID)
 {
 	struct obj *pseudo;
 
@@ -2047,15 +2041,14 @@ int spellID;
 }
 
 static void
-uunstick()
+uunstick(void)
 {
 	pline("%s is no longer in your clutches.", Monnam(u.ustuck));
 	u.ustuck = 0;
 }
 
 void
-skinback(silently)
-boolean silently;
+skinback(boolean silently)
 {
 	if (uskin) {
 		struct obj * otmp = (struct obj *)0;
@@ -2089,9 +2082,7 @@ boolean silently;
 
 
 const char *
-mbodypart(mon, part)
-struct monst *mon;
-int part;
+mbodypart(struct monst *mon, int part)
 {
 	static const char
 	*humanoid_parts[] = { 
@@ -2517,15 +2508,14 @@ int part;
 }
 
 const char *
-body_part(part)
-int part;
+body_part(int part)
 {
 	return mbodypart(&youmonst, part);
 }
 
 
 int
-poly_gender()
+poly_gender(void)
 {
 /* Returns gender of polymorphed player; 0/1=same meaning as flags.female,
  * 2=none.
@@ -2536,8 +2526,7 @@ poly_gender()
 
 
 void
-ugolemeffects(damtype, dam)
-int damtype, dam;
+ugolemeffects(int damtype, int dam)
 {
 	int heal = 0;
 	/* We won't bother with "slow"/"haste" since players do not
@@ -2571,8 +2560,7 @@ int damtype, dam;
 }
 
 static int
-armor_to_dragon(atyp)
-int atyp;
+armor_to_dragon(int atyp)
 {
 	switch(atyp) {
 	    case LEO_NEMAEUS_HIDE:
@@ -2614,7 +2602,7 @@ int atyp;
 
 
 static short
-doclockmenu()
+doclockmenu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -2685,7 +2673,7 @@ doclockmenu()
 }
 
 static short
-dodroidmenu()
+dodroidmenu(void)
 {
 	winid tmpwin;
 	int n, how;

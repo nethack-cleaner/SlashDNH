@@ -37,8 +37,7 @@ int skeletpm = -1;
 #define m_initlgrp(mtmp, x, y)	m_initgrp(mtmp, x, y, 10)
 
 boolean
-is_home_elemental(ptr)
-register struct permonst *ptr;
+is_home_elemental(register struct permonst *ptr)
 {
 	if (ptr->mlet == S_ELEMENTAL) switch (monsndx(ptr)) {
 		case PM_AIR_ELEMENTAL: return Is_airlevel(&u.uz);
@@ -59,8 +58,7 @@ register struct permonst *ptr;
  * Return true if the given monster cannot exist on this elemental level.
  */
 static boolean
-wrong_elem_type(ptr)
-    register struct permonst *ptr;
+wrong_elem_type(register struct permonst *ptr)
 {
     if (ptr->mlet == S_ELEMENTAL) {
 	return((boolean)(!is_home_elemental(ptr)));
@@ -79,10 +77,9 @@ wrong_elem_type(ptr)
     return FALSE;
 }
 
+/* make a group just like mtmp */
 void
-m_initgrp(mtmp, x, y, n)	/* make a group just like mtmp */
-register struct monst *mtmp;
-register int x, y, n;
+m_initgrp(struct monst *mtmp, int x, int y, int n)
 {
 	coord mm;
 	int mndx;
@@ -146,10 +143,7 @@ register int x, y, n;
 }
 
 void
-m_initthrow(mtmp,otyp,oquan,mkobjflags)
-struct monst *mtmp;
-int otyp,oquan;
-int mkobjflags;
+m_initthrow(struct monst *mtmp, int otyp, int oquan, int mkobjflags)
 {
 	register struct obj *otmp;
 
@@ -177,11 +171,7 @@ static int angelweps[] = {
 };
 
 static void
-golem_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+golem_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	int mm = mtmp->mtyp;
@@ -391,11 +381,7 @@ boolean goodequip;
 }
 
 static void
-yochlol_initinv(mtmp, mkobjflags, faction, goodequip)
-struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+yochlol_initinv(struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	/*weapon*/
@@ -464,11 +450,7 @@ boolean goodequip;
 }
 
 static void
-golem_initinv(mtmp, mkobjflags, faction, goodequip)
-struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+golem_initinv(struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	if(mtmp->mtyp == PM_ARSENAL){
@@ -503,11 +485,7 @@ boolean goodequip;
 }
 
 static void
-giant_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+giant_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	if (rn2(2)) (void)mongets(mtmp, (mtmp->mtyp != PM_ETTIN) ?
@@ -523,11 +501,7 @@ boolean goodequip;
 }
 
 static void
-giant_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+giant_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	struct permonst *ptr = mtmp->data;
@@ -790,11 +764,7 @@ boolean goodequip;
 }
 
 static void
-imp_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+imp_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	int w1 = 0, w2 = 0;
@@ -941,21 +911,12 @@ boolean goodequip;
 }
 
 static void
-imp_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+imp_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 }
 
 static void
-human_initweap(mtmp, mkobjflags, faction, goodequip, greatequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
-boolean greatequip;
+human_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip, int greatequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4081,11 +4042,7 @@ boolean greatequip;
 }
 
 static void
-human_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+human_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int cnt;
 	int chance;
@@ -4368,11 +4325,7 @@ boolean goodequip;
 }
 
 static void
-xorn_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+xorn_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	struct obj *otmp;
 	struct permonst *ptr = mtmp->data;
@@ -4438,11 +4391,7 @@ boolean goodequip;
 }
 
 static void
-elemental_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+elemental_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4485,11 +4434,7 @@ boolean goodequip;
 }
 
 static void
-elemental_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+elemental_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4498,11 +4443,7 @@ boolean goodequip;
 }
 
 static void
-umber_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+umber_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4511,11 +4452,7 @@ boolean goodequip;
 }
 
 static void
-umber_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+umber_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4571,11 +4508,7 @@ boolean goodequip;
 }
 
 static void
-worm_initweap(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+worm_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4588,11 +4521,7 @@ boolean goodequip;
 }
 
 static void
-worm_initinv(mtmp, mkobjflags, faction, goodequip)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
+worm_initinv(register struct monst *mtmp, int mkobjflags, int faction, int goodequip)
 {
 	int mm = mtmp->mtyp;
 	int chance;
@@ -4610,13 +4539,7 @@ boolean goodequip;
 #define MAYBE_MERC(otmp)	if(!rn2(100) || greatequip) set_material_gm(otmp, MERCURIAL);
 
 static void
-m_initweap(mtmp, mkobjflags, faction, goodequip, greatequip, mmflags)
-register struct monst *mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
-boolean greatequip;
-int mmflags;
+m_initweap(register struct monst *mtmp, int mkobjflags, int faction, boolean goodequip, boolean greatequip, int mmflags)
 {
 	struct permonst *ptr = mtmp->data;
 	int mm = monsndx(ptr);
@@ -10950,10 +10873,8 @@ int mmflags;
  *   Makes up money for monster's inventory.
  *   This will change with silver & copper coins
  */
-void 
-mkmonmoney(mtmp, amount)
-struct monst *mtmp;
-long amount;
+void
+mkmonmoney(struct monst *mtmp, long amount)
 {
     struct obj *gold = mksobj(GOLD_PIECE, mkobjflags|MKOBJ_NOINIT);
     gold->quan = amount;
@@ -10963,12 +10884,7 @@ long amount;
 #endif
 
 static void
-m_initinv(mtmp, mkobjflags, faction, goodequip, greatequip)
-register struct	monst	*mtmp;
-int mkobjflags;
-int faction;
-boolean goodequip;
-boolean greatequip;
+m_initinv(register struct monst *mtmp, int mkobjflags, int faction, boolean goodequip, boolean greatequip)
 {
 	int cnt;
 	int chance;
@@ -13260,9 +13176,7 @@ boolean greatequip;
 
 /* Note: for long worms, always call cutworm (cutworm calls clone_mon) */
 struct monst *
-clone_mon(mon, x, y)
-struct monst *mon;
-xchar x, y;	/* clone's preferred location or 0 (near mon) */
+clone_mon(struct monst *mon, xchar x, xchar y) /* clone's preferred location or 0 (near mon) */
 {
 	coord mm;
 	struct monst *m2;
@@ -13363,7 +13277,7 @@ xchar x, y;	/* clone's preferred location or 0 (near mon) */
  * clones the player, making a tame creature
  */
 struct monst *
-cloneu()
+cloneu(void)
 {
 	register struct monst *mon;
 	int mndx = monsndx(youracedata);
@@ -13397,10 +13311,7 @@ cloneu()
  *         TRUE  propagation successful
  */
 boolean
-propagate(mndx, tally, ghostly)
-int mndx;
-boolean tally;
-boolean ghostly;
+propagate(int mndx, boolean tally, boolean ghostly)
 {
 	boolean result;
 	uchar lim = mbirth_limit(mndx);
@@ -13432,10 +13343,10 @@ boolean ghostly;
  * Returns template applied.
  */
 int
-makemon_set_template(ptrptr, template, randmonst)
-struct permonst ** ptrptr;	/* standard ptr, but one layer referenced so that we can change what ptr is for the caller */
-int template;
-boolean randmonst;
+makemon_set_template(
+	struct permonst **ptrptr,	/* standard ptr, but one layer referenced so that we can change what ptr is for the caller */
+	int template,
+	boolean randmonst)
 {
 	struct permonst * ptr = *ptrptr;
 	int mkmon_template = 0;
@@ -13548,11 +13459,7 @@ boolean randmonst;
  * Returns faction chosen.
  */
 int
-makemon_get_permonst_faction(ptr, x, y, template, faction)
-struct permonst * ptr;
-int x,y;
-int template;
-int faction;
+makemon_get_permonst_faction(struct permonst *ptr, int x, int y, int template, int faction)
 {
 	int out_faction = 0;
 
@@ -13712,8 +13619,7 @@ int faction;
  * takes the faction into account when deciding peacefulness.
  */
 void
-makemon_set_monster_faction(mon)
-struct monst * mon;
+makemon_set_monster_faction(struct monst *mon)
 {
 	boolean peaceful = mon->mpeaceful;
 	int out_faction = 0;
@@ -13765,10 +13671,7 @@ struct monst * mon;
  * Shorter function call with "use defaults" filled in for makemon_full()'s template and faction parameters.
  */
 struct monst *
-makemon(ptr, x, y, mmflags)
-struct permonst *ptr;
-register int	x, y;
-register int	mmflags;
+makemon(struct permonst *ptr, register int x, register int y, register int mmflags)
 {
 	return makemon_full(ptr, x, y, mmflags, -1, -1);	/* -1 meaning "default" */
 }
@@ -13780,12 +13683,7 @@ register int	mmflags;
  *   and faction (if -1),    (-1 means default for mon+locale, 0 means no template and no random chance at one)
  */
 struct monst *
-makemon_full(ptr, x, y, mmflags, template, faction)
-struct permonst *ptr;
-register int	x, y;
-register int	mmflags;
-int template;
-int faction;
+makemon_full(struct permonst *ptr, register int x, register int y, register int mmflags, int template, int faction)
 {
 	int out_template = template;
 	int out_faction = faction;
@@ -13996,12 +13894,7 @@ int faction;
  * In case we make a monster group, only return the one at [x,y].
  */
 struct monst *
-makemon_core(ptr, x, y, mmflags, template, faction)
-struct permonst *ptr;
-register int	x, y;
-register int	mmflags;
-int template;
-int faction;
+makemon_core(struct permonst *ptr, register int x, register int y, register int mmflags, int template, int faction)
 {
 	register struct monst *mtmp, *tmpm;
 	int mndx = ptr->mtyp;
@@ -15233,15 +15126,13 @@ int faction;
 }
 
 void
-set_curhouse(house)
-	int house;
+set_curhouse(int house)
 {
 	curhouse = house;
 }
 
 int
-mbirth_limit(mndx)
-int mndx;
+mbirth_limit(int mndx)
 {
 	/* assert(MAXMONNO < 255); */
 	return (mndx == PM_NAZGUL ? 9 : /*mndx == PM_ERINYS ? 3 :*/ mndx == PM_GARO_MASTER ? 1 : mndx == PM_METROID ? 21
@@ -15256,9 +15147,9 @@ int mndx;
 /* used for wand/scroll/spell of create monster */
 /* returns TRUE iff you know monsters have been created */
 boolean
-create_critters(cnt, mptr)
-int cnt;
-struct permonst *mptr;		/* usually null; used for confused reading */
+create_critters(
+	int cnt,
+	struct permonst *mptr)		/* usually null; used for confused reading */
 {
 	coord c;
 	int x, y;
@@ -15292,8 +15183,7 @@ struct permonst *mptr;		/* usually null; used for confused reading */
 
 
 static boolean
-uncommon(mndx)
-int mndx;
+uncommon(int mndx)
 {
 	if (mons[mndx].geno & (G_NOGEN | G_UNIQ)) return TRUE;
 	if (mvitals[mndx].mvflags & G_GONE && !In_quest(&u.uz)) return TRUE;
@@ -15314,8 +15204,7 @@ int mndx;
  *	return an integer in the range of 0-5.
  */
 static int
-align_shift(ptr)
-register struct permonst *ptr;
+align_shift(register struct permonst *ptr)
 {
     static long oldmoves = 0L;	/* != 1, starting value of moves */
     static s_level *lev;
@@ -15374,9 +15263,8 @@ static int roguemons[] = {
 	PM_ZOMBIE
 };
 
-static
-struct permonst *
-roguemonst()
+static struct permonst *
+roguemonst(void)
 {
 	int mn, tries=0;
 	int zlevel, minmlev, maxmlev;
@@ -15395,7 +15283,7 @@ roguemonst()
 
 /* select a random monster type */
 struct permonst *
-rndmonst()
+rndmonst(void)
 {
 	register struct permonst *ptr;
 	register int mndx, ct;
@@ -15747,8 +15635,7 @@ rndmonst()
 /* select a random monster type for a shapeshifter to turn into */
 /* optional: give a function that takes an mtyp and returns TRUE if it meets conditions */
 int
-rndshape(extra_req)
-boolean FDECL((*extra_req), (int));
+rndshape(boolean FDECL((*extra_req), (int)))
 {
 	register struct permonst *ptr;
 	register int mndx, ct;
@@ -15843,8 +15730,7 @@ boolean FDECL((*extra_req), (int));
 /* called when you change level (experience or dungeon depth) or when
    monster species can no longer be created (genocide or extinction) */
 void
-reset_rndmonst(mndx)
-int mndx;	/* particular species that can no longer be created */
+reset_rndmonst(int mndx) /* particular species that can no longer be created */
 {
 	/* cached selection info is out of date */
 	if (mndx == NON_PM) {
@@ -15864,7 +15750,7 @@ int mndx;	/* particular species that can no longer be created */
  */
 
 struct permonst *
-mkdragon()
+mkdragon(void)
 {
 	int dragons[] = {PM_GRAY_DRAGON, PM_SILVER_DRAGON, PM_SHIMMERING_DRAGON, 
 					 PM_RED_DRAGON, PM_WHITE_DRAGON, PM_ORANGE_DRAGON, 
@@ -15890,9 +15776,7 @@ mkdragon()
  */
 
 struct permonst *
-mkclass(class,spc)
-char	class;
-int	spc;
+mkclass(char class, int spc)
 {
 	register int	first, last, num = 0;
 	int maxmlev, mask = (G_DEPTHS | G_PLANES | G_NOHELL | G_HELL | G_NOGEN | G_UNIQ) & ~spc;
@@ -16104,7 +15988,7 @@ static const int futureZombies[] = {
 					};
 
 struct permonst *
-mkzombie()
+mkzombie(void)
 {
 	register int	first, last, num = 0;
 	int maxmlev;
@@ -16177,8 +16061,8 @@ mkzombie()
 }
 
 int
-adj_lev(ptr)	/* adjust strength of monsters based on u.uz and u.ulevel */
-register struct permonst *ptr;
+adj_lev(	/* adjust strength of monsters based on u.uz and u.ulevel */
+	register struct permonst *ptr)
 {
 	int	tmp, tmp2;
 	int scaling_mult = 1;
@@ -16213,8 +16097,7 @@ register struct permonst *ptr;
 
 
 void
-give_grown_equipment(mtmp)
-struct monst *mtmp;
+give_grown_equipment(struct monst *mtmp)
 {
 	struct obj *otmp;
 	switch(mtmp->mtyp){
@@ -16281,8 +16164,7 @@ struct monst *mtmp;
 }
 
 void
-m_level_up_intrinsic(mtmp)
-struct monst *mtmp;
+m_level_up_intrinsic(struct monst *mtmp)
 {
 	if(mtmp->mtyp == PM_LADY_CONSTANCE){
 		if(mtmp->m_lev >= 7){
@@ -16722,8 +16604,9 @@ struct monst *mtmp;
 }
 
 struct permonst *
-grow_up(mtmp, victim)	/* `mtmp' might "grow up" into a bigger version */
-struct monst *mtmp, *victim;
+grow_up(	/* `mtmp' might "grow up" into a bigger version */
+	struct monst *mtmp,
+	struct monst *victim)
 {
 	int oldtype, newtype, max_increase, cur_increase,
 	    lev_limit, hp_threshold;
@@ -16979,10 +16862,7 @@ struct monst *mtmp, *victim;
 
 
 struct obj *
-mongets(mtmp, otyp, mkobjflags)
-register struct monst *mtmp;
-register int otyp;
-int mkobjflags;
+mongets(register struct monst *mtmp, register int otyp, int mkobjflags)
 {
 	register struct obj *otmp;
 	int spe;
@@ -17176,8 +17056,7 @@ int mkobjflags;
 
 
 int
-golemhp(type)
-int type;
+golemhp(int type)
 {
 	switch(type) {
 		case PM_ZHI_REN_MONK: return 5;
@@ -17225,11 +17104,8 @@ int type;
  * Returns true if their IS a conflict (which causes peace minded to return false: the monster is not peaceful)
  */
 
-static
-boolean
-conflicting_unaligned_alignment(gnum, ptr)
-int gnum;
-struct permonst *ptr;
+static boolean
+conflicting_unaligned_alignment(int gnum, struct permonst *ptr)
 {
 	switch(gnum){
 		case GOD_THE_SILENCE:
@@ -17294,8 +17170,7 @@ struct permonst *ptr;
  *	( some "animal" types are co-aligned, but also hungry )
  */
 boolean
-peace_minded(ptr)
-register struct permonst *ptr;
+peace_minded(register struct permonst *ptr)
 {
 	int mndx = monsndx(ptr);
 	aligntyp mal = ptr->maligntyp, ual = u.ualign.type;
@@ -17436,8 +17311,7 @@ register struct permonst *ptr;
  *   it's never bad to kill a hostile monster, although it may not be good
  */
 void
-set_malign(mtmp)
-struct monst *mtmp;
+set_malign(struct monst *mtmp)
 {
 	schar mal = mtmp->data->maligntyp;
 	boolean coaligned;
@@ -17517,8 +17391,8 @@ static char syms[] = {
 };
 
 void
-set_mimic_sym(mtmp)		/* KAA, modified by ERS */
-register struct monst *mtmp;
+set_mimic_sym(		/* KAA, modified by ERS */
+	register struct monst *mtmp)
 {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
@@ -17637,10 +17511,10 @@ assign_sym:
 
 /* release a monster from a bag of tricks */
 int
-bagotricks(bag, tipping, seencount)
-struct obj *bag;
-boolean tipping; /* caller emptying entire contents; affects shop handling */
-int *seencount;  /* secondary output */
+bagotricks(
+	struct obj *bag,
+	boolean tipping, /* caller emptying entire contents; affects shop handling */
+	int *seencount)  /* secondary output */
 {
 	int moncount = 0;
 
@@ -17679,7 +17553,7 @@ int *seencount;  /* secondary output */
 }
 
 long
-init_doll_sales()
+init_doll_sales(void)
 {
 	int i, j;
 	long tmp, dollTypes = 0;
@@ -17715,8 +17589,7 @@ init_doll_sales()
 }
 
 int
-permonst_max_lev(ptr)
-struct permonst *ptr;
+permonst_max_lev(struct permonst *ptr)
 {
 	int lev_limit = 3 * (int)ptr->mlevel / 2;
 
@@ -17736,8 +17609,7 @@ struct permonst *ptr;
 }
 
 int
-mon_max_lev(mon)
-struct monst *mon;
+mon_max_lev(struct monst *mon)
 {
 	int lev_limit = permonst_max_lev(mon->data);
 

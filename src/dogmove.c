@@ -23,17 +23,15 @@ static boolean FDECL(dog_hunger,(struct monst *,struct edog *));
 static int FDECL(dog_invent,(struct monst *,struct edog *,int));
 static int FDECL(dog_goal,(struct monst *,struct edog *,int,int,int));
 
-static boolean FDECL(can_reach_location,(struct monst *,XCHAR_P,XCHAR_P,
-    XCHAR_P,XCHAR_P));
-static boolean FDECL(could_reach_item,(struct monst *, XCHAR_P,XCHAR_P));
+static boolean FDECL(can_reach_location,(struct monst *,xchar,xchar,
+    xchar,xchar));
+static boolean FDECL(could_reach_item,(struct monst *, xchar,xchar));
 
 /*
  * See if this armor is better than what we're wearing.
  */
 boolean
-is_better_armor(mtmp, otmp)
-register struct monst *mtmp;
-register struct obj *otmp;
+is_better_armor(register struct monst *mtmp, register struct obj *otmp)
 {
     register struct obj *obj;
     register struct obj *best = (struct obj *)0;
@@ -109,10 +107,7 @@ register struct obj *otmp;
  * See if a monst could use this item in an offensive or defensive capacity.
  */
 boolean
-could_use_item(mtmp, otmp, check_if_better)
-register struct monst *mtmp;
-register struct obj *otmp;
-boolean check_if_better;
+could_use_item(register struct monst *mtmp, register struct obj *otmp, boolean check_if_better)
 {
     boolean can_use;
     if(mindless_mon(mtmp) && otmp && otmp->where == OBJ_MINVENT)
@@ -199,8 +194,7 @@ boolean check_if_better;
 }
 
 struct obj *
-DROPPABLES(mon)
-register struct monst *mon;
+DROPPABLES(register struct monst *mon)
 {
 	register struct obj *obj;
 	struct obj *wep  = MON_WEP(mon),
@@ -256,8 +250,7 @@ register struct monst *mon;
 }
 
 struct obj *
-drop_envy(mon)
-register struct monst *mon;
+drop_envy(register struct monst *mon)
 {
 	register struct obj *obj;
 	if(MON_WEP(mon))
@@ -284,8 +277,7 @@ static xchar gtyp, gx, gy;	/* type and position of dog's current goal */
 static void FDECL(wantdoor, (int, int, genericptr_t));
 
 static boolean
-cursed_object_at(x, y)
-int x, y;
+cursed_object_at(int x, int y)
 {
 	struct obj *otmp;
 
@@ -295,9 +287,7 @@ int x, y;
 }
 
 int
-dog_nutrition(mtmp, obj)
-struct monst *mtmp;
-struct obj *obj;
+dog_nutrition(struct monst *mtmp, struct obj *obj)
 {
 	int nutrit;
 
@@ -351,11 +341,7 @@ struct obj *obj;
 
 /* returns 2 if pet dies, otherwise 1 */
 int
-dog_eat(mtmp, obj, x, y, devour)
-register struct monst *mtmp;
-register struct obj * obj;
-int x, y;
-boolean devour;
+dog_eat(struct monst *mtmp, struct obj *obj, int x, int y, boolean devour)
 {
 	register struct edog *edog = EDOG(mtmp);
 	boolean poly = FALSE, grow = FALSE, heal = FALSE, ston = FALSE,
@@ -570,9 +556,7 @@ boolean devour;
 
 /* hunger effects -- returns TRUE on starvation */
 static boolean
-dog_hunger(mtmp, edog)
-register struct monst *mtmp;
-register struct edog *edog;
+dog_hunger(register struct monst *mtmp, register struct edog *edog)
 {
 	if (monstermoves+900 > edog->hungrytime && (
 		(!carnivorous(mtmp->data) && !herbivorous(mtmp->data)) || 
@@ -658,9 +642,7 @@ dog_died:
 }
 
 void
-give_mon_corpse_intrinsic(mon, mtyp)
-struct monst *mon;
-int mtyp;
+give_mon_corpse_intrinsic(struct monst *mon, int mtyp)
 {
 	struct permonst *ptr = &mons[mtyp];
 	 for (int i = 1; i <= LAST_PROP; i++) {
@@ -725,10 +707,7 @@ int mtyp;
  * returns 1 if object eaten (since that counts as dog's move), 2 if died
  */
 static int
-dog_invent(mtmp, edog, udist)
-register struct monst *mtmp;
-register struct edog *edog;
-int udist;
+dog_invent(register struct monst *mtmp, register struct edog *edog, int udist)
 {
 	register int omx, omy;
 	struct obj *obj;
@@ -813,10 +792,7 @@ int udist;
  * returns -1/0/1 (dog's desire to approach player) or -2 (abort move)
  */
 static int
-dog_goal(mtmp, edog, after, udist, whappr)
-register struct monst *mtmp;
-struct edog *edog;
-int after, udist, whappr;
+dog_goal(struct monst *mtmp, struct edog *edog, int after, int udist, int whappr)
 {
 	register int omx, omy;
 	boolean in_masters_sight, dog_has_minvent;
@@ -990,10 +966,7 @@ int after, udist, whappr;
 }
 
 boolean
-acceptable_pet_target(mtmp, mtmp2, ranged)
-register struct monst *mtmp;
-register struct monst *mtmp2;
-boolean ranged;
+acceptable_pet_target(struct monst *mtmp, struct monst *mtmp2, boolean ranged)
 {
 	if(mtmp2->moccupation) return FALSE;
 	
@@ -1062,8 +1035,7 @@ boolean ranged;
 }
 
 boolean
-betrayed(mtmp)
-register struct monst *mtmp;
+betrayed(struct monst *mtmp)
 {
     int udist = distu(mtmp->mx, mtmp->my);
 	if(get_mx(mtmp, MX_EDOG)){
@@ -1101,9 +1073,9 @@ register struct monst *mtmp;
 
 /* return 0 (no move), 1 (move) or 2 (dead) */
 int
-dog_move(mtmp, after)
-register struct monst *mtmp;
-register int after;	/* this is extra fast monster movement */
+dog_move(
+	register struct monst *mtmp,
+	register int after)	/* this is extra fast monster movement */
 {
 	int omx, omy;		/* original mtmp position */
 	int appr, whappr, udist;
@@ -1485,9 +1457,7 @@ dognext:
 
 /* check if a monster could pick up objects from a location */
 static boolean
-could_reach_item(mon, nx, ny)
-struct monst *mon;
-xchar nx, ny;
+could_reach_item(struct monst *mon, xchar nx, xchar ny)
 {
     if ((!is_pool(nx,ny, FALSE) || mon_resistance(mon,SWIMMING)) &&
 	(!is_lava(nx,ny) || likes_lava(mon->data)) &&
@@ -1504,9 +1474,7 @@ xchar nx, ny;
  * deep.
  */
 static boolean
-can_reach_location(mon, mx, my, fx, fy)
-struct monst *mon;
-xchar mx, my, fx, fy;
+can_reach_location(struct monst *mon, xchar mx, xchar my, xchar fx, xchar fy)
 {
     int i, j;
     int dist;
@@ -1539,9 +1507,7 @@ xchar mx, my, fx, fy;
 
 /*ARGSUSED*/	/* do_clear_area client */
 static void
-wantdoor(x, y, distance)
-int x, y;
-genericptr_t distance;
+wantdoor(int x, int y, genericptr_t distance)
 {
     int ndist;
 

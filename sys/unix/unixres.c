@@ -54,8 +54,7 @@ static unsigned int hiding_privileges = 0;
  */
 
 int
-hide_privileges(flag)
-boolean flag;
+hide_privileges(boolean flag)
 {
     if (flag)
 	hiding_privileges++;

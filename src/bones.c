@@ -11,14 +11,12 @@ extern char bones[];	/* from files.c */
 static boolean FDECL(no_bones_level_core, (d_level *, boolean));
 static boolean FDECL(no_bones_level, (d_level *));
 static void FDECL(goodfruit, (int));
-static void FDECL(resetobjs,(struct obj *,BOOLEAN_P));
+static void FDECL(resetobjs,(struct obj *,boolean));
 static void FDECL(drop_upon_death, (struct monst *, struct obj *, int, int));
 static void FDECL(sanitize_name, (char *namebuf));
 
 static boolean
-no_bones_level_core(lev, recursed)
-d_level *lev;
-boolean recursed;
+no_bones_level_core(d_level *lev, boolean recursed)
 {
 	extern d_level save_dlevel;		/* in do.c */
 	s_level *sptr;
@@ -39,8 +37,7 @@ boolean recursed;
 
 /* wrapper for no_bones_level_core, so that it and only it can recursively call itself with recursed = TRUE */
 static boolean
-no_bones_level(lev)
-d_level * lev;
+no_bones_level(d_level *lev)
 {
 	return no_bones_level_core(lev, FALSE);
 }
@@ -51,8 +48,7 @@ d_level * lev;
  * chain of fruit types, we know to only save the types that exist.
  */
 static void
-goodfruit(id)
-int id;
+goodfruit(int id)
 {
 	register struct fruit *f;
 
@@ -65,9 +61,7 @@ int id;
 }
 
 static void
-resetobjs(ochain,restore)
-struct obj *ochain;
-boolean restore;
+resetobjs(struct obj *ochain, boolean restore)
 {
 	struct obj *otmp;
 
@@ -228,8 +222,7 @@ boolean restore;
  /* while loading bones, strip out text possibly supplied by old player
     that might accidentally or maliciously disrupt new player's display */
 void
-sanitize_name(namebuf)
-char *namebuf;
+sanitize_name(char *namebuf)
 {
 	int c;
 	boolean strip_8th_bit = (!strcmp(windowprocs.name, "tty")
@@ -254,11 +247,7 @@ char *namebuf;
 }
 
 static void
-drop_upon_death(mtmp, cont, x, y)
-struct monst *mtmp;
-struct obj *cont;
-int x;
-int y;
+drop_upon_death(struct monst *mtmp, struct obj *cont, int x, int y)
 {
 	struct obj *otmp;
 	int thoughttries = 0;
@@ -393,7 +382,7 @@ int y;
 
 /* check whether bones are feasible */
 boolean
-can_make_bones()
+can_make_bones(void)
 {
 	register struct trap *ttmp;
 
@@ -419,8 +408,7 @@ can_make_bones()
 
 /* save bones and possessions of a deceased adventurer */
 void
-savebones(corpse)
-struct obj *corpse;
+savebones(struct obj *corpse)
 {
 	int fd, x, y, angelnum=0;
 	struct trap *ttmp;
@@ -656,7 +644,7 @@ struct obj *corpse;
 }
 
 int
-getbones()
+getbones(void)
 {
 	register int fd;
 	register int ok;

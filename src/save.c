@@ -47,7 +47,7 @@ extern const struct text_color_option *text_colors;
 static unsigned ustuck_id = 0, usteed_id = 0;
 
 int
-dosave()
+dosave(void)
 {
 	if (iflags.debug_fuzzer)
 		return MOVE_CANCELLED;
@@ -77,8 +77,8 @@ dosave()
 #if defined(UNIX)
 /*ARGSUSED*/
 void
-hangup(sig_unused)  /* called as signal() handler, so sent at least one arg */
-int sig_unused;
+hangup(  /* called as signal() handler, so sent at least one arg */
+	int sig_unused)
 {
 # ifdef NOSAVEONHANGUP
 	(void) signal(SIGINT, SIG_IGN);
@@ -102,7 +102,7 @@ int sig_unused;
 
 /* returns 1 if save successful */
 int
-dosave0()
+dosave0(void)
 {
 	const char *fq_save;
 	register int fd, ofd;
@@ -225,8 +225,7 @@ dosave0()
 }
 
 static void
-savegamestate(fd, mode)
-register int fd, mode;
+savegamestate(register int fd, register int mode)
 {
 	int uid,i;
 	struct obj * bc_objs = (struct obj *)0;
@@ -301,7 +300,7 @@ register int fd, mode;
 
 #ifdef INSURANCE
 void
-savestateinlock()
+savestateinlock(void)
 {
 	int fd, hpid;
 	static boolean havestate = TRUE;
@@ -373,10 +372,7 @@ savestateinlock()
 #endif
 
 void
-savelev(fd,lev,mode)
-int fd;
-int lev;
-int mode;
+savelev(int fd, int lev, int mode)
 {
 
 	/* if we're tearing down the current level without saving anything
@@ -507,8 +503,7 @@ static boolean compressing = FALSE;
 }*/
 
 static void
-bputc(c)
-int c;
+bputc(int c)
 {
     if (outbufp >= sizeof outbuf) {
 	(void) write(bwritefd, outbuf, sizeof outbuf);
@@ -519,8 +514,7 @@ int c;
 
 /*ARGSUSED*/
 void
-bufon(fd)
-int fd;
+bufon(int fd)
 {
     compressing = TRUE;
     return;
@@ -528,8 +522,7 @@ int fd;
 
 /*ARGSUSED*/
 void
-bufoff(fd)
-int fd;
+bufoff(int fd)
 {
     if (outbufp) {
 	outbufp = 0;
@@ -541,8 +534,8 @@ int fd;
 }
 
 void
-bflush(fd)  /* flush run and buffer */
-register int fd;
+bflush(  /* flush run and buffer */
+	register int fd)
 {
     bwritefd = fd;
     if (outrunlength >= 0) {	/* flush run */
@@ -563,10 +556,7 @@ register int fd;
 }
 
 void
-bwrite(fd, loc, num)
-int fd;
-genericptr_t loc;
-register unsigned num;
+bwrite(int fd, genericptr_t loc, register unsigned num)
 {
     register unsigned char *bp = (unsigned char *)loc;
 
@@ -597,8 +587,7 @@ register unsigned num;
 }
 
 void
-bclose(fd)
-int fd;
+bclose(int fd)
 {
     bufoff(fd);
     (void) close(fd);
@@ -612,8 +601,7 @@ static FILE *bw_FILE = 0;
 static boolean buffering = FALSE;
 
 void
-bufon(fd)
-    int fd;
+bufon(int fd)
 {
 #ifdef UNIX
     if(bw_fd >= 0)
@@ -626,16 +614,14 @@ bufon(fd)
 }
 
 void
-bufoff(fd)
-int fd;
+bufoff(int fd)
 {
     bflush(fd);
     buffering = FALSE;
 }
 
 void
-bflush(fd)
-    int fd;
+bflush(int fd)
 {
 #ifdef UNIX
     if(fd == bw_fd) {
@@ -647,10 +633,7 @@ bflush(fd)
 }
 
 void
-bwrite(fd,loc,num)
-register int fd;
-register genericptr_t loc;
-register unsigned num;
+bwrite(register int fd, register genericptr_t loc, register unsigned num)
 {
 	boolean failed;
 
@@ -679,8 +662,7 @@ register unsigned num;
 }
 
 void
-bclose(fd)
-    int fd;
+bclose(int fd)
 {
     bufoff(fd);
 #ifdef UNIX
@@ -696,8 +678,7 @@ bclose(fd)
 #endif /* ZEROCOMP */
 
 static void
-savelevchn(fd, mode)
-register int fd, mode;
+savelevchn(register int fd, register int mode)
 {
 	s_level	*tmplev, *tmplev2;
 	int cnt = 0;
@@ -718,8 +699,7 @@ register int fd, mode;
 }
 
 static void
-savedamage(fd, mode)
-register int fd, mode;
+savedamage(register int fd, register int mode)
 {
 	register struct damage *damageptr, *tmp_dam;
 	unsigned int xl = 0;
@@ -743,9 +723,7 @@ register int fd, mode;
 }
 
 static void
-saveobjchn(fd, otmp, mode)
-register int fd, mode;
-register struct obj *otmp;
+saveobjchn(register int fd, register struct obj *otmp, register int mode)
 {
 	register struct obj *otmp2;
 	unsigned int xl;
@@ -786,9 +764,7 @@ register struct obj *otmp;
 }
 
 static void
-savemonchn(fd, mtmp, mode)
-register int fd, mode;
-register struct monst *mtmp;
+savemonchn(register int fd, register struct monst *mtmp, register int mode)
 {
 	register struct monst *mtmp2;
 	int zero = 0;
@@ -821,9 +797,7 @@ register struct monst *mtmp;
 }
 
 static void
-savetrapchn(fd, trap, mode)
-register int fd, mode;
-register struct trap *trap;
+savetrapchn(register int fd, register struct trap *trap, register int mode)
 {
 	register struct trap *trap2;
 	static struct trap zerotrap;
@@ -848,8 +822,7 @@ register struct trap *trap;
  * level routine marks nonexistent fruits by making the fid negative.
  */
 void
-savefruitchn(fd, mode)
-register int fd, mode;
+savefruitchn(register int fd, register int mode)
 {
 	register struct fruit *f2, *f1;
 	static struct fruit zerofruit;
@@ -872,8 +845,7 @@ register int fd, mode;
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 
 void
-free_percent_color_options(list_head)
-     const struct percent_color_option *list_head;
+free_percent_color_options(const struct percent_color_option *list_head)
 {
     if (list_head == NULL) return;
     free_percent_color_options(list_head->next);
@@ -881,8 +853,7 @@ free_percent_color_options(list_head)
 }
 
 void
-free_text_color_options(list_head)
-     const struct text_color_option *list_head;
+free_text_color_options(const struct text_color_option *list_head)
 {
     if (list_head == NULL) return;
     free_text_color_options(list_head->next);
@@ -891,7 +862,7 @@ free_text_color_options(list_head)
 }
 
 void
-free_status_colors()
+free_status_colors(void)
 {
     free_percent_color_options(hp_colors); hp_colors = NULL;
     free_percent_color_options(pw_colors); pw_colors = NULL;
@@ -902,7 +873,7 @@ free_status_colors()
 
 /* also called by prscore(); this probably belongs in dungeon.c... */
 void
-free_dungeons()
+free_dungeons(void)
 {
 #ifdef FREE_ALL_MEMORY
 	savelevchn(0, FREE_SAVE);
@@ -913,7 +884,7 @@ free_dungeons()
 
 #ifdef MENU_COLOR
 void
-free_menu_coloring()
+free_menu_coloring(void)
 {
     struct menucoloring *tmp = menu_colorings;
 
@@ -931,7 +902,7 @@ free_menu_coloring()
 #endif /* MENU_COLOR */
 
 void
-freedynamicdata()
+freedynamicdata(void)
 {
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
     free_status_colors();

@@ -1018,8 +1018,7 @@ char * yogTitles[] =  {
 };
 
 char *
-random_engraving(outbuf)
-char *outbuf;
+random_engraving(char *outbuf)
 {
 	const char *rumor;
 
@@ -1033,15 +1032,13 @@ char *outbuf;
 }
 
 int
-random_haluIndex()
+random_haluIndex(void)
 {
 	return rn2(SIZE(haluWard));
 }
 
 int
-get_num_wards_added(ward,complete)
-int ward;
-int complete;
+get_num_wards_added(int ward, int complete)
 {
 	return wardsAdded[ward][complete];
 }
@@ -1068,27 +1065,26 @@ static const struct {
 };
 
 struct engr *
-get_head_engr(){
+get_head_engr(void){
 	return head_engr;
 }
 
 const char *
-fetchHaluWard(index)
-int index;
+fetchHaluWard(int index)
 {
 	return haluWard[index];
 }
 
 int
-randHaluWard(){
+randHaluWard(void){
 	return rn2(SIZE(haluWard)-1)+1;
 }
 
 void
-wipeout_text(engr, cnt, seed)
-char *engr;
-int cnt;
-unsigned seed;		/* for semi-controlled randomization */
+wipeout_text(
+	char *engr,
+	int cnt,
+	unsigned seed		/* for semi-controlled randomization */)
 {
 	char *s;
 	int i, j, nxt, use_rubout, lth = (int)strlen(engr);
@@ -1145,10 +1141,10 @@ unsigned seed;		/* for semi-controlled randomization */
 }
 
 void
-wipeout_ward(ep, cnt, seed)
-struct engr *ep;
-int cnt;
-unsigned seed;		/* for semi-controlled randomization */
+wipeout_ward(
+	struct engr *ep,
+	int cnt,
+	unsigned seed		/* for semi-controlled randomization */)
 {
 	char *s;
 	int i, j, nxt, lth, clth, slth, dlth, plth;
@@ -1276,7 +1272,7 @@ unsigned seed;		/* for semi-controlled randomization */
 }
 
 boolean
-can_reach_floor()
+can_reach_floor(void)
 {
 	return (boolean)(!u.uswallow &&
 			/* Restricted/unskilled riders can't reach the floor */
@@ -1286,8 +1282,7 @@ can_reach_floor()
 }
 
 const char *
-surface(x, y)
-register int x, y;
+surface(register int x, register int y)
 {
 	register struct rm *lev = &levl[x][y];
 
@@ -1322,8 +1317,7 @@ register int x, y;
 }
 
 const char *
-ceiling(x, y)
-register int x, y;
+ceiling(register int x, register int y)
 {
 	register struct rm *lev = &levl[x][y];
 	const char *what;
@@ -1355,7 +1349,7 @@ register int x, y;
  *Gliders can move engravings in their square along with them.
  */
 void
-move_gliders()
+move_gliders(void)
 {
 	struct engr *ep = head_engr;
 
@@ -1428,8 +1422,7 @@ move_gliders()
 }
 
 struct engr *
-engr_at(x, y)
-xchar x, y;
+engr_at(xchar x, xchar y)
 {
 	struct engr *ep = head_engr;
 
@@ -1447,9 +1440,7 @@ xchar x, y;
 	Heh. Why not? Restriction on headstone Elberenths removed.
  */
 int
-sengr_at(s, x, y)
-	const char *s;
-	xchar x, y;
+sengr_at(const char *s, xchar x, xchar y)
 {
 	register struct engr *ep = engr_at(x,y);
 
@@ -1458,8 +1449,7 @@ sengr_at(s, x, y)
 }
 
 int
-ward_at(x, y)
-	xchar x, y;
+ward_at(xchar x, xchar y)
 {
 	register struct engr *ep = engr_at(x,y);
 
@@ -1469,8 +1459,7 @@ ward_at(x, y)
 }
 
 int
-num_wards_at(x, y)
-	xchar x, y;
+num_wards_at(xchar x, xchar y)
 {
 	register struct engr *ep = engr_at(x,y);
 
@@ -1480,8 +1469,7 @@ num_wards_at(x, y)
 
 
 void
-u_wipe_engr(cnt)
-register int cnt;
+u_wipe_engr(register int cnt)
 {
 	if (can_reach_floor())
 		wipe_engr_at(u.ux, u.uy, cnt);
@@ -1489,8 +1477,7 @@ register int cnt;
 
 
 void
-wipe_engr_at(x,y,strt_cnt)
-register xchar x,y,strt_cnt;
+wipe_engr_at(register xchar x, register xchar y, register xchar strt_cnt)
 {
 	register struct engr *ep = engr_at(x,y);
 	xchar cnt;
@@ -1526,8 +1513,7 @@ register xchar x,y,strt_cnt;
 
 
 void
-read_engr_at(x,y)
-register int x,y;
+read_engr_at(register int x, register int y)
 {
 	register struct engr *ep = engr_at(x,y);
 	register int	sensed = 0;
@@ -1751,11 +1737,7 @@ register int x,y;
 
 
 void
-make_engr_at(x,y,s,e_time,e_type)
-int x,y;
-const char *s;
-long e_time;
-xchar e_type;
+make_engr_at(int x, int y, const char *s, long e_time, xchar e_type)
 {
 	struct engr *ep;
 
@@ -1803,8 +1785,7 @@ xchar e_type;
 
 /* delete any engraving at location <x,y> */
 void
-del_engr_at(x, y)
-int x, y;
+del_engr_at(int x, int y)
 {
 	register struct engr *ep = engr_at(x, y);
 
@@ -1812,8 +1793,7 @@ int x, y;
 }
 
 void
-del_ward_at(x, y)
-int x, y;
+del_ward_at(int x, int y)
 {
 	register struct engr *ep = engr_at(x, y);
 
@@ -1821,8 +1801,7 @@ int x, y;
 }
 
 void
-del_engr_ward_at(x, y)
-int x, y;
+del_engr_ward_at(int x, int y)
 {
 	register struct engr *ep = engr_at(x, y);
 
@@ -1833,7 +1812,7 @@ int x, y;
  *	freehand - returns true if player has a free hand
  */
 int
-freehand()
+freehand(void)
 {
 	return(!Straitjacketed && 
 		(!uwep || !welded(uwep) ||
@@ -1850,7 +1829,7 @@ static const char styluses[] =
 	  GEM_CLASS, RING_CLASS, 0 };
 
 int
-doengward()
+doengward(void)
 {
     char c = 'n';
 	if(u.wardsknown){
@@ -1891,8 +1870,7 @@ doengward()
 
 /* returns standard time-taken constants */
 int
-dogenengrave(mode)
-int mode;
+dogenengrave(int mode)
 {
 	boolean dengr = FALSE;	/* TRUE if we wipe out the current engraving */
 	boolean preknown = FALSE;  /* TRUE if we identify the stylus before */
@@ -3166,20 +3144,20 @@ int mode;
 
 /* return 1 if action took 1 (or more) moves, 0 if error or aborted */
 int
-doengrave()
+doengrave(void)
 {
 	return dogenengrave(ENGRAVE_MODE);
 }
 
 /* return 1 if action took 1 (or more) moves, 0 if error or aborted */
 int
-doward()
+doward(void)
 {
 	return dogenengrave(WARD_MODE);
 }
 
 int
-random_unknown_ward()
+random_unknown_ward(void)
 {
 	int options[FIRST_RUNE];
 	int num_unknown=0;
@@ -3238,8 +3216,7 @@ random_unknown_ward()
 }
 
 int
-pick_ward(describe)
-int describe;
+pick_ward(int describe)
 {
 	winid tmpwin;
 	int n, how;
@@ -3437,8 +3414,7 @@ int describe;
 }
 
 void
-describe_ward(floorID)
-int floorID;
+describe_ward(int floorID)
 {
 	winid datawin;
 	char name[80] = "";
@@ -3609,8 +3585,7 @@ int floorID;
 }
 
 int
-decode_wardID(wardID)
-int wardID;
+decode_wardID(int wardID)
 {
 	switch(wardID){
 		case WARD_HEPTAGRAM: return HEPTAGRAM;
@@ -3666,8 +3641,7 @@ int wardID;
 }
 
 int
-get_wardID(floorID)
-int floorID;
+get_wardID(int floorID)
 {
 	switch(floorID){
 		case HEPTAGRAM: return WARD_HEPTAGRAM;
@@ -3724,14 +3698,13 @@ int floorID;
 
 /* return 1 if action took 1 (or more) moves, 0 if error or aborted */
 int
-doseal()
+doseal(void)
 {
 	return dogenengrave(SEAL_MODE);
 }
 
 int
-pick_seal(prompt)
-const char * prompt;
+pick_seal(const char *prompt)
 {
 	winid tmpwin;
 	int i, n, how;
@@ -3855,8 +3828,7 @@ const char * prompt;
 }
 
 int
-decode_sealID(sealID)
-long sealID;
+decode_sealID(long sealID)
 {
 	long offset;
 	int j;
@@ -3877,8 +3849,7 @@ long sealID;
 }
 
 long
-get_sealID(floorID)
-int floorID;
+get_sealID(int floorID)
 {
 	int i;
 	long sealID = 0L;
@@ -3896,8 +3867,7 @@ int floorID;
 }
 
 void
-save_engravings(fd, mode)
-int fd, mode;
+save_engravings(int fd, int mode)
 {
 	register struct engr *ep = head_engr;
 	register struct engr *ep2;
@@ -3921,8 +3891,7 @@ int fd, mode;
 }
 
 void
-rest_engravings(fd)
-int fd;
+rest_engravings(int fd)
 {
 	register struct engr *ep;
 	unsigned lth;
@@ -3945,8 +3914,7 @@ int fd;
 }
 
 void
-del_engr_ward(ep)
-register struct engr *ep;
+del_engr_ward(register struct engr *ep)
 {
 	if (ep == head_engr) {
 		head_engr = ep->nxt_engr;
@@ -3967,16 +3935,14 @@ register struct engr *ep;
 }
 
 void
-del_engr(ep)
-register struct engr *ep;
+del_engr(register struct engr *ep)
 {
 	if(!ep->ward_id) del_engr_ward(ep);
 	else make_engr_at(ep->engr_x,ep->engr_y,"",moves,DUST);
 }
 
 void
-del_ward(ep)
-register struct engr *ep;
+del_ward(register struct engr *ep)
 {
 	if(!ep->engr_txt[0]) del_engr_ward(ep);
 	else{
@@ -3991,7 +3957,7 @@ register struct engr *ep;
 }
 
 void
-blank_all_wards()
+blank_all_wards(void)
 {
 	struct engr *ep = head_engr, *np;
 	
@@ -4003,7 +3969,7 @@ blank_all_wards()
 }
 
 void
-randomize_all_wards()
+randomize_all_wards(void)
 {
 	struct engr *ep = head_engr;
 	
@@ -4017,8 +3983,7 @@ randomize_all_wards()
 }
 /* randomly relocate an engraving */
 void
-rloc_engr(ep)
-struct engr *ep;
+rloc_engr(struct engr *ep)
 {
 	int tx, ty, tryct = 200;
 
@@ -4507,9 +4472,7 @@ static const char *epitaphs[] = {
  * The caller is responsible for newsym(x, y).
  */
 void
-make_grave(x, y, str)
-int x, y;
-const char *str;
+make_grave(int x, int y, const char *str)
 {
 	/* Can we put a grave here? */
 	if ((levl[x][y].typ != ROOM && levl[x][y].typ != GRAVE) || t_at(x,y)) return;
@@ -4525,8 +4488,7 @@ const char *str;
 }
 
 boolean
-allied_faction(f1, f2)
-int f1,f2;
+allied_faction(int f1, int f2)
 {
 	if(f1 > f2){
 		int tmp = f1;

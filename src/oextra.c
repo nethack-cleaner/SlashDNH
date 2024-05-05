@@ -18,9 +18,7 @@ struct ox_table {
 /* add one component to obj */
 /* automatically finds size of component */
 void
-add_ox(otmp, ox_id)
-struct obj * otmp;
-int ox_id;
+add_ox(struct obj *otmp, int ox_id)
 {
 	int size = ox_list[ox_id].s_size;
 	if (size == -1) {
@@ -35,10 +33,7 @@ int ox_id;
 /* for a fixed-size component, len is its total size (from table) */
 /* for a variable-size compenent, len is the size of the extra data (does NOT include sizeof(int) to store len itself) */
 void
-add_ox_l(otmp, ox_id, len)
-struct obj * otmp;
-int ox_id;
-long len;
+add_ox_l(struct obj *otmp, int ox_id, long len)
 {
 	void * ox_p;
 
@@ -72,9 +67,7 @@ long len;
 /* removes one component from obj */
 /* removes oextra if that was the last one */
 void
-rem_ox(otmp, ox_id)
-struct obj * otmp;
-int ox_id;
+rem_ox(struct obj *otmp, int ox_id)
 {
 	void * ox_p;
 
@@ -108,8 +101,7 @@ int ox_id;
 
 /* removes all components from obj */
 void
-rem_all_ox(otmp)
-struct obj * otmp;
+rem_all_ox(struct obj *otmp)
 {
 	int ox_id;
 
@@ -121,10 +113,7 @@ struct obj * otmp;
 
 /* copies one component from obj1 to obj2 */
 void
-cpy_ox(obj1, obj2, ox_id)
-struct obj * obj1;
-struct obj * obj2;
-int ox_id;
+cpy_ox(struct obj *obj1, struct obj *obj2, int ox_id)
 {
 	void * ox_p1;
 	void * ox_p2;
@@ -144,10 +133,7 @@ int ox_id;
 
 /* moves one component from obj1 to obj2 */
 void
-mov_ox(obj1, obj2, ox_id)
-struct obj * obj1;
-struct obj * obj2;
-int ox_id;
+mov_ox(struct obj *obj1, struct obj *obj2, int ox_id)
 {
 	cpy_ox(obj1, obj2, ox_id);
 	rem_ox(obj1, ox_id);
@@ -155,9 +141,7 @@ int ox_id;
 }
 
 void
-mov_all_ox(obj1, obj2)
-struct obj * obj1;
-struct obj * obj2;
+mov_all_ox(struct obj *obj1, struct obj *obj2)
 {
 	int ox_id;
 	for (ox_id=0; ox_id<NUM_OX; ox_id++)
@@ -168,9 +152,7 @@ struct obj * obj2;
 
 /* returns pointer to wanted component */
 void *
-get_ox(otmp, ox_id)
-struct obj * otmp;
-int ox_id;
+get_ox(struct obj *otmp, int ox_id)
 {
 	if (!otmp || !otmp->oextra_p)
 		return (void *)0;
@@ -180,9 +162,7 @@ int ox_id;
 
 /* returns the size, in bytes, of component. Includes sizeof(long) for variable-size components. */
 long
-siz_ox(otmp, ox_id)
-struct obj * otmp;
-int ox_id;
+siz_ox(struct obj *otmp, int ox_id)
 {
 	void * ox_p;
 
@@ -201,9 +181,7 @@ int ox_id;
 /* allocates a block of memory containing otmp and it's components */
 /* free this memory block when done using it! */
 void *
-bundle_oextra(otmp, len_p)
-struct obj * otmp;
-long * len_p;
+bundle_oextra(struct obj *otmp, long *len_p)
 {
 	int i;
 	long len = 0;
@@ -248,9 +226,7 @@ long * len_p;
 
 /* takes a pointer to a block of memory containing the components of an oextra and assigns them to otmp */
 void
-unbundle_oextra(otmp, oextra_block)
-struct obj * otmp;
-void * oextra_block;
+unbundle_oextra(struct obj *otmp, void *oextra_block)
 {
 	int i;
 	int toread = 0;
@@ -293,10 +269,7 @@ void * oextra_block;
 
 /* saves oextra from otmp to fd */
 void
-save_oextra(otmp, fd, mode)
-struct obj * otmp;
-int fd;
-int mode;
+save_oextra(struct obj *otmp, int fd, int mode)
 {
 	void * oextra_block;
 	long len;
@@ -325,10 +298,7 @@ int mode;
 /* should only be called if otmp->oextra_p existed (currently a stale pointer) */
 /* TODO: combine somehow with unbundle_oextra? Might not be possible. */
 void
-rest_oextra(otmp, fd, ghostly)
-struct obj * otmp;
-int fd;
-boolean ghostly;
+rest_oextra(struct obj *otmp, int fd, boolean ghostly)
 {
 	int i;
 	int toread = 0;
@@ -367,8 +337,7 @@ boolean ghostly;
 
 /* relinks ox. If called with a specific otmp, only does so for that one, otherwise does all */
 void
-relink_ox(specific_otmp)
-struct obj * specific_otmp;
+relink_ox(struct obj *specific_otmp)
 {
     unsigned nid;
 	int owhere = ((1 << OBJ_FLOOR) |

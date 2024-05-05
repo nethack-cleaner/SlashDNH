@@ -6,7 +6,7 @@
 #include "lev.h"	/* save & restore info */
 
 static void FDECL(setgemprobs, (d_level*));
-static void FDECL(shuffle,(int,int,BOOLEAN_P));
+static void FDECL(shuffle,(int,int,boolean));
 static void NDECL(shuffle_all);
 static int FDECL(find_otyp_of_desc, (const char *, const char **, int, int, boolean(*)(int)));
 static void NDECL(randomize_nonmatwands);
@@ -29,7 +29,7 @@ extern short glyph2tile[];	/* from tile.c */
  * another routine.
  */
 static void
-shuffle_tiles()
+shuffle_tiles(void)
 {
 	int i;
 	short tmp_tilemap[NUM_OBJECTS];
@@ -44,8 +44,7 @@ shuffle_tiles()
 #endif	/* USE_TILES */
 
 static void
-setgemprobs(dlev)
-d_level *dlev;
+setgemprobs(d_level *dlev)
 {
 	int j, first, lev, totalprob=0;
 
@@ -74,9 +73,7 @@ d_level *dlev;
 
 /* shuffle descriptions on objects o_low to o_high */
 static void
-shuffle(o_low, o_high, domaterial)
-	int o_low, o_high;
-	boolean domaterial;
+shuffle(int o_low, int o_high, boolean domaterial)
 {
 	int i, j, num_to_shuffle;
 	short sw;
@@ -111,7 +108,7 @@ shuffle(o_low, o_high, domaterial)
 }
 
 void
-init_objects()
+init_objects(void)
 {
 register int i, first, last, sum;
 register char oclass;
@@ -176,7 +173,7 @@ register char oclass;
 }
 
 static void
-shuffle_all()
+shuffle_all(void)
 {
 	int first, last, oclass, signetring;
 
@@ -253,7 +250,7 @@ shuffle_all()
  * modify some objects
  */
 void
-hack_objects()
+hack_objects(void)
 {
 	/* Fix up the crown */
 	switch (find_gcirclet())
@@ -285,12 +282,11 @@ hack_objects()
 * Caller is responsible for storing returned otyp.
 */
 int
-find_otyp_of_desc(str, strs, lbound, ubound, extracondition)
-const char * str;
-const char ** strs;
-int lbound;
-int ubound;
-boolean FDECL((*extracondition), (int));	/* extracondition CANNOT call find_otyp_of_desc() */
+find_otyp_of_desc(
+	const char *str, const char **strs,
+	int lbound, int ubound,
+	boolean FDECL((*extracondition), (int)))
+/* extracondition CANNOT call find_otyp_of_desc() */
 {
 	register int i;
 	register int j;
@@ -339,7 +335,7 @@ const char * matNeutralWands[] = {
 #define NUM_NONMAT_WANDS 7
 /* randomizes order of non-material-ed wands list */
 void
-randomize_nonmatwands()
+randomize_nonmatwands(void)
 {
 	int i;
 	int j;
@@ -356,7 +352,7 @@ randomize_nonmatwands()
 
 /* find the object index for silver attack wand */
 int
-find_sawant()
+find_sawant(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -372,7 +368,7 @@ find_sawant()
 
 /* find the object index for gold attack wand */
 int
-find_gawant()
+find_gawant(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -388,7 +384,7 @@ find_gawant()
 
 /* find the object index for platinum attack wand */
 int
-find_pawant()
+find_pawant(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -404,7 +400,7 @@ find_pawant()
 
 /* find the object index for platinum wand */
 int
-find_riwant()
+find_riwant(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -420,7 +416,7 @@ find_riwant()
 
 /* find the object index for (gold) circlet */
 int
-find_gcirclet()
+find_gcirclet(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -435,7 +431,7 @@ find_gcirclet()
 
 /* find the object index for silver ring */
 int
-find_sring()
+find_sring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -450,7 +446,7 @@ find_sring()
 
 /* find the object index for iron ring */
 int
-find_iring()
+find_iring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -465,7 +461,7 @@ find_iring()
 
 /* find the object index for a non-polymorph iron ring */
 int
-find_good_iring()
+find_good_iring(void)
 {
 	static int i = -1;
     register const char *s;
@@ -484,7 +480,7 @@ find_good_iring()
 
 /* find the object index for a non-polymorph granite or gold ring */
 int
-find_good_dring()
+find_good_dring(void)
 {
 	static int i = -1;
     register const char *s;
@@ -503,7 +499,7 @@ find_good_dring()
 
 /* find the object index for a non-polymorph ruby or gold ring */
 int
-find_good_fring()
+find_good_fring(void)
 {
 	static int i = -1;
     register const char *s;
@@ -522,7 +518,7 @@ find_good_fring()
 
 /* find the object index for a non-polymorph diamond (adamant) or silver ring */
 int
-find_good_wring()
+find_good_wring(void)
 {
 	static int i = -1;
     register const char *s;
@@ -541,7 +537,7 @@ find_good_wring()
 
 /* find the object index for a non-polymorph sapphire or brass ring */
 int
-find_good_aring()
+find_good_aring(void)
 {
 	static int i = -1;
     register const char *s;
@@ -560,7 +556,7 @@ find_good_aring()
 
 /* find the object index for visored helmet */
 int
-find_vhelm()
+find_vhelm(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -575,7 +571,7 @@ find_vhelm()
 
 /* find the object index for snow boots; used [once] by slippery ice code */
 int
-find_skates()
+find_skates(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -590,7 +586,7 @@ find_skates()
 
 /* find the object index for combat boots */
 int
-find_cboots()
+find_cboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -605,7 +601,7 @@ find_cboots()
 
 /* find the object index for mud boots */
 int
-find_mboots()
+find_mboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -620,7 +616,7 @@ find_mboots()
 
 /* find the object index for hiking boots */
 int
-find_hboots()
+find_hboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -635,7 +631,7 @@ find_hboots()
 
 /* find the object index for buckled boots */
 int
-find_bboots()
+find_bboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -650,7 +646,7 @@ find_bboots()
 
 /* find the object index for jungle boots */
 int
-find_jboots()
+find_jboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -665,7 +661,7 @@ find_jboots()
 
 /* find the object index for riding boots */
 int
-find_rboots()
+find_rboots(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -680,7 +676,7 @@ find_rboots()
 
 /* find the object index for the ornamental cope */
 int
-find_cope()
+find_cope(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -695,7 +691,7 @@ find_cope()
 
 /* find the object index for the opera cloak */
 int
-find_opera_cloak()
+find_opera_cloak(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -710,7 +706,7 @@ find_opera_cloak()
 
 /* find the object index for piece of cloth */
 int
-find_pcloth()
+find_pcloth(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -726,7 +722,7 @@ find_pcloth()
 /* find the object index for the signet ring */
 /* bugfix: can't be static-optimized, because we sometimes reshuffle descriptions after calling this function */
 int
-find_signet_ring()
+find_signet_ring(void)
 {
 	int i = -1;
 	register const char *s;
@@ -739,15 +735,14 @@ find_signet_ring()
 }
 /* legacy function */
 boolean
-isSignetRing(otyp)
-int otyp;
+isSignetRing(int otyp)
 {
 	return (otyp == find_signet_ring());
 }
 
 /* find the object index for the engagement ring */
 int
-find_engagement_ring()
+find_engagement_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -762,7 +757,7 @@ find_engagement_ring()
 
 /* find the object index for the gold ring */
 int
-find_gold_ring()
+find_gold_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -776,7 +771,7 @@ find_gold_ring()
 }
 
 int
-find_silver_ring()
+find_silver_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -790,7 +785,7 @@ find_silver_ring()
 }
 
 int
-find_opal_ring()
+find_opal_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -804,7 +799,7 @@ find_opal_ring()
 }
 
 int
-find_clay_ring()
+find_clay_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -818,7 +813,7 @@ find_clay_ring()
 }
 
 int
-find_coral_ring()
+find_coral_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -832,7 +827,7 @@ find_coral_ring()
 }
 
 int
-find_onyx_ring()
+find_onyx_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -846,7 +841,7 @@ find_onyx_ring()
 }
 
 int
-find_moonstone_ring()
+find_moonstone_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -860,7 +855,7 @@ find_moonstone_ring()
 }
 
 int
-find_jade_ring()
+find_jade_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -874,7 +869,7 @@ find_jade_ring()
 }
 
 int
-find_agate_ring()
+find_agate_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -888,7 +883,7 @@ find_agate_ring()
 }
 
 int
-find_topaz_ring()
+find_topaz_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -902,7 +897,7 @@ find_topaz_ring()
 }
 
 int
-find_sapphire_ring()
+find_sapphire_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -916,7 +911,7 @@ find_sapphire_ring()
 }
 
 int
-find_ruby_ring()
+find_ruby_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -930,7 +925,7 @@ find_ruby_ring()
 }
 
 int
-find_pearl_ring()
+find_pearl_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -944,7 +939,7 @@ find_pearl_ring()
 }
 
 int
-find_ivory_ring()
+find_ivory_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -958,7 +953,7 @@ find_ivory_ring()
 }
 
 int
-find_emerald_ring()
+find_emerald_ring(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -973,8 +968,7 @@ find_emerald_ring()
 
 /* test if a ring is an engravable ring */
 boolean
-isEngrRing(otyp)
-int otyp;
+isEngrRing(int otyp)
 {
     register int i;
 	
@@ -1007,7 +1001,7 @@ int otyp;
 
 /* find the object index for golden potions */
 int
-find_golden_potion()
+find_golden_potion(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1021,7 +1015,7 @@ find_golden_potion()
 }
 
 int
-find_cloth_book()
+find_cloth_book(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1035,7 +1029,7 @@ find_cloth_book()
 }
 
 int
-find_leather_book()
+find_leather_book(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1049,7 +1043,7 @@ find_leather_book()
 }
 
 int
-find_bronze_book()
+find_bronze_book(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1063,7 +1057,7 @@ find_bronze_book()
 }
 
 int
-find_silver_book()
+find_silver_book(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1077,7 +1071,7 @@ find_silver_book()
 }
 
 int
-find_gold_book()
+find_gold_book(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1092,9 +1086,7 @@ find_gold_book()
 
 /* find a wand that is compatable with a given material*/
 int
-matWand(otyp, mat)
-int otyp;
-int mat;
+matWand(int otyp, int mat)
 {
     int i, j, ctyp;
 	
@@ -1118,7 +1110,7 @@ int mat;
 
 /* find the object index for old gloves */
 int
-find_ogloves()
+find_ogloves(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1133,7 +1125,7 @@ find_ogloves()
 
 /* find the object index for fighting gloves */
 int
-find_tgloves()
+find_tgloves(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1148,7 +1140,7 @@ find_tgloves()
 
 /* find the object index for padded gloves */
 int
-find_pgloves()
+find_pgloves(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1163,7 +1155,7 @@ find_pgloves()
 
 /* find the object index for fencing gloves */
 int
-find_fgloves()
+find_fgloves(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1178,7 +1170,7 @@ find_fgloves()
 
 /* find the object index for riding gloves */
 int
-find_rgloves()
+find_rgloves(void)
 {
 	static int i = -1;
 	register const char *s;
@@ -1192,14 +1184,13 @@ find_rgloves()
 }
 
 void
-oinit()			/* level dependent initialization */
+oinit(void)			/* level dependent initialization */
 {
 	setgemprobs(&u.uz);
 }
 
 void
-savenames(fd, mode)
-int fd, mode;
+savenames(int fd, int mode)
 {
 	register int i;
 	unsigned int len;
@@ -1228,8 +1219,7 @@ int fd, mode;
 }
 
 void
-restnames(fd)
-register int fd;
+restnames(register int fd)
 {
 	register int i;
 	unsigned int len;
@@ -1250,10 +1240,7 @@ register int fd;
 }
 
 void
-discover_object(oindx, mark_as_known, credit_hero)
-register int oindx;
-boolean mark_as_known;
-boolean credit_hero;
+discover_object(register int oindx, boolean mark_as_known, boolean credit_hero)
 {
     if (!objects[oindx].oc_name_known) {
 	register int dindx, acls = objects[oindx].oc_class;
@@ -1276,8 +1263,7 @@ boolean credit_hero;
 
 /* if a class name has been cleared, we may need to purge it from disco[] */
 void
-undiscover_object(oindx)
-register int oindx;
+undiscover_object(register int oindx)
 {
     if (!objects[oindx].oc_name_known) {
 	register int dindx, acls = objects[oindx].oc_class;
@@ -1301,8 +1287,7 @@ register int oindx;
 }
 
 static boolean
-interesting_to_discover(i)
-register int i;
+interesting_to_discover(register int i)
 {
 	/* Pre-discovered objects are now printed with a '*' */
     return((boolean)(objects[i].oc_uname != (char *)0 ||
@@ -1318,7 +1303,7 @@ static short uniq_objs[] = {
 };
 
 int
-dodiscovered()				/* free after Robert Viduya */
+dodiscovered(void)				/* free after Robert Viduya */
 {
     register int i, dis;
     int	ct = 0;
@@ -1378,8 +1363,7 @@ dodiscovered()				/* free after Robert Viduya */
 }
 
 void
-set_isamusei_color(obj)
-struct obj *obj;
+set_isamusei_color(struct obj *obj)
 {
 	if(u.uinsight >= 70){
 		obj->obj_color = CLR_MAGENTA;
@@ -1399,8 +1383,7 @@ struct obj *obj;
 }
 
 void
-set_object_color(otmp)
-struct obj *otmp;
+set_object_color(struct obj *otmp)
 {
 	const char * s;
 	
@@ -1520,8 +1503,7 @@ struct obj *otmp;
 }
 
 int
-object_color(otmp)
-struct obj *otmp;
+object_color(struct obj *otmp)
 {
 	/* should never happen */
 	if (!otmp)
@@ -1568,9 +1550,7 @@ struct obj *otmp;
 }
 
 void
-set_submat(otmp, submat)
-struct obj *otmp;
-int submat;
+set_submat(struct obj *otmp, int submat)
 {
 	/* should never happen */
 	if (!otmp)
@@ -1583,8 +1563,7 @@ int submat;
 }
 
 void
-fix_object(otmp)
-	struct obj *otmp;
+fix_object(struct obj *otmp)
 {
 	otmp->owt = weight(otmp);
 	if (obj_eternal_light(otmp) && !otmp->lamplit) {

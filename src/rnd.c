@@ -21,7 +21,7 @@ static int reseed_period = 0;
 static int reseed_count = 0;
 
 void
-check_reseed()
+check_reseed(void)
 {
     reseed_count++;
     if (reseed_count > reseed_period) {
@@ -43,8 +43,8 @@ check_reseed()
 }
 
 int
-rn2(x)		/* 0 <= rn2(x) < x */
-register int x;
+rn2(		/* 0 <= rn2(x) < x */
+	register int x)
 {
     check_reseed();
 	if(x <= 0) x = 1; //I prefer this behavior -CM
@@ -62,8 +62,8 @@ register int x;
 
 
 int
-rnl(x)		/* 0 <= rnl(x) < x; sometimes subtracting Luck */
-register int x;	/* good luck approaches 0, bad luck approaches (x-1) */
+rnl(		/* 0 <= rnl(x) < x; sometimes subtracting Luck */
+	register int x	/* good luck approaches 0, bad luck approaches (x-1) */)
 {
 	register int i;
     check_reseed();
@@ -87,8 +87,8 @@ register int x;	/* good luck approaches 0, bad luck approaches (x-1) */
 
 
 int
-rnd(x)		/* 1 <= rnd(x) <= x */
-register int x;
+rnd(		/* 1 <= rnd(x) <= x */
+	register int x)
 {
     check_reseed();
 	if(x<=0) x=1; //fixes a crash from feeding rnd a negative number.  I'd rather have this behavior.
@@ -106,8 +106,9 @@ register int x;
 
 
 int
-d(n,x)		/* n <= d(n,x) <= (n*x) */
-register int n, x;
+d(		/* n <= d(n,x) <= (n*x) */
+	register int n,
+	register int x)
 {
 	register int tmp = n;
     check_reseed();
@@ -121,8 +122,7 @@ register int n, x;
 }
 
 int
-exploding_d(n,x,m)
-register int n, x, m;
+exploding_d(register int n, register int x, register int m)
 {
 	register int tmp=0, cur;
     check_reseed();
@@ -158,8 +158,7 @@ register int n, x, m;
 }
 
 int
-lucky_exploding_d(n,x,m)
-register int n, x, m;
+lucky_exploding_d(register int n, register int x, register int m)
 {
 	register int tmp=0, cur;
     check_reseed();
@@ -185,8 +184,7 @@ register int n, x, m;
 }
 
 int
-unlucky_exploding_d(n,x,m)
-register int n, x, m;
+unlucky_exploding_d(register int n, register int x, register int m)
 {
 	register int tmp=0, cur;
 	if(x < 2) return d(n,x) + m*n; //A die of size 1 or 0 would always explode.
@@ -212,8 +210,7 @@ register int n, x, m;
 
 
 int
-rne(x)
-register int x;
+rne(register int x)
 {
 	register int tmp, utmp;
 
@@ -233,8 +230,7 @@ register int x;
 }
 
 int
-rnz(i)
-int i;
+rnz(int i)
 {
 #ifdef LINT
 	int x = i;

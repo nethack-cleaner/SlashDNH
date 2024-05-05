@@ -41,7 +41,7 @@ static const char *developers[] = {
 
 /* return a randomly chosen developer name */
 static const char *
-dev_name()
+dev_name(void)
 {
 	register int i, m = 0, n = SIZE(developers);
 	register struct monst *mtmp;
@@ -67,10 +67,7 @@ dev_name()
 }
 
 static void
-get_mplname(mtmp, nam, endgame)
-register struct monst *mtmp;
-char *nam;
-boolean endgame;
+get_mplname(register struct monst *mtmp, char *nam, boolean endgame)
 {
 	boolean fmlkind = is_female(mtmp->data);
 	if(endgame){
@@ -98,9 +95,7 @@ boolean endgame;
 }
 
 static void
-get_mplname_culture(mtmp, nam)
-register struct monst *mtmp;
-char *nam;
+get_mplname_culture(register struct monst *mtmp, char *nam)
 {
 	boolean fmlkind = mtmp->female;
 	const char *namelist;
@@ -555,9 +550,7 @@ char *nam;
 }
 
 static void
-mk_mplayer_armor(mon, typ)
-struct monst *mon;
-int typ;
+mk_mplayer_armor(struct monst *mon, int typ)
 {
 	struct obj *obj;
 
@@ -576,11 +569,7 @@ int typ;
 }
 
 void
-init_mplayer_gear(ptr, female, special, weapon, secweapon, rweapon, rwammo, armor, shirt, cloak, helm, boots, gloves, shield, tool)
-register struct permonst *ptr;
-boolean female;
-boolean special;
-int *weapon, *secweapon, *rweapon, *rwammo, *armor, *shirt, *cloak, *helm, *boots, *gloves, *shield, *tool;
+init_mplayer_gear(register struct permonst *ptr, boolean female, boolean special, int *weapon, int *secweapon, int *rweapon, int *rwammo, int *armor, int *shirt, int *cloak, int *helm, int *boots, int *gloves, int *shield, int *tool)
 {
 	//Default to nothing
 	*weapon = STRANGE_OBJECT;
@@ -904,10 +893,7 @@ int *weapon, *secweapon, *rweapon, *rwammo, *armor, *shirt, *cloak, *helm, *boot
 
 
 struct monst *
-mk_mplayer(ptr, x, y, flags)
-register struct permonst *ptr;
-xchar x, y;
-long flags;
+mk_mplayer(register struct permonst *ptr, xchar x, xchar y, long flags)
 {
 	boolean special = (flags&MM_GOODEQUIP) == MM_GOODEQUIP;
 	boolean endgame = (flags&MM_ENDGEQUIP) == MM_ENDGEQUIP;
@@ -1146,9 +1132,7 @@ long flags;
  * fill up the overflow.
  */
 void
-create_mplayers(num, special)
-register int num;
-boolean special;
+create_mplayers(register int num, boolean special)
 {
 	int pm, x, y;
 	struct monst fakemon = {0};
@@ -1175,8 +1159,7 @@ boolean special;
 }
 
 void
-mplayer_talk(mtmp)
-register struct monst *mtmp;
+mplayer_talk(register struct monst *mtmp)
 {
 	static const char *same_class_msg[3] = {
 		"I can't win, and neither will you!",

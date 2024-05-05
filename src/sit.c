@@ -9,7 +9,7 @@
 int NDECL(dohomesit);
 
 void
-take_gold()
+take_gold(void)
 {
 #ifndef GOLDOBJ
 	if (u.ugold <= 0)  {
@@ -39,7 +39,7 @@ take_gold()
 }
 
 int
-dosit()
+dosit(void)
 {
 	static const char sit_message[] = "sit on the %s.";
 	register struct trap *trap;
@@ -519,8 +519,7 @@ dosit()
 }
 
 int
-sit_bergonic(chair)
-struct obj *chair;
+sit_bergonic(struct obj *chair)
 {
 	You("sit on %s.", the(xname(chair)));
 	if(chair->spe <= 0){
@@ -621,7 +620,7 @@ struct obj *chair;
 
 /* returns TRUE if the caller should print a message */
 boolean
-rndcurse()			/* curse a few inventory items at random! */
+rndcurse(void)			/* curse a few inventory items at random! */
 {
 	int	nobj = 0;
 	int	cnt, onum;
@@ -696,8 +695,8 @@ rndcurse()			/* curse a few inventory items at random! */
 
 /* returns TRUE if the caller should print a message */
 boolean
-mrndcurse(mtmp)			/* curse a few inventory items at random! */
-register struct monst *mtmp;
+mrndcurse(			/* curse a few inventory items at random! */
+	register struct monst *mtmp)
 {
 	int	nobj = 0;
 	int	cnt, onum;
@@ -758,7 +757,7 @@ register struct monst *mtmp;
  * that was gained via eating corpses
  * or some other re-appliable source */
 void
-attrcurse()
+attrcurse(void)
 {
 	switch(rnd(10)) {
 	case 1 : if (HFire_resistance & TIMEOUT) {
@@ -819,7 +818,7 @@ attrcurse()
 }
 
 int
-dohomesit()
+dohomesit(void)
 {
 	winid tmpwin;
 	int n, how;

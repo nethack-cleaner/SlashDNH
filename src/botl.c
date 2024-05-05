@@ -60,7 +60,7 @@ long get_status_duration(long long mask) {
 	}
 }
 
-long long get_status_mask() {
+long long get_status_mask(void) {
 	long long mask = 0;
 	if(Stoned || Golded)
 		mask |= BL_MASK_STONE;
@@ -132,9 +132,7 @@ extern const struct percent_color_option *pw_colors;
 extern const struct text_color_option *text_colors;
 
 struct color_option
-text_color_of(text, color_options)
-     const char *text;
-     const struct text_color_option *color_options;
+text_color_of(const char *text, const struct text_color_option *color_options)
 {
     if (color_options == NULL) {
 	struct color_option result = {NO_COLOR, 0};
@@ -147,9 +145,7 @@ text_color_of(text, color_options)
 }
 
 struct color_option
-percentage_color_of(value, max, color_options)
-     int value, max;
-     const struct percent_color_option *color_options;
+percentage_color_of(int value, int max, const struct percent_color_option *color_options)
 {
     if (color_options == NULL) {
 	struct color_option result = {NO_COLOR, 0};
@@ -178,8 +174,7 @@ percentage_color_of(value, max, color_options)
 }
 
 void
-start_color_option(color_option)
-     struct color_option color_option;
+start_color_option(struct color_option color_option)
 {
 #ifdef TTY_GRAPHICS
     int i;
@@ -192,8 +187,7 @@ start_color_option(color_option)
 }
 
 void
-end_color_option(color_option)
-     struct color_option color_option;
+end_color_option(struct color_option color_option)
 {
 #ifdef TTY_GRAPHICS
     int i;
@@ -205,12 +199,11 @@ end_color_option(color_option)
 #endif  /* TTY_GRAPHICS */
 }
 
-static
-void
-apply_color_option(color_option, newbot2, statusline)
-     struct color_option color_option;
-     const char *newbot2;
-     int statusline; /* apply color on this statusline: 1, 2, or 3 */
+static void
+apply_color_option(
+	struct color_option color_option,
+	const char *newbot2,
+	int statusline) /* apply color on this statusline: 1, 2, or 3 */
 {
     if (!iflags.use_status_colors || !iflags.use_color) return;
     curs(WIN_STATUS, 1, statusline-1);
@@ -269,8 +262,7 @@ static const char *NDECL(rank);
 
 /* convert experience level (1..30) to rank index (0..8) */
 int
-xlev_to_rank(xlev)
-int xlev;
+xlev_to_rank(int xlev)
 {
 	return (xlev <= 2) ? 0 : (xlev <= 30) ? ((xlev + 2) / 4) : 8;
 }
@@ -278,16 +270,14 @@ int xlev;
 #if 0	/* not currently needed */
 /* convert rank index (0..8) to experience level (1..30) */
 int
-rank_to_xlev(rank)
-int rank;
+rank_to_xlev(int rank)
 {
 	return (rank <= 0) ? 1 : (rank <= 8) ? ((rank * 4) - 2) : 30;
 }
 #endif
 
 const char *
-code_of(monnum)
-	short monnum;
+code_of(short monnum)
 {
 	register struct Role *role;
 	register int i;
@@ -303,10 +293,7 @@ code_of(monnum)
 }
 
 const char *
-rank_of(lev, monnum, female)
-	int lev;
-	short monnum;
-	boolean female;
+rank_of(int lev, short monnum, boolean female)
 {
 	register struct Role *role;
 	register int i;
@@ -345,7 +332,7 @@ rank_of(lev, monnum, female)
 
 
 static const char *
-rank()
+rank(void)
 {
 	int i;
 	/* Find the rank */
@@ -362,9 +349,7 @@ rank()
 }
 
 int
-title_to_mon(str, rank_indx, title_length)
-const char *str;
-int *rank_indx, *title_length;
+title_to_mon(const char *str, int *rank_indx, int *title_length)
 {
 	register int i, j;
 
@@ -391,7 +376,7 @@ int *rank_indx, *title_length;
 
 
 void
-max_rank_sz()
+max_rank_sz(void)
 {
 	register int i, r, maxr = 0;
 	for (i = 0; i < 9; i++) {
@@ -404,7 +389,7 @@ max_rank_sz()
 
 
 long
-botl_score()
+botl_score(void)
 {
     int deepest = deepest_lev_reached(FALSE);
 #ifndef GOLDOBJ
@@ -527,7 +512,7 @@ bot1()
 #ifdef DUMP_LOG
 }
 static void
-bot1()
+bot1(void)
 {
 	char newbot1[MAXCO];
 
@@ -541,8 +526,7 @@ bot1()
 
 /* provide the name of the current level for display by various ports */
 int
-describe_level(buf)
-char *buf;
+describe_level(char *buf)
 {
 	int ret = 1;
 
@@ -714,7 +698,7 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
 }
 
 static void
-bot2()
+bot2(void)
 {
 	char newbot2[MAXCO];
 	int abbrev = 0;
@@ -739,7 +723,7 @@ bot3str(char *newbot3, boolean terminal_output, int abbrev)
 }
 
 void
-bot3()
+bot3(void)
 {
 	char newbot3[MAXCO];
 	int abbrev = 0;
@@ -759,7 +743,7 @@ bot3()
 }
 
 void
-bot()
+bot(void)
 {
 	if (!iflags.botl_updates) {
 	  flags.botl = flags.botlx = 0;
@@ -772,7 +756,7 @@ bot()
 }
 
 int
-force_bot()
+force_bot(void)
 {
 	bot1();
 	bot2();

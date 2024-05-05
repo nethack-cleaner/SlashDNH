@@ -3,12 +3,12 @@
 #include "seduce.h"
 
 # ifdef SEDUCE
-static void FDECL(mayberem, (struct obj *, const char *, BOOLEAN_P));
-static void FDECL(lrdmayberem, (struct obj *, const char *, BOOLEAN_P));
-static void FDECL(mlcmayberem, (struct obj *, const char *, BOOLEAN_P));
-static void FDECL(mayberem_common, (struct obj *, const char *, BOOLEAN_P));
-static void FDECL(sflmayberem, (struct obj *, const char *, BOOLEAN_P));
-static void FDECL(palemayberem, (struct obj *, const char *, BOOLEAN_P));
+static void FDECL(mayberem, (struct obj *, const char *, boolean));
+static void FDECL(lrdmayberem, (struct obj *, const char *, boolean));
+static void FDECL(mlcmayberem, (struct obj *, const char *, boolean));
+static void FDECL(mayberem_common, (struct obj *, const char *, boolean));
+static void FDECL(sflmayberem, (struct obj *, const char *, boolean));
+static void FDECL(palemayberem, (struct obj *, const char *, boolean));
 static boolean FDECL(sedu_helpless, (struct monst *));
 static int FDECL(sedu_refuse, (struct monst *));
 static boolean FDECL(sedu_roll, (struct monst *, boolean));
@@ -25,9 +25,7 @@ static void FDECL(seduce_effect, (struct monst *, int));
 static const char tools[] = { TOOL_CLASS, 0 };
 
 int
-could_seduce(magr,mdef,mattk)
-struct monst *magr, *mdef;
-struct attack *mattk;
+could_seduce(struct monst *magr, struct monst *mdef, struct attack *mattk)
 /* returns 0 if seduction impossible,
  *	   1 if fine,
  *	   2 if wrong gender for nymph */
@@ -105,8 +103,7 @@ struct attack *mattk;
 /* Pale Night is entirely outsourced to its own function */
 /* returns 1 if monster should stop attacking */
 int
-doseduce(mon)
-struct monst * mon;
+doseduce(struct monst *mon)
 {
 	boolean helpless;
 	boolean badeffect;
@@ -230,8 +227,7 @@ struct monst * mon;
  * and so this hasn't been totally integrated into
  * the reworked combined seduce */
 int
-dosflseduce(mon)
-register struct monst *mon;
+dosflseduce(register struct monst *mon)
 {
 	boolean fem = TRUE;
 	//char qbuf[QBUFSZ];
@@ -281,8 +277,7 @@ register struct monst *mon;
 }
 
 int
-dopaleseduce(mon)
-register struct monst *mon;
+dopaleseduce(register struct monst *mon)
 {
 	register struct obj *ring, *nring;
 	boolean fem = !poly_gender(); /* male = 0, fem = 1, neuter = 2 */
@@ -375,9 +370,7 @@ register struct monst *mon;
 }
 
 int
-dotent(mon,dmg)
-register struct monst *mon;
-int dmg;
+dotent(register struct monst *mon, int dmg)
 {
 	char buf[BUFSZ];
 	register struct obj *otmp;
@@ -798,37 +791,25 @@ int dmg;
 }
 
 static void
-mayberem(obj, str, helpless)
-register struct obj *obj;
-const char *str;
-boolean helpless;
+mayberem(struct obj *obj, const char *str, boolean helpless)
 {
 	mayberem_common(obj, str, !(rn2(20) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 10 : 0))));
 }
 
 static void
-lrdmayberem(obj, str, helpless)
-register struct obj *obj;
-const char *str;
-boolean helpless;
+lrdmayberem(struct obj *obj, const char *str, boolean helpless)
 {
 	mayberem_common(obj, str, !(rn2(60) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 30 : 0))));
 }
 
 static void
-mlcmayberem(obj, str, helpless)
-register struct obj *obj;
-const char *str;
-boolean helpless;
+mlcmayberem(struct obj *obj, const char *str, boolean helpless)
 {
 	mayberem_common(obj, str, helpless || !(rn2(60) < (ACURR(A_CHA) + (check_mutation(TENDRIL_HAIR) ? 30 : 0))));
 }
 
 static void
-mayberem_common(obj, str, dontask)
-register struct obj *obj;
-const char *str;
-boolean dontask;
+mayberem_common(register struct obj *obj, const char *str, boolean dontask)
 {
 	char qbuf[QBUFSZ];
 
@@ -857,10 +838,7 @@ boolean dontask;
 }
 
 static void
-sflmayberem(obj, str, helpless)
-register struct obj *obj;
-const char *str;
-boolean helpless;
+sflmayberem(struct obj *obj, const char *str, boolean helpless)
 {
 	char qbuf[QBUFSZ];
 	int her_strength;
@@ -899,10 +877,7 @@ boolean helpless;
 }
 
 static void
-palemayberem(obj, str, helpless)
-register struct obj *obj;
-const char *str;
-boolean helpless;
+palemayberem(struct obj *obj, const char *str, boolean helpless)
 {
 	char qbuf[QBUFSZ];
 	int its_cha;
@@ -921,8 +896,7 @@ boolean helpless;
 /* prints a message about the player being unconscious */
 /* returns TRUE if seducer stops */
 boolean
-sedu_helpless(mon)
-struct monst * mon;
+sedu_helpless(struct monst *mon)
 {
 	/* seducers that will return early */
 	if (mon->mtyp == PM_INCUBUS || mon->mtyp == PM_SUCCUBUS) {
@@ -951,8 +925,7 @@ struct monst * mon;
 /* returns 1 if mon tried teleporting after being refused, ending sedu */
 /* returns 0 if monster should continue sedu, and give a bad effect */
 int
-sedu_refuse(mon)
-struct monst * mon;
+sedu_refuse(struct monst *mon)
 {
 	switch(mon->mtyp) {
 		case PM_AVATAR_OF_LOLTH:
@@ -999,9 +972,7 @@ struct monst * mon;
 
 /* returns TRUE if your roll doesn't beat the monster and you should get a bad sedu effect */
 boolean
-sedu_roll(mon, helpless)
-struct monst * mon;
-boolean helpless;
+sedu_roll(struct monst *mon, boolean helpless)
 {
 	switch(mon->mtyp) {
 		case PM_AVATAR_OF_LOLTH:
@@ -1024,8 +995,7 @@ boolean helpless;
 }
 
 void
-sedu_payment(mon)
-struct monst * mon;
+sedu_payment(struct monst *mon)
 {
 	if (mon->mtame) {
 		/* don't charge */
@@ -1085,8 +1055,7 @@ struct monst * mon;
 }
 
 void
-sedu_undress(mon)
-struct monst * mon;
+sedu_undress(struct monst *mon)
 {
 	/* check no-clothes case */
 	if (!uarm && !uarmc && !uarmf && !uarmg && !uarms && !uarmh
@@ -1182,8 +1151,7 @@ struct monst * mon;
 }
 
 void
-sedu_adornment_ring(mon)
-struct monst * mon;
+sedu_adornment_ring(struct monst *mon)
 {
 	struct obj * ring;
 	struct obj * nring;
@@ -1323,8 +1291,7 @@ struct monst * mon;
 
 /* some monsters try to knife you, how rude */
 void
-sedu_knife(mon)
-struct monst * mon;
+sedu_knife(struct monst *mon)
 {
 	const char * knife = uclockwork ? "knife to the gears" : "knife to the ribs";
 	if (ACURR(A_CHA) + rn1(4, 3) < 24){
@@ -1344,9 +1311,7 @@ struct monst * mon;
 
 /* sets mspecused */
 void
-sedu_wornout(mon, badeffect)
-struct monst * mon;
-boolean badeffect;
+sedu_wornout(struct monst *mon, boolean badeffect)
 {
 	switch(mon->mtyp)
 	{
@@ -1380,9 +1345,7 @@ boolean badeffect;
 
 /* prints a message */
 void
-sedu_timestandsstill(mon, badeffect)
-struct monst * mon;
-boolean badeffect;
+sedu_timestandsstill(struct monst *mon, boolean badeffect)
 {
 
 	/* lolth transforms */
@@ -1425,9 +1388,7 @@ boolean badeffect;
 }
 
 int
-sedu_select_effect(mon, badeffect)
-struct monst * mon;
-boolean badeffect;
+sedu_select_effect(struct monst *mon, boolean badeffect)
 {
 	if (badeffect) {
 		switch(mon->mtyp) {
@@ -1537,9 +1498,7 @@ boolean badeffect;
 }
 
 void
-seduce_effect(mon, effect_num)
-struct monst * mon;
-int effect_num;
+seduce_effect(struct monst *mon, int effect_num)
 {
 	char qbuf[QBUFSZ];
 	struct obj *key;
@@ -2277,11 +2236,7 @@ int effect_num;
  */
 
 boolean
-msteal_m(magr, mdef, attk, result)
-struct monst *magr;
-struct monst *mdef;
-struct attack *attk;
-int *result;
+msteal_m(struct monst *magr, struct monst *mdef, struct attack *attk, int *result)
 {
 	const long equipmentmask = ~(W_WEP|W_SWAPWEP);
 	boolean seduct_type;

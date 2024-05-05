@@ -15,17 +15,17 @@ static int NDECL(prayer_done);
 static struct obj *NDECL(worst_cursed_item);
 static int NDECL(in_trouble);
 static void FDECL(fix_worst_trouble,(int));
-static void FDECL(pleased,(ALIGNTYP_P));
+static void FDECL(pleased,(int));
 static void FDECL(god_zaps_you, (int));
 static void FDECL(fry_by_god, (int));
 static void FDECL(consume_offering,(struct obj *));
 static void FDECL(eat_offering,(struct obj *, boolean, int));
 static void FDECL(burn_offering,(struct obj *, boolean));
-static boolean FDECL(water_prayer,(BOOLEAN_P));
+static boolean FDECL(water_prayer,(boolean));
 static boolean FDECL(blocked_boulder,(int,int));
 static void NDECL(lawful_god_gives_angel);
 static void FDECL(god_gives_pet,(int));
-static void FDECL(god_gives_benefit,(ALIGNTYP_P));
+static void FDECL(god_gives_benefit,(int));
 
 /* simplify a few tests */
 #define Cursed_obj(obj,typ) ((obj) && (obj)->otyp == (typ) && (obj)->cursed)
@@ -187,7 +187,7 @@ but that's really hard.
  */
 
 static int
-in_trouble()
+in_trouble(void)
 {
 	struct obj *otmp;
 	int i, j, count=0;
@@ -285,7 +285,7 @@ in_trouble()
 
 /* select an item for TROUBLE_CURSED_ITEMS */
 static struct obj *
-worst_cursed_item()
+worst_cursed_item(void)
 {
     register struct obj *otmp;
 
@@ -347,8 +347,7 @@ worst_cursed_item()
 }
 
 static void
-fix_worst_trouble(trouble)
-register int trouble;
+fix_worst_trouble(int trouble)
 {
 	int i;
 	struct obj *otmp = 0;
@@ -634,8 +633,7 @@ decurse:
  * Divine wrath, dungeon walls, and armor follow the same principle.
  */
 static void
-god_zaps_you(godnum)
-int godnum;
+god_zaps_you(int godnum)
 {
 	if (u.uswallow) {
 	    pline("Suddenly a bolt of lightning comes down at you from the heavens!");
@@ -713,8 +711,7 @@ int godnum;
 }
 
 static void
-fry_by_god(godnum)
-int godnum;
+fry_by_god(int godnum)
 {
 	char killerbuf[64];
 
@@ -726,8 +723,7 @@ int godnum;
 }
 
 void
-angrygods(godnum)
-int godnum;
+angrygods(int godnum)
 {
 	register int	maxanger;
 	char buf[BUFSZ];
@@ -841,7 +837,7 @@ int godnum;
 /* chance for god to give you a gift */
 /* returns TRUE if your god should give you a gift */
 boolean
-maybe_god_gives_gift()
+maybe_god_gives_gift(void)
 {
 	/* previous: 1 in (10 + (2 * gifts * (gifts+wishes))) */
 	/* Role_if(PM_PRIEST) ? !rn2(10 + (2 * u.ugifts * u.ugifts)) : !rn2(10 + (2 * u.ugifts * nartifacts)) */
@@ -858,8 +854,7 @@ maybe_god_gives_gift()
 
 /* helper to print "str appears at your feet", or appropriate */
 void
-at_your_feet(str)
-	const char *str;
+at_your_feet(const char *str)
 {
 	if (Blind) str = Something;
 	if (u.uswallow) {
@@ -875,8 +870,7 @@ at_your_feet(str)
 }
 
 static void
-pleased(godnum)
-int godnum;
+pleased(int godnum)
 {
 	/* don't use p_trouble, worst trouble may get fixed while praying */
 	int trouble = in_trouble();	/* what's your worst difficulty? */
@@ -1148,8 +1142,7 @@ int godnum;
  * returns true if it found any water here.
  */
 static boolean
-water_prayer(bless_water)
-    boolean bless_water;
+water_prayer(boolean bless_water)
 {
     register struct obj* otmp;
     register long changed = 0;
@@ -1201,9 +1194,7 @@ water_prayer(bless_water)
 }
 
 void
-godvoice(godnum, words)
-int godnum;
-const char *words;
+godvoice(int godnum, const char *words)
 {
     const char *quot = "";
     if(words)
@@ -1239,16 +1230,14 @@ const char *words;
 
 /* god voices their displeasure with you (but doesn't do anything) */
 void
-gods_angry(godnum)
-int godnum;
+gods_angry(int godnum)
 {
     godvoice(godnum, "Thou hast angered me.");
 }
 
 /* This god is upset with you. */
 void
-gods_upset(godnum)
-int godnum;
+gods_upset(int godnum)
 {
 	if(godnum == GOD_THE_VOID) return;
 
@@ -1270,10 +1259,7 @@ int godnum;
 static const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
 static void
-eat_offering(otmp, silently, eatflag)
-register struct obj *otmp;
-boolean silently;
-int eatflag;
+eat_offering(struct obj *otmp, boolean silently, int eatflag)
 {
 	xchar x, y;
 	get_obj_location(otmp, &x, &y, BURIED_TOO);
@@ -1384,9 +1370,7 @@ int eatflag;
 }
 
 static void
-burn_offering(otmp, silently)
-register struct obj *otmp;
-boolean silently;
+burn_offering(struct obj *otmp, boolean silently)
 {
 	xchar x, y;
 	get_obj_location(otmp, &x, &y, BURIED_TOO);
@@ -1407,8 +1391,7 @@ boolean silently;
 }
 
 static void
-consume_offering(otmp)
-register struct obj *otmp;
+consume_offering(register struct obj *otmp)
 {
     if (Hallucination)
 	switch (rn2(25)) {
@@ -1507,8 +1490,7 @@ register struct obj *otmp;
 }
 
 void
-god_gives_pet(godnum)
-int godnum;
+god_gives_pet(int godnum)
 {
 /*
     register struct monst *mtmp2;
@@ -1580,7 +1562,7 @@ int godnum;
 }
 
 static void
-lawful_god_gives_angel()
+lawful_god_gives_angel(void)
 {
 /*
     register struct monst *mtmp2;
@@ -1593,7 +1575,7 @@ lawful_god_gives_angel()
 }
 
 void
-pacify_goat_faction()
+pacify_goat_faction(void)
 {
 	struct monst *mtmp;
 	for(mtmp = migrating_mons; mtmp; mtmp = mtmp->nmon){
@@ -1614,7 +1596,7 @@ pacify_goat_faction()
 }
 
 int
-dosacrifice()
+dosacrifice(void)
 {
     register struct obj *otmp;
     int value = 0;
@@ -2334,8 +2316,7 @@ dosacrifice()
 
 /* determine prayer results in advance; also used for enlightenment */
 boolean
-can_pray(praying)
-boolean praying;	/* false means no messages should be given */
+can_pray(boolean praying)	/* false means no messages should be given */
 {
     int alignment;
 
@@ -2391,7 +2372,7 @@ boolean praying;	/* false means no messages should be given */
 }
 
 int
-dopray()
+dopray(void)
 {
 	if(Role_if(PM_ANACHRONONAUT) && flags.questprogress!=2){
 		pline("There is but one God in the future.");
@@ -2461,7 +2442,7 @@ dopray()
 }
 
 static int
-prayer_done()		/* M. Stephenson (1.0.3b) */
+prayer_done(void)		/* M. Stephenson (1.0.3b) */
 {
     aligntyp alignment = galign(p_god);
 
@@ -2540,8 +2521,7 @@ prayer_done()		/* M. Stephenson (1.0.3b) */
 
 static
 int
-turn_level(mtmp)
-struct monst *mtmp;
+turn_level(struct monst *mtmp)
 {
 	boolean youdef = mtmp == &youmonst;
 	int xlev = youdef ? u.ulevel : mtmp->data->mlevel;
@@ -2582,7 +2562,7 @@ struct monst *mtmp;
 }
 
 int
-doturn()
+doturn(void)
 {	/* Knights & Priest(esse)s only please */
 	struct monst *mtmp, *mtmp2;
 	int once, range, xlev;
@@ -2695,8 +2675,7 @@ doturn()
 }
 
 int
-mon_doturn(mon)
-struct monst *mon;
+mon_doturn(struct monst *mon)
 {	/* Knights & Priest(esse)s only please */
 	struct monst *mtmp, *mtmp2;
 	int once, range, xlev;
@@ -2801,7 +2780,7 @@ struct monst *mon;
 }
 
 const char *
-a_gname()
+a_gname(void)
 {
     return(a_gname_at(u.ux, u.uy));
 }
@@ -2811,8 +2790,7 @@ a_gname()
  * if the altar is undedicated, returns the name of the responsible god
  */
 const char *
-a_gname_at(x,y)
-xchar x, y;
+a_gname_at(xchar x, xchar y)
 {
     if(!IS_ALTAR(levl[x][y].typ)) return((char *)0);
 	
@@ -2820,7 +2798,7 @@ xchar x, y;
 }
 
 const char *
-u_gname()  /* returns the name of the player's deity */
+u_gname(void)  /* returns the name of the player's deity */
 {
     return godname(u.ualign.god);
 }
@@ -2969,16 +2947,14 @@ const char * const hallu_gods[] = {
 };
 
 const char *
-align_gname(alignment)
-aligntyp alignment;
+align_gname(aligntyp alignment)
 {
 	return godname(align_to_god(alignment));
 }
 
 /* deity's title */
 const char *
-gtitle(godnum)
-int godnum;
+gtitle(int godnum)
 {
 	const char *gnam, *result = "god";
 	gnam = godlist[godnum].name;
@@ -2988,8 +2964,7 @@ int godnum;
 }
 
 void
-altar_wrath(x, y)
-register int x, y;
+altar_wrath(int x, int y)
 {
 	if(god_at_altar(x, y) == u.ualign.god) {
 		godvoice(u.ualign.god, "How darest thou desecrate my altar!");
@@ -3003,8 +2978,7 @@ register int x, y;
 
 /* assumes isok() at one space away, but not necessarily at two */
 static boolean
-blocked_boulder(dx,dy)
-int dx,dy;
+blocked_boulder(int dx, int dy)
 {
     register struct obj *otmp;
     long count = 0L;
@@ -3038,8 +3012,7 @@ int dx,dy;
  */
  
 int
-candle_on_altar(candle) 
-struct obj *candle;
+candle_on_altar(struct obj *candle)
 {
   if (candle->where != OBJ_FLOOR 
      || !IS_ALTAR(levl[candle->ox][candle->oy].typ)
@@ -3057,8 +3030,7 @@ struct obj *candle;
 
 /* Give away something */
 void
-god_gives_benefit(godnum)
-int godnum;
+god_gives_benefit(int godnum)
 {
 	register struct obj *otmp;
 	const char *what = (const char *)0;
@@ -3290,9 +3262,7 @@ int godnum;
 }
 
 static int
-goat_resurrect(otmp, eatflag)
-struct obj *otmp;
-int eatflag;
+goat_resurrect(struct obj *otmp, int eatflag)
 {
 	struct monst *revived = 0;
 	if(goat_monster(&mons[otmp->corpsenm])){
@@ -3315,9 +3285,7 @@ int eatflag;
 }
 
 static int
-goat_rider(otmp, eatflag)
-struct obj *otmp;
-int eatflag;
+goat_rider(struct obj *otmp, int eatflag)
 {
 	int cn = otmp->corpsenm;
 	struct monst *revived = 0;
@@ -3340,9 +3308,7 @@ int eatflag;
 }
 
 static int
-fire_rider(otmp, offering)
-struct obj *otmp;
-boolean offering;
+fire_rider(struct obj *otmp, boolean offering)
 {
 	int cn = otmp->corpsenm;
 	struct monst *revived = 0;
@@ -3371,8 +3337,7 @@ boolean offering;
 #define GOATBOON_RED_WORD	8
 #define GOATBOON_MUTATE	9
 int
-dogoat_menu(greater_boon)
-boolean greater_boon;	/* you have shown devotion enough to ask for a greater boon */
+dogoat_menu(boolean greater_boon)	/* you have shown devotion enough to ask for a greater boon */
 {
 	winid tmpwin;
 	int n, how;
@@ -3464,7 +3429,7 @@ boolean greater_boon;	/* you have shown devotion enough to ask for a greater boo
 }
 
 boolean
-shub_nugganoth_mutation()
+shub_nugganoth_mutation(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -3521,7 +3486,7 @@ shub_nugganoth_mutation()
 }
 
 int
-commune_with_goat()
+commune_with_goat(void)
 {
 	const char * goatname = goattitles[rn2(SIZE(goattitles))];
 	const char blessable_classes[] = { WEAPON_CLASS, TOOL_CLASS, ARMOR_CLASS, 0 };
@@ -3712,8 +3677,7 @@ commune_with_goat()
 #define FLAMEBOON_RIGHTEOUS_WRATH	13
 #define FLAMEBOON_PRESERVE_LIFE	14
 int
-dosflm_menu(greater_boon)
-boolean greater_boon;	/* you have shown devotion enough to ask for a greater boon */
+dosflm_menu(boolean greater_boon)	/* you have shown devotion enough to ask for a greater boon */
 {
 	winid tmpwin;
 	int n, how;
@@ -3814,7 +3778,7 @@ boolean greater_boon;	/* you have shown devotion enough to ask for a greater boo
 }
 
 int
-commune_with_silver_flame()
+commune_with_silver_flame(void)
 {
 	int cultsval = Role_if(PM_MADMAN) ? 7*u.ucultsval/10 : u.ucultsval;
 	/* you must be an active cultist (redirects to mirror if you haven't, so this shouldn't actually happen) */
@@ -4073,8 +4037,7 @@ commune_with_silver_flame()
 #define YOGBOON_MUTATE	9
 
 int
-doyog_menu(greater_boon)
-boolean greater_boon;	/* you have shown devotion enough to ask for a greater boon */
+doyog_menu(boolean greater_boon)	/* you have shown devotion enough to ask for a greater boon */
 {
 	winid tmpwin;
 	int n, how;
@@ -4181,7 +4144,7 @@ boolean greater_boon;	/* you have shown devotion enough to ask for a greater boo
 }
 
 boolean
-yog_sothoth_mutation()
+yog_sothoth_mutation(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -4241,7 +4204,7 @@ yog_sothoth_mutation()
 }
 
 int
-commune_with_yog()
+commune_with_yog(void)
 {
 	const char * yogname = yogtitles[rn2(SIZE(yogtitles))];
 	const char blessable_classes[] = { WEAPON_CLASS, TOOL_CLASS, ARMOR_CLASS, 0 };
@@ -4427,8 +4390,7 @@ commune_with_yog()
 }
 
 boolean
-goat_mouth_at(x, y)
-int x, y;
+goat_mouth_at(int x, int y)
 {
 	struct monst *mtmp;
 	for(mtmp = migrating_mons; mtmp; mtmp = mtmp->nmon){
@@ -4450,8 +4412,7 @@ int x, y;
 }
 
 boolean
-bokrug_idol_at(x, y)
-int x, y;
+bokrug_idol_at(int x, int y)
 {
 	struct obj *otmp;
 	for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
@@ -4462,8 +4423,7 @@ int x, y;
 }
 
 void
-bokrug_offer(otmp)
-struct obj *otmp;
+bokrug_offer(struct obj *otmp)
 {
 	if(otmp->otyp == AMULET_OF_YENDOR){
 		/* The final Test.	Did you win? */
@@ -4486,9 +4446,7 @@ struct obj *otmp;
 }
 
 void
-goat_eat(otmp, eatflag)
-struct obj *otmp;
-int eatflag;
+goat_eat(struct obj *otmp, int eatflag)
 {
     int value = 0;
 	struct permonst *ptr = &mons[otmp->corpsenm];
@@ -4628,10 +4586,7 @@ int eatflag;
 }
 
 void
-flame_consume(mtmp, otmp, offering)
-struct monst *mtmp;
-struct obj *otmp;
-boolean offering;
+flame_consume(struct monst *mtmp, struct obj *otmp, boolean offering)
 {
     int value = 0;
 	struct permonst *ptr = mtmp ? mtmp->data : otmp ? &mons[otmp->corpsenm] : 0;
@@ -4728,8 +4683,7 @@ boolean offering;
 }
 
 void
-yog_credit(value)
-int value;
+yog_credit(int value)
 {
 	//May be zero if draining a small monster etc.
 	if(!value)
@@ -4777,7 +4731,7 @@ struct god * godlist;
 
 /* save and restore god list */
 void
-init_gods()
+init_gods(void)
 {
 	extern const struct god base_godlist[];
 
@@ -4786,15 +4740,13 @@ init_gods()
 }
 
 void
-save_gods(fd)
-int fd;
+save_gods(int fd)
 {
 	bwrite(fd, (genericptr_t) godlist, sizeof(struct god) * (MAX_GOD+1));
 }
 
 void
-restore_gods(fd)
-int fd;
+restore_gods(int fd)
 {
 	extern const struct god base_godlist[];
 	int i;
@@ -4807,23 +4759,20 @@ int fd;
 }
 
 aligntyp
-galign(godnum)
-int godnum;
+galign(int godnum)
 {
 	return godlist[godnum].alignment;
 }
 
 int
-gholiness(godnum)
-int godnum;
+gholiness(int godnum)
 {
 	return godlist[godnum].holiness;
 }
 
 /* transitory function, hopefully, to convert an alignment into the most likely candidate god */
 int
-align_to_god(alignmnt)
-aligntyp alignmnt;
+align_to_god(aligntyp alignmnt)
 {
 	const char * name;
 	switch(alignmnt) {
@@ -4845,8 +4794,7 @@ aligntyp alignmnt;
 
 /* gets god name, with no hallu check */
 const char *
-godname_full(godnum)
-int godnum;
+godname_full(int godnum)
 {
 	/* special cases that give alternative names for particular gods */
 
@@ -4886,8 +4834,7 @@ int godnum;
 
 /* gets god name OR a hallu god if appropriate */
 const char *
-godname(godnum)
-int godnum;
+godname(int godnum)
 {
     const char *gnam;
 
@@ -4902,8 +4849,7 @@ int godnum;
 }
 
 int
-god_faction(godnum)
-int godnum;
+god_faction(int godnum)
 {
 	switch(godnum) {
 		case GOD_EDDERGUD: return EDDER_SYMBOL;
@@ -4923,8 +4869,7 @@ int godnum;
 
 
 const int *
-god_minions(godnum)
-int godnum;
+god_minions(int godnum)
 {
 	/* special cases */
 	if (godnum == GOD_MOLOCH) {
@@ -4954,10 +4899,10 @@ int godnum;
 }
 
 struct monst *
-god_priest(godnum, sx, sy, sanctum)
-int godnum;
-int sx, sy;
-int sanctum;   /* is it the seat of the high priest? */
+god_priest(
+	int godnum,
+	int sx, int sy,
+	int sanctum)	      /* is it the seat of the high priest? */
 {
 	struct monst *priest;
 	
@@ -5222,8 +5167,7 @@ int sanctum;   /* is it the seat of the high priest? */
  * ex: the deep blue sea is responsible for "a neutral altar" in a Pirate game
  */
 int
-god_at_altar(x, y)
-int x, y;
+god_at_altar(int x, int y)
 {
 	if(levl[x][y].typ != ALTAR) {
 		if(goat_mouth_at(x, y))
@@ -5250,8 +5194,7 @@ int x, y;
  * Any attending priests will still get upset, though!
  */
 boolean
-gods_are_friendly(from_god, to_god)
-int from_god, to_god;
+gods_are_friendly(int from_god, int to_god)
 {
 	/* elf-gods are friendly with each other */
 	/* NOTE: assumes order of elfgods in godlist.h */
@@ -5282,8 +5225,7 @@ int from_god, to_god;
  * Returns TRUE if god will accept your worship/allegiance
  */
 boolean
-god_accepts_you(godnum)
-int godnum;
+god_accepts_you(int godnum)
 {
 	if (galign(godnum) == A_NONE)
 		return FALSE;

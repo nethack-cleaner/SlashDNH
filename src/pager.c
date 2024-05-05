@@ -12,7 +12,7 @@
 static boolean FDECL(is_swallow_sym, (int));
 static int FDECL(append_str, (char *, const char *));
 static struct monst * FDECL(lookat, (int, int, char *, char *, char *));
-static int FDECL(do_look, (BOOLEAN_P));
+static int FDECL(do_look, (boolean));
 static boolean FDECL(help_menu, (int *));
 static char * get_description_of_monster_type(struct monst *, char *);
 static char * get_generation_description_of_monster_type(struct monst *, char *);
@@ -42,8 +42,7 @@ extern struct attack noattack;
 
 /* Returns "true" for characters that could represent a monster's stomach. */
 static boolean
-is_swallow_sym(c)
-int c;
+is_swallow_sym(int c)
 {
     int i;
     for (i = S_sw_tl; i <= S_sw_br; i++)
@@ -57,9 +56,7 @@ int c;
  * This only works on buf of LONGBUFSZ.
  */
 static int
-append_str(buf, new_str)
-    char *buf;
-    const char *new_str;
+append_str(char *buf, const char *new_str)
 {
     int space_left;	/* space remaining in buf */
 
@@ -114,9 +111,7 @@ static const char * const bodyStr[] = {
 
 /* extracted from lookat(); also used by do_floorname() */
 boolean
-object_from_map(glyph, x, y, obj_p)
-    int glyph, x, y;
-    struct obj **obj_p;
+object_from_map(int glyph, int x, int y, struct obj **obj_p)
 {
     boolean fakeobj = FALSE;
     struct obj *otmp = vobj_at(x,y);
@@ -153,9 +148,9 @@ object_from_map(glyph, x, y, obj_p)
 #define MSYM	8
 
 char *
-flag_to_word(flag, category)
-	unsigned long flag; /* flag to check */
-	int category; /* category (MM, MT, etc.). 1-indexed from MM in order in monflag.h */
+flag_to_word(
+	unsigned long flag, /* flag to check */
+	int category /* category (MM, MT, etc.). 1-indexed from MM in order in monflag.h */)
 {
 	switch (category){
 	case MM_FLAG:
@@ -360,9 +355,7 @@ flag_to_word(flag, category)
 }
 
 void
-warned_monster_reasons(mon, wbuf)
-	struct monst * mon;
-	char * wbuf;
+warned_monster_reasons(struct monst *mon, char *wbuf)
 {
 	char buf[BUFSZ];
 	strcpy(buf, "");
@@ -490,9 +483,7 @@ warned_monster_reasons(mon, wbuf)
  * If not hallucinating and the glyph is a monster, also monster data.
  */
 static struct monst *
-lookat(x, y, buf, monbuf, shapebuff)
-    int x, y;
-    char *buf, *monbuf, *shapebuff;
+lookat(int x, int y, char *buf, char *monbuf, char *shapebuff)
 {
     register struct monst *mtmp = (struct monst *) 0;
     struct permonst *pm = (struct permonst *) 0;
@@ -828,11 +819,7 @@ lookat(x, y, buf, monbuf, shapebuff)
  * Returns TRUE if it found an entry and printed to the nhwindow
  */
 boolean
-checkfile(inp, pm, user_typed_name, without_asking, printwindow)
-    char *inp;
-    struct permonst *pm;
-    boolean user_typed_name, without_asking;
-	winid *printwindow;
+checkfile(char *inp, struct permonst *pm, boolean user_typed_name, boolean without_asking, winid *printwindow)
 {
     dlb *fp;
     char buf[BUFSZ], newstr[BUFSZ];
@@ -1371,7 +1358,7 @@ static const char * const bogusobjects[] = {
 
 /* Return a random bogus object name, for hallucination */
 const char *
-rndobjnam()
+rndobjnam(void)
 {
     int name;
 	if(!rn2(3)){
@@ -1388,8 +1375,8 @@ rndobjnam()
 
 
 static int
-do_look(quick)
-    boolean quick;	/* use cursor && don't search for "more info" */
+do_look(
+	boolean quick	/* use cursor && don't search for "more info" */)
 {
 	char out_str[LONGBUFSZ];
 	out_str[0] = 0;
@@ -1542,15 +1529,8 @@ do_look(quick)
 	return MOVE_CANCELLED;
 }
 
-char*
-do_look_letter(sym, from_screen, quick, force_defsyms, cc, out_str, firstmatch)
-	glyph_t sym;
-	boolean from_screen;
-	boolean quick;
-	boolean force_defsyms;
-	coord cc;
-	char* out_str;
-	const char* firstmatch;
+char *
+do_look_letter(glyph_t sym, boolean from_screen, boolean quick, boolean force_defsyms, coord cc, char *out_str, const char *firstmatch)
 {
 	char look_buf[BUFSZ];
     const char *x_str = 0;
@@ -2775,19 +2755,19 @@ get_description_of_monster_type(struct monst * mtmp, char * description)
 }
 
 int
-dowhatis()
+dowhatis(void)
 {
 	return do_look(FALSE);
 }
 
 int
-doquickwhatis()
+doquickwhatis(void)
 {
 	return do_look(TRUE);
 }
 
 int
-doidtrap()
+doidtrap(void)
 {
 	register struct trap *trap;
 	int x, y, tt;
@@ -2819,9 +2799,7 @@ doidtrap()
 }
 
 char *
-dowhatdoes_core(q, cbuf)
-char q;
-char *cbuf;
+dowhatdoes_core(char q, char *cbuf)
 {
 	dlb *fp;
 	char bufr[BUFSZ];
@@ -2867,7 +2845,7 @@ char *cbuf;
 }
 
 int
-dowhatdoes()
+dowhatdoes(void)
 {
 	char bufr[BUFSZ];
 	char q, *reslt;
@@ -2914,8 +2892,7 @@ static const char *help_menu_items[] = {
 };
 
 static boolean
-help_menu(sel)
-	int *sel;
+help_menu(int *sel)
 {
 	winid tmpwin = create_nhwindow(NHW_MENU);
 #ifdef PORT_HELP
@@ -2958,7 +2935,7 @@ help_menu(sel)
 }
 
 int
-dohelp()
+dohelp(void)
 {
 	int sel = 0;
 
@@ -2987,7 +2964,7 @@ dohelp()
 }
 
 int
-dohistory()
+dohistory(void)
 {
 	display_file(HISTORY, TRUE);
 	return MOVE_CANCELLED;

@@ -27,7 +27,6 @@ uchar warnsyms[WARNCOUNT]  = DUMMY;  /* the current warning display symbols */
 uchar showsymcolors[MAXPCHARS] = DUMMY; /* current feature display colors */
 #endif
 
-
 /* Default object class symbols.  See objclass.h. */
 const char def_oc_syms[MAXOCLASSES] = {
 /* 0*/	'\0',		/* placeholder for the "random class" */
@@ -835,8 +834,7 @@ static glyph_t utf8_graphics[MAXPCHARS] = {
  * options.c, pickup.c, sp_lev.c, and lev_main.c.
  */
 int
-def_char_to_objclass(ch)
-    char ch;
+def_char_to_objclass(char ch)
 {
     int i;
     for (i = 1; i < MAXOCLASSES; i++)
@@ -849,8 +847,7 @@ def_char_to_objclass(ch)
  * match made.  If there are are no matches, return MAXMCLASSES.
  */
 int
-def_char_to_monclass(ch)
-    char ch;
+def_char_to_monclass(char ch)
 {
     int i;
     for (i = 1; i < MAXMCLASSES; i++)
@@ -859,9 +856,7 @@ def_char_to_monclass(ch)
 }
 
 void
-assign_graphics(graph_chars, glth, maxlen, offset)
-register glyph_t *graph_chars;
-int glth, maxlen, offset;
+assign_graphics(register glyph_t *graph_chars, int glth, int maxlen, int offset)
 {
     register int i;
     for (i = 0; i < maxlen; i++)
@@ -871,9 +866,7 @@ int glth, maxlen, offset;
 
 #ifdef USER_DUNGEONCOLOR
 void
-assign_colors(graph_colors, glth, maxlen, offset)
-register uchar *graph_colors;
-int glth, maxlen, offset;
+assign_colors(register uchar *graph_colors, int glth, int maxlen, int offset)
 {
     register int i;
 
@@ -885,8 +878,7 @@ int glth, maxlen, offset;
 #endif
 
 void
-switch_graphics(gr_set_flag)
-int gr_set_flag;
+switch_graphics(int gr_set_flag)
 {
     iflags.IBMgraphics = FALSE;
     iflags.DECgraphics = FALSE;
@@ -950,9 +942,7 @@ int gr_set_flag;
 
 /** Change the UTF8graphics symbol at position with codepoint "value". */
 void
-assign_utf8graphics_symbol(position, value)
-int position;
-glyph_t value;
+assign_utf8graphics_symbol(int position, glyph_t value)
 {
 #ifdef UTF8_GLYPHS
 	if (position < MAXPCHARS) {
@@ -1032,8 +1022,7 @@ static const uchar IBM_r_oc_syms[MAXOCLASSES] = {	/* a la EPYX Rogue */
 # endif /* ASCIIGRAPH */
 
 void
-assign_rogue_graphics(is_rlevel)
-boolean is_rlevel;
+assign_rogue_graphics(int is_rlevel)
 {
     /* Adjust graphics display characters on Rogue levels */
 

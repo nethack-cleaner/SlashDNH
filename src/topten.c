@@ -60,7 +60,7 @@ static void FDECL(topten_print, (const char *));
 static void FDECL(topten_print_bold, (const char *));
 static xchar FDECL(observable_depth, (d_level *));
 static void NDECL(outheader);
-static void FDECL(outentry, (int,struct toptenentry *,BOOLEAN_P));
+static void FDECL(outentry, (int,struct toptenentry *,boolean));
 static void FDECL(readentry, (FILE *,struct toptenentry *));
 static void FDECL(writeentry, (FILE *,struct toptenentry *));
 #ifdef XLOGFILE
@@ -68,9 +68,9 @@ static void FDECL(munge_xlstring, (char *dest, char *src, int n));
 static void FDECL(write_xlentry, (FILE *,struct toptenentry *));
 #endif
 static void FDECL(free_ttlist, (struct toptenentry *));
-static int FDECL(classmon, (char *,BOOLEAN_P));
+static int FDECL(classmon, (char *,boolean));
 static int FDECL(score_wanted,
-		(BOOLEAN_P, int,struct toptenentry *,int,const char **,int));
+		(boolean, int,struct toptenentry *,int,const char **,int));
 /*static long FDECL(encodeconduct, (void));*/
 static long FDECL(encodeachieve, (void));
 static void FDECL(writeachieveX, (char *));
@@ -89,8 +89,7 @@ static winid toptenwin = WIN_ERR;
 static time_t deathtime = 0L;
 
 static void
-topten_print(x)
-const char *x;
+topten_print(const char *x)
 {
 	if (toptenwin == WIN_ERR)
 	    raw_print(x);
@@ -99,8 +98,7 @@ const char *x;
 }
 
 static void
-topten_print_bold(x)
-const char *x;
+topten_print_bold(const char *x)
 {
 	if (toptenwin == WIN_ERR)
 	    raw_print_bold(x);
@@ -109,8 +107,7 @@ const char *x;
 }
 
 static xchar
-observable_depth(lev)
-d_level *lev;
+observable_depth(d_level *lev)
 {
 #if 0	/* if we ever randomize the order of the elemental planes, we
 	   must use a constant external representation in the record file */
@@ -127,9 +124,7 @@ d_level *lev;
 }
 
 static void
-readentry(rfile,tt)
-FILE *rfile;
-struct toptenentry *tt;
+readentry(FILE *rfile, struct toptenentry *tt)
 {
 	static const char fmt[] = "%d.%d.%d %ld %d %d %d %d %d %d %ld %ld %d ";
 	static const char fmt32[] = "%c%c %[^,],%[^\n]%*c";
@@ -178,9 +173,7 @@ struct toptenentry *tt;
 }
 
 static void
-writeentry(rfile,tt)
-FILE *rfile;
-struct toptenentry *tt;
+writeentry(FILE *rfile, struct toptenentry *tt)
 {
 	(void) fprintf(rfile,"%d.%d.%d %ld %d %d %d %d %d %d %ld %ld %d ",
 		tt->ver_major, tt->ver_minor, tt->patchlevel,
@@ -206,10 +199,7 @@ struct toptenentry *tt;
 /* copy a maximum of n-1 characters from src to dest, changing ':' and '\n'
  * to '_'; always null-terminate. */
 static void
-munge_xlstring(dest, src, n)
-char *dest;
-char *src;
-int n;
+munge_xlstring(char *dest, char *src, int n)
 {
   int i;
 
@@ -226,9 +216,7 @@ int n;
 }
 
 static void
-write_xlentry(rfile,tt)
-FILE *rfile;
-struct toptenentry *tt;
+write_xlentry(FILE *rfile, struct toptenentry *tt)
 {
 
   char buf[DTHSZ+1];
@@ -323,9 +311,7 @@ struct toptenentry *tt;
 
 
 void
-get_current_ttentry_data(t0, how)
-struct toptenentry *t0;
-int how;
+get_current_ttentry_data(struct toptenentry *t0, int how)
 {
 	int uid = getuid();
 	t0->ver_major = VERSION_MAJOR;
@@ -406,7 +392,7 @@ mk_HUPfile(char *fname)
 
 
 void
-write_HUP_file()
+write_HUP_file(void)
 {
 #ifdef HUPLIST_FN
     mk_HUPfile(HUPLIST_FN);
@@ -415,8 +401,7 @@ write_HUP_file()
 
 
 static void
-free_ttlist(tt)
-struct toptenentry *tt;
+free_ttlist(struct toptenentry *tt)
 {
 	struct toptenentry *ttnext;
 
@@ -429,8 +414,7 @@ struct toptenentry *tt;
 }
 
 void
-topten(how)
-int how;
+topten(int how)
 {
 	int rank, rank0 = -1, rank1 = 0;
 	int occ_cnt = PERSMAX;
@@ -723,7 +707,7 @@ int how;
 }
 
 static void
-outheader()
+outheader(void)
 {
 	char linebuf[BUFSZ];
 	register char *bp;
@@ -740,10 +724,7 @@ outheader()
 
 /* so>0: standout line; so=0: ordinary line */
 static void
-outentry(rank, t1, so)
-struct toptenentry *t1;
-int rank;
-boolean so;
+outentry(int rank, struct toptenentry *t1, boolean so)
 {
 	boolean second_line = TRUE;
 	char linebuf[BUFSZ];
@@ -898,13 +879,7 @@ boolean so;
 }
 
 static int
-score_wanted(current_ver, rank, t1, playerct, players, uid)
-boolean current_ver;
-int rank;
-struct toptenentry *t1;
-int playerct;
-const char **players;
-int uid;
+score_wanted(boolean current_ver, int rank, struct toptenentry *t1, int playerct, const char **players, int uid)
 {
 	int i;
 
@@ -1043,8 +1018,7 @@ encodeachieve(void)
 	}
 
 void
-writeachieveX(achieveXbuff)
-char *achieveXbuff;
+writeachieveX(char *achieveXbuff)
 {
 	//achieveXbuff is 25*ACHIEVE_NUMBER chars long. 25 is > than the average length of a trophy name, but keep an eye on that too.
 	char seperator[2] = "";
@@ -1125,9 +1099,7 @@ char *achieveXbuff;
  * and argv[1] starting with "-s".
  */
 void
-prscore(argc,argv)
-int argc;
-char **argv;
+prscore(int argc, char **argv)
 {
 	const char **players;
 	int playerct, rank;
@@ -1247,9 +1219,7 @@ char **argv;
 }
 
 static int
-classmon(plch, fem)
-	char *plch;
-	boolean fem;
+classmon(char *plch, boolean fem)
 {
 	int i;
 
@@ -1282,8 +1252,7 @@ classmon(plch, fem)
  * and attach them to an object (for statues or morgue corpses).
  */
 struct obj *
-tt_oname(otmp)
-struct obj *otmp;
+tt_oname(struct obj *otmp)
 {
 	int rank;
 	register int i;

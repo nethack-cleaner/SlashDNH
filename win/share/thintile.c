@@ -24,7 +24,7 @@ static int filenum;
 static char comment[BUFSZ];
 
 static void
-copy_colormap()
+copy_colormap(void)
 {
 	int r, g, b;
 	char c[2];
@@ -36,7 +36,7 @@ copy_colormap()
 }
 
 static boolean
-read_txttile()
+read_txttile(void)
 {
 	int i, j;
 	char buf[BUFSZ];
@@ -80,7 +80,7 @@ read_txttile()
 }
 
 static void
-write_thintile()
+write_thintile(void)
 {
 	int i, j;
 
@@ -97,9 +97,7 @@ write_thintile()
 	Fprintf(outfile, "}\n");
 }
 int
-main(argc, argv)
-int argc;
-char *argv[];
+main(int argc, char *argv[])
 {
 	while (filenum < 3) {
 		tilecount_per_file = 0;

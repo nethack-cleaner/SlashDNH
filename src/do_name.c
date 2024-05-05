@@ -8,7 +8,7 @@
 
 
 //static void FDECL(do_oname, (struct obj *));//moved to extern.h
-static void FDECL(getpos_help, (BOOLEAN_P,const char *));
+static void FDECL(getpos_help, (boolean,const char *));
 
 static void FDECL(mod_template_desc, (struct monst *, struct permonst *, char *, boolean, int, boolean));
 static boolean FDECL(maybe_append_injury_desc, (struct monst *, char *));
@@ -17,9 +17,7 @@ extern const char what_is_an_unknown_object[];		/* from pager.c */
 
 /* the response for '?' help request in getpos() */
 static void
-getpos_help(force, goal)
-boolean force;
-const char *goal;
+getpos_help(boolean force, const char *goal)
 {
     char sbuf[BUFSZ];
     boolean doing_what_is;
@@ -54,7 +52,7 @@ static int getpos_monarr_idx = 0;
 static struct _getpos_monarr *getpos_monarr_pos = NULL;
 
 void
-getpos_freemons()
+getpos_freemons(void)
 {
     if (getpos_monarr_pos) free(getpos_monarr_pos);
     getpos_monarr_pos = NULL;
@@ -62,9 +60,7 @@ getpos_freemons()
 }
 
 static int
-getpos_monarr_cmp(a, b)
-     const void *a;
-     const void *b;
+getpos_monarr_cmp(const void *a, const void *b)
 {
     const struct _getpos_monarr *m1 = (const struct _getpos_monarr *)a;
     const struct _getpos_monarr *m2 = (const struct _getpos_monarr *)b;
@@ -72,7 +68,7 @@ getpos_monarr_cmp(a, b)
 }
 
 void
-getpos_initmons()
+getpos_initmons(void)
 {
     struct monst *mtmp = fmon;
     if (getpos_monarr_pos) getpos_freemons();
@@ -98,7 +94,7 @@ getpos_initmons()
 }
 
 struct monst *
-getpos_nextmon()
+getpos_nextmon(void)
 {
     if (!getpos_monarr_pos) {
 	getpos_initmons();
@@ -116,7 +112,7 @@ getpos_nextmon()
 }
 
 struct monst *
-getpos_prevmon()
+getpos_prevmon(void)
 {
     if (!getpos_monarr_pos) {
 	getpos_initmons();
@@ -188,10 +184,7 @@ auto_describe(int cx, int cy)
 }
 
 int
-getpos(cc, force, goal)
-coord *cc;
-boolean force;
-const char *goal;
+getpos(coord *cc, boolean force, const char *goal)
 {
     int result = 0;
     int cx, cy, i, c;
@@ -358,9 +351,7 @@ const char *goal;
 }
 
 struct monst *
-christen_monst(mtmp, name)
-struct monst *mtmp;
-const char *name;
+christen_monst(struct monst *mtmp, const char *name)
 {
 	int lth;
 	struct monst *mtmp2;
@@ -386,7 +377,7 @@ const char *name;
 }
 
 int
-do_mname()
+do_mname(void)
 {
 	char buf[BUFSZ];
 	coord cc;
@@ -448,15 +439,15 @@ static const char callable[] = {
 	GEM_CLASS, SPBOOK_CLASS, ARMOR_CLASS, TOOL_CLASS, 0 };
 
 boolean
-objtyp_is_callable(i)
-int i;
+objtyp_is_callable(int i)
 {
     return (boolean) (objects[i].oc_uname
                       || (OBJ_DESCR(objects[i])
                           && index(callable, objects[i].oc_class)));
 }
 
-void do_floorname() {
+void
+do_floorname(void) {
     coord cc;
     int glyph;
     char buf[BUFSZ];
@@ -543,8 +534,7 @@ void do_floorname() {
  * when obj is in the inventory.
  */
 void
-do_oname(obj)
-register struct obj *obj;
+do_oname(register struct obj *obj)
 {
 	char buf[BUFSZ], qbuf[BUFSZ+BUFSZ];
 	const char *aname;
@@ -582,9 +572,7 @@ register struct obj *obj;
 }
 
 struct obj *
-oname(obj, name)
-struct obj *obj;
-const char *name;
+oname(struct obj *obj, const char *name)
 {
 	int lth;
 	char buf[PL_PSIZ];
@@ -820,7 +808,7 @@ const char *name;
 
 
 int
-ddocall()
+ddocall(void)
 {
 	register struct obj *obj;
 	char	ch;
@@ -858,8 +846,7 @@ ddocall()
 }
 
 void
-docall(obj)
-register struct obj *obj;
+docall(register struct obj *obj)
 {
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	struct obj otemp;
@@ -911,26 +898,19 @@ static const char * const ghostnames[] = {
 
 /* ghost names formerly set by x_monnam(), now by makemon() instead */
 const char *
-rndghostname()
+rndghostname(void)
 {
 	return rn2(7) ? ghostnames[rn2(SIZE(ghostnames))] : (const char *)plname;
 }
 
 void
-append_template_desc(mtmp, buf, pname, full)
-struct monst * mtmp;
-char * buf;
-boolean pname;
-boolean full;
+append_template_desc(struct monst *mtmp, char *buf, boolean pname, boolean full)
 {
 	mod_template_desc(mtmp, mtmp->data, buf, pname, mtmp->mtemplate, full);
 }
 
 void
-adjust_permonst_template_desc(mptr, buf, template)
-struct permonst * mptr;
-char * buf;
-int template;
+adjust_permonst_template_desc(struct permonst *mptr, char *buf, int template)
 {
 	mod_template_desc((struct monst *)0, mptr, buf, type_is_pname(mptr), template, TRUE);
 }
@@ -950,13 +930,7 @@ int template;
  *      'mtmp' != NULL
  */
 void
-mod_template_desc(mtmp, base, buf, pname, template, full)
-struct monst * mtmp;
-struct permonst * base;
-char * buf;
-boolean pname;
-int template;
-boolean full;
+mod_template_desc(struct monst *mtmp, struct permonst *base, char *buf, boolean pname, int template, boolean full)
 {
 	char buf2[BUFSZ];
 
@@ -1032,8 +1006,7 @@ boolean full;
 }
 
 const char *
-injury_desc_word(mtmp)
-struct monst * mtmp;
+injury_desc_word(struct monst *mtmp)
 {
 	if (mtmp->mhp >= mtmp->mhpmax)
 		return (has_blood_mon(mtmp)) ? "uninjured" : "undamaged";
@@ -1053,9 +1026,7 @@ struct monst * mtmp;
 }
 
 boolean
-maybe_append_injury_desc(mtmp, buf)
-struct monst * mtmp;
-char * buf;
+maybe_append_injury_desc(struct monst *mtmp, char *buf)
 {
 	if (DEADMONSTER(mtmp) || mtmp->mhp <= 0)
 		return FALSE;
@@ -1086,23 +1057,23 @@ char * buf;
  * options works, since those are special cases.
  */
 char *
-x_monnam(mtmp, article, adjective, suppress, called)
-register struct monst *mtmp;
-int article;
-/* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
- * ARTICLE_YOUR: "your" on pets, "the" on everything else
- *
- * If the monster would be referred to as "it" or if the monster has a name
- * _and_ there is no adjective, "invisible", "saddled", etc., override this
- * and always use no article.
- */
-const char *adjective;
-int suppress;
-/* SUPPRESS_IT, SUPPRESS_INVISIBLE, SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE.
- * EXACT_NAME: combination of all the above
- */
+x_monnam(
+	register struct monst *mtmp,
+	int article,
+	/* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
+	 * ARTICLE_YOUR: "your" on pets, "the" on everything else
+	 *
+	 * If the monster would be referred to as "it" or if the monster has a name
+	 * _and_ there is no adjective, "invisible", "saddled", etc., override this
+	 * and always use no article.
+	 */
+	const char *adjective,
+	int suppress,
+	/* SUPPRESS_IT, SUPPRESS_INVISIBLE, SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE.
+	 * EXACT_NAME: combination of all the above
+	 */
 #define XMONNAM_BUFFERS 3
-boolean called;
+	boolean called)
 {
 #ifdef LINT	/* static char buf[BUFSZ]; */
 	char buffers[XMONNAM_BUFFERS][BUFSZ];
@@ -1378,18 +1349,7 @@ boolean called;
 }
 
 char *
-x_ptrnam(ptr, article, adjective, called)
-register struct permonst *ptr;
-int article;
-/* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
- * ARTICLE_YOUR: "your" on pets, "the" on everything else
- *
- * If the monster would be referred to as "it" or if the monster has a name
- * _and_ there is no adjective, "invisible", "saddled", etc., override this
- * and always use no article.
- */
-const char *adjective;
-boolean called;
+x_ptrnam(register struct permonst *ptr, int article, const char *adjective, boolean called)
 {
 #ifdef LINT	/* static char buf[BUFSZ]; */
 	char buf[BUFSZ];
@@ -1451,8 +1411,7 @@ boolean called;
 
 
 char *
-l_monnam(mtmp)
-register struct monst *mtmp;
+l_monnam(register struct monst *mtmp)
 {
 	return(x_monnam(mtmp, ARTICLE_NONE, (char *)0, 
 		M_HAS_NAME(mtmp) ? SUPPRESS_SADDLE : 0, TRUE));
@@ -1460,43 +1419,37 @@ register struct monst *mtmp;
 
 
 const char *
-sheheit(mtmp)
-register struct monst *mtmp;
+sheheit(register struct monst *mtmp)
 {
 	return (is_neuter(mtmp->data)) ? "it" : mtmp->female ? "she" : "he";
 }
 
 const char *
-SheHeIt(mtmp)
-register struct monst *mtmp;
+SheHeIt(register struct monst *mtmp)
 {
 	return (is_neuter(mtmp->data)) ? "It" : mtmp->female ? "She" : "He";
 }
 
 const char *
-hisherits(mtmp)
-register struct monst *mtmp;
+hisherits(register struct monst *mtmp)
 {
 	return (!canspotmon(mtmp) || is_neuter(mtmp->data)) ? "its" : mtmp->female ? "her" : "his";
 }
 
 const char *
-himherit(mtmp)
-register struct monst *mtmp;
+himherit(register struct monst *mtmp)
 {
 	return (!canspotmon(mtmp) || is_neuter(mtmp->data)) ? "it" : mtmp->female ? "her" : "him";
 }
 
 const char *
-HisHerIts(mtmp)
-register struct monst *mtmp;
+HisHerIts(register struct monst *mtmp)
 {
 	return (!canspotmon(mtmp) || is_neuter(mtmp->data)) ? "Its" : mtmp->female ? "Her" : "His";
 }
 
 char *
-mon_nam(mtmp)
-register struct monst *mtmp;
+mon_nam(register struct monst *mtmp)
 {
 	return(x_monnam(mtmp, mtmp->mtyp == PM_TWIN_SIBLING ? ARTICLE_YOUR : ARTICLE_THE, (char *)0,
 		M_HAS_NAME(mtmp) ? SUPPRESS_SADDLE : 0, FALSE));
@@ -1507,8 +1460,7 @@ register struct monst *mtmp;
  * the player with a cursed potion of invisibility
  */
 char *
-noit_mon_nam(mtmp)
-register struct monst *mtmp;
+noit_mon_nam(register struct monst *mtmp)
 {
 	return(x_monnam(mtmp, mtmp->mtyp == PM_TWIN_SIBLING ? ARTICLE_YOUR : ARTICLE_THE, (char *)0,
 		M_HAS_NAME(mtmp) ? (SUPPRESS_SADDLE|SUPPRESS_IT) :
@@ -1520,8 +1472,7 @@ register struct monst *mtmp;
  * printing monster name to livelog in dNAO
  */
 char *
-noit_nohalu_mon_nam(mtmp)
-register struct monst *mtmp;
+noit_nohalu_mon_nam(register struct monst *mtmp)
 {
 	return(x_monnam(mtmp, mtmp->mtyp == PM_TWIN_SIBLING ? ARTICLE_YOUR : ARTICLE_THE, (char *)0,
 		M_HAS_NAME(mtmp) ? (SUPPRESS_SADDLE|SUPPRESS_IT|SUPPRESS_HALLUCINATION) :
@@ -1529,8 +1480,7 @@ register struct monst *mtmp;
 }
 
 char *
-Monnam(mtmp)
-register struct monst *mtmp;
+Monnam(register struct monst *mtmp)
 {
 	register char *bp = mon_nam(mtmp);
 
@@ -1539,8 +1489,7 @@ register struct monst *mtmp;
 }
 
 char *
-noit_Monnam(mtmp)
-register struct monst *mtmp;
+noit_Monnam(register struct monst *mtmp)
 {
 	register char *bp = noit_mon_nam(mtmp);
 
@@ -1550,16 +1499,14 @@ register struct monst *mtmp;
 
 /* monster's own name */
 char *
-m_monnam(mtmp)
-struct monst *mtmp;
+m_monnam(struct monst *mtmp)
 {
 	return x_monnam(mtmp, ARTICLE_NONE, (char *)0, EXACT_NAME, FALSE);
 }
 
 /* pet name: "your little dog" */
 char *
-y_monnam(mtmp)
-struct monst *mtmp;
+y_monnam(struct monst *mtmp)
 {
 	int prefix, suppression_flag;
 
@@ -1574,9 +1521,7 @@ struct monst *mtmp;
 
 
 char *
-Adjmonnam(mtmp, adj)
-register struct monst *mtmp;
-register const char *adj;
+Adjmonnam(register struct monst *mtmp, register const char *adj)
 {
 	register char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
 		M_HAS_NAME(mtmp) ? SUPPRESS_SADDLE : 0, FALSE);
@@ -1586,23 +1531,20 @@ register const char *adj;
 }
 
 char *
-a_monnam(mtmp)
-register struct monst *mtmp;
+a_monnam(register struct monst *mtmp)
 {
 	return x_monnam(mtmp, ARTICLE_A, (char *)0,
 		M_HAS_NAME(mtmp) ? SUPPRESS_SADDLE : 0, FALSE);
 }
 
 char *
-a_ptrnam(ptr)
-register struct permonst *ptr;
+a_ptrnam(register struct permonst *ptr)
 {
 	return x_ptrnam(ptr, ARTICLE_A, (char *)0, FALSE);
 }
 
 char *
-Amonnam(mtmp)
-register struct monst *mtmp;
+Amonnam(register struct monst *mtmp)
 {
 	register char *bp = a_monnam(mtmp);
 
@@ -1611,8 +1553,7 @@ register struct monst *mtmp;
 }
 
 char *
-Aptrnam(ptr)
-register struct permonst *ptr;
+Aptrnam(register struct permonst *ptr)
 {
 	register char *bp = a_ptrnam(ptr);
 
@@ -1623,10 +1564,10 @@ register struct permonst *ptr;
 /* used for monster ID by the '/', ';', and 'C' commands to block remote
    identification of the endgame altars via their attending priests */
 char *
-distant_monnam(mon, article, outbuf)
-struct monst *mon;
-int article;	/* only ARTICLE_NONE and ARTICLE_THE are handled here */
-char *outbuf;
+distant_monnam(
+	struct monst *mon,
+	int article,	/* only ARTICLE_NONE and ARTICLE_THE are handled here */
+	char *outbuf)
 {
     /* high priest(ess)'s identity is concealed on the Astral Plane,
        unless you're adjacent (overridden for hallucination which does
@@ -1648,9 +1589,7 @@ char *outbuf;
  * the same, in which case the reference is to {him|her|it} self
  */
 char *
-mon_nam_too(mon, other_mon)
-struct monst *mon;
-struct monst *other_mon;
+mon_nam_too(struct monst *mon, struct monst *other_mon)
 {
 	if (mon == other_mon) {
 		if (mon == &youmonst)
@@ -1669,9 +1608,8 @@ struct monst *other_mon;
 	return mon_nam(mon);
 }
 
-const char * 
-get_ent_species(species)
-int species;
+const char *
+get_ent_species(int species)
 {
 	switch(species){
 		case ENT_ASH:
@@ -1729,8 +1667,7 @@ int species;
 }
 
 char *
-getDrowHouse(hnum)
-long hnum;
+getDrowHouse(long hnum)
 {
 	switch(hnum){
 		case BAENRE:
@@ -2142,7 +2079,7 @@ static const char * const bogusmons[] = {
  * with this without radically modifying the calling functions.
  */
 const char *
-rndmonnam()
+rndmonnam(void)
 {
 	int name;
 
@@ -2157,7 +2094,7 @@ rndmonnam()
 
 #ifdef REINCARNATION
 const char *
-roguename() /* Name of a Rogue player */
+roguename(void) /* Name of a Rogue player */
 {
 	char *i, *opts;
 
@@ -2189,8 +2126,7 @@ static const char * const hcolors[] = {
 };
 
 const char *
-hcolor(colorpref)
-const char *colorpref;
+hcolor(const char *colorpref)
 {
 	return (Hallucination || !colorpref) ?
 		hcolors[rn2(SIZE(hcolors))] : colorpref;
@@ -2198,7 +2134,7 @@ const char *colorpref;
 
 /* return a random real color unless hallucinating */
 const char *
-rndcolor()
+rndcolor(void)
 {
 	int k = rn2(CLR_MAX);
 	return Hallucination ? hcolor((char *)0) : (k == NO_COLOR) ?
@@ -2216,8 +2152,7 @@ static const char *const hliquids[] = {
 };
 
 const char *
-hliquid(liquidpref)
-const char *liquidpref;
+hliquid(const char *liquidpref)
 {
 	return (Hallucination || !liquidpref) ? hliquids[rn2(SIZE(hliquids))]
 										  : liquidpref;
@@ -2240,9 +2175,7 @@ static const char * const coynames[] = {
 };
 	
 char *
-coyotename(mtmp, buf)
-struct monst *mtmp;
-char *buf;
+coyotename(struct monst *mtmp, char *buf)
 {
     if (mtmp && buf) {
 	Sprintf(buf, "%s - %s",

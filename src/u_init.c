@@ -15,7 +15,7 @@ struct trobj {
 };
 
 static void FDECL(ini_inv, (struct trobj *));
-static void FDECL(knows_class,(CHAR_P));
+static void FDECL(knows_class,(char));
 static boolean FDECL(restricted_spell_discipline, (int));
 
 #define UNDEF_TYP	0
@@ -1643,8 +1643,7 @@ static const char *oseVowels[] = {"a","e","i","o","u","ae","oe","oo","y"};
 static const char *oseConsonants[] = {"b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z","ch","ll","sh","th"};
 
 void
-knows_object(obj)
-register int obj;
+knows_object(register int obj)
 {
 	discover_object(obj,TRUE,FALSE);
 	objects[obj].oc_pre_discovered = 1;	/* not a "discovery" */
@@ -1654,8 +1653,7 @@ register int obj;
  * like all gems except the loadstone and luckstone.
  */
 static void
-knows_class(sym)
-register char sym;
+knows_class(char sym)
 {
 	register int ct;
 	for (ct = 1; ct < NUM_OBJECTS; ct++)
@@ -1670,8 +1668,7 @@ register char sym;
    We might also add GEM_CLASS with oc_material != GLASS 
 *** Contributed by Johanna Ploog */
 void
-know_random_obj(count)
-int count;
+know_random_obj(int count)
 {
         register int obj, ct;
 
@@ -1708,7 +1705,7 @@ int count;
 }
 
 static void
-set_ent_species(){
+set_ent_species(void){
 	u.ent_species = species[flags.initspecies].value;
 	switch(u.ent_species){
 		case ENT_DOGWOOD:
@@ -1730,7 +1727,7 @@ set_ent_species(){
 
 
 void
-u_init()
+u_init(void)
 {
 	register int i;
 
@@ -3023,8 +3020,7 @@ u_init()
 
 /* skills aren't initialized, so we use the role-specific skill lists */
 static boolean
-restricted_spell_discipline(otyp)
-int otyp;
+restricted_spell_discipline(int otyp)
 {
     const struct def_skill *skills;
     int this_skill = spell_skilltype(otyp);
@@ -3061,8 +3057,7 @@ int otyp;
 }
 
 static void
-ini_inv(trop)
-register struct trobj *trop;
+ini_inv(register struct trobj *trop)
 {
 	struct obj *obj;
 	int otyp, i;
@@ -3512,11 +3507,11 @@ register struct trobj *trop;
 }
 
 void
-set_mask(){
+set_mask(void){
 }
 
 void
-scatter_weapons(){
+scatter_weapons(void){
 	struct obj *obj;
 	struct monst *mtmp;
 	if(flags.initgend){

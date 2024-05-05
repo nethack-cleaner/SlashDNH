@@ -133,7 +133,7 @@ static char msgbuf[BUFSZ];
  * we have no means to reset song_played.
  */
 static int
-song_being_played()
+song_being_played(void)
 {
     if (occupation != play_song)
 		song_played = SNG_NONE;
@@ -141,7 +141,7 @@ song_being_played()
 }
 
 static void
-reset_song()
+reset_song(void)
 {
     song_played = SNG_NONE;
     song_delay = 0;
@@ -158,9 +158,7 @@ reset_song()
  * Checks if this pet can sing, helping the player, returning a bonus
  */
 int
-pet_can_sing(mtmp, domsg)
-struct monst *mtmp;
-boolean domsg;
+pet_can_sing(struct monst *mtmp, boolean domsg)
 {
     int r = 0;
 	boolean plural = FALSE;
@@ -309,9 +307,7 @@ boolean domsg;
 }
 
 int
-mon_can_counter_sing(mtmp, domsg)
-struct monst *mtmp;
-boolean domsg;
+mon_can_counter_sing(struct monst *mtmp, boolean domsg)
 {
     int r = 0;
 	boolean plural = FALSE;
@@ -459,7 +455,7 @@ boolean domsg;
  * for this turn
  */
 static int
-singing_pets_effect()
+singing_pets_effect(void)
 {
     register struct monst *mtmp;
 
@@ -479,7 +475,7 @@ singing_pets_effect()
 }
 
 static int
-counter_singing_effect()
+counter_singing_effect(void)
 {
     register struct monst *mtmp;
 
@@ -504,10 +500,7 @@ counter_singing_effect()
  * the creature, which depends more on charisma than dexterity.
  */
 int
-song_success(song_id, instr, know_spell)
-int song_id;
-struct obj *instr;
-int know_spell;
+song_success(int song_id, struct obj *instr, int know_spell)
 {
 	int a;
 	int chance;
@@ -556,9 +549,8 @@ int know_spell;
  * Shows the music menu.
  * Returns a SNG_* identifier
  */
-static unsigned char
-songs_menu(instr)
-struct obj *instr;
+static unsigned char 
+songs_menu(struct obj *instr)
 {
 	char buf[BUFSZ];
 	winid tmpwin;
@@ -649,10 +641,7 @@ struct obj *instr;
  * successfully playing the song, which depends on dexterity.
  */
 int
-resist_song(mtmp, song, instr)
-struct monst *mtmp;
-int song;
-struct obj * instr;
+resist_song(struct monst *mtmp, int song, struct obj *instr)
 {
 	/* atack level, defense level, defense level before modifiers */
 	int alev, dlev, dlev0;
@@ -780,7 +769,7 @@ struct obj * instr;
 
 
 static int
-play_song()
+play_song(void)
 {
 	register struct monst *mtmp;
 	int distance;
@@ -860,8 +849,7 @@ play_song()
  * Contributed by Johanna Ploog
  */
 void
-scary_song(distance)
-int distance;
+scary_song(int distance)
 {
 	register struct monst *mtmp, *m = fmon;
 	register int r;
@@ -939,8 +927,7 @@ int distance;
 
 
 static void
-slowness_song(distance)
-int distance;
+slowness_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 	register int distm;
@@ -981,8 +968,7 @@ int distance;
 
 
 static void
-haste_song(distance)
-int distance;
+haste_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 	register int distm;
@@ -1004,8 +990,7 @@ int distance;
 
 
 static void
-heal_song(distance)
-int distance;
+heal_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 	register int distm;
@@ -1034,8 +1019,7 @@ int distance;
 
 
 static void
-encourage_pets(distance)
-int distance;
+encourage_pets(int distance)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1078,8 +1062,7 @@ int distance;
 }
 
 static void
-confusion_song(distance)
-int distance;
+confusion_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1099,8 +1082,7 @@ int distance;
 }
 
 static void
-cancel_song(distance)
-int distance;
+cancel_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1121,8 +1103,7 @@ int distance;
 }
 
 static void
-rally_song(distance)
-int distance;
+rally_song(int distance)
 {
 	register struct monst *mtmp = fmon, *nextmon;
 
@@ -1186,8 +1167,7 @@ int distance;
  */
 
 static void
-awaken_monsters(distance)
-int distance;
+awaken_monsters(int distance)
 {
 	register struct monst *mtmp = fmon;
 	register int distm;
@@ -1231,8 +1211,7 @@ int distance;
  */
 
 void
-song_noise(distance)
-int distance;
+song_noise(int distance)
 {
 	register struct monst *mtmp = fmon;
 	register int distm;
@@ -1267,8 +1246,7 @@ int distance;
  * Make monsters fall asleep.  Note that they may resist the spell.
  */
 static void
-sleep_song(distance)
-int distance;
+sleep_song(int distance)
 {
 	register struct monst *mtmp = fmon;
 // to do: peaceful music can aggravate demons
@@ -1302,8 +1280,7 @@ int distance;
 }
 
 static void
-put_monsters_to_sleep(distance)
-int distance;
+put_monsters_to_sleep(int distance)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1322,8 +1299,7 @@ int distance;
  */
 
 static void
-charm_snakes(distance)
-int distance;
+charm_snakes(int distance)
 {
 	register struct monst *mtmp = fmon;
 	int could_see_mon, was_peaceful;
@@ -1360,8 +1336,7 @@ int distance;
  */
 
 static void
-calm_nymphs(distance)
-int distance;
+calm_nymphs(int distance)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1387,7 +1362,7 @@ int distance;
 /* Awake only soldiers of the level. */
 
 void
-awaken_soldiers()
+awaken_soldiers(void)
 {
 	register struct monst *mtmp = fmon;
 
@@ -1409,8 +1384,7 @@ awaken_soldiers()
  * If swallowed, range is reduced to 0.
  */
 static void
-tame_song(distance)
-int distance;
+tame_song(int distance)
 {
 	struct monst *mtmp=0, *mtmp2;
 	xchar waspeaceful;
@@ -1505,8 +1479,7 @@ int distance;
 }
 
 static void
-charm_monsters(distance)
-int distance;
+charm_monsters(int distance)
 {
 	struct monst *mtmp, *mtmp2;
 
@@ -1534,10 +1507,7 @@ int distance;
  */
 
 void
-do_earthquake(cntrx, cntry, range, force, cursed, mon)
-int cntrx, cntry, range, force;
-boolean cursed;
-struct monst *mon;
+do_earthquake(int cntrx, int cntry, int range, int force, boolean cursed, struct monst *mon)
 {
     register int x,y, horrors = 0;
 	struct monst *mtmp;
@@ -1729,8 +1699,7 @@ do_pit:		    chasm = maketrap(x,y,PIT);
  */
 
 static int
-do_improvisation(instr)
-struct obj *instr;
+do_improvisation(struct obj *instr)
 {
 	int damage, do_spec = !Confusion;
 
@@ -1859,8 +1828,7 @@ struct obj *instr;
  */
 
 int
-do_play_instrument(instr)
-struct obj *instr;
+do_play_instrument(struct obj *instr)
 {
     char buf[BUFSZ], c = 'y';
     char *s;

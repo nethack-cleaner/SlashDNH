@@ -23,9 +23,7 @@ struct mx_table {
 /* add one component to mon */
 /* automatically finds size of component */
 void
-add_mx(mtmp, mx_id)
-struct monst * mtmp;
-int mx_id;
+add_mx(struct monst *mtmp, int mx_id)
 {
 	int size = mx_list[mx_id].s_size;
 	if (size == -1) {
@@ -40,10 +38,7 @@ int mx_id;
 /* for a fixed-size component, len is its total size (from table) */
 /* for a variable-size compenent, len is the size of the extra data (does NOT include sizeof(int) to store len itself) */
 void
-add_mx_l(mtmp, mx_id, len)
-struct monst * mtmp;
-int mx_id;
-long len;
+add_mx_l(struct monst *mtmp, int mx_id, long len)
 {
 	void * mx_p;
 
@@ -77,9 +72,7 @@ long len;
 /* removes one component from mon */
 /* removes mextra if that was the last one */
 void
-rem_mx(mtmp, mx_id)
-struct monst * mtmp;
-int mx_id;
+rem_mx(struct monst *mtmp, int mx_id)
 {
 	void * mx_p;
 
@@ -113,8 +106,7 @@ int mx_id;
 
 /* removes all components from mon */
 void
-rem_all_mx(mtmp)
-struct monst * mtmp;
+rem_all_mx(struct monst *mtmp)
 {
 	int mx_id;
 
@@ -126,10 +118,7 @@ struct monst * mtmp;
 
 /* copies one component from mon1 to mon2 */
 void
-cpy_mx(mon1, mon2, mx_id)
-struct monst * mon1;
-struct monst * mon2;
-int mx_id;
+cpy_mx(struct monst *mon1, struct monst *mon2, int mx_id)
 {
 	void * mx_p1;
 	void * mx_p2;
@@ -149,10 +138,7 @@ int mx_id;
 
 /* moves one component from mon1 to mon2 */
 void
-mov_mx(mon1, mon2, mx_id)
-struct monst * mon1;
-struct monst * mon2;
-int mx_id;
+mov_mx(struct monst *mon1, struct monst *mon2, int mx_id)
 {
 	cpy_mx(mon1, mon2, mx_id);
 	rem_mx(mon1, mx_id);
@@ -160,9 +146,7 @@ int mx_id;
 }
 
 void
-mov_all_mx(mon1, mon2)
-struct monst * mon1;
-struct monst * mon2;
+mov_all_mx(struct monst *mon1, struct monst *mon2)
 {
 	int mx_id;
 	for (mx_id=0; mx_id<NUM_MX; mx_id++)
@@ -173,9 +157,7 @@ struct monst * mon2;
 
 /* returns pointer to wanted component */
 void *
-get_mx(mtmp, mx_id)
-struct monst * mtmp;
-int mx_id;
+get_mx(struct monst *mtmp, int mx_id)
 {
 	if (!mtmp || !mtmp->mextra_p)
 		return (void *)0;
@@ -185,9 +167,7 @@ int mx_id;
 
 /* returns the size, in bytes, of component. Includes sizeof(long) for variable-size components. */
 long
-siz_mx(mtmp, mx_id)
-struct monst * mtmp;
-int mx_id;
+siz_mx(struct monst *mtmp, int mx_id)
 {
 	void * mx_p;
 
@@ -206,9 +186,7 @@ int mx_id;
 /* allocates a block of memory containing mtmp and it's components */
 /* free this memory block when done using it! */
 void *
-bundle_mextra(mtmp, len_p)
-struct monst * mtmp;
-long * len_p;
+bundle_mextra(struct monst *mtmp, long *len_p)
 {
 	int i;
 	long len = 0;
@@ -253,9 +231,7 @@ long * len_p;
 
 /* takes a pointer to a block of memory containing the components of an mextra and assigns them to mtmp */
 void
-unbundle_mextra(mtmp, mextra_block)
-struct monst * mtmp;
-void * mextra_block;
+unbundle_mextra(struct monst *mtmp, void *mextra_block)
 {
 	int i;
 	int toread = 0;
@@ -298,10 +274,7 @@ void * mextra_block;
 
 /* saves mextra from mtmp to fd */
 void
-save_mextra(mtmp, fd, mode)
-struct monst * mtmp;
-int fd;
-int mode;
+save_mextra(struct monst *mtmp, int fd, int mode)
 {
 	void * mextra_block;
 	long len;
@@ -330,10 +303,7 @@ int mode;
 /* should only be called if mtmp->mextra_p existed (currently a stale pointer) */
 /* TODO: combine somehow with unbundle_mextra? Might not be possible. */
 void
-rest_mextra(mtmp, fd, ghostly)
-struct monst * mtmp;
-int fd;
-boolean ghostly;
+rest_mextra(struct monst *mtmp, int fd, boolean ghostly)
 {
 	int i;
 	int toread = 0;
@@ -395,8 +365,7 @@ boolean ghostly;
 
 /* relinks mx. If called with a specific mtmp, only does so for that one, otherwise does all on fmon and migrating_mons */
 void
-relink_mx(specific_mtmp)
-struct monst * specific_mtmp;
+relink_mx(struct monst *specific_mtmp)
 {
     unsigned nid;
 	boolean checked_migrating = FALSE;

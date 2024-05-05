@@ -120,7 +120,7 @@ static const char * const stoned_texts[] = {
 };
 
 static void
-stoned_dialogue()
+stoned_dialogue(void)
 {
 	register long i = (Stoned & TIMEOUT);
 
@@ -144,7 +144,7 @@ static const char * const golded_texts[] = {
 };
 
 static void
-golded_dialogue()
+golded_dialogue(void)
 {
 	register long i = (Golded & TIMEOUT);
 
@@ -160,7 +160,7 @@ golded_dialogue()
 }
 
 static void
-gillyweed_dialogue()
+gillyweed_dialogue(void)
 {
     if (HMagical_breathing == 15) {
         Your("gills are beginning to disappear.");
@@ -172,7 +172,7 @@ gillyweed_dialogue()
 }
 
 static void
-phasing_dialogue()
+phasing_dialogue(void)
 {
     if (Phasing == 15) {
         if (!Hallucination) {
@@ -210,7 +210,7 @@ static char * const non_vomiting_texts[] = {
 };
 
 static void
-vomiting_dialogue()
+vomiting_dialogue(void)
 {
 	register long i = (Vomiting & TIMEOUT) / 3L;
 	
@@ -260,7 +260,7 @@ static const char * const choke_texts3[] = {
 };
 
 static void
-choke_dialogue()
+choke_dialogue(void)
 {
 	register long i = u.divetimer;
 	const char *str;
@@ -294,7 +294,7 @@ static const char * const slime_texts[] = {
 };
 
 static void
-slime_dialogue()
+slime_dialogue(void)
 {
 	register long i = (Slimed & TIMEOUT) / 2L;
 
@@ -320,7 +320,7 @@ slime_dialogue()
 }
 
 void
-burn_away_slime()
+burn_away_slime(void)
 {
 	if (Slimed) {
 	    pline_The("slime that covers you is burned away!");
@@ -332,7 +332,7 @@ burn_away_slime()
 }
 
 void
-melt_frozen_air()
+melt_frozen_air(void)
 {
 	if (FrozenAir) {
 	    pline_The("frozen air around you vaporizes!");
@@ -346,25 +346,19 @@ melt_frozen_air()
 
 
 void
-unbind(spir,forced)
-long spir;
-boolean forced;
+unbind(long spir, boolean forced)
 {
 	unbind_core(spir,forced,FALSE);
 }
 
 void
-unbind_lifesaving(spir)
-long spir;
+unbind_lifesaving(long spir)
 {
 	unbind_core(spir,TRUE,TRUE);
 }
 
 void
-unbind_core(spir,forced,lifesave_forced)
-long spir;
-boolean forced;
-boolean lifesave_forced;
+unbind_core(long spir, boolean forced, boolean lifesave_forced)
 {
 	int i;
 	boolean found = FALSE, gnosis = (spir == u.spirit[GPREM_SPIRIT]);
@@ -487,7 +481,7 @@ boolean lifesave_forced;
 char *spiritFadeTerms[] = {"starting to weaken","growing weaker","very faint","fading fast","about to break"};
 
 void
-nh_timeout()
+nh_timeout(void)
 {
 	register struct prop *upp;
 	int sleeptime, i, m_idx, baseluck = (flags.moonphase == FULL_MOON) ? 1 : 0;
@@ -997,9 +991,7 @@ nh_timeout()
 
 
 void
-fall_asleep(how_long, wakeup_msg)
-int how_long;
-boolean wakeup_msg;
+fall_asleep(int how_long, boolean wakeup_msg)
 {
 	if(u.sealsActive&SEAL_HUGINN_MUNINN){
 		unbind(SEAL_HUGINN_MUNINN,TRUE);
@@ -1031,10 +1023,7 @@ boolean wakeup_msg;
 
 /* Attach an explosion timeout to a given explosive device */
 void
-attach_bomb_blow_timeout(bomb, fuse, yours)
-struct obj *bomb;
-int fuse;
-boolean yours;
+attach_bomb_blow_timeout(struct obj *bomb, int fuse, boolean yours)
 {
 	long expiretime;	
 
@@ -1057,9 +1046,7 @@ boolean yours;
 
 /* timer callback routine: detonate the explosives */
 void
-bomb_blow(arg, timeout)
-genericptr_t arg;
-long timeout;
+bomb_blow(genericptr_t arg, long timeout)
 {
 	struct obj *bomb;
 	xchar x,y;
@@ -1161,8 +1148,7 @@ free_bomb:
 
 /* Attach an egg hatch timeout to the given egg. */
 void
-attach_egg_hatch_timeout(egg)
-struct obj *egg;
+attach_egg_hatch_timeout(struct obj *egg)
 {
 	int i;
 
@@ -1186,8 +1172,7 @@ struct obj *egg;
 
 /* prevent an egg from ever hatching */
 void
-kill_egg(egg)
-struct obj *egg;
+kill_egg(struct obj *egg)
 {
 	/* stop previous timer, if any */
 	(void) stop_timer(HATCH_EGG, egg->timed);
@@ -1195,9 +1180,7 @@ struct obj *egg;
 
 /* timer callback routine: hatch the given egg */
 void
-hatch_egg(arg, timeout)
-genericptr_t arg;
-long timeout;
+hatch_egg(genericptr_t arg, long timeout)
 {
 	struct obj *egg;
 	struct monst *mon, *mon2;
@@ -1368,8 +1351,7 @@ long timeout;
 
 /* Learn to recognize eggs of the given type. */
 void
-learn_egg_type(mtyp)
-int mtyp;
+learn_egg_type(int mtyp)
 {
 	/* baby monsters hatch from grown-up eggs */
 	mtyp = little_to_big(mtyp, rn2(2));
@@ -1380,8 +1362,7 @@ int mtyp;
 
 /* Attach a fig_transform timeout to the given figurine. */
 void
-attach_fig_transform_timeout(figurine)
-struct obj *figurine;
+attach_fig_transform_timeout(struct obj *figurine)
 {
 	int i;
 
@@ -1399,7 +1380,7 @@ struct obj *figurine;
 
 /* give a fumble message */
 static void
-slip_or_trip()
+slip_or_trip(void)
 {
 	struct obj *otmp = vobj_at(u.ux, u.uy);
 	const char *what, *pronoun;
@@ -1478,9 +1459,7 @@ slip_or_trip()
 
 /* Print a lamp flicker message with tailer. */
 static void
-see_lamp_flicker(obj, tailer)
-struct obj *obj;
-const char *tailer;
+see_lamp_flicker(struct obj *obj, const char *tailer)
 {
 	switch (obj->where) {
 	    case OBJ_INVENT:
@@ -1495,8 +1474,7 @@ const char *tailer;
 
 /* Print a dimming message for brass lanterns. */
 static void
-lantern_message(obj)
-struct obj *obj;
+lantern_message(struct obj *obj)
 {
 	/* from adventure */
 	switch (obj->where) {
@@ -1520,9 +1498,7 @@ struct obj *obj;
  * See begin_burn() for meanings of obj->age and obj->spe.
  */
 void
-burn_object(arg, timeout)
-genericptr_t arg;
-long timeout;
+burn_object(genericptr_t arg, long timeout)
 {
 	struct obj *obj = (struct obj *) arg;
 	boolean canseeit, many, menorah, need_newsym;
@@ -2115,9 +2091,7 @@ long timeout;
 /* lightsabers deactivate when they hit the ground/not wielded */
 /* assumes caller checks for correct conditions */
 void
-lightsaber_deactivate (obj, timer_attached)
-	struct obj *obj;
-	boolean timer_attached;
+lightsaber_deactivate(struct obj *obj, boolean timer_attached)
 {
 	xchar x,y;
 	char whose[BUFSZ];
@@ -2149,8 +2123,7 @@ lightsaber_deactivate (obj, timer_attached)
 
 /* returns the correct light/dark radius for obj, if it were lit */
 int
-lightsource_radius(obj)
-struct obj * obj;
+lightsource_radius(struct obj *obj)
 {
 	int radius = 0;
 
@@ -2226,8 +2199,7 @@ struct obj * obj;
 }
 
 long
-lightsource_turns(obj)
-struct obj * obj;
+lightsource_turns(struct obj *obj)
 {
 	long turns = 0;
 
@@ -2308,8 +2280,7 @@ struct obj * obj;
 }
 
 boolean
-lightsource_timed(obj)
-struct obj * obj;
+lightsource_timed(struct obj *obj)
 {
 	return (obj && (
 		(obj->oartifact == ART_HOLY_MOONLIGHT_SWORD) ||	/* ??? Chris: The timer's used to extinquish it when it's dropped. */
@@ -2365,8 +2336,7 @@ struct obj * obj;
  * This is a "silent" routine - it should not print anything out.
  */
 void
-begin_burn(obj)
-	struct obj *obj;
+begin_burn(struct obj *obj)
 {
 	int radius;
 	long turns = 0;
@@ -2445,9 +2415,7 @@ begin_burn(obj)
  * light source.
  */
 void
-end_burn(obj, timer_attached)
-	struct obj *obj;
-	boolean timer_attached;
+end_burn(struct obj *obj, boolean timer_attached)
 {
 	if (!obj->lamplit) {
 	    impossible("end_burn: obj %s not lit", xname(obj));
@@ -2487,9 +2455,7 @@ extern boolean saving_game;
  * Cleanup a burning object if timer stopped.
  */
 static void
-cleanup_burn(arg, expire_time)
-    genericptr_t arg;
-    long expire_time;
+cleanup_burn(genericptr_t arg, long expire_time)
 {
     struct obj *obj = (struct obj *)arg;
     if (!obj->lamplit) {
@@ -2509,7 +2475,7 @@ cleanup_burn(arg, expire_time)
 
 
 void
-do_storms()
+do_storms(void)
 {
     int nstrike;
     register int x, y;
@@ -2548,9 +2514,7 @@ do_storms()
 }
 
 struct obj *
-update_skull_mon(mon, obj)
-struct monst *mon;
-struct obj *obj;
+update_skull_mon(struct monst *mon, struct obj *obj)
 {
 	if(!get_mx(mon, MX_ESUM) || !mon->mextra_p->esum_p->sm_o_id){
 		impossible("Monster %s to update skull stats, but doesn't have an item id set!", noit_mon_nam(mon));
@@ -2629,9 +2593,7 @@ struct obj *obj;
 
 /* callback procs to desummon monsters/objects */
 void
-desummon_mon(arg, timeout)
-genericptr_t arg;
-long timeout;
+desummon_mon(genericptr_t arg, long timeout)
 {
 	struct monst * mon = (struct monst *)arg;
 	if (DEADMONSTER(mon)) {
@@ -2671,9 +2633,7 @@ long timeout;
 }
 
 void
-cleanup_msummon(arg, timeout)
-genericptr_t arg;
-long timeout;
+cleanup_msummon(genericptr_t arg, long timeout)
 {
 	struct monst * mon = (struct monst *)arg;
 	/* if we are stopping the timer because mon died or vanished, reduce tax on summoner */
@@ -2687,9 +2647,7 @@ long timeout;
 }
 
 void
-desummon_obj(arg, timeout)
-genericptr_t arg;
-long timeout;
+desummon_obj(genericptr_t arg, long timeout)
 {
 	struct obj * otmp = (struct obj *)arg;
 	if(get_ox(otmp, OX_ESUM) && otmp->oextra_p->esum_p->permanent) {
@@ -2710,9 +2668,7 @@ long timeout;
 }
 
 void
-larvae_die(arg, timeout)
-genericptr_t arg;
-long timeout;
+larvae_die(genericptr_t arg, long timeout)
 {
 	struct obj * otmp = (struct obj *)arg;
 	if(otmp->olarva > 0){
@@ -2780,7 +2736,7 @@ long timeout;
  */
 
 #ifdef WIZARD
-static const char *FDECL(kind_name, (SHORT_P));
+static const char *FDECL(kind_name, (short));
 static void FDECL(print_queue, (winid, timer_element *));
 #endif
 static void FDECL(add_procchain_tm, (timer_element *));
@@ -2835,8 +2791,7 @@ static const ttable timeout_funcs[NUM_TIME_FUNCS] = {
 #if defined(WIZARD)
 
 static const char *
-kind_name(kind)
-short kind;
+kind_name(short kind)
 {
     switch (kind) {
 	//case TIMER_LEVEL: return "level";
@@ -2848,9 +2803,7 @@ short kind;
 }
 
 static void
-print_queue(win, base)
-winid win;
-timer_element *base;
+print_queue(winid win, timer_element *base)
 {
     timer_element *curr;
     char buf[BUFSZ], arg_address[20];
@@ -2871,7 +2824,7 @@ timer_element *base;
 }
 
 int
-wiz_timeout_queue()
+wiz_timeout_queue(void)
 {
     winid win;
     char buf[BUFSZ];
@@ -2935,7 +2888,7 @@ wiz_timeout_queue()
 }
 
 void
-timer_sanity_check()
+timer_sanity_check(void)
 {
     timer_element *curr;
     char obj_address[20];
@@ -2956,8 +2909,7 @@ timer_sanity_check()
 /* adds an existing timer to the processing chain */
 /* does not affect local chain it should go on */
 void
-add_procchain_tm(tm)
-timer_element * tm;
+add_procchain_tm(timer_element *tm)
 {
 	timer_element *curr, *prev;
 
@@ -3000,8 +2952,7 @@ timer_element * tm;
 /* removes a timer from the processing chain */
 /* does not affect local chain it is on */
 void
-rem_procchain_tm(tm)
-timer_element * tm;
+rem_procchain_tm(timer_element *tm)
 {
 	struct timer * tmtmp;
 
@@ -3027,8 +2978,7 @@ timer_element * tm;
 }
 /* removes and readds a timer from the procchain, so that it is in the correct place */
 void
-adj_procchain_tm(tm)
-timer_element * tm;
+adj_procchain_tm(timer_element *tm)
 {
 	rem_procchain_tm(tm);
 	add_procchain_tm(tm);
@@ -3036,9 +2986,7 @@ timer_element * tm;
 
 /* removes a timer from a local chain */
 void
-rem_locchain_tm(tm, chain_p)
-timer_element * tm;
-timer_element ** chain_p;
+rem_locchain_tm(timer_element *tm, timer_element **chain_p)
 {
 	struct timer * tmtmp;
 	struct timer * chain_base = *chain_p;
@@ -3062,7 +3010,7 @@ timer_element ** chain_p;
  * Do this until their time is less than or equal to the move count.
  */
 void
-run_timers()
+run_timers(void)
 {
     timer_element *curr;
 	flags.run_timers = FALSE;
@@ -3084,11 +3032,7 @@ run_timers()
  * Start a timer.  Return TRUE if successful.
  */
 timer_element *
-start_timer(when, tmtype, func_index, owner)
-long when;
-short tmtype;
-short func_index;
-genericptr_t owner;
+start_timer(long when, short tmtype, short func_index, genericptr_t owner)
 {
     timer_element *gnu;
 	timer_element *curr;
@@ -3125,9 +3069,7 @@ genericptr_t owner;
  * it would have gone off, 0 if not found.
  */
 long
-stop_timer(func_index, chain)
-short func_index;
-timer_element * chain;
+stop_timer(short func_index, timer_element *chain)
 {
     timer_element *doomed;
     long timeout;
@@ -3149,8 +3091,7 @@ timer_element * chain;
 	return timeout;
 }
 void
-stop_all_timers(tm)
-timer_element * tm;
+stop_all_timers(timer_element *tm)
 {
 	timer_element *curr, *next_timer = 0;
 	for (curr = tm; curr; curr = next_timer) {
@@ -3161,8 +3102,7 @@ timer_element * tm;
 
 /* temporarily pause processing of a single timer */
 void
-pause_timer(tm)
-timer_element * tm;
+pause_timer(timer_element *tm)
 {
 	tm->timeout = tm->timeout - monstermoves;
 	tm->timerflags |= TIMERFLAG_PAUSED;
@@ -3170,8 +3110,7 @@ timer_element * tm;
 }
 /* resume processing of a single timer */
 void
-resume_timer(tm)
-timer_element * tm;
+resume_timer(timer_element *tm)
 {
 	tm->timeout = tm->timeout + monstermoves;
 	tm->timerflags &= ~TIMERFLAG_PAUSED;
@@ -3181,8 +3120,7 @@ timer_element * tm;
 
 /* temporarily pause processing of all timers on chain until it they are resumed */
 void
-pause_timers(tm)
-timer_element * tm;
+pause_timers(timer_element *tm)
 {
 	timer_element *curr;
 	for (curr = tm; curr; curr = tm->tnxt)
@@ -3191,8 +3129,7 @@ timer_element * tm;
 
 /* resume processing of all timers on chain */
 void
-resume_timers(tm)
-timer_element * tm;
+resume_timers(timer_element *tm)
 {
 	timer_element *curr;
 	for (curr = tm; curr; curr = tm->tnxt)
@@ -3201,8 +3138,7 @@ timer_element * tm;
 
 /* set all timers on chain as migrating (do not execute) */
 void
-migrate_timers(tm)
-timer_element * tm;
+migrate_timers(timer_element *tm)
 {
 	timer_element *curr;
 	for (curr = tm; curr; curr = tm->tnxt)
@@ -3213,8 +3149,7 @@ timer_element * tm;
 }
 /* resume handling of migrating timers on chain */
 void
-receive_timers(tm)
-timer_element * tm;
+receive_timers(timer_element *tm)
 {
 	timer_element *curr;
 	for (curr = tm; curr; curr = tm->tnxt)
@@ -3226,10 +3161,7 @@ timer_element * tm;
 }
 
 void
-save_timers(tm, fd, mode)
-struct timer * tm;
-int fd;
-int mode;
+save_timers(struct timer *tm, int fd, int mode)
 {
 	struct timer * curr;
 
@@ -3244,13 +3176,7 @@ int mode;
 }
 
 void
-rest_timers(tmtype, owner, tm, fd, ghostly, adjust)
-int tmtype;
-genericptr_t owner;
-struct timer * tm;
-int fd;
-boolean ghostly;
-long adjust;
+rest_timers(int tmtype, genericptr_t owner, struct timer *tm, int fd, boolean ghostly, long adjust)
 {
 	boolean hastnxt;
 
@@ -3272,8 +3198,7 @@ long adjust;
 }
 
 long
-timer_duration_remaining(tm)
-timer_element * tm;
+timer_duration_remaining(timer_element *tm)
 {
 	if (!tm)
 		return 0L;
@@ -3281,9 +3206,7 @@ timer_element * tm;
 }
 
 void
-adjust_timer_duration(tm, amt)
-timer_element * tm;
-long amt;
+adjust_timer_duration(timer_element *tm, long amt)
 {
 	if (!tm) {
 		impossible("tm doesn't exist to adjust timer");
@@ -3296,9 +3219,7 @@ long amt;
 }
 
 timer_element *
-get_timer(chain, func)
-timer_element * chain;
-short func;
+get_timer(timer_element *chain, short func)
 {
 	timer_element * tm;
 	for (tm = chain; tm && tm->func_index != func; tm = tm->tnxt);
@@ -3308,10 +3229,7 @@ short func;
 /* Duplicates a specific timer onto dest.
  */
 void
-copy_timer(src_timer, tmtype, dest)
-timer_element *src_timer;
-int tmtype;
-genericptr_t dest;
+copy_timer(timer_element *src_timer, int tmtype, genericptr_t dest)
 {
 	timer_element * tmp;
 	if (src_timer) {
@@ -3325,10 +3243,7 @@ genericptr_t dest;
  * Duplicate all timers on the given chain onto dest.
  */
 void
-copy_timers(src_timer, tmtype, dest)
-timer_element *src_timer;
-int tmtype;
-genericptr_t dest;
+copy_timers(timer_element *src_timer, int tmtype, genericptr_t dest)
 {
     timer_element *curr;
 	timer_element *tmp;
@@ -3344,9 +3259,7 @@ genericptr_t dest;
 
 /* safely reduce remaining time on the summoned monster by amt */
 void
-abjure_summon(mon, amt)
-struct monst * mon;
-int amt;
+abjure_summon(struct monst *mon, int amt)
 {
 	struct esum * esum = get_mx(mon, MX_ESUM);
 	timer_element * tm;
@@ -3358,9 +3271,9 @@ int amt;
 }
 /* when a summoner dies or changes levels, all of its summons disappear */
 void
-summoner_gone(mon, travelling)
-struct monst * mon;
-boolean travelling;	/* if true, don't vanish summoned items in its inventory */
+summoner_gone(
+	struct monst *mon,
+	boolean travelling	/* if true, don't vanish summoned items in its inventory */)
 {
 	if (!mon) return;
 	timer_element * tm;
@@ -3413,8 +3326,7 @@ boolean travelling;	/* if true, don't vanish summoned items in its inventory */
  * stops all corpse-related timers on otmp
  */
 void
-stop_corpse_timers(otmp)
-struct obj * otmp;
+stop_corpse_timers(struct obj *otmp)
 {
 	if(!otmp->timed)
 		return;

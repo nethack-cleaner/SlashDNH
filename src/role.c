@@ -1072,16 +1072,14 @@ static char randomstr[] = "random";
 
 
 boolean
-validrole(rolenum)
-	int rolenum;
+validrole(int rolenum)
 {
 	return (rolenum >= 0 && rolenum < SIZE(roles)-1);
 }
 
 
 int
-randrole(ralign)
-	int ralign;
+randrole(int ralign)
 {
 	if(!ralign) return (rn2(SIZE(roles)-1));
 	else{
@@ -1094,8 +1092,7 @@ randrole(ralign)
 }
 
 int
-str2role(str)
-	char *str;
+str2role(char *str)
 {
 	int i, len;
 
@@ -1126,8 +1123,7 @@ str2role(str)
 }
 
 struct Role *
-pm2role(tpm)
-	int tpm;
+pm2role(int tpm)
 {
 	int i;
 	for(i = 0; SIZE(roles)-1; i++){
@@ -1138,8 +1134,7 @@ pm2role(tpm)
 
 
 boolean
-validrace(rolenum, racenum)
-	int rolenum, racenum;
+validrace(int rolenum, int racenum)
 {
 	/* Assumes validrole */
 	return (racenum >= 0 && racenum < SIZE(races)-1 &&
@@ -1148,8 +1143,7 @@ validrace(rolenum, racenum)
 
 
 int
-randrace(rolenum)
-	int rolenum;
+randrace(int rolenum)
 {
 	int i, n = 0;
 
@@ -1173,8 +1167,7 @@ randrace(rolenum)
 
 
 int
-str2race(str)
-	char *str;
+str2race(char *str)
 {
 	int i, len;
 
@@ -1203,8 +1196,7 @@ str2race(str)
 
 
 boolean
-validgend(rolenum, racenum, gendnum)
-	int rolenum, racenum, gendnum;
+validgend(int rolenum, int racenum, int gendnum)
 {
 	/* Assumes validrole and validrace */
 	return (gendnum >= 0 && gendnum < ROLE_GENDERS &&
@@ -1214,8 +1206,7 @@ validgend(rolenum, racenum, gendnum)
 
 
 int
-randgend(rolenum, racenum)
-	int rolenum, racenum;
+randgend(int rolenum, int racenum)
 {
 	int i, n = 0;
 
@@ -1240,8 +1231,7 @@ randgend(rolenum, racenum)
 
 
 int
-str2gend(str)
-	char *str;
+str2gend(char *str)
 {
 	int i, len;
 
@@ -1270,8 +1260,7 @@ str2gend(str)
 /* I TRIED to add forced alignments in a non-hacky manner, but SOMETHING SOMEWHERE nullpointers if the
 	Role struct changes lengths, gdb was no help, and I'm tired of screwing with it.  */
 boolean
-validalign(rolenum, racenum, alignnum)
-	int rolenum, racenum, alignnum;
+validalign(int rolenum, int racenum, int alignnum)
 {
 	/* Assumes validrole and validrace */
 	return (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
@@ -1283,8 +1272,7 @@ validalign(rolenum, racenum, alignnum)
 
 
 int
-randalign(rolenum, racenum)
-	int rolenum, racenum;
+randalign(int rolenum, int racenum)
 {
 	int i, n = 0;
 
@@ -1312,8 +1300,7 @@ randalign(rolenum, racenum)
 
 
 int
-str2align(str)
-	char *str;
+str2align(char *str)
 {
 	int i, len;
 
@@ -1340,8 +1327,7 @@ str2align(str)
 }
 
 boolean
-validspecies(rolenum, racenum, gendnum, speciesnum)
-	int rolenum, racenum, gendnum, speciesnum;
+validspecies(int rolenum, int racenum, int gendnum, int speciesnum)
 {
 	if (speciesnum < 0 || speciesnum >= ROLE_SPECIES)
 		return FALSE; 
@@ -1381,8 +1367,7 @@ validspecies(rolenum, racenum, gendnum, speciesnum)
 }
 
 boolean
-validdescendant(rolenum)
-int rolenum;
+validdescendant(int rolenum)
 {
 	if(rolenum < 0) return FALSE;
 	return roles[rolenum].malenum == PM_MADMAN || 
@@ -1399,8 +1384,7 @@ int rolenum;
 
 
 int
-randspecies(rolenum, racenum, gendnum)
-	int rolenum, racenum, gendnum;
+randspecies(int rolenum, int racenum, int gendnum)
 {
 	int i, n = 0;
 
@@ -1421,8 +1405,7 @@ randspecies(rolenum, racenum, gendnum)
 
 
 int
-str2species(str)
-	char *str;
+str2species(char *str)
 {
 	int i, len;
 
@@ -1447,8 +1430,7 @@ str2species(str)
 
 /* is rolenum compatible with any racenum/gendnum/alignnum constraints? */
 boolean
-ok_role(rolenum, racenum, gendnum, alignnum)
-int rolenum, racenum, gendnum, alignnum;
+ok_role(int rolenum, int racenum, int gendnum, int alignnum)
 {
     int i;
     short allow;
@@ -1491,8 +1473,7 @@ int rolenum, racenum, gendnum, alignnum;
 /* If pickhow == PICK_RIGID a role is returned only if there is  */
 /* a single possibility */
 int
-pick_role(racenum, gendnum, alignnum, pickhow)
-int racenum, gendnum, alignnum, pickhow;
+pick_role(int racenum, int gendnum, int alignnum, int pickhow)
 {
     int i;
     int roles_ok = 0;
@@ -1517,8 +1498,7 @@ int racenum, gendnum, alignnum, pickhow;
 
 /* is racenum compatible with any rolenum/gendnum/alignnum constraints? */
 boolean
-ok_race(rolenum, racenum, gendnum, alignnum)
-int rolenum, racenum, gendnum, alignnum;
+ok_race(int rolenum, int racenum, int gendnum, int alignnum)
 {
     int i;
     short allow;
@@ -1561,8 +1541,7 @@ int rolenum, racenum, gendnum, alignnum;
 /* If pickhow == PICK_RIGID a race is returned only if there is  */
 /* a single possibility */
 int
-pick_race(rolenum, gendnum, alignnum, pickhow)
-int rolenum, gendnum, alignnum, pickhow;
+pick_race(int rolenum, int gendnum, int alignnum, int pickhow)
 {
     int i;
     int races_ok = 0;
@@ -1588,8 +1567,7 @@ int rolenum, gendnum, alignnum, pickhow;
 /* is gendnum compatible with any rolenum/racenum/alignnum constraints? */
 /* gender and alignment are not comparable (and also not constrainable) */
 boolean
-ok_gend(rolenum, racenum, gendnum, alignnum)
-int rolenum, racenum, gendnum, alignnum;
+ok_gend(int rolenum, int racenum, int gendnum, int alignnum)
 {
     int i;
     short allow;
@@ -1623,8 +1601,7 @@ int rolenum, racenum, gendnum, alignnum;
 /* If pickhow == PICK_RIGID a gender is returned only if there is  */
 /* a single possibility */
 int
-pick_gend(rolenum, racenum, alignnum, pickhow)
-int rolenum, racenum, alignnum, pickhow;
+pick_gend(int rolenum, int racenum, int alignnum, int pickhow)
 {
     int i;
     int gends_ok = 0;
@@ -1650,8 +1627,7 @@ int rolenum, racenum, alignnum, pickhow;
 /* is alignnum compatible with any rolenum/racenum/gendnum constraints? */
 /* alignment and gender are not comparable (and also not constrainable) */
 boolean
-ok_align(rolenum, racenum, gendnum, alignnum)
-int rolenum, racenum, gendnum, alignnum;
+ok_align(int rolenum, int racenum, int gendnum, int alignnum)
 {
     int i;
     short allow;
@@ -1689,8 +1665,7 @@ int rolenum, racenum, gendnum, alignnum;
 /* If pickhow == PICK_RIGID an alignment is returned only if there is  */
 /* a single possibility */
 int
-pick_align(rolenum, racenum, gendnum, pickhow)
-int rolenum, racenum, gendnum, pickhow;
+pick_align(int rolenum, int racenum, int gendnum, int pickhow)
 {
     int i;
     int aligns_ok = 0;
@@ -1714,8 +1689,7 @@ int rolenum, racenum, gendnum, pickhow;
 }
 
 int
-pick_species(rolenum, racenum, gendnum, pickhow)
-int rolenum, racenum, gendnum, pickhow;
+pick_species(int rolenum, int racenum, int gendnum, int pickhow)
 {
     int i;
     int species_ok = 0;
@@ -1739,7 +1713,7 @@ int rolenum, racenum, gendnum, pickhow;
 }
 
 void
-rigid_role_checks()
+rigid_role_checks(void)
 {
     /* Some roles are limited to a single race, alignment, or gender and
      * calling this routine prior to XXX_player_selection() will help
@@ -1782,9 +1756,7 @@ rigid_role_checks()
 static char pa[NUM_BP], post_attribs;
 
 static char *
-promptsep(buf, num_post_attribs)
-char *buf;
-int num_post_attribs;
+promptsep(char *buf, int num_post_attribs)
 {
 	const char *conj = "and ";
 	if (num_post_attribs > 1
@@ -1797,8 +1769,7 @@ int num_post_attribs;
 }
 
 static int
-role_gendercount(rolenum)
-int rolenum;
+role_gendercount(int rolenum)
 {
 	int gendcount = 0;
 	if (validrole(rolenum)) {
@@ -1810,8 +1781,7 @@ int rolenum;
 }
 
 static int
-race_alignmentcount(racenum)
-int racenum;
+race_alignmentcount(int racenum)
 {
 	int aligncount = 0;
 	if (racenum != ROLE_NONE && racenum != ROLE_RANDOM) {
@@ -1823,9 +1793,7 @@ int racenum;
 }
 
 char *
-root_plselection_prompt(suppliedbuf, buflen, rolenum, racenum, descendantnum, gendnum, alignnum)
-char *suppliedbuf;
-int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
+root_plselection_prompt(char *suppliedbuf, int buflen, int rolenum, int racenum, int descendantnum, int gendnum, int alignnum)
 {
 	int k, gendercount = 0, aligncount = 0;
 	char buf[BUFSZ];
@@ -1968,9 +1936,7 @@ int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
 }
 
 char *
-build_plselection_prompt(buf, buflen, rolenum, racenum, descendantnum, gendnum, alignnum)
-char *buf;
-int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
+build_plselection_prompt(char *buf, int buflen, int rolenum, int racenum, int descendantnum, int gendnum, int alignnum)
 {
 	const char *defprompt = "Shall I pick a character for you? [ynq] ";
 	int num_post_attribs = 0;
@@ -2033,7 +1999,7 @@ int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
 #undef NUM_BP
 
 void
-plnamesuffix()
+plnamesuffix(void)
 {
 	char *sptr, *eptr;
 	int i;
@@ -2086,8 +2052,7 @@ plnamesuffix()
  * This code also replaces quest_init().
  */
 void
-role_init(newgame)
-int newgame;
+role_init(int newgame)
 {
 	int alignmnt;
 
@@ -2701,8 +2666,7 @@ int newgame;
 }
 
 const char *
-Hello(mtmp)
-struct monst *mtmp;
+Hello(struct monst *mtmp)
 {
 	switch (Role_switch) {
 	case PM_KNIGHT:
@@ -2726,7 +2690,7 @@ struct monst *mtmp;
 }
 
 const char *
-Goodbye()
+Goodbye(void)
 {
 	switch (Role_switch) {
 	case PM_KNIGHT:
@@ -2743,8 +2707,7 @@ Goodbye()
 }
 
 void
-add_imp_record(prop)
-long prop;
+add_imp_record(long prop)
 {
 	int i, count = 0;
 	achieve.iea_flags |= prop;
@@ -2759,7 +2722,7 @@ long prop;
 }
 
 void
-give_quest_trophy()
+give_quest_trophy(void)
 {
 	if(urole.neminum == PM_MINION_OF_HUHETOTL)
 		achieve.trophies |= ARC_QUEST;
@@ -2815,7 +2778,7 @@ give_quest_trophy()
 }
 
 void
-give_ascension_trophy()
+give_ascension_trophy(void)
 {
 	if(Role_if(PM_ANACHRONONAUT) && flags.questprogress == 2)
 		achieve.trophies |= ANA_ASC;
@@ -2850,50 +2813,49 @@ give_ascension_trophy()
 }
 
 void
-give_lamashtu_trophy()
+give_lamashtu_trophy(void)
 {
 	achieve.trophies |= LAMASHTU_KILL;
 }
 
 void
-give_baalphegor_trophy()
+give_baalphegor_trophy(void)
 {
 	achieve.trophies |= BAALPHEGOR_KILL;
 }
 
 void
-give_angel_vault_trophy()
+give_angel_vault_trophy(void)
 {
 	achieve.trophies |= ANGEL_VAULT;
 }
 
 void
-give_ancient_vault_trophy()
+give_ancient_vault_trophy(void)
 {
 	achieve.trophies |= ANCIENT_VAULT;
 }
 
 void
-give_tannin_vault_trophy()
+give_tannin_vault_trophy(void)
 {
 	achieve.trophies |= TANNINIM_VAULT;
 }
 
 void
-give_devil_vault_trophy()
+give_devil_vault_trophy(void)
 {
 	achieve.trophies |= DEVIL_VAULT;
 }
 
 void
-give_demon_vault_trophy()
+give_demon_vault_trophy(void)
 {
 	achieve.trophies |= DEMON_VAULT;
 }
 
 void
-give_hell_vault_trophy(hv_id)
-int hv_id;
+give_hell_vault_trophy(int hv_id)
 {
 	switch(hv_id){
 		case VN_AKKABISH:
@@ -2927,38 +2889,38 @@ int hv_id;
 }
 
 void
-give_castle_trophy()
+give_castle_trophy(void)
 {
 	achieve.trophies |= CASTLE_WISH;
 }
 
 void
-give_ugwish_trophy()
+give_ugwish_trophy(void)
 {
 	achieve.trophies |= UNKNOWN_WISH;
 }
 
 void
-give_law_trophy()
+give_law_trophy(void)
 {
 	achieve.trophies |= LAW_QUEST;
 }
 
 void
-give_neutral_trophy()
+give_neutral_trophy(void)
 {
 	achieve.trophies |= NEU_QUEST;
 }
 
 void
-give_chaos_temple_trophy()
+give_chaos_temple_trophy(void)
 {
 	if(chaos_dvariant == TEMPLE_OF_CHAOS)
 		achieve.trophies |= CHA_QUEST;
 }
 
 void
-check_mithardir_trophy()
+check_mithardir_trophy(void)
 {
 	if(chaos_dvariant == MITHARDIR){
 		if(u.ufirst_light && u.ufirst_sky && u.ufirst_life)
@@ -2967,14 +2929,14 @@ check_mithardir_trophy()
 }
 
 void
-give_mordor_trophy()
+give_mordor_trophy(void)
 {
 	if(chaos_dvariant == MORDOR)
 		achieve.trophies |= MORD_QUEST;
 }
 
 void
-check_illumian_trophy()
+check_illumian_trophy(void)
 {
 	int syls;
 	syls = u.uaesh + u.ukrau + u.uhoon + u.uuur + u.unaen + u.uvaul;
@@ -2983,13 +2945,13 @@ check_illumian_trophy()
 }
 
 void
-give_rescue_trophy()
+give_rescue_trophy(void)
 {
 	achieve.trophies |= RESCUE;
 }
 
 void
-check_loadout_trophy()
+check_loadout_trophy(void)
 {
 	long allupgrades = (OIL_STOVE|WOOD_STOVE|FAST_SWITCH|EFFICIENT_SWITCH|ARMOR_PLATING|PHASE_ENGINE|MAGIC_FURNACE|HELLFIRE_FURNACE|SCRAP_MAW);
 	if((u.clockworkUpgrades&allupgrades) == allupgrades)
@@ -2997,13 +2959,13 @@ check_loadout_trophy()
 }
 
 void
-give_nightmare_hunter_trophy()
+give_nightmare_hunter_trophy(void)
 {
 	achieve.trophies |= NIGHTMAREHUNTER;
 }
 
 void
-check_madman_trophy()
+check_madman_trophy(void)
 {
 	int i;
 	int count = 0;
@@ -3016,14 +2978,14 @@ check_madman_trophy()
 }
 
 void
-check_drunkard_trophy()
+check_drunkard_trophy(void)
 {
 	if(u.udrunken >= 90)
 		achieve.trophies |= TOTAL_DRUNK;
 }
 
 void
-give_bokrug_trophy()
+give_bokrug_trophy(void)
 {
 	achieve.trophies |= BOKRUG_QUEST;
 }

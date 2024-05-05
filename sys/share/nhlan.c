@@ -36,7 +36,8 @@ struct lan_mail_struct mailmessage;
 #endif /* LAN_MAIL */
 
 
-void init_lan_features()
+void
+init_lan_features(void)
 {
 	lan_username();
 #ifdef LAN_MAIL
@@ -53,7 +54,8 @@ void init_lan_features()
 char lusername[MAX_LAN_USERNAME];
 int lusername_size = MAX_LAN_USERNAME;
 
-char *lan_username()
+char *
+lan_username(void)
 {
 	char *lu;
 	lu = get_username(&lusername_size);
@@ -66,8 +68,7 @@ char *lan_username()
 # ifdef LAN_MAIL
 #if 0
 static void
-mail_by_pline(msg)
-struct lan_mail_struct *msg;
+mail_by_pline(struct lan_mail_struct *msg)
 {
 	long	size;
 
@@ -81,8 +82,7 @@ struct lan_mail_struct *msg;
 #endif /* 0 */
 
 static void
-mail_by_window(msg)
-struct lan_mail_struct *msg;
+mail_by_window(struct lan_mail_struct *msg)
 {
 	char buf[BUFSZ];
 	winid datawin = create_nhwindow(NHW_TEXT);
@@ -121,7 +121,8 @@ struct lan_mail_struct *msg;
 }
 
 /* this returns TRUE if there is mail ready to be read */
-boolean lan_mail_check()
+boolean
+lan_mail_check(void)
 {
 	if (flags.biff) {
 		if (mail_check()) return TRUE;
@@ -129,8 +130,8 @@ boolean lan_mail_check()
 	return FALSE;
 }
 
-void lan_mail_read(otmp)
-struct obj *otmp;
+void
+lan_mail_read(struct obj *otmp)
 {
 	if (flags.biff) {
 		(void) mail_fetch(&mailmessage);
@@ -152,13 +153,15 @@ struct obj *otmp;
 	pline_The("text has faded and is no longer readable.");
 }
 
-void lan_mail_init()
+void
+lan_mail_init(void)
 {
 	if (!flags.biff) return;
 	(void) mail_init(lusername);
 }
 
-void lan_mail_finish()
+void
+lan_mail_finish(void)
 {
 	if (iflags.lan_mail)
 		(void) mail_finish();
@@ -170,7 +173,8 @@ void lan_mail_finish()
  * may already be unavailable. Just clean up the NetHack side
  * of things to prevent a crash.
  */
-void lan_mail_terminate()
+void
+lan_mail_terminate(void)
 {
 	/* Step 1. Clear iflags.lan_mail to indicate "not inited" */
 	iflags.lan_mail = FALSE;

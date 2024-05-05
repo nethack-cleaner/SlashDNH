@@ -18,9 +18,9 @@ static struct obj * FDECL(blaster_ammo, (struct obj *));
 /* grab some functions from dothrow.c */
 extern boolean FDECL(quest_arti_hits_leader, (struct obj *, struct monst *));
 extern int FDECL(gem_accept, (struct monst *, struct obj *));
-extern void FDECL(check_shop_obj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P));
-extern void FDECL(breakmsg, (struct obj *, BOOLEAN_P));
-extern void FDECL(breakobj, (struct obj *, XCHAR_P, XCHAR_P, BOOLEAN_P, BOOLEAN_P));
+extern void FDECL(check_shop_obj, (struct obj *, xchar, xchar, boolean));
+extern void FDECL(breakmsg, (struct obj *, boolean));
+extern void FDECL(breakobj, (struct obj *, xchar, xchar, boolean, boolean));
 extern void NDECL(autoquiver);
 
 /* some damn global variables because passing these as parameters would be a lot to add for something so rarely used.
@@ -34,9 +34,7 @@ static long old_wep_mask;
  * If merging ammo into a new stack, pass the new stack into merge (otherwise leave as null)
  */
 void
-interrupt_multishot(ammo, merge)
-struct obj * ammo;
-struct obj * merge;
+interrupt_multishot(struct obj *ammo, struct obj *merge)
 {
 	if (ammo != m_shot.x)
 		return;
@@ -54,20 +52,20 @@ struct obj * merge;
  * it does not assume magr is actually firing the projectile themselves
  */
 int
-projectile(magr, ammo, vpointer, hmoncode, initx, inity, dx, dy, dz, initrange, forcedestroy, verbose, impaired)
-struct monst * magr;			/* Creature responsible for the projectile. Can be non-existant. */
-struct obj * ammo;				/* Projectile object. Must exist. May be in an inventory, or free, or anywhere. */
-void * vpointer;				/* additional /whatever/, type based on hmoncode. */
-int hmoncode;					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
-int initx;						/* x; Where the projectile originates from. Does not hit this location. */
-int inity;						/* y; Where the projectile originates from. Does not hit this location. */
-int dx;							/* x; Direction of projectile's movement */
-int dy;							/* y; Direction of projectile's movement */
-int dz;							/* z; Direction of projectile's movement */
-int initrange;					/* Maximum range for projectile */
-boolean forcedestroy;			/* TRUE if projectile should be forced to be destroyed at the end */
-boolean verbose;				/* TRUE if messages should be printed even if the player can't see what happened */
-boolean impaired;				/* TRUE if throwing/firing slipped OR magr is confused/stunned/etc */
+projectile(
+	struct monst *magr,	/* Creature responsible for the projectile. Can be non-existant. */
+	struct obj *ammo,	/* Projectile object. Must exist. May be in an inventory, or free, or anywhere. */
+	void *vpointer,		/* additional /whatever/, type based on hmoncode. */
+	int hmoncode,		/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
+	int initx,		/* x; Where the projectile originates from. Does not hit this location. */
+	int inity,		/* y; Where the projectile originates from. Does not hit this location. */
+	int dx,			/* x; Direction of projectile's movement */
+	int dy,			/* y; Direction of projectile's movement */
+	int dz,			/* z; Direction of projectile's movement */
+	int initrange,		/* Maximum range for projectile */
+	boolean forcedestroy,	/* TRUE if projectile should be forced to be destroyed at the end */
+	boolean verbose,	/* TRUE if messages should be printed even if the player can't see what happened */
+	boolean impaired)	/* TRUE if throwing/firing slipped OR magr is confused/stunned/etc */
 {
 	boolean youagr = (magr && magr == &youmonst);
 	struct obj ** thrownobj_p;			/* pointer to thrownobj */
@@ -622,11 +620,11 @@ move_projectile:
  * Some projectiles perform a digging operation.
  */
 void
-do_digging_projectile(magr, thrownobj, dx, dy)
-struct monst * magr;			/* Creature responsible for the projectile. Might not exist. */
-struct obj * thrownobj;			/* Projectile object. Must be free. Will no longer exist after this function. */
-int dx;							/* */
-int dy;							/* */
+do_digging_projectile(
+	struct monst *magr,			/* Creature responsible for the projectile. Might not exist. */
+	struct obj *thrownobj,			/* Projectile object. Must be free. Will no longer exist after this function. */
+	int dx,				        /* */
+	int dy)					/* */
 {
 	boolean youagr = (magr && (magr == &youmonst));
 	int newx = bhitpos.x + dx;
@@ -791,11 +789,11 @@ int dy;							/* */
  * Called when a digging-mpact weapon interacts with terrain by iron bars or some non-ZAP_POS.
  */
 void
-do_digging_impact(magr, weapon, x, y)
-struct monst * magr;			/* Creature responsible for the projectile. Might not exist. */
-struct obj * weapon;
-int x;							/* */
-int y;							/* */
+do_digging_impact(
+	struct monst *magr, /* Creature responsible for the projectile. Might not exist. */
+	struct obj *weapon,
+	int x,			/* */
+	int y)			/* */
 {
 	boolean youagr = (magr && (magr == &youmonst));
 	struct rm *room = &levl[x][y];
@@ -922,9 +920,9 @@ int y;							/* */
  * Call this when the projectile should immediately cease to exist. Possibly explosively.
  */
 void
-destroy_projectile(magr, thrownobj)
-struct monst * magr;			/* Creature responsible for the projectile. Might not exist. */
-struct obj * thrownobj;			/* Projectile object. Must be free. Will no longer exist after this function. */
+destroy_projectile(
+	struct monst *magr,			/* Creature responsible for the projectile. Might not exist. */
+	struct obj *thrownobj)			/* Projectile object. Must be free. Will no longer exist after this function. */
 {
 	boolean youagr = (magr && (magr == &youmonst));
 
@@ -979,13 +977,13 @@ struct obj * thrownobj;			/* Projectile object. Must be free. Will no longer exi
  * [thrownobj] may have been destroyed already -- if so, we just return early, as there's nothing to do
  */
 void
-end_projectile(magr, mdef, thrownobj_p, launcher, fired, forcedestroy)
-struct monst * magr;			/* Creature responsible for the projectile. Might not exist. */
-struct monst * mdef;			/* Creature hit by the projectile. Might not exist. */
-struct obj ** thrownobj_p;		/* Pointer to: Projectile object. Must be free. At this point, might not exist. */
-struct obj * launcher;			/* Launcher for the projectile. Can be non-existant. Implies "fired" is true. */
-boolean fired;					/* Whether or not the projectile was fired (ex arrow from a bow). Fired without a launcher is possible (ex AT_ARRW). */
-boolean forcedestroy;			/* If TRUE, make sure the projectile is destroyed */
+end_projectile(
+	struct monst *magr,	        /* Creature responsible for the projectile. Might not exist. */
+	struct monst *mdef,		/* Creature hit by the projectile. Might not exist. */
+	struct obj **thrownobj_p,	/* Pointer to: Projectile object. Must be free. At this point, might not exist. */
+	struct obj *launcher,		/* Launcher for the projectile. Can be non-existant. Implies "fired" is true. */
+	boolean fired,			/* Whether or not the projectile was fired (ex arrow from a bow). Fired without a launcher is possible (ex AT_ARRW). */
+	boolean forcedestroy)		/* If TRUE, make sure the projectile is destroyed */
 {
 	boolean youagr = (magr && (magr == &youmonst));
 	struct obj * thrownobj = (thrownobj_p) ? *(thrownobj_p) : (struct obj *)0;
@@ -1174,12 +1172,7 @@ boolean forcedestroy;			/* If TRUE, make sure the projectile is destroyed */
  * 
  */
 void
-hitfloor2(magr, obj_p, launcher, fired, forcedestroy)
-struct monst * magr;
-struct obj ** obj_p;
-struct obj * launcher;
-boolean fired;
-boolean forcedestroy;
+hitfloor2(struct monst *magr, struct obj **obj_p, struct obj *launcher, boolean fired, boolean forcedestroy)
 {
 	boolean youagr = (magr == &youmonst);
 
@@ -1209,17 +1202,17 @@ boolean forcedestroy;
  *  
  */
 int
-projectile_attack(magr, mdef, thrownobj_p, vpointer, hmoncode, pdx, pdy, prange, prange2, forcedestroy)
-struct monst * magr;			/* Creature responsible for the projectile. Can be non-existant. */
-struct monst * mdef;			/* Creature under fire. */
-struct obj ** thrownobj_p;		/* Projectile object. Must be free. */
-void * vpointer;				/* additional /whatever/, type based on hmoncode. */
-int hmoncode;					/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
-int * pdx;						/* pointer to: x; Direction of projectile's movement */
-int * pdy;						/* pointer to: y; Direction of projectile's movement */
-int * prange;					/* pointer to: Remaining range for projectile */
-int * prange2;					/* pointer to: Remaining 2x range for projectile */
-boolean forcedestroy;			/* TRUE if projectile should be forced to be destroyed at the end */
+projectile_attack(
+	struct monst *magr,		/* Creature responsible for the projectile. Can be non-existant. */
+	struct monst *mdef,		/* Creature under fire. */
+	struct obj **thrownobj_p,	/* Projectile object. Must be free. */
+	void *vpointer,			/* additional /whatever/, type based on hmoncode. */
+	int hmoncode,			/* what kind of pointer is vpointer, and what is it doing? (hack.h) */
+	int *pdx,			/* pointer to: x; Direction of projectile's movement */
+	int *pdy,			/* pointer to: y; Direction of projectile's movement */
+	int *prange,			/* pointer to: Remaining range for projectile */
+	int *prange2,			/* pointer to: Remaining 2x range for projectile */
+	boolean forcedestroy)		/* TRUE if projectile should be forced to be destroyed at the end */
 {
 	int dx		= *pdx;
 	int dy		= *pdy;
@@ -1673,9 +1666,7 @@ boolean forcedestroy;			/* TRUE if projectile should be forced to be destroyed a
 }
 
 void
-quest_art_swap(obj_p, mon)
-struct obj ** obj_p;
-struct monst * mon;
+quest_art_swap(struct obj **obj_p, struct monst *mon)
 {
 	struct obj * obj = *obj_p;
 	/* don't make game unwinnable if naive player throws artifact
@@ -1816,10 +1807,7 @@ struct monst * mon;
 
 /* show the currently thrown object returning to (destx, desty) in a straight line (not for boomerangs) */
 void
-sho_obj_return(thrownobj, destx, desty)
-struct obj * thrownobj;
-int destx;
-int desty;
+sho_obj_return(struct obj *thrownobj, int destx, int desty)
 {
 	int dx = destx - bhitpos.x;
 	int dy = desty - bhitpos.y;
@@ -1865,9 +1853,7 @@ int desty;
  * Relies on global variable "old_wep_mask"
  */
 void
-return_thrownobj(magr, thrownobj)
-struct monst * magr;
-struct obj * thrownobj;
+return_thrownobj(struct monst *magr, struct obj *thrownobj)
 {
 	boolean youagr = (magr == &youmonst);
 	struct obj * obj;
@@ -1909,9 +1895,7 @@ struct obj * thrownobj;
  * Hero tosses an object upwards with appropriate consequences.
  */
 static void
-toss_up(obj, forcedestroy)
-struct obj *obj;
-boolean forcedestroy;
+toss_up(struct obj *obj, boolean forcedestroy)
 {
 	char buf[BUFSZ];
 	/* note: obj->quan == 1 */
@@ -1955,11 +1939,7 @@ boolean forcedestroy;
  * Assumes launcher is an appropriate launcher of ammo
  */
 int
-calc_multishot(magr, ammo, launcher, shotlimit)
-struct monst * magr;
-struct obj * ammo;
-struct obj * launcher;
-int shotlimit;
+calc_multishot(struct monst *magr, struct obj *ammo, struct obj *launcher, int shotlimit)
 {
 	boolean youagr = (magr == &youmonst);
 	int multishot = 1;
@@ -2139,11 +2119,7 @@ int shotlimit;
  * Is significantly stripped-down for non-player magr.
  */
 int
-calc_range(magr, ammo, launcher, hurtle_dist)
-struct monst * magr;
-struct obj * ammo;
-struct obj * launcher;
-int * hurtle_dist;
+calc_range(struct monst *magr, struct obj *ammo, struct obj *launcher, int *hurtle_dist)
 {
 	boolean youagr = (magr && magr == &youmonst);
 	int range = 1;
@@ -2245,7 +2221,7 @@ int * hurtle_dist;
  * Asks for something to throw.
  */
 int
-dothrow()
+dothrow(void)
 {
 	struct obj * ammo;
 	struct obj * launcher;
@@ -2300,7 +2276,7 @@ dothrow()
  * Player's ('f') command
  */
 int
-dofire()
+dofire(void)
 {
 	int oldmulti = multi;
 	int result = MOVE_CANCELLED;
@@ -2628,8 +2604,7 @@ dofire()
  * Creates appropriate ammo for blaster
  */
 struct obj *
-blaster_ammo(blaster)
-struct obj * blaster;
+blaster_ammo(struct obj *blaster)
 {
 	struct obj * ammo = (struct obj *)0;
 
@@ -2679,11 +2654,7 @@ struct obj * blaster;
  * call projectile().
  */
 int
-uthrow(ammo, launcher, shotlimit, forcedestroy)
-struct obj * ammo;
-struct obj * launcher;
-int shotlimit;
-boolean forcedestroy;
+uthrow(struct obj *ammo, struct obj *launcher, int shotlimit, boolean forcedestroy)
 {
 	int multishot;
 	int hurtle_dist = 0;
@@ -2843,14 +2814,7 @@ boolean forcedestroy;
  * returns TRUE if throw is impaired.
  */
 boolean
-misthrow(magr, ammo, launcher, fired, dx, dy, dz)
-struct monst * magr;
-struct obj * ammo;
-struct obj * launcher;
-boolean fired;
-int * dx;
-int * dy;
-int * dz;
+misthrow(struct monst *magr, struct obj *ammo, struct obj *launcher, boolean fired, int *dx, int *dy, int *dz)
 {
 	boolean youagr = (magr == &youmonst);
 	boolean impaired = FALSE;
@@ -2942,13 +2906,7 @@ int * dz;
  * if called with mdef and stoponhit, returns FALSE if a creature other than mdef will take the hit
  */
 boolean
-m_online(magr, mdef, tarx, tary, safe, stoponhit)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
-boolean safe;
-boolean stoponhit;
+m_online(struct monst *magr, struct monst *mdef, int tarx, int tary, boolean safe, boolean stoponhit)
 {
 	boolean youagr = (magr == &youmonst);
 	struct permonst * pa = youagr ? youracedata : magr->data;
@@ -3022,12 +2980,7 @@ boolean stoponhit;
  * if called with SAFE, tries not to hit friendlies
  */
 boolean
-m_insplash(magr, mdef, tarx, tary, safe)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
-boolean safe;
+m_insplash(struct monst *magr, struct monst *mdef, int tarx, int tary, boolean safe)
 {
 	boolean youagr = (magr == &youmonst);
 	struct permonst * pa = youagr ? youracedata : magr->data;
@@ -3075,11 +3028,7 @@ boolean safe;
  * 
  */
 boolean
-xbreathey(magr, attk, tarx, tary)
-struct monst * magr;
-struct attack * attk;
-int tarx;
-int tary;
+xbreathey(struct monst *magr, struct attack *attk, int tarx, int tary)
 {
 	boolean youagr = (magr == &youmonst);
 	struct permonst * pa = youagr ? youracedata : magr->data;
@@ -3248,11 +3197,7 @@ int tary;
  * TODO: make 'f'ire use this function
  */
 boolean
-xspity(magr, attk, tarx, tary)
-struct monst * magr;
-struct attack * attk;
-int tarx;
-int tary;
+xspity(struct monst *magr, struct attack *attk, int tarx, int tary)
 {
 	struct obj * otmp;
 	boolean youagr = (magr == &youmonst);
@@ -3344,12 +3289,12 @@ int tary;
  * magr is inherently shooting at (tarx, tary)
  */
 boolean
-xfirey(magr, attk, tarx, tary, n)		/* monster fires arrows at you */
-struct monst * magr;
-struct attack * attk;
-int tarx;
-int tary;
-int n;	/* number to try to fire */
+xfirey(		/* monster fires arrows at you */
+	struct monst *magr,
+	struct attack *attk,
+	int tarx,
+	int tary,
+	int n)	/* number to try to fire */
 {
 	struct obj * qvr = (struct obj *)0;				/* quiver of projectiles to use */
 	boolean youagr = (magr == &youmonst);
@@ -3601,11 +3546,7 @@ int n;	/* number to try to fire */
  * NOT polearms.
  */ 
 boolean
-mdofire(magr, mdef, tarx, tary)
-struct monst * magr;
-struct monst * mdef;
-int tarx;
-int tary;
+mdofire(struct monst *magr, struct monst *mdef, int tarx, int tary)
 {
 	boolean youdef = (mdef && mdef == &youmonst);
 	struct obj * thrownobj;
@@ -3718,13 +3659,7 @@ int tary;
  * Actually returns MM_HIT/MISS etc markers.
  */
 int
-mthrow(magr, ammo, launcher, tarx, tary, forcedestroy)
-struct monst * magr;
-struct obj * ammo;
-struct obj * launcher;
-int tarx;
-int tary;
-boolean forcedestroy;
+mthrow(struct monst *magr, struct obj *ammo, struct obj *launcher, int tarx, int tary, boolean forcedestroy)
 {
 	int result;
 	int multishot;
@@ -3791,9 +3726,7 @@ boolean forcedestroy;
  * returns arg (obj) to player's inventory
  */
 void
-return_ammo(arg, timeout)
-genericptr_t arg;
-long timeout;
+return_ammo(genericptr_t arg, long timeout)
 {
 	struct obj *ammo = (struct obj *) arg;
 

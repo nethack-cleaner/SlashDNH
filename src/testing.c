@@ -12,7 +12,7 @@ static void NDECL(test_levelgen);
 #define TEST_LEVELGEN 2
 
 int
-wiz_testmenu()
+wiz_testmenu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -64,7 +64,7 @@ wiz_testmenu()
 }
 
 void
-test_readobjnam()
+test_readobjnam(void)
 {
 	int i;
 	int wishreturn;
@@ -167,7 +167,7 @@ test_readobjnam()
  *   excludes Ludios if the portal didn't generate
  */
 void
-test_levelgen()
+test_levelgen(void)
 {
 	int i, j;
 	struct d_level newlevel;

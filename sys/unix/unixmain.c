@@ -16,7 +16,7 @@
 
 extern struct passwd *FDECL(getpwuid,(uid_t));
 extern struct passwd *FDECL(getpwnam,(const char *));
-static void FDECL(chdirx, (const char *,BOOLEAN_P));
+static void FDECL(chdirx, (const char *,boolean));
 static boolean NDECL(whoami);
 #ifdef FUZZER_TIMEOUT
 static void NDECL(init_fuzzer_child);
@@ -38,9 +38,7 @@ extern void check_utf8_console(void);
 #endif
 
 int
-main(argc,argv)
-int argc;
-char *argv[];
+main(int argc, char *argv[])
 {
 	register int fd;
 	register char *dir;
@@ -287,8 +285,8 @@ not_recovered:
 
 #ifdef FUZZER_TIMEOUT
 
-static void 
-init_fuzzer_child(){
+static void
+init_fuzzer_child(void){
 	pid_t pid = getpid();
 	pid_t child_pid = fork();
 	int status;
@@ -305,9 +303,7 @@ init_fuzzer_child(){
 #endif
 
 static void
-process_options(argc, argv)
-int argc;
-char *argv[];
+process_options(int argc, char *argv[])
 {
 	int i;
 
@@ -398,9 +394,7 @@ char *argv[];
 }
 
 static void
-chdirx(dir, wr)
-const char *dir;
-boolean wr;
+chdirx(const char *dir, boolean wr)
 {
 	if (dir					/* User specified directory? */
 # ifdef HACKDIR
@@ -454,7 +448,7 @@ boolean wr;
 }
 
 static boolean
-whoami() {
+whoami(void) {
 	/*
 	 * Who am i? Algorithm: 1. Use name as specified in NETHACKOPTIONS
 	 *			2. Use $USER or $LOGNAME	(if 1. fails)
@@ -480,7 +474,7 @@ whoami() {
 
 #ifdef PORT_HELP
 void
-port_help()
+port_help(void)
 {
 	/*
 	 * Display unix-specific help.   Just show contents of the helpfile
@@ -491,7 +485,7 @@ port_help()
 #endif
 
 static void
-wd_message()
+wd_message(void)
 {
 #ifdef WIZARD
 	if (wiz_error_flag) {
@@ -509,8 +503,7 @@ wd_message()
  * be room for the /
  */
 void
-append_slash(name)
-char *name;
+append_slash(char *name)
 {
 	char *ptr;
 

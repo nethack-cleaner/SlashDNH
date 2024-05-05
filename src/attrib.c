@@ -247,9 +247,10 @@ static void FDECL(postadjabil, (long long *));
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
 boolean
-adjattrib(ndx, incr, msgflg)
-	int	ndx, incr;
-	int	msgflg;	    /* positive => no message, zero => message, and */
+adjattrib(
+	int ndx,
+	int incr,
+	int msgflg)	    /* positive => no message, zero => message, and */
 {			    /* negative => conditional (msg if change made) */
 	if (Fixed_abil || !incr) return FALSE;
 
@@ -339,9 +340,7 @@ adjattrib(ndx, incr, msgflg)
 }
 
 void
-gainstr(otmp, incr)
-	register struct obj *otmp;
-	register int incr;
+gainstr(register struct obj *otmp, register int incr)
 {
 	int num = 1;
 
@@ -353,8 +352,7 @@ gainstr(otmp, incr)
 }
 
 void
-losestr(num)	/* may kill you; cause may be poison or monster like 'a' */
-	register int num;
+losestr(register int num) /* may kill you; cause may be poison or monster like 'a' */
 {
 	int ustr = ABASE(A_STR) - num;
 
@@ -373,8 +371,7 @@ losestr(num)	/* may kill you; cause may be poison or monster like 'a' */
 }
 
 void
-change_luck(n)
-	register schar n;
+change_luck(schar n)
 {
 	u.uluck += n;
 	if (u.uluck < 0 && u.uluck < LUCKMIN)	u.uluck = LUCKMIN;
@@ -382,8 +379,7 @@ change_luck(n)
 }
 
 int
-stone_luck(parameter)
-boolean parameter; /* So I can't think up of a good name.  So sue me. --KAA */
+stone_luck(schar parameter) /* So I can't think up of a good name.  So sue me. --KAA */
 {
 	register struct obj *otmp;
 	register long bonchance = 0;
@@ -402,7 +398,7 @@ boolean parameter; /* So I can't think up of a good name.  So sue me. --KAA */
 }
 
 boolean
-has_luckitem()
+has_luckitem(void)
 {
 	register struct obj *otmp;
 
@@ -413,7 +409,7 @@ has_luckitem()
 
 /* there has just been an inventory change affecting a luck-granting item */
 void
-set_moreluck()
+set_moreluck(void)
 {
 	int stoneluck = stone_luck(TRUE);
 	if (!has_luckitem()) u.moreluck = 0;
@@ -425,7 +421,7 @@ set_moreluck()
 }
 
 int
-stone_health()
+stone_health(void)
 {
 	struct obj *otmp;
 	int healthup = 0;
@@ -440,7 +436,7 @@ stone_health()
 }
 
 int
-stone_energy()
+stone_energy(void)
 {
 	struct obj *otmp;
 	int energyup = 0;
@@ -456,7 +452,7 @@ stone_energy()
 
 
 void
-restore_attrib()
+restore_attrib(void)
 {
 	int	i;
 
@@ -478,9 +474,7 @@ restore_attrib()
 #define AVAL	50		/* tune value for exercise gains */
 
 void
-exercise(i, inc_or_dec)
-int	i;
-boolean	inc_or_dec;
+exercise(int i, boolean inc_or_dec)
 {
 #ifdef DEBUG
 	pline("Exercise:");
@@ -523,7 +517,7 @@ boolean	inc_or_dec;
 #define STARVED		6
 
 static void
-exerper()
+exerper(void)
 {
 	if(!(moves % 10)) {
 		/* Hunger Checks */
@@ -583,7 +577,7 @@ exerper()
 }
 
 void
-exerchk()
+exerchk(void)
 {
 	int	i, mod_val;
 	
@@ -700,15 +694,14 @@ exerchk()
 /* OBSOLETE: next_check will otherwise have its initial 600L after a game restore */
 /* next_check is now stored in the you struct, and is persistent from session to session. */
 void
-reset_attribute_clock()
+reset_attribute_clock(void)
 {
 	/* if (moves > 600L) next_check = moves + rn1(50,800); */
 }
 
 
 void
-init_attr(np)
-	register int	np;
+init_attr(register int np)
 {
 	register int	i, x, tryct;
 
@@ -776,9 +769,7 @@ init_attr(np)
 }
 
 void
-init_mask_attr(np, mask)
-	int	np;
-	struct obj *mask;
+init_mask_attr(int np, struct obj *mask)
 {
 	int	i, x, tryct;
 	struct Role *mrole = pm2role(mask->mp->mskrolenum);
@@ -827,7 +818,7 @@ init_mask_attr(np, mask)
 }
 
 void
-redist_attr()
+redist_attr(void)
 {
 	register int i, tmp;
 
@@ -855,8 +846,7 @@ postadjabil(long long *ability)
 }
 
 void
-adjabil(oldlevel,newlevel)
-int oldlevel, newlevel;
+adjabil(int oldlevel, int newlevel)
 {
 	register const struct innate *abil, *rabil, *sabil;
 	long mask = FROMEXPER;
@@ -1059,7 +1049,7 @@ int oldlevel, newlevel;
 
 
 int
-newhp()
+newhp(void)
 {
 	int	hp;
 
@@ -1098,7 +1088,7 @@ newhp()
 }
 
 int
-newen()
+newen(void)
 {
 	int	en;
 
@@ -1132,8 +1122,7 @@ newen()
 }
 
 int
-maxhp(incon)
-int incon;
+maxhp(int incon)
 {
 	int	hp;
 	int perlevel;
@@ -1171,7 +1160,7 @@ int incon;
 }
 
 int
-maxen()
+maxen(void)
 {
 	int	en;
 	int perlevel;
@@ -1207,8 +1196,7 @@ maxen()
 }
 
 double
-conplus(con)
-	int con;
+conplus(int con)
 {
 	double conplus;
 	
@@ -1222,7 +1210,7 @@ conplus(con)
 }
 
 void
-calc_total_maxhp()
+calc_total_maxhp(void)
 {
 	int ulev;
 	int * hpmax;
@@ -1294,7 +1282,7 @@ calc_total_maxhp()
 }
 
 void
-calc_total_maxen()
+calc_total_maxen(void)
 {
 	int en;
 	int uenbonus = u.uenbonus;
@@ -1321,9 +1309,7 @@ calc_total_maxen()
 
 
 schar
-acurr(x, mon)
-int x;
-struct monst *mon;
+acurr(int x, struct monst *mon)
 {
 	boolean is_player = !mon; 
 	struct permonst *dat = (is_player? youracedata: mon->data);
@@ -1455,16 +1441,13 @@ struct monst *mon;
 }
 
 schar
-acurr_player(x)
-int x;
+acurr_player(int x)
 {
 	return acurr(x, (struct monst *) 0);
 }
 
 void
-change_usanity(delta, check)
-int delta;
-boolean check;
+change_usanity(int delta, boolean check)
 {
 	/* ACU is immune to insanity as their mind is only a piece of a group*/
 	if(Role_if(PM_ANACHRONOUNBINDER)) return;
@@ -1549,8 +1532,7 @@ boolean check;
 }
 
 void
-change_uinsight(delta)
-int delta;
+change_uinsight(int delta)
 {
 	if(u.veil)
 		return;
@@ -1575,7 +1557,7 @@ int delta;
 }
 
 boolean
-check_insight()
+check_insight(void)
 {
 	/*ACU's full insight doesn't have negative effects*/
 	if(Role_if(PM_ANACHRONOUNBINDER)) return FALSE;
@@ -1588,8 +1570,7 @@ check_insight()
 }
 
 int
-roll_generic_madness(clearable)
-boolean clearable;
+roll_generic_madness(int clearable)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1608,8 +1589,7 @@ boolean clearable;
 }
 
 int
-roll_generic_flat_madness(clearable)
-int clearable;
+roll_generic_flat_madness(int clearable)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1626,7 +1606,7 @@ int clearable;
 }
 
 int
-count_madnesses()
+count_madnesses(void)
 {
 	int count = 0;
 	int i;
@@ -1638,8 +1618,7 @@ count_madnesses()
 }
 
 int
-roll_madness(madness)
-long int madness;
+roll_madness(long int madness)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1667,8 +1646,7 @@ long int madness;
 }
 
 int
-mad_turn(madness)
-long int madness;
+mad_turn(long int madness)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1693,8 +1671,7 @@ long int madness;
 }
 
 int
-flat_mad_turn(madness)
-long int madness;
+flat_mad_turn(long int madness)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1717,9 +1694,7 @@ long int madness;
 }
 
 int
-mad_monster_turn(mon, madness)
-struct monst *mon;
-long int madness;
+mad_monster_turn(struct monst *mon, long int madness)
 {
 	int sanlevel;
 	int usan = u.usanity;
@@ -1744,7 +1719,7 @@ long int madness;
 }
 
 void
-roll_frigophobia()
+roll_frigophobia(void)
 {
 	if(roll_madness(MAD_FRIGOPHOBIA)){
 		if(!Cold_resistance){
@@ -1761,7 +1736,7 @@ roll_frigophobia()
 
 /* Airless Void-aware frigophobia */
 void
-roll_av_frigophobia()
+roll_av_frigophobia(void)
 {
 	if(roll_madness(MAD_FRIGOPHOBIA)){
 		if(FrozenAir && !Breathless){
@@ -1779,8 +1754,7 @@ roll_av_frigophobia()
 }
 
 void
-give_madness(mon)
-struct monst *mon;
+give_madness(struct monst *mon)
 {
 	int mm = monsndx(mon->data);
 	switch(mm){
@@ -1870,8 +1844,7 @@ struct monst *mon;
 /* A monster has seen/whatever you and may contract madnesses
  */
 void
-you_inflict_madness(mon)
-struct monst *mon;
+you_inflict_madness(struct monst *mon)
 {
 	if(mon->seenmadnesses != u.umadness){
 		unsigned long long int madflag;
@@ -1986,8 +1959,7 @@ struct monst *mon;
 /* condense clumsy ACURR(A_STR) value into value that fits into game formulas
  */
 schar
-acurrstr(str)
-	int str;
+acurrstr(int str)
 {
 	if (str <= 18) return((schar)str);
 	if (str <= 41) return((schar)(19 + str / 10)); /* map to 19-21 */
@@ -1999,8 +1971,7 @@ acurrstr(str)
  * location for any future alignment limits
  */
 void
-adjalign(n)
-register int n;
+adjalign(register int n)
 {
 	register int newalign = u.ualign.record + n;
 
@@ -2018,8 +1989,7 @@ register int n;
 }
 
 void
-unSetFightingForm(fform)
-int fform;
+unSetFightingForm(int fform)
 {
 	int i, first, last;
 	if(fform > LAST_FFORM || fform < 0)
@@ -2043,8 +2013,7 @@ int fform;
 }
 
 void
-setFightingForm(fform)
-int fform;
+setFightingForm(int fform)
 {
 	/* this code assumes that each batch of 32 fighting forms are mutually exclusive, but not with other batches of 32 */
 	unSetFightingForm(fform);
@@ -2052,22 +2021,19 @@ int fform;
 }
 
 boolean
-activeFightingForm(fform)
-int fform;
+activeFightingForm(int fform)
 {
 	return (selectedFightingForm(fform) && !blockedFightingForm(fform));
 }
 
 boolean
-activeMentalEdge(fform)
-int fform;
+activeMentalEdge(int fform)
 {
 	return (artinstance[ART_SILVER_SKY].GithStyle == fform && !blockedMentalEdge(fform));
 }
 
 boolean
-selectedFightingForm(fform)
-int fform;
+selectedFightingForm(int fform)
 {
 	int i;
 	if(fform > LAST_FFORM || fform < 0)
@@ -2087,8 +2053,7 @@ int fform;
 }
 
 int
-getFightingFormSkill(fform)
-int fform;
+getFightingFormSkill(int fform)
 {
 	switch(fform){
 		case FFORM_SHII_CHO:
@@ -2142,8 +2107,7 @@ int fform;
 }
 
 const char *
-nameOfFightingForm(fform)
-int fform;
+nameOfFightingForm(int fform)
 {
 	switch (fform)
 	{
@@ -2168,8 +2132,7 @@ int fform;
 }
 
 const char *
-nameOfMentalEdge(edge)
-int edge;
+nameOfMentalEdge(int edge)
 {
 	switch (edge)
 	{
@@ -2185,7 +2148,7 @@ int edge;
 }
 
 void
-validateLightsaberForm()
+validateLightsaberForm(void)
 {
 	int i;
 	for(i=FFORM_SHII_CHO; i <= FFORM_JUYO; i++)
@@ -2199,8 +2162,7 @@ validateLightsaberForm()
 
 /* returns TRUE if fform is blocked by currently worn armor */
 boolean
-blockedFightingForm(fform)
-int fform;
+blockedFightingForm(int fform)
 {
 	switch (fform) {
 		/* always available */
@@ -2245,8 +2207,7 @@ int fform;
 }
 
 boolean
-blockedMentalEdge(edge)
-int edge;
+blockedMentalEdge(int edge)
 {
 	boolean ok = FALSE;
     const struct artifact *oart = (struct artifact *) 0;
@@ -2289,14 +2250,14 @@ int edge;
 
 /** Returns the hitpoints of your current form. */
 int
-uhp()
+uhp(void)
 {
     return (Upolyd ? u.mh : u.uhp);
 }
 
 /** Returns the maximal hitpoints of your current form. */
 int
-uhpmax()
+uhpmax(void)
 {
     return (Upolyd ? u.mhmax : u.uhpmax);
 }
@@ -2316,8 +2277,7 @@ check_brainlessness(const char *reason)
 }
 
 boolean
-change_hod(delta)
-int delta;
+change_hod(int delta)
 {
 	if(delta < 0 || !Infuture){
 		u.hod += delta;
@@ -2328,8 +2288,7 @@ int delta;
 }
 
 boolean
-change_chokhmah(delta)
-int delta;
+change_chokhmah(int delta)
 {
 	if(delta < 0 || !Infuture){
 		u.chokhmah += delta;
@@ -2339,8 +2298,7 @@ int delta;
 }
 
 boolean
-change_gevurah(delta)
-int delta;
+change_gevurah(int delta)
 {
 	if(delta < 0 || !Infuture){
 		u.gevurah += delta;
@@ -2350,8 +2308,7 @@ int delta;
 }
 
 boolean
-change_keter(delta)
-int delta;
+change_keter(int delta)
 {
 	if(delta < 0 || !Infuture){
 		u.keter += delta;

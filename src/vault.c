@@ -11,16 +11,14 @@ static struct monst *NDECL(findgd);
 	x_monnam(mtmp, ARTICLE_NONE, (char *)0, SUPPRESS_IT, FALSE)
 
 
-static boolean FDECL(clear_fcorr, (struct monst *,BOOLEAN_P));
+static boolean FDECL(clear_fcorr, (struct monst *,boolean));
 static void FDECL(restfakecorr,(struct monst *));
 static boolean FDECL(in_fcorridor, (struct monst *,int,int));
 static void FDECL(move_gold,(struct obj *,int));
 static void FDECL(wallify_vault,(struct monst *));
 
 static boolean
-clear_fcorr(grd, forceshow)
-register struct monst *grd;
-register boolean forceshow;
+clear_fcorr(register struct monst *grd, register boolean forceshow)
 {
 	register int fcx, fcy, fcbeg;
 	register struct monst *mtmp;
@@ -59,16 +57,15 @@ register boolean forceshow;
 }
 
 static void
-restfakecorr(grd)
-register struct monst *grd;
+restfakecorr(register struct monst *grd)
 {
 	/* it seems you left the corridor - let the guard disappear */
 	if(clear_fcorr(grd, FALSE)) mongone(grd);
 }
 
 boolean
-grddead(grd)				/* called in mon.c */
-register struct monst *grd;
+grddead(				/* called in mon.c */
+	register struct monst *grd)
 {
 	register boolean dispose = clear_fcorr(grd, TRUE);
 
@@ -85,9 +82,7 @@ register struct monst *grd;
 }
 
 static boolean
-in_fcorridor(grd, x, y)
-register struct monst *grd;
-int x, y;
+in_fcorridor(register struct monst *grd, int x, int y)
 {
 	register int fci;
 
@@ -98,9 +93,8 @@ int x, y;
 	return(FALSE);
 }
 
-static
-struct monst *
-findgd()
+static struct monst *
+findgd(void)
 {
 	register struct monst *mtmp;
 
@@ -112,8 +106,7 @@ findgd()
 
 
 char
-vault_occupied(array)
-char *array;
+vault_occupied(char *array)
 {
 	register char *ptr;
 
@@ -124,7 +117,7 @@ char *array;
 }
 
 void
-invault()
+invault(void)
 {
     struct monst *guard;
     int trycount, vaultroom = (int)vault_occupied(u.urooms);
@@ -350,9 +343,7 @@ fnd:
 
 
 static void
-move_gold(gold, vroom)
-struct obj *gold;
-int vroom;
+move_gold(struct obj *gold, int vroom)
 {
 	xchar nx, ny;
 
@@ -366,8 +357,7 @@ int vroom;
 }
 
 static void
-wallify_vault(grd)
-struct monst *grd;
+wallify_vault(struct monst *grd)
 {
 	int x, y, typ;
 	int vlt = EVGD(grd)->vroom;
@@ -434,8 +424,7 @@ struct monst *grd;
  * return  1: guard moved,  0: guard didn't,  -1: let m_move do it,  -2: died
  */
 int
-gd_move(grd)
-register struct monst *grd;
+gd_move(register struct monst *grd)
 {
 	int x, y, nx, ny, m, n;
 	int dx, dy, gx, gy, fci;
@@ -732,7 +721,7 @@ cleanup:
 
 /* Routine when dying or quitting with a vault guard around */
 void
-paygd()
+paygd(void)
 {
 	register struct monst *grd = findgd();
 #ifndef GOLDOBJ
@@ -792,7 +781,7 @@ paygd()
 }
 
 long
-hidden_gold()
+hidden_gold(void)
 {
 	register long value = 0L;
 	register struct obj *obj;
@@ -806,7 +795,7 @@ hidden_gold()
 }
 
 boolean
-gd_sound()  /* prevent "You hear footsteps.." when inappropriate */
+gd_sound(void)  /* prevent "You hear footsteps.." when inappropriate */
 {
 	register struct monst *grd = findgd();
 

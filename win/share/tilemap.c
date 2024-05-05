@@ -91,8 +91,7 @@ struct substitute {
  * entry is the position of the tile within the monsters/objects/other set
  */
 const char *
-tilename(set, entry)
-int set, entry;
+tilename(int set, int entry)
 {
 	int i, j, condnum, tilenum;
 	static char buf[BUFSZ];
@@ -252,7 +251,7 @@ int lastmontile, lastobjtile, lastothtile;
  * introduced in 3.3.1.
  */
 void
-init_tilemap()
+init_tilemap(void)
 {
 	int i, j, condnum, tilenum;
 	int corpsetile, swallowbase;
@@ -365,8 +364,7 @@ const char *prolog[] = {
 	"",
 	"",
 	"void",
-	"substitute_tiles(plev)",
-	"d_level *plev;",
+	"substitute_tiles(d_level *plev)",
 	"{",
 	"\tint i;",
 	""
@@ -378,8 +376,7 @@ const char *epilog[] = {
 
 /* write out the substitutions in an easily-used form. */
 void
-process_substitutions(ofp)
-FILE *ofp;
+process_substitutions(FILE *ofp)
 {
 	int i, j, k, span, start;
 
@@ -450,7 +447,8 @@ FILE *ofp;
 	lastothtile = start - 1;
 }
 
-int main()
+int
+main(void)
 {
     register int i;
     char filename[30];

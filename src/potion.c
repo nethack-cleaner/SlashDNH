@@ -25,8 +25,7 @@ static short FDECL(mixtype, (struct obj *,struct obj *));
 
 /* force `val' to be within valid range for intrinsic timeout value */
 static long
-itimeout(val)
-long val;
+itimeout(long val)
 {
     if (val >= TIMEOUT) val = TIMEOUT;
     else if (val < 1) val = 0;
@@ -36,9 +35,7 @@ long val;
 
 /* increment `old' by `incr' and force result to be valid intrinsic timeout */
 long
-itimeout_incr(old, incr)
-long old;
-long incr;
+itimeout_incr(long old, long incr)
 {
     return itimeout((old & TIMEOUT) + incr);
 }
@@ -59,9 +56,7 @@ incr_itimeout(long long *which, long incr)
 }
 
 void
-make_confused(xtime,talk)
-long xtime;
-boolean talk;
+make_confused(long xtime, boolean talk)
 {
 	long old = HConfusion;
 
@@ -76,9 +71,7 @@ boolean talk;
 }
 
 void
-make_stunned(xtime,talk)
-long xtime;
-boolean talk;
+make_stunned(long xtime, boolean talk)
 {
 	long old = HStun;
 
@@ -101,9 +94,7 @@ boolean talk;
 }
 
 void
-make_doubtful(xtime,talk)
-long xtime;
-boolean talk;
+make_doubtful(long xtime, boolean talk)
 {
 	long old = HDoubt;
 
@@ -123,9 +114,7 @@ boolean talk;
 }
 
 void
-make_invulnerable(xtime,talk)
-long xtime;
-boolean talk;
+make_invulnerable(long xtime, boolean talk)
 {
 	long old = HSanctuary;
 
@@ -149,11 +138,11 @@ boolean talk;
 }
 
 void
-make_sick(xtime, cause, talk, type)
-long xtime;
-const char *cause;	/* sickness cause */
-boolean talk;
-int type;
+make_sick(
+	long xtime,
+	const char *cause,	/* sickness cause */
+	boolean talk,
+	int type)
 {
 	long old = Sick;
 
@@ -196,9 +185,7 @@ int type;
 }
 
 void
-make_vomiting(xtime, talk)
-long xtime;
-boolean talk;
+make_vomiting(long xtime, boolean talk)
 {
 	if(Race_if(PM_ETHEREALOID)) return;
 	long old = Vomiting;
@@ -213,9 +200,7 @@ static const char vismsg[] = "vision seems to %s for a moment but is %s now.";
 static const char eyemsg[] = "%s momentarily %s.";
 
 void
-make_blinded(xtime, talk)
-long xtime;
-boolean talk;
+make_blinded(long xtime, boolean talk)
 {
 	long old = Blinded;
 	boolean u_could_see, can_see_now;
@@ -291,10 +276,10 @@ boolean talk;
 }
 
 boolean
-make_hallucinated(xtime, talk, mask)
-long xtime;	/* nonzero if this is an attempt to turn on hallucination */
-boolean talk;
-long mask;	/* nonzero if resistance status should change by mask */
+make_hallucinated(
+	long xtime,	/* nonzero if this is an attempt to turn on hallucination */
+	boolean talk,
+	long mask	/* nonzero if resistance status should change by mask */)
 {
 	long old = HHallucination;
 	boolean changed = 0;
@@ -353,7 +338,7 @@ long mask;	/* nonzero if resistance status should change by mask */
 }
 
 static void
-ghost_from_bottle()
+ghost_from_bottle(void)
 {
 	struct monst *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
 
@@ -376,7 +361,7 @@ ghost_from_bottle()
 /* "Quaffing is like drinking, except you spill more."  -- Terry Pratchett
  */
 int
-dodrink()
+dodrink(void)
 {
 	register struct obj *otmp;
 	const char *potion_descr;
@@ -482,9 +467,7 @@ dodrink()
 }
 
 int
-dopotion(otmp, force)
-register struct obj *otmp;
-boolean force;
+dopotion(register struct obj *otmp, boolean force)
 {
 	int retval;
 
@@ -521,9 +504,7 @@ boolean force;
 }
 
 int
-peffects(otmp, force)
-register struct obj	*otmp;
-boolean force;
+peffects(register struct obj *otmp, boolean force)
 {
 	register int i, ii, lim;
     boolean enhanced;
@@ -1446,9 +1427,7 @@ as_extra_healing:
 }
 
 void
-healup(nhp, nxtra, curesick, cureblind)
-	int nhp, nxtra;
-	register boolean curesick, cureblind;
+healup(int nhp, int nxtra, register boolean curesick, register boolean cureblind)
 {
 	int * hpmax;
 	int * hp;
@@ -1485,9 +1464,7 @@ healup(nhp, nxtra, curesick, cureblind)
 }
 
 void
-strange_feeling(obj,txt)
-register struct obj *obj;
-register const char *txt;
+strange_feeling(register struct obj *obj, register const char *txt)
 {
 	if (flags.beginner || !txt) {
 		You("have a %s feeling for a moment, then it passes.",
@@ -1511,16 +1488,13 @@ const char *bottlenames[] = {
 
 
 const char *
-bottlename()
+bottlename(void)
 {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
 void
-potionhit(mon, obj, your_fault)
-register struct monst *mon;
-register struct obj *obj;
-boolean your_fault;
+potionhit(register struct monst *mon, register struct obj *obj, boolean your_fault)
 {
 	register const char *botlnam = bottlename();
 	boolean isyou = (mon == &youmonst);
@@ -1987,8 +1961,7 @@ boolean your_fault;
 
 /* vapors are inhaled or get in your eyes */
 void
-potionbreathe(obj)
-register struct obj *obj;
+potionbreathe(register struct obj *obj)
 {
 	register int i, ii, isdone, kn = 0;
 
@@ -2185,8 +2158,7 @@ register struct obj *obj;
 }
 
 static short
-mixtype(o1, o2)
-register struct obj *o1, *o2;
+mixtype(register struct obj *o1, register struct obj *o2)
 /* returns the potion type when o1 is dipped in o2 */
 {
 	/* cut down on the number of cases below */
@@ -2449,11 +2421,8 @@ register struct obj *o1, *o2;
 
 /* Bills an object that's about to be downgraded, assuming that's not already
  * been done */
-static
-void
-pre_downgrade_obj(obj, used)
-register struct obj *obj;
-boolean *used;
+static void
+pre_downgrade_obj(register struct obj *obj, boolean *used)
 {
     boolean dummy = FALSE;
 
@@ -2467,12 +2436,11 @@ boolean *used;
 }
 
 /* Implements the downgrading effect of potions of amnesia and Lethe water */
-static
-void
-downgrade_obj(obj, nomagic, used)
-register struct obj *obj;
-int nomagic;	/* The non-magical object to downgrade to */
-boolean *used;
+static void
+downgrade_obj(
+	register struct obj *obj,
+	int nomagic,	/* The non-magical object to downgrade to */
+	boolean *used)
 {
     pre_downgrade_obj(obj, used);
     obj->otyp = nomagic;
@@ -2483,9 +2451,7 @@ boolean *used;
 
 //Lethe patch by way of Slashem
 boolean
-get_wet(obj, amnesia)
-register struct obj *obj;
-boolean amnesia;
+get_wet(register struct obj *obj, boolean amnesia)
 /* returns TRUE if something happened (potion should be used up) */
 {
 	char Your_buf[BUFSZ];
@@ -2713,7 +2679,7 @@ boolean amnesia;
 }
 
 int
-dodip()
+dodip(void)
 {
 	struct obj *potion, *obj;
 	struct obj *singlepotion;
@@ -3520,8 +3486,7 @@ dodip()
 
 
 void
-djinni_from_bottle(obj)
-register struct obj *obj;
+djinni_from_bottle(register struct obj *obj)
 {
 	struct monst *mtmp;
 	struct monst *mtmp2 = (struct monst*)0;
@@ -3600,9 +3565,9 @@ register struct obj *obj;
 /* clone a gremlin or mold (2nd arg non-null implies heat as the trigger);
    hit points are cut in half (odd HP stays with original) */
 struct monst *
-split_mon(mon, mtmp)
-struct monst *mon,	/* monster being split */
-	     *mtmp;	/* optional attacker whose heat triggered it */
+split_mon(
+	struct monst *mon,	/* monster being split */
+	struct monst *mtmp	/* optional attacker whose heat triggered it */)
 {
 	struct monst *mtmp2;
 	char reason[BUFSZ];

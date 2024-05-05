@@ -70,7 +70,7 @@ static const char *list_file = LIBLISTFILE;
  */
 
 static void
-usage()
+usage(void)
 {
     (void) printf("Usage: %s [ctxCIfv] arguments... [files...]\n", progname);
     (void) printf("  default library is %s\n", library_file);
@@ -79,7 +79,7 @@ usage()
 }
 
 static void
-verbose_help()
+verbose_help(void)
 {
     static const char *long_help[] = {
 	"",
@@ -106,10 +106,7 @@ verbose_help()
 }
 
 static void
-Write(out,buf,len)
-    int out;
-    char *buf;
-    long len;
+Write(int out, char *buf, long len)
 {
     if (write(out,buf,len) != len) {
 	printf("Write Error in '%s'\n",library_file);
@@ -119,8 +116,7 @@ Write(out,buf,len)
 
 
 char *
-eos(s)
-    char *s;
+eos(char *s)
 {
     while (*s) s++;
     return s;
@@ -130,8 +126,7 @@ eos(s)
 
 /* open_library(dlb.c) needs this (which normally comes from src/files.c) */
 FILE *
-fopen_datafile(filename, mode)
-const char *filename, *mode;
+fopen_datafile(const char *filename, const char *mode)
 {
     return fopen(filename, mode);
 }
@@ -139,9 +134,7 @@ const char *filename, *mode;
 #endif	/* DLB */
 
 int
-main(argc, argv)
-    int argc;
-    char **argv;
+main(int argc, char **argv)
 {
 #ifdef DLB
     int i, r;
@@ -440,10 +433,7 @@ main(argc, argv)
 #ifdef DLB
 
 static void
-write_dlb_directory(out, nfiles, ld, slen, dir_size, flen)
-int out, nfiles;
-libdir *ld;
-long slen, dir_size, flen;
+write_dlb_directory(int out, int nfiles, libdir *ld, long slen, long dir_size, long flen)
 {
     char buf[BUFSIZ];
     int i;
@@ -473,8 +463,7 @@ long slen, dir_size, flen;
 #endif	/* DLB */
 
 static void
-xexit(retcd)
-    int retcd;
+xexit(int retcd)
 {
 #ifdef DLB
 #endif

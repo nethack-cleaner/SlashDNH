@@ -10,8 +10,7 @@ static int NDECL(bc_order);
 static void NDECL(litter);
 
 void
-ballrelease(showmsg)
-boolean showmsg;
+ballrelease(boolean showmsg)
 {
     if (carried(uball)) {
         if (showmsg)
@@ -30,7 +29,7 @@ boolean showmsg;
 }
 
 void
-ballfall()
+ballfall(void)
 {
 	boolean gets_hit;
 
@@ -112,7 +111,7 @@ ballfall()
  *  Should not be called while swallowed.
  */
 void
-placebc()
+placebc(void)
 {
     if (!uchain || !uball) {
 	impossible("Where are your ball and chain?");
@@ -144,7 +143,7 @@ placebc()
 }
 
 void
-unplacebc()
+unplacebc(void)
 {
     if (u.uswallow) return;	/* ball&chain not placed while swallowed */
 
@@ -169,7 +168,7 @@ unplacebc()
  *  hero is being punished.
  */
 static int
-bc_order()
+bc_order(void)
 {
     struct obj *obj;
 
@@ -192,8 +191,7 @@ bc_order()
  *  Set up the ball and chain variables so that the ball and chain are "felt".
  */
 void
-set_bc(already_blind)
-int already_blind;
+set_bc(int already_blind)
 {
     int ball_on_floor = !carried(uball);
 
@@ -250,9 +248,7 @@ int already_blind;
  *  Should not be called while swallowed.
  */
 void
-move_bc(before, control, ballx, bally, chainx, chainy)
-int   before, control;
-xchar ballx, bally, chainx, chainy;	/* only matter !before */
+move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xchar chainy) /* only matter !before */
 {
     if (Blind) {
 	/*
@@ -379,13 +375,8 @@ xchar ballx, bally, chainx, chainy;	/* only matter !before */
  * and chain.
  */
 boolean
-drag_ball(x, y, bc_control, ballx, bally, chainx, chainy, cause_delay,
-    allow_drag)
-xchar x, y;
-int *bc_control;
-xchar *ballx, *bally, *chainx, *chainy;
-boolean *cause_delay;
-boolean allow_drag;
+drag_ball(schar x, schar y, int *bc_control, xchar *ballx, xchar *bally,
+	  xchar *chainx, xchar *chainy, boolean *cause_delay, boolean allow_drag)
 {
 	struct trap *t = (struct trap *)0;
 	boolean already_in_rock;
@@ -659,8 +650,7 @@ drag:
  *  Should not be called while swallowed.
  */
 void
-drop_ball(x, y)
-xchar x, y;
+drop_ball(xchar x, xchar y)
 {
     if (Blind) {
 	u.bc_order = bc_order();			/* get the order */
@@ -763,7 +753,7 @@ xchar x, y;
 
 
 static void
-litter()
+litter(void)
 {
 	struct obj *otmp = invent, *nextobj;
 	int capacity = weight_cap();
@@ -782,7 +772,7 @@ litter()
 }
 
 void
-drag_down()
+drag_down(void)
 {
 	boolean forward;
 	uchar dragchance = 3;
@@ -826,7 +816,7 @@ drag_down()
 }
 
 void
-bc_sanity_check()
+bc_sanity_check(void)
 {
     int otyp;
     unsigned save_nameknown;

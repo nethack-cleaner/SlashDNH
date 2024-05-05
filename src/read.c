@@ -40,7 +40,7 @@ static int NDECL(learn_word);
 static void FDECL(learn_spell_aphanactonan, (int));
 
 int
-doread()
+doread(void)
 {
 	register struct obj *scroll;
 	register boolean confused;
@@ -786,10 +786,8 @@ doread()
 	return MOVE_READ;
 }
 
-static
-int
-read_tile(scroll)
-struct obj *scroll;
+static int
+read_tile(struct obj *scroll)
 {
 	int duration;
 	long int thought;
@@ -1034,8 +1032,7 @@ static int delay = 0;
 static struct obj *curslab = 0;
 
 static int
-study_word(slab)
-struct obj *slab;
+study_word(struct obj *slab)
 {
 	if (delay && !Confusion && slab == curslab) {
 		You("continue your efforts to memorize the %s.", OBJ_DESCR(objects[slab->otyp]));
@@ -1049,7 +1046,7 @@ struct obj *slab;
 }
 
 static int
-learn_word()
+learn_word(void)
 {
 	if (Confusion) {		/* became confused while learning */
 	    curslab = 0;			/* no longer studying */
@@ -1112,8 +1109,7 @@ learn_word()
 }
 
 static void
-stripspe(obj)
-register struct obj *obj;
+stripspe(register struct obj *obj)
 {
 	if (obj->blessed) pline1(nothing_happens);
 	else {
@@ -1127,17 +1123,14 @@ register struct obj *obj;
 }
 
 static void
-p_glow1(otmp)
-register struct obj	*otmp;
+p_glow1(register struct obj *otmp)
 {
 	Your("%s %s briefly.", xname(otmp),
 	     otense(otmp, Blind ? "vibrate" : "glow"));
 }
 
 static void
-p_glow2(otmp,color)
-register struct obj	*otmp;
-register const char *color;
+p_glow2(register struct obj *otmp, register const char *color)
 {
 	Your("%s %s%s%s for a moment.",
 		xname(otmp),
@@ -1149,8 +1142,7 @@ register const char *color;
 /* Is the object chargeable?  For purposes of inventory display; it is */
 /* possible to be able to charge things for which this returns FALSE. */
 boolean
-is_chargeable(obj)
-struct obj *obj;
+is_chargeable(struct obj *obj)
 {
 	if (obj->oclass == WAND_CLASS) return TRUE;
 	/* known && !uname is possible after amnesia/mind flayer */
@@ -1178,9 +1170,7 @@ struct obj *obj;
  * Returns 1 if the item is destroyed
  */
 int
-recharge(obj, curse_bless)
-struct obj *obj;
-int curse_bless;
+recharge(struct obj *obj, int curse_bless)
 {
 	register int n;
 	boolean is_cursed, is_blessed;
@@ -1528,8 +1518,7 @@ int curse_bless;
 
 /* Forget known information about this object class. */
 static void
-forget_single_object(obj_id)
-	int obj_id;
+forget_single_object(int obj_id)
 {
 	objects[obj_id].oc_name_known = 0;
 	objects[obj_id].oc_pre_discovered = 0;	/* a discovery when relearned */
@@ -1546,8 +1535,7 @@ forget_single_object(obj_id)
 #if 0	/* here if anyone wants it.... */
 /* Forget everything known about a particular object class. */
 static void
-forget_objclass(oclass)
-	int oclass;
+forget_objclass(int oclass)
 {
 	int i;
 
@@ -1560,9 +1548,7 @@ forget_objclass(oclass)
 
 /* randomize the given list of numbers  0 <= i < count */
 static void
-randomize(indices, count)
-	int *indices;
-	int count;
+randomize(int *indices, int count)
 {
 	int i, iswap, temp;
 
@@ -1577,8 +1563,7 @@ randomize(indices, count)
 
 /* Forget % of known objects. */
 void
-forget_objects(percent)
-	int percent;
+forget_objects(int percent)
 {
 	int i, count;
 	int indices[NUM_OBJECTS];
@@ -1609,8 +1594,7 @@ forget_objects(percent)
 
 /* Forget some or all of map (depends on parameters). */
 void
-forget_map(howmuch)
-	int howmuch;
+forget_map(int howmuch)
 {
 	register int zx, zy;
 	
@@ -1633,7 +1617,7 @@ forget_map(howmuch)
 
 /* Forget all traps on the level. */
 void
-forget_traps()
+forget_traps(void)
 {
 	register struct trap *trap;
 
@@ -1651,8 +1635,7 @@ forget_traps()
  * except this one.
  */
 void
-forget_levels(percent)
-	int percent;
+forget_levels(int percent)
 {
 	int i, count;
 	xchar  maxl, this_lev;
@@ -1700,8 +1683,7 @@ forget_levels(percent)
 
 /* Forget % of insight gained and sanity lost from monsters. */
 void
-losesaninsight(percent)
-	int percent;
+losesaninsight(int percent)
 {
 	int i, count = 0;
 	int indices[NUMMONS] = {0};
@@ -1740,8 +1722,7 @@ losesaninsight(percent)
  *	howmuch & ALL_SPELLS	= forget all spells
  */
 void
-forget(howmuch)
-int howmuch;
+forget(int howmuch)
 {
 	u.wimage = 0; //clear wa image from your mind
 	
@@ -1786,9 +1767,7 @@ int howmuch;
 
 /* monster is hit by scroll of taming's effect */
 static void
-maybe_tame(mtmp, sobj)
-struct monst *mtmp;
-struct obj *sobj;
+maybe_tame(struct monst *mtmp, struct obj *sobj)
 {
 	if (sobj->cursed) {
 	    setmangry(mtmp);
@@ -1815,8 +1794,7 @@ struct obj *sobj;
 }
 
 int
-seffects(sobj)
-struct obj	*sobj;
+seffects(struct obj *sobj)
 {
 	int cval;
 	boolean confused = (Confusion != 0) || sobj->forceconf;
@@ -3064,8 +3042,7 @@ struct obj	*sobj;
 }
 
 static void
-wand_explode(obj)
-register struct obj *obj;
+wand_explode(register struct obj *obj)
 {
     obj->in_use = TRUE;	/* in case losehp() is fatal */
     Your("%s vibrates violently, and explodes!",xname(obj));
@@ -3079,9 +3056,7 @@ register struct obj *obj;
  * Low-level lit-field update routine.
  */
 void
-set_lit(x,y,val)
-int x, y;
-genericptr_t val;
+set_lit(int x, int y, genericptr_t val)
 {
 	if (val)
 	    levl[x][y].lit = 1;
@@ -3094,9 +3069,7 @@ genericptr_t val;
 // lights/snuffs simple lightsources lying at the location, lighting assumes this is triggered by the player for shk purposes
 // this could also be added to set_lit, I suppose
 void
-ranged_set_lightsources(x,y,val)
-int x, y;
-genericptr_t val;
+ranged_set_lightsources(int x, int y, genericptr_t val)
 {
 	if (val) {
 		struct obj *ispe = mksobj(SPE_LIGHT, NO_MKOBJ_FLAGS);
@@ -3108,9 +3081,7 @@ genericptr_t val;
 }
 
 void
-litroom(on,obj)
-register boolean on;
-struct obj *obj;
+litroom(register boolean on, struct obj *obj)
 {
 	char is_lit;	/* value is irrelevant; we use its address
 			   as a `not null' flag for set_lit() */
@@ -3209,7 +3180,7 @@ do_it:
 }
 
 int
-wiz_kill_all()
+wiz_kill_all(void)
 {
 	register struct monst *mtmp, *mtmp2;
 
@@ -3225,7 +3196,7 @@ wiz_kill_all()
 }
 
 static void
-do_class_genocide()
+do_class_genocide(void)
 {
 	int i, j, immunecnt, gonecnt, goodcnt, class, feel_dead = 0;
 	char buf[BUFSZ];
@@ -3378,8 +3349,7 @@ do_class_genocide()
 #define PLAYER 2
 #define ONTHRONE 4
 void
-do_genocide(how)
-int how;
+do_genocide(int how)
 /* 0 = no genocide; create monsters (cursed scroll) */
 /* 1 = normal genocide */
 /* 3 = forced genocide of player */
@@ -3530,8 +3500,7 @@ int how;
 }
 
 void
-punish(sobj)
-register struct obj	*sobj;
+punish(register struct obj *sobj)
 {
     struct obj *otmp;
 	boolean cursed = (sobj && sobj->cursed);
@@ -3577,7 +3546,7 @@ register struct obj	*sobj;
 }
 
 void
-unpunish()
+unpunish(void)
 {	    /* remove the ball and chain */
 	struct obj *savechain = uchain;
 
@@ -3594,9 +3563,7 @@ unpunish()
  * one, the disoriented creature becomes a zombie
  */
 boolean
-cant_create(mtype, revival)
-int *mtype;
-boolean revival;
+cant_create(int *mtype, boolean revival)
 {
 
 	/* SHOPKEEPERS can be revived now */
@@ -3623,15 +3590,7 @@ boolean revival;
  * than a mimic; this behavior quirk is useful so don't "fix" it...
  */
 struct monst *
-create_particular(x, y, specify_attitude, specify_derivation, allow_multi, ma_require, mg_restrict, gen_restrict, in_buff)\
-int x,y;
-unsigned long specify_attitude;		// -1 -> true; 0 -> false; >0 -> as given
-int specify_derivation;				// -1 -> true; 0 -> false; >0 -> as given
-int allow_multi;
-unsigned long ma_require;
-unsigned long mg_restrict;
-int gen_restrict;
-char *in_buff;
+create_particular(int x, int y, unsigned long specify_attitude, int specify_derivation, int allow_multi, unsigned long ma_require, unsigned long mg_restrict, int gen_restrict, char *in_buff)
 {
 	char buf[BUFSZ], *bufp, *p, *q, monclass = MAXMCLASSES;
 	int which, tries, i;
@@ -3962,8 +3921,7 @@ createmon:
 }
 
 static void
-learn_spell_aphanactonan(spellnum)
-int spellnum;
+learn_spell_aphanactonan(int spellnum)
 {
 	int i;
 	char splname[BUFSZ];

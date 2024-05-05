@@ -203,7 +203,7 @@ pixel (*pixels)[TILE_X];
 
 /* initialize main colormap from globally accessed ColorMap */
 void
-init_colormap()
+init_colormap(void)
 {
 	int i;
 
@@ -217,7 +217,7 @@ init_colormap()
 
 /* merge new colors from ColorMap into MainColorMap */
 void
-merge_colormap()
+merge_colormap(void)
 {
 	int i, j;
 
@@ -243,9 +243,7 @@ merge_colormap()
 }
 
 boolean
-fopen_text_file(filename, type)
-const char *filename;
-const char *type;
+fopen_text_file(const char *filename, const char *type)
 {
 	const char *p;
 	int i;
@@ -314,7 +312,7 @@ pixel (*pixels)[TILE_X];
 }
 
 int
-fclose_text_file()
+fclose_text_file(void)
 {
 	int ret;
 

@@ -5,7 +5,7 @@
 #include "hack.h"
 #include "mfndpos.h" /* ALLOW_M */
 
-//static int FDECL(drop_throw,(struct monst *, struct obj *,BOOLEAN_P,int,int));
+//static int FDECL(drop_throw,(struct monst *, struct obj *,boolean,int,int));
 
 #define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
 
@@ -18,9 +18,7 @@ static const int dirx[8] = {0, 1, 1,  1,  0, -1, -1, -1},
 
 /* Remove an item from the monster's inventory and destroy it. */
 void
-m_useup(mon, obj)
-struct monst *mon;
-struct obj *obj;
+m_useup(struct monst *mon, struct obj *obj)
 {
 	if (obj->quan > 1L) {
 		obj->quan--;
@@ -42,8 +40,7 @@ struct obj *obj;
 
 
 boolean
-mtarget_adjacent(magr)
-struct monst *magr;
+mtarget_adjacent(struct monst *magr)
 {
 	int i,j, ix, jy;
 	int x = magr->mx, y = magr->my;
@@ -79,10 +76,10 @@ extern int monstr[];
 /* Find a target for a ranged attack. */
 /* needs to set tbx, tby */
 struct monst *
-mfind_target(magr, force_linedup, use_find_offensive)
-struct monst *magr;
-boolean force_linedup;	/* if TRUE, we have some offensive item ready that will work if we are lined up */
-boolean use_find_offensive;	/* if TRUE, we have some offensive item ready that will work if we are lined up */
+mfind_target(
+	struct monst *magr,
+	boolean force_linedup,	/* if TRUE, we have some offensive item ready that will work if we are lined up */
+	boolean use_find_offensive	/* if TRUE, we have some offensive item ready that will work if we are lined up */)
 {
 	struct monst * mdef = (struct monst *)0;
 	struct monst * best_target = (struct monst *)0;
@@ -309,8 +306,7 @@ boolean use_find_offensive;	/* if TRUE, we have some offensive item ready that w
 }
 
 boolean
-linedup(ax, ay, bx, by)
-register xchar ax, ay, bx, by;
+linedup(register xchar ax, register xchar ay, register xchar bx, register xchar by)
 {
 	tbx = ax - bx;	/* These two values are set for use */
 	tby = ay - by;	/* after successful return.	    */
@@ -328,8 +324,8 @@ register xchar ax, ay, bx, by;
 }
 
 boolean
-lined_up(mtmp)		/* is mtmp in position to use ranged attack? */
-	register struct monst *mtmp;
+lined_up(		/* is mtmp in position to use ranged attack? */
+	register struct monst *mtmp)
 {
 	return(linedup(mtmp->mux,mtmp->muy,mtmp->mx,mtmp->my));
 }
@@ -346,8 +342,7 @@ lined_up(mtmp)		/* is mtmp in position to use ranged attack? */
  *  
  */
 int
-m_pole_range(magr)
-struct monst * magr;
+m_pole_range(struct monst *magr)
 {
 	if (magr == &youmonst) {
 		impossible("calculating player's polearm range with m_pole_range?");
@@ -370,9 +365,7 @@ struct monst * magr;
 /* Check if a monster is carrying a particular item.
  */
 struct obj *
-m_carrying(mtmp, type)
-struct monst *mtmp;
-int type;
+m_carrying(struct monst *mtmp, int type)
 {
 	register struct obj *otmp;
 
@@ -385,9 +378,7 @@ int type;
 /* Check if a monster is carrying a particular charged (ovar1_charges>0) item.
  */
 struct obj *
-m_carrying_charged(mtmp, type)
-struct monst *mtmp;
-int type;
+m_carrying_charged(struct monst *mtmp, int type)
 {
 	register struct obj *otmp;
 
@@ -399,11 +390,12 @@ int type;
 
 /* TRUE iff thrown/kicked/rolled object doesn't pass through iron bars */
 boolean
-hits_bars(obj_p, x, y, always_hit, whodidit)
-struct obj **obj_p;	/* *obj_p will be set to NULL if object breaks */
-int x, y;
-int always_hit;	/* caller can force a hit for items which would fit through */
-int whodidit;	/* 1==hero, 0=other, -1==just check whether it'll pass thru */
+hits_bars(
+	struct obj **obj_p,	/* *obj_p will be set to NULL if object breaks */
+	int x,
+	int y,
+	int always_hit,	/* caller can force a hit for items which would fit through */
+	int whodidit	/* 1==hero, 0=other, -1==just check whether it'll pass thru */)
 {
     struct obj *otmp = *obj_p;
     int obj_type = otmp->otyp;

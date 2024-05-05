@@ -129,7 +129,7 @@ static const struct crowning hand_of_elbereth[] = {
 /* returns the appropriate index of hand_of_elbereth[] for your character */
 /* butt-ugly until I write the player to store the INDEX of their current god instead of their name */
 int
-choose_crowning()
+choose_crowning(void)
 {
 	/* figure out what index your god is */
 	int god_index = u.ualign.god;
@@ -199,7 +199,7 @@ choose_crowning()
 }
 
 const char *
-crowning_title()
+crowning_title(void)
 {
 	if (!u.uevent.uhand_of_elbereth) {
 		impossible("called crowning_title() without being crowned?");
@@ -238,7 +238,7 @@ crowning_title()
 }
 
 int
-gcrownu()
+gcrownu(void)
 {
 	struct obj * obj;
 	char buf[BUFSZ];

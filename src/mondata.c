@@ -19,7 +19,7 @@ char * nameless_horror_name;
  * is called at gamestart (and after restoring a save)
  */
 void
-id_permonst()
+id_permonst(void)
 {
 	int i;
 	if (mons->mtyp == NON_PM)
@@ -35,9 +35,7 @@ id_permonst()
  */
 
 void
-set_mcan(mon, state)
-struct monst *mon;
-boolean state;
+set_mcan(struct monst *mon, boolean state)
 {
 	boolean weap_attack, xwep_attack;
 	mon->mcan = state;
@@ -65,9 +63,7 @@ boolean state;
  * Calling `set_mon_data(mon, mon->mtyp)` is always ok.
  */
 void
-set_mon_data(mon, mtyp)
-struct monst *mon;
-int mtyp;
+set_mon_data(struct monst *mon, int mtyp)
 {
 	struct permonst * bas;
 	struct permonst * ptr;
@@ -103,10 +99,7 @@ int mtyp;
 }
 
 void
-update_mon_mvar(mon, oldpm, newpm)
-struct monst *mon;
-int oldpm;
-int newpm;
+update_mon_mvar(struct monst *mon, int oldpm, int newpm)
 {
 	//set mvar1
 	if(is_vectored_mtyp(newpm)){
@@ -226,9 +219,7 @@ int newpm;
  * Calling `set_mon_data_core(mon, mon->data)` is always ok.
  */
 void
-set_mon_data_core(mon, ptr)
-struct monst *mon;
-struct permonst * ptr;
+set_mon_data_core(struct monst *mon, struct permonst *ptr)
 {
 	int i;
 
@@ -323,18 +314,14 @@ struct permonst * ptr;
 }
 
 void
-give_mintrinsic(mon, intrinsic)
-struct monst * mon;
-long intrinsic;
+give_mintrinsic(struct monst *mon, long intrinsic)
 {
 	mon->acquired_trinsics[((intrinsic)-1)/32] |=  (1L<<((intrinsic)-1)%32);
 	set_mon_data_core(mon, mon->data);
 }
 
 void
-remove_mintrinsic(mon, intrinsic)
-struct monst * mon;
-long intrinsic;
+remove_mintrinsic(struct monst *mon, long intrinsic)
 {
 	mon->acquired_trinsics[((intrinsic)-1)/32] &= ~(1L<<((intrinsic)-1)%32);
 	set_mon_data_core(mon, mon->data);
@@ -342,9 +329,7 @@ long intrinsic;
 
 //Note: intended to be mental things relating to a faction a monster belongs to
 void
-set_faction(mtmp, faction)
-struct monst * mtmp;
-int faction;
+set_faction(struct monst *mtmp, int faction)
 {
 	mtmp->mfaction = faction;
 	set_mon_data(mtmp, mtmp->mtyp); //Should be unlikely to actually result in a change in data.
@@ -353,9 +338,7 @@ int faction;
 
 //Note: intended to be physical things like zombification.
 void
-set_template(mtmp, template)
-struct monst * mtmp;
-int template;
+set_template(struct monst *mtmp, int template)
 {
 	mtmp->mtemplate = template;
 	set_mon_data(mtmp, mtmp->mtyp);
@@ -366,10 +349,7 @@ int template;
  * Modifies a base permonst struct for a specific template and saves it to `ptr`
  */
 void
-set_template_data(base, ptr, template)
-struct permonst * base;
-struct permonst * ptr;
-int template;
+set_template_data(struct permonst *base, struct permonst *ptr, int template)
 {
 	int mtyp = base->mtyp;
 	/* copy original */
@@ -1498,9 +1478,7 @@ int template;
 
 /* returns TRUE if mtyp and mtemplate are compatible */
 boolean
-mtemplate_accepts_mtyp(mtemplate, mtyp)
-int mtemplate;
-int mtyp;
+mtemplate_accepts_mtyp(int mtemplate, int mtyp)
 {
 	if (mtyp == NON_PM)
 		return FALSE;
@@ -1589,9 +1567,7 @@ int mtyp;
  * This function is responsible for allocating memory for new permonsts!
  */
 struct permonst *
-permonst_of(mtyp, template)
-int mtyp;
-int template;
+permonst_of(int mtyp, int template)
 {
 	static struct permonst * monsarrays[NUMMONS][MAXTEMPLATE] = { 0 };
 	struct permonst * ptr;
@@ -1627,10 +1603,7 @@ int template;
 }
 
 void
-make_horror(horror, target_level, level_bonus)
-struct permonst * horror;
-int target_level;
-int level_bonus;
+make_horror(struct permonst *horror, int target_level, int level_bonus)
 {
 	extern int monstr[];
 	struct attack* attkptr;
@@ -2045,9 +2018,7 @@ int level_bonus;
 
 
 struct attack *
-attacktype_fordmg(ptr, atyp, dtyp)
-struct permonst *ptr;
-int atyp, dtyp;
+attacktype_fordmg(struct permonst *ptr, int atyp, int dtyp)
 {
     struct attack *a;
 
@@ -2060,9 +2031,7 @@ int atyp, dtyp;
 }
 
 struct attack *
-permonst_dmgtype(ptr, dtyp)
-struct permonst *ptr;
-int dtyp;
+permonst_dmgtype(struct permonst *ptr, int dtyp)
 {
     struct attack *a;
 
@@ -2075,8 +2044,7 @@ int dtyp;
 }
 
 boolean
-at_least_one_attack(magr)
-struct monst *magr;
+at_least_one_attack(struct monst *magr)
 {
 	struct attack *attk;
 	struct attack prev_attk = {0};
@@ -2106,9 +2074,7 @@ struct monst *magr;
 }
 
 boolean
-attacktype(ptr, atyp)
-struct permonst *ptr;
-int atyp;
+attacktype(struct permonst *ptr, int atyp)
 {
     return attacktype_fordmg(ptr, atyp, AD_ANY) ? TRUE : FALSE;
 }
@@ -2116,9 +2082,7 @@ int atyp;
 //Does monster have an attack of type atyp? Use get_attacktype to avoid duplicating code.
 
 boolean
-mon_attacktype(mon, atyp)
-struct monst *mon;
-int atyp;
+mon_attacktype(struct monst *mon, int atyp)
 {
 	struct attack prev_attk = {0};
 
@@ -2131,9 +2095,7 @@ int atyp;
 //Count the number of attacks of type atyp a monster has.
 
 int
-mon_count_attacktype(mon, atyp)
-struct monst *mon;
-int atyp;
+mon_count_attacktype(struct monst *mon, int atyp)
 {
 	struct attack *attk;
 	struct attack prev_attk = {0};
@@ -2163,10 +2125,7 @@ int atyp;
 //Get a pointer to mon's first attack of type atyp. prev_attk must point to the attack buffer the attack's data should end up in.
 
 struct attack *
-mon_get_attacktype(mon, atyp, prev_attk)
-struct monst *mon;
-int atyp;
-struct attack *prev_attk;
+mon_get_attacktype(struct monst *mon, int atyp, struct attack *prev_attk)
 {
 	struct attack *attk;
 	int	indexnum = 0,	/* loop counter */
@@ -2193,8 +2152,7 @@ struct attack *prev_attk;
 }
 
 boolean
-mon_offhand_attack(mon)
-struct monst *mon;
+mon_offhand_attack(struct monst *mon)
 {
 	struct attack *attk;
 	struct attack prev_attk_buffer = {0};
@@ -2221,8 +2179,7 @@ struct monst *mon;
 }
 
 boolean
-cantwield(mon)
-struct monst *mon;
+cantwield(struct monst *mon)
 {
 	if(mon_attacktype(mon, AT_WEAP) || mon_attacktype(mon, AT_DEVA))
 		return FALSE;
@@ -2231,8 +2188,7 @@ struct monst *mon;
 }
 
 boolean
-you_cantwield(ptr)
-struct permonst *ptr;
+you_cantwield(struct permonst *ptr)
 {
     struct attack *a;
 	
@@ -2248,8 +2204,8 @@ struct permonst *ptr;
 }
 
 boolean
-noattacks(ptr)			/* returns TRUE if monster has no non-passive attacks */
-struct permonst *ptr;
+noattacks(			/* returns TRUE if monster has no non-passive attacks */
+	struct permonst *ptr)
 {
 	int i;
 
@@ -2261,9 +2217,7 @@ struct permonst *ptr;
 }
 
 int
-attackindex(ptr, atyp, dtyp)
-struct permonst *ptr;
-int atyp, dtyp;
+attackindex(struct permonst *ptr, int atyp, int dtyp)
 {
 	int i;
     for (i = 0; i < NATTK; i++)
@@ -2275,8 +2229,7 @@ int atyp, dtyp;
 
 
 boolean
-poly_when_stoned(ptr)
-    struct permonst *ptr;
+poly_when_stoned(struct permonst *ptr)
 {
     return((boolean)(is_golem(ptr) && ptr->mtyp != PM_STONE_GOLEM && ptr->mtyp != PM_SENTINEL_OF_MITHARDIR &&
 	    !(mvitals[PM_STONE_GOLEM].mvflags & G_GENOD && !In_quest(&u.uz))));
@@ -2284,8 +2237,7 @@ poly_when_stoned(ptr)
 }
 
 boolean
-poly_when_golded(ptr)
-    struct permonst *ptr;
+poly_when_golded(struct permonst *ptr)
 {
     return((boolean)(is_golem(ptr) && ptr->mtyp != PM_GOLD_GOLEM &&
 	    !(mvitals[PM_GOLD_GOLEM].mvflags & G_GENOD && !In_quest(&u.uz))));
@@ -2293,8 +2245,7 @@ poly_when_golded(ptr)
 }
 
 boolean
-resists_oona(mon)
-	struct monst *mon;
+resists_oona(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2307,8 +2258,7 @@ resists_oona(mon)
 }
 
 boolean
-resists_fire(mon)
-	struct monst *mon;
+resists_fire(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2316,8 +2266,7 @@ resists_fire(mon)
 }
 
 boolean
-resists_cold(mon)
-	struct monst *mon;
+resists_cold(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2327,8 +2276,7 @@ resists_cold(mon)
 }
 
 boolean
-resists_sleep(mon)
-	struct monst *mon;
+resists_sleep(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2337,8 +2285,7 @@ resists_sleep(mon)
 }
 
 boolean
-resists_disint(mon)
-	struct monst *mon;
+resists_disint(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2346,8 +2293,7 @@ resists_disint(mon)
 }
 
 boolean
-resists_elec(mon)
-	struct monst *mon;
+resists_elec(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2355,8 +2301,7 @@ resists_elec(mon)
 }
 
 boolean
-resists_poison(mon)
-	struct monst *mon;
+resists_poison(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2365,8 +2310,7 @@ resists_poison(mon)
 }
 
 boolean
-resists_acid(mon)
-	struct monst *mon;
+resists_acid(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2374,8 +2318,7 @@ resists_acid(mon)
 }
 
 boolean
-Slime_res(mon)
-struct monst *mon;
+Slime_res(struct monst *mon)
 {
 	struct obj *otmp;
 	if(!mon) return FALSE;
@@ -2404,8 +2347,7 @@ struct monst *mon;
 }
 
 boolean
-resists_ston(mon)
-	struct monst *mon;
+resists_ston(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2413,8 +2355,7 @@ resists_ston(mon)
 }
 
 boolean
-resists_drain(mon)
-	struct monst *mon;
+resists_drain(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2422,8 +2363,7 @@ resists_drain(mon)
 }
 
 boolean
-resists_sickness(mon)
-	struct monst *mon;
+resists_sickness(struct monst *mon)
 {
 	if(!mon) return FALSE;
 	
@@ -2431,8 +2371,8 @@ resists_sickness(mon)
 }
 
 boolean
-resists_drli(mon)	/* returns TRUE if monster is drain-life resistant */
-struct monst *mon;
+resists_drli(	/* returns TRUE if monster is drain-life resistant */
+	struct monst *mon)
 {
 	struct permonst *ptr;
 	
@@ -2447,8 +2387,8 @@ struct monst *mon;
 }
 
 boolean
-resists_magm(mon)	/* TRUE if monster is magic-missile resistant */
-struct monst *mon;
+resists_magm(	/* TRUE if monster is magic-missile resistant */
+	struct monst *mon)
 {
 	if(!mon) return FALSE;
 
@@ -2457,8 +2397,8 @@ struct monst *mon;
 }
 
 boolean
-resists_death(mon)	/* TRUE if monster resists death magic */
-struct monst *mon;
+resists_death(	/* TRUE if monster resists death magic */
+	struct monst *mon)
 {
 	struct permonst *ptr;
 	
@@ -2472,8 +2412,7 @@ struct monst *mon;
 
 /* TRUE iff monster is resistant to light-induced blindness */
 boolean
-resists_blnd(mon)
-struct monst *mon;
+resists_blnd(struct monst *mon)
 {
 	struct permonst *ptr;
 	boolean is_you = (mon == &youmonst);
@@ -2592,8 +2531,7 @@ can_blnd(
 
 
 int
-m_martial_skill(ptr)
-struct permonst * ptr;
+m_martial_skill(struct permonst *ptr)
 {
 	switch (ptr->mflagsf & (MF_MARTIAL_B|MF_MARTIAL_S|MF_MARTIAL_E))
 	{
@@ -2608,8 +2546,8 @@ struct permonst * ptr;
 }
 
 boolean
-ranged_attk(ptr)	/* returns TRUE if monster can attack at range */
-struct permonst *ptr;
+ranged_attk(	/* returns TRUE if monster can attack at range */
+	struct permonst *ptr)
 {
 	register int i, atyp;
 	long atk_mask = (1L << AT_BREA) | (1L << AT_BRSH) | (1L << AT_SPIT) | (1L << AT_GAZE) | (1L << AT_LRCH) | (1L << AT_LNCK)
@@ -2633,8 +2571,7 @@ struct permonst *ptr;
 
 /* true iff the type of monster pass through iron bars */
 boolean
-passes_bars(mon)
-struct monst *mon;
+passes_bars(struct monst *mon)
 {
 	struct permonst *mptr = mon->data;
 
@@ -2646,8 +2583,8 @@ struct monst *mon;
 
 
 boolean
-can_track(ptr)		/* returns TRUE if monster can track well */
-	register struct permonst *ptr;
+can_track(		/* returns TRUE if monster can track well */
+	register struct permonst *ptr)
 {
 	if (uwep && (
 		uwep->oartifact == ART_EXCALIBUR
@@ -2661,8 +2598,8 @@ can_track(ptr)		/* returns TRUE if monster can track well */
 
 
 boolean
-sticks(mtmp)	/* creature sticks other creatures it hits */
-struct monst * mtmp;
+sticks(	/* creature sticks other creatures it hits */
+	struct monst *mtmp)
 {
 	register struct permonst * ptr = (mtmp == &youmonst) ? youracedata : mtmp->data;
 	/* monsters that can intrinsically do so */
@@ -2678,8 +2615,7 @@ struct monst * mtmp;
 
 /* number of horns this type of monster has on its head */
 int
-num_horns(ptr)
-struct permonst *ptr;
+num_horns(struct permonst *ptr)
 {
     switch (monsndx(ptr)) {
 	case PM_DRACAE_ELADRIN:
@@ -2738,9 +2674,7 @@ struct permonst *ptr;
 }
 
 struct attack *
-dmgtype_fromattack(ptr, dtyp, atyp)
-struct permonst *ptr;
-int dtyp, atyp;
+dmgtype_fromattack(struct permonst *ptr, int dtyp, int atyp)
 {
     struct attack *a;
 
@@ -2752,9 +2686,7 @@ int dtyp, atyp;
 }
 
 boolean
-dmgtype(ptr, dtyp)
-struct permonst *ptr;
-int dtyp;
+dmgtype(struct permonst *ptr, int dtyp)
 {
     return dmgtype_fromattack(ptr, dtyp, AT_ANY) ? TRUE : FALSE;
 }
@@ -2788,8 +2720,8 @@ max_passive_dmg(struct monst *mdef, struct monst *magr)
 
 
 int
-monsndx(ptr)		/* return an index into the mons array */
-	struct	permonst	*ptr;
+monsndx(		/* return an index into the mons array */
+	struct permonst *ptr)
 {
 	return ptr->mtyp;
 	//register int	i;
@@ -2810,8 +2742,7 @@ monsndx(ptr)		/* return an index into the mons array */
 
 
 int
-name_to_mon(in_str)
-const char *in_str;
+name_to_mon(const char *in_str)
 {
 	/* Be careful.  We must check the entire string in case it was
 	 * something such as "ettin zombie corpse".  The calling routine
@@ -2937,8 +2868,7 @@ const char *in_str;
 
 /* returns 3 values (0=male, 1=female, 2=none) */
 int
-gender(mtmp)
-register struct monst *mtmp;
+gender(register struct monst *mtmp)
 {
 	if (is_neuter(mtmp->data)) return 2;
 	return mtmp->female;
@@ -2947,8 +2877,7 @@ register struct monst *mtmp;
 /* Like gender(), but lower animals and such are still "it". */
 /* This is the one we want to use when printing messages. */
 int
-pronoun_gender(mtmp)
-register struct monst *mtmp;
+pronoun_gender(register struct monst *mtmp)
 {
 	struct permonst * mdat = mtmp->data;
 	if(mtmp->m_ap_type == M_AP_MONSTER) mdat = &mons[mtmp->mappearance];
@@ -2968,8 +2897,7 @@ register struct monst *mtmp;
 
 /* used for nearby monsters when you go to another level */
 boolean
-levl_follower(mtmp)
-struct monst *mtmp;
+levl_follower(struct monst *mtmp)
 {
 	/* monsters with the Amulet--even pets--won't follow across levels */
 	if (mon_has_amulet(mtmp)) return FALSE;
@@ -3086,9 +3014,7 @@ static const short grownups[][2] = {
 };
 
 int
-little_to_big(montype, female)
-int montype;
-int female;
+little_to_big(int montype, int female)
 {
 	register int i;
 
@@ -3104,8 +3030,7 @@ int female;
 }
 
 int
-big_to_little(montype)
-int montype;
+big_to_little(int montype)
 {
 	register int i;
 
@@ -3120,8 +3045,7 @@ int montype;
  * player.  It does not return a pointer to player role character.
  */
 const struct permonst *
-raceptr(mtmp)
-struct monst *mtmp;
+raceptr(struct monst *mtmp)
 {
     if (mtmp == &youmonst && !Upolyd) return(&mons[urace.malenum]);
     else return(mtmp->data);
@@ -3136,9 +3060,7 @@ static const char *immobile[4]	= { "wiggle", "Wiggle", "pulsate", "Pulsate" };
 static const char *crawl[4]	= { "crawl", "Crawl", "falter", "Falter" };
 
 const char *
-locomotion(mon, def)
-struct monst *mon;
-const char *def;
+locomotion(struct monst *mon, const char *def)
 {
 	int capitalize = (*def == highc(*def));
 	const struct permonst *ptr = mon->data;
@@ -3156,9 +3078,7 @@ const char *def;
 }
 
 const char *
-stagger(mon, def)
-struct monst *mon;
-const char *def;
+stagger(struct monst *mon, const char *def)
 {
 	int capitalize = 2 + (*def == highc(*def));
 	const struct permonst *ptr = mon->data;
@@ -3177,9 +3097,7 @@ const char *def;
 
 /* return a phrase describing the effect of fire attack on a type of monster */
 const char *
-on_fire(mptr, mattk)
-struct permonst *mptr;
-struct attack *mattk;
+on_fire(struct permonst *mptr, struct attack *mattk)
 {
     const char *what;
 
@@ -3224,8 +3142,7 @@ struct attack *mattk;
 since I have no clue how the heck to access it while it's in there
 */
 int
-mstrength(ptr)
-struct permonst *ptr;
+mstrength(struct permonst *ptr)
 {
 	int	i, tmp2, n, tmp = ptr->mlevel;
 
@@ -3332,8 +3249,7 @@ struct permonst *ptr;
  * Used for carry cap.
  */
 long
-mon_str(mon)
-struct monst *mon;
+mon_str(struct monst *mon)
 {
 	struct obj *gloves = which_armor(mon, W_ARMG);
 	struct obj *weap = MON_WEP(mon);
@@ -3366,8 +3282,7 @@ struct monst *mon;
  * Used for carry cap.
  */
 long
-mon_con(mon)
-struct monst *mon;
+mon_con(struct monst *mon)
 {
 	struct obj *gloves = which_armor(mon, W_ARMG);
 	struct obj *weap = MON_WEP(mon);
@@ -3399,8 +3314,7 @@ struct monst *mon;
 }
 
 boolean
-hiddenwidegaze(magr)
-struct monst *magr;
+hiddenwidegaze(struct monst *magr)
 {
 	struct obj *cloak = which_armor(magr, W_ARMC);
 	if(magr->mtyp == PM_MEDUSA){
@@ -3426,8 +3340,7 @@ struct monst *magr;
 }
 
 int
-hd_size(ptr)
-struct permonst *ptr;
+hd_size(struct permonst *ptr)
 {
 	int size = 8;
 	// acu spirits all use 8 as hit dice

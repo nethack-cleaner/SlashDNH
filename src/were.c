@@ -6,8 +6,7 @@
 
 
 void
-were_change(mon)
-register struct monst *mon;
+were_change(register struct monst *mon)
 {
 	if( !is_were(mon->data)
 		&& !(is_heladrin(mon->data) && mon->mhp < .5*mon->mhpmax && rn2(2))
@@ -108,8 +107,7 @@ register struct monst *mon;
 
 
 int
-counter_were(pm)
-int pm;
+counter_were(int pm)
 {
 	switch(pm) {
 	    case PM_WEREWOLF:	      return(PM_HUMAN_WEREWOLF);
@@ -210,8 +208,7 @@ int pm;
 }
 
 int
-transmitted_were(mtyp)
-int mtyp;
+transmitted_were(int mtyp)
 {
 	switch(mtyp)
 	{
@@ -232,9 +229,7 @@ int mtyp;
 }
 
 void
-were_transform(mon, pm)
-struct monst *mon;
-int pm;
+were_transform(struct monst *mon, int pm)
 {
 	struct obj *otmp;
 	set_mon_data(mon, pm);
@@ -308,8 +303,7 @@ int pm;
 }
 
 void
-new_were(mon)
-struct monst *mon;
+new_were(struct monst *mon)
 {
 	int pm;
 
@@ -352,10 +346,10 @@ struct monst *mon;
 }
 
 int
-were_summon(caller,visible,genbuf)	/* were-creature (even you) summons a horde */
-struct monst * caller;
-int *visible;			/* number of visible helpers created */
-char *genbuf;
+were_summon(	/* were-creature (even you) summons a horde */
+	struct monst *caller,
+	int *visible,			/* number of visible helpers created */
+	char *genbuf)
 {
 	register int i, typ;
 	register struct monst *mtmp;
@@ -406,7 +400,7 @@ char *genbuf;
 }
 
 void
-you_were()
+you_were(void)
 {
 	char qbuf[QBUFSZ];
 
@@ -421,8 +415,7 @@ you_were()
 }
 
 void
-you_unwere(purify)
-boolean purify;
+you_unwere(boolean purify)
 {
 	if (purify) {
 	    You_feel("purified.");

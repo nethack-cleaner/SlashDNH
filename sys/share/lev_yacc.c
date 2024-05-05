@@ -51,14 +51,14 @@ extern void FDECL(yywarning, (const char *));
 extern int NDECL(yylex);
 int NDECL(yyparse);
 
-extern int FDECL(get_floor_type, (CHAR_P));
+extern int FDECL(get_floor_type, (char));
 extern int FDECL(get_room_type, (char *));
 extern int FDECL(get_trap_type, (char *));
-extern int FDECL(get_monster_id, (char *,CHAR_P));
-extern int FDECL(get_object_id, (char *,CHAR_P));
-extern boolean FDECL(check_monster_char, (CHAR_P));
-extern boolean FDECL(check_object_char, (CHAR_P));
-extern char FDECL(what_map_char, (CHAR_P));
+extern int FDECL(get_monster_id, (char *,char));
+extern int FDECL(get_object_id, (char *,char));
+extern boolean FDECL(check_monster_char, (char));
+extern boolean FDECL(check_object_char, (char));
+extern char FDECL(what_map_char, (char));
 extern void FDECL(scan_map, (char *));
 extern void NDECL(wallify_map);
 extern boolean NDECL(check_subrooms);
@@ -909,7 +909,7 @@ YYSTYPE yyvs[YYSTACKSIZE];
 #define YYACCEPT goto yyaccept
 #define YYERROR goto yyerrlab
 int
-yyparse()
+yyparse(void)
 {
     register int yym, yyn, yystate;
 #if YYDEBUG

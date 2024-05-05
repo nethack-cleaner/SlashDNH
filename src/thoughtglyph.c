@@ -5,7 +5,7 @@
 #include "hack.h"
 
 int
-count_glyphs(){
+count_glyphs(void){
 	int i, count = 0;
 	for (i = 0; i<32; i++){
 		if (((u.thoughts >> i) & 1L) == 1L) count++;
@@ -14,9 +14,8 @@ count_glyphs(){
 }
 
 /* returns the thought associated with the otyp, if there is one */
-long int
-otyp_to_thought(otyp)
-int otyp;
+long int 
+otyp_to_thought(int otyp)
 {
 	int i;
 
@@ -28,9 +27,8 @@ int otyp;
 }
 
 /* returns the thought associated with the mtyp, if there is one */
-long int
-mtyp_to_thought(mtyp)
-int mtyp;
+long int 
+mtyp_to_thought(int mtyp)
 {
 	int i;
 
@@ -44,8 +42,7 @@ int mtyp;
 /* gives the player the thought IF they meet the insight/san requirements */
 /* returns TRUE if it succeeds */
 boolean
-maybe_give_thought(thought)
-long int thought;
+maybe_give_thought(long int thought)
 {
 	if ((count_glyphs() >= MAX_GLYPHS) ||
 		(u.thoughts & thought) ||
@@ -61,8 +58,7 @@ long int thought;
 
 /* gives the player the thought */
 void
-give_thought(thought)
-long int thought;
+give_thought(long int thought)
 {
 	u.thoughts |= thought;
 	if (active_glyph(thought))
@@ -70,8 +66,7 @@ long int thought;
 }
 
 void
-remove_thought(thought)
-long int thought;
+remove_thought(long int thought)
 {
 	if (!(u.thoughts & thought)) {
 		impossible("removing thought %ld?", thought);
@@ -85,8 +80,7 @@ long int thought;
 }
 
 int
-glyph_sanity(thought)
-long int thought;
+glyph_sanity(long int thought)
 {
 	/* disabled. */
 	return 1000;
@@ -102,8 +96,7 @@ long int thought;
 }
 
 int
-glyph_insight(thought)
-long int thought;
+glyph_insight(long int thought)
 {
 	int i;
 	for (i = 0; i < SIZE(thoughtglyphs); i++) {
@@ -117,8 +110,7 @@ long int thought;
 
 /* returns TRUE if <thought> is currently active */
 boolean
-active_glyph(thought)
-long int thought;
+active_glyph(long int thought)
 {
 	if (!(u.thoughts&thought))
 		return FALSE;
@@ -130,10 +122,7 @@ long int thought;
 }
 /* returns TRUE if <thought> would have been active at old insight/sanity values */
 boolean
-was_active_glyph(thought, oldinsight, oldsanity)
-long int thought;
-int oldinsight;
-int oldsanity;
+was_active_glyph(long int thought, int oldinsight, int oldsanity)
 {
 	if (!(u.thoughts&thought))
 		return FALSE;
@@ -146,9 +135,9 @@ int oldsanity;
 
 /* perform all tasks when activating/deactivating <thought> */
 void
-change_glyph_active(thought, on)
-long int thought;
-boolean on;	/* TRUE if activating, FALSE if deactivating */
+change_glyph_active(
+	long int thought,
+	boolean on	/* TRUE if activating, FALSE if deactivating */)
 {
 	/* print activation message */
 	if (on) {
@@ -192,9 +181,7 @@ boolean on;	/* TRUE if activating, FALSE if deactivating */
 
 /* does the activated effect of the guidance glyph */
 void
-doguidance(mdef, dmg)
-struct monst *mdef;
-int dmg;
+doguidance(struct monst *mdef, int dmg)
 {
 	if (mdef && mdef->mattackedu) {
 		int life = (int)(dmg*0.2 + 1);
@@ -203,7 +190,7 @@ int dmg;
 }
 
 int
-dofreethought_menu()
+dofreethought_menu(void)
 {
 	winid tmpwin;
 	int n, how;
@@ -414,7 +401,7 @@ dofreethought_menu()
 }
 
 boolean
-dofreethought()
+dofreethought(void)
 {
 	int thoughtID;
 	thoughtID = dofreethought_menu();

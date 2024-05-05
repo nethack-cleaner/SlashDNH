@@ -49,10 +49,7 @@ static const char
 #define you_have_X(something)	enl_msg(You_,have,(const char *)"",something)
 
 static void
-enlght_line(start, middle, end, dumping, duration)
-const char *start, *middle, *end;
-boolean dumping;
-long duration;
+enlght_line(const char *start, const char *middle, const char *end, boolean dumping, long duration)
 {
 	char buf[BUFSZ];
 
@@ -67,9 +64,7 @@ long duration;
 }
 
 static void
-put_or_dump(msg, dumping)
-const char * msg;
-boolean dumping;
+put_or_dump(const char *msg, boolean dumping)
 {
 #ifdef DUMP_LOG
 	char buf[BUFSZ];
@@ -84,10 +79,7 @@ boolean dumping;
 
 /* format increased damage or chance to hit */
 static char *
-enlght_combatinc(inctyp, incamt, final, outbuf)
-const char *inctyp;
-int incamt, final;
-char *outbuf;
+enlght_combatinc(const char *inctyp, int incamt, int final, char *outbuf)
 {
 	char numbuf[24];
 	const char *modif, *bonus;
@@ -123,7 +115,7 @@ char *outbuf;
 
 
 int
-doattributes()
+doattributes(void)
 {
 	int choice;
 	
@@ -163,14 +155,14 @@ doattributes()
  * (shares enlightenment's tense handling)
  */
 int
-doconduct()
+doconduct(void)
 {
 	show_conduct(0, FALSE);
 	return MOVE_INSTANT;
 }
 
 int
-doenlightenment()
+doenlightenment(void)
 {
 	show_enlightenment(0, FALSE);
 	return MOVE_INSTANT;
@@ -182,7 +174,7 @@ doenlightenment()
  * Returns FALSE if menu cancelled (dismissed with ESC), TRUE otherwise.
  */
 static int
-minimal_enlightenment()
+minimal_enlightenment(void)
 {
 	winid tmpwin;
 	menu_item *selected;
@@ -405,9 +397,9 @@ minimal_enlightenment()
 
 
 void
-show_enlightenment(final, dumping)
-int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
-boolean dumping;
+show_enlightenment(
+	int final,	/* 0 => still in progress; 1 => over, survived; 2 => dead */
+	boolean dumping)
 {
 	int ltmp;
 	char buf[BUFSZ];
@@ -1163,7 +1155,7 @@ boolean dumping;
 }
 
 static void
-resistances_enlightenment()
+resistances_enlightenment(void)
 {
 	char buf[BUFSZ];
 
@@ -1741,7 +1733,7 @@ resistances_enlightenment()
 }
 
 void
-udr_enlightenment()
+udr_enlightenment(void)
 {
 	int dr;
 	int cap = 11;
@@ -1804,7 +1796,7 @@ udr_enlightenment()
 }
 
 static void
-spirits_enlightenment()
+spirits_enlightenment(void)
 {
 	char buf[BUFSZ];
 	int i;
@@ -1935,7 +1927,7 @@ spirits_enlightenment()
 }
 
 static void
-signs_enlightenment()
+signs_enlightenment(void)
 {
 	boolean message = FALSE;
 
@@ -2267,7 +2259,7 @@ signs_enlightenment()
 }
 
 void
-signs_mirror()
+signs_mirror(void)
 {
 	boolean message = FALSE;
 	int count;
@@ -2874,9 +2866,7 @@ signs_mirror()
 
 
 void
-show_conduct(final, dumping)
-int final;
-boolean dumping;
+show_conduct(int final, boolean dumping)
 {
 	char buf[BUFSZ];
 	int ngenocided;
@@ -3042,7 +3032,7 @@ boolean dumping;
 }
 
 static void
-mutations_enlightenment()
+mutations_enlightenment(void)
 {
 	char buf[BUFSZ];
 	int i;
@@ -3066,7 +3056,7 @@ mutations_enlightenment()
 }
 
 static void
-genocide_enlightenment()
+genocide_enlightenment(void)
 {
         list_genocided('y', FALSE, FALSE);
 }

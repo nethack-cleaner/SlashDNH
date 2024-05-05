@@ -16,15 +16,15 @@ static int NDECL(eatfood);
 static void FDECL(costly_tin, (const char*));
 static int NDECL(opentin);
 static int NDECL(windclock);
-static int FDECL(clockwork_eat_menu, (BOOLEAN_P,BOOLEAN_P));
+static int FDECL(clockwork_eat_menu, (boolean,boolean));
 
-static const char *FDECL(food_xname, (struct obj *,BOOLEAN_P));
+static const char *FDECL(food_xname, (struct obj *,boolean));
 static void FDECL(choke, (struct obj *));
 static void NDECL(recalc_wt);
 static struct obj *FDECL(touchfood, (struct obj *));
 static void NDECL(do_reset_eat);
-static void FDECL(done_eating, (BOOLEAN_P));
-static void FDECL(givit, (int,struct permonst *,SHORT_P,BOOLEAN_P));
+static void FDECL(done_eating, (boolean));
+static void FDECL(givit, (int,struct permonst *,short,boolean));
 static void FDECL(start_tin, (struct obj *));
 static int FDECL(eatcorpse, (struct obj *));
 static void FDECL(start_eating, (struct obj *));
@@ -37,7 +37,7 @@ static int FDECL(rottenfood, (struct obj *));
 static void NDECL(eatspecial);
 static void FDECL(eataccessory, (struct obj *));
 static const char *FDECL(foodword, (struct obj *));
-static boolean FDECL(maybe_cannibal, (int,BOOLEAN_P));
+static boolean FDECL(maybe_cannibal, (int,boolean));
 
 char msgbuf[BUFSZ];
 int etype;			/* Clockwork's eat type */
@@ -76,8 +76,7 @@ const char *ca_hu_stat[] = {
 
 
 boolean
-incantifier_edible(obj)
-register struct obj *obj;
+incantifier_edible(register struct obj *obj)
 {
 	/* protect invocation tools but not Rider corpses (handled elsewhere)*/
      /* if (obj->oclass != FOOD_CLASS && obj_resists(obj, 0, 0)) */
@@ -107,8 +106,7 @@ register struct obj *obj;
 }
 
 boolean
-uclockwork_edible(obj)
-struct obj *obj;
+uclockwork_edible(struct obj *obj)
 {
 	/* protect invocation tools but not Rider corpses (handled elsewhere)*/
      /* if (obj->oclass != FOOD_CLASS && obj_resists(obj, 0, 0)) */
@@ -174,8 +172,7 @@ struct obj *obj;
  * polymorphed character.  Not used for monster checks.
  */
 boolean
-is_edible(obj)
-register struct obj *obj;
+is_edible(register struct obj *obj)
 {
 	/* protect invocation tools but not Rider corpses (handled elsewhere)*/
      /* if (obj->oclass != FOOD_CLASS && obj_resists(obj, 0, 0)) */
@@ -231,7 +228,7 @@ register struct obj *obj;
 
 
 void
-init_uhunger()
+init_uhunger(void)
 {
 	if(Race_if(PM_INCANTIFIER)){
 		u.uenbonus += 1800;
@@ -245,7 +242,7 @@ init_uhunger()
 }
 
 void
-reset_uhunger()
+reset_uhunger(void)
 {
 	if(Race_if(PM_INCANTIFIER)){
 		u.uen = min(u.uen+400, get_satiationlimit()*.9);
@@ -257,7 +254,7 @@ reset_uhunger()
 }
 
 boolean
-satiate_uhunger()
+satiate_uhunger(void)
 {
 	if(Race_if(PM_INCANTIFIER)){
 		if(u.uen > min(u.uen+400, get_satiationlimit()*11/10))
@@ -274,7 +271,7 @@ satiate_uhunger()
 }
 
 double
-get_uhungersizemod()
+get_uhungersizemod(void)
 {
 	double sizemod = 1;
 	if(youracedata->msize > MZ_MEDIUM)
@@ -286,7 +283,7 @@ get_uhungersizemod()
 }
 
 int
-get_uhungermax()
+get_uhungermax(void)
 {
 	int hungermax = u.uhungermax;
 	if(youracedata->msize > MZ_MEDIUM)
@@ -297,7 +294,7 @@ get_uhungermax()
 }
 
 int
-get_satiationlimit()
+get_satiationlimit(void)
 {
 	int hungermax = get_uhungermax();
 
@@ -366,9 +363,8 @@ static struct {
 
 static char *eatmbuf = 0;	/* set by cpostfx() */
 
-static
-int
-eatmdone()		/* called after mimicing is over */
+static int
+eatmdone(void)		/* called after mimicing is over */
 {
 	/* release `eatmbuf' */
 	if (eatmbuf) {
@@ -385,9 +381,7 @@ eatmdone()		/* called after mimicing is over */
 
 /* ``[the(] singular(food, xname) [)]'' with awareness of unique monsters */
 static const char *
-food_xname(food, the_pfx)
-struct obj *food;
-boolean the_pfx;
+food_xname(struct obj *food, boolean the_pfx)
 {
 	const char *result;
 	int mtyp = food->corpsenm;
@@ -411,10 +405,10 @@ boolean the_pfx;
  * Amended by AKP 09/22/87: if not hard, don't choke, just vomit.
  * Amended by 3.  06/12/89: if not hard, sometimes choke anyway, to keep risk.
  *		  11/10/89: if hard, rarely vomit anyway, for slim chance.
+ * To a full belly all food is bad. (It.)
  */
 static void
-choke(food)	/* To a full belly all food is bad. (It.) */
-	register struct obj *food;
+choke(register struct obj *food)
 {
 	/* only happens if you were satiated */
 	if (u.uhs != SATIATED) {
@@ -488,7 +482,7 @@ choke(food)	/* To a full belly all food is bad. (It.) */
 
 /* modify object wt. depending on time spent consuming it */
 static void
-recalc_wt()
+recalc_wt(void)
 {
 	struct obj *piece = victual.piece;
 
@@ -500,7 +494,7 @@ recalc_wt()
 }
 
 void
-reset_eat()		/* called when eating interrupted by an event */
+reset_eat(void)		/* called when eating interrupted by an event */
 {
     /* we only set a flag here - the actual reset process is done after
      * the round is spent eating.
@@ -513,8 +507,7 @@ reset_eat()		/* called when eating interrupted by an event */
 }
 
 static struct obj *
-touchfood(otmp)
-register struct obj *otmp;
+touchfood(register struct obj *otmp)
 {
 	struct obj *pseudo;
 	if (otmp->quan > 1L) {
@@ -589,8 +582,7 @@ register struct obj *otmp;
  * in do_reset_eat().
  */
 void
-food_disappears(obj)
-register struct obj *obj;
+food_disappears(register struct obj *obj)
 {
 	if (obj == victual.piece) victual.piece = (struct obj *)0;
 	if (obj->timed) stop_all_timers(obj->timed);
@@ -600,15 +592,14 @@ register struct obj *obj;
    so the sequence start eating/opening, get interrupted, name the food,
    resume eating/opening would restart from scratch */
 void
-food_substitution(old_obj, new_obj)
-struct obj *old_obj, *new_obj;
+food_substitution(struct obj *old_obj, struct obj *new_obj)
 {
 	if (old_obj == victual.piece) victual.piece = new_obj;
 	if (old_obj == tin.tin) tin.tin = new_obj;
 }
 
 static void
-do_reset_eat()
+do_reset_eat(void)
 {
 	//debugpline("do_reset_eat...");
 	if (victual.piece) {
@@ -625,9 +616,8 @@ do_reset_eat()
 	newuhs(FALSE);
 }
 
-static
-int
-eatfood()		/* called each move during eating process */
+static int
+eatfood(void)		/* called each move during eating process */
 {
 	if(!victual.piece ||
 	 (!carried(victual.piece) && !obj_here(victual.piece, u.ux, u.uy))) {
@@ -658,8 +648,7 @@ eatfood()		/* called each move during eating process */
 }
 
 static void
-done_eating(message)
-boolean message;
+done_eating(boolean message)
 {
 	victual.piece->in_use = TRUE;
 	occupation = 0; /* do this early, so newuhs() knows we're done */
@@ -686,9 +675,7 @@ boolean message;
 }
 
 static boolean
-maybe_cannibal(pm, allowmsg)
-int pm;
-boolean allowmsg;
+maybe_cannibal(int pm, boolean allowmsg)
 {
 	if(your_race(&mons[pm]) && !is_animal(&mons[pm]) && !mindless(&mons[pm])){
 		if (!CANNIBAL_ALLOWED()) {
@@ -712,9 +699,7 @@ boolean allowmsg;
 }
 
 void
-cprefx(pm,bld,nobadeffects)
-int pm;
-BOOLEAN_P bld, nobadeffects;
+cprefx(int pm, boolean bld, boolean nobadeffects)
 {
 	if(!nobadeffects) maybe_cannibal(pm,TRUE);
 	if (!nobadeffects && (touch_petrifies(&mons[pm]) || pm == PM_MEDUSA)) {
@@ -803,8 +788,7 @@ BOOLEAN_P bld, nobadeffects;
  */
 
 boolean
-bite_monster(mon)
-struct monst *mon;
+bite_monster(struct monst *mon)
 {
     switch(monsndx(mon->data)) {
 	case PM_LIZARD:
@@ -847,7 +831,7 @@ struct monst *mon;
 }
 
 void
-fix_petrification()
+fix_petrification(void)
 {
 	Stoned = 0;
 	Golded = 0;
@@ -870,9 +854,7 @@ fix_petrification()
 
 /* intrinsic_possible() returns TRUE iff a monster can give an intrinsic. */
 int
-intrinsic_possible(type, ptr)
-int type;
-register struct permonst *ptr;
+intrinsic_possible(int type, register struct permonst *ptr)
 {
 	switch (type) {
 	    case FIRE_RES:
@@ -969,11 +951,7 @@ give_intrinsic(int type, long duration){
  * Energy resistence intrinsics time out now - CM
  */
 static void
-givit(type, ptr, nutval, drained)
-int type;
-register struct permonst *ptr;
-short nutval;
-boolean drained;
+givit(int type, register struct permonst *ptr, short nutval, boolean drained)
 {
 	int chance = 0; //starts at 0. Changing it indicates a non-energy resistence
 	int multiplier = 1;
@@ -1127,9 +1105,11 @@ boolean drained;
 }
 
 void
-cpostfx(pm, tin, nobadeffects, drained)		/* called after completely consuming a corpse */
-register int pm;
-BOOLEAN_P tin, nobadeffects, drained;
+cpostfx(		/* called after completely consuming a corpse */
+	register int pm,
+	boolean tin,
+	boolean nobadeffects,
+	boolean drained)
 {
 	register int tmp = 0;
 	boolean catch_lycanthropy = FALSE;
@@ -1410,7 +1390,7 @@ BOOLEAN_P tin, nobadeffects, drained;
 }
 
 void
-violated_vegetarian()
+violated_vegetarian(void)
 {
     u.uconduct.unvegetarian++;
 	
@@ -1425,10 +1405,9 @@ violated_vegetarian()
 
 /* common code to check and possibly charge for 1 context.tin.tin,
  * will split() context.tin.tin if necessary */
-static
-void
-costly_tin(verb)
-	const char* verb;		/* if 0, the verb is "open" */
+static void
+costly_tin(
+	const char *verb		/* if 0, the verb is "open" */)
 {
 	if(((!carried(tin.tin) &&
 	     costly_spot(tin.tin->ox, tin.tin->oy) &&
@@ -1440,9 +1419,8 @@ costly_tin(verb)
 	}
 }
 
-static
-int
-opentin()		/* called during each move whilst opening a tin */
+static int
+opentin(void)		/* called during each move whilst opening a tin */
 {
 	register int r;
 	const char *what;
@@ -1714,8 +1692,8 @@ use_me:
 }
 
 static void
-start_tin(otmp)		/* called when starting to open a tin */
-	register struct obj *otmp;
+start_tin(		/* called when starting to open a tin */
+	register struct obj *otmp)
 {
 	register int tmp;
 
@@ -1786,8 +1764,7 @@ Hear_again(VOID_ARGS)		/* called when waking up after fainting */
 
 /* called on the "first bite" of rotten food */
 static int
-rottenfood(obj)
-struct obj *obj;
+rottenfood(struct obj *obj)
 {
 	pline("Blecch!  Rotten %s!",
 		is_vampire(youracedata) ? "blood" : foodword(obj));
@@ -1830,8 +1807,8 @@ static char *eatrat[] = {
 };
 
 static int
-eatcorpse(otmp)		/* called when a corpse is selected as food */
-	register struct obj *otmp;
+eatcorpse(		/* called when a corpse is selected as food */
+	register struct obj *otmp)
 {
 	int tp = 0, mtyp = otmp->corpsenm;
 	long rotted = 0L;
@@ -2020,8 +1997,8 @@ eatcorpse(otmp)		/* called when a corpse is selected as food */
 }
 
 static void
-start_eating(otmp)		/* called as you start to eat */
-	register struct obj *otmp;
+start_eating(		/* called as you start to eat */
+	register struct obj *otmp)
 {
 	/*debugpline("start_eating: %lx (victual = %lx)", otmp, victual.piece);
 	debugpline("reqtime = %d", victual.reqtime);
@@ -2058,8 +2035,7 @@ start_eating(otmp)		/* called as you start to eat */
  * used for non-rotten non-tin non-corpse food
  */
 static void
-fprefx(otmp)
-struct obj *otmp;
+fprefx(struct obj *otmp)
 {
 	switch(otmp->otyp) {
 	    case FOOD_RATION:
@@ -2146,16 +2122,14 @@ struct obj *otmp;
 }
 
 static void
-accessory_has_effect(otmp)
-struct obj *otmp;
+accessory_has_effect(struct obj *otmp)
 {
 	pline("Magic spreads through your body as you digest the %s.",
 	    otmp->oclass == RING_CLASS ? "ring" : "amulet");
 }
 
 static void
-eataccessory(otmp)
-struct obj *otmp;
+eataccessory(struct obj *otmp)
 {
 	int typ = otmp->otyp;
 	long oldprop;
@@ -2308,7 +2282,7 @@ struct obj *otmp;
 }
 
 static void
-eatspecial() /* called after eating non-food */
+eatspecial(void) /* called after eating non-food */
 {
 	register struct obj *otmp = victual.piece;
 
@@ -2372,8 +2346,7 @@ static const char *foodwords[] = {
 };
 
 static const char *
-foodword(otmp)
-register struct obj *otmp;
+foodword(register struct obj *otmp)
 {
 	if (otmp->oclass == FOOD_CLASS) return "food";
 	if (otmp->oclass == GEM_CLASS &&
@@ -2384,8 +2357,8 @@ register struct obj *otmp;
 }
 
 static void
-fpostfx(otmp)		/* called after consuming (non-corpse) food */
-register struct obj *otmp;
+fpostfx(		/* called after consuming (non-corpse) food */
+	register struct obj *otmp)
 {
 	if(u.sealsActive&SEAL_ENKI && u.uhp < u.uhpmax && otmp->otyp >= CREAM_PIE && otmp->otyp <= TIN){
 		pline("The fruits of civilization give you strength!");
@@ -2581,8 +2554,7 @@ register struct obj *otmp;
  * return 2 if the food was dangerous and you chose to eat it anyway.
  */
 static int
-edibility_prompts(otmp)
-struct obj *otmp;
+edibility_prompts(struct obj *otmp)
 {
 	/* blessed food detection granted you a one-use
 	   ability to detect food that is unfit for consumption
@@ -2718,7 +2690,7 @@ struct obj *otmp;
 }
 
 int
-doeat()		/* generic "eat" command funtion (see cmd.c) */
+doeat(void)		/* generic "eat" command funtion (see cmd.c) */
 {
 	register struct obj *otmp;
 	int basenutrit;			/* nutrition of full item */
@@ -3895,7 +3867,7 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
  * modifying usedtime.  Returns 1 if they choked and survived, 0 otherwise.
  */
 static int
-bite()
+bite(void)
 {
 	if(victual.canchoke && 
 		((Race_if(PM_INCANTIFIER) && u.uen >= u.uenmax) ||
@@ -3923,7 +3895,7 @@ bite()
 
 
 void
-gethungry()	/* as time goes by - called by moveloop() and domove() */
+gethungry(void)	/* as time goes by - called by moveloop() and domove() */
 {
 	int hungermod = 1;
 	if (Invulnerable) return;	/* you don't feel hungrier */
@@ -4062,8 +4034,8 @@ gethungry()	/* as time goes by - called by moveloop() and domove() */
 
 
 void
-morehungry(num)	/* called after vomiting and after performing feats of magic */
-register int num;
+morehungry(	/* called after vomiting and after performing feats of magic */
+	register int num)
 {
 	if(inediate(youracedata) && !uclockwork && !Race_if(PM_INCANTIFIER)) return;
 	if(Race_if(PM_INCANTIFIER)) losepw(num);
@@ -4073,8 +4045,8 @@ register int num;
 
 
 void
-lesshungry(num)	/* called after eating (and after drinking fruit juice) */
-register int num;
+lesshungry(	/* called after eating (and after drinking fruit juice) */
+	register int num)
 {
 	if(Race_if(PM_ETHEREALOID)) return;
 	/* See comments in newuhs() for discussion on force_save_hs */
@@ -4154,10 +4126,7 @@ unfaint(VOID_ARGS)
 }
 
 int
-ask_turns(mon, flatrate, perturn)
-struct monst *mon;
-int flatrate;
-int perturn;
+ask_turns(struct monst *mon, int flatrate, int perturn)
 {
 	int ret, turns;
 	long price;
@@ -4234,9 +4203,7 @@ int perturn;
 }
 
 int
-ask_cp(mon, flatrate)
-struct monst *mon;
-int flatrate;
+ask_cp(struct monst *mon, int flatrate)
 {
 	int ret, howmany;
 	long price;
@@ -4295,10 +4262,7 @@ int flatrate;
 }
 
 int
-start_clockwinding(key, mon, turns)
-struct obj * key;
-struct monst *mon;
-int turns;
+start_clockwinding(struct obj *key, struct monst *mon, int turns)
 {
   // int ret;
   // char buf[BUFSZ], qbuf[QBUFSZ];
@@ -4331,9 +4295,8 @@ int turns;
 
 
 
-static
-int
-windclock()
+static int
+windclock(void)
 {
   if (victual.reqtime == victual.usedtime){
     occupation = 0;
@@ -4377,20 +4340,20 @@ windclock()
 }
 
 boolean
-is_fainted()
+is_fainted(void)
 {
 	return((boolean)(u.uhs == FAINTED));
 }
 
 void
-reset_faint()	/* call when a faint must be prematurely terminated */
+reset_faint(void)	/* call when a faint must be prematurely terminated */
 {
 	if(is_fainted()) nomul(0, NULL);
 }
 
 #if 0
 void
-sync_hunger()
+sync_hunger(void)
 {
 
 	if(is_fainted()) {
@@ -4409,9 +4372,9 @@ sync_hunger()
 }
 #endif
 
+/* compute and comment on your (new?) hunger status */
 void
-newuhs(incr)		/* compute and comment on your (new?) hunger status */
-boolean incr;
+newuhs(boolean incr)
 {
 	unsigned newhs;
 	static unsigned save_hs;
@@ -4601,9 +4564,9 @@ boolean incr;
  * in inventory.
  */
 struct obj *
-floorfood(verb,corpsecheck)	/* get food from floor or pack */
-	const char *verb;
-	int corpsecheck; /* 0, no check, 1, corpses, 2, tinnable corpses */
+floorfood(	/* get food from floor or pack */
+	const char *verb,
+	int corpsecheck /* 0, no check, 1, corpses, 2, tinnable corpses */)
 {
 	register struct obj *otmp;
 	char qbuf[QBUFSZ];
@@ -4688,16 +4651,14 @@ floorfood(verb,corpsecheck)	/* get food from floor or pack */
 /* Side effects of vomiting */
 /* added nomul (MRS) - it makes sense, you're too busy being sick! */
 void
-vomit()		/* A good idea from David Neves */
+vomit(void)		/* A good idea from David Neves */
 {
 	make_sick(0L, (char *) 0, TRUE, SICK_VOMITABLE);
 	if (!Free_action) nomul(-2, "vomiting");
 }
 
 int
-eaten_stat(base, obj)
-register int base;
-register struct obj *obj;
+eaten_stat(register int base, register struct obj *obj)
 {
 	long uneaten_amt, full_amount;
 
@@ -4737,9 +4698,7 @@ obj_nutrition(struct obj *otmp)
 }
 /* reduce obj's oeaten field, making sure it never hits or passes 0 */
 void
-consume_oeaten(obj, amt)
-struct obj *obj;
-int amt;
+consume_oeaten(struct obj *obj, int amt)
 {
 	
 	if (!obj_nutrition(obj)) {
@@ -4803,9 +4762,7 @@ int amt;
 }
 
 static int
-clockwork_eat_menu(dry,mgc)
-	boolean dry;
-	boolean mgc;
+clockwork_eat_menu(boolean dry, boolean mgc)
 {
 	winid tmpwin;
 	int n, how;
@@ -4871,8 +4828,7 @@ clockwork_eat_menu(dry,mgc)
 /* called when eatfood occupation has been interrupted,
    or in the case of theft, is about to be interrupted */
 boolean
-maybe_finished_meal(stopping)
-boolean stopping;
+maybe_finished_meal(boolean stopping)
 {
 	/* in case consume_oeaten() has decided that the food is all gone */
 	if (occupation == eatfood && victual.usedtime >= victual.reqtime) {

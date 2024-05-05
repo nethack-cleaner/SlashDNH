@@ -44,8 +44,7 @@ static long expUps[] = {
 };
 
 long
-newuexp(lev)
-int lev;
+newuexp(int lev)
 {
 	if (lev < 30) return expUps[lev];
 	else return 100000L + lev*10000L;
@@ -55,9 +54,9 @@ int lev;
 }
 
 int
-experience(mtmp, nk)	/* return # of exp points for mtmp after nk killed */
-	register struct	monst *mtmp;
-	register int	nk;
+experience(	/* return # of exp points for mtmp after nk killed */
+	register struct monst *mtmp,
+	register int nk)
 {
 	register struct permonst *ptr = mtmp->data;
 	int	i, tmp, tmp2;
@@ -123,8 +122,8 @@ experience(mtmp, nk)	/* return # of exp points for mtmp after nk killed */
 }
 
 int
-ptrexperience(ptr)	/* return # of exp points for mtmp after nk killed */
-	register struct permonst *ptr;
+ptrexperience(	/* return # of exp points for mtmp after nk killed */
+	register struct permonst *ptr)
 {
 	int	i, tmp, tmp2;
 	
@@ -187,8 +186,7 @@ ptrexperience(ptr)	/* return # of exp points for mtmp after nk killed */
 }
 
 void
-more_experienced(exp, rexp)
-	register int exp, rexp;
+more_experienced(register int exp, register int rexp)
 {
 	if(active_glyph(MOON)){
 		exp *= 1.3;
@@ -235,8 +233,7 @@ more_experienced(exp, rexp)
 }
 
 void
-lose_experience(exp)
-	register int exp;
+lose_experience(register int exp)
 {
 	if(!exp)
 		return;
@@ -249,11 +246,11 @@ lose_experience(exp)
 }
 
 void
-losexp(drainer,verbose,force,expdrain)		/* e.g., hit by drain life attack */
-const char *drainer;	/* cause of death, if drain should be fatal */
-boolean verbose; /* attack has custom notification */
-boolean force; /* attack ignores drain resistance */
-boolean expdrain; /* attack drains exp as well */
+losexp(		/* e.g., hit by drain life attack */
+	const char *drainer,	/* cause of death, if drain should be fatal */
+	boolean verbose, /* attack has custom notification */
+	boolean force, /* attack ignores drain resistance */
+	boolean expdrain /* attack drains exp as well */)
 {
 	register int num;
 
@@ -322,7 +319,7 @@ boolean expdrain; /* attack drains exp as well */
  * at a dragon created with a wand of polymorph??
  */
 void
-newexplevel()
+newexplevel(void)
 {
 	if (u.ulevel < MAXULEV && u.uexp >= newuexp(u.ulevel))
 	    pluslvl(TRUE);
@@ -332,7 +329,7 @@ newexplevel()
 
 /*Give spirits to anachronounbinder*/
 void
-acuup(){
+acuup(void){
 	if(u.ulevel == ACU_PULSE_LVL){
 		You_feel("psionic!");
 	} else if(u.ulevel == ACU_CRAZE_LVL){
@@ -347,7 +344,7 @@ acuup(){
 }
 
 void
-acudown(){
+acudown(void){
 	if(u.ulevel == ACU_PULSE_LVL - 1){
 		You_feel("unpsionic.");
 	} else if(u.ulevel == ACU_CRAZE_LVL - 1){
@@ -363,7 +360,7 @@ acudown(){
 /* Grant new spirits to binder */
 /* It reaplies all spirts just for kicks */
 void
-binderup(){
+binderup(void){
 	switch(u.ulevel){
 	default:
 	case 13:
@@ -397,7 +394,7 @@ binderup(){
 }
 
 void
-binderdown(){
+binderdown(void){
 	switch(u.ulevel){
 	default:
 	case 12:
@@ -443,8 +440,8 @@ binderdown(){
 }
 
 void
-pluslvl(incr)
-boolean incr;	/* true iff via incremental experience growth */
+pluslvl(
+	boolean incr	/* true iff via incremental experience growth */)
 {		/*	(false for potion of gain level)      */
 	if(Role_if(PM_ANACHRONOUNBINDER) && !(u.spiritSummons & sealKey[u.sealorder[u.ulevel]]) && !wizard){
 		if(!incr) You_feel("an experience adjustment.");
@@ -504,8 +501,8 @@ boolean incr;	/* true iff via incremental experience growth */
    experience level:  base number of points needed to reach the current
    level plus a random portion of what it takes to get to the next level */
 long
-rndexp(gaining)
-boolean gaining;	/* gaining XP via potion vs setting XP for polyself */
+rndexp(
+	boolean gaining	/* gaining XP via potion vs setting XP for polyself */)
 {
 	long minexp, maxexp, diff, factor, result;
 

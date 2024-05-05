@@ -13,9 +13,9 @@ extern const int monstr[];
  * if mon is null, treat as if as being summoned by a far-off Wizard of Yendor
  */
 void
-msummon(mon, ptr)
-struct monst *mon;		/* mon to attribute summons to */
-struct permonst * ptr;	/* summon as though you were <X> */
+msummon(
+	struct monst *mon,		/* mon to attribute summons to */
+	struct permonst *ptr	/* summon as though you were <X> */)
 {
 	register int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
@@ -156,9 +156,7 @@ struct permonst * ptr;	/* summon as though you were <X> */
 }
 
 struct monst *
-summon_god_minion(godnum, talk)
-int godnum;
-boolean talk;
+summon_god_minion(int godnum, boolean talk)
 {
 	aligntyp alignment = galign(godnum);
     const int *minions = god_minions(godnum);
@@ -254,11 +252,7 @@ boolean talk;
 }
 
 struct monst *
-summon_minion(alignment, talk, devils, angels)
-aligntyp alignment;
-boolean talk;
-boolean devils;
-boolean angels;
+summon_minion(aligntyp alignment, boolean talk, boolean devils, boolean angels)
 {
     register struct monst *mon;
     int mtyp;
@@ -312,8 +306,8 @@ boolean angels;
 #define Athome	(Inhell && !mtmp->cham)
 
 int
-demon_talk(mtmp)		/* returns 1 if it won't attack. */
-register struct monst *mtmp;
+demon_talk(		/* returns 1 if it won't attack. */
+	register struct monst *mtmp)
 {
 	long cash, demand, offer;
 
@@ -384,8 +378,7 @@ register struct monst *mtmp;
 }
 
 long
-bribe(mtmp)
-struct monst *mtmp;
+bribe(struct monst *mtmp)
 {
 	char buf[BUFSZ];
 	long offer;
@@ -439,9 +432,7 @@ int demonPrinces[] = {
 };
 
 int
-dprince(ptr, atyp)
-struct permonst *ptr;
-aligntyp atyp;
+dprince(struct permonst *ptr, aligntyp atyp)
 {
 	int tryct, pm;
 	boolean check_alliances = TRUE;
@@ -509,9 +500,7 @@ int lordsOfTheNine[] = {
 };
 
 int
-dlord(ptr, atyp)
-struct permonst *ptr;
-aligntyp atyp;
+dlord(struct permonst *ptr, aligntyp atyp)
 {
 	int tryct, pm;
 	boolean check_alliances = TRUE;
@@ -585,7 +574,7 @@ aligntyp atyp;
 
 /* create lawful (good) lord */
 int
-llord()
+llord(void)
 {
 	switch(rnd(2)){
 	case 1:
@@ -602,7 +591,7 @@ llord()
 }
 
 int
-lminion()
+lminion(void)
 {
 	int	tryct;
 	struct	permonst *ptr;
@@ -618,7 +607,7 @@ lminion()
 
 /* create neutral (good) lord */
 int
-nlord()
+nlord(void)
 {
 	switch(rnd(4)){
 	case 1:
@@ -637,7 +626,7 @@ nlord()
 }
 
 int
-nminion()
+nminion(void)
 {
 	int	tryct;
 	struct	permonst *ptr;
@@ -653,7 +642,7 @@ nminion()
 
 /* create chaotic (good) lord */
 int
-clord()
+clord(void)
 {
 	if (!(mvitals[PM_TULANI_ELADRIN].mvflags & G_GONE && !In_quest(&u.uz)))
 		return(PM_TULANI_ELADRIN);
@@ -662,7 +651,7 @@ clord()
 }
 
 int
-cminion()
+cminion(void)
 {
 	int	tryct;
 	struct	permonst *ptr;
@@ -677,8 +666,7 @@ cminion()
 }
 
 int
-ndemon(atyp)
-aligntyp atyp;
+ndemon(aligntyp atyp)
 {
 	int	tryct;
 	struct	permonst *ptr;

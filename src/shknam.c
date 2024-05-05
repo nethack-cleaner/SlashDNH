@@ -418,7 +418,7 @@ const int fancy_clothes[] = {
 /* validate shop probabilities; otherwise incorrect local changes could
    end up provoking infinite loops or wild subscripts fetching garbage */
 void
-init_shop_selection()
+init_shop_selection(void)
 {
 	register int i, j, item_prob, shop_prob;
 
@@ -436,10 +436,11 @@ init_shop_selection()
 #endif /*0*/
 
 static void
-mkshobj_at(shp, sx, sy)
+mkshobj_at(
 /* make an object of the appropriate type for a shop square */
-const struct shclass *shp;
-int sx, sy;
+	const struct shclass *shp,
+	int sx,
+	int sy)
 {
 	struct monst *mtmp;
 	int atype;
@@ -628,9 +629,7 @@ int sx, sy;
 
 /* extract a shopkeeper name for the given shop type */
 static void
-nameshk(shk, nlp)
-struct monst *shk;
-const char * const *nlp;
+nameshk(struct monst *shk, const char *const *nlp)
 {
 	int i, trycnt, names_avail;
 	const char *shname = 0;
@@ -691,9 +690,9 @@ const char * const *nlp;
 }
 
 static int
-shkinit(shp, sroom)	/* create a new shopkeeper in the given room */
-const struct shclass	*shp;
-struct mkroom	*sroom;
+shkinit(	/* create a new shopkeeper in the given room */
+	const struct shclass *shp,
+	struct mkroom *sroom)
 {
 	register int sh, sx, sy;
 	struct monst *shk;
@@ -813,9 +812,7 @@ struct mkroom	*sroom;
 
 /* stock a newly-created room with objects */
 void
-stock_room(shp_indx, sroom)
-int shp_indx;
-register struct mkroom *sroom;
+stock_room(int shp_indx, register struct mkroom *sroom)
 {
     /*
      * Someday soon we'll dispatch on the shdist field of shclass to do
@@ -888,8 +885,7 @@ register struct mkroom *sroom;
 }
 
 static void
-init_shk_services(shk)
-struct monst *shk;
+init_shk_services(struct monst *shk)
 {
 	ESHK(shk)->services = 0L;
 
@@ -939,9 +935,7 @@ struct monst *shk;
 
 /* does shkp's shop stock this item type? */
 boolean
-saleable(shkp, obj)
-struct monst *shkp;
-struct obj *obj;
+saleable(struct monst *shkp, struct obj *obj)
 {
     int i, shp_indx = ESHK(shkp)->shoptype - SHOPBASE;
     const struct shclass *shp = &shtypes[shp_indx];
@@ -970,8 +964,7 @@ struct obj *obj;
 
 /* positive value: class; negative value: specific object type */
 int
-get_shop_item(type)
-int type;
+get_shop_item(int type)
 {
 	const struct shclass *shp = shtypes+type;
 	register int i,j;

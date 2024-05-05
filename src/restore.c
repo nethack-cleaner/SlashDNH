@@ -16,16 +16,16 @@ static int NDECL(mgetc);
 #endif
 static void NDECL(find_lev_obj);
 static void FDECL(restlevchn, (int));
-static void FDECL(restdamage, (int,BOOLEAN_P));
-static struct obj *FDECL(restobjchn, (int,BOOLEAN_P,BOOLEAN_P));
-static struct monst *FDECL(restmonchn, (int,BOOLEAN_P));
+static void FDECL(restdamage, (int,boolean));
+static struct obj *FDECL(restobjchn, (int,boolean,boolean));
+static struct monst *FDECL(restmonchn, (int,boolean));
 static struct fruit *FDECL(loadfruitchn, (int));
 static void FDECL(freefruitchn, (struct fruit *));
 static void FDECL(ghostfruit, (struct obj *));
 static boolean FDECL(restgamestate, (int, unsigned int *, unsigned int *));
 static void FDECL(restlevelstate, (unsigned int, unsigned int));
 static int FDECL(restlevelfile, (int,int));
-static void FDECL(reset_oattached_mids, (BOOLEAN_P));
+static void FDECL(reset_oattached_mids, (boolean));
 
 /*
  * Save a mapping of IDs from ghost levels to the current level.  This
@@ -58,7 +58,7 @@ static long omoves;
 
 /* Recalculate level.objects[x][y], since this info was not saved. */
 static void
-find_lev_obj()
+find_lev_obj(void)
 {
 	register struct obj *fobjtmp = (struct obj *)0;
 	register struct obj *otmp;
@@ -91,8 +91,7 @@ find_lev_obj()
  * infamous "HUP" cheat) get used up here.
  */
 void
-inven_inuse(quietly)
-boolean quietly;
+inven_inuse(boolean quietly)
 {
 	register struct obj *otmp, *otmp2;
 
@@ -117,8 +116,7 @@ boolean quietly;
 }
 
 static void
-restlevchn(fd)
-register int fd;
+restlevchn(register int fd)
 {
 	int cnt;
 	s_level	*tmplev, *x;
@@ -140,9 +138,7 @@ register int fd;
 }
 
 static void
-restdamage(fd, ghostly)
-int fd;
-boolean ghostly;
+restdamage(int fd, boolean ghostly)
 {
 	int counter;
 	struct damage *tmp_dam;
@@ -183,9 +179,7 @@ boolean ghostly;
 }
 
 static struct obj *
-restobjchn(fd, ghostly, frozen)
-register int fd;
-boolean ghostly, frozen;
+restobjchn(register int fd, boolean ghostly, boolean frozen)
 {
 	register struct obj *otmp, *otmp2 = 0;
 	register struct obj *first = (struct obj *)0;
@@ -248,9 +242,7 @@ boolean ghostly, frozen;
 }
 
 static struct monst *
-restmonchn(fd, ghostly)
-register int fd;
-boolean ghostly;
+restmonchn(register int fd, boolean ghostly)
 {
 	register struct monst *mtmp, *mtmp2 = 0;
 	register struct monst *first = (struct monst *)0;
@@ -341,8 +333,7 @@ boolean ghostly;
 }
 
 static struct fruit *
-loadfruitchn(fd)
-int fd;
+loadfruitchn(int fd)
 {
 	register struct fruit *flist, *fnext;
 
@@ -358,8 +349,7 @@ int fd;
 }
 
 static void
-freefruitchn(flist)
-register struct fruit *flist;
+freefruitchn(register struct fruit *flist)
 {
 	register struct fruit *fnext;
 
@@ -371,8 +361,7 @@ register struct fruit *flist;
 }
 
 static void
-ghostfruit(otmp)
-register struct obj *otmp;
+ghostfruit(register struct obj *otmp)
 {
 	register struct fruit *oldf;
 
@@ -383,11 +372,11 @@ register struct obj *otmp;
 	else otmp->spe = fruitadd(oldf->fname);
 }
 
-static
-boolean
-restgamestate(fd, stuckid, steedid)
-register int fd;
-unsigned int *stuckid, *steedid;	/* STEED */
+static boolean
+restgamestate(
+	register int fd,
+	unsigned int *stuckid,
+	unsigned int *steedid	/* STEED */)
 {
 	/* discover is actually flags.explore */
 	boolean remember_discover = discover;
@@ -552,8 +541,9 @@ unsigned int *stuckid, *steedid;	/* STEED */
  * don't dereference a wild u.ustuck when saving the game state, for instance)
  */
 static void
-restlevelstate(stuckid, steedid)
-unsigned int stuckid, steedid;	/* STEED */
+restlevelstate(
+	unsigned int stuckid,
+	unsigned int steedid	/* STEED */)
 {
 	register struct monst *mtmp;
 
@@ -582,9 +572,7 @@ unsigned int stuckid, steedid;	/* STEED */
 
 /*ARGSUSED*/	/* fd used in MFLOPPY only */
 static int
-restlevelfile(fd, ltmp)
-register int fd;
-int ltmp;
+restlevelfile(register int fd, int ltmp)
 {
 	register int nfd;
 	char whynot[BUFSZ];
@@ -602,8 +590,7 @@ int ltmp;
 }
 
 int
-dorecover(fd)
-register int fd;
+dorecover(register int fd)
 {
 	unsigned int stuckid = 0, steedid = 0;	/* not a register */
 	int ltmp;
@@ -717,8 +704,7 @@ register int fd;
 }
 
 void
-trickery(reason)
-char *reason;
+trickery(char *reason)
 {
 	int *c = (int *)0;
 	pline("Strange, this map is not as I remember it.");
@@ -730,10 +716,7 @@ char *reason;
 }
 
 void
-getlev(fd, pid, lev, ghostly)
-int fd, pid;
-int lev;
-boolean ghostly;
+getlev(int fd, int pid, int lev, boolean ghostly)
 {
 	register struct trap *trap;
 	register struct monst *mtmp;
@@ -936,7 +919,7 @@ boolean ghostly;
 
 /* Clear all structures for object and monster ID mapping. */
 static void
-clear_id_mapping()
+clear_id_mapping(void)
 {
     struct bucket *curr;
 
@@ -949,8 +932,7 @@ clear_id_mapping()
 
 /* Add a mapping to the ID map. */
 static void
-add_id_mapping(gid, nid)
-    unsigned gid, nid;
+add_id_mapping(unsigned gid, unsigned nid)
 {
     int idx;
 
@@ -974,8 +956,7 @@ add_id_mapping(gid, nid)
  * ID.
  */
 boolean
-lookup_id_mapping(gid, nidp)
-    unsigned gid, *nidp;
+lookup_id_mapping(unsigned gid, unsigned *nidp)
 {
     int i;
     struct bucket *curr;
@@ -1000,8 +981,7 @@ lookup_id_mapping(gid, nidp)
 }
 
 static void
-reset_oattached_mids(ghostly)
-boolean ghostly;
+reset_oattached_mids(boolean ghostly)
 {
     struct obj *otmp;
     unsigned oldid, nid;
@@ -1041,7 +1021,7 @@ static short inrunlength = -1;
 static int mreadfd;
 
 static int
-mgetc()
+mgetc(void)
 {
     if (inbufp >= inbufsz) {
 	inbufsz = read(mreadfd, (genericptr_t)inbuf, sizeof inbuf);
@@ -1057,7 +1037,7 @@ mgetc()
 }
 
 void
-minit()
+minit(void)
 {
     inbufsz = 0;
     inbufp = 0;
@@ -1065,10 +1045,7 @@ minit()
 }
 
 int
-mread(fd, buf, len)
-int fd;
-genericptr_t buf;
-register unsigned len;
+mread(int fd, genericptr_t buf, register unsigned len)
 {
     /*register int readlen = 0;*/
     if (fd < 0) error("Restore error; mread attempting to read file %d.", fd);
@@ -1092,16 +1069,13 @@ register unsigned len;
 #else /* ZEROCOMP */
 
 void
-minit()
+minit(void)
 {
     return;
 }
 
 void
-mread(fd, buf, len)
-register int fd;
-register genericptr_t buf;
-register unsigned int len;
+mread(register int fd, register genericptr_t buf, register unsigned int len)
 {
 	register int rlen;
 

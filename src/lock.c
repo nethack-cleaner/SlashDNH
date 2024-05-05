@@ -47,13 +47,12 @@ static boolean FDECL(obstructed,(int,int));
 static void FDECL(chest_shatter_msg, (struct obj *));
 
 boolean
-is_box_picking_context() {
+is_box_picking_context(void) {
 	return (!xlock.box || !carried(xlock.box));
 }
 
 boolean
-picking_lock(x, y)
-	int *x, *y;
+picking_lock(int *x, int *y)
 {
 	if (occupation == picklock) {
 	    *x = u.ux + u.dx;
@@ -65,15 +64,13 @@ picking_lock(x, y)
 }
 
 boolean
-picking_at(x, y)
-int x, y;
+picking_at(int x, int y)
 {
 	return (boolean)(occupation == picklock && xlock.door == &levl[x][y]);
 }
 
 boolean
-forcing_door(x, y)
-int *x, *y;
+forcing_door(int *x, int *y)
 {
 	if (occupation == forcedoor)
 	{
@@ -88,7 +85,7 @@ int *x, *y;
 
 /* produce an occupation string appropriate for the current activity */
 static const char *
-lock_action()
+lock_action(void)
 {
 	/* "unlocking"+2 == "locking" */
 	static const char *actions[] = {
@@ -114,9 +111,8 @@ lock_action()
 		return xlock.box->otyp == CHEST ? actions[1] : actions[2];
 }
 
-static
-int
-picklock()	/* try to open/close a lock */
+static int
+picklock(void)	/* try to open/close a lock */
 {
 
 	if (xlock.box) {
@@ -190,9 +186,8 @@ picklock()	/* try to open/close a lock */
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-static
-int
-forcelock()	/* try to force a locked chest */
+static int
+forcelock(void)	/* try to force a locked chest */
 {
 
 	register struct obj *otmp;
@@ -304,9 +299,8 @@ forcelock()	/* try to force a locked chest */
 	return MOVE_FINISHED_OCCUPATION;
 }
 
-static
-int
-forcedoor()      /* try to break/pry open a door */
+static int
+forcedoor(void)      /* try to break/pry open a door */
 {
 
 	if(xlock.door != &(levl[u.ux+u.dx][u.uy+u.dy])) {
@@ -374,7 +368,7 @@ forcedoor()      /* try to break/pry open a door */
 
 
 void
-reset_pick()
+reset_pick(void)
 {
 	xlock.usedtime = xlock.chance = xlock.picktyp = 0;
 	xlock.door = 0;
@@ -383,8 +377,8 @@ reset_pick()
 
 
 int
-pick_lock(pick_p) /* pick a lock with a given object */
-	register struct	obj	**pick_p;
+pick_lock( /* pick a lock with a given object */
+	register struct obj **pick_p)
 {
 	int picktyp, c, ch;
 	struct obj *pick = 0;
@@ -648,7 +642,7 @@ pick_lock(pick_p) /* pick a lock with a given object */
 }
 
 int
-doforce()		/* try to force a chest with your weapon */
+doforce(void)		/* try to force a chest with your weapon */
 {
 	register struct obj *otmp;
 	register int x, y, c, picktyp;
@@ -828,14 +822,13 @@ doforce()		/* try to force a chest with your weapon */
 }
 
 int
-doopen()		/* try to open a door */
+doopen(void)		/* try to open a door */
 {
 	return doopen_indir(0, 0);
 }
 
 int
-doopen_indir(x, y)
-int x, y;
+doopen_indir(int x, int y)
 {
 	coord cc;
 	register struct rm *door;
@@ -925,10 +918,8 @@ int x, y;
 	return MOVE_STANDARD;
 }
 
-static
-boolean
-obstructed(x,y)
-register int x, y;
+static boolean
+obstructed(register int x, register int y)
 {
 	register struct monst *mtmp = m_at(x, y);
 
@@ -948,7 +939,7 @@ objhere:	pline("%s's in the way.", Something);
 }
 
 int
-doclose()		/* try to close a door */
+doclose(void)		/* try to close a door */
 {
 	register int x, y;
 	register struct rm *door;
@@ -1042,9 +1033,10 @@ doclose()		/* try to close a door */
 	return MOVE_STANDARD;
 }
 
-boolean			/* box obj was hit with spell effect otmp */
-boxlock(obj, otmp)	/* returns true if something happened */
-register struct obj *obj, *otmp;	/* obj *is* a box */
+boolean
+boxlock(	/* returns true if something happened */
+	register struct obj *obj,
+	register struct obj *otmp	/* obj *is* a box */)
 {
 	register boolean res = 0;
 
@@ -1080,10 +1072,11 @@ register struct obj *obj, *otmp;	/* obj *is* a box */
 	return res;
 }
 
-boolean			/* Door/secret door was hit with spell effect otmp */
-doorlock(otmp,x,y)	/* returns true if something happened */
-struct obj *otmp;
-int x, y;
+boolean
+doorlock(	/* returns true if something happened */
+	struct obj *otmp,
+	int x,
+	int y)
 {
 	register struct rm *door = &levl[x][y];
 	boolean res = TRUE;
@@ -1248,8 +1241,7 @@ int x, y;
 }
 
 static void
-chest_shatter_msg(otmp)
-struct obj *otmp;
+chest_shatter_msg(struct obj *otmp)
 {
 	const char *disposition;
 	const char *thing;
@@ -1298,8 +1290,7 @@ struct obj *otmp;
  */
 
 int
-artifact_door(x, y)
-int x, y;
+artifact_door(int x, int y)
 {
     int i;
 

@@ -67,9 +67,8 @@ int explcolors[] = {
 
 /** Returns the correct monster glyph.
  *  Returns a Unicode codepoint in UTF8graphics and an ASCII character otherwise. */
-static glyph_t
-get_monsym(glyph)
-int glyph;
+static glyph_t 
+get_monsym(int glyph)
 {
 	if (iflags.UTF8graphics &&
 	    permonst_unicode_codepoint[glyph]) {
@@ -82,9 +81,8 @@ int glyph;
 
 /** Returns the correct object glyph.
  *  Returns a Unicode codepoint in UTF8graphics and an ASCII character otherwise. */
-static glyph_t
-get_objsym(glyph)
-int glyph;
+static glyph_t 
+get_objsym(int glyph)
 {
 	if (iflags.UTF8graphics &&
 	    objclass_unicode_codepoint[glyph]) {
@@ -97,10 +95,7 @@ int glyph;
 
 /*ARGSUSED*/
 void
-mapglyph(glyph, ochar, ocolor, obgcolor, x, y)
-int glyph, *ocolor, x, y;
-glyph_t *ochar;
-unsigned int *obgcolor;
+mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, int y)
 {
 	register int offset;
 #if defined(TEXTCOLOR) || defined(ROGUE_COLOR)

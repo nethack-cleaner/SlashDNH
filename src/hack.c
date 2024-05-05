@@ -8,38 +8,34 @@
 
 static int NDECL(moverock);
 static void NDECL(sigilfloat);
-static int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
-static int FDECL(invocation_distmin,(int, int));
+static int FDECL(still_chewing,(xchar,xchar));
+static int FDECL(invocation_distmin,(xchar, xchar));
 static void NDECL(dosinkfall);
-static boolean FDECL(findtravelpath, (BOOLEAN_P));
+static boolean FDECL(findtravelpath, (boolean));
 static boolean FDECL(monstinroom, (struct permonst *,int));
 
-static void FDECL(move_update, (BOOLEAN_P));
+static void FDECL(move_update, (boolean));
 static struct obj * FDECL(all_items, (boolean, int *, boolean));
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 
 
 int
-min_ints(i1, i2)
-int i1, i2;
+min_ints(int i1, int i2)
 {
 	if(i1 < i2) return i1;
 	else return i2;
 }
 
 int
-max_ints(i1, i2)
-int i1, i2;
+max_ints(int i1, int i2)
 {
 	if(i1 > i2) return i1;
 	else return i2;
 }
 
 boolean
-revive_nasty(x, y, msg)
-int x,y;
-const char *msg;
+revive_nasty(int x, int y, const char *msg)
 {
     register struct obj *otmp, *otmp2;
     struct monst *mtmp;
@@ -73,7 +69,7 @@ const char *msg;
 }
 
 static int
-moverock()
+moverock(void)
 {
     register xchar rx, ry, sx, sy;
     register struct obj *otmp;
@@ -328,8 +324,7 @@ moverock()
  *  when done.
  */
 static int
-still_chewing(x,y)
-    xchar x, y;
+still_chewing(xchar x, xchar y)
 {
     struct rm *lev = &levl[x][y];
     struct obj *boulder = boulder_at(x,y);
@@ -453,9 +448,7 @@ still_chewing(x,y)
 
 
 void
-movobj(obj, ox, oy)
-register struct obj *obj;
-register xchar ox, oy;
+movobj(register struct obj *obj, register xchar ox, register xchar oy)
 {
 	/* optimize by leaving on the fobj chain? */
 	remove_object(obj);
@@ -467,7 +460,7 @@ register xchar ox, oy;
 static const char fell_on_sink[] = "fell onto a sink";
 
 static void
-dosinkfall()
+dosinkfall(void)
 {
 	register struct obj *obj;
 
@@ -512,8 +505,7 @@ dosinkfall()
 }
 
 boolean
-may_dig(x,y)
-register xchar x,y;
+may_dig(xchar x, xchar y)
 /* intended to be called only on ROCKs and trees */
 {
     return (boolean)!((levl[x][y].wall_info & W_NONDIGGABLE)
@@ -523,8 +515,7 @@ register xchar x,y;
 }
 
 boolean
-may_passwall(x,y)
-register xchar x,y;
+may_passwall(xchar x, xchar y)
 {
    return (boolean)!((levl[x][y].wall_info & W_NONPASSWALL)
 		&&((IS_STWALL(levl[x][y].typ) ||
@@ -534,9 +525,7 @@ register xchar x,y;
 
 
 boolean
-bad_rock(mon,x,y)
-struct monst *mon;
-register xchar x,y;
+bad_rock(struct monst *mon, xchar x, xchar y)
 {
 	boolean isyou = mon==&youmonst;
 	struct permonst *mdat = mon->data;
@@ -547,15 +536,13 @@ register xchar x,y;
 }
 
 boolean
-invocation_pos(x, y)
-xchar x, y;
+invocation_pos(xchar x, xchar y)
 {
 	return((boolean)(Invocation_lev(&u.uz) && x == inv_pos.x && y == inv_pos.y));
 }
 
 static int
-invocation_distmin(x, y)
-xchar x, y;
+invocation_distmin(xchar x, xchar y)
 {
 	if(Invocation_lev(&u.uz))
 		return distmin(x, y, inv_pos.x, inv_pos.y);
@@ -567,10 +554,8 @@ xchar x, y;
 /* return TRUE if (dx,dy) is an OK place to move
  * mode is one of DO_MOVE, TEST_MOVE or TEST_TRAV
  */
-boolean 
-test_move(ux, uy, dx, dy, mode)
-int ux, uy, dx, dy;
-int mode;
+boolean
+test_move(int ux, int uy, int dx, int dy, int mode)
 {
     int x = ux+dx;
     int y = uy+dy;
@@ -772,8 +757,7 @@ int mode;
  * Returns TRUE if a path was found.
  */
 static boolean
-findtravelpath(guess)
-boolean guess;
+findtravelpath(boolean guess)
 {
     /* if travel to adjacent, reachable location, use normal movement rules */
     if (!guess && iflags.travel1 && distmin(u.ux, u.uy, u.tx, u.ty) == 1) {
@@ -966,7 +950,7 @@ found:
 }
 
 void
-domove()
+domove(void)
 {
 	register struct monst *mtmp;
 	register struct rm *tmpr;
@@ -1886,7 +1870,7 @@ domove()
 }
 
 void
-invocation_message()
+invocation_message(void)
 {
 	/* a special clue-msg when on the Invocation position */
 	if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
@@ -1919,8 +1903,7 @@ invocation_message()
 
 
 void
-spoteffects(pick)
-boolean pick;
+spoteffects(boolean pick)
 {
 	register struct monst *mtmp;
 
@@ -2099,7 +2082,8 @@ stillinwater:;
 	}
 }
 
-void sigilfloat()
+void
+sigilfloat(void)
 {
 	if(!Is_sigil(&u.uz)) return;
 	if(levl[u.ux][u.uy].typ != AIR) return;
@@ -2115,9 +2099,7 @@ void sigilfloat()
 }
 
 static boolean
-monstinroom(mdat,roomno)
-struct permonst *mdat;
-int roomno;
+monstinroom(struct permonst *mdat, int roomno)
 {
 	register struct monst *mtmp;
 
@@ -2129,9 +2111,7 @@ int roomno;
 }
 
 char *
-in_rooms(x, y, typewanted)
-register xchar x, y;
-register int typewanted;
+in_rooms(xchar x, xchar y, int typewanted)
 {
 	static char buf[5];
 	char rno, *ptr = &buf[4];
@@ -2198,8 +2178,7 @@ register int typewanted;
 
 /* is (x,y) in a town? */
 boolean
-in_town(x, y)
-register int x, y;
+in_town(int x, int y)
 {
 	s_level *slev = Is_special(&u.uz);
 	register struct mkroom *sroom;
@@ -2222,8 +2201,7 @@ register int x, y;
 }
 
 static void
-move_update(newlev)
-register boolean newlev;
+move_update(register boolean newlev)
 {
 	char *ptr1, *ptr2, *ptr3, *ptr4;
 
@@ -2264,8 +2242,7 @@ register boolean newlev;
 }
 
 void
-check_special_room(newlev)
-register boolean newlev;
+check_special_room(register boolean newlev)
 {
 	register struct monst *mtmp;
 	char *ptr;
@@ -2449,7 +2426,7 @@ register boolean newlev;
 
 
 int
-dopickup()
+dopickup(void)
 {
 	int count;
 	struct trap *traphere = t_at(u.ux, u.uy);
@@ -2527,7 +2504,7 @@ dopickup()
 /* turn around a corner if that is the only way we can proceed */
 /* do not turn left or right twice */
 void
-lookaround()
+lookaround(void)
 {
     register int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
     register int corrct = 0, noturn = 0;
@@ -2661,7 +2638,7 @@ stop:
 /* something like lookaround, but we are not running */
 /* react only to monsters that might hit us */
 int
-monster_nearby()
+monster_nearby(void)
 {
 	register int x,y;
 	register struct monst *mtmp;
@@ -2686,9 +2663,7 @@ monster_nearby()
 }
 
 void
-nomul(nval, txt)
-	register int nval;
-	const char *txt;
+nomul(register int nval, const char *txt)
 {
 	if(multi < nval) return;	/* This is a bug fix by ab@unido */
 	u.uinvulnerable = FALSE;	/* Kludge to avoid ctrl-C bug -dlc */
@@ -2704,8 +2679,7 @@ nomul(nval, txt)
 
 /* called when a non-movement, multi-turn action has completed */
 void
-unmul(msg_override)
-const char *msg_override;
+unmul(const char *msg_override)
 {
 	multi = 0;	/* caller will usually have done this already */
 	(void) memset(multi_txt, 0, BUFSZ);
@@ -2756,7 +2730,7 @@ const char *msg_override;
 
 
 void
-maybe_wail()
+maybe_wail(void)
 {
     static short powers[] = { TELEPORT, SEE_INVIS, POISON_RES, COLD_RES,
 			      SHOCK_RES, FIRE_RES, SLEEP_RES, DISINT_RES,
@@ -2790,9 +2764,9 @@ maybe_wail()
  * if the Mother is bound.
  */
 void
-showdmg(n,you)
-int n; /**< amount of damage inflicted */
-boolean you; /**< true, if you are hit */
+showdmg(
+	int n, /**< amount of damage inflicted */
+	boolean you /**< true, if you are hit */)
 {
 	if (u.sealsActive & SEAL_MOTHER && n > 0) {
 		if (you)
@@ -2803,10 +2777,7 @@ boolean you; /**< true, if you are hit */
 }
 
 void
-losehp(n, knam, k_format)
-register int n;
-register const char *knam;
-boolean k_format;
+losehp(register int n, register const char *knam, boolean k_format)
 {
 	if (Upolyd) {
 		u.mh -= n;
@@ -2842,8 +2813,7 @@ boolean k_format;
 }
 
 void
-losepw(n)
-int n;
+losepw(int n)
 {
 	u.uen -= n;
 	if(u.uen < 0 && !Race_if(PM_INCANTIFIER))
@@ -2852,7 +2822,7 @@ int n;
 }
 
 boolean
-adjacent_mon()
+adjacent_mon(void)
 {
 	int i, j;
 	if(u.ustuck)
@@ -2866,9 +2836,9 @@ adjacent_mon()
 }
 
 void
-mdamageu(mtmp, n)	/* mtmp hits you for n points damage */
-register struct monst *mtmp;
-register int n;
+mdamageu(	/* mtmp hits you for n points damage */
+	register struct monst *mtmp,
+	register int n)
 {
 	flags.botl = 1;
 	if (n > 0){
@@ -2902,7 +2872,7 @@ register int n;
 }
 
 int
-weight_cap()
+weight_cap(void)
 {
 	long carrcap = 0, maxcap = MAX_CARR_CAP;
 
@@ -3013,7 +2983,7 @@ static int wc;	/* current weight_cap(); valid after call to inv_weight() */
 /* returns how far beyond the normal capacity the player is currently. */
 /* inv_weight() is negative if the player is below normal capacity. */
 int
-inv_weight()
+inv_weight(void)
 {
 	register struct obj *otmp = invent;
 	register int wt = 0;
@@ -3067,8 +3037,7 @@ inv_weight()
  * over the normal capacity the player is loaded.  Max is 5.
  */
 int
-calc_capacity(xtra_wt)
-int xtra_wt;
+calc_capacity(int xtra_wt)
 {
     int cap, wt = inv_weight() + xtra_wt;
 
@@ -3079,13 +3048,13 @@ int xtra_wt;
 }
 
 int
-near_capacity()
+near_capacity(void)
 {
     return calc_capacity(0);
 }
 
 int
-max_capacity()
+max_capacity(void)
 {
     int wt = inv_weight();
 
@@ -3093,8 +3062,7 @@ max_capacity()
 }
 
 boolean
-check_capacity(str)
-const char *str;
+check_capacity(const char *str)
 {
     if(near_capacity() >= EXT_ENCUMBER) {
 	if(str)
@@ -3108,7 +3076,7 @@ const char *str;
 
 
 int
-inv_cnt()
+inv_cnt(void)
 {
 	register struct obj *otmp = invent;
 	register int ct = 0;
@@ -3126,8 +3094,7 @@ inv_cnt()
 /* now that u.gold/m.gold is gone.*/
 /* Counting money in a container might be possible too. */
 long
-money_cnt(otmp)
-struct obj *otmp;
+money_cnt(struct obj *otmp)
 {
         while(otmp) {
 	        /* Must change when silver & copper is implemented: */
@@ -3141,8 +3108,7 @@ struct obj *otmp;
 /* starts all_items() */
 /* initializes all_items to look in where_to_look chains */
 struct obj *
-start_all_items(where_to_look)
-int * where_to_look;
+start_all_items(int *where_to_look)
 {
 	return all_items(TRUE, where_to_look, FALSE);
 }
@@ -3151,15 +3117,14 @@ int * where_to_look;
 /* uses foundwhere to return where the returned object was found */
 /* -> helpful for contained objects, whose obj->where doesn't reflect minvent/migratingminvent/etc */
 struct obj *
-next_all_items(foundwhere)
-int * foundwhere;
+next_all_items(int *foundwhere)
 {
 	return all_items(FALSE, foundwhere, FALSE);
 }
 
 /* prematurely ends all_items */
 void
-end_all_items()
+end_all_items(void)
 {
 	all_items(FALSE, NULL, TRUE);
 	return;
@@ -3167,10 +3132,10 @@ end_all_items()
 
 /* finds all items, specify where you want them from */
 struct obj *
-all_items(start, wherefrom, endnow)
-boolean start;	/* call with TRUE when first calling this function to start it */
-int * wherefrom;	/* bitfield, (1L << obj->where) */
-boolean endnow;
+all_items(
+	boolean start,	/* call with TRUE when first calling this function to start it */
+	int *wherefrom,	/* bitfield, (1L << obj->where) */
+	boolean endnow)
 {
 	static boolean in_progress = FALSE;
 	static int curwhere;

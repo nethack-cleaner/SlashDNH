@@ -21,7 +21,7 @@ boolean m_using = FALSE;
 
 static struct permonst *FDECL(muse_newcham_mon, (struct monst *));
 static int FDECL(precheck, (struct monst *,struct obj *));
-static void FDECL(mzapmsg, (struct monst *,struct obj *,BOOLEAN_P));
+static void FDECL(mzapmsg, (struct monst *,struct obj *,boolean));
 static void FDECL(mreadmsg, (struct monst *,struct obj *));
 static void FDECL(mquaffmsg, (struct monst *,struct obj *));
 static int FDECL(mbhitm, (struct monst *,struct obj *,struct monst *));
@@ -30,7 +30,7 @@ static void FDECL(mbhit,
 	int FDECL((*),(OBJ_P,OBJ_P)),struct obj *));
 void FDECL(you_aggravate, (struct monst *));
 static void FDECL(mon_consume_unstone, (struct monst *,struct obj *,
-	BOOLEAN_P,BOOLEAN_P));
+	boolean,boolean));
 
 static struct musable {
 	struct obj *offensive;
@@ -54,9 +54,7 @@ static boolean zap_oseen;
  * (i.e. it teleported) and 1 if it's dead.
  */
 static int
-precheck(mon, obj)
-struct monst *mon;
-struct obj *obj;
+precheck(struct monst *mon, struct obj *obj)
 {
 	boolean vis;
 
@@ -143,10 +141,7 @@ struct obj *obj;
 }
 
 static void
-mzapmsg(mtmp, otmp, self)
-struct monst *mtmp;
-struct obj *otmp;
-boolean self;
+mzapmsg(struct monst *mtmp, struct obj *otmp, boolean self)
 {
 	if (!canseemon(mtmp)) {
 		if (flags.soundok)
@@ -163,9 +158,7 @@ boolean self;
 }
 
 static void
-mreadmsg(mtmp, otmp)
-struct monst *mtmp;
-struct obj *otmp;
+mreadmsg(struct monst *mtmp, struct obj *otmp)
 {
 	boolean vismon = canseemon(mtmp);
 	char onambuf[BUFSZ];
@@ -202,9 +195,7 @@ struct obj *otmp;
 }
 
 static void
-mquaffmsg(mtmp, otmp)
-struct monst *mtmp;
-struct obj *otmp;
+mquaffmsg(struct monst *mtmp, struct obj *otmp)
 {
 	if (canseemon(mtmp)) {
 		otmp->dknown = 1;
@@ -251,8 +242,7 @@ struct obj *otmp;
  * found.
  */
 boolean
-find_defensive(mtmp)
-struct monst *mtmp;
+find_defensive(struct monst *mtmp)
 {
 	register struct obj *obj = 0;
 	struct monst *mtarg;
@@ -564,8 +554,7 @@ botm:	return((boolean)(!!m.has_defense));
  * 2: did something and can't attack again (i.e. teleported).
  */
 int
-use_defensive(mtmp)
-struct monst *mtmp;
+use_defensive(struct monst *mtmp)
 {
 	int i, fleetim, how = 0;
 	struct obj *otmp = m.defensive;
@@ -1029,14 +1018,13 @@ const int good_amulets[] = {
 };
 
 int
-rnd_good_amulet()
+rnd_good_amulet(void)
 {
 	return good_amulets[rn2(SIZE(good_amulets))];
 }
 
 int
-rnd_defensive_item(mtmp)
-struct monst *mtmp;
+rnd_defensive_item(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -1104,8 +1092,7 @@ struct monst *mtmp;
 /* Find a mask.
  */
 struct permonst *
-find_mask(mtmp)
-struct monst *mtmp;
+find_mask(struct monst *mtmp)
 {
 #define validmask(obj) ((obj)->otyp == MASK && (obj)->corpsenm != NON_PM && !is_horror(&mons[(int)((obj)->corpsenm)]))
 	register struct obj *obj;
@@ -1128,8 +1115,7 @@ struct monst *mtmp;
  * found.
  */
 boolean
-find_offensive(mtmp)
-struct monst *mtmp;
+find_offensive(struct monst *mtmp)
 {
 	register struct obj *obj;
 	boolean ranged_stuff = FALSE; 
@@ -1325,12 +1311,8 @@ struct monst *mtmp;
 #undef nomore
 }
 
-static
-int
-mbhitm(mtmp, otmp, magr)
-register struct monst *mtmp;
-register struct obj *otmp;
-register struct monst *magr;
+static int
+mbhitm(register struct monst *mtmp, register struct obj *otmp, register struct monst *magr)
 {
 	int tmp;
 
@@ -1451,12 +1433,12 @@ register struct monst *magr;
  * to merge the two functions...)
  */
 static void
-mbhit(mon,range,fhitm,fhito,obj)
-struct monst *mon;			/* monster shooting the wand */
-register int range;			/* direction and range */
-int FDECL((*fhitm),(MONST_P,OBJ_P,MONST_P));
-int FDECL((*fhito),(OBJ_P,OBJ_P));	/* fns called when mon/obj hit */
-struct obj *obj;			/* 2nd arg to fhitm/fhito */
+mbhit(
+	struct monst *mon,	/* monster shooting the wand */
+	register int range,	/* direction and range */
+	int FDECL((*fhitm),(MONST_P,OBJ_P,MONST_P)),
+	int FDECL((*fhito),(OBJ_P,OBJ_P)), /* fns called when mon/obj hit */
+	struct obj *obj)	/* 2nd arg to fhitm/fhito */
 {
 	register struct monst *mtmp;
 	register struct obj *otmp;
@@ -1547,8 +1529,7 @@ struct obj *obj;			/* 2nd arg to fhitm/fhito */
  * after find_offensive().  Return values are same as use_defensive().
  */
 int
-use_offensive(mtmp)
-struct monst *mtmp;
+use_offensive(struct monst *mtmp)
 {
 	int i;
 	struct obj *otmp = m.offensive;
@@ -1835,8 +1816,7 @@ struct monst *mtmp;
 }
 
 int
-rnd_offensive_item(mtmp)
-struct monst *mtmp;
+rnd_offensive_item(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))], diesize;
@@ -1874,8 +1854,7 @@ struct monst *mtmp;
 }
 
 int
-rnd_attack_wand(mtmp)
-struct monst *mtmp;
+rnd_attack_wand(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -1899,8 +1878,7 @@ struct monst *mtmp;
 }
 
 boolean
-is_attack_wand(otyp)
-int otyp;
+is_attack_wand(int otyp)
 {
 	switch (otyp) {
 		case WAN_STRIKING:
@@ -1924,8 +1902,7 @@ int otyp;
 }
 
 int
-rnd_utility_wand(mtmp)
-struct monst *mtmp;
+rnd_utility_wand(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -1946,8 +1923,7 @@ struct monst *mtmp;
 }
 
 int
-rnd_attack_potion(mtmp)
-struct monst *mtmp;
+rnd_attack_potion(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -1968,8 +1944,7 @@ struct monst *mtmp;
 }
 
 int
-rnd_utility_potion(mtmp)
-struct monst *mtmp;
+rnd_utility_potion(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -2018,8 +1993,7 @@ struct monst *mtmp;
 #define MUSE_SCR_DESTROY_ARMOR 17
 
 boolean
-find_misc(mtmp)
-struct monst *mtmp;
+find_misc(struct monst *mtmp)
 {
 	register struct obj *obj;
 	struct permonst *mdat = mtmp->data;
@@ -2236,8 +2210,7 @@ struct monst *mtmp;
 
 /* Now not used, was causing weak monsters to poly to very similar weak monsters */
 static struct permonst *
-muse_newcham_mon(mon)
-struct monst *mon;
+muse_newcham_mon(struct monst *mon)
 {
 	struct obj *m_armr;
 
@@ -2251,8 +2224,7 @@ struct monst *mon;
 }
 
 int
-use_misc(mtmp)
-struct monst *mtmp;
+use_misc(struct monst *mtmp)
 {
 	int i;
 	struct obj *otmp = m.misc;
@@ -2680,8 +2652,7 @@ museamnesia:
 }
 
 void
-you_aggravate(mtmp)
-struct monst *mtmp;
+you_aggravate(struct monst *mtmp)
 {
 	register struct monst *tmpm;
 
@@ -2723,8 +2694,7 @@ struct monst *mtmp;
 }
 
 int
-rnd_misc_item(mtmp)
-struct monst *mtmp;
+rnd_misc_item(struct monst *mtmp)
 {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
@@ -2760,9 +2730,7 @@ struct monst *mtmp;
 }
 
 boolean
-can_equip(mon, obj)
-struct monst *mon;
-struct obj *obj;
+can_equip(struct monst *mon, struct obj *obj)
 {
 	/* Monsters csn't equip your ball and chain */
 	if(obj == uball || obj == uchain)
@@ -2792,9 +2760,7 @@ struct obj *obj;
 }
 
 boolean
-likes_obj(mon, obj)
-struct monst *mon;
-struct obj *obj;
+likes_obj(struct monst *mon, struct obj *obj)
 {
 	struct permonst *ptr = mon->data;
 	/* Monsters don't want your ball and chain */
@@ -2847,9 +2813,7 @@ struct obj *obj;
 }
 
 boolean
-searches_for_item(mon, obj)
-struct monst *mon;
-struct obj *obj;
+searches_for_item(struct monst *mon, struct obj *obj)
 {
 	int typ = obj->otyp;
 
@@ -2956,9 +2920,7 @@ struct obj *obj;
 }
 
 boolean
-mon_reflects(mon,str)
-struct monst *mon;
-const char *str;
+mon_reflects(struct monst *mon, const char *str)
 {
 	struct obj *orefl = which_armor(mon, W_ARMS);
 	int sheen_turn = mad_turn(MAD_ARGENT_SHEEN);
@@ -3096,8 +3058,7 @@ const char *str;
 }
 
 boolean
-ureflects(fmt, str)
-const char *fmt, *str;
+ureflects(const char *fmt, const char *str)
 {
 	/* Check from outermost to innermost objects */
 	if (EReflecting & W_ARMS) {
@@ -3187,9 +3148,7 @@ const char *fmt, *str;
 
 /* TRUE if the monster ate something */
 boolean
-munstone(mon, by_you)
-struct monst *mon;
-boolean by_you;
+munstone(struct monst *mon, boolean by_you)
 {
 	struct obj *obj;
 
@@ -3208,11 +3167,7 @@ boolean by_you;
 }
 
 static void
-mon_consume_unstone(mon, obj, by_you, stoning)
-struct monst *mon;
-struct obj *obj;
-boolean by_you;
-boolean stoning;
+mon_consume_unstone(struct monst *mon, struct obj *obj, boolean by_you, boolean stoning)
 {
     int nutrit = (obj->otyp == CORPSE) ? dog_nutrition(mon, obj) : 0;
     /* also sets meating */
@@ -3271,8 +3226,7 @@ boolean stoning;
 }
 
 int
-mbreak_entanglement(mon)
-struct monst *mon;
+mbreak_entanglement(struct monst *mon)
 {
 	struct obj *obj;
 	int count;
@@ -3313,8 +3267,7 @@ struct monst *mon;
 }
 
 int
-mescape_entanglement(mon)
-struct monst *mon;
+mescape_entanglement(struct monst *mon)
 {
 	struct obj *obj;
 	int count;
@@ -3393,9 +3346,7 @@ struct monst *mon;
 }
 
 int
-entangle_material(mon, mat)
-struct monst *mon;
-int mat;
+entangle_material(struct monst *mon, int mat)
 {
 	struct obj *obj;
 	if(mon == &youmonst){
@@ -3417,9 +3368,7 @@ int mat;
 }
 
 int
-entangle_beatitude(mon, bet)
-struct monst *mon;
-int bet;
+entangle_beatitude(struct monst *mon, int bet)
 {
 	struct obj *obj;
 	int strength = 0;

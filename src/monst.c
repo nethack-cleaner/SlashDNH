@@ -11126,7 +11126,7 @@ is a red right hand
 
 /* dummy routine used to force linkage */
 void
-monst_init()
+monst_init(void)
 {
     return;
 }

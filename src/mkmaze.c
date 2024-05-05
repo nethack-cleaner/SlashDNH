@@ -17,10 +17,10 @@ static boolean FDECL(is_solid,(int,int));
 static int FDECL(extend_spine, (int [3][3], int, int, int));
 static boolean FDECL(okay,(int,int,int,int));
 static void FDECL(maze0xy,(coord *));
-static boolean FDECL(put_lregion_here,(XCHAR_P,XCHAR_P,XCHAR_P,
-	XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P,BOOLEAN_P,d_level *));
+static boolean FDECL(put_lregion_here,(xchar,xchar,xchar,
+	xchar,xchar,xchar,xchar,boolean,d_level *));
 static void NDECL(fixup_special);
-static boolean FDECL(maze_inbounds, (XCHAR_P, XCHAR_P));
+static boolean FDECL(maze_inbounds, (xchar, xchar));
 static void FDECL(move, (int *,int *,int));
 static void NDECL(setup_waterlevel);
 static void NDECL(unsetup_waterlevel);
@@ -28,8 +28,7 @@ static void NDECL(fill_dungeon_of_ill_regard);
 
 
 static boolean
-iswall(x,y)
-int x,y;
+iswall(int x, int y)
 {
     register int type;
 
@@ -40,8 +39,7 @@ int x,y;
 }
 
 static boolean
-iswall_or_stone(x,y)
-    int x,y;
+iswall_or_stone(int x, int y)
 {
     register int type;
 
@@ -55,8 +53,7 @@ iswall_or_stone(x,y)
 
 /* return TRUE if out of bounds, wall or rock */
 static boolean
-is_solid(x,y)
-    int x, y;
+is_solid(int x, int y)
 {
     return (!isok(x,y) || IS_STWALL(levl[x][y].typ));
 }
@@ -81,9 +78,7 @@ is_solid(x,y)
  *		. W W
  */
 static int
-extend_spine(locale, wall_there, dx, dy)
-    int locale[3][3];
-    int wall_there, dx, dy;
+extend_spine(int locale[3][3], int wall_there, int dx, int dy)
 {
     int spine, nx, ny;
 
@@ -120,8 +115,7 @@ extend_spine(locale, wall_there, dx, dy)
  * the types so that they extend and connect to each other.
  */
 void
-wallification(x1, y1, x2, y2)
-int x1, y1, x2, y2;
+wallification(int x1, int y1, int x2, int y2)
 {
 	uchar type;
 	register int x,y;
@@ -197,10 +191,7 @@ int x1, y1, x2, y2;
 }
 
 static boolean
-okay(x,y,dir,depth)
-int x,y;
-register int dir;
-int depth;
+okay(int x, int y, register int dir, int depth)
 {
 	move(&x,&y,dir);
 	move(&x,&y,dir);
@@ -214,8 +205,8 @@ int depth;
 }
 
 static void
-maze0xy(cc)	/* find random starting point for maze generation */
-	coord	*cc;
+maze0xy(	/* find random starting point for maze generation */
+	coord *cc)
 {
 	int tryct = 200;
 	do{
@@ -234,9 +225,7 @@ maze0xy(cc)	/* find random starting point for maze generation */
  *	NOT (pos is corridor and a maze level OR pos is a room OR pos is air)
  */
 boolean
-bad_location(x, y, lx, ly, hx, hy)
-    xchar x, y;
-    xchar lx, ly, hx, hy;
+bad_location(xchar x, xchar y, xchar lx, xchar ly, xchar hx, xchar hy)
 {
     return((boolean)(occupied(x, y) ||
 	   within_bounded_area(x,y, lx,ly, hx,hy) ||
@@ -253,11 +242,7 @@ bad_location(x, y, lx, ly, hx, hy)
 /* pick a location in area (lx, ly, hx, hy) but not in (nlx, nly, nhx, nhy) */
 /* and place something (based on rtype) in that region */
 void
-place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev)
-    xchar	lx, ly, hx, hy;
-    xchar	nlx, nly, nhx, nhy;
-    xchar	rtype;
-    d_level	*lev;
+place_lregion(xchar lx, xchar ly, xchar hx, xchar hy, xchar nlx, xchar nly, xchar nhx, xchar nhy, xchar rtype, d_level *lev)
 {
     int trycnt;
     boolean oneshot;
@@ -299,12 +284,7 @@ place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev)
 }
 
 static boolean
-put_lregion_here(x,y,nlx,nly,nhx,nhy,rtype,oneshot,lev)
-xchar x, y;
-xchar nlx, nly, nhx, nhy;
-xchar rtype;
-boolean oneshot;
-d_level *lev;
+put_lregion_here(xchar x, xchar y, xchar nlx, xchar nly, xchar nhx, xchar nhy, xchar rtype, boolean oneshot, d_level *lev)
 {
     if (bad_location(x, y, nlx, nly, nhx, nhy)) {
 	if (!oneshot) {
@@ -360,9 +340,8 @@ static const int angelnums[] = {PM_JUSTICE_ARCHON, PM_SWORD_ARCHON, PM_SHIELD_AR
 						  PM_ERINYS, PM_FALLEN_ANGEL, PM_ANCIENT_OF_BLESSINGS, PM_ANCIENT_OF_ICE, PM_ANCIENT_OF_DEATH
 						 };
 
-int 
-init_village(rndlevs)
-int rndlevs;
+int
+init_village(int rndlevs)
 {
 	if(Race_if(PM_ELF) || Race_if(PM_ENT))
 		return FOREST_VILLAGE;
@@ -386,7 +365,7 @@ int rndlevs;
 
 /* this is special stuff that the level compiler cannot (yet) handle */
 static void
-fixup_special()
+fixup_special(void)
 {
     register lev_region *r = lregions;
     struct d_level lev;
@@ -1134,8 +1113,7 @@ fixup_special()
  * Returns true if the (x,y) location given falls withing the allowable bounds for mazes
  */
 boolean
-maze_inbounds(x, y)
-xchar x, y;
+maze_inbounds(xchar x, xchar y)
 {
 	return (x >= 2 && y >= 2 && x < x_maze_max && y < y_maze_max && isok(x, y));
 }
@@ -1145,8 +1123,7 @@ xchar x, y;
  * is overtop of a mazewalk-textured area.
  */
 boolean
-rectangle_in_mazewalk_area(lx, ly, hx, hy)
-xchar lx, ly, hx, hy;
+rectangle_in_mazewalk_area(xchar lx, xchar ly, xchar hx, xchar hy)
 {
 	int x, y;
 
@@ -1168,8 +1145,7 @@ xchar lx, ly, hx, hy;
  * Determines if a cutting out a rectangle would immediately separate sections of mazewalk from each other
  */
 boolean
-maze_rectangle_border_is_okay(lx, ly, hx, hy)
-xchar lx, ly, hx, hy;
+maze_rectangle_border_is_okay(xchar lx, xchar ly, xchar hx, xchar hy)
 {
 	int x = lx-1;	// we want to be on the [stone] part of the mazewalk fill
 	int y = ly-1;
@@ -1212,8 +1188,7 @@ xchar lx, ly, hx, hy;
  * Sets the solidwall parameters for rand maze room walls for the given room
  */
 void
-maze_room_set_destructible_flags(r)
-struct mkroom * r;
+maze_room_set_destructible_flags(struct mkroom *r)
 {
 	xchar rlx, rly, rhx, rhy;	// rectangles to check for mazewalk-ness
 	
@@ -1246,8 +1221,7 @@ struct mkroom * r;
  * Utility function to destroy a wall at the given spot.
  */
 void
-destroy_wall(x, y)
-xchar x, y;
+destroy_wall(xchar x, xchar y)
 {
 	/* don't destroy walls of the maze border */
 	if (   !maze_inbounds(x + 1, y + 0)
@@ -1267,9 +1241,7 @@ xchar x, y;
  * Attempts to add rooms to the yet-unwalked mazewalk sections of a maze
  */
 void
-maze_add_rooms(attempts, maxsize)
-int attempts;
-int maxsize;
+maze_add_rooms(int attempts, int maxsize)
 {
 	xchar x, y;
 
@@ -1390,8 +1362,7 @@ int maxsize;
 * Attempts to add rooms to the yet-unwalked mazewalk sections of a maze
 */
 void
-maze_add_openings(attempts)
-int attempts;
+maze_add_openings(int attempts)
 {
 	xchar x, y;
 
@@ -1438,9 +1409,7 @@ int attempts;
  * If called with careful = TRUE, it will only remove dead ends into places it is certain are not part of sp_lev generation
  */
 void
-maze_remove_deadends(floortyp, careful)
-int floortyp;
-int careful;
+maze_remove_deadends(int floortyp, int careful)
 {
 	char dirok[4];
 	int x, y, dir, idx, idx2, dx, dy, dx2, dy2;
@@ -1509,8 +1478,7 @@ int careful;
 * chance/100 probability
 */
 void
-maze_damage_rooms(chance)
-int chance;
+maze_damage_rooms(int chance)
 {
 	xchar x, y;
 	xchar lx, ly, hx, hy;
@@ -1580,8 +1548,7 @@ int chance;
  * place some other furniture inside the room.
  */
 void
-maze_touchup_rooms(attempts)
-int attempts;
+maze_touchup_rooms(int attempts)
 {
 	struct mkroom *r;
 	if (nroom == 0)
@@ -1625,8 +1592,7 @@ int attempts;
  * Removes the given room, replacing its contents with pre-wallwalk fill
  */
 void
-maze_remove_room(room_index)
-int room_index;
+maze_remove_room(int room_index)
 {
 	int x, y;
 	struct mkroom *troom = &rooms[room_index];
@@ -1644,7 +1610,7 @@ int room_index;
 }
 
 void
-create_maze()
+create_maze(void)
 {
 	int x, y;
 	coord mm;
@@ -1678,8 +1644,7 @@ create_maze()
 }
 
 void
-makemaz(s)
-register const char *s;
+makemaz(register const char *s)
 {
 	int x,y;
 	char protofile[20];
@@ -1896,8 +1861,7 @@ register const char *s;
 
 
 void
-walkfrom(x,y,depth)
-int x,y,depth;
+walkfrom(int x, int y, int depth)
 {
 	register int q,a,dir;
 	int dirs[4];
@@ -1928,9 +1892,7 @@ int x,y,depth;
 }
 
 static void
-move(x,y,dir)
-register int *x, *y;
-register int dir;
+move(register int *x, register int *y, register int dir)
 {
 	switch(dir){
 		case 0: --(*y); break;
@@ -1942,9 +1904,9 @@ register int dir;
 }
 
 void
-mazexy(cc)	/* find random point in generated corridors,
+mazexy(	/* find random point in generated corridors,
 		   so we don't create items in moats, bunkers, or walls */
-	coord	*cc;
+	coord *cc)
 {
 	int cpt=0;
 
@@ -1974,7 +1936,7 @@ mazexy(cc)	/* find random point in generated corridors,
 }
 
 void
-bound_digging()
+bound_digging(void)
 /* put a non-diggable boundary around the initial portion of a level map.
  * assumes that no level will initially put things beyond the isok() range.
  *
@@ -2056,9 +2018,7 @@ bound_digging()
 }
 
 struct trap *
-mkportal(x, y, todnum, todlevel)
-register xchar x, y;
-register int todnum, todlevel;
+mkportal(register xchar x, register xchar y, register int todnum, register int todlevel)
 {
 	/* a portal "trap" must be matched by a */
 	/* portal in the destination dungeon/dlevel */
@@ -2104,10 +2064,10 @@ static int xmin, ymin, xmax, ymax;	/* level boundaries */
 
 static void NDECL(set_wportal);
 static void FDECL(mk_bubble, (int,int,int));
-static void FDECL(mv_bubble, (struct bubble *,int,int,BOOLEAN_P));
+static void FDECL(mv_bubble, (struct bubble *,int,int,boolean));
 
 void
-movebubbles()
+movebubbles(void)
 {
 	static boolean up;
     struct bubble *b;
@@ -2235,7 +2195,7 @@ movebubbles()
 
 /* when moving in water, possibly (1 in 3) alter the intended destination */
 void
-water_friction()
+water_friction(void)
 {
     int x, y, dx, dy;
     boolean eff = FALSE;
@@ -2270,8 +2230,7 @@ water_friction()
 }
 
 void
-save_waterlevel(fd, mode)
-int fd, mode;
+save_waterlevel(int fd, int mode)
 {
     struct bubble *b;
 
@@ -2293,8 +2252,7 @@ int fd, mode;
 }
 
 void
-restore_waterlevel(fd)
-int fd;
+restore_waterlevel(int fd)
 {
     struct bubble *b = (struct bubble *) 0, *btmp;
     int i, n;
@@ -2333,8 +2291,8 @@ int fd;
 	return;
 }
 
-const char *waterbody_name(x, y)
-xchar x,y;
+const char *
+waterbody_name(xchar x, xchar y)
 {
 	register struct rm *lev;
 	schar ltyp;
@@ -2362,7 +2320,7 @@ xchar x,y;
 }
 
 static void
-set_wportal()
+set_wportal(void)
 {
 	/* there better be only one magic portal on water level... */
 	for (wportal = ftrap; wportal; wportal = wportal->ntrap)
@@ -2371,7 +2329,7 @@ set_wportal()
 }
 
 static void
-setup_waterlevel()
+setup_waterlevel(void)
 {
 	register int x, y;
 	register int xskip, yskip;
@@ -2400,7 +2358,7 @@ setup_waterlevel()
 }
 
 static void
-unsetup_waterlevel()
+unsetup_waterlevel(void)
 {
     struct bubble *b, *bb;
 
@@ -2414,8 +2372,7 @@ unsetup_waterlevel()
 }
 
 static void
-mk_bubble(x,y,n)
-int x, y, n;
+mk_bubble(int x, int y, int n)
 {
 	/*
 	 * These bit masks make visually pleasing bubbles on a normal aspect
@@ -2477,10 +2434,7 @@ int x, y, n;
  * This property also makes leaving a bubble slightly difficult.
  */
 static void
-mv_bubble(b,dx,dy,ini)
-struct bubble *b;
-int dx, dy;
-boolean ini;
+mv_bubble(struct bubble *b, int dx, int dy, boolean ini)
 {
     int x, y, i, j, colli = 0;
 	struct container *cons, *ctemp;
@@ -2619,7 +2573,7 @@ boolean ini;
 }
 
 static void
-fill_dungeon_of_ill_regard(){
+fill_dungeon_of_ill_regard(void){
 	int corrs = 0, all = 0, med = 0, strong = 0;
 	int i = 0, j = 0;
 	int x = 0, y = 0;

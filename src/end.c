@@ -38,17 +38,17 @@ static void FDECL(done_intr, (int));
 static void FDECL(done_hangup, (int));
 # endif
 #endif
-static void FDECL(disclose,(int,BOOLEAN_P));
+static void FDECL(disclose,(int,boolean));
 static void FDECL(get_valuables, (struct obj *));
 static void FDECL(sort_valuables, (struct valuable_data *,int));
-static void FDECL(artifact_score, (struct obj *,BOOLEAN_P,winid));
+static void FDECL(artifact_score, (struct obj *,boolean,winid));
 static void FDECL(savelife, (int));
-void FDECL(list_vanquished, (CHAR_P,BOOLEAN_P));
+void FDECL(list_vanquished, (char,boolean));
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
 extern void NDECL(dump_spells);
-void FDECL(do_vanquished, (int, BOOLEAN_P, BOOLEAN_P));
+void FDECL(do_vanquished, (char, boolean, boolean));
 #endif /* DUMP_LOG */
 static boolean FDECL(should_query_disclose_option, (int,char *));
 
@@ -145,7 +145,7 @@ FILE *dump_fp = (FILE *)0;  /* file pointer for dumps */
 /* functions dump_init, dump_exit and dump are from the dump patch */
 
 void
-dump_init ()
+dump_init(void)
 {
   if (dump_fn[0]) {
 #ifdef UNIX
@@ -167,7 +167,7 @@ dump_init ()
 }
 
 void
-dump_exit ()
+dump_exit(void)
 {
   if (dump_fp)
     fclose (dump_fp);
@@ -175,7 +175,7 @@ dump_exit ()
 
 
 void
-mk_dgl_extrainfo()
+mk_dgl_extrainfo(void)
 {
 #ifdef EXTRAINFO_FN
     FILE *extrai = (FILE *)0;
@@ -247,8 +247,8 @@ mk_mapdump(char *fname)
   }
 }
 
-void dump (pre, str)
-     char *pre, *str;
+void
+dump(char *pre, char *str)
 {
   if (dump_fp)
     fprintf (dump_fp, "%s%s\n", pre, str);
@@ -257,8 +257,7 @@ void dump (pre, str)
 
 /*ARGSUSED*/
 void
-done1(sig_unused)   /* called as signal() handler, so sent at least one arg */
-int sig_unused;
+done1(int sig_unused) /* called as signal() handler, so sent at least one arg */
 {
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT,SIG_IGN);
@@ -279,7 +278,7 @@ int sig_unused;
 
 /* "#quit" command or keyboard interrupt */
 int
-done2()
+done2(void)
 {
 	if (iflags.debug_fuzzer)
 		return MOVE_CANCELLED;
@@ -328,8 +327,7 @@ done2()
 #ifndef NO_SIGNAL
 /*ARGSUSED*/
 static void
-done_intr(sig_unused) /* called as signal() handler, so sent at least one arg */
-int sig_unused;
+done_intr(int sig_unused) /* called as signal() handler, so sent at least one arg */
 {
 	done_stopprint++;
 	(void) signal(SIGINT, SIG_IGN);
@@ -341,8 +339,7 @@ int sig_unused;
 
 # if defined(UNIX)
 static void
-done_hangup(sig)	/* signal() handler */
-int sig;
+done_hangup(int sig)		/* signal() handler */
 {
 	program_state.done_hup++;
 	(void)signal(SIGHUP, SIG_IGN);
@@ -353,8 +350,7 @@ int sig;
 #endif /* NO_SIGNAL */
 
 void
-done_in_by(mtmp)
-register struct monst *mtmp;
+done_in_by(register struct monst *mtmp)
 {
 	char buf[BUFSZ];
 	boolean distorted = (boolean)(Hallucination && canspotmon(mtmp));
@@ -504,9 +500,7 @@ panic VA_DECL(const char *, str)
 }
 
 static boolean
-should_query_disclose_option(category, defquery)
-int category;
-char *defquery;
+should_query_disclose_option(int category, char *defquery)
 {
     int idx;
     char *dop = index(disclosure_options, category);
@@ -542,9 +536,7 @@ char *defquery;
 }
 
 static void
-disclose(how,taken)
-int how;
-boolean taken;
+disclose(int how, boolean taken)
 {
 	char	c = 0, defquery;
 	char	qbuf[QBUFSZ];
@@ -636,8 +628,7 @@ boolean taken;
 
 /* try to get the player back in a viable state after being killed */
 static void
-savelife(how)
-int how;
+savelife(int how)
 {
 	u.uswldtim = 0;
 	u.divetimer = ACURR(A_CON)/3;
@@ -672,8 +663,7 @@ int how;
  * intact.
  */
 static void
-get_valuables(list)
-struct obj *list;	/* inventory or container contents */
+get_valuables(struct obj *list)	/* inventory or container contents */
 {
     register struct obj *obj;
     register int i;
@@ -705,9 +695,9 @@ struct obj *list;	/* inventory or container contents */
  *  as easily use qsort, but we don't care about efficiency here.
  */
 static void
-sort_valuables(list, size)
-struct valuable_data list[];
-int size;		/* max value is less than 20 */
+sort_valuables(
+	struct valuable_data list[],
+	int size)		/* max value is less than 20 */
 {
     register int i, j;
     struct valuable_data ltmp;
@@ -728,10 +718,10 @@ int size;		/* max value is less than 20 */
 
 /* called twice; first to calculate total, then to list relevant items */
 static void
-artifact_score(list, counting, endwin)
-struct obj *list;
-boolean counting;	/* true => add up points; false => display them */
-winid endwin;
+artifact_score(
+	struct obj *list,
+	boolean counting,	/* true => add up points; false => display them */
+	winid endwin)
 {
     char pbuf[BUFSZ];
     struct obj *otmp;
@@ -772,7 +762,7 @@ winid endwin;
 }
 
 struct obj *
-find_equip_life_oprop()
+find_equip_life_oprop(void)
 {
 	struct obj *otmp;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
@@ -782,8 +772,8 @@ find_equip_life_oprop()
 	return (struct obj *) 0;
 }
 
-const char*
-get_alignment_code()
+const char *
+get_alignment_code(void)
 {
 	for(int i = 0; i<5; i++){
 		if(u.ualign.type == aligns[i].value) return aligns[i].filecode;
@@ -791,8 +781,8 @@ get_alignment_code()
 	return "Naa"; //Not An Alignment
 }
 
-const char*
-get_alignment_adj()
+const char *
+get_alignment_adj(void)
 {
 	for(int i = 0; i<5; i++){
 		if(u.ualign.type == aligns[i].value) return aligns[i].adj;
@@ -801,7 +791,7 @@ get_alignment_adj()
 }
 
 boolean
-Check_crystal_lifesaving()
+Check_crystal_lifesaving(void)
 {
 	if(!Black_crystal)
 		return FALSE;
@@ -834,7 +824,7 @@ Check_crystal_lifesaving()
 }
 
 boolean
-Check_iaso_lifesaving()
+Check_iaso_lifesaving(void)
 {
 	for(struct monst *mon = fmon; mon; mon = mon->nmon)
 		if(mon->mtyp == PM_IASOIAN_ARCHON
@@ -846,7 +836,7 @@ Check_iaso_lifesaving()
 }
 
 boolean
-Check_twin_lifesaving()
+Check_twin_lifesaving(void)
 {
 	if(!check_mutation(TWIN_SAVE))
 		return FALSE;
@@ -857,7 +847,7 @@ Check_twin_lifesaving()
 }
 
 boolean
-Check_ring_lifesaving()
+Check_ring_lifesaving(void)
 {
 	struct obj *ring = uring_otyp(RIN_WISHES);
 	if (ring && ring->spe > 0)
@@ -866,7 +856,7 @@ Check_ring_lifesaving()
 }
 
 static void
-Use_crystal_lifesaving()
+Use_crystal_lifesaving(void)
 {
 	//Use less advantageous l.s. first (the full set of 5 crystals is heavy and riskier for theft)
 	struct obj *otmp, *crystal, *ec = 0, *fc = 0, *wc = 0, *ac = 0;
@@ -930,7 +920,7 @@ Use_crystal_lifesaving()
 }
 
 static void
-Use_iaso_lifesaving()
+Use_iaso_lifesaving(void)
 {
 	struct monst *mon;
 	int count = 0;
@@ -960,7 +950,7 @@ Use_iaso_lifesaving()
 }
 
 static void
-Use_twin_lifesaving()
+Use_twin_lifesaving(void)
 {
 	struct monst *mon;
 	remove_mutation(TWIN_SAVE);
@@ -976,8 +966,7 @@ Use_twin_lifesaving()
 
 /* Be careful not to call panic from here! */
 void
-done(how)
-int how;
+done(int how)
 {
 #if defined(WIZARD)
 	char paranoid_buf[BUFSZ];
@@ -1683,17 +1672,14 @@ die:
 
 
 void
-container_contents(list, identified, all_containers)
-struct obj *list;
-boolean identified, all_containers;
+container_contents(struct obj *list, boolean identified, boolean all_containers)
 #ifdef DUMP_LOG
 {
 	do_containerconts(list, identified, all_containers, FALSE, TRUE);
 }
 
-void do_containerconts(list, identified, all_containers, want_dump, want_disp)
-struct obj *list;
-boolean identified, all_containers, want_dump, want_disp;
+void
+do_containerconts(struct obj *list, boolean identified, boolean all_containers, boolean want_dump, boolean want_disp)
 #endif
 /* The original container_contents function */
 {
@@ -1808,8 +1794,7 @@ boolean identified, all_containers, want_dump, want_disp;
 
 /* should be called with either EXIT_SUCCESS or EXIT_FAILURE */
 void
-terminate(status)
-int status;
+terminate(int status)
 {
 	/* don't bother to try to release memory if we're in panic mode, to
 	   avoid trouble in case that happens to be due to memory problems */
@@ -1822,19 +1807,14 @@ int status;
 }
 
 void		/* showborn patch */
-list_vanquished(defquery, ask)
-char defquery;
-boolean ask;
+list_vanquished(char defquery, boolean ask)
 #ifdef DUMP_LOG
 {
   do_vanquished(defquery, ask, FALSE);
 }
 
 void
-do_vanquished(defquery, ask, want_dump)
-int defquery;
-boolean ask;
-boolean want_dump;
+do_vanquished(char defquery, boolean ask, boolean want_dump)
 #endif
 {
     register int i, lev;
@@ -1932,7 +1912,7 @@ boolean want_dump;
 
 /* number of monster species which have been genocided */
 int
-num_genocides()
+num_genocides(void)
 {
     int i, n = 0;
 
@@ -1944,7 +1924,7 @@ num_genocides()
 
 /* number of monster species which have been genocided */
 int
-num_extinct()
+num_extinct(void)
 {
     int i, n = 0;
 

@@ -19,7 +19,6 @@ GAMELIBS = -lncurses -lm
 -include local.mk
 
 CPPFLAGS += -Iinclude
-CPPFLAGS += -DDLB
 CPPFLAGS += -Wall
 #CPPFLAGS += -Wdeprecated-non-prototype
 CPPFLAGS += -Wold-style-definition

@@ -830,16 +830,14 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	    char tbuf[BUFSZ];
 	    Sprintf(tbuf, "Cannot open dungeon description - \"%s",
 		DUNGEON_FILE);
-# if defined(DLB)
 	    Strcat(tbuf, "\" from ");
-#  ifdef PREFIXES_IN_USE
+#ifdef PREFIXES_IN_USE
 	    Strcat(tbuf, "\n\"");
 	    if (fqn_prefix[DATAPREFIX]) Strcat(tbuf, fqn_prefix[DATAPREFIX]);
-#  else
+#else
 	    Strcat(tbuf, "\"");
-#  endif
+#endif
 	    Strcat(tbuf, DLBFILE);
-# endif
 	    Strcat(tbuf, "\" file!");
 	    panic1(tbuf);
 	}

@@ -515,9 +515,6 @@ static const char *build_opts[] = {
 #ifdef COMPRESS
 		"data file compression",
 #endif
-#ifdef DLB
-		"data librarian",
-#endif
 #ifdef WIZARD
 		"debug mode",
 #endif

@@ -7,7 +7,6 @@
 
 #define DATAPREFIX 4
 
-#ifdef DLB
 /*
  * Data librarian.  Present a STDIO-like interface to NetHack while
  * multiplexing on one or more "data libraries".  If a file is not found
@@ -476,6 +475,5 @@ dlb_ftell(dlb *dp)
     return do_dlb_ftell(dp);
 }
 
-#endif /* DLB */
 
 /*dlb.c*/

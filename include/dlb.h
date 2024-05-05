@@ -6,10 +6,6 @@
 #define DLB_H
 /* definitions for data library */
 
-#ifdef DLB
-
-/* implementations */
-
 /* directory structure in memory */
 typedef struct dlb_directory {
     char *fname;	/* file name as seen from calling code */
@@ -30,14 +26,12 @@ typedef struct dlb_library {
 } library;
 
 /* library definitions */
-# ifndef DLBFILE
-#  define DLBFILE	"nhdat"			/* name of library */
-# endif
-# ifndef FILENAME_CMP
-#  define FILENAME_CMP	strcmp			/* case sensitive */
-# endif
-
-
+#ifndef DLBFILE
+# define DLBFILE	"nhdat"			/* name of library */
+#endif
+#ifndef FILENAME_CMP
+# define FILENAME_CMP	strcmp			/* case sensitive */
+#endif
 
 typedef struct dlb_handle {
     FILE *fp;		/* pointer to an external file, use if non-null */
@@ -57,28 +51,6 @@ int FDECL(dlb_fseek, (dlb *,long,int));
 char *FDECL(dlb_fgets, (char *,int,dlb *));
 int FDECL(dlb_fgetc, (dlb *));
 long FDECL(dlb_ftell, (dlb *));
-
-
-/* Resource DLB entry points */
-
-
-#else /* DLB */
-
-# define dlb FILE
-
-# define dlb_init()
-# define dlb_cleanup()
-
-# define dlb_fopen	fopen
-# define dlb_fclose	fclose
-# define dlb_fread	fread
-# define dlb_fseek	fseek
-# define dlb_fgets	fgets
-# define dlb_fgetc	fgetc
-# define dlb_ftell	ftell
-
-#endif /* DLB */
-
 
 /* various other I/O stuff we don't want to replicate everywhere */
 

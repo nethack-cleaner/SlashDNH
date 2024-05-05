@@ -12,8 +12,6 @@
 
 static void FDECL(xexit, (int));
 
-#ifdef DLB
-
 #define DLB_DIRECTORY "Directory"	/* name of lib directory */
 #define LIBLISTFILE "dlb.lst"		/* default list file */
 
@@ -114,15 +112,12 @@ Write(int out, char *buf, long len)
     }
 }
 
-
 char *
 eos(char *s)
 {
     while (*s) s++;
     return s;
 }
-
-
 
 /* open_library(dlb.c) needs this (which normally comes from src/files.c) */
 FILE *
@@ -131,12 +126,9 @@ fopen_datafile(const char *filename, const char *mode)
     return fopen(filename, mode);
 }
 
-#endif	/* DLB */
-
 int
 main(int argc, char **argv)
 {
-#ifdef DLB
     int i, r;
     int ap=2;				/* argument pointer */
     int cp;				/* command pointer */
@@ -423,14 +415,11 @@ main(int argc, char **argv)
 	xexit(EXIT_SUCCESS);
 	}
     }
-#endif	/* DLB */
 
     xexit(EXIT_SUCCESS);
     /*NOTREACHED*/
     return 0;
 }
-
-#ifdef DLB
 
 static void
 write_dlb_directory(int out, int nfiles, libdir *ld, long slen, long dir_size, long flen)
@@ -460,16 +449,11 @@ write_dlb_directory(int out, int nfiles, libdir *ld, long slen, long dir_size, l
     }
 }
 
-#endif	/* DLB */
-
 static void
 xexit(int retcd)
 {
-#ifdef DLB
-#endif
     exit(retcd);
 }
-
 
 
 /*dlb_main.c*/

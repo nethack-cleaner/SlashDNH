@@ -262,10 +262,8 @@ init_linux_cons(void)
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		atexit(linux_mapon);
 		linux_mapoff();
-#  ifdef TEXTCOLOR
 		if (has_colors())
 			iflags.use_color = TRUE;
-#  endif
 	}
 # endif
 }

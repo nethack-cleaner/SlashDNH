@@ -52,9 +52,7 @@ struct WinDesc {
 struct DisplayDesc {
     long rows, cols;		/* width and height of tty display */
     long curx, cury;		/* current cursor position on the screen */
-#ifdef TEXTCOLOR
     int color;			/* current color */
-#endif
     int attrs;			/* attributes in effect */
     int toplin;			/* flag for topl stuff */
     int rawprint;		/* number of raw_printed lines since synch */
@@ -95,9 +93,7 @@ extern void xwaitforspace(const char *);
 /* ### termcap.c, video.c ### */
 
 extern void tty_startup(int*, int*);
-#ifndef NO_TERMS
 extern void tty_shutdown(void);
-#endif
 extern void xputc(char);
 extern void xputs(const char *);
 extern void cl_end(void);
@@ -128,18 +124,14 @@ extern void term_end_attr(int attr);
 extern void term_start_raw_bold(void);
 extern void term_end_raw_bold(void);
 
-#ifdef TEXTCOLOR
 extern void term_start_bgcolor(int color);
 extern void term_end_color(void);
 extern void term_start_color(int color);
 extern int has_color(int color);
-#endif /* TEXTCOLOR */
 
-#ifdef STATUS_COLORS
 extern boolean parse_status_color_options(char *);
 extern boolean parse_setcolor(char *);
 extern boolean parse_resetcolor(char *);
-#endif /* STATUS_COLOR */
 
 /* ### topl.c ### */
 
@@ -206,10 +198,5 @@ extern void tty_start_screen(void);
 extern void tty_end_screen(void);
 
 extern void genl_outrip(winid,int);
-
-#ifdef NO_TERMS
-#endif/*NO_TERMS*/
-
-#undef E
 
 #endif /* WINTTY_H */

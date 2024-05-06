@@ -11,11 +11,7 @@
 #undef C
 #endif
 
-#ifdef TEXTCOLOR
 #define C(n) n
-#else
-#define C(n)
-#endif
 
 #define g_FILLER(symbol) 0
 
@@ -461,7 +457,6 @@ const char * const symbol_names[MAXPCHARS] = {
 
 #undef C
 
-#ifdef ASCIIGRAPH
 
 #ifdef CURSES_GRAPHICS
 void (*cursesgraphics_mode_callback)(void) = 0;
@@ -583,9 +578,7 @@ static glyph_t ibm_graphics[MAXPCHARS] = {
 	g_FILLER(S_explode8),
 	g_FILLER(S_explode9)
 };
-#endif  /* ASCIIGRAPH */
 
-#ifdef TERMLIB
 void (*decgraphics_mode_callback)(void) = 0;  /* set in tty_start_screen() */
 
 static glyph_t dec_graphics[MAXPCHARS] = {
@@ -704,7 +697,6 @@ static glyph_t dec_graphics[MAXPCHARS] = {
 	0xf3,	/* S_explode8:	meta-s, low horizontal line */
 	g_FILLER(S_explode9)
 };
-#endif  /* TERMLIB */
 
 
 #ifdef UTF8_GLYPHS
@@ -891,7 +883,6 @@ switch_graphics(int gr_set_flag)
     case ASCII_GRAPHICS:
 	    assign_graphics((glyph_t *)0, 0, MAXPCHARS, 0);
 	    break;
-#ifdef ASCIIGRAPH
     case IBM_GRAPHICS:
 /*
  * Use the nice IBM Extended ASCII line-drawing characters (codepage 437).
@@ -913,8 +904,6 @@ switch_graphics(int gr_set_flag)
 	     * monsyms[S_NEU_ANGEL] = 0x8E;
 	     */
 	    break;
-#endif /* ASCIIGRAPH */
-#ifdef TERMLIB
     case DEC_GRAPHICS:
 /*
  * Use the VT100 line drawing character set.
@@ -923,7 +912,6 @@ switch_graphics(int gr_set_flag)
 	    assign_graphics(dec_graphics, SIZE(dec_graphics), MAXPCHARS, 0);
 	    if (decgraphics_mode_callback) (*decgraphics_mode_callback)();
 	    break;
-#endif /* TERMLIB */
 #ifdef UTF8_GLYPHS
     case UTF8_GRAPHICS:
 	    assign_graphics(utf8_graphics, SIZE(utf8_graphics), MAXPCHARS, 0);
@@ -989,7 +977,6 @@ static const glyph_t r_oc_syms[MAXOCLASSES] = {
 	SCOIN_SYM
 };
 
-# ifdef ASCIIGRAPH
 /* Rogue level graphics.  Under IBM graphics mode, use the symbols that were
  * used for Rogue on the IBM PC.  Unfortunately, this can't be completely
  * done because some of these are control characters--armor and rings under
@@ -1019,7 +1006,6 @@ static const uchar IBM_r_oc_syms[MAXOCLASSES] = {	/* a la EPYX Rogue */
 	BED_SYM,
 	SCOIN_SYM
 };
-# endif /* ASCIIGRAPH */
 
 void
 assign_rogue_graphics(int is_rlevel)
@@ -1039,10 +1025,8 @@ assign_rogue_graphics(int is_rlevel)
 	/* Use a loop: char != uchar on some machines. */
 	for (i = 0; i < MAXMCLASSES; i++)
 	    monsyms[i] = def_monsyms[i];
-# if defined(ASCIIGRAPH)
 	if (iflags.IBMgraphics)
 	    monsyms[S_HUMAN] = 0x01; /* smiley face */
-# endif
 	for (i = 0; i < MAXPCHARS; i++)
 	    showsyms[i] = defsyms[i].sym;
 
@@ -1052,13 +1036,9 @@ assign_rogue_graphics(int is_rlevel)
  * all of this info and to simply initialize it via a for() loop like r_oc_syms.
  */
 
-# ifdef ASCIIGRAPH
-	if (!iflags.IBMgraphics
-				) {
-# endif
+	if (!iflags.IBMgraphics) {
 	    showsyms[S_vodoor]  = showsyms[S_hodoor]  = showsyms[S_ndoor] = '+';
 	    showsyms[S_upstair] = showsyms[S_dnstair] = showsyms[S_brupstair] = showsyms[S_brdnstair] = '%';
-# ifdef ASCIIGRAPH
 	} else {
 	    /* a la EPYX Rogue */
 	    showsyms[S_vwall]   = 0xba; /* all walls now use	*/
@@ -1112,15 +1092,12 @@ assign_rogue_graphics(int is_rlevel)
 	    showsyms[S_flesh_hook] = 0x04;
 		monsyms[S_GHOST] = showsyms[S_litroom];
 	}
-#endif /* ASCIIGRAPH */
 
 	for (i = 0; i < MAXOCLASSES; i++) {
-#ifdef ASCIIGRAPH
 	    if (iflags.IBMgraphics
 		)
 		oc_syms[i] = IBM_r_oc_syms[i];
 	    else
-#endif /* ASCIIGRAPH */
 		oc_syms[i] = r_oc_syms[i];
 	}
     } else {

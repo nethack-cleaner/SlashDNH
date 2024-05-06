@@ -402,7 +402,6 @@ curses_create_main_windows(void)
 void
 curses_init_nhcolors(void)
 {
-#ifdef TEXTCOLOR
     if (has_colors()) {
         use_default_colors();
         int i, j;
@@ -450,7 +449,6 @@ curses_init_nhcolors(void)
 # endif
         }
     }
-#endif
 }
 
 
@@ -1185,7 +1183,6 @@ curses_display_splash_window(void)
 void
 curses_cleanup(void)
 {
-#ifdef TEXTCOLOR
     if (has_colors() && can_change_color()) {
         int cnum = COLORS >= 16 ? 16 : 8;
         int clr_remap[16] = {
@@ -1210,5 +1207,4 @@ curses_cleanup(void)
         }
 # endif
     }
-#endif
 }

@@ -110,9 +110,7 @@ struct permonst {
 					mflagsa,		/* Monster rAce boolean bitflags */
 					mflagsv,		/* Monster Vision boolean bitflags */
 					mflagsw;		/* Monster Warded boolean bitflags */
-# ifdef TEXTCOLOR
 	uchar		mcolor;			/* color to use */
-# endif
 	int				mtyp;			/* Index number of this permonst entry */
 };
 

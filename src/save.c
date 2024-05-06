@@ -37,11 +37,9 @@ static void savegamestate(int,int);
 extern struct menucoloring *menu_colorings;
 #endif
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 extern const struct percent_color_option *hp_colors;
 extern const struct percent_color_option *pw_colors;
 extern const struct text_color_option *text_colors;
-#endif
 
 /* need to preserve these during save to avoid accessing freed memory */
 static unsigned ustuck_id = 0, usteed_id = 0;
@@ -842,7 +840,6 @@ savefruitchn(register int fd, register int mode)
 	    ffruit = 0;
 }
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 
 void
 free_percent_color_options(const struct percent_color_option *list_head)
@@ -868,7 +865,6 @@ free_status_colors(void)
     free_percent_color_options(pw_colors); pw_colors = NULL;
     free_text_color_options(text_colors); text_colors = NULL;
 }
-#endif
 
 
 /* also called by prscore(); this probably belongs in dungeon.c... */
@@ -904,9 +900,7 @@ free_menu_coloring(void)
 void
 freedynamicdata(void)
 {
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
     free_status_colors();
-#endif
 	unload_qtlist();
 	free_invbuf();	/* let_to_name (invent.c) */
 	free_youbuf();	/* You_buf,&c (pline.c) */

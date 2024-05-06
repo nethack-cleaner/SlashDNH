@@ -12,15 +12,6 @@
 #define NETWORK		/* if running on a networked system */
 			/* e.g. Suns sharing a playground through NFS */
 
-#define TERMINFO	/* uses terminfo rather than termcap */
-			/* Should be defined for most SYSV, SVR4 (including
-			 * Solaris 2+), HPUX, and Linux systems.  In
-			 * particular, it should NOT be defined for the UNIXPC
-			 * unless you remove the use of the shared library in
-			 * the Makefile */
-#define TEXTCOLOR	/* Use System V r3.2 terminfo color support */
-			/* and/or ANSI color support on termcap systems */
-			/* and/or X11 color */
 #define POSIX_JOB_CONTROL /* use System V / Solaris 2.x / POSIX job control */
 			/* (e.g., VSUSP) */
 

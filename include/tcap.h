@@ -7,10 +7,8 @@
 #ifndef TCAP_H
 #define TCAP_H
 
-# define TERMLIB	/* include termcap code */
 
 /* might display need graphics code? */
-#  define ASCIIGRAPH
 
 #ifndef DECL_H
 extern struct tc_gbl_data {   /* also declared in decl.h; defined in decl.c */
@@ -40,8 +38,6 @@ extern struct tc_lcl_data {   /* defined and set up in termcap.c */
 
 extern short ospeed;		/* set up in termcap.c */
 
-#ifdef TEXTCOLOR
 extern char *hilites[CLR_MAX];
-#endif
 
 #endif /* TCAP_H */

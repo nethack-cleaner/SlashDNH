@@ -282,9 +282,7 @@ struct instance_flags {
 #ifdef WIN_EDGE
 	boolean  win_edge;	/* are the menus aligned left&top */
 #endif
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
     boolean use_status_colors; /* use color in status line; only if wc_color */
-#endif
     boolean hitpointbar;
 #ifdef LAN_FEATURES
 	boolean lan_mail;	/* mail is initialized */
@@ -426,9 +424,7 @@ struct instance_flags {
 #ifdef TTY_GRAPHICS
 #define eight_bit_tty wc_eight_bit_input
 #endif
-#ifdef TEXTCOLOR
 #define use_color wc_color
-#endif
 #define hilite_pet wc_hilite_pet
 #define hilite_peaceful wc_hilite_peaceful
 #define hilite_detected wc_hilite_detected

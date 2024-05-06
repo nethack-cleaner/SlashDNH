@@ -67,11 +67,7 @@ static struct Bool_Opt
 #else
 	{"cursesgraphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#if defined(TERMLIB)
 	{"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
-#else
-	{"DECgraphics", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"eight_bit_tty", &iflags.wc_eight_bit_input, FALSE, SET_IN_GAME},	/*WC*/
 #if defined(TTY_GRAPHICS) || defined(CURSES_GRAPHICS)
 	{"extmenu", &iflags.extmenu, FALSE, SET_IN_GAME},
@@ -106,11 +102,7 @@ static struct Bool_Opt
 	{"hitpointbar", &iflags.hitpointbar, FALSE, SET_IN_GAME},
 	{"hp_monitor", (boolean *)0, TRUE, SET_IN_FILE}, /* For backward compat, HP monitor patch */
 	{"hp_notify", &iflags.hp_notify, FALSE, SET_IN_GAME},
-#ifdef ASCIIGRAPH
 	{"IBMgraphics", &iflags.IBMgraphics, FALSE, SET_IN_GAME},
-#else
-	{"IBMgraphics", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"ignintr", &flags.ignintr, FALSE, SET_IN_GAME},
 	{"item_use_menu", &iflags.item_use_menu, TRUE, SET_IN_GAME},
 	{"large_font", &iflags.obsolete, FALSE, SET_IN_FILE},	/* OBSOLETE */
@@ -192,11 +184,7 @@ static struct Bool_Opt
 	{"sound", &flags.soundok, TRUE, SET_IN_GAME},
 	{"sparkle", &flags.sparkle, TRUE, SET_IN_GAME},
 	{"standout", &flags.standout, FALSE, SET_IN_GAME},
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         {"statuscolors", &iflags.use_status_colors, TRUE, SET_IN_GAME},
-#else
-        {"statuscolors", (boolean *)0, TRUE, SET_IN_GAME},
-#endif
 	{"splash_screen",     &iflags.wc_splash_screen, TRUE, DISP_IN_GAME},	/*WC*/
 	{"suppress hurtness", &flags.suppress_hurtness, FALSE, SET_IN_GAME},
 	{"tiled_map",     &iflags.wc_tiled_map, PREFER_TILED, DISP_IN_GAME},	/*WC*/
@@ -608,9 +596,7 @@ initoptions(void)
 	/* this detects the IBM-compatible console on most 386 boxes */
 	if ((opts = nh_getenv("TERM")) && !strncmp(opts, "AT", 2)) {
 		switch_graphics(IBM_GRAPHICS);
-# ifdef TEXTCOLOR
 		iflags.use_color = TRUE;
-# endif
 	}
 #endif /* UNIX && TTY_GRAPHICS */
 #if defined(UNIX)
@@ -980,7 +966,6 @@ feature_alert_opts(char *op, const char *optn)
 	return 1;
 }
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 
 struct name_value {
     char *name;
@@ -1137,7 +1122,6 @@ parse_status_color_options(char *start)
     return ok;
 }
 
-#endif /* STATUS_COLORS */
 
 
 struct rgb_color_option *setcolor_opts = NULL;
@@ -2807,12 +2791,10 @@ goodfruit:
 
         fullname = "statuscolor";
         if (match_optname(opts, fullname, 11, TRUE)) {
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 	    if (negated) bad_negation(fullname, FALSE);
 	    else if ((op = string_for_env_opt(fullname, opts, FALSE)) != 0)
 		if (!parse_status_color_options(op))
 		    badoption(opts);
-#endif
             return;
         }
 
@@ -3226,14 +3208,9 @@ goodfruit:
 
 			duplicate_opt_detection(boolopt[i].name, 0);
 
-#if defined(TERMLIB) || defined(ASCIIGRAPH) || defined(CURSES_GRAPHICS)
 			if (FALSE
-# ifdef TERMLIB
 				 || (boolopt[i].addr) == &iflags.DECgraphics
-# endif
-# ifdef ASCIIGRAPH
 				 || (boolopt[i].addr) == &iflags.IBMgraphics
-# endif
 # ifdef UTF8_GLYPHS
 				 || (boolopt[i].addr) == &iflags.UTF8graphics
 # endif
@@ -3246,16 +3223,12 @@ goodfruit:
 				assign_rogue_graphics(FALSE);
 # endif
 			    need_redraw = TRUE;
-# ifdef TERMLIB
 			    if ((boolopt[i].addr) == &iflags.DECgraphics)
 				switch_graphics(iflags.DECgraphics ?
 						DEC_GRAPHICS : ASCII_GRAPHICS);
-# endif
-# ifdef ASCIIGRAPH
 			    if ((boolopt[i].addr) == &iflags.IBMgraphics)
 				switch_graphics(iflags.IBMgraphics ?
 						IBM_GRAPHICS : ASCII_GRAPHICS);
-# endif
 # ifdef UTF8_GLYPHS
 			    if ((boolopt[i].addr) == &iflags.UTF8graphics)
 				switch_graphics(iflags.UTF8graphics ?
@@ -3271,7 +3244,6 @@ goodfruit:
 				assign_rogue_graphics(TRUE);
 # endif
 			}
-#endif /* TERMLIB || ASCIIGRAPH || MAC_GRAPHICS_ENV */
 
 			/* only do processing below if setting with doset() */
 			if (initial) return;
@@ -3314,11 +3286,9 @@ goodfruit:
 			    need_redraw = TRUE;
 			}
 #endif
-#ifdef TEXTCOLOR
 			else if ((boolopt[i].addr) == &iflags.use_color) {
 			    need_redraw = TRUE;
 			}
-#endif
 
 			return;
 		}

@@ -166,7 +166,6 @@ struct obj *invent = (struct obj *)0,
 
 struct obj *urings[URINGS_SIZE] = {0};
 
-#ifdef TEXTCOLOR
 /*
  * zap_glyph_color in zap.c assumes that this is in the same order as defined in color.c
  */
@@ -188,7 +187,6 @@ const int zapcolors[NUM_ZAP] = {
 	CLR_BRIGHT_CYAN,
 	CLR_WHITE
 };
-#endif /* text color */
 
 const int shield_static[SHIELD_COUNT] = {
     S_ss1, S_ss2, S_ss3, S_ss2, S_ss1, S_ss2, S_ss4,	/* 7 per row */

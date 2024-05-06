@@ -1506,9 +1506,7 @@ parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels)
 	    assign_graphics(uchar_to_glypht(translate, len), len, MAXPCHARS, 0);
         } else if (match_varname(buf, "STATUSCOLOR", 11)) {
             /* ignore statuscolor entries if not compiled in */
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
             (void) parse_status_color_options(bufp);
-#endif
 	} else if (match_varname(buf, "SETCOLOR", 8)) {
 	    (void) parse_setcolor(bufp);
 	} else if (match_varname(buf, "RESETCOLOR", 10)) {

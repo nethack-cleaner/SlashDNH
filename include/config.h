@@ -207,8 +207,6 @@ typedef long glyph_t;
  */
 #endif
 
-#define STATUS_COLORS /* Shachaf & Oren Ben-Kiki */
-
 #ifdef TTY_GRAPHICS
 # define WIN_EDGE	/* windows aligned left&top */
 #endif

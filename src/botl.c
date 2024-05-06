@@ -125,8 +125,6 @@ long long get_status_mask(void) {
         return mask;
 }
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
-
 extern const struct percent_color_option *hp_colors;
 extern const struct percent_color_option *pw_colors;
 extern const struct text_color_option *text_colors;
@@ -241,7 +239,7 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
     putstr(WIN_STATUS, 0, newbot2);
 
     Strncat(nb = eos(nb), text, MAXCO - strlen(newbot2));
-    if (duration)
+    if (duration & TIMEOUT)
         Snprintf(nb = eos(nb), MAXCO - strlen(newbot2), ":%ld", duration);
     curs(WIN_STATUS, 1, statusline-1);
     color_option = text_color_of(hilite, text_colors);
@@ -253,7 +251,6 @@ add_colored_text(const char *hilite, const char *text, char *newbot2,
     end_color_option(color_option);
 }
 
-#endif
 
 static int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
 
@@ -419,12 +416,9 @@ bot1()
 #endif
 	register char *nb;
 	register int i=0,j;
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         int save_botlx = flags.botlx;
-#endif
 
         Strcpy(newbot1, "");
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         if (iflags.hitpointbar) {
 	    flags.botlx = 0;
 	    curs(WIN_STATUS, 1, 0);
@@ -434,7 +428,6 @@ bot1()
 	    curs(WIN_STATUS, 1, 0);
 	    putstr(WIN_STATUS, 0, newbot1);
         }
-#endif
 
 	Strcat(newbot1, plname);
 	if('a' <= newbot1[i] && newbot1[i] <= 'z') newbot1[i] += 'A'-'a';
@@ -456,7 +449,6 @@ bot1()
 	} else
 	    Sprintf(nb = eos(nb), "%s", rank());
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         if (iflags.hitpointbar) {
 	    int bar_length = strlen(newbot1)-1;
 	    char tmp[MAXCO];
@@ -482,7 +474,6 @@ bot1()
 
 	    Strcat(newbot1, "]");
         }
-#endif
 
 	Sprintf(nb = eos(nb),"  ");
 	i = mrank_sz + 15;
@@ -586,51 +577,29 @@ do_statuseffects(char *newbot2, boolean terminal_output, int abbrev, int statusl
   int cap = near_capacity();
   boolean first = statusline == 3; /* first text shown on line */
   long long mask = get_status_mask();
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
-#define status_effect_duration(str1, str2, str3, duration)              \
+#define status_effect(str1, str2, str3, duration)                       \
   (add_colored_text((str1),                                             \
                     abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1), \
                     newbot2, terminal_output, statusline, first,        \
                     duration),                                          \
    first = FALSE)
-#define status_effect(str1, str2, str3) status_effect_duration(str1, str2, str3, 0)
-#else
-#define status_effect(str1, str2, str3)                                 \
-  (Snprintf(nb = eos(nb), MAXCO - strlen(newbot2),                      \
-            first ? "%s" : " %s",                                       \
-            abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1)),      \
-   first = FALSE)
-#define status_effect_duration(str1, str2, str3, duration)		\
-  (Snprintf(nb = eos(nb), MAXCO - strlen(newbot2),                      \
-            first ? "%s:%ld" : " %s:%ld",				\
-            abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1),	\
-	    duration),							\
-   first = FALSE)
-#endif
-  for (int i = 0; i < SIZE(status_effects); i++) {
+ for (int i = 0; i < SIZE(status_effects); i++) {
     struct status_effect status = status_effects[i];
-    if (mask & status.mask & iflags.statuseffects) {
-      long duration = get_status_duration(status.mask);
-      if (duration & TIMEOUT)
-        status_effect_duration(status.name, status.abbrev1, status.abbrev2,
-                               duration);
-      else
-        status_effect(status.name, status.abbrev1, status.abbrev2);
-    }
+    if (mask & status.mask & iflags.statuseffects)
+      status_effect(status.name, status.abbrev1, status.abbrev2, get_status_duration(status.mask));
     /* Add hunger and encumbrance after foodpois */
     if (status.mask == BL_MASK_FOODPOIS) {
         if(u.uhs != NOT_HUNGRY) {
           if(uclockwork)
-            status_effect(ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], ca_hu_stat[u.uhs]);
+            status_effect(ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], 0);
           else
-            status_effect(hu_stat[u.uhs], hu_stat[u.uhs], hu_stat[u.uhs]);
+            status_effect(hu_stat[u.uhs], hu_stat[u.uhs], hu_stat[u.uhs], 0);
         }
         if(cap > UNENCUMBERED)
-          status_effect(enc_stat[cap], enc_stat_abbrev1[cap], enc_stat_abbrev2[cap]);
+          status_effect(enc_stat[cap], enc_stat_abbrev1[cap], enc_stat_abbrev2[cap], 0);
     }
   }
 #undef status_effect
-#undef status_effect_duration
 }
 
 void
@@ -638,9 +607,7 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
 {
 	register char *nb;
 	int hp, hpmax;
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         int save_botlx = flags.botlx;
-#endif
 
 	hp = Upolyd ? u.mh : u.uhp;
 	hpmax = Upolyd ? u.mhmax : u.uhpmax;
@@ -655,7 +622,6 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
 #endif
 		);
 
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         Strcat(nb = eos(newbot2), " HP:");
         curs(WIN_STATUS, 1, 1);
         putstr(WIN_STATUS, 0, newbot2);
@@ -663,19 +629,12 @@ bot2str(char *newbot2, boolean terminal_output, int abbrev, boolean dumplog)
 
         Sprintf(nb = eos(nb), "%d(%d)", hp, hpmax);
         apply_color_option(percentage_color_of(hp, hpmax, hp_colors), newbot2, 2);
-#else
-        Sprintf(nb = eos(nb), " HP:%d(%d)", hp, hpmax);
-#endif
-#if defined(STATUS_COLORS) && defined(TEXTCOLOR)
         Strcat(nb = eos(nb), " Pw:");
         curs(WIN_STATUS, 1, 1);
         putstr(WIN_STATUS, 0, newbot2);
 
         Sprintf(nb = eos(nb), "%d(%d)", u.uen, u.uenmax);
         apply_color_option(percentage_color_of(u.uen, u.uenmax, pw_colors), newbot2, 2);
-#else
-        Sprintf(nb = eos(nb), " Pw:%d(%d)", u.uen, u.uenmax);
-#endif
         Sprintf(nb = eos(nb), " Br:%d", u.divetimer);
         Sprintf(nb = eos(nb), " AC:%-2d", (u.uac + u.ustdy));
         Sprintf(nb = eos(nb), " DR:%-2d", u.udr - u.ustdy);

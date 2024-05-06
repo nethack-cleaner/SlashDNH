@@ -30,7 +30,6 @@ int explcolors[] = {
 #define has_color(n)  TRUE
 #endif
 
-#ifdef TEXTCOLOR
 #define zap_color(n)  color = iflags.use_color ? zapcolors[n] : NO_COLOR
 #ifndef USER_DUNGEONCOLOR
 #define cmap_color(n) color = iflags.use_color ? defsyms[n].color : NO_COLOR
@@ -45,21 +44,10 @@ int explcolors[] = {
 #define peace_color(n)  color = iflags.use_color ? mons[n].mcolor : NO_COLOR
 #define warn_color(n) color = iflags.use_color ? def_warnsyms[n].color : NO_COLOR
 #define explode_color(n) color = iflags.use_color ? explcolors[n] : NO_COLOR
-# if defined(REINCARNATION) && defined(ASCIIGRAPH)
+# if defined(REINCARNATION)
 #  define ROGUE_COLOR
 # endif
 
-#else	/* no text color */
-
-#define zap_color(n)
-#define cmap_color(n)
-#define obj_color(n)
-#define mon_color(n)
-#define invis_color(n)
-#define pet_color(c)
-#define warn_color(n)
-#define explode_color(n)
-#endif
 
 #ifdef ROGUE_COLOR
 #define HAS_ROGUE_IBM_GRAPHICS (iflags.IBMgraphics && Is_rogue_level(&u.uz))
@@ -98,10 +86,8 @@ void
 mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, int y)
 {
 	register int offset;
-#if defined(TEXTCOLOR) || defined(ROGUE_COLOR)
 	int color = NO_COLOR;
 	int bgcolor = NO_COLOR;
-#endif
 	glyph_t ch;
 	unsigned special = 0;
 	struct trap *ttmp = t_at(x,y);
@@ -169,7 +155,6 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
 		color = NO_COLOR;
 	} else
 #endif
-#ifdef TEXTCOLOR
 	    /* provide a visible difference if normal and lit corridor
 	     * use the same symbol */
 	    if (iflags.use_color &&
@@ -187,7 +172,6 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
     }
 #endif /* USER_DUNGEONCOLOR */
 	    else
-#endif
 		/* Special colours for special dungeon areas */
 		if(iflags.use_color && iflags.dnethack_dungeon_colors){
 			if(In_sokoban(&u.uz)){
@@ -743,11 +727,9 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
 		{
 			mon_color(glyph);
 			/* special case the hero for `showrace' option */
-#ifdef TEXTCOLOR
 			if (iflags.use_color && x == u.ux && y == u.uy &&
 				iflags.showrace && !Upolyd)
 			color = HI_DOMESTIC;
-#endif
 		}
     }
 
@@ -767,25 +749,17 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
 			bgcolor = CLR_BLUE;
 	}
 
-#ifdef TEXTCOLOR
     /* Turn off color if no color defined, or rogue level w/o PC graphics. */
 # ifdef REINCARNATION
-#  ifdef ASCIIGRAPH
     if (!has_color(color) || (Is_rogue_level(&u.uz) && !HAS_ROGUE_IBM_GRAPHICS))
-#  else
-    if (!has_color(color) || Is_rogue_level(&u.uz))
-#  endif
 # else
     if (!has_color(color))
 # endif
 	color = NO_COLOR;
-#endif
 
     *ochar = ch;
     *obgcolor = bgcolor;
-#ifdef TEXTCOLOR
     *ocolor = color;
-#endif
     return;
 }
 

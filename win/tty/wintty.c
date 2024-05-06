@@ -22,9 +22,7 @@ extern short glyph2tile[];
 
 #ifdef TTY_GRAPHICS
 
-#ifndef NO_TERMS
 #include "tcap.h"
-#endif
 
 #include "wintty.h"
 
@@ -34,11 +32,7 @@ extern char mapped_menu_cmds[]; /* from options.c */
 struct window_procs tty_procs = {
     "tty",
     WC_COLOR|WC_HILITE_PET|WC_INVERSE|WC_EIGHT_BIT_IN,
-#ifdef TERMINFO
     WC2_DARKGRAY,
-#else
-    0L,
-#endif
     tty_init_nhwindows,
     tty_player_selection,
     tty_askname,
@@ -116,10 +110,8 @@ static int clipx = 0, clipxmax = 0;
 static int clipy = 0, clipymax = 0;
 
 
-#if defined(ASCIIGRAPH) && !defined(NO_TERMS)
 boolean GFlag = FALSE;
 boolean HE_resets_AS;	/* see termcap.c */
-#endif
 
 static void getret(void);
 static void erase_menu_or_text(winid, struct WinDesc *, boolean);
@@ -285,9 +277,7 @@ tty_init_nhwindows(int *argcp, char **argv)
     ttyDisplay->curx = ttyDisplay->cury = 0;
     ttyDisplay->inmore = ttyDisplay->inread = ttyDisplay->intr = 0;
     ttyDisplay->dismiss_more = 0;
-#ifdef TEXTCOLOR
     ttyDisplay->color = NO_COLOR;
-#endif
     ttyDisplay->attrs = 0;
 
     /* set up the default windows */
@@ -876,9 +866,7 @@ tty_exit_nhwindows(const char *str)
 #endif
 	    wins[i] = 0;
 	}
-#ifndef NO_TERMS		/*(until this gets added to the window interface)*/
     tty_shutdown();		/* cleanup termcap/terminfo/whatever */
-#endif
     iflags.window_inited = 0;
 }
 
@@ -1790,25 +1778,21 @@ tty_curs(winid window, int x, int y)
     if(cw->type == NHW_MAP)
 	end_glyphout();
 
-#ifndef NO_TERMS
     if(!nh_ND && (cx != x || x <= 3)) { /* Extremely primitive */
 	cmov(x, y); /* bunker!wtm */
 	return;
     }
-#endif
 
     if((cy -= y) < 0) cy = -cy;
     if((cx -= x) < 0) cx = -cx;
     if(cy <= 3 && cx <= 3) {
 	nocmov(x, y);
-#ifndef NO_TERMS
     } else if ((x <= 3 && cy <= 3) || (!nh_CM && x < cx)) {
 	(void) putchar('\r');
 	ttyDisplay->curx = 0;
 	nocmov(x, y);
     } else if (!nh_CM) {
 	nocmov(x, y);
-#endif
     } else
 	cmov(x, y);
 
@@ -2069,9 +2053,7 @@ tty_display_file(const char *fname, boolean complain)
 	    boolean empty = TRUE;
 
 	    if(complain
-#ifndef NO_TERMS
 		&& nh_CD
-#endif
 	    ) {
 		/* attempt to scroll text below map window if there's room */
 		wins[datawin]->offy = wins[WIN_STATUS]->offy+3;
@@ -2406,18 +2388,14 @@ docorner(int xmin, int ymax)
 void
 end_glyphout(void)
 {
-#if defined(ASCIIGRAPH) && !defined(NO_TERMS)
     if (GFlag) {
 	GFlag = FALSE;
 	graph_off();
     }
-#endif
-#ifdef TEXTCOLOR
     if(ttyDisplay->color != NO_COLOR) {
 	term_end_color();
 	ttyDisplay->color = NO_COLOR;
     }
-#endif
 }
 
 void
@@ -2425,7 +2403,6 @@ g_putch(int in_ch)
 {
     register char ch = (char)in_ch;
 
-# if defined(ASCIIGRAPH) && !defined(NO_TERMS)
     if (iflags.IBMgraphics || iflags.eight_bit_tty) {
 	/* IBM-compatible displays don't need other stuff */
 	(void) putchar(ch);
@@ -2443,10 +2420,6 @@ g_putch(int in_ch)
 	(void) putchar(ch);
     }
 
-#else
-    (void) putchar(ch);
-
-#endif	/* ASCIIGRAPH && !NO_TERMS */
 
     return;
 }
@@ -2521,14 +2494,11 @@ tty_print_glyph(winid window, xchar x, xchar y, int glyph)
 
     print_vt_code(AVTC_GLYPH_START, glyph2tile[glyph]);
 
-#ifndef NO_TERMS
     if (ul_hack && ch == '_') {		/* non-destructive underscore */
 	(void) putchar((char) ' ');
 	backsp();
     }
-#endif
 
-#ifdef TEXTCOLOR
     if (color != ttyDisplay->color) {
 	if(ttyDisplay->color != NO_COLOR)
 	    term_end_color();
@@ -2536,15 +2506,12 @@ tty_print_glyph(winid window, xchar x, xchar y, int glyph)
 	if(color != NO_COLOR)
 	    term_start_color(color);
     }
-#endif /* TEXTCOLOR */
 
     /* must be after color check; term_end_color may turn off inverse too */
-#ifdef TEXTCOLOR
     if (bgcolor_ret != NO_COLOR) {
 		bgcolor = bgcolor_ret;
 		term_start_bgcolor(bgcolor);
 	}
-#endif
 
     if (color == bgcolor && color != NO_COLOR) {
 		if(ttyDisplay->color != NO_COLOR)
@@ -2568,23 +2535,19 @@ tty_print_glyph(winid window, xchar x, xchar y, int glyph)
 
     if (reverse_on) {
     	term_end_attr(ATR_INVERSE);
-#ifdef TEXTCOLOR
 	/* turn off color as well, ATR_INVERSE may have done this already */
 	if(ttyDisplay->color != NO_COLOR) {
 	    term_end_color();
 	    ttyDisplay->color = NO_COLOR;
 	}
-#endif
     }
 
     print_vt_code(AVTC_GLYPH_END, -1);
 
-#ifdef TEXTCOLOR
     if (!reverse_on && (bgcolor != NO_COLOR)) {
 	term_end_color();
 	ttyDisplay->color = NO_COLOR;
     }
-#endif
 
     wins[window]->curx++;	/* one character over */
     ttyDisplay->curx++;		/* the real cursor moved too */

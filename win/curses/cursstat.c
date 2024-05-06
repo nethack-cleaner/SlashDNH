@@ -31,7 +31,6 @@ static void curses_add_status(WINDOW *, boolean, boolean, int *, int *,
                               const char *, const char *, long, boolean);
 static int decrement_highlight(nhstat *, boolean);
 
-#ifdef STATUS_COLORS
 static attr_t hpen_color_attr(boolean, int, int);
 extern struct color_option text_color_of(const char *text,
                                          const struct text_color_option *color_options);
@@ -41,7 +40,6 @@ struct color_option percentage_color_of(int value, int max,
 extern const struct text_color_option *text_colors;
 extern const struct percent_color_option *hp_colors;
 extern const struct percent_color_option *pw_colors;
-#endif
 
 /* Whether or not we have printed status window content at least once.
    Used to ensure that prev* doesn't end up highlighted on game start. */
@@ -69,102 +67,29 @@ extern const char *enc_stat[];  /* from botl.c */
 extern const char *enc_stat_abbrev1[]; /* from botl.c */
 extern const char *enc_stat_abbrev2[]; /* from botl.c */
 
-/* If the statuscolors patch isn't enabled, have some default colors for status problems
-   anyway */
-
-struct statcolor {
-    const char *txt; /* For status problems */
-    int color; /* Default color assuming STATUS_COLORS isn't enabled */
-};
-
-static const struct statcolor default_colors[] = {
-    /* Hunger */
-    {"Satiated", CLR_YELLOW},
-    {"Hungry", CLR_YELLOW},
-    {"Weak", CLR_ORANGE},
-    {"Fainted", CLR_BRIGHT_MAGENTA},
-    {"Fainting", CLR_BRIGHT_MAGENTA},
-    {"OvrWound", CLR_YELLOW},
-    {"Waning", CLR_YELLOW},
-    {"Unwound", CLR_ORANGE},
-    {"Slipping", CLR_BRIGHT_MAGENTA},
-    {"Slipped", CLR_BRIGHT_MAGENTA},
-    /* Encumbrance */
-    {"Burdened", CLR_RED},
-    {"Stressed", CLR_RED},
-    {"Strained", CLR_ORANGE},
-    {"Overtaxed", CLR_ORANGE},
-    {"Overloaded", CLR_BRIGHT_MAGENTA},
-    /* Delayed instadeaths */
-    {"Stone", CLR_BRIGHT_MAGENTA},
-    {"Slime", CLR_BRIGHT_MAGENTA},
-    {"Sufct", CLR_BRIGHT_MAGENTA},
-    {"Ill", CLR_BRIGHT_MAGENTA},
-    {"FoodPois", CLR_BRIGHT_MAGENTA},
-    /* Other status effects */
-    {"Blind", CLR_BRIGHT_BLUE},
-    {"Stun", CLR_BRIGHT_BLUE},
-    {"Conf", CLR_BRIGHT_BLUE},
-    {"Hallu", CLR_BRIGHT_BLUE},
-    /* Insanity messages */
-    {"Panic", CLR_BRIGHT_CYAN},
-    {"Stmblng", CLR_BRIGHT_CYAN},
-    {"Stggrng", CLR_BRIGHT_CYAN},
-    {"Babble", CLR_BRIGHT_CYAN},
-    {"Scream", CLR_BRIGHT_CYAN},
-    {"Faint", CLR_BRIGHT_CYAN},
-    /* Less important */
-    {"Held", CLR_GREEN},
-    {"UHold", CLR_GREEN},
-    {"Lycn", CLR_GREEN},
-    {"Invl", CLR_GREEN},
-    {"Lev", CLR_GREEN},
-    {"Fly", CLR_GREEN},
-    {"Ride", CLR_GREEN},
-    /* Temporary effects with known duration */
-    {"TimeStop", CLR_BRIGHT_GREEN},
-    {"Lust", CLR_BRIGHT_GREEN},
-    {"DeadMagc", CLR_BRIGHT_GREEN},
-    {"Miso", CLR_BRIGHT_GREEN},
-    {"Catapsi", CLR_BRIGHT_GREEN},
-    {"DimLock", CLR_BRIGHT_GREEN},
-    {NULL, NO_COLOR},
-};
-
 static attr_t
 get_trouble_color(const char *stat)
 {
     attr_t res = curses_color_attr(CLR_GRAY, 0);
-    const struct statcolor *clr;
-    for (clr = default_colors; clr->txt; clr++) {
-        if (stat && !strcmp(clr->txt, stat)) {
-#ifdef STATUS_COLORS
-            /* Check if we have a color enabled with statuscolors */
-            if (!iflags.use_status_colors)
-                return curses_color_attr(CLR_GRAY, 0); /* no color configured */
+    /* Check if we have a color enabled with statuscolors */
+    if (!iflags.use_status_colors)
+        return curses_color_attr(CLR_GRAY, 0); /* no color configured */
 
-            struct color_option stat_color;
+    struct color_option stat_color;
 
-            stat_color = text_color_of(clr->txt, text_colors);
-            if (stat_color.color == NO_COLOR && !stat_color.attr_bits)
-                return curses_color_attr(CLR_GRAY, 0);
+    stat_color = text_color_of(stat, text_colors);
+    if (stat_color.color == NO_COLOR && !stat_color.attr_bits)
+        return curses_color_attr(CLR_GRAY, 0);
 
-            if (stat_color.color != NO_COLOR)
-                res = curses_color_attr(stat_color.color, 0);
+    if (stat_color.color != NO_COLOR)
+        res = curses_color_attr(stat_color.color, 0);
 
-            res = curses_color_attr(stat_color.color, 0);
-            int count;
-            for (count = 0; (1 << count) <= stat_color.attr_bits; count++) {
-                if (count != ATR_NONE &&
-                    (stat_color.attr_bits & (1 << count)))
-                    res |= curses_convert_attr(count);
-            }
-
-            return res;
-#else
-            return curses_color_attr(clr->color, 0);
-#endif
-        }
+    res = curses_color_attr(stat_color.color, 0);
+    int count;
+    for (count = 0; (1 << count) <= stat_color.attr_bits; count++) {
+        if (count != ATR_NONE &&
+            (stat_color.attr_bits & (1 << count)))
+            res |= curses_convert_attr(count);
     }
 
     return res;
@@ -281,7 +206,6 @@ curses_color_attr(int nh_color, int bg_color)
 }
 
 /* Returns a complete curses attribute. Used to possibly bold/underline/etc HP/Pw. */
-#ifdef STATUS_COLORS
 static attr_t
 hpen_color_attr(boolean is_hp, int cur, int max)
 {
@@ -303,7 +227,6 @@ hpen_color_attr(boolean is_hp, int cur, int max)
 
     return attr;
 }
-#endif
 
 /* Return color for the HP bar.
    With status colors ON, this respect its configuration (defaulting to gray), but
@@ -313,7 +236,6 @@ hpen_color_attr(boolean is_hp, int cur, int max)
 static int
 hpen_color(boolean is_hp, int cur, int max)
 {
-#ifdef STATUS_COLORS
     if (iflags.use_status_colors) {
         struct color_option stat_color;
         stat_color = percentage_color_of(cur, max, is_hp ? hp_colors : pw_colors);
@@ -324,7 +246,6 @@ hpen_color(boolean is_hp, int cur, int max)
             return stat_color.color;
     } else
         return CLR_GRAY;
-#endif
 
     int color = CLR_GRAY;
     if (cur == max)
@@ -357,7 +278,6 @@ draw_bar(boolean is_hp, int cur, int max, const char *title)
     else {
         int len = 5;
         snprintf(buf, BUFSZ, "%*d / %-*d", len, cur, len, max);
-#ifdef STATUS_COLORS
         if (!iflags.hitpointbar) {
             attr_t attr = hpen_color_attr(is_hp, cur, max);
             wattron(win, attr);
@@ -365,15 +285,12 @@ draw_bar(boolean is_hp, int cur, int max, const char *title)
             wattroff(win, attr);
             return;
         }
-#endif
     }
 
-#ifdef STATUS_COLORS
     if (!iflags.hitpointbar) {
         wprintw(win, "%s", buf);
         return;
     }
-#endif
 
     /* Colors */
     attr_t fillattr, attr;
@@ -542,16 +459,8 @@ draw_horizontal(int x, int y, int hp, int hpmax)
 
     /* HP/Pw use special coloring rules */
     attr_t hpattr, pwattr;
-#ifdef STATUS_COLORS
     hpattr = hpen_color_attr(TRUE, hp, hpmax);
     pwattr = hpen_color_attr(FALSE, u.uen, u.uenmax);
-#else
-    int hpcolor, pwcolor;
-    hpcolor = hpen_color(TRUE, hp, hpmax);
-    pwcolor = hpen_color(FALSE, u.uen, u.uenmax);
-    hpattr = curses_color_attr(hpcolor, 0);
-    pwattr = curses_color_attr(pwcolor, 0);
-#endif
     wprintw(win, " HP:");
     wattron(win, hpattr);
     wprintw(win, "%d(%d)", hp, hpmax);
@@ -775,10 +684,8 @@ draw_vertical(int x, int y, int hp, int hpmax)
     int ranklen = strlen(rank);
     int namelen = strlen(plname);
     int maxlen = 19;
-#ifdef STATUS_COLORS
     if (!iflags.hitpointbar)
         maxlen += 2; /* With no hitpointbar, we can fit more since there's no "[]" */
-#endif
 
     if ((ranklen + namelen) > maxlen) {
         /* The result doesn't fit. Strip name if >10 characters, then strip title */
@@ -838,16 +745,8 @@ draw_vertical(int x, int y, int hp, int hpmax)
 
     /* HP/Pw use special coloring rules */
     attr_t hpattr, pwattr;
-#ifdef STATUS_COLORS
     hpattr = hpen_color_attr(TRUE, hp, hpmax);
     pwattr = hpen_color_attr(FALSE, u.uen, u.uenmax);
-#else
-    int hpcolor, pwcolor;
-    hpcolor = hpen_color(TRUE, hp, hpmax);
-    pwcolor = hpen_color(FALSE, u.uen, u.uenmax);
-    hpattr = curses_color_attr(hpcolor, 0);
-    pwattr = curses_color_attr(pwcolor, 0);
-#endif
 
     wprintw(win,   "Hit Points:    ");
     wattron(win, hpattr);
@@ -929,33 +828,30 @@ curses_add_statuses(WINDOW *win, boolean align_right,
 	}
     }
 
-#define status_effect_duration(str1, str2, str3, duration)              \
+#define status_effect(str1, str2, str3, duration)                       \
     (curses_add_status(win, align_right, vertical, x, y, str1,          \
                        abbrev == 2 ? (str3) : abbrev == 1 ? (str2) : (str1), \
                        duration, first), first = FALSE)
-#define status_effect(str1, str2, str3) status_effect_duration(str1, str2, str3, 0)
     long long mask = get_status_mask();
     for (int i = 0; i < SIZE(status_effects); i++) {
         struct status_effect status = status_effects[i];
-        if (mask & status.mask & iflags.statuseffects) {
-            long duration = get_status_duration(status.mask);
-            status_effect_duration(status.name, status.abbrev1, status.abbrev2, duration);
-        }
+        if (mask & status.mask & iflags.statuseffects)
+            status_effect(status.name, status.abbrev1, status.abbrev2, get_status_duration(status.mask));
         /* Add hunger and encumbrance after foodpois */
         if (status.mask == BL_MASK_FOODPOIS) {
             if (u.uhs != NOT_HUNGRY) {
                 if (uclockwork)
-                    status_effect(ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], ca_hu_stat[u.uhs]);
+                    status_effect(ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], ca_hu_stat[u.uhs], 0);
                 else
-                    status_effect(hu_stat[u.uhs], hu_stat[u.uhs], hu_stat[u.uhs]);
+                    status_effect(hu_stat[u.uhs], hu_stat[u.uhs], hu_stat[u.uhs], 0);
             }
             int enc = near_capacity();
             if (enc > UNENCUMBERED)
-                status_effect(enc_stat[enc], enc_stat_abbrev1[enc], enc_stat_abbrev2[enc]);
+                status_effect(enc_stat[enc], enc_stat_abbrev1[enc], enc_stat_abbrev2[enc], 0);
         }
     }
 #undef status_effect
-#undef status_effect_duration
+
 }
 
 static void

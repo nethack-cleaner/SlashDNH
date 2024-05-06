@@ -4,7 +4,7 @@
 
 #include "hack.h"
 
-#if defined (TTY_GRAPHICS) && !defined(NO_TERMS)
+#if defined (TTY_GRAPHICS)
 
 #include "wintty.h"
 
@@ -18,13 +18,11 @@ static char * e_atr2str(int);
 
 void cmov(int, int);
 void nocmov(int, int);
-#if defined(TEXTCOLOR) && defined(TERMLIB)
-# if !defined(UNIX) || !defined(TERMINFO)
+# if !defined(UNIX)
 static void analyze_seq(char *, int *, int *);
 # endif
 static void init_hilite(void);
 static void kill_hilite(void);
-#endif
 
 	/* (see tcap.h) -- nh_CM, nh_ND, nh_CD, nh_HI,nh_HE, nh_US,nh_UE,
 				ul_hack */
@@ -40,37 +38,24 @@ static char *MR;
 static char *MB, *MH;
 static char *MD;     /* may already be in use below */
 #endif
-#ifdef TERMLIB
-# ifdef TEXTCOLOR
 static char *MD;
-# endif
 static int SG;
 static char PC = '\0';
 static char tbuf[512];
-#endif
 
-#ifdef TEXTCOLOR
 char *hilites[CLR_MAX]; /* terminal escapes for the various colors */
-#endif
 
 static char *KS = (char *)0, *KE = (char *)0;	/* keypad sequences */
 static char nullstr[] = "";
 
-#if defined(ASCIIGRAPH) && !defined(NO_TERMS)
 extern boolean HE_resets_AS;
-#endif
 
-#ifndef TERMLIB
-static char tgotobuf[20];
-#define tgoto(fmt, x, y)	(Sprintf(tgotobuf, fmt, y+1, x+1), tgotobuf)
-#endif /* TERMLIB */
 
 
 void
 tty_startup(int *wid, int *hgt)
 {
 	register int i;
-#ifdef TERMLIB
 	register const char *term;
 	register char *tptr;
 	char *tbufptr, *pc;
@@ -78,7 +63,6 @@ tty_startup(int *wid, int *hgt)
 		term = getenv("TERM");
 
 	if (!term)
-#endif
 #ifndef ANSI_DEFAULT
 		error("Can't get TERM.");
 #else
@@ -86,11 +70,7 @@ tty_startup(int *wid, int *hgt)
 		HO = "\033[H";
 /*		nh_CD = "\033[J"; */
 		CE = "\033[K";		/* the ANSI termcap */
-#  ifndef TERMLIB
-		nh_CM = "\033[%d;%dH";
-#  else
 		nh_CM = "\033[%i%d;%dH";
-#  endif
 		UP = "\033[A";
 		nh_ND = "\033[C";
 		XD = "\033[B";
@@ -106,7 +86,6 @@ tty_startup(int *wid, int *hgt)
 		AS = "\016";
 		AE = "\017";
 		TE = VS = VE = nullstr;
-#  ifdef TEXTCOLOR
 		for (i = 0; i < CLR_MAX / 2; i++)
 		    if (i != CLR_BLACK) {
 			hilites[i|BRIGHT] = (char *) alloc(sizeof("\033[1;3%dm"));
@@ -117,7 +96,6 @@ tty_startup(int *wid, int *hgt)
 				Sprintf(hilites[i], "\033[0;3%dm", i);
 			    }
 		    }
-#  endif
 		*wid = CO;
 		*hgt = LI;
 		CL = "\033[2J";		/* last thing set */
@@ -125,7 +103,6 @@ tty_startup(int *wid, int *hgt)
 	}
 #endif /* ANSI_DEFAULT */
 
-#ifdef TERMLIB
 	tptr = (char *) alloc(1024);
 
 	tbufptr = tbuf;
@@ -142,19 +119,7 @@ tty_startup(int *wid, int *hgt)
 		PC = *pc;
 
 	if(!(BC = Tgetstr("le")))	/* both termcap and terminfo use le */
-# ifdef TERMINFO
 	    error("Terminal must backspace.");
-# else
-	    if(!(BC = Tgetstr("bc"))) {	/* termcap also uses bc/bs */
-#  ifndef MINIMAL_TERM
-		if(!tgetflag("bs"))
-			error("Terminal must backspace.");
-#  endif
-		BC = tbufptr;
-		tbufptr += 2;
-		*BC = '\b';
-	    }
-# endif
 
 # ifdef MINIMAL_TERM
 	HO = (char *)0;
@@ -198,9 +163,7 @@ tty_startup(int *wid, int *hgt)
 	TI = Tgetstr("ti");
 	TE = Tgetstr("te");
 	VS = VE = nullstr;
-# ifdef TERMINFO
 	VS = Tgetstr("eA");	/* enable graphics */
-# endif
 	KS = Tgetstr("ks");	/* keypad start (special mode) */
 	KE = Tgetstr("ke");	/* keypad end (ordinary mode [ie, digits]) */
 	MR = Tgetstr("mr");	/* reverse */
@@ -229,12 +192,8 @@ tty_startup(int *wid, int *hgt)
 	AE = Tgetstr("ae");
 	nh_CD = Tgetstr("cd");
 	allow_bgcolor = 1;
-# ifdef TEXTCOLOR
 	MD = Tgetstr("md");
-# endif
-# ifdef TEXTCOLOR
 	init_hilite();
-# endif
 	*wid = CO;
 	*hgt = LI;
 	CL = "\033[2J";		/* last thing set */
@@ -243,7 +202,6 @@ tty_startup(int *wid, int *hgt)
 	if ((int)(tbufptr - tbuf) > (int)(sizeof tbuf))
 		error("TERMCAP entry too big...\n");
 	free((void *)tptr);
-#endif /* TERMLIB */
 }
 
 /* note: at present, this routine is not part of the formal window interface */
@@ -251,9 +209,7 @@ tty_startup(int *wid, int *hgt)
 void
 tty_shutdown(void)
 {
-#if defined(TEXTCOLOR) && defined(TERMLIB)
 	kill_hilite();
-#endif
 	/* we don't attempt to clean up individual termcap variables [yet?] */
 	return;
 }
@@ -274,7 +230,6 @@ tty_number_pad(int state)
 	}
 }
 
-#ifdef TERMLIB
 extern void (*decgraphics_mode_callback)(void);    /* defined in drawing.c */
 static void tty_decgraphics_termcap_fixup(void);
 
@@ -305,7 +260,6 @@ tty_decgraphics_termcap_fixup(void)
 	 */
 	if (iflags.DECgraphics) xputs("\033)0");
 
-#if defined(ASCIIGRAPH) && !defined(NO_TERMS)
 	/* some termcaps suffer from the bizarre notion that resetting
 	   video attributes should also reset the chosen character set */
     {
@@ -328,9 +282,7 @@ tty_decgraphics_termcap_fixup(void)
 	    ++nh_he, --he_limit;
 	}
     }
-#endif
 }
-#endif	/* TERMLIB */
 
 
 
@@ -340,11 +292,9 @@ tty_start_screen(void)
 	xputs(TI);
 	xputs(VS);
 
-#ifdef TERMLIB
 	if (iflags.DECgraphics) tty_decgraphics_termcap_fixup();
 	/* set up callback in case option is not set yet but toggled later */
 	decgraphics_mode_callback = tty_decgraphics_termcap_fixup;
-#endif
 	if (iflags.num_pad) tty_number_pad(1);	/* make keypad send digits */
 }
 
@@ -421,11 +371,7 @@ xputc(char c)
 void
 xputs(const char *s)
 {
-#ifndef TERMLIB
-	(void) fputs(s, stdout);
-#else
 	tputs(s, 1, (int (*)())xputc);
-#endif
 }
 
 void
@@ -534,7 +480,6 @@ tty_nhbell(void)
 }
 
 
-#ifdef ASCIIGRAPH
 void
 graph_on(void) {
 	if (AS) xputs(AS);
@@ -544,7 +489,6 @@ void
 graph_off(void) {
 	if (AE) xputs(AE);
 }
-#endif
 
 
 static const short tmspc10[] = {		/* from termcap */
@@ -568,12 +512,8 @@ tty_delay_output(int delay)
 	/* BUG: if the padding character is visible, as it is on the 5620
 	   then this looks terrible. */
 	if(flags.null)
-#ifdef TERMINFO
 		/* cbosgd!cbcephus!pds for SYS V R2 */
 		tputs("$<50>", 1, (int (*)())xputc);
-#else
-		tputs("50", 1, (int (*)())xputc);
-#endif
 
 	else if(ospeed > 0 && ospeed < SIZE(tmspc10) && nh_CM) {
 		/* delay by sending cm(here) an appropriate number of times */
@@ -608,8 +548,7 @@ cl_eos(void)			/* free after Robert Viduya */
 	}
 }
 
-#if defined(TEXTCOLOR) && defined(TERMLIB)
-# if defined(UNIX) && defined(TERMINFO)
+# if defined(UNIX)
 /*
  * Sets up color highlighting, using terminfo(4) escape sequences.
  *
@@ -896,7 +835,6 @@ kill_hilite(void)
 	return;
 }
 # endif /* UNIX */
-#endif /* TEXTCOLOR */
 
 
 static char nulstr[] = "";
@@ -909,9 +847,7 @@ s_atr2str(int n)
 		    if(nh_US) return nh_US;
 	    case ATR_BOLD:
 	    case ATR_BLINK:
-#if defined(TERMLIB) && defined(TEXTCOLOR)
 		    if (MD) return MD;
-#endif
 		    return nh_HI;
 	    case ATR_INVERSE:
 		    return MR;
@@ -967,7 +903,6 @@ term_end_raw_bold(void)
 }
 
 
-#ifdef TEXTCOLOR
 
 void
 term_start_bgcolor(int color)
@@ -1008,7 +943,6 @@ has_color(int color)
 	return hilites[color] != (char *)0;
 }
 
-#endif /* TEXTCOLOR */
 
 
 #endif /* TTY_GRAPHICS */

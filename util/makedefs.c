@@ -360,9 +360,6 @@ make_version(void)
 			| (1L << 12)
 #endif
 		/* flag bits and/or other global variables (15..26) */
-#ifdef TEXTCOLOR
-			| (1L << 17)
-#endif
 #ifdef INSURANCE
 			| (1L << 18)
 #endif
@@ -506,9 +503,6 @@ static const char *build_opts[] = {
 #ifdef ANSI_DEFAULT
 		"ANSI default terminal",
 #endif
-#ifdef TEXTCOLOR
-		"color",
-#endif
 #ifdef COM_COMPL
 		"command line completion",
 #endif
@@ -557,13 +551,6 @@ static const char *build_opts[] = {
 #endif
 #ifdef SUSPEND
 		"suspend command",
-#endif
-#ifdef TERMINFO
-		"terminal info library",
-#else
-# if defined(TERMLIB) || defined(TTY_GRAPHICS)
-		"terminal capability library",
-# endif
 #endif
 #ifdef TIMED_DELAY
 		"timed wait for display effects",

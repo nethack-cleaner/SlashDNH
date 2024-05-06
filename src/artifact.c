@@ -8980,17 +8980,7 @@ arti_invoke(struct obj *obj)
 			}
 			else if(u.dz > 0 ){
 				char buf[BUFSZ];
-				int really_bdown = FALSE;
-				if (iflags.paranoid_quit) {
-				  getlin ("Are you sure you want to bring down the Silence Glaive? [yes/no]?",buf);
-				  (void) lcase (buf);
-				  if (!(strcmp (buf, "yes"))) really_bdown = TRUE;
-				} else {
-				if (yn("Are you sure you want to bring down the Silence Glaive?") == 'y') {
-				    really_bdown = TRUE;
-				  }
-				}
-				if (really_bdown) {
+				if (yesno("Are you sure you want to bring down the Silence Glaive?", iflags.paranoid_quit) == 'y') {
 				register struct monst *mtmp, *mtmp2;
 				int gonecnt = 0;
 				You("touch the tip of the Silence Glaive to the ground.");

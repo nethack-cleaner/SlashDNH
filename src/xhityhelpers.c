@@ -250,22 +250,10 @@ attack_checks(
 			else if (iflags.attack_mode == ATTACK_MODE_ASK){
 				char qbuf[QBUFSZ];
 				char buf[BUFSZ];
-				if (iflags.paranoid_hit) {
-					Sprintf(qbuf, "Really attack %s? [no/yes]",
-						mon_nam(mdef));
-					getlin(qbuf, buf);
-					(void)lcase(buf);
-					if (strcmp(buf, "yes")) {
-						flags.move |= MOVE_CANCELLED;
-						return ATTACKCHECK_NONE;
-					}
-				}
-				else {
-					Sprintf(qbuf, "Really attack %s?", mon_nam(mdef));
-					if (yn(qbuf) != 'y') {
-						flags.move |= MOVE_CANCELLED;
-						return ATTACKCHECK_NONE;
-					}
+				Sprintf(qbuf, "Really attack %s?", mon_nam(mdef));
+				if (yesno(qbuf, iflags.paranoid_hit) != 'y') {
+					flags.move |= MOVE_CANCELLED;
+					return ATTACKCHECK_NONE;
 				}
 			}
 		}

@@ -334,6 +334,7 @@ extern char txt2key(char*);
 extern char* key2txt(char, char*);
 extern char* str2txt(char*, char*);
 extern char yn_function(const char *, const char *, char);
+extern char yesno(const char *, boolean);
 extern int dotravel(void);
 
 /* ### crown.c ### */

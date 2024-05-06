@@ -158,6 +158,7 @@ static struct Bool_Opt
 	{"paranoid_quit", &iflags.paranoid_quit, FALSE, SET_IN_GAME},
 	{"paranoid_remove", &iflags.paranoid_remove, FALSE, SET_IN_GAME},
 	{"paranoid_swim", &iflags.paranoid_swim, TRUE, SET_IN_GAME},
+	{"paranoid_wand_break", &iflags.paranoid_wand_break, TRUE, SET_IN_GAME},
 	{"perm_invent", &flags.perm_invent, FALSE, SET_IN_GAME},
        {"pickup_thrown", &iflags.pickup_thrown, FALSE, SET_IN_GAME},
 	{"polearm_old_style", &flags.standard_polearms, FALSE, SET_IN_GAME},

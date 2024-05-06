@@ -7,7 +7,6 @@ autoautoopen       walking into a door attempts to open it        [TRUE]
 autopickup     automatically pick up objects you move over        [TRUE]
 autoquiver     when firing with an empty quiver, select some
                suitable inventory weapon to fill the quiver       [FALSE]
-BIOS           allow the use of IBM ROM BIOS calls                [FALSE]
 block_forget_map disable amnesia map forgetting                   [TRUE]
 cmdassist      give help for errors on direction & other commands [TRUE]
 confirm        ask before hitting tame or peaceful monsters       [TRUE]
@@ -44,7 +43,6 @@ quiver_fired   when using the f (fire) command and no ammunition
                is quivered, prompt for ammunition to quiver, then 
                fire it.                                           [TRUE]
 qwertz_movement replace the y key with z                          [FALSE]
-rawio          allow the use of raw I/O                           [FALSE]
 rest_on_space  count the space bar as a rest character            [FALSE]
 safe_pet       prevent you from (knowingly) attacking your pet(s) [TRUE]
 showborn       show numbers of created monsters after the number

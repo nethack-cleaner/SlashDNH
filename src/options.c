@@ -44,7 +44,6 @@ static struct Bool_Opt
 	{"autopickup", &flags.pickup, TRUE, SET_IN_GAME},
 	{"apexception_regex", &iflags.ape_regex, FALSE,  SET_IN_FILE},
 	{"autoquiver", &flags.autoquiver, FALSE, SET_IN_GAME},
-	{"BIOS", (boolean *)0, FALSE, SET_IN_FILE},
 	{"botl_updates", &iflags.botl_updates, TRUE, SET_IN_GAME},
 	{"bones", (boolean *)&iflags.bones, TRUE, SET_IN_GAME},
 #ifdef INSURANCE
@@ -172,7 +171,6 @@ static struct Bool_Opt
 	{"quick_m_abilities", &iflags.quick_m_abilities, TRUE, SET_IN_GAME },
 	{"quiver_fired", &iflags.quiver_fired, TRUE, SET_IN_GAME},
 	{"qwertz_movement", &iflags.qwertz_movement, FALSE, SET_IN_GAME},
-	{"rawio", (boolean *)0, FALSE, SET_IN_FILE},
 	{"rest_on_space", &flags.rest_on_space, FALSE, SET_IN_GAME},
 	{"safe_pet", &flags.safe_dog, TRUE, SET_IN_GAME},
 #ifdef WIZARD

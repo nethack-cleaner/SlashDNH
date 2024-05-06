@@ -46,43 +46,33 @@ NetHack, except that rounddiv may call panic().
 	int		night		(void)
 	int		midnight	(void)
 =*/
-#ifdef LINT
-# define Static		/* pacify lint */
-#else
-# define Static static
-#endif
 
 boolean
-digit(		/* is 'c' a digit? */
-	char c)
+digit(char c)			/* is 'c' a digit? */
 {
     return((boolean)('0' <= c && c <= '9'));
 }
 
 boolean
-letter(		/* is 'c' a letter?  note: '@' classed as letter */
-	char c)
+letter(char c)	   /* is 'c' a letter?  note: '@' classed as letter */
 {
     return((boolean)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
 }
 
 char
-highc(			/* force 'c' into uppercase */
-	char c)
+highc(char c)			/* force 'c' into uppercase */
 {
     return((char)(('a' <= c && c <= 'z') ? (c & ~040) : c));
 }
 
 char
-lowc(			/* force 'c' into lowercase */
-	char c)
+lowc(char c)			/* force 'c' into lowercase */
 {
     return((char)(('A' <= c && c <= 'Z') ? (c | 040) : c));
 }
 
 char *
-lcase(		/* convert a string into all lowercase */
-	char *s)
+lcase(char *s)		     /* convert a string into all lowercase */
 {
     register char *p;
 
@@ -92,8 +82,7 @@ lcase(		/* convert a string into all lowercase */
 }
 
 char *
-upstart(		/* convert first character of a string to uppercase */
-	char *s)
+upstart(char *s) /* convert first character of a string to uppercase */
 {
     if (s) *s = highc(*s);
     return s;
@@ -118,8 +107,7 @@ mungspaces(char *bp)
 
 
 char *
-eos(			/* return the end of a string (pointing at '\0') */
-	register char *s)
+eos(register char *s) /* return the end of a string (pointing at '\0') */
 {
     while (*s) s++;	/* s += strlen(s); */
     return s;
@@ -127,9 +115,7 @@ eos(			/* return the end of a string (pointing at '\0') */
 
 /* strcat(s, {c,'\0'}); */
 char *
-strkitten(		/* append a character to a string (in place) */
-	char *s,
-	char c)
+strkitten(char *s, char c) /* append a character to a string (in place) */
 {
     char *p = eos(s);
 
@@ -151,11 +137,10 @@ sanitizestr(char *s)
 
 
 char *
-s_suffix(		/* return a name converted to possessive */
-	const char *s)
+s_suffix(const char *s)	   /* return a name converted to possessive */
 {
 #define SSUFFIX_BUFFERS 3
-	Static char buf[SSUFFIX_BUFFERS][BUFSZ];
+	static char buf[SSUFFIX_BUFFERS][BUFSZ];
 	static int i = 0;
 	i = (i + 1) % SSUFFIX_BUFFERS;
 
@@ -208,9 +193,7 @@ ing_suffix(const char *s)
 }
 
 char *
-xcrypt(	/* trivial text encryption routine (see makedefs) */
-	const char *str,
-	char *buf)
+xcrypt(const char *str, char *buf) /* trivial text encryption routine (see makedefs) */
 {
     register const char *p;
     register char *q;
@@ -226,8 +209,7 @@ xcrypt(	/* trivial text encryption routine (see makedefs) */
 }
 
 boolean
-onlyspace(		/* is a string entirely whitespace? */
-	const char *s)
+onlyspace(const char *s)	/* is a string entirely whitespace? */
 {
     for (; *s; s++)
 	if (*s != ' ' && *s != '\t') return FALSE;
@@ -235,8 +217,7 @@ onlyspace(		/* is a string entirely whitespace? */
 }
 
 char *
-tabexpand(		/* expand tabs into proper number of spaces */
-	char *sbuf)
+tabexpand(char *sbuf)	/* expand tabs into proper number of spaces */
 {
     char buf[BUFSZ];
     register char *bp, *s = sbuf;
@@ -257,10 +238,9 @@ tabexpand(		/* expand tabs into proper number of spaces */
 }
 
 char *
-visctrl(		/* make a displayable string from a character */
-	char c)
+visctrl(char c)	      /* make a displayable string from a character */
 {
-    Static char ccc[3];
+    static char ccc[3];
 
     c &= 0177;
 
@@ -278,9 +258,10 @@ visctrl(		/* make a displayable string from a character */
     return ccc;
 }
 
+/* return the ordinal suffix of a number */
+/* note: should be non-negative */
 const char *
-ordin(		/* return the ordinal suffix of a number */
-	int n			/* note: should be non-negative */)
+ordin(int n)
 {
     register int dd = n % 10;
 
@@ -289,26 +270,22 @@ ordin(		/* return the ordinal suffix of a number */
 }
 
 char *
-sitoa(		/* make a signed digit string from a number */
-	int n)
+sitoa(int n)		/* make a signed digit string from a number */
 {
-    Static char buf[13];
+    static char buf[13];
 
     Sprintf(buf, (n < 0) ? "%d" : "+%d", n);
     return buf;
 }
 
 int
-sgn(			/* return the sign of a number: -1, 0, or 1 */
-	int n)
+sgn(int n)		/* return the sign of a number: -1, 0, or 1 */
 {
     return (n < 0) ? -1 : (n != 0);
 }
 
 int
-rounddiv(		/* calculate x/y, rounding as appropriate */
-	long x,
-	int y)
+rounddiv(long x, int y)	  /* calculate x/y, rounding as appropriate */
 {
     int r, m;
     int divsgn = 1;
@@ -329,11 +306,7 @@ rounddiv(		/* calculate x/y, rounding as appropriate */
 }
 
 int
-distmin( /* distance between two points, in moves */
-	int x0,
-	int y0,
-	int x1,
-	int y1)
+distmin(int x0, int y0, int x1, int y1)	/* distance between two points, in moves */
 {
     register int dx = x0 - x1, dy = y0 - y1;
     if (dx < 0) dx = -dx;
@@ -345,22 +318,14 @@ distmin( /* distance between two points, in moves */
 }
 
 int
-dist2(	/* square of euclidean distance between pair of pts */
-	int x0,
-	int y0,
-	int x1,
-	int y1)
+dist2(int x0, int y0, int x1, int y1) /* square of euclidean distance between pair of pts */
 {
     register int dx = x0 - x1, dy = y0 - y1;
     return dx * dx + dy * dy;
 }
 
 boolean
-online2( /* are two points lined up (on a straight line)? */
-	int x0,
-	int y0,
-	int x1,
-	int y1)
+online2(int x0, int y0, int x1, int y1)	/* are two points lined up (on a straight line)? */
 {
     int dx = x0 - x1, dy = y0 - y1;
     /*  If either delta is zero then they're on an orthogonal line,
@@ -371,9 +336,7 @@ online2( /* are two points lined up (on a straight line)? */
 
 
 boolean
-pmatch(	/* match a string against a pattern */
-	const char *patrn,
-	const char *strng)
+pmatch(const char *patrn, const char *strng) /* match a string against a pattern */
 {
     char s, p;
   /*
@@ -398,7 +361,7 @@ int
 strncmpi(	/* case insensitive counted string comparison */
 	register const char *s1,
 	register const char *s2,
-	register int n /*(should probably be size_t, which is usually unsigned)*/)
+	register int n) /*(should probably be size_t, which is usually unsigned)*/
 {					/*{ aka strncasecmp }*/
     register char t1, t2;
 
@@ -416,9 +379,7 @@ strncmpi(	/* case insensitive counted string comparison */
 #ifndef STRSTRI
 
 char *
-strstri(	/* case insensitive substring search */
-	const char *str,
-	const char *sub)
+strstri(const char *str, const char *sub) /* case insensitive substring search */
 {
     register const char *s1, *s2;
     register int i, k;
@@ -550,7 +511,7 @@ getyear(void)
 char *
 yymmdd(time_t date)
 {
-	Static char datestr[10];
+	static char datestr[10];
 	struct tm *lt;
 
 	if (date == 0)

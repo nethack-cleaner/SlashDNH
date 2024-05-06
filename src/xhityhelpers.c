@@ -584,9 +584,6 @@ fightm(		/* have monsters fight each other */
 						(distu(mtmp->mx,mtmp->my) <= BOLT_LIM*BOLT_LIM) && 
 						!resist(mtmp, RING_CLASS, 0, 0))
 					|| mtmp->mberserk;
-#ifdef LINT
-	nmon = 0;
-#endif
 	/* perhaps the monster will resist Conflict */
 	/* if(resist(mtmp, RING_CLASS, 0, 0))
 	    return(0); */

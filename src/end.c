@@ -318,9 +318,7 @@ done2(void)
 	    } else if (c == 'q') done_stopprint++;
 	}
 #endif
-#ifndef LINT
 	done(QUIT);
-#endif
 	return MOVE_CANCELLED;
 }
 

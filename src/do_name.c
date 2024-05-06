@@ -1071,11 +1071,7 @@ x_monnam(
 #define XMONNAM_BUFFERS 3
 	boolean called)
 {
-#ifdef LINT	/* static char buf[BUFSZ]; */
-	char buffers[XMONNAM_BUFFERS][BUFSZ];
-#else
 	static char buffers[XMONNAM_BUFFERS][BUFSZ];
-#endif
 	struct permonst *mdat = mtmp->data;
 	const char * appearname = mdat->mname;
 	int appeartype = mdat->mtyp;
@@ -1347,11 +1343,7 @@ x_monnam(
 char *
 x_ptrnam(register struct permonst *ptr, int article, const char *adjective, boolean called)
 {
-#ifdef LINT	/* static char buf[BUFSZ]; */
-	char buf[BUFSZ];
-#else
 	static char buf[BUFSZ];
-#endif
 	struct permonst *mdat = ptr;
 	boolean name_at_start, has_adjectives;
 	char *bp;

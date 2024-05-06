@@ -4284,11 +4284,7 @@ click_to_cmd(int x, int y, int mod)
 static char *
 parse(void)
 {
-#ifdef LINT	/* static char in_line[COLNO]; */
-	char in_line[COLNO];
-#else
 	static char in_line[COLNO];
-#endif
 	register int foo;
 	boolean prezero = FALSE;
 

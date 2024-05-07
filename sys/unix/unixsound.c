@@ -130,7 +130,7 @@ play_usersound(const char *filename, int volume)
 		kill(nowplayingpid, SIGTERM);
 	/* Register signal handler */
 	struct sigaction handler = {
-		.sa_flags = SA_SIGINFO,
+		.sa_flags = SA_SIGINFO|SA_RESTART,
 		.sa_sigaction = usersound_sigchld_handler
 	};
 	sigaction(SIGCHLD, &handler, &orig_handler);
@@ -147,7 +147,9 @@ play_usersound(const char *filename, int volume)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGHUP, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	/* portaudio prints junk to stderr, close it so it doesn't mess up the display */
+	/* Close stdin/stdout/stderr so it doesn't mess up the display */
+	fclose(stdin);
+	fclose(stdout);
 	fclose(stderr);
 	/* Finally, play sound and exit */
 	play_usersound_blocking(filename, volume);

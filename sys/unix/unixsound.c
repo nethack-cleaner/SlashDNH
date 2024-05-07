@@ -28,7 +28,6 @@ usersound_panic VA_DECL(const char *, str)
 	{
 	    char buf[BUFSZ];
 	    Vsprintf(buf,str,VA_ARGS);
-	    raw_print(buf);
 	    paniclog("usersound", buf);
 	}
 	VA_END();

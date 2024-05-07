@@ -14,6 +14,7 @@
 #include <portaudio.h>
 
 #define FRAMECOUNT 1024
+#define MAX_VOLUME 100
 
 /* Wrapper for paniclog() that:
  * - doesn't print to console (since it's called from another process)
@@ -72,12 +73,16 @@ play_usersound_blocking(const char *filename, int volume)
 
 	/* Play the sound */
 	Pa_StartStream(stream);
-	float frames[sfinfo.channels * FRAMECOUNT * sizeof(float)];
+	float frames[sfinfo.channels * FRAMECOUNT];
 	sf_count_t framesread;
 	do {
 		framesread = sf_readf_float(sndfile, frames, FRAMECOUNT);
-		if (framesread)
+		if (framesread) {
+			/* Scale by volume */
+			for (int i = 0; i < sfinfo.channels * framesread; i++)
+				frames[i] *= (float)volume / MAX_VOLUME;
 			Pa_WriteStream(stream, frames, framesread);
+		}
 	} while (framesread == FRAMECOUNT);
 	Pa_StopStream(stream);
 

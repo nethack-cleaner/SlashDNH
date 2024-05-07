@@ -42,7 +42,7 @@ play_usersound_blocking(const char *filename, int volume)
 	SF_INFO sfinfo = { .format = SF_FORMAT_WAV };
 	SNDFILE *sndfile = sf_open(filename, SFM_READ, &sfinfo);
 	if (!sndfile) {
-		usersound_panic("sf_open: %s\n", sf_strerror(NULL));
+		usersound_panic("sf_open: %s", sf_strerror(NULL));
 		return;
 	}
 
@@ -50,7 +50,7 @@ play_usersound_blocking(const char *filename, int volume)
 	PaError error;
 	error = Pa_Initialize();
 	if (error != paNoError) {
-		usersound_panic("Pa_Initialize: %s\n", Pa_GetErrorText(error));
+		usersound_panic("Pa_Initialize: %s", Pa_GetErrorText(error));
 		sf_close(sndfile);
 		return;
 	}
@@ -64,7 +64,7 @@ play_usersound_blocking(const char *filename, int volume)
 	};
 	error = Pa_OpenStream(&stream, NULL, &params, sfinfo.samplerate, FRAMECOUNT, 0, NULL, NULL);
 	if (error != paNoError) {
-		usersound_panic("Pa_OpenStream: %s\n", Pa_GetErrorText(error));
+		usersound_panic("Pa_OpenStream: %s", Pa_GetErrorText(error));
 		Pa_Terminate();
 		sf_close(sndfile);
 		return;
@@ -133,7 +133,7 @@ play_usersound(const char *filename, int volume)
 	pid_t pid = nowplayingpid = fork();
 	if (pid != 0) {		/* We are the parent */
 		if (pid == -1)	/* fork() failed */
-			usersound_panic("fork: %s\n", strerror(errno));
+			usersound_panic("fork: %s", strerror(errno));
 		return;
 	}
 	/* We are the child */

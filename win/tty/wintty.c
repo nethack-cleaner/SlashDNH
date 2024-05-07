@@ -1883,6 +1883,9 @@ tty_putstr(winid window, int attr, const char *str)
     switch(cw->type) {
     case NHW_MESSAGE:
 	/* really do this later */
+#ifdef USER_SOUNDS
+        play_sound_for_message(str);
+#endif
 	update_topl(str);
 	break;
 

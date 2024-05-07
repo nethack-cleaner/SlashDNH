@@ -464,6 +464,9 @@ curses_puts(winid wid, int attr, const char *text)
     }
 
     if (wid == MESSAGE_WIN) {
+#ifdef USER_SOUNDS
+        play_sound_for_message(text);
+#endif
         curses_message_win_puts(text, FALSE);
         return;
     }

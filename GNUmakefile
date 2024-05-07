@@ -16,6 +16,10 @@ LDFLAGS +=
 
 GAMELIBS = -lncurses -lm
 
+# Uncomment for user sounds support
+# Make sure to also #define USER_SOUNDS in config.h
+#GAMELIBS += -lsndfile -lportaudio
+
 -include local.mk
 
 CPPFLAGS += -Iinclude
@@ -73,7 +77,7 @@ SRCOBJ = allmain.o alloc.o apply.o artifact.o astar.o attrib.o ball.o bones.o	\
          u_init.o unicode.o vault.o version.o vision.o weapon.o 	\
          were.o wield.o windows.o wizard.o worm.o worn.o write.o 	\
          xhity.o xhityhelpers.o zap.o 
-SYSUNIXOBJ = unixmain.o unixres.o unixunix.o
+SYSUNIXOBJ = unixmain.o unixres.o unixsound.o unixunix.o
 SYSSHAREOBJ = ioctl.o unixtty.o
 WINTTYOBJ = getline.o termcap.o topl.o wintty.o
 WINCURSESOBJ = cursdial.o cursinit.o cursmain.o cursmesg.o cursmisc.o	\

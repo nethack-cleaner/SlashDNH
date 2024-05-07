@@ -231,7 +231,7 @@ int
 dosh(void)
 {
 	register char *str;
-	if(iflags.debug_fuzzer);
+	if(iflags.debug_fuzzer)
 		return 0;
 	if(child(0)) {
 		if((str = getenv("SHELL")) != (char*)0)

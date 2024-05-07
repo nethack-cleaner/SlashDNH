@@ -88,14 +88,19 @@ play_usersound_blocking(const char *filename, int volume)
 }
 
 static pid_t nowplayingpid = 0; /* PID of the process currently playing sound */
+static struct sigaction orig_handler;
 
 static void
 usersound_sigchld_handler(int sig, siginfo_t *info, void *context)
 {
-	/* If called on nowplayingpid, unset it */
-	if (info->si_pid == nowplayingpid)
+	/* Reap process */
+	waitpid(info->si_pid, NULL, WNOHANG);
+	/* If called on nowplayingpid, unregister self and unset it */
+	if (sig == SIGCHLD && info->si_pid == nowplayingpid) {
+		sigaction(sig, &orig_handler, NULL);
 		nowplayingpid = 0;
-	/* Otherwise ignore (nothing else handles SIGCHLD so this is fine) */
+	}
+	/* Otherwise, ignore (nothing else handles SIGCHLD so this is fine) */
 }
 
 static void
@@ -120,10 +125,10 @@ play_usersound(const char *filename, int volume)
 		kill(nowplayingpid, SIGTERM);
 	/* Register signal handler */
 	struct sigaction handler = {
-		.sa_flags = SA_SIGINFO|SA_RESETHAND,
+		.sa_flags = SA_SIGINFO,
 		.sa_sigaction = usersound_sigchld_handler
 	};
-	sigaction(SIGCHLD, &handler, NULL);
+	sigaction(SIGCHLD, &handler, &orig_handler);
 	/* Fork before playing the sound so it doesn't block */
 	pid_t pid = nowplayingpid = fork();
 	if (pid != 0) {		/* We are the parent */

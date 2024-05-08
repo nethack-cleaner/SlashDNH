@@ -1472,6 +1472,7 @@ recharge(struct obj *obj, int curse_bless)
 	    case BAG_OF_TRICKS:
 	    case CAN_OF_GREASE:
 	    case TREPHINATION_KIT:
+	    case MIST_PROJECTOR:
 		if (is_cursed) stripspe(obj);
 		else if (is_blessed) {
 		    if (obj->spe <= 10)

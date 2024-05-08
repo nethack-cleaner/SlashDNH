@@ -7005,6 +7005,22 @@ use_armor_salve(struct obj *obj)
 	return MOVE_CANCELLED;
 }
 
+int
+use_mist_projector(struct obj *obj)
+{
+	if (obj->spe <= 0) {
+		pline("%s", nothing_happens);
+		return MOVE_CANCELLED;
+	}
+	struct region_arg cloud_data;
+	cloud_data.damage = 3+3*P_SKILL(P_FIREARM);
+	cloud_data.adtyp = AD_COLD;
+	(void) create_generic_cloud(u.ux, u.uy, 4+bcsign(obj), &cloud_data, TRUE);
+	pline("Whirling snow swirls out from around the %s.", xname(obj));
+	obj->spe--;
+	return MOVE_STANDARD;
+}
+
 static int
 res_engine_menu(struct obj *obj)
 {
@@ -8856,6 +8872,9 @@ doapply(void)
 	case ARMOR_SALVE:
 		res = use_armor_salve(obj);
 	break;
+	case MIST_PROJECTOR:
+		res = use_mist_projector(obj);
+        break;
 	case UNICORN_HORN:
 		use_unicorn_horn(obj);
 	break;

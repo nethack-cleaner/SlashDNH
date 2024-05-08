@@ -76,3 +76,11 @@ New Ludios levels from UnNetHack (Winterly Fort Ludios and Minas Tirith)
 	Minas Tirith has some extra secret doors to ensure that there are no unreachable areas
 Brainlessness does not bypass lifesaving
 	Lifesaving from brainlessness sets your Int to 5
+New item: mist projector
+	Chargeable tool with the same charge count as a can of grease
+	Weighs 50 aum, made of metal, not randomly generated
+	Migo queens/philosophers/soldiers get them, replacing the weird gaze attack
+	Creates a radius 3/4/5 (depending on BUC) cold cloud, which
+		deals a flat 3/6/9/12 cold damage per turn, depending
+		on firearm skill for the PC or migo type for monsters
+	Cold-resistant monsters will use them

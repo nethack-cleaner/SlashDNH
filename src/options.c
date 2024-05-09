@@ -115,11 +115,8 @@ static struct Bool_Opt
 #else
 	{"mail", (boolean *)0, TRUE, SET_IN_FILE},
 #endif
-#ifdef MENU_COLOR
 	{"menucolors", &iflags.use_menu_color, FALSE, SET_IN_GAME},
-#else
-	{"menucolors", (boolean *)0, FALSE, SET_IN_GAME},
-#endif
+	{"menucolor_regex", &iflags.menucolor_regex, TRUE, SET_IN_FILE},
 	{"menu_glyphs", &iflags.use_menu_glyphs, FALSE, SET_IN_GAME},
 #ifdef WIZARD
 	/* for menu debugging only*/
@@ -201,6 +198,9 @@ static struct Bool_Opt
 	{"UTF8graphics", &iflags.UTF8graphics, FALSE, SET_IN_GAME},
 #else
 	{"UTF8graphics", (boolean *)0, FALSE, SET_IN_FILE},
+#endif
+#ifdef USER_SOUNDS
+	{"usersound_regex", &iflags.usersound_regex, FALSE, SET_IN_FILE},
 #endif
 	{"use_darkgray", &iflags.wc2_darkgray, TRUE, SET_IN_FILE},
 	{"use_inverse",   &iflags.wc_inverse, FALSE, SET_IN_GAME},		/*WC*/
@@ -1298,7 +1298,6 @@ static const struct {
    {"white", CLR_WHITE}
 };
 
-#ifdef MENU_COLOR
 extern struct menucoloring *menu_colorings;
 
 static const struct {
@@ -1321,11 +1320,6 @@ add_menu_coloring(char *str)
     int i, c = NO_COLOR, a = ATR_NONE;
     struct menucoloring *tmp;
     char *tmps, *cs = strchr(str, '=');
-#ifdef MENU_COLOR_REGEX_POSIX
-    int errnum;
-    char errbuf[80];
-#endif
-    const char *err = (char *)0;
 
     if (!cs || !str) return FALSE;
 
@@ -1368,40 +1362,32 @@ add_menu_coloring(char *str)
     }
 
     tmp = (struct menucoloring *)alloc(sizeof(struct menucoloring));
-#ifdef MENU_COLOR_REGEX
-#ifdef MENU_COLOR_REGEX_POSIX
-    errnum = regcomp(&tmp->match, tmps, REG_EXTENDED | REG_NOSUB);
-    if (errnum != 0)
-    {
-	regerror(errnum, &tmp->match, errbuf, sizeof(errbuf));
-	err = errbuf;
-    }
-#else
-    tmp->match.translate = 0;
-    tmp->match.fastmap = 0;
-    tmp->match.buffer = 0;
-    tmp->match.allocated = 0;
-    tmp->match.regs_allocated = REGS_FIXED;
-    err = re_compile_pattern(tmps, strlen(tmps), &tmp->match);
-#endif
-#else
-    tmp->match = (char *)alloc(strlen(tmps)+1);
-    (void) memcpy((void *)tmp->match, (void *)tmps, strlen(tmps)+1);
-#endif
-    if (err) {
-	raw_printf("\nMenucolor regex error: %s\n", err);
-	wait_synch();
-	free(tmp);
-	return FALSE;
+    tmp->is_regexp = iflags.menucolor_regex;
+    if (tmp->is_regexp) {
+	int errnum;
+	char errbuf[80];
+	const char *err = (char *)0;
+	errnum = regcomp(&tmp->match, tmps, REG_EXTENDED | REG_NOSUB);
+	if (errnum != 0) {
+		regerror(errnum, &tmp->match, errbuf, sizeof(errbuf));
+		err = errbuf;
+	}
+	if (err) {
+	    raw_printf("\nMenucolor regex error: %s\n", err);
+	    wait_synch();
+	    free(tmp);
+	    return FALSE;
+	}
     } else {
-	tmp->next = menu_colorings;
-	tmp->color = c;
-	tmp->attr = a;
-	menu_colorings = tmp;
-	return TRUE;
+	    tmp->pattern = (char *)alloc(strlen(tmps)+1);
+	    (void) memcpy((void *)tmp->pattern, (void *)tmps, strlen(tmps)+1);
     }
+    tmp->next = menu_colorings;
+    tmp->color = c;
+    tmp->attr = a;
+    menu_colorings = tmp;
+    return TRUE;
 }
-#endif /* MENU_COLOR */
 
 /* parse '"monster name":color' and change monster info accordingly */
 boolean
@@ -2049,12 +2035,10 @@ parseoptions(register char *opts, boolean tinitial, boolean tfrom_file)
 	/* menucolor:"regex_string"=color */
 	fullname = "menucolor";
 	if (match_optname(opts, fullname, 9, TRUE)) {
-#ifdef MENU_COLOR
 	    if (negated) bad_negation(fullname, FALSE);
 	    else if ((op = string_for_env_opt(fullname, opts, FALSE)) != 0)
 		if (!add_menu_coloring(op))
 		    badoption(opts);
-#endif
 	    return;
 	}
 

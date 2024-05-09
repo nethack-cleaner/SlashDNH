@@ -100,10 +100,7 @@ char defmorestr[] = "--More--";
 /** Track if the player is still selecting his character. */
 boolean in_character_selection = FALSE;
 
-
-#ifdef MENU_COLOR
 extern struct menucoloring *menu_colorings;
-#endif
 
 static boolean clipping = FALSE;	/* clipping on? */
 static int clipx = 0, clipxmax = 0;
@@ -1180,29 +1177,21 @@ invert_all(winid window, tty_menu_item *page_start, tty_menu_item *page_end, cha
     }
 }
 
-#ifdef MENU_COLOR
 static boolean
 get_menu_coloring(char *str, int *color, int *attr)
 {
     struct menucoloring *tmpmc;
     if (iflags.use_menu_color)
 	for (tmpmc = menu_colorings; tmpmc; tmpmc = tmpmc->next)
-# ifdef MENU_COLOR_REGEX
-#  ifdef MENU_COLOR_REGEX_POSIX
-	    if (regexec(&tmpmc->match, str, 0, NULL, 0) == 0) {
-#  else
-	    if (re_search(&tmpmc->match, str, strlen(str), 0, 9999, 0) >= 0) {
-#  endif
-# else
-	    if (pmatch(tmpmc->match, str)) {
-# endif
+	    if (tmpmc->is_regexp
+		? regexec(&tmpmc->match, str, 0, NULL, 0) == 0
+		: pmatch(tmpmc->pattern, str)) {
 		*color = tmpmc->color;
 		*attr = tmpmc->attr;
 		return TRUE;
 	    }
     return FALSE;
 }
-#endif /* MENU_COLOR */
 
 static void
 process_menu_window(winid window, struct WinDesc *cw)
@@ -1278,10 +1267,8 @@ process_menu_window(winid window, struct WinDesc *cw)
 		for (page_lines = 0, curr = page_start;
 			curr != page_end;
 			page_lines++, curr = curr->next) {
-#ifdef MENU_COLOR
 		    int color = NO_COLOR, attr = ATR_NONE;
 		    boolean menucolr = FALSE;
-#endif
 		    if (curr->selector)
 			*rp++ = curr->selector;
 
@@ -1332,24 +1319,20 @@ process_menu_window(winid window, struct WinDesc *cw)
 		    }
 
 
-#ifdef MENU_COLOR
 		   if (iflags.use_menu_color &&
 		       (menucolr = get_menu_coloring(curr->str, &color,&attr))) {
 		       term_start_attr(attr);
 		       if (color != NO_COLOR) term_start_color(color);
 		   } else
-#endif
 		    term_start_attr(curr->attr);
 		    for (n = 0, cp = curr->str;
 			  *cp && (int) ++ttyDisplay->curx < (int) ttyDisplay->cols;
 			  cp++, n++)
 			(void) pututf8char(*cp);
-#ifdef MENU_COLOR
 		   if (iflags.use_menu_color && menucolr) {
 		       if (color != NO_COLOR) term_end_color();
 		       term_end_attr(attr);
 		   } else
-#endif
 		    term_end_attr(curr->attr);
 		}
 	    } else {

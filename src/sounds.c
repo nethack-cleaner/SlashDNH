@@ -7207,11 +7207,9 @@ spiritSkill(int p_skill)
 extern void play_usersound(const char*, int);
 
 typedef struct audio_mapping_rec {
-#ifdef USER_SOUNDS_REGEX
-	struct re_pattern_buffer regex;
-#else
 	char *pattern;
-#endif
+	regex_t match;
+	boolean is_regexp;
 	char *filename;
 	int volume;
 	struct audio_mapping_rec *next;
@@ -7232,7 +7230,6 @@ add_sound_mapping(const char *mapping)
 
 	if (sscanf(mapping, "MESG \"%255[^\"]\"%*[\t ]\"%255[^\"]\" %d",
 		   text, filename, &volume) == 3) {
-	    const char *err;
 	    audio_mapping *new_map;
 
 	    if (strlen(sounddir) + strlen(filename) > 254) {
@@ -7243,33 +7240,31 @@ add_sound_mapping(const char *mapping)
 
 	    if (can_read_file(filespec)) {
 		new_map = (audio_mapping *)alloc(sizeof(audio_mapping));
-#ifdef USER_SOUNDS_REGEX
-		new_map->regex.translate = 0;
-		new_map->regex.fastmap = 0;
-		new_map->regex.buffer = 0;
-		new_map->regex.allocated = 0;
-		new_map->regex.regs_allocated = REGS_FIXED;
-#else
-		new_map->pattern = (char *)alloc(strlen(text) + 1);
-		Strcpy(new_map->pattern, text);
-#endif
+		new_map->is_regexp = iflags.usersound_regex;
+		if (new_map->is_regexp) {
+		    int errnum;
+		    char errbuf[80];
+		    const char *err = (char *)0;
+		    errnum = regcomp(&new_map->match, text, REG_EXTENDED | REG_NOSUB);
+		    if (errnum != 0) {
+			regerror(errnum, &new_map->match, errbuf, sizeof(errbuf));
+			err = errbuf;
+		    }
+		    if (err) {
+			raw_print(err);
+			free(new_map->filename);
+			free(new_map);
+			return 0;
+		    }
+		} else {
+		    new_map->pattern = (char *)alloc(strlen(text) + 1);
+		    Strcpy(new_map->pattern, text);
+		}
 		new_map->filename = strdup(filespec);
 		new_map->volume = volume;
 		new_map->next = soundmap;
 
-#ifdef USER_SOUNDS_REGEX
-		err = re_compile_pattern(text, strlen(text), &new_map->regex);
-#else
-		err = 0;
-#endif
-		if (err) {
-		    raw_print(err);
-		    free(new_map->filename);
-		    free(new_map);
-		    return 0;
-		} else {
-		    soundmap = new_map;
-		}
+		soundmap = new_map;
 	    } else {
 		Sprintf(text, "cannot read %.243s", filespec);
 		raw_print(text);
@@ -7289,11 +7284,9 @@ play_sound_for_message(const char *msg)
 	audio_mapping* cursor = soundmap;
 
 	while (cursor) {
-#ifdef USER_SOUNDS_REGEX
-	    if (re_search(&cursor->regex, msg, strlen(msg), 0, 9999, 0) >= 0) {
-#else
-	    if (pmatch(cursor->pattern, msg)) {
-#endif
+	    if (cursor->is_regexp
+		? regexec(&cursor->match, msg, 0, NULL, 0) == 0
+		: pmatch(cursor->pattern, msg)) {
 		play_usersound(cursor->filename, cursor->volume);
 	    }
 	    cursor = cursor->next;

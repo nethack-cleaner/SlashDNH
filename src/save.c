@@ -33,9 +33,7 @@ static void savegamestate(int,int);
 #define HUP
 #endif
 
-#ifdef MENU_COLOR
 extern struct menucoloring *menu_colorings;
-#endif
 
 extern const struct percent_color_option *hp_colors;
 extern const struct percent_color_option *pw_colors;
@@ -878,7 +876,6 @@ free_dungeons(void)
 	return;
 }
 
-#ifdef MENU_COLOR
 void
 free_menu_coloring(void)
 {
@@ -886,16 +883,14 @@ free_menu_coloring(void)
 
     while (tmp) {
 	struct menucoloring *tmp2 = tmp->next;
-# ifdef MENU_COLOR_REGEX
-	(void) regfree(&tmp->match);
-# else
-	free(tmp->match);
-# endif
+	if (tmp->is_regexp)
+	    (void) regfree(&tmp->match);
+	else
+	    free(tmp->pattern);
 	free(tmp);
 	tmp = tmp2;
     }
 }
-#endif /* MENU_COLOR */
 
 void
 freedynamicdata(void)
@@ -905,9 +900,7 @@ freedynamicdata(void)
 	free_invbuf();	/* let_to_name (invent.c) */
 	free_youbuf();	/* You_buf,&c (pline.c) */
 	msgpline_free();
-#ifdef MENU_COLOR
 	free_menu_coloring();
-#endif
 	tmp_at(DISP_FREEMEM, 0);	/* temporary display effects */
 #ifdef FREE_ALL_MEMORY
 # define freeobjchn(X)	(saveobjchn(0, X, FREE_SAVE),  X = 0)

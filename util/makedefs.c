@@ -530,13 +530,6 @@ static const char *build_opts[] = {
 #ifdef MAIL
 		"mail daemon",
 #endif
-#ifdef MENU_COLOR
-# ifdef MENU_COLOR_REGEX
-		"menu colors via regular expressions",
-# else
-		"menu colors via pmatch",
-# endif
-#endif
 #ifdef NEWS
 		"news file",
 #endif
@@ -556,11 +549,7 @@ static const char *build_opts[] = {
 		"timed wait for display effects",
 #endif
 #ifdef USER_SOUNDS
-# ifdef USER_SOUNDS_REGEX
-		"user sounds via regular expressions",
-# else
-		"user sounds via pmatch",
-# endif
+		"user sounds",
 #endif
 #ifdef PREFIXES_IN_USE
 		"variable playground",

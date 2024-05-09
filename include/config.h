@@ -195,28 +195,12 @@ typedef long glyph_t;
  * bugs left here.
  */
 
-#if defined(TTY_GRAPHICS)
-# define MENU_COLOR
-# define MENU_COLOR_REGEX
-# define MENU_COLOR_REGEX_POSIX
-/* if MENU_COLOR_REGEX is defined, use regular expressions (regex.h,
- * GNU specific functions by default, POSIX functions with
- * MENU_COLOR_REGEX_POSIX).
- * otherwise use pmatch() to match menu color lines.
- * pmatch() provides basic globbing: '*' and '?' wildcards.
- */
-#endif
-
 /*
  * Enable support for playing user-specified sounds using libsndfile
  * and portaudio.  Make sure to add -lsndfile -lportaudio to GAMELIBS
  * if you enable this.
  */
 /* #define USER_SOUNDS */
-#ifdef USER_SOUNDS
-# define USER_SOUNDS_REGEX
-/* This does the same thing as MENU_COLOR_REGEX but for user sounds. */
-#endif
 
 #ifdef TTY_GRAPHICS
 # define WIN_EDGE	/* windows aligned left&top */

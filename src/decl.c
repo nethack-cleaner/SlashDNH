@@ -270,9 +270,7 @@ const char *c_obj_colors[] = {
 	"white",		/* CLR_WHITE */
 };
 
-#ifdef MENU_COLOR
 struct menucoloring *menu_colorings = 0;
-#endif
 
 struct c_common_strings c_common_strings = {
 	"Nothing happens.",		"That's enough tries!",

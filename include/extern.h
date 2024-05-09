@@ -1986,9 +1986,7 @@ extern void set_wc2_option_mod_status(unsigned long, int);
 extern void set_option_mod_status(const char *,int);
 extern int add_autopickup_exception(const char *);
 extern void free_autopickup_exceptions(void);
-#ifdef MENU_COLOR
 extern boolean add_menu_coloring(char *);
-#endif /* MENU_COLOR */
 extern boolean parse_monster_color(char *);
 extern boolean parse_monster_template(char *);
 extern int parse_codepoint(char *);

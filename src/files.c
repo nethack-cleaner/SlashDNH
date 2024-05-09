@@ -1483,9 +1483,7 @@ parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels)
 	    (void) get_uchars(fp, buf, bufp, &iflags.bouldersym, TRUE,
 			      1, "BOULDER");
 	} else if (match_varname(buf, "MENUCOLOR", 9)) {
-#ifdef MENU_COLOR
 	    (void) add_menu_coloring(bufp);
-#endif
 	} else if (match_varname(buf, "MONSTERCOLOR", 12)) {
 	    return parse_monster_color(bufp);
 	} else if (match_varname(buf, "MONSTERTEMPLATE", 15)) {

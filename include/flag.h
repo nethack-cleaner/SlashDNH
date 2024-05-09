@@ -276,9 +276,7 @@ struct instance_flags {
 #if defined(TTY_GRAPHICS) || defined(CURSES_GRAPHICS)
 	boolean  extmenu;	/* extended commands use menu interface */
 #endif
-#ifdef MENU_COLOR
 	boolean use_menu_color;	/* use color in menus; only if wc_color */
-#endif
 #ifdef WIN_EDGE
 	boolean  win_edge;	/* are the menus aligned left&top */
 #endif
@@ -305,6 +303,10 @@ struct instance_flags {
        boolean  pickup_thrown;
     boolean msgtype_regex;
     boolean ape_regex;
+    boolean menucolor_regex;
+#ifdef USER_SOUNDS
+    boolean usersound_regex;
+#endif
     boolean show_shop_prices;
     boolean item_use_menu;
     boolean notice_walls;

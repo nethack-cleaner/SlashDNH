@@ -10,7 +10,6 @@ static void mkbox_cnts(struct obj *);
 static void obj_timer_checks(struct obj *, xchar, xchar, int);
 static void handle_material_specials(struct obj *, int, int);
 static void init_obj_material(struct obj *);
-static void container_weight(struct obj *);
 #ifdef WIZARD
 static const char *where_name(int);
 static void check_contained(struct obj *,const char *);
@@ -3602,7 +3601,7 @@ add_to_buried(struct obj *obj)
 }
 
 /* Recalculate the weight of this container and all of _its_ containers. */
-static void
+void
 container_weight(struct obj *container)
 {
     container->owt = weight(container);

@@ -2811,6 +2811,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"come", "order pets to come", docome, !IFBURIED, AUTOCOMPLETE},
 	{"conduct", "list which challenges you have adhered to", doconduct, IFBURIED, AUTOCOMPLETE},
 	{"dip", "dip an object into something", dodip, !IFBURIED, AUTOCOMPLETE},
+	{"dropit", "order pets to drop inventory", dodropall, IFBURIED, AUTOCOMPLETE},
 	{"enhance", "advance or check weapons skills", enhance_weapon_skill, IFBURIED, AUTOCOMPLETE},
 	{"equip", "give a pet an item", dopetequip, !IFBURIED, AUTOCOMPLETE},
 	{"force", "force a lock", doforce, !IFBURIED, AUTOCOMPLETE},

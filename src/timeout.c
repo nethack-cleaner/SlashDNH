@@ -771,6 +771,12 @@ nh_timeout(void)
 				pline("...But only a bit.");
 			}
 		break;
+		case GAZE_RES:
+			You_feel("self-conscious!");
+			if(HGaze_immune){
+				pline("...But only a bit.");
+			}
+		break;
 		case DISPLACED:
 			if(Hallucination){
 				You("calm down");

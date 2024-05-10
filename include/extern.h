@@ -508,6 +508,7 @@ extern int doattack(void);
 extern int dopassive(void);
 extern int dodownboy(void);
 extern int dosickem(void);
+extern int dodropall(void);
 extern int drop(struct obj *);
 
 /* ### do_name.c ### */
@@ -1496,6 +1497,7 @@ extern struct obj *add_to_magic_chest(struct obj *, int);
 extern struct obj *add_to_container(struct obj *, struct obj *);
 extern void add_to_migration(struct obj *);
 extern void add_to_buried(struct obj *);
+extern void container_weight(struct obj *);
 extern void dealloc_obj(struct obj *);
 extern int hornoplenty(struct obj *, boolean);
 extern void obj_ice_effects(int, int, boolean);

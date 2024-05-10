@@ -675,9 +675,9 @@ place_monster(struct monst *mon, int x, int y)
     mon->mx = x, mon->my = y;
     level.monsters[x][y] = mon;
 //	pline("%d",u.umonster); O_o that was a strange series of bugs....
-//	if (opaque(mon->data) && (!mon->minvis || HSee_invisible || ESee_invisible || ((!Race_if(PM_INCANTIFIER) || Upolyd) && mon_resistance(&youmonst,SEE_INVIS)) ))
-	if (opaque(mon->data) && (!mon->minvis || (See_invisible(mon->mx,mon->my))))
-		block_point(x,y);
+	// if (opaque(mon->data) && (!mon->minvis || HSee_invisible || ESee_invisible || ((!Race_if(PM_INCANTIFIER) || Upolyd) && mon_resistance(&youmonst,SEE_INVIS)) ))
+	// if (opaque(&mons[mon->mtyp]) && (!mon->minvis || (See_invisible(mon->mx,mon->my))))
+		// block_point(x,y);
 }
 
 

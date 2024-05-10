@@ -14,7 +14,7 @@ CFLAGS = -g3
 # LDFLAGS += -pg
 LDFLAGS += 
 
-GAMELIBS = -lncurses -lm
+GAMELIBS = -lncursesw -lm
 
 # Uncomment for user sounds support
 # Make sure to also #define USER_SOUNDS in config.h

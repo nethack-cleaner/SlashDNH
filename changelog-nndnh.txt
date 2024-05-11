@@ -85,3 +85,23 @@ New item: mist projector
 		on firearm skill for the PC or migo type for monsters
 	Cold-resistant monsters will use them
 Gnomes get +400 carrycap (from ndnh1)
+User sound support (from 3.4.3) re-added for unix
+	Requires libsndfile and portaudio
+	Need to compile with USER_SOUNDS and add -lsndfile -lportaudio to linker flags
+	Configured the same as in 3.4.3
+New options: usersound_regex, menucolor_regex, querytype_regex
+	Used to control whether or not user sounds/menucolors/querytypes use regex or pmatch
+	menucolor_regex defaults to TRUE (for backwards compat), the rest to FALSE
+New option: paranoid_wand_break
+	Makes breaking wands give a yes/no prompt instead of y/n
+	This is redundant with QUERYTYPE but predates it and vanilla has it
+New option: QUERYTYPE
+	Like msgtype but controls whether prompts are y/n or yes/no
+	Example:
+		OPTIONS=querytype_regex
+		# Make edibility prompts yes/no
+		QUERYTYPE=yesno ".*Eat it anyway.*"
+		# Make paranoid_self_cast prompt y/n
+		QUERYTYPE=yn "^Are you sure you want to cast that spell at yourself\?$"
+		# Reset everything to default
+		#QUERYTYPE=default ".*"

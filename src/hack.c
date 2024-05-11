@@ -2915,6 +2915,10 @@ weight_cap(void)
 	if (!u.usteed && Race_if(PM_ORC) && !Upolyd){
 		carrcap = 2 * carrcap / 3 + u.ulevel*carrcap / 30;
 	}
+	if (!u.usteed && is_gnome(youracedata)){
+		carrcap += 400;
+		maxcap = max(maxcap, carrcap);
+	}
 
 	if (Levitation || Weightless)    /* pugh@cornell */
 		carrcap = maxcap;

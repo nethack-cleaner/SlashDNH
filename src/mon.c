@@ -2776,7 +2776,10 @@ max_mon_load(register struct monst *mtmp)
 	if (boots && boots->otyp == hboots) carcap += boots->cursed ? 0 : maxload/10;
 	if (boots && check_oprop(boots, OPROP_RBRD) && is_lawful_mon(mtmp)) 
 		carcap += boots->cursed ? 0 : max(200, maxload/5);
-	
+
+	if(is_gnome(mdat)){
+		carcap += 400;
+	}
 	if(animaloid(mdat) || naoid(mdat)){
 		carcap *= 1.5;
 	}

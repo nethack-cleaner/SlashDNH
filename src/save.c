@@ -900,6 +900,7 @@ freedynamicdata(void)
 	free_invbuf();	/* let_to_name (invent.c) */
 	free_youbuf();	/* You_buf,&c (pline.c) */
 	msgpline_free();
+	querytype_free();
 	free_menu_coloring();
 	tmp_at(DISP_FREEMEM, 0);	/* temporary display effects */
 #ifdef FREE_ALL_MEMORY

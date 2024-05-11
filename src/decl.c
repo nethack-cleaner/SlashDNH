@@ -348,8 +348,9 @@ struct u_achieve achieve = DUMMY;
 
 struct realtime_data realtime_data = { 0, 0, 0 };
 
-
 struct _plinemsg *pline_msg = NULL;
+
+struct querytype *query_types = NULL;
 
 /* FIXME: These should be integrated into objclass and permonst structs,
    but that invalidates saves */

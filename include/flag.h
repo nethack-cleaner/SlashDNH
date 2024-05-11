@@ -304,6 +304,7 @@ struct instance_flags {
     boolean msgtype_regex;
     boolean ape_regex;
     boolean menucolor_regex;
+    boolean querytype_regex;
 #ifdef USER_SOUNDS
     boolean usersound_regex;
 #endif

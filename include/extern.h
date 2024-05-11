@@ -334,6 +334,8 @@ extern char txt2key(char*);
 extern char* key2txt(char, char*);
 extern char* str2txt(char*, char*);
 extern char yn_function(const char *, const char *, char);
+extern void querytype_add(xchar, char *);
+extern void querytype_free(void);
 extern char yesno(const char *, boolean);
 extern int dotravel(void);
 
@@ -2049,7 +2051,7 @@ extern boolean is_autopickup_exception(struct obj *, boolean);
 
 /* ### pline.c ### */
 
-extern void msgpline_add(int, char *);
+extern void msgpline_add(xchar, char *);
 extern void msgpline_free(void);
 extern void pline(const char *,...) PRINTF_F(1,2);
 extern void Norep(const char *,...) PRINTF_F(1,2);

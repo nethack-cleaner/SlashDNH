@@ -6,10 +6,6 @@
 #include <math.h>
 #include "hack.h"
 
-#ifdef WIZARD
-#endif
-
-
 static boolean no_repeat = FALSE;
 
 static char *You_buf(int);
@@ -19,9 +15,8 @@ char msgs[DUMPMSGS][BUFSZ];
 int lastmsg = -1;
 #endif
 
-
 void
-msgpline_add(int typ, char *pattern)
+msgpline_add(xchar typ, char *pattern)
 {
     int errnum;
     char errbuf[80];
@@ -67,7 +62,7 @@ msgpline_free(void)
     pline_msg = NULL;
 }
 
-int
+xchar
 msgpline_type(const char *msg)
 {
     struct _plinemsg *tmp = pline_msg;
@@ -81,8 +76,6 @@ msgpline_type(const char *msg)
     }
     return MSGTYP_NORMAL;
 }
-
-
 
 /*VARARGS1*/
 /* Note that these declarations rely on knowledge of the internals
@@ -106,7 +99,7 @@ char prevmsg[BUFSZ];
 static void
 vpline(const char *line, va_list the_args) {
 	char pbuf[BUFSZ];
-	int typ;
+	xchar typ;
 	/* Do NOT use VA_START and VA_END in here... see above */
 
 	if (!line || !*line) return;

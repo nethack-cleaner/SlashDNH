@@ -1719,11 +1719,10 @@ dosacrifice(void)
 		}
 
 		if (your_race(ptr) && !is_animal(ptr) && !mindless(ptr) && u.ualign.type != A_VOID) {
-			if(u.ualign.record >= 20 || ACURR(A_WIS) >= 20 || u.ualign.record >= rnd(20-ACURR(A_WIS))){
-				Sprintf(buf, "You feel a deep sense of kinship to %s!  Sacrifice %s anyway?",
-					the(xname(otmp)), (otmp->quan == 1L) ? "it" : "one");
-				if (yn_function(buf,ynchars,'n')=='n') return MOVE_CANCELLED;
-			}
+			Sprintf(buf, "You feel a deep sense of kinship to %s!  Sacrifice %s anyway?",
+				the(xname(otmp)), (otmp->quan == 1L) ? "it" : "one");
+			if (yn_function(buf,ynchars,'n')=='n') return MOVE_CANCELLED;
+
 			if (is_demon(youracedata)) {
 				You("find the idea very satisfying.");
 				exercise(A_WIS, TRUE);

@@ -202,6 +202,8 @@ static struct Bool_Opt
 #endif
 #ifdef USER_SOUNDS
 	{"usersound_regex", &iflags.usersound_regex, FALSE, SET_IN_FILE},
+#else
+	{"usersound_regex", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 	{"use_darkgray", &iflags.wc2_darkgray, TRUE, SET_IN_FILE},
 	{"use_inverse",   &iflags.wc_inverse, FALSE, SET_IN_GAME},		/*WC*/

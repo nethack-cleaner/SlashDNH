@@ -1564,6 +1564,10 @@ parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels)
 		sounddir = (char *)strdup(bufp);
 	} else if (match_varname(buf, "SOUND", 5)) {
 		add_sound_mapping(bufp);
+#else
+        /* Don't error on config files with SOUND/SOUNDDIR if USER_SOUNDS is disabled */
+	} else if (match_varname(buf, "SOUNDDIR", 8)) {
+	} else if (match_varname(buf, "SOUND", 5)) {
 #endif
 	} else
 		return 0;

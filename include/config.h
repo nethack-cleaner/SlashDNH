@@ -156,8 +156,6 @@ typedef unsigned char	uchar;
 
 typedef uint32_t glyph_t;
 
-#define HAVE_SETLOCALE /* Query locale, if UTF8 is supported? */
-
 /*
  * Various structures have the option of using bitfields to save space.
  * If your C compiler handles bitfields well (e.g., it can initialize structs

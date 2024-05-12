@@ -154,8 +154,7 @@ typedef signed char	schar;
  */
 typedef unsigned char	uchar;
 
-/* TODO: include inttypes.h or stdint.h and use uint32_t instead of long? */
-typedef long glyph_t;
+typedef uint32_t glyph_t;
 
 #define HAVE_SETLOCALE /* Query locale, if UTF8 is supported? */
 

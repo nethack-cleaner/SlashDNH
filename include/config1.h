@@ -12,4 +12,6 @@
 # define _GNU_SOURCE
 #endif
 
+#include <stdint.h>
+
 #endif	/* CONFIG1_H */

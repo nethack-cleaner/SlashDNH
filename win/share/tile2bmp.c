@@ -282,8 +282,7 @@ build_bmih(BITMAPINFOHEADER *pbmih)
 }
 
 static void
-build_bmptile(pixels)
-pixel (*pixels)[TILE_X];
+build_bmptile(pixel (*pixels)[TILE_X])
 {
 	int cur_x, cur_y, cur_color;
 	int x,y;

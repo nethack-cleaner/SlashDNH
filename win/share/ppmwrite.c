@@ -81,8 +81,7 @@ fopen_ppm_file(const char *filename, const char *type)
 }
 
 boolean
-write_ppm_tile(pixels)
-pixel (*pixels)[TILE_X];
+write_ppm_tile(pixel (*pixels)[TILE_X])
 {
 	int i, j;
 

@@ -3,9 +3,6 @@ GAMEDIR = notnotdnethackdir
 # only used for generating include/macromagic.h
 PYTHON = python3
 
-# only used for generating include/macromagic.h
-PYTHON = python3
-
 # gprof flags
 # CFLAGS = -pg
 CFLAGS = -g3

@@ -1160,6 +1160,7 @@ badtouch(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj
  * due to:
  *  - cockatrice stoning
  *  - eating a fatal corpse
+ *  - Pale Night
  */
 boolean
 safe_attack(struct monst *magr, struct monst *mdef, struct attack *attk, struct obj *weapon, struct permonst *pa, struct permonst *pd)
@@ -1185,6 +1186,10 @@ safe_attack(struct monst *magr, struct monst *mdef, struct attack *attk, struct 
 		((attk->aatyp == AT_BITE || attk->aatyp == AT_OBIT || attk->aatyp == AT_WBIT || attk->aatyp == AT_LNCK || attk->aatyp == AT_5SBT) && is_vampire(pa)) ||
 		(attk->aatyp == AT_ENGL && attk->adtyp == AD_DGST)
 		))
+		return FALSE;	// don't attack
+
+	/* Pale Night's deadly passive seduction */
+	if (pd && pd->mtyp == PM_PALE_NIGHT && youagr && !(Chastity || uring_otyp(find_engagement_ring())))
 		return FALSE;	// don't attack
 
 	/* otherwise, it is safe(ish) to attack */

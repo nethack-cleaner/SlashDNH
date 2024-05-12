@@ -195,11 +195,7 @@ static struct Bool_Opt
 	{"tombstone",&flags.tombstone, TRUE, SET_IN_GAME},
 	{"toptenwin",&flags.toptenwin, FALSE, SET_IN_GAME},
 	{"travel", &iflags.travelcmd, TRUE, SET_IN_GAME},
-#ifdef UTF8_GLYPHS
 	{"UTF8graphics", &iflags.UTF8graphics, FALSE, SET_IN_GAME},
-#else
-	{"UTF8graphics", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef USER_SOUNDS
 	{"usersound_regex", &iflags.usersound_regex, FALSE, SET_IN_FILE},
 #else
@@ -3198,9 +3194,7 @@ goodfruit:
 			if (FALSE
 				 || (boolopt[i].addr) == &iflags.DECgraphics
 				 || (boolopt[i].addr) == &iflags.IBMgraphics
-# ifdef UTF8_GLYPHS
 				 || (boolopt[i].addr) == &iflags.UTF8graphics
-# endif
 # ifdef CURSES_GRAPHICS
 				 || (boolopt[i].addr) == &iflags.cursesgraphics
 # endif
@@ -3216,11 +3210,9 @@ goodfruit:
 			    if ((boolopt[i].addr) == &iflags.IBMgraphics)
 				switch_graphics(iflags.IBMgraphics ?
 						IBM_GRAPHICS : ASCII_GRAPHICS);
-# ifdef UTF8_GLYPHS
 			    if ((boolopt[i].addr) == &iflags.UTF8graphics)
 				switch_graphics(iflags.UTF8graphics ?
 						UTF8_GRAPHICS : ASCII_GRAPHICS);
-# endif
 # ifdef CURSES_GRAPHICS
 			    if ((boolopt[i].addr) == &iflags.cursesgraphics)
 				switch_graphics(iflags.cursesgraphics ?

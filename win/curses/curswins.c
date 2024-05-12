@@ -586,21 +586,17 @@ void
 curses_write_char(WINDOW * win, int x, int y, nethack_char nch)
 {
     curses_toggle_color_attr(win, nch.color, nch.attr, ON);
-#ifdef UTF8_GLYPHS
     if (iflags.UTF8graphics) {
         wpututf8char(win, y, x, nch.ch);
     } else if (iflags.IBMgraphics) {
         wpututf8char(win, y, x, get_unicode_codepoint(nch.ch));
     } else {
-#endif
 #ifdef PDCURSES
         mvwaddrawch(win, y, x, nch.ch);
 #else
         mvwaddch(win, y, x, nch.ch);
 #endif
-#ifdef UTF8_GLYPHS
     }
-#endif
     curses_toggle_color_attr(win, nch.color, nch.attr, OFF);
 }
 

@@ -324,7 +324,6 @@ get_unicode_codepoint(int ch)
 int
 pututf8char(glyph_t c)
 {
-#ifdef UTF8_GLYPHS
   if (c < 0x80) {
     putchar(c);
   } else if(c < 0x800) {
@@ -340,9 +339,6 @@ pututf8char(glyph_t c)
     putchar(0x80 | (c>>6 & 0x3F));
     putchar(0x80 | (c & 0x3F));
   }
-#else
-  putchar(c);
-#endif
   return 0;
 }
 

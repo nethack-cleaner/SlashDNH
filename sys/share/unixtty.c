@@ -286,7 +286,6 @@ error VA_DECL(const char *,s)
 }
 #endif /* !__begui__ */
 
-#ifdef UTF8_GLYPHS
 void
 check_utf8_console(void)
 {
@@ -342,4 +341,3 @@ check_utf8_console(void)
         exit(EXIT_FAILURE);
     }
 }
-#endif

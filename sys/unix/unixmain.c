@@ -33,9 +33,7 @@ static void wd_message(void);
 static boolean wiz_error_flag = FALSE;
 #endif
 
-#ifdef UTF8_GLYPHS
 extern void check_utf8_console(void);
-#endif
 
 int
 main(int argc, char *argv[])
@@ -135,9 +133,7 @@ main(int argc, char *argv[])
 #ifdef __linux__
 	check_linux_console();
 #endif
-#ifdef UTF8_GLYPHS
 	//check_utf8_console();
-#endif
 
 	initoptions();
 	init_nhwindows(&argc,argv);

@@ -699,7 +699,6 @@ static glyph_t dec_graphics[MAXPCHARS] = {
 };
 
 
-#ifdef UTF8_GLYPHS
 /* Probably best to only use characters from this list
  * http://en.wikipedia.org/wiki/WGL4 */
 static glyph_t utf8_graphics[MAXPCHARS] = {
@@ -818,7 +817,6 @@ static glyph_t utf8_graphics[MAXPCHARS] = {
 	0x2581,	/* S_explode8:	LOWER ONE EIGHTH BLOCK */
 	g_FILLER(S_explode9)
 };
-#endif
 
 /*
  * Convert the given character to an object class.  If the character is not
@@ -912,12 +910,10 @@ switch_graphics(int gr_set_flag)
 	    assign_graphics(dec_graphics, SIZE(dec_graphics), MAXPCHARS, 0);
 	    if (decgraphics_mode_callback) (*decgraphics_mode_callback)();
 	    break;
-#ifdef UTF8_GLYPHS
     case UTF8_GRAPHICS:
 	    assign_graphics(utf8_graphics, SIZE(utf8_graphics), MAXPCHARS, 0);
 	    iflags.UTF8graphics = TRUE;
 	    break;
-#endif
 #ifdef CURSES_GRAPHICS
     case CURS_GRAPHICS:
 	    assign_graphics((glyph_t *)0, 0, MAXPCHARS, 0);
@@ -932,7 +928,6 @@ switch_graphics(int gr_set_flag)
 void
 assign_utf8graphics_symbol(int position, glyph_t value)
 {
-#ifdef UTF8_GLYPHS
 	if (position < MAXPCHARS) {
 		utf8_graphics[position] = value;
 		/* need to update showsym */
@@ -940,7 +935,6 @@ assign_utf8graphics_symbol(int position, glyph_t value)
 			switch_graphics(UTF8_GRAPHICS);
 		}
 	}
-#endif
 }
 
 

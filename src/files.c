@@ -26,6 +26,7 @@
 #include <signal.h>
 #endif
 
+#include <sys/stat.h>
 #ifndef O_BINARY	/* used for micros, no-op for others */
 # define O_BINARY 0
 #endif

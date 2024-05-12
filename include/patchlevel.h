@@ -59,13 +59,19 @@
 #define EDITLEVEL	0
 
 #define COPYRIGHT_BANNER_A \
-"notnotdNetHack, Copyright 2017-2024"
+"notnotdNetHack, Copyright 2024"
 
 #define COPYRIGHT_BANNER_B \
-"    Based on NetHack, Copyright 1985-2003 by Stichting Mathematisch"
+"  Based on notdNetHack, Copyright 2017-2024"
 
 #define COPYRIGHT_BANNER_C \
-"         Centrum and M. Stephenson.  See license for details."
+"    Based on dNetHack, Copyright 2012-2024"
+
+#define COPYRIGHT_BANNER_D \
+"      Based on NetHack, Copyright 1985-2003 by Stichting Mathematisch"
+
+#define COPYRIGHT_BANNER_E \
+"        Centrum and M. Stephenson.  See license for details."
 
 /*
  * If two or more successive releases have compatible data files, define

@@ -999,8 +999,13 @@ curses_display_splash_window(void)
     y_start++;
 #endif
 
-#ifdef COPYRIGHT_BANNER_D       /* Just in case */
+#ifdef COPYRIGHT_BANNER_D
     mvaddstr(y_start, x_start, COPYRIGHT_BANNER_D);
+    y_start++;
+#endif
+
+#ifdef COPYRIGHT_BANNER_E
+    mvaddstr(y_start, x_start, COPYRIGHT_BANNER_E);
     y_start++;
 #endif
     refresh();

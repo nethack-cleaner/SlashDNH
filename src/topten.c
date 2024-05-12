@@ -4,11 +4,7 @@
 
 #include "hack.h"
 #include "dlb.h"
-#ifdef SHORT_FILENAMES
-#include "patchlev.h"
-#else
 #include "patchlevel.h"
-#endif
 #ifdef XLOGFILE
 #include "artifact.h" /* we need artilist so inherited arti can be in xlogfile */
 #endif

@@ -12,7 +12,7 @@ static const char tools_too[] = { ALL_CLASSES, SCOIN_CLASS, TOOL_CLASS, POTION_C
 				  WEAPON_CLASS, WAND_CLASS, GEM_CLASS, CHAIN_CLASS, 0 };
 static const char apply_armor[] = { ARMOR_CLASS, 0 };
 static const char imperial_repairs[] = { AMULET_CLASS, ARMOR_CLASS, RING_CLASS, WAND_CLASS, 0 };
-static const char apply_corpse[] = { FOOD_CLASS, 0 };
+static const char apply_wand[] = { WAND_CLASS, 0 };
 static const char apply_gem[] = { GEM_CLASS, 0 };
 static const char chain_class[] = { CHAIN_CLASS, 0 };
 static const char apply_all[] = { ALL_CLASSES, CHAIN_CLASS, 0 };
@@ -8176,12 +8176,12 @@ doUseUpgradeKit(struct obj **optr)
 					return MOVE_STANDARD;
 				break;
 				case MAGIC_FURNACE:
-					comp = getobj(apply_corpse, "build a magic furnace with");
+					comp = getobj(apply_wand, "build a magic furnace with");
 					if(!comp || comp->otyp != WAN_DRAINING){
 						pline("Never mind.");
 						return MOVE_CANCELLED;
 					}
-					You("combine the components in the upgrade kit with the disenchanter corpse and build a magic furnace.");
+					You("combine the components in the upgrade kit with the wand of draining and build a magic furnace.");
 					u.clockworkUpgrades |= upgrade;
 					useup(comp);
 					useup(obj);

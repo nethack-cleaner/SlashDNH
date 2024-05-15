@@ -486,9 +486,9 @@ setrandom(void)
 #ifdef RANDOM	/* srandom() from sys/share/random.c */
 	srandom((unsigned int) time((time_t *)0));
 #else
-	srandom((int) (time((time_t *)0)) + rnd[0]);
+	srandom((unsigned int) (time((time_t *)0)) + rnd[0]);
 #endif
-	srand((int) time((time_t *)0)); /*The basic rand function is always used in a few places, so seed it*/
+	srand((unsigned int) time((time_t *)0)); /*The basic rand function is always used in a few places, so seed it*/
 }
 
 static struct tm *

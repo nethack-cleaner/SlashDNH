@@ -689,13 +689,13 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 		{
 		case INVIS:
 			if (mon->mtyp != PM_HELLCAT){
-				mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 				mon->minvis = !mon->invis_blkd;
 			}
 			break;
 		case FAST:
 			{
-			mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+			mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 			boolean save_in_mklev = in_mklev;
 			if (silently) in_mklev = TRUE;
 			mon_adjust_speed(mon, 0, obj, TRUE);
@@ -705,7 +705,7 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 			}
 		case LEVITATION:
 		case FLYING:
-			mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+			mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 			if (!oldprop && (mon_resistance(mon,LEVITATION) || mon_resistance(mon,FLYING))) {
 				m_float_up(mon, silently);
 				if (obj && !silently && canseemon(mon)) {
@@ -714,7 +714,7 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 			}
 			break;
 		case DISPLACED:
-			mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+			mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 			if (!oldprop && mon_resistance(mon,DISPLACED) && !silently && canseemon(mon)) {
 				pline("%s outline begins shimmering!", s_suffix(Monnam(mon)));
 				if (obj) {
@@ -723,13 +723,13 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 			}
 			break;
 		case SWIMMING:
-			mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+			mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 			if (!oldprop && mon_resistance(mon,SWIMMING)) {
 				minliquid(mon);
 			}
 			break;
 		default:
-			mon->mextrinsics[(which-1)/32] |= (1 << (which-1)%32);
+			mon->mextrinsics[(which-1)/32] |= (1L << (which-1)%32);
 			break;
 		}
     }
@@ -740,12 +740,12 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 			switch (which)
 			{
 			case INVIS:
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				mon->minvis = (mon->invis_blkd ? FALSE : mon->perminvis);
 				break;
 			case FAST:
 				{
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				boolean save_in_mklev = in_mklev;
 				if (silently) in_mklev = TRUE;
 				mon_adjust_speed(mon, 0, obj, TRUE);
@@ -754,7 +754,7 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 				}
 			case LEVITATION:
 			case FLYING:
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				if (oldprop && !mon_resistance(mon,LEVITATION) && !mon_resistance(mon,FLYING)) {
 					m_float_down(mon, silently);
 					if (obj && !silently && canseemon(mon)) {
@@ -763,7 +763,7 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 				}
 				break;
 			case DISPLACED:
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				if (oldprop && !mon_resistance(mon,DISPLACED) && !silently && canseemon(mon)) {
 					pline("%s outline stops shimmering.", s_suffix(Monnam(mon)));
 					if (obj) {
@@ -772,13 +772,13 @@ update_mon_intrinsic(struct monst *mon, struct obj *obj, int which, boolean on, 
 				}
 				break;
 			case SWIMMING:
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				if (oldprop && !mon_resistance(mon,SWIMMING)) {
 					minliquid(mon);
 				}
 				break;
 			default:
-				mon->mextrinsics[(which-1)/32] &= ~(1 << (which-1)%32);
+				mon->mextrinsics[(which-1)/32] &= ~(1L << (which-1)%32);
 				break;
 			}
 		}

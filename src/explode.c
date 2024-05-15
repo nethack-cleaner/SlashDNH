@@ -45,8 +45,9 @@ add_location_to_explode_region(int x, int y, void * _reg)
 	reg->alocations = reg->alocations ? 2 * reg->alocations : 32;
 	new = (ExplodeLocation *)
 		alloc(reg->alocations * sizeof(ExplodeLocation));
-	(void) memcpy((void *)new, (void *)reg->locations,
-		reg->nlocations * sizeof(ExplodeLocation));
+	if (reg->locations)
+		(void) memcpy((void *)new, (void *)reg->locations,
+			reg->nlocations * sizeof(ExplodeLocation));
 	free((void *)reg->locations);
 	reg->locations = new;
     }

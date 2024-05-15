@@ -553,10 +553,8 @@ is_main_window(winid wid)
 }
 
 static int
-wpututf8char(WINDOW *win, int y, int x, glyph_t g)
+wpututf8char(WINDOW *win, int y, int x, glyph_t c)
 {
-    /* glyph_t is a long, cast it to an int to avoid warnings about using %c */
-    int c = (int)g;
     if (c < 0x80) {
         return mvwprintw(win, y, x, "%c", c);
     } else if (c < 0x800) {

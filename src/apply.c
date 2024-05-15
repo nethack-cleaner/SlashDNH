@@ -8181,7 +8181,7 @@ doUseUpgradeKit(struct obj **optr)
 						pline("Never mind.");
 						return MOVE_CANCELLED;
 					}
-					You("combine the components in the upgrade kit with the wand of draining and build a magic furnace.");
+					You("combine the components in the upgrade kit with the wand and build a magic furnace.");
 					u.clockworkUpgrades |= upgrade;
 					useup(comp);
 					useup(obj);

@@ -1063,6 +1063,7 @@ domonnoise(struct monst *mtmp, boolean chatting)
 				if(obj->objsize == MZ_GIGANTIC) obj->objsize = MZ_HUGE; 
 				else obj->objsize--;
 				verbalize("Shrunk her down!");
+				fix_object(obj);
 				made_purchase = TRUE;
 				break;
 			case 2://grow armor
@@ -1097,6 +1098,7 @@ domonnoise(struct monst *mtmp, boolean chatting)
 				if(obj->objsize == MZ_HUGE) obj->objsize = MZ_GIGANTIC; 
 				else obj->objsize++;
 				verbalize("Combined em!");
+				fix_object(obj);
 				made_purchase = TRUE;
 				break;
 			case 3://repair armor
@@ -1193,6 +1195,7 @@ domonnoise(struct monst *mtmp, boolean chatting)
 					obj->otyp - GRAY_DRAGON_SCALES;
 				obj->objsize = MZ_HUMAN;
 				obj->known = 1;
+				fix_object(obj);
 				made_purchase = TRUE;
 				break;
 			default:

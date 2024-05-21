@@ -218,8 +218,13 @@ summon_god_minion(int godnum, boolean talk)
 			if (!Blind)
 				pline("%s appears before you.", An(Hallucination ? rndmonnam() : mon->data->mname));
 		}
-		mon->mpeaceful = FALSE;
-		/* don't call set_malign(); player was naughty */
+		if(mon->mpeaceful){
+			mon->mpeaceful = FALSE;
+			if(godnum != u.ugodbase[UGOD_CURRENT])
+				set_malign(mon);
+			/* else don't call set_malign(); player was naughty */
+			newsym(mon->mx,mon->my);
+		}
 		mon->msleeping = 0;
 		mon->mcanmove = 1;
 		

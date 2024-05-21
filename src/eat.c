@@ -309,7 +309,7 @@ get_satiationlimit(void)
 	 */
 	if (Race_if(PM_INCANTIFIER)) return max((u.uenmax*4)/5, 200);
 
-	if (uclockwork) return (hungermax*3)/4;
+	if (uclockwork) return min(hungermax-850, (hungermax*3)/4);
 
 	return hungermax/2;
 }

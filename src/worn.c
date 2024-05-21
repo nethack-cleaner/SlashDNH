@@ -315,7 +315,7 @@ get_item_property_list(int *property_list, struct obj *obj, int otyp)
 			}
 		}
 		//From scorpion carapace
-		if(obj->oartifact == ART_SCORPION_CARAPACE){
+		if(obj && obj->oartifact == ART_SCORPION_CARAPACE){
 			switch(cur_prop){
 				case SWIMMING:
 					if(check_carapace_mod(obj, CPROP_SWIMMING))

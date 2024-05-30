@@ -3048,7 +3048,7 @@ extern struct obj *uring_otyp(int);
 extern struct obj *uring_art(int);
 extern boolean item_has_property(struct obj *, int);
 extern void get_item_property_list(int *, struct obj*, int);
-extern void setworn(struct obj *,long);
+extern void setworn(struct obj *,long long);
 extern void m_lose_armor(struct monst *,struct obj *);
 extern void setnotworn(struct obj *);
 extern void mon_set_minvis(struct monst *);

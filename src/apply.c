@@ -5737,7 +5737,7 @@ use_doll(struct obj *obj)
 				else mtmp = m_at(u.ux + u.dx, u.uy + u.dy);
 				if(mtmp){
 					struct obj *otmp;
-					long unwornmask;
+					long long unwornmask;
 					//Note: unlike normal theft, you are never petrified by a stolen item because the doll is doing it.
 					if(!Blind) pline("The black-clad doll steals %s possessions.", s_suffix(mon_nam(mtmp)));
 					while ((otmp = mtmp->minvent) != 0) {

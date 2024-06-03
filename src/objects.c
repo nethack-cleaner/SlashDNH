@@ -1267,7 +1267,8 @@ TOOL(("power pack", "little white cube", "little cube"), /*Needs encyc entry*//*
 TOOL(("trephination kit"),  /*Needs encyc entry*/
 								1, MZ_MEDIUM, 0, 0, 1,   4, 10,  30, METAL, HI_METAL),/*Needs encyc entry*//*Needs tile*/
 TOOL(("can of grease"),1,  MZ_SMALL, 0, 0, 1,  15, 15,  20, IRON, HI_METAL),
-TOOL(("figurine"),     1,  MZ_SMALL, 0, 1, 0,  18, 50,  80, MINERAL, HI_MINERAL),
+TOOL(("figurine"),     1,  MZ_SMALL, 0, 1, 0,  18, 50,  80, MINERAL, HI_MINERAL, O_NOWISH(1)),
+
 TOOL(("crystal skull"),1,  MZ_SMALL, 0, 1, 0,   0, 118, 800, GLASS, HI_GLASS),
 /*Keep in sync with doll mvar flags*/
 TOOL(("effigy",   (char *)0),     1,   MZ_TINY, 1, 1, 0,  20,  5,  80, LEATHER, HI_LEATHER),

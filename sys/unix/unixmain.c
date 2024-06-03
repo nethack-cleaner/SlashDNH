@@ -28,6 +28,9 @@ extern struct passwd *FDECL(getpwnam,(const char *));
 static void FDECL(chdirx, (const char *,BOOLEAN_P));
 #endif /* CHDIR */
 static boolean NDECL(whoami);
+#ifdef FUZZER_TIMEOUT
+static void NDECL(init_fuzzer_child);
+#endif
 static void FDECL(process_options, (int, char **));
 
 #ifdef _M_UNIX
@@ -42,6 +45,10 @@ extern void NDECL(init_linux_cons);
 static void NDECL(wd_message);
 #ifdef WIZARD
 static boolean wiz_error_flag = FALSE;
+#endif
+
+#ifdef UTF8_GLYPHS
+extern void check_utf8_console(void);
 #endif
 
 int
@@ -157,6 +164,10 @@ char *argv[];
 #ifdef __linux__
 	check_linux_console();
 #endif
+#ifdef UTF8_GLYPHS
+	//check_utf8_console();
+#endif
+
 	initoptions();
 	init_nhwindows(&argc,argv);
 	exact_username = whoami();
@@ -200,6 +211,11 @@ char *argv[];
 	plnamesuffix();		/* strip suffix from name; calls askname() */
 				/* again if suffix was whole name */
 				/* accepts any suffix */
+#ifdef FUZZER_TIMEOUT
+	if(iflags.debug_fuzzer){
+		init_fuzzer_child();
+	}
+#endif
 #ifdef WIZARD
 	if(!wizard) {
 #endif
@@ -299,6 +315,25 @@ not_recovered:
 	return(0);
 }
 
+#ifdef FUZZER_TIMEOUT
+
+static void 
+init_fuzzer_child(){
+	pid_t pid = getpid();
+	pid_t child_pid = fork();
+	int status;
+	if(!child_pid){
+		while(TRUE){
+			sleep(FUZZER_TIMEOUT);
+			//check shared memory, if the timestamp is in date, go back to sleep, otherwise raise a SIGHUP to the parent and exit
+		}
+		
+	} else {
+		waitpid(child_pid, &status, WNOHANG);
+	}
+}
+#endif
+
 static void
 process_options(argc, argv)
 int argc;
@@ -314,6 +349,9 @@ char *argv[];
 		argv++;
 		argc--;
 		switch(argv[0][1]){
+		case 'F':
+			iflags.debug_fuzzer = TRUE;
+			break;
 		case 'D':
 #ifdef WIZARD
 			wizard = TRUE;

@@ -58,7 +58,7 @@
 #define Shock_resistance	(HShock_resistance || EShock_resistance || \
 				 (species_resists_elec(&youmonst) && !(Race_if(PM_ANDROID) && !Upolyd)) || \
 				 ward_at(u.ux,u.uy) == TRACERY_OF_KARAKAL )
-#define InvShock_resistance	(EShock_resistance || Preservation || ward_at(u.ux,u.uy) == TRACERY_OF_KARAKAL || (HShock_resistance&FROMRACE && Race_if(PM_ANDROID)))
+#define InvShock_resistance	(EShock_resistance || Preservation || ward_at(u.ux,u.uy) == TRACERY_OF_KARAKAL || (HShock_resistance&FROMRACE && (Race_if(PM_ANDROID) || Race_if(PM_PARASITIZED_ANDROID))))
 
 #define HPoison_resistance	u.uprops[POISON_RES].intrinsic
 #define EPoison_resistance	u.uprops[POISON_RES].extrinsic
@@ -88,6 +88,7 @@
 #define Antimagic		(EAntimagic || HAntimagic || \
 						(u.usteed && u.usteed->misc_worn_check & W_SADDLE \
 						&& which_armor(u.usteed, W_SADDLE)->oartifact == ART_HELLRIDER_S_SADDLE) || \
+						(activeFightingForm(FFORM_KNI_RUNIC) && uwep && uwep->otyp == LONG_SWORD) || \
 						Nullmagic ||\
 				 (Upolyd && resists_magm(&youmonst)))
 
@@ -166,8 +167,8 @@
 #define Punished		(uball)
 
 #define	Insanity	 (100 - u.usanity)
-#define NightmareAware_Sanity ((Nightmare && ClearThoughts) ? (u.usanity + 4*Insanity/5) : u.usanity)
-#define NightmareAware_Insanity ((Nightmare && ClearThoughts) ? (Insanity/5) : Insanity)
+#define NightmareAware_Sanity ((Nightmare && ClearThoughts) ? (u.usanity + 4*Insanity/5) : ClearThoughts ? (u.usanity + 9*Insanity/10) : u.usanity)
+#define NightmareAware_Insanity ((Nightmare && ClearThoughts) ? (Insanity/5) : ClearThoughts ? Insanity/10 : Insanity)
 
 #define	FacelessHelm(obj) ((obj)->otyp == PLASTEEL_HELM || (obj)->otyp == CRYSTAL_HELM || (obj)->otyp == PONTIFF_S_CROWN || (obj)->otyp == FACELESS_HELM || (obj)->otyp == IMPERIAL_ELVEN_HELM)
 #define	FacelessCloak(obj) ((obj)->otyp == WHITE_FACELESS_ROBE || (obj)->otyp == BLACK_FACELESS_ROBE || (obj)->otyp == SMOKY_VIOLET_FACELESS_ROBE)
@@ -233,11 +234,11 @@
 #define Shattering		u.uprops[SHATTERING].intrinsic
 #define DimensionalLock	u.uprops[DIMENSION_LOCK].intrinsic
 
-/* Hallucination is solely a timeout; its resistance is extrinsic */
+/* Hallucination is solely a timeout; its resistance can be intrinsic or extrinsic */
 #define HHallucination		u.uprops[HALLUC].intrinsic
 #define HHalluc_resistance	u.uprops[HALLUC_RES].intrinsic
 #define EHalluc_resistance	u.uprops[HALLUC_RES].extrinsic
-#define Halluc_resistance	(EHalluc_resistance || \
+#define Halluc_resistance	(HHalluc_resistance || EHalluc_resistance || \
 				 (Upolyd && dmgtype(youmonst.data, AD_HALU)))
 #define Hallucination		(HHallucination && !Halluc_resistance)
 
@@ -371,7 +372,8 @@
 #define ETelepat		u.uprops[TELEPAT].extrinsic
 #define Blind_telepat		(HTelepat || ETelepat || \
 				 species_is_telepathic(youracedata))
-#define Unblind_telepat		(ETelepat)
+#define Unblind_telepat		(ETelepat || (Blind_telepat && uarmh && uarmh->oartifact == ART_ENFORCED_MIND))
+#define Tele_blind		(!Blind_telepat && uarmh && uarmh->oartifact == ART_ENFORCED_MIND)
 
 #define HWarning		u.uprops[WARNING].intrinsic
 #define EWarning		u.uprops[WARNING].extrinsic
@@ -398,6 +400,7 @@
 #define EWeldproof	u.uprops[WELDPROOF].extrinsic
 #define Weldproof	(HWeldproof || EWeldproof || \
 					 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM))
+					)
 
 /*** Appearance and behavior ***/
 #define Adornment		u.uprops[ADORNED].extrinsic
@@ -519,10 +522,10 @@
 
 #define HSanctuary	u.uprops[SANCTUARY].intrinsic
 #define ESanctuary	u.uprops[SANCTUARY].extrinsic
-#define Sactuary	(HSanctuary || ESanctuary)
+#define Sanctuary	(HSanctuary || ESanctuary)
 	/* Get wet, may go under surface */
 
-#define	Invulnerable	(Sactuary || u.uinvulnerable || u.spiritPColdowns[PWR_PHASE_STEP] >= moves + 20)
+#define	Invulnerable	(Sanctuary || u.uinvulnerable || u.spiritPColdowns[PWR_PHASE_STEP] >= moves + 20)
 
 #define Breathless		(HMagical_breathing || EMagical_breathing || \
 				 breathless(youracedata))
@@ -625,21 +628,23 @@
 #define Fast			(HFast || EFast)
 #define Very_fast		((HFast & ~INTRINSIC) || EFast)
 
+#define HReflecting		u.uprops[REFLECTING].intrinsic
 #define EReflecting		u.uprops[REFLECTING].extrinsic
-#define Reflecting		(EReflecting || \
+#define Reflecting		(HReflecting || EReflecting || \
 						 (uwep && is_lightsaber(uwep) && uwep->lamplit && (activeFightingForm(FFORM_SORESU) || activeFightingForm(FFORM_SHIEN))) || \
 						 (u.usteed && u.usteed->misc_worn_check & W_SADDLE \
 						 && which_armor(u.usteed, W_SADDLE)->oartifact == ART_HELLRIDER_S_SADDLE) || \
 						species_reflects(&youmonst))
 
+#define HFree_action		u.uprops[FREE_ACTION].intrinsic
 #define EFree_action		u.uprops[FREE_ACTION].extrinsic
-
-#define Free_action		(EFree_action) /* [Tom] */
+#define Free_action		(HFree_action || EFree_action) /* [Tom] */
 
 #define Fixed_abil		(u.uprops[FIXED_ABIL].extrinsic)	/* KMH */
 
+ /*Note: the rings only give life saving when charged, so it can't be a normal property*/
 #define ELifesaved		u.uprops[LIFESAVED].extrinsic
-#define Lifesaved		(ELifesaved || Check_crystal_lifesaving() || Check_iaso_lifesaving() || (uleft && uleft->otyp == RIN_WISHES && uleft->spe > 0) || (uright && uright->otyp == RIN_WISHES && uright->spe > 0)) /*Note: the rings only give life saving when charged, so it can't be a normal property*/
+#define Lifesaved		(ELifesaved || Check_crystal_lifesaving() || Check_iaso_lifesaving() || Check_twin_lifesaving() || (uleft && uleft->otyp == RIN_WISHES && uleft->spe > 0) || (uright && uright->otyp == RIN_WISHES && uright->spe > 0) || (check_mutation(ABHORRENT_SPORE) && !(mvitals[PM_DARK_YOUNG].mvflags & G_GENOD)))
 
 #define Necrospellboost	(u.uprops[NECROSPELLS].extrinsic)
 

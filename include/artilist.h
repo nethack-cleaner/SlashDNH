@@ -77,7 +77,7 @@ A("",					STRANGE_OBJECT,					(const char *)0,
 /*Excalibur does extra blessed damage to demons and undead, +3d7 instead of 1d4*/
 A("Excalibur",			LONG_SWORD,						(const char *)0,
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, PM_KNIGHT, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_INHER|ARTG_MAJOR|ARTG_FXALGN),
+	A_LAWFUL, PM_KNIGHT, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	ATTK(AD_PHYS, 20, 10), NOFLAG,
 	PROPS(DRAIN_RES, SEARCHING), (ARTP_SEEK),
@@ -107,7 +107,7 @@ A("Soulthief",			LONG_SWORD,						(const char *)0,
 
 A("Dirge",			LONG_SWORD,						"half-melted %s",
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, PM_KNIGHT, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_INHER|ARTG_MAJOR|ARTG_FXALGN),
+	A_CHAOTIC, PM_KNIGHT, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	ATTK(AD_ACID, 5, 10), NOFLAG,
 	PROPS(ACID_RES), NOFLAG,
@@ -138,13 +138,13 @@ A("Bonded Blade",			LONG_SWORD,						"your bonded blade %s",
  *  Stormbringer now gives its wielder great strength and vitality
  *	(25 Str and Con)
  *
- *	Stormbringer cuts through any substance (ie, it counts as shining)
+ *	Stormbringer cuts through any substance (ie, it counts as phasing)
  */
 A("Stormbringer",		RUNESWORD,						(const char *)0,
 	8000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, NON_PM, NON_PM, TIER_A, (ARTG_INHER | ARTG_MAJOR),
+	A_CHAOTIC, NON_PM, NON_PM, TIER_A, (ARTG_MAJOR),
 	NO_MONS(),
-	ATTK(AD_DRLI, 5, 2), (ARTA_DRAIN|ARTA_SHINING),
+	ATTK(AD_DRLI, 5, 2), (ARTA_DRAIN|ARTA_PHASING),
 	PROPS(DRAIN_RES), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, (ARTI_BLOODTHRST)
@@ -154,13 +154,13 @@ A("Stormbringer",		RUNESWORD,						(const char *)0,
  *	2) doesn't give unusual message for 2-headed monsters (but
  *	allowing those at all causes more problems than worth the effort).
  *
- * Special code in weapon.c uses an extra die (2d8, 2d12) and makes the dice explode
- * According to an article on 1d4Chan, the average of an exploading die is roughly that of a die one size larger
- *  -> effectively, 2d10+2/2d14+2
+ * Special code in weapon.c uses an extra die (2d12, 2d8) and makes the dice explode
+ * According to an article on 1d4Chan, the average of an exploding die is roughly that of a die one size larger
+ *  -> effectively, 2d14+2/2d10+2
  */
-A("Vorpal Blade",		LONG_SWORD,						(const char *)0,
+A("Vorpal Blade",	        ISAMUSEI,						(const char *)0,
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NEUTRAL, NON_PM, NON_PM, TIER_B, NOFLAG,
+	A_NEUTRAL, NON_PM, NON_PM, TIER_S, NOFLAG,
 	NO_MONS(),
 	ATTK(AD_PHYS, 5, 1), (ARTA_VORPAL|ARTA_DEXPL),
 	PROPS(), NOFLAG,
@@ -186,7 +186,7 @@ A("The Marauder's Map",	SCR_MAGIC_MAPPING,				"parchment scroll",
  */
 A("Orcrist",			ELVEN_BROADSWORD,				(const char *)0,
 	2000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, NON_PM, PM_ELF, TIER_C, (ARTG_NAME|ARTG_INHER),
+	A_CHAOTIC, NON_PM, PM_ELF, TIER_C, (ARTG_NAME|ARTG_NOGEN),
 	MONS(vsMA(MA_ORC | MA_DEMON)),
 	ATTK(AD_PHYS, 10, 0), (ARTA_HATES),
 	PROPS(), NOFLAG,
@@ -235,7 +235,7 @@ A("Carnwennan",			DAGGER,							(const char *)0,
 /*two handed, so no twoweaponing.*/
 A("Slave to Armok",		DWARVISH_MATTOCK,				(const char *)0,
 	2500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, NON_PM, PM_DWARF, TIER_F, (ARTG_NAME),
+	A_LAWFUL, NON_PM, PM_DWARF, TIER_F, (ARTG_NAME|ARTG_NOGEN),
 	MONS(vsMT(MT_PEACEFUL), vsMG(MG_LORD|MG_PRINCE), vsMA(MA_ELF | MA_ORC)),
 	ATTK(AD_PHYS, 5, 0), (ARTA_HATES),
 	PROPS(), NOFLAG,
@@ -259,7 +259,7 @@ A("Claideamh",			LONG_SWORD,						(const char *)0,
 /* also makes a handy weapon for knights, since it can't break */
 A("Dragonlance",		LANCE,							(const char *)0,
 	5000L, DRAGON_HIDE, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, NON_PM, TIER_D, (ARTG_GIFT),
+	A_NONE, NON_PM, NON_PM, TIER_D, (ARTG_GIFT|ARTG_INHER),
 	MONS(vsMA(MA_DRAGON | MA_REPTILIAN)),
 	ATTK(AD_PHYS, 10, 20), (ARTA_HATES|ARTA_CANCEL),
 	PROPS(REFLECTING), NOFLAG,
@@ -335,7 +335,7 @@ A("Giantslayer",		AXE,							(const char *)0,
 /*is given extra damage in weapon.c, since whip damage is so low*/
 A("The Vampire Killer",	BULLWHIP,						"bloodstained chain whip",
 	2500L, METAL, MZ_DEFAULT, WT_SPECIAL,
-	A_LAWFUL, NON_PM, NON_PM, TIER_D, (ARTG_GIFT),
+	A_LAWFUL, NON_PM, NON_PM, TIER_D, (ARTG_GIFT|ARTG_INHER),
 	MONS(vsMA(MA_UNDEAD | MA_DEMON | MA_WERE)),
 	ATTK(AD_PHYS, 10, 20), (ARTA_HATES|ARTA_CANCEL),
 	PROPS(DRAIN_RES), (ARTP_NOWERE),
@@ -404,7 +404,7 @@ A("Mjollnir",			WAR_HAMMER,						"lightning-bolt embossed %s",
 	A_NEUTRAL, PM_VALKYRIE, NON_PM, TIER_B, (ARTG_GIFT),
 	NO_MONS(),
 	ATTK(AD_ELEC, 5, 24), (ARTA_EXPLELEC),
-	PROPS(SHOCK_RES), NOFLAG,
+	PROPS(SHOCK_RES, BLIND_RES), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
 	),
@@ -559,7 +559,7 @@ A("Magicbane",			ATHAME,							"mystically runed %s",
  */
 A("Fuma-itto no Ken",	BROADSWORD,						(const char *)0,
 	1200L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, NON_PM, NON_PM, TIER_D, (ARTG_GIFT),
+	A_CHAOTIC, NON_PM, NON_PM, TIER_D, (ARTG_GIFT|ARTG_INHER),
 	NO_MONS(),
 	ATTK(AD_PHYS, 1, 8), (ARTA_HATES|ARTA_CROSSA|ARTA_POIS),	/* missing: SPFX2_NINJA */
 	PROPS(), NOFLAG,
@@ -569,7 +569,7 @@ A("Fuma-itto no Ken",	BROADSWORD,						(const char *)0,
 
 A("The Golden Sword of Y'ha-Talla",			SCIMITAR,	"scorpion-bladed %s",
 	3000L, GOLD, MZ_DEFAULT, WT_SPECIAL,
-	A_NONE, NON_PM, NON_PM, TIER_C, (ARTG_GIFT | ARTG_INHER),
+	A_NONE, NON_PM, NON_PM, TIER_C, (ARTG_GIFT|ARTG_INHER),
 	NO_MONS(),
 	ATTK(AD_DRST, 5, 0), (ARTA_POIS),
 	PROPS(POISON_RES), NOFLAG,
@@ -634,7 +634,7 @@ A("Mirror Brand",		LONG_SWORD,						"polished %s",
 	3000L, SILVER, MZ_DEFAULT, WT_DEFAULT,
 	A_NEUTRAL, NON_PM, NON_PM, TIER_B, (ARTG_GIFT),
 	NO_MONS(),
-	ATTK(AD_MAGM, 1, 0), (ARTA_MAGIC),
+	ATTK(AD_MAGM, 1, 0), (ARTA_MAGIC|ARTA_HATES|ARTA_CROSSA),
 	PROPS(REFLECTING), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
@@ -642,9 +642,9 @@ A("Mirror Brand",		LONG_SWORD,						"polished %s",
 
 A("Sunsword",			LONG_SWORD,						"sun-bladed %s",
 	1500L, GOLD, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, NON_PM, NON_PM, TIER_B, (ARTG_GIFT | ARTG_INHER),
+	A_LAWFUL, NON_PM, NON_PM, TIER_B, (ARTG_GIFT),
 	MONS(vsMA(MA_UNDEAD | MA_DEMON)),
-	ATTK(AD_PHYS, 1, 0), (ARTA_HATES | ARTA_SILVER | ARTA_BRIGHT | ARTA_BLIND | ARTA_SHINING | ARTA_CANCEL),
+	ATTK(AD_PHYS, 1, 0), (ARTA_HATES | ARTA_SILVER | ARTA_BRIGHT | ARTA_BLIND | ARTA_PHASING | ARTA_CANCEL),
 	PROPS(BLIND_RES, SEARCHING), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, (ARTI_LIGHT)
@@ -766,6 +766,36 @@ A("The Lance of Longinus",		SPEAR,					(const char *)0,
 	WWALKING, NOFLAG
 	),
 
+A("The Silver Sky",		LONG_SWORD,					(const char *)0,
+	1500L, SILVER, MZ_MEDIUM, WT_DEFAULT,
+	A_NONE, NON_PM, PM_GITHYANKI_PIRATE, TIER_B, (ARTG_INHER),
+	NO_MONS(),
+	ATTK(AD_PHYS, 1, 12), (ARTA_VORPAL),
+	PROPS(ANTIMAGIC), NOFLAG,
+	PROPS(), NOFLAG,
+	GITH_ART, NOFLAG
+	),
+
+A("The Sky Reflected",		BROADSWORD,					(const char *)0,
+	1500L, MERCURIAL, MZ_MEDIUM, WT_DEFAULT,
+	A_NONE, NON_PM, PM_GITHYANKI_PIRATE, TIER_B, (ARTG_NAME|ARTG_NOGEN|ARTG_INHER),
+	NO_MONS(),
+	ATTK(AD_PHYS, 8, 1), NOFLAG,
+	PROPS(REFLECTING), NOFLAG,
+	PROPS(), NOFLAG,
+	ZERTH_ART, NOFLAG
+	),
+
+A("The Amalgamated Skies",		TWO_HANDED_SWORD,					(const char *)0,
+	1500L, MERCURIAL, MZ_LARGE, 150,
+	A_NONE, NON_PM, PM_GITHYANKI_PIRATE, TIER_S, (ARTG_NOGEN|ARTG_NOWISH),
+	NO_MONS(),
+	ATTK(AD_PHYS, 8, 12), (ARTA_SILVER|ARTA_VORPAL),
+	PROPS(FREE_ACTION, REFLECTING), NOFLAG,
+	PROPS(ANTIMAGIC), NOFLAG,
+	AMALGUM_ART, NOFLAG
+	),
+
 // /* still uses the old artifact structure */
 // /* TODO aggrevate 'f' */
 // A("The Pink Panther", DIAMOND,			0,			0,
@@ -800,7 +830,7 @@ A("Release from Care",	SCYTHE,							(const char *)0,
 /* uses STR and DEX scaling, +16 max */
 A("The Lifehunt Scythe",SCYTHE,							(const char *)0,
 	4000L, DRAGON_HIDE, MZ_LARGE, WT_DEFAULT,
-	A_CHAOTIC, NON_PM, NON_PM, TIER_B, (ARTG_GIFT|ARTG_INHER),
+	A_CHAOTIC, NON_PM, NON_PM, TIER_B, (ARTG_GIFT),
 	NO_MONS(),
 	ATTK(AD_PHYS, 6, 6), (ARTA_HATES|ARTA_VORPAL), /* damage only applies vs living or undead monsters */
 	PROPS(DRAIN_RES, STEALTH), NOFLAG,
@@ -876,7 +906,7 @@ A("The Garnet Rod",		UNIVERSAL_KEY,					"garnet-tipped rod",
 /* also protects vs curses while carried */
 A("Helping Hand",		GRAPPLING_HOOK,					(const char *)0,
 	2000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, NON_PM, NON_PM, TIER_A, NOFLAG,
+	A_LAWFUL, NON_PM, NON_PM, TIER_A, (ARTG_INHER),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(STEALTH, WARNING, SEARCHING), (ARTP_SEEK),
@@ -887,7 +917,7 @@ A("Helping Hand",		GRAPPLING_HOOK,					(const char *)0,
 /*Needs encyc entry*/
 A("The Blade Singer's Saber",		RAKUYO,				(const char *)0,
 	1500L, SILVER, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, NON_PM, TIER_A, (ARTG_GIFT),
+	A_NONE, NON_PM, NON_PM, TIER_A, (ARTG_GIFT|ARTG_INHER),
 	NO_MONS(),
 	ATTK(AD_PHYS, 8, 8), (ARTA_HASTE),
 	PROPS(), NOFLAG,
@@ -1033,7 +1063,7 @@ A("Epoch's Curve",			BOW,							"white ash longbow",
 /* die size set to 1d8 in weapon.c */
 A("The Fluorite Octahedron",		BLUE_FLUORITE,		"glowing cobalt eight-sided die",
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, NON_PM, TIER_D, NOFLAG,
+	A_NONE, NON_PM, NON_PM, TIER_D, (NOFLAG),
 	NO_MONS(),
 	NO_ATTK(), (ARTA_DLUCK|ARTA_DEXPL),	/* EXTREMELY potent combination of lucky-exploding dice */
 	PROPS(), NOFLAG,
@@ -1091,7 +1121,7 @@ A("The Cloak of the Unheld One",	OILSKIN_CLOAK,		(const char *)0,
 /*Needs encyc entry*/
 A("The Beastmaster's Duster",		JACKET,				(const char *)0,
 	9000L, DRAGON_HIDE, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, NON_PM, NON_PM, TIER_F, NOFLAG,
+	A_LAWFUL, NON_PM, NON_PM, TIER_F, (ARTG_INHER),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(), NOFLAG,
@@ -1110,15 +1140,15 @@ A("Soulmirror",						PLATE_MAIL,			(const char *)0,
 	NOINVOKE, (ARTI_PLUSSEV)
 	),
 
-/* wearer gets a 1d4 poison sting */
+/* wearer gets a 1d4 poison sting, upgradeable by earning XP */
 A("The Scorpion Carapace",			SCALE_MAIL,			(const char *)0,
 	3000L, CHITIN, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, NON_PM, TIER_D, NOFLAG,
+	A_NONE, NON_PM, NON_PM, TIER_C, ARTG_INHER,
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(POISON_RES), NOFLAG,
 	PROPS(), NOFLAG,
-	NOINVOKE, (ARTI_PLUSSEV)
+	SCORPION_UPGRADES, (ARTI_PLUSSEV)
 	),
 
 A("Mirrorbright",					ROUNDSHIELD,		(const char *)0,
@@ -1168,7 +1198,7 @@ A("The Shield of Yggdrasil",		ELVEN_SHIELD,		(const char *)0,
 /* heals you when your hp would be depleted at the cost of pw */
 A("The Golden Knight",		BUCKLER,		(const char *)0,
 	3000L, GOLD, MZ_DEFAULT, WT_DEFAULT,
-	A_NEUTRAL, NON_PM, NON_PM, TIER_B, NOFLAG,
+	A_NEUTRAL, NON_PM, NON_PM, TIER_B, (NOFLAG),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(), NOFLAG,
@@ -1305,7 +1335,7 @@ A("The Helm of Undeath",			WAR_HAT,				(const char *)0,
 	2500L, BONE, MZ_DEFAULT, WT_DEFAULT,
 	A_CHAOTIC, NON_PM, NON_PM, TIER_C, NOFLAG,
 	NO_MONS(),
-	NO_ATTK(), NOFLAG,
+	ATTK(AD_DRLI, 1, 1), (ARTA_DRAIN),
 	PROPS(DRAIN_RES, LIFESAVED), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, (ARTI_PLUSSEV)
@@ -1316,7 +1346,7 @@ A("Stormhelm",						HELM_OF_BRILLIANCE,				(const char *)0,
 	3000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_CHAOTIC, NON_PM, NON_PM, TIER_B, NOFLAG,
 	NO_MONS(),
-	NO_ATTK(), NOFLAG,
+	ATTK(AD_ELEC, 1, 0), NOFLAG,
 	PROPS(COLD_RES), NOFLAG,
 	PROPS(SHOCK_RES), NOFLAG,
 	NOINVOKE, (ARTI_PLUSSEV)
@@ -1331,6 +1361,21 @@ A("Apotheosis Veil",				CRYSTAL_HELM,			(const char *)0,
 	PROPS(SEE_INVIS, DRAIN_RES, EXTRAMISSION), NOFLAG,
 	PROPS(), NOFLAG,
 	ENLIGHTENING, (ARTI_PLUSSEV)
+	),
+
+/*
+ * does not give telepathy. if you have telepathy, turns it to active and boosts doubles range 
+ * if you don't have telepathy, nullifies mind blasts and any psychic damage
+ * makes monsters within your extrinsic telepathy range treated as if they WERE telepathic (does not include cross-level, only in your range)
+ */
+A("Enforced Mind",				HELM_OF_TELEPATHY,			(const char *)0,
+	2500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	A_LAWFUL, NON_PM, NON_PM, TIER_C, NOFLAG,
+	NO_MONS(),
+	NO_ATTK(), NOFLAG,
+	PROPS(BLOCK_CONFUSION), NOFLAG,
+	PROPS(SLEEP_RES), NOFLAG,
+	NOINVOKE, (ARTI_PLUSSEV)
 	),
 
 /*Needs encyc entry*/
@@ -1356,7 +1401,7 @@ A("Ring of Thror",								RIN_GAIN_STRENGTH,	/* granite or gold (Note: since gol
 /* Gives fire res when worn */
 A("Narya",								RIN_CONFLICT,	/* ruby or gold */			(const char *)0,
 	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_INHER|ARTG_MAJOR),
+	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_MAJOR),
 	NO_MONS(),
 	ATTK(AD_FIRE, 1, 10), NOFLAG,
 	PROPS(FIRE_RES), NOFLAG,
@@ -1373,7 +1418,7 @@ A("Narya",								RIN_CONFLICT,	/* ruby or gold */			(const char *)0,
 /* Grants monster detection, waterproofing, and water walking when worn */
 A("Nenya",								RIN_WARNING,	/* diamond or silver */			(const char *)0,
 	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_INHER|ARTG_MAJOR),
+	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_MAJOR),
 	NO_MONS(),
 	ATTK(AD_STAR, 1, 20), NOFLAG,
 	PROPS(DETECT_MONSTERS, WATERPROOF, WWALKING), NOFLAG,
@@ -1392,7 +1437,7 @@ A("Nenya",								RIN_WARNING,	/* diamond or silver */			(const char *)0,
 /* Grants shock res, warning, stealth, and magical breathing when worn */
 A("Vilya",								RIN_AGGRAVATE_MONSTER,	/* sapphire or brass */			(const char *)0,
 	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_INHER|ARTG_MAJOR),
+	A_NONE, NON_PM, PM_ELF, TIER_A, (ARTG_MAJOR),
 	NO_MONS(),
 	ATTK(AD_STDY, 1, 20), NOFLAG,
 	PROPS(SHOCK_RES, WARN_OF_MON, STEALTH, MAGICAL_BREATHING), NOFLAG,
@@ -1412,7 +1457,7 @@ A("Vilya",								RIN_AGGRAVATE_MONSTER,	/* sapphire or brass */			(const char *
 /* Grants teleportation, teleport control, and searching when worn */
 A("Lomya",					RIN_PROTECTION_FROM_SHAPE_CHAN,/* black signet */			(const char *)0,
 	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, PM_DROW, TIER_A, (ARTG_INHER|ARTG_MAJOR),
+	A_NONE, NON_PM, PM_DROW, TIER_A, (ARTG_MAJOR),
 	NO_MONS(),
 	ATTK(AD_SLEE,1,8), NOFLAG,
 	PROPS(TELEPORT, TELEPORT_CONTROL, SEARCHING), NOFLAG,
@@ -1633,7 +1678,7 @@ A("The Shard from Morgoth's Crown",	RIN_ADORNMENT,			"twisted band of jagged iro
 	ATTK(AD_HLUH, 7, 9), NOFLAG,
 	PROPS(SHOCK_RES), NOFLAG,
 	PROPS(ANTIMAGIC), NOFLAG,
-	NOINVOKE, NOFLAG
+	MORGOTH, NOFLAG
 	),
 
 /* The Alignment Keys.  Must be grouped together.  Some code in lock.c, artifact.h, and invent.c depends on the order. */
@@ -1663,7 +1708,7 @@ ALIGNMENT_KEY("The Third Key of Neutrality", A_NEUTRAL),
 
 A("Infinity's Mirrored Arc",		DOUBLE_LIGHTSABER,		(const char *)0,
 	3000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_NEUTRAL, NON_PM, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_INHER),
+	A_NEUTRAL, NON_PM, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(REFLECTING), NOFLAG,
@@ -1688,7 +1733,7 @@ A("The Mirrored Mask",				MASK,					(const char *)0,
 	NO_ATTK(), NOFLAG,
 	PROPS(REFLECTING, HALF_SPDAM), NOFLAG,
 	PROPS(), NOFLAG,
-	CAPTURE_REFLECTION, NOFLAG
+	NOINVOKE, NOFLAG
 	),
 
 /* reflects projectiles and counterattacks, and doubles your multishot when carried in swapwep or wielded */
@@ -1772,12 +1817,23 @@ ARTIFACT_BOOK("The Book of Lost Names", SPIRITNAMES),
 	/*Clarent has been modified to make it the Knight crowning-gift*/
 A("Clarent",						LONG_SWORD,				(const char *)0,
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, PM_KNIGHT, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_INHER|ARTG_FXALGN),
+	A_LAWFUL, PM_KNIGHT, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_FXALGN),
 	MONS(vsMB(MB_THICK_HIDE)),
 	ATTK(AD_PHYS, 10, 20), (ARTA_HATES),
 	PROPS(), NOFLAG,
 	PROPS(), NOFLAG,
 	LEADERSHIP, (ARTI_DIG)
+	),
+
+/* sdice are a copy of ldice, ocn +=1  */
+A("The Dark Claymore",						TWO_HANDED_SWORD,				(const char *)0,
+	4000L, OBSIDIAN_MT, MZ_LARGE, WT_DEFAULT,
+	A_CHAOTIC, PM_KNIGHT, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	NO_MONS(),
+	ATTK(AD_DARK, 1, 6), NOFLAG,
+	PROPS(), NOFLAG,
+	PROPS(), NOFLAG,
+	LEADERSHIP, NOFLAG
 	),
 
 /*Needs encyc entry*/
@@ -1890,7 +1946,7 @@ A("Poseidon's Trident",				TRIDENT,				(const char *)0,
 	ATTK(AD_PHYS, 3, 0), NOFLAG,
 	PROPS(), NOFLAG,
 	PROPS(), NOFLAG,
-	WATER, NOFLAG
+	CREATE_POOL, NOFLAG
 	),
 
 A("Feng Huo Lun",				WIND_AND_FIRE_WHEELS,				"flaming %s",
@@ -2129,9 +2185,9 @@ A("The Iron Spoon of Liberation",	SPOON,				(const char *)0,
 /* needs encyc entry */
 A("Silver Starlight",				RAPIER,				(const char *)0,
 	5000L, SILVER, MZ_DEFAULT, WT_DEFAULT,
-	A_NONE, NON_PM, PM_DROW, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_NONE, NON_PM, PM_DROW, TIER_B, (ARTG_NOGEN|ARTG_INHER|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
-	ATTK(AD_PHYS, 4, 4), (ARTA_SHINING),
+	ATTK(AD_PHYS, 4, 4), (ARTA_PHASING),
 	PROPS(), NOFLAG,
 	PROPS(), NOFLAG,
 	CREATE_AMMO, NOFLAG
@@ -2168,7 +2224,7 @@ A("The Crescent Blade",				SABER,				(const char *)0,
 	5000L, SILVER, MZ_DEFAULT, WT_DEFAULT,
 	A_LAWFUL, NON_PM, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
-	ATTK(AD_FIRE, 4, 0), (ARTA_SHINING|ARTA_VORPAL),
+	ATTK(AD_FIRE, 4, 0), (ARTA_PHASING|ARTA_VORPAL),
 	PROPS(), NOFLAG,
 	PROPS(REFLECTING), NOFLAG,
 	NOINVOKE, NOFLAG
@@ -2211,7 +2267,7 @@ A("The Webweaver's Crook",			FAUCHARD,			(const char *)0,
 /* needs encyc entry */
 /* Hedrow crowning gift, chaotic or neutral */
 A("Lolth's Fang",					DROVEN_SHORT_SWORD,	"silver-edged %s",
-	8000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
+	8000L, CHITIN, MZ_DEFAULT, WT_DEFAULT,
 	A_NONE, NON_PM, PM_DROW, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
 	ATTK(AD_ACID, 10, 10), (ARTA_POIS|ARTA_SILVER),
@@ -2222,10 +2278,10 @@ A("Lolth's Fang",					DROVEN_SHORT_SWORD,	"silver-edged %s",
 
 /* needs encyc entry */
 /* Drow crowning gift, chaotic */
-A("The Web of Lolth",				DROVEN_CHAIN_MAIL,	"silver-starred %s",
+A("The Web of Lolth",				ELVEN_TOGA,	"silver-starred %s",
 	2000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_CHAOTIC, NON_PM, PM_DROW, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
-	MONS(vsMA(MA_ELF)),
+	MONS(vsMA(MA_ELF|MA_MINION|MA_DEMON)),
 	NO_ATTK(), (ARTA_SILVER),
 	PROPS(WARN_OF_MON, DRAIN_RES, SPELLBOOST), NOFLAG,
 	PROPS(ANTIMAGIC), NOFLAG,
@@ -2299,7 +2355,7 @@ A("Arcor Kerym",					CRYSTAL_SWORD,			"gold-runed craggy and pitted %s",
 /* Elf crowning gift, Neutral */
 A("Aryfaern Kerym",					RUNESWORD,			"sword of crimson-edged darkness",
 	8000L, MINERAL, MZ_DEFAULT, 4,
-	A_NEUTRAL, NON_PM, PM_ELF, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN|ARTA_SHINING),
+	A_NEUTRAL, NON_PM, PM_ELF, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN|ARTA_PHASING),
 	NO_MONS(),
 	ATTK(AD_ELEC, 5, 10), NOFLAG,
 	PROPS(SHOCK_RES, SPELLBOOST), NOFLAG,
@@ -2339,7 +2395,7 @@ A("The Magic Mirror of Merlin",		MIRROR,				(const char *)0,
 	NOINVOKE, (ARTI_SPEAK)
 	),
 
-A("The Eyes of the Overworld",		LENSES,				(const char *)0,
+A("The Eye of the Overworld",		SOUL_LENS,				(const char *)0,
 	2500L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_NEUTRAL, PM_MONK, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
@@ -2423,7 +2479,7 @@ A("The Armor of Khazad-dum",		DWARVISH_MITHRIL_COAT,			(const char *)0,
 	A_LAWFUL, PM_NOBLEMAN, PM_DWARF, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
-	PROPS(ANTIMAGIC), NOFLAG,
+	PROPS(ANTIMAGIC, HALF_PHDAM), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, (ARTI_PLUSSEV)
 	),
@@ -2576,7 +2632,7 @@ A("The Red Cords of Ilmater",		HAND_WRAPS,	"pair of red cords",
 /*Needs encyc entry*/
 A("The Crown of the Percipient",				HELM_OF_BRILLIANCE,	(const char *)0,
 	1000L, FLESH, MZ_DEFAULT, WT_DEFAULT,
-	A_NEUTRAL, PM_HEALER, PM_DROW, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_NEUTRAL, PM_HEALER, PM_DROW, TIER_S, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(DETECT_MONSTERS, DRAIN_RES, STONE_RES, FIRE_RES, COLD_RES, SHOCK_RES, HALLUC_RES, SLEEP_RES, BLOCK_CONFUSION), NOFLAG,
@@ -2613,7 +2669,7 @@ A("Friede's Scythe",				SCYTHE,				(const char *)0,
 	4000L, METAL, MZ_SMALL, WT_DEFAULT,
 	A_LAWFUL, PM_NOBLEMAN, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH),
 	NO_MONS(),
-	ATTK(AD_MAGM, 6, 6), (ARTA_MAGIC|ARTA_SHINING),
+	ATTK(AD_MAGM, 6, 6), (ARTA_MAGIC|ARTA_PHASING),
 	PROPS(), NOFLAG,
 	PROPS(ANTIMAGIC), NOFLAG,
 	NOINVOKE, (ARTI_PLUSTEN)
@@ -2624,7 +2680,7 @@ A("Friede's Scythe",				SCYTHE,				(const char *)0,
 /* scales with STR & DEX & WIS for +24 max*/
 A("Yorshka's Spear",				SPEAR,				(const char *)0,
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_LAWFUL, PM_NOBLEMAN, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH),
+	A_LAWFUL, PM_NOBLEMAN, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_INHER|ARTG_NOWISH),
 	NO_MONS(),
 	NO_ATTK(), (NOFLAG),
 	PROPS(), NOFLAG,
@@ -2635,7 +2691,7 @@ A("Yorshka's Spear",				SPEAR,				(const char *)0,
 /*Needs encyc entry*/
 A("Dragonhead Shield",		STONE_DRAGON_SHIELD,					"stone dragon head",
 	4000L, MINERAL, MZ_HUGE, WT_DEFAULT,
-	A_LAWFUL, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_LAWFUL, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(COLD_RES, DISINT_RES, STONE_RES), NOFLAG,
@@ -2646,7 +2702,7 @@ A("Dragonhead Shield",		STONE_DRAGON_SHIELD,					"stone dragon head",
 /*Needs encyc entry*/
 A("Crucifix of the Mad King",		HALBERD,					(const char *)0,
 	4000L, METAL, MZ_LARGE, WT_DEFAULT,
-	A_NEUTRAL, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_NEUTRAL, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	ATTK(AD_DARK, 1, 10), NOFLAG,
 	PROPS(), NOFLAG,
@@ -2667,7 +2723,7 @@ A("Vigilant Halberd",		HALBERD,					(const char *)0,
 /*Needs encyc entry*/
 A("Ringed Brass Armor",		PLATE_MAIL,					"molten-ringed brass %s",
 	4000L, COPPER, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_CHAOTIC, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(), NOFLAG,
@@ -2678,7 +2734,7 @@ A("Ringed Brass Armor",		PLATE_MAIL,					"molten-ringed brass %s",
 /*Needs encyc entry*/
 A("Ritual Ringed Spear",		SPEAR,					"molten-ringed spear",
 	4000L, OBSIDIAN_MT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
+	A_CHAOTIC, PM_NOBLEMAN, NON_PM, TIER_C, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	NO_ATTK(), NOFLAG,
 	PROPS(), NOFLAG,
@@ -2714,7 +2770,7 @@ A("The Mitre of Holiness",			HELM_OF_BRILLIANCE,	(const char *)0,
 	2000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_LAWFUL, PM_PRIEST, NON_PM, TIER_A, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	MONS(vsMA(MA_UNDEAD)),
-	NO_ATTK(), NOFLAG,
+	ATTK(AD_HOLY, 5, 0), NOFLAG,
 	PROPS(WARN_OF_MON, DRAIN_RES), NOFLAG,
 	PROPS(FIRE_RES), NOFLAG,
 	ENERGY_BOOST, (ARTI_PLUSSEV)
@@ -2776,7 +2832,7 @@ A("The Glitterstone",				AMBER,				(const char *)0,
 
 A("Great Claws of Urdlen",			GAUNTLETS_OF_POWER,	"clawed %s",
 	4000L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
-	A_CHAOTIC, NON_PM, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
+	A_CHAOTIC, NON_PM, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_INHER|ARTG_NOWISH|ARTG_MAJOR|ARTG_FXALGN),
 	NO_MONS(),
 	ATTK(AD_PHYS, 10, 0), NOFLAG,
 	PROPS(), NOFLAG,
@@ -3324,7 +3380,7 @@ A("Shadowlock",						RAPIER,				(const char *)0,
 	9999L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_LAWFUL, NON_PM, NON_PM, TIER_B, (ARTG_NOGEN|ARTG_NOWISH|ARTG_MAJOR),
 	NO_MONS(),
-	ATTK(AD_PHYS, 20, 0), (ARTA_VORPAL|ARTA_SHINING),
+	ATTK(AD_PHYS, 20, 0), (ARTA_VORPAL|ARTA_PHASING),
 	PROPS(), NOFLAG,
 	PROPS(), NOFLAG,
 	NOINVOKE, NOFLAG
@@ -3634,7 +3690,7 @@ A("The Declaration of the Apostate",SCR_REMOVE_CURSE,	(const char *)0,
 	PROPS(), NOFLAG,
 	UNBIND_SEALS, NOFLAG
 	),
-A("The Soul Lens",					LENSES,				(const char *)0,
+A("The Soul Lens",					SOUL_LENS,				(const char *)0,
 	0L, MT_DEFAULT, MZ_DEFAULT, WT_DEFAULT,
 	A_NONE, PM_EXILE, NON_PM, NO_TIER, (ARTG_NOGEN|ARTG_NOWISH),
 	NO_MONS(),

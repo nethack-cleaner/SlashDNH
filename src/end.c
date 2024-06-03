@@ -49,9 +49,6 @@ extern char msgs[][BUFSZ];
 extern int lastmsg;
 extern void NDECL(dump_spells);
 void FDECL(do_vanquished, (int, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL void FDECL(list_genocided, (int, BOOLEAN_P, BOOLEAN_P));
-#else
-STATIC_DCL void FDECL(list_genocided, (CHAR_P,BOOLEAN_P));
 #endif /* DUMP_LOG */
 STATIC_DCL boolean FDECL(should_query_disclose_option, (int,char *));
 
@@ -327,6 +324,7 @@ done2()
 		if(multi == 0) {
 		    u.uinvulnerable = FALSE;	/* avoid ctrl-C bug -dlc */
 		    u.usleep = 0;
+		    u.puzzle_time = 0;
 		}
 		return MOVE_CANCELLED;
 	}
@@ -465,7 +463,7 @@ register struct monst *mtmp;
 			u.ugrave_arise = PM_BROKEN_SHADOW;
 		else if (mtmp->data->mlet == S_MUMMY && urace.mummynum != NON_PM)
 			u.ugrave_arise = urace.mummynum;
-		else if ((mtmp->data->mlet == S_VAMPIRE || has_template(mtmp, VAMPIRIC)) && (Race_if(PM_HUMAN) || Race_if(PM_INHERITOR)))
+		else if ((mtmp->data->mlet == S_VAMPIRE || has_template(mtmp, VAMPIRIC)) && (Race_if(PM_HUMAN)))
 			u.ugrave_arise = PM_VAMPIRE;
 		else if (mtmp->mtyp == PM_GHOUL || mtmp->mtyp == PM_GNOLL_GHOUL)
 			u.ugrave_arise = PM_GHOUL;
@@ -644,9 +642,9 @@ boolean taken;
 	ask = should_query_disclose_option('g', &defquery);
 	if (!done_stopprint)
 #ifdef DUMP_LOG
-	    list_genocided(defquery, ask,TRUE);
+	    list_genocided(defquery, ask, TRUE, TRUE);
 #else
-	    list_genocided(defquery, ask);
+	    list_genocided(defquery, ask, FALSE, TRUE);
 #endif
 
 	ask = should_query_disclose_option('c', &defquery);
@@ -808,7 +806,7 @@ find_equip_life_oprop()
 {
 	struct obj *otmp;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
-		if(otmp->owornmask && check_oprop(otmp, OPROP_LIFE))
+		if(otmp->owornmask && (check_oprop(otmp, OPROP_LIFE) || check_oprop(otmp, OPROP_SLIF)))
 			return otmp;
 	}
 	return (struct obj *) 0;
@@ -837,20 +835,26 @@ Check_crystal_lifesaving()
 {
 	if(!Black_crystal)
 		return FALSE;
-	struct obj *otmp;
+	struct obj *otmp, *crystal;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
-		if(otmp->oartifact == ART_BLACK_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_CHAOS)
+		crystal = otmp;
+		if(arti_socketed(otmp) && otmp->cobj)
+			crystal = otmp->cobj;
+		if(crystal->oartifact == ART_BLACK_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_CHAOS)
 			return TRUE;
 	}
 	int count = 0;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
-		if(otmp->oartifact == ART_EARTH_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_EARTH)
+		crystal = otmp;
+		if(arti_socketed(otmp) && otmp->cobj)
+			crystal = otmp->cobj;
+		if(crystal->oartifact == ART_EARTH_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_EARTH)
 			count++;
-		else if(otmp->oartifact == ART_FIRE_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_FIRE)
+		else if(crystal->oartifact == ART_FIRE_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_FIRE)
 			count++;
-		else if(otmp->oartifact == ART_WATER_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_WATER)
+		else if(crystal->oartifact == ART_WATER_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_WATER)
 			count++;
-		else if(otmp->oartifact == ART_AIR_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_WIND)
+		else if(crystal->oartifact == ART_AIR_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_WIND)
 			count++;
 
 		if(count == 4)
@@ -871,27 +875,41 @@ Check_iaso_lifesaving()
 	return FALSE;
 }
 
+boolean
+Check_twin_lifesaving()
+{
+	if(!check_mutation(TWIN_SAVE))
+		return FALSE;
+	for(struct monst *mon = fmon; mon; mon = mon->nmon)
+		if(mon->mtyp == PM_TWIN_SIBLING && mon->mtame)
+			return TRUE;
+	return FALSE;
+}
+
 STATIC_OVL void
 Use_crystal_lifesaving()
 {
 	//Use less advantageous l.s. first (the full set of 5 crystals is heavy and riskier for theft)
-	struct obj *otmp, *ec = 0, *fc = 0, *wc = 0, *ac = 0;
+	struct obj *otmp, *crystal, *ec = 0, *fc = 0, *wc = 0, *ac = 0;
 	int count = 0;
 	for(otmp = invent; otmp; otmp = otmp->nobj){
-		if(otmp->oartifact == ART_EARTH_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_EARTH){
-			ec = otmp;
+		crystal = otmp;
+		if(arti_socketed(otmp) && otmp->cobj)
+			crystal = otmp->cobj;
+		if(crystal->oartifact == ART_EARTH_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_EARTH){
+			ec = crystal;
 			count++;
 		}
-		else if(otmp->oartifact == ART_FIRE_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_FIRE){
-			fc = otmp;
+		else if(crystal->oartifact == ART_FIRE_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_FIRE){
+			fc = crystal;
 			count++;
 		}
-		else if(otmp->oartifact == ART_WATER_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_WATER){
-			wc = otmp;
+		else if(crystal->oartifact == ART_WATER_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_WATER){
+			wc = crystal;
 			count++;
 		}
-		else if(otmp->oartifact == ART_AIR_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_WIND){
-			ac = otmp;
+		else if(crystal->oartifact == ART_AIR_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_WIND){
+			ac = crystal;
 			count++;
 		}
 
@@ -920,9 +938,12 @@ Use_crystal_lifesaving()
 	}
 	//Otherwise find the black crystal
 	for(otmp = invent; otmp; otmp = otmp->nobj){
-		if(otmp->oartifact == ART_BLACK_CRYSTAL && otmp->oeroded3 == 0 && !(get_ox(otmp, OX_ESUM)) && PURIFIED_CHAOS){
+		crystal = otmp;
+		if(arti_socketed(otmp) && otmp->cobj)
+			crystal = otmp->cobj;
+		if(crystal->oartifact == ART_BLACK_CRYSTAL && crystal->oeroded3 == 0 && !(get_ox(crystal, OX_ESUM)) && PURIFIED_CHAOS){
 			pline("The black crystal cracks!");
-			otmp->oeroded3 = 1;
+			crystal->oeroded3 = 1;
 			return;
 		}
 	}
@@ -957,6 +978,21 @@ Use_iaso_lifesaving()
 			}
 	}
 	impossible("Iasoian lifesaving but can't find pet!?");
+}
+
+STATIC_OVL void
+Use_twin_lifesaving()
+{
+	struct monst *mon;
+	remove_mutation(TWIN_SAVE);
+	for(struct monst *mon = fmon; mon; mon = mon->nmon)
+		if(mon->mtyp == PM_TWIN_SIBLING && mon->mtame){
+			if(canseemon(mon)){
+				pline("%s is simultaneously struck by lightning! %s vanishes!", Monnam(mon), SheHeIt(mon));
+			}
+			return;
+		}
+	impossible("Twin lifesaving but can't find pet!?");
 }
 
 /* Be careful not to call panic from here! */
@@ -1031,6 +1067,7 @@ int how;
 #define LSVD_MISC 1
 #define LSVD_JACK 2
 #define LSVD_DTHK 3
+#define LSVD_SPOR 4
 
 	if (how < PANICKED) u.umortality++;
 	if (Lifesaved && (how <= GENOCIDED)) {
@@ -1043,11 +1080,8 @@ int how;
 					is_undead(youracedata)
 			)) {
 				You_feel("a curse fall upon your soul!");
-				if (Upolyd && uskin && uskin->oartifact == ART_MIRRORED_MASK) {
-					pline("Your mask falls to pieces!");
-					useup(uskin);
-				}
 				polymon(PM_DEATH_KNIGHT);
+				change_gevurah(16); //cheated death extra (20 total).
 				HUnchanging |= FROMOUTSIDE;
 				lsvd = LSVD_DTHK;
 			}
@@ -1082,7 +1116,7 @@ int how;
 			lsvd = LSVD_MISC;
 		}
 		else if(uamul && uamul->otyp == AMULET_OF_LIFE_SAVING){
-			if(!check_oprop(uamul, OPROP_LIFE))
+			if(!check_oprop(uamul, OPROP_LIFE) && !check_oprop(uamul, OPROP_SLIF))
 				makeknown(AMULET_OF_LIFE_SAVING);
 
 			Your("medallion %s!",
@@ -1093,12 +1127,15 @@ int how;
 			else You_feel("much better!");
 
 			lsvd = LSVD_MISC;
-			if(!check_oprop(uamul, OPROP_LIFE)){
+			if(!check_oprop(uamul, OPROP_LIFE) && !check_oprop(uamul, OPROP_SLIF)){
 				pline_The("medallion crumbles to dust!");
 				if (uamul) useup(uamul);
 			}
 			else {
-				remove_oprop(uamul, OPROP_LIFE);
+				if(check_oprop(uamul, OPROP_SLIF))
+					remove_oprop(uamul, OPROP_SLIF);
+				else
+					remove_oprop(uamul, OPROP_LIFE);
 			}
 		} else if (ubeltworn && ubeltworn->otyp == BELT_OF_SECURITY) {
 			Your("belt %s!",
@@ -1110,7 +1147,17 @@ int how;
 
 			lsvd = LSVD_MISC;
 			if (ubeltworn) useup(ubeltworn);
-		} else if((otmp = find_equip_life_oprop())){
+		}
+		else if(Check_twin_lifesaving()){
+			You("are struck by lightning!?");
+			if (how == CHOKING) You("vomit ...");
+			if (how == DISINTEGRATED) You("reconstitute!");
+			else if (how == OVERWOUND) You("reassemble!");
+			else You("miraculously recover!");
+			Use_twin_lifesaving();
+			lsvd = LSVD_MISC;
+		}
+		else if((otmp = find_equip_life_oprop())){
 			Your("%s %s!",
 				  xname(otmp),
 				  !Blind ? "begins to glow" : "feels warm");
@@ -1120,7 +1167,10 @@ int how;
 			else You_feel("much better!");
 
 			lsvd = LSVD_MISC;
-			remove_oprop(otmp, OPROP_LIFE);
+			if(check_oprop(otmp, OPROP_SLIF))
+				remove_oprop(otmp, OPROP_SLIF);
+			else
+				remove_oprop(otmp, OPROP_LIFE);
 		} else if(u.sealsActive&SEAL_JACK){
 			lsvd = LSVD_JACK;
 			unbind_lifesaving(SEAL_JACK);
@@ -1138,11 +1188,21 @@ int how;
 			You("wish that hadn't happened.");
 			pline("A star flares on your right ring-finger!");
 			uright->spe--;
+		} else if(check_mutation(ABHORRENT_SPORE) && !(mvitals[PM_DARK_YOUNG].mvflags & G_GENOD)){
+			lsvd = LSVD_SPOR;
+			if (how == DISINTEGRATED) pline("Your dust is consumed by the abhorrent spore!");
+			else pline("Your body melts and is consumed by the abhorrent spore!");
+			if(youracedata->mtyp == PM_DARK_YOUNG)
+				change_gevurah(16); //cheated death extra.
+
+			polymon(PM_DARK_YOUNG);
+			HUnchanging |= FROMOUTSIDE;
+			remove_mutation(ABHORRENT_SPORE);
 		} else {
 			lsvd = LSVD_NONE;
 			impossible("Lifesaved with no amulet, ring, or Jack?");
 		}
-		u.gevurah += 4;//cheated death.
+		change_gevurah(4);//cheated death.
 
 		(void) adjattrib(A_CON, -1, TRUE);
 		if((Upolyd ? u.mhmax : u.uhpmax) < 10){
@@ -1175,6 +1235,8 @@ int how;
 			case LSVD_JACK: llogstr = "averted death";
 				break;
 			case LSVD_DTHK: llogstr = "averted death by becoming a death knight";
+				break;
+			case LSVD_SPOR: llogstr = "averted death by becoming a dark young";
 				break;
 			default:
 				impossible("unhandled lsvd");
@@ -1209,7 +1271,7 @@ int how;
 			}
 		}
 		savelife(how);
-		u.gevurah += 4;//cheated death.
+		change_gevurah(4);//cheated death.
 		killer = 0;
 		killer_format = 0;
 		return;
@@ -1218,6 +1280,7 @@ int how;
 #undef LSVD_MISC
 #undef LSVD_JACK
 #undef LSVD_DTHK
+#undef LSVD_SPOR
 
     /*
      *	The game is now over...
@@ -1234,8 +1297,8 @@ die:
             if (dump_fp) {
     		char racebuf[BUFSZ];
     		*racebuf = '\0';
-		if(Race_if(PM_ENT)){
-		    Sprintf(eos(racebuf), "%s %s", get_ent_species(u.ent_species), urace.adj);
+		if(Race_if(PM_ENT) || Race_if(PM_HALF_DRAGON) || Race_if(PM_CLOCKWORK_AUTOMATON)){
+		    Sprintf(eos(racebuf), "%s %s", base_species_name(), urace.adj);
 		} else {
 		    Sprintf(eos(racebuf), "%s", urace.adj);
 		}
@@ -1969,113 +2032,101 @@ num_genocides()
     return n;
 }
 
-#ifdef DUMP_LOG
-STATIC_OVL void
-list_genocided(defquery, ask, want_dump)
+/* number of monster species which have been genocided */
+int
+num_extinct()
+{
+    int i, n = 0;
+
+    for (i = LOW_PM; i < NUMMONS; ++i)
+	if ((mvitals[i].mvflags & G_GONE) && !(mons[i].geno & G_UNIQ)) ++n;
+
+    return n;
+}
+
+void
+list_genocided(defquery, ask, want_dump, show_extinct)
 int defquery;
 boolean ask;
 boolean want_dump;
-#else
-STATIC_OVL void
-list_genocided(defquery, ask)
-char defquery;
-boolean ask;
-#endif
+boolean show_extinct;
 {
     register int i;
     int ngenocided=0;
-#ifdef SHOW_EXTINCT
     int nextincted=0;
-#endif
     char c;
-    winid klwin;
+    winid klwin = WIN_ERR;
     char buf[BUFSZ];
 
+    /* why is this even conditional? */
+#ifndef SHOW_EXTINCT
+    show_extinct = FALSE;
+#endif
+
     /* get totals first */
-#ifdef SHOW_EXTINCT
     for (i = LOW_PM; i < NUMMONS; i++) {
 	if (mvitals[i].mvflags & G_GENOD)
 	    ngenocided++;
 	else if ( (mvitals[i].mvflags & G_GONE) && !(mons[i].geno & G_UNIQ) )
 	    nextincted++;
     }
-    ngenocided = num_genocides();
-#endif
 
     /* genocided species list */
-    if (ngenocided != 0
-#ifdef SHOW_EXTINCT
-      || nextincted != 0
-#endif
-    ) {
-#ifdef SHOW_EXTINCT
-	if (nextincted != 0)
-	  c = ask ?
-	  yn_function("Do you want a list of species genocided or extinct?",
-		      ynqchars, defquery) : defquery;
-       else
-#endif
-	c = ask ? yn_function("Do you want a list of species genocided?",
-			      ynqchars, defquery) : defquery;
+    if (ngenocided != 0 || (show_extinct && nextincted != 0)) {
+	c = ask ?
+	    yn_function((show_extinct && nextincted != 0) ?
+			"Do you want a list of species genocided or extinct?" :
+			"Do you want a list of species genocided?",
+			ynqchars, defquery) : defquery;
 	if (c == 'q') done_stopprint++;
+	Sprintf(buf, show_extinct ? "Genocided or extinct species:" : "Genocided species:");
 	if (c == 'y') {
 	    klwin = create_nhwindow(NHW_MENU);
-#ifdef SHOW_EXTINCT
-	    Sprintf(buf, "Genocided or extinct species:");
-#else
-	    Sprintf(buf, "Genocided species:");
-#endif
 	    putstr(klwin, 0, buf);
 	    putstr(klwin, 0, "");
+	}
 #ifdef DUMP_LOG
-	    if (want_dump)  dump("", buf);
+	if (want_dump)  dump("", buf);
 #endif
 
-	    for (i = LOW_PM; i < NUMMONS; i++)
-#ifdef SHOW_EXTINCT
-	      if (mvitals[i].mvflags & G_GONE && !(mons[i].geno & G_UNIQ) ){
-#else
-		if (mvitals[i].mvflags & G_GENOD) {
-#endif
-		    if ((mons[i].geno & G_UNIQ) && i != PM_HIGH_PRIEST)
-			Sprintf(buf, "%s%s",
-				!type_is_pname(&mons[i]) ? "" : "the ",
-				mons[i].mname);
-		    else
-			Strcpy(buf, makeplural(mons[i].mname));
-#ifdef SHOW_EXTINCT
-		    if( !(mvitals[i].mvflags & G_GENOD) )
-			Strcat(buf, " (extinct)");
-#endif
-		    putstr(klwin, 0, buf);
+	for (i = LOW_PM; i < NUMMONS; i++)
+	    if (show_extinct ?
+		(mvitals[i].mvflags & G_GONE && !(mons[i].geno & G_UNIQ)) :
+		(mvitals[i].mvflags & G_GENOD)) {
+		if ((mons[i].geno & G_UNIQ) && i != PM_HIGH_PRIEST)
+		    Sprintf(buf, "%s%s",
+			    !type_is_pname(&mons[i]) ? "" : "the ",
+			    mons[i].mname);
+		else
+		    Strcpy(buf, makeplural(mons[i].mname));
+		if(show_extinct && !(mvitals[i].mvflags & G_GENOD))
+		    Strcat(buf, " (extinct)");
+		if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
-		    if (want_dump)  dump("  ", buf);
+		if (want_dump)  dump("  ", buf);
 #endif
-		}
-
-	    putstr(klwin, 0, "");
-#ifdef SHOW_EXTINCT
-	    if (ngenocided>0) {
-#endif
-	      Sprintf(buf, "%d species genocided.", ngenocided);
-	      putstr(klwin, 0, buf);
-#ifdef DUMP_LOG
-	      if (want_dump)  dump("  ", buf);
-#endif
-#ifdef SHOW_EXTINCT
 	    }
-	    if (nextincted>0) {
-	      Sprintf(buf, "%d species extinct.", nextincted);
-	      putstr(klwin, 0, buf);
+
+	if (c == 'y') putstr(klwin, 0, "");
+	if (ngenocided>0) {
+	    Sprintf(buf, "%d species genocided.", ngenocided);
+	    if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
-	      if (want_dump) dump(" ", buf);
+	    if (want_dump)  dump("  ", buf);
 #endif
-            }
-#endif /* SHOW_EXTINCT */
+	}
+	if (show_extinct && nextincted>0) {
+	    Sprintf(buf, "%d species extinct.", nextincted);
+	    if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
-	      if (want_dump)  dump("", "");
+	    if (want_dump) dump(" ", buf);
+#endif
+	}
+#ifdef DUMP_LOG
+	if (want_dump)  dump("", "");
 #endif
 
+	if (c == 'y') {
 	    display_nhwindow(klwin, TRUE);
 	    destroy_nhwindow(klwin);
 	}

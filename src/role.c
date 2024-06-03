@@ -1588,8 +1588,11 @@ const struct Species species[] = {
 	{"green", AD_DRST, DRAGON_SPECIES},
 	{"yellow", AD_ACID, DRAGON_SPECIES},
 	{"gray", AD_MAGM, DRAGON_SPECIES},
-	{"shimmering", AD_RBRE, DRAGON_SPECIES},
-	{"black", AD_DISN, DRAGON_SPECIES}
+	{"chaos", AD_RBRE, DRAGON_SPECIES},
+	{"black", AD_DISN, DRAGON_SPECIES},
+	{"bronze", COPPER, CLK_SPECIES},
+	{"iron", IRON, CLK_SPECIES},
+	{"green-steel", GREEN_STEEL, CLK_SPECIES},
 };
 
 
@@ -1909,9 +1912,31 @@ validspecies(rolenum, racenum, gendnum, speciesnum)
 			breath_type == AD_ELEC ||
 			breath_type == AD_DRST ||
 			breath_type == AD_ACID;
+	} else if(races[racenum].malenum == PM_CLOCKWORK_AUTOMATON
+		  /* ana and acu clockworks are androids, who don't have species */
+		  && roles[rolenum].malenum != PM_ANACHRONONAUT
+		  && roles[rolenum].malenum != PM_ANACHRONOUNBINDER){
+		return species[speciesnum].type == CLK_SPECIES;
 	}
 	return FALSE;
 
+}
+
+boolean
+validdescendant(rolenum)
+int rolenum;
+{
+	if(rolenum < 0) return FALSE;
+	return roles[rolenum].malenum == PM_MADMAN || 
+		roles[rolenum].malenum == PM_NOBLEMAN || 
+		roles[rolenum].malenum == PM_ARCHEOLOGIST || 
+		roles[rolenum].malenum == PM_KNIGHT || 
+		roles[rolenum].malenum == PM_PIRATE || 
+		roles[rolenum].malenum == PM_ROGUE || 
+		roles[rolenum].malenum == PM_SAMURAI || 
+		roles[rolenum].malenum == PM_TOURIST || 
+		roles[rolenum].malenum == PM_VALKYRIE || 
+		roles[rolenum].malenum == PM_CONVICT;
 }
 
 
@@ -2332,7 +2357,8 @@ rigid_role_checks()
 #define BP_GEND		1
 #define BP_RACE		2
 #define BP_ROLE		3
-#define NUM_BP		4
+#define BP_DESC		4
+#define NUM_BP		5
 
 STATIC_VAR char pa[NUM_BP], post_attribs;
 
@@ -2378,9 +2404,9 @@ int racenum;
 }
 
 char *
-root_plselection_prompt(suppliedbuf, buflen, rolenum, racenum, gendnum, alignnum)
+root_plselection_prompt(suppliedbuf, buflen, rolenum, racenum, descendantnum, gendnum, alignnum)
 char *suppliedbuf;
-int buflen, rolenum, racenum, gendnum, alignnum;
+int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
 {
 	int k, gendercount = 0, aligncount = 0;
 	char buf[BUFSZ];
@@ -2474,8 +2500,18 @@ int buflen, rolenum, racenum, gendnum, alignnum;
 		pa[BP_RACE] = 1;
 		post_attribs++;
 	}
-	/* <your lawful female gnomish> || <your lawful female gnome> */
 
+	/* <your lawful female gnomish> || <your lawful female gnome> */
+	if (descendantnum > 0) {
+		if (donefirst) Strcat(buf, " ");
+		Strcat(buf, "descendant");
+		donefirst = TRUE;
+	} else if (descendantnum < 0) { // if zeroed, pretend it doesn't exist
+		pa[BP_DESC] = 1;
+		post_attribs++;
+	}
+
+	/* <your lawful female gnomish descendant> || <your lawful female gnome descendant> */
 	if (validrole(rolenum)) {
 		if (donefirst) Strcat(buf, " ");
 		if (gendnum != ROLE_NONE) {
@@ -2513,9 +2549,9 @@ int buflen, rolenum, racenum, gendnum, alignnum;
 }
 
 char *
-build_plselection_prompt(buf, buflen, rolenum, racenum, gendnum, alignnum)
+build_plselection_prompt(buf, buflen, rolenum, racenum, descendantnum, gendnum, alignnum)
 char *buf;
-int buflen, rolenum, racenum, gendnum, alignnum;
+int buflen, rolenum, racenum, descendantnum, gendnum, alignnum;
 {
 	const char *defprompt = "Shall I pick a character for you? [ynq] ";
 	int num_post_attribs = 0;
@@ -2533,7 +2569,7 @@ int buflen, rolenum, racenum, gendnum, alignnum;
 	/* <your> */
 
 	(void)  root_plselection_prompt(eos(tmpbuf), buflen - strlen(tmpbuf),
-					rolenum, racenum, gendnum, alignnum);
+					rolenum, racenum, descendantnum, gendnum, alignnum);
 	Sprintf(buf, "%s", s_suffix(tmpbuf));
 
 	/* buf should now be:
@@ -2561,6 +2597,10 @@ int buflen, rolenum, racenum, gendnum, alignnum;
 			(void) promptsep(eos(buf), num_post_attribs);
 			Strcat(buf, "alignment");
 		}
+		if (pa[BP_DESC]) {
+			(void) promptsep(eos(buf), num_post_attribs);
+			Strcat(buf, "inheritance");
+		}
 	}
 	Strcat(buf, " for you? [ynq] ");
 	return buf;
@@ -2570,6 +2610,7 @@ int buflen, rolenum, racenum, gendnum, alignnum;
 #undef BP_GEND
 #undef BP_RACE
 #undef BP_ROLE
+#undef BP_DESC
 #undef NUM_BP
 
 void
@@ -3218,6 +3259,15 @@ int newgame;
 		
 		COPY_OBJ_DESCR(objects[HEAVY_MACHINE_GUN], objects[HEAVY_GUN]);
 		COPY_OBJ_DESCR(objects[GRENADE_LAUNCHER], objects[HEAVY_GUN]);
+	}
+	/* Adjust lovemask and hatemask */
+	if(Role_if(PM_CONVICT) || Role_if(PM_MADMAN)){
+        urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
+        urace.lovemask = 0; /* Pariahs of their race */
+	}
+	else if(Role_if(PM_HEALER) && Race_if(PM_DROW)){
+		urace.lovemask |= MA_FEY|MA_ELF;
+		urace.hatemask = MA_ORC;
 	}
 
 	/* Artifacts are fixed in hack_artifacts() */

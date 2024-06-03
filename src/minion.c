@@ -220,8 +220,13 @@ boolean talk;
 			if (!Blind)
 				pline("%s appears before you.", An(Hallucination ? rndmonnam() : mon->data->mname));
 		}
-		mon->mpeaceful = FALSE;
-		/* don't call set_malign(); player was naughty */
+		if(mon->mpeaceful){
+			mon->mpeaceful = FALSE;
+			if(godnum != u.ugodbase[UGOD_CURRENT])
+				set_malign(mon);
+			/* else don't call set_malign(); player was naughty */
+			newsym(mon->mx,mon->my);
+		}
 		mon->msleeping = 0;
 		mon->mcanmove = 1;
 		
@@ -351,6 +356,7 @@ register struct monst *mtmp;
 	if (!demand) {		/* you have no gold */
 	    mtmp->mpeaceful = 0;
 	    set_malign(mtmp);
+	    newsym(mtmp->mx, mtmp->my);
 	    return 0;
 	} else {
 		if(mtmp->mtyp == PM_ASMODEUS && demand < 9000) demand = 9000 + rn2(1000);
@@ -374,6 +380,7 @@ register struct monst *mtmp;
 		pline("%s gets angry...", Amonnam(mtmp));
 		mtmp->mpeaceful = 0;
 		set_malign(mtmp);
+		newsym(mtmp->mx, mtmp->my);
 		return 0;
 	    }
 	}

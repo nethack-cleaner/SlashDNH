@@ -30,7 +30,7 @@ const struct propname {
     int prop_num;
     const char *prop_name;
 } propertynames[] = {
-    { SANCTUARY, "sactuary" },
+    { SANCTUARY, "sanctuary" },
     { STONED, "petrifying" },
     { FROZEN_AIR, "frozen air" },
     { SLIMED, "becoming slime" },
@@ -109,6 +109,7 @@ const struct propname {
     { DARKVISION_ONLY, "darksight-override" },
     { DIMENSION_LOCK, "dimensional lock" },
 	{ CLEAR_THOUGHTS, "clear thoughts" },
+    { EXTRAMISSION, "extramission" },
     {  0, 0 },
 };
 
@@ -581,8 +582,10 @@ nh_timeout()
 	if(u.mtimedone && !--u.mtimedone) {
 		if (Unchanging)
 			u.mtimedone = rnd(100*youmonst.data->mlevel + 1);
-		else
+		else {
 			rehumanize();
+			change_gevurah(1); //cheated death.
+		}
 	}
 	if(u.ucreamed) u.ucreamed--;
 
@@ -634,6 +637,8 @@ nh_timeout()
 			}
 		}
 	}
+	if(u.spirit[ALIGN_SPIRIT] & SEAL_YOG_SOTHOTH && carrying_art(ART_SILVER_KEY))
+		u.spiritT[ALIGN_SPIRIT]++;
 	if(!u.voidChime && !Role_if(PM_ANACHRONOUNBINDER)){
 		while(u.spirit[0] && u.spiritT[0] < moves) unbind(u.spirit[0],0);
 		if(u.spiritTineB && u.spiritTineTB < moves) unbind(u.spiritTineB,0);
@@ -734,6 +739,13 @@ nh_timeout()
 			upp->intrinsic++;
 			You("form new eyes.");
 		}
+		if((youracedata->mtyp == PM_BLASPHEMOUS_LURKER || youracedata->mtyp == PM_LURKING_ONE) && upp - u.uprops == BLINDED
+			&&  upp->intrinsic & TIMEOUT
+		){
+			upp->intrinsic &= ~TIMEOUT;
+			upp->intrinsic++;
+			You("open more eyes.");
+		}
 		if (!(upp->intrinsic & TIMEOUT_INF)
 			&& (upp->intrinsic & TIMEOUT)
 			&& !(--upp->intrinsic & TIMEOUT)	/* decremented here */
@@ -773,6 +785,12 @@ nh_timeout()
 		case DRAIN_RES:
 			You_feel("less energetic!");
 			if(HDrain_resistance){
+				pline("...But only a bit.");
+			}
+		break;
+		case GAZE_RES:
+			You_feel("self-conscious!");
+			if(HGaze_immune){
 				pline("...But only a bit.");
 			}
 		break;
@@ -1018,6 +1036,13 @@ boolean wakeup_msg;
 	/*Adjust Android timeouts*/
 	u.nextsleep = max(u.nextsleep, monstermoves);
 	u.lastslept = monstermoves;
+	struct obj *puzzle;
+	if(u.uhyperborean_steps < 6 && (puzzle = get_most_complete_puzzle())){
+		u.puzzle_time = 6*(1+puzzle->ovar1_puzzle_steps)*(27-ACURR(A_INT))/2;
+		if(ESleeping)
+			u.puzzle_time = (u.puzzle_time + 1)/2; //Restful sleep
+		Your("%s begin working the disks and pegs of %s!", makeplural(body_part(FINGER)), the(xname(puzzle)));
+	}
 	/* early wakeup from combat won't be possible until next monster turn */
 	u.usleep = monstermoves;
 	nomovemsg = wakeup_msg ? "You wake up." : You_can_move_again;
@@ -1553,7 +1578,7 @@ long timeout;
 				|| obj->otyp == SUNROD
 				) {
 				/* get rid of candles and burning oil potions */
-				obj_extract_self(obj);
+				obj_extract_and_unequip_self(obj);
 				obfree(obj, (struct obj *)0);
 				obj = (struct obj *) 0;
 				//#ifdef FIREARMS
@@ -1570,7 +1595,7 @@ long timeout;
 					fix_object(obj);
 				}
 				else {
-					obj_extract_self(obj);
+					obj_extract_and_unequip_self(obj);
 					obfree(obj, (struct obj *)0);
 					obj = (struct obj *) 0;
 				}
@@ -1917,7 +1942,7 @@ long timeout;
 				break;	/* don't do other torch things */
 			}
 			else {
-				obj_extract_self(obj);
+				obj_extract_and_unequip_self(obj);
 				obfree(obj, (struct obj *)0);
 				obj = (struct obj *) 0;
 			}
@@ -1985,7 +2010,7 @@ long timeout;
 			}
 			end_burn(obj, FALSE);
 
-			obj_extract_self(obj);
+			obj_extract_and_unequip_self(obj);
 			obfree(obj, (struct obj *)0);
 			obj = (struct obj *) 0;
 		}
@@ -2059,7 +2084,7 @@ long timeout;
 				break;	/* don't do other torch things */
 			}
 			else {
-				obj_extract_self(obj);
+				obj_extract_and_unequip_self(obj);
 				obfree(obj, (struct obj *)0);
 				obj = (struct obj *) 0;
 			}
@@ -2176,6 +2201,7 @@ struct obj * obj;
 		break;
 	case GNOMISH_POINTY_HAT:
 	case POT_STARLIGHT:
+	case SUNLIGHT_MAGGOT:
 		radius = 2;
 		break;
 	case CHUNK_OF_FOSSIL_DARK:
@@ -2387,6 +2413,7 @@ begin_burn(obj)
 		obj->otyp != CANDLE_OF_INVOCATION &&
 		obj->otyp != MAGIC_TORCH &&
 		obj->otyp != POT_STARLIGHT && 
+		obj->otyp != SUNLIGHT_MAGGOT && 
 		obj->otyp != CHUNK_OF_FOSSIL_DARK && 
 		!artifact_light(obj) && 
 		!arti_light(obj) && 
@@ -2466,6 +2493,7 @@ end_burn(obj, timer_attached)
 		|| obj->otyp == MAGIC_CANDLE
 		|| obj->otyp == MAGIC_TORCH
 		|| obj->otyp == POT_STARLIGHT
+		|| obj->otyp == SUNLIGHT_MAGGOT
 		|| obj->otyp == CHUNK_OF_FOSSIL_DARK
 		|| artifact_light(obj)
 		|| arti_light(obj)
@@ -2715,7 +2743,7 @@ long timeout;
 	}
 	/* if in_use is set, then we know it'll be used up by the thing currently using it, and we'd be double-deleting it */
 	if (!otmp->in_use) {
-		obj_extract_self(otmp);
+		obj_extract_and_unequip_self(otmp);
 		newsym(otmp->ox, otmp->oy);
 		obfree(otmp, (struct obj *)0);
 	}

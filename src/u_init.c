@@ -293,6 +293,7 @@ static struct trobj Anachrononaut_Dw[] = {
 	{ AMULET_OF_NULLIFY_MAGIC, 0, AMULET_CLASS, 1, 0 },
 	{ BULLET, 3, WEAPON_CLASS, 100, 0 },
 	{ BULLET_FABBER, 0, TOOL_CLASS, 1, 0 },
+	{ NIGHT_VISION_GOGGLES, UNDEF_SPE, TOOL_CLASS, 1, 0 },
 	{ PROTEIN_PILL, 0, FOOD_CLASS, 6, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
@@ -1536,6 +1537,13 @@ static const struct def_skill Skill_K[] = {
     { P_NONE, 0 }
 };
 
+static const struct def_skill Skill_Kni_Forms[] = {
+    { P_SHIELD_BASH, P_EXPERT },
+    { P_GREAT_WEP, P_EXPERT },
+    { P_HALF_SWORD, P_EXPERT },
+    { P_NONE, 0 }
+};
+
 static const struct def_skill Skill_Mon[] = {
     { P_QUARTERSTAFF, P_EXPERT },    { P_SPEAR, P_BASIC },
     { P_SHURIKEN, P_EXPERT },		{ P_HARVEST, P_EXPERT },
@@ -2012,11 +2020,17 @@ u_init()
 
 	u.umabil = 0;
 	u.utats = 0;
+	u.uavoid_passives = 0; // don't start out using only starblades lol
+	u.uavoid_msplcast = 0; // by default, allow mspellcasting
+	u.uavoid_grabattk = 0; // by default, allow grabbing attacks
+	u.uavoid_englattk = 0; // by default, allow engulfing attacks
+	u.uavoid_unsafetouch = 1; // avoid touching potentally unsafe monsters by default
 	u.umystic = ~0; //By default, all monk style attacks are active
 
 	u.summonMonster = FALSE;
 	u.uleadamulet = FALSE;
 	artinstance[ART_TENSA_ZANGETSU].ZangetsuSafe = 1;
+	artinstance[ART_SCORPION_CARAPACE].CarapaceLevel = 10;
 	u.ucspeed = NORM_CLOCKSPEED;
 	u.voidChime = 0;
 	u.regifted = 0;
@@ -2050,6 +2064,7 @@ u_init()
 	// u.ublessed = 0;				/* not worthy yet */
 	// u.ugifts   = 0;				/* no divine gifts bestowed */
 	// u.uartisval = 0;			/* no artifacts directly acquired */
+	// u.ucultsval = 0;			/* no boons directly acquired */
 	// u.ucarinc = 0;
 	// u.uacinc = 0;
 // // ifdef ELBERETH
@@ -2092,7 +2107,9 @@ u_init()
 	
 	u.uhouse = 0;
 	u.start_house = 0;
-	
+
+	u.inherited = 0;
+
 	u.uaesh = 0;
 	u.uaesh_duration = 0;
 	u.ukrau = 0;
@@ -2147,10 +2164,6 @@ u_init()
 	u.sealsActive = 0;
 	u.specialSealsActive = 0;
 
-	u.sealTimeout[AHAZU-FIRST_SEAL] = u.sealTimeout[AMON-FIRST_SEAL] = u.sealTimeout[ANDREALPHUS-FIRST_SEAL] = u.sealTimeout[ANDROMALIUS-FIRST_SEAL] = u.sealTimeout[ASTAROTH-FIRST_SEAL] = u.sealTimeout[BALAM-FIRST_SEAL] = u.sealTimeout[BERITH-FIRST_SEAL] = u.sealTimeout[BUER-FIRST_SEAL] = u.sealTimeout[CHUPOCLOPS-FIRST_SEAL] = u.sealTimeout[DANTALION-FIRST_SEAL] = u.sealTimeout[SHIRO-FIRST_SEAL] = 0;
-	u.sealTimeout[ECHIDNA-FIRST_SEAL] = u.sealTimeout[EDEN-FIRST_SEAL] = u.sealTimeout[ENKI-FIRST_SEAL] = u.sealTimeout[EURYNOME-FIRST_SEAL] = u.sealTimeout[EVE-FIRST_SEAL] = u.sealTimeout[FAFNIR-FIRST_SEAL] = u.sealTimeout[HUGINN_MUNINN-FIRST_SEAL] = u.sealTimeout[IRIS-FIRST_SEAL] = u.sealTimeout[JACK-FIRST_SEAL] = u.sealTimeout[MALPHAS-FIRST_SEAL] = u.sealTimeout[MARIONETTE-FIRST_SEAL] = u.sealTimeout[MOTHER-FIRST_SEAL] = 0;
-	u.sealTimeout[NABERIUS-FIRST_SEAL] = u.sealTimeout[ORTHOS-FIRST_SEAL] = u.sealTimeout[OSE-FIRST_SEAL] = u.sealTimeout[OTIAX-FIRST_SEAL] = u.sealTimeout[PAIMON-FIRST_SEAL] = u.sealTimeout[SIMURGH-FIRST_SEAL] = u.sealTimeout[TENEBROUS-FIRST_SEAL] = u.sealTimeout[YMIR-FIRST_SEAL] = u.sealTimeout[DAHLVER_NAR-FIRST_SEAL] = u.sealTimeout[ACERERAK-FIRST_SEAL] = 0;
-	
 	u.osepro[0] = '\0';
 	u.osegen[0] = '\0';
 	
@@ -2448,6 +2461,7 @@ u_init()
 		knows_object(ROCKET);
 		knows_object(FRAG_GRENADE);
 		knows_object(GAS_GRENADE);
+		knows_object(NIGHT_VISION_GOGGLES);
 		knows_object(STICK_OF_DYNAMITE);
 		knows_object(HEAVY_BLASTER_BOLT);
 		knows_object(BLASTER_BOLT);
@@ -2687,6 +2701,9 @@ u_init()
 		u.usanity = 75; /* Your sanity is not so hot */
 		u.umadness |= MAD_DELUSIONS; /* Your sanity is not so hot */
 		u.udrunken = 30; /* Your sanity is not so hot (and you may have once been more powerful) */
+		if(Race_if(PM_ELF)){
+			u.gevurah += 4;//cheated death.
+		}
 
         urace.hatemask |= urace.lovemask;   /* Hated by the race's allies */
         urace.lovemask = 0; /* Madmen are pariahs of their race */
@@ -2765,6 +2782,8 @@ u_init()
 		HJumping |= FROMOUTSIDE;
 		if(Race_if(PM_DWARF)) skill_init(Skill_DwaNob);
 		else skill_init(Skill_K);
+
+		skill_add(Skill_Kni_Forms);
 		break;
 	case PM_MONK:
 		u.umartial = TRUE;
@@ -2818,6 +2837,9 @@ u_init()
 		
 		if(Race_if(PM_ELF)){
 			ini_inv(Phial);
+			for(struct obj *otmp = invent; otmp; otmp = otmp->nobj){
+				bless(otmp);
+			}
 		} else if(Race_if(PM_DROW) && !flags.female){
 			ini_inv(BlackTorches);
 		}
@@ -3105,7 +3127,7 @@ u_init()
 			HTelepat |= FROMOUTSIDE;
 			skill_add(Skill_Elf_Ana);
 		}
-		if(Role_if(PM_ELF)){
+		if(Role_if(PM_HEALER)){
 			u.ualign.type = A_NEUTRAL;
 			u.ualign.god = u.ugodbase[UGOD_CURRENT] = u.ugodbase[UGOD_ORIGINAL] = align_to_god(u.ualign.type);
 			flags.initalign = 1; // 1 == neutral
@@ -3342,14 +3364,31 @@ u_init()
 		else
 			init_attr(55);
 	} else if(Race_if(PM_ORC)){
-		init_attr(55);
+		if(flags.descendant)
+			init_attr(45);
+		else
+			init_attr(55);
 	} else if (Race_if(PM_ANDROID)){
-		init_attr(95);
+		if(flags.descendant)
+			init_attr(75);
+		else
+			init_attr(95);
 	} else if (Role_if(PM_VALKYRIE)){
-		init_attr(85);
+		if(flags.descendant)
+			init_attr(70);
+		else
+			init_attr(85);
 	} else if (Race_if(PM_ELF)){
-		init_attr(80);
-	} else init_attr(75);	/* init attribute values */
+		if(flags.descendant)
+			init_attr(65);
+		else
+			init_attr(80);
+	} else {
+		if(flags.descendant)
+			init_attr(60);
+		else
+			init_attr(75);	/* init attribute values */
+	}
 	find_ac();				/* get initial ac value */
 	max_rank_sz();			/* set max str size for class ranks */
 /*
@@ -3408,6 +3447,16 @@ u_init()
 	u.silver_flame_z.dnum = u.uz.dnum;
 	u.silver_flame_z.dlevel = rn2(dunlevs_in_dungeon(&u.uz)) + dungeons[u.uz.dnum].depth_start;
 
+	dungeon_topology.hell1_variant = rnd(BELIAL_LEVEL); // bael, dis, mammon, belial + later chance of chromatic dragon for non-cav
+	dungeon_topology.hell2_variant = rnd(MEPHISTOPHELES_LEVEL); // levi, lilth, baalze, meph
+	dungeon_topology.abyss_variant = rnd(KOSTCH_LEVEL); // juib, zugg, yeen, baph, pale night, kostch
+	dungeon_topology.abys2_variant = rnd(LOLTH_LEVEL); // orcus, mal, grazzt, lolth
+	dungeon_topology.brine_variant = rnd(LAMASHTU_LEVEL); // demo, dagon, lamashtu
+	
+	if(!Role_if(PM_CAVEMAN) && dungeon_topology.hell1_variant == BAEL_LEVEL && rn2(2)){
+		dungeon_topology.hell1_variant = CHROMA_LEVEL;
+	}
+
 	int common_caste = 0;
 	switch(rn2(6)){
 		case 0:
@@ -3440,8 +3489,43 @@ u_init()
 	}
 
 	dungeon_topology.eprecursor_typ = rnd(8);
+	if(Race_if(PM_HALF_DRAGON)){
+		flags.HDbreath = species[flags.initspecies].value;
+		switch(flags.HDbreath){
+			case AD_MAGM:	
+				HAntimagic |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_COLD:
+				HAntimagic |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_FIRE:
+				HFire_resistance |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_DISN:
+				HDisint_resistance |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_SLEE:
+				HSleep_resistance |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_ELEC:
+				HShock_resistance |= (FROMRACE|FROMOUTSIDE);
+				HBlind_res |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_DRST:
+				HPoison_resistance |= (FROMRACE|FROMOUTSIDE);
+				break;
+			case AD_ACID:
+				HAcid_resistance |= (FROMRACE|FROMOUTSIDE);
+				break;
+
+		}
+	}
 	if(Race_if(PM_ENT)){
 		set_ent_species();
+	}
+	u.clk_material = COPPER;
+	if(Race_if(PM_CLOCKWORK_AUTOMATON)){
+		u.clk_material = species[flags.initspecies].value;
 	}
 	/* Fix up the alignment quest nemesi */
 	mons[PM_OONA].mcolor = (u.oonaenergy == AD_FIRE) ? CLR_RED 
@@ -3877,6 +3961,9 @@ register struct trobj *trop;
 		if(obj->otyp == AMULET_OF_NULLIFY_MAGIC && (Role_if(PM_ANACHRONONAUT) || Role_if(PM_MADMAN)) && !uamul){
 			setworn(obj, W_AMUL);
 		}
+
+		if(obj->otyp == NIGHT_VISION_GOGGLES && !ublindf)
+			setworn(obj, W_TOOL);
 
 		if(obj->oclass == RING_CLASS && Role_if(PM_MADMAN) && !uright){
 			setworn(obj, W_RINGR);

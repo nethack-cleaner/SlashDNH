@@ -9,6 +9,9 @@
 #else
 #include "patchlevel.h"
 #endif
+#ifdef XLOGFILE
+#include "artifact.h" /* we need artilist so inherited arti can be in xlogfile */
+#endif
 #ifdef UNIX /* filename chmod() */
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -305,7 +308,11 @@ struct toptenentry *tt;
                 SEP "gender=%s"
                 SEP "align=%s",
                 tt->plrole, tt->plrace, tt->plgend, tt->plalign);
-   
+
+  if (Race_if(PM_ENT) || Race_if(PM_HALF_DRAGON) || Race_if(PM_CLOCKWORK_AUTOMATON)) {
+    (void)fprintf(rfile, SEP "species=%s", base_species_name());
+  }
+
    munge_xlstring(buf, plname, DTHSZ + 1);
   (void)fprintf(rfile, SEP "name=%s", buf);
 
@@ -362,6 +369,14 @@ struct toptenentry *tt;
   (void)fprintf(rfile, SEP "align0=%s", 
           aligns[1 - galign(u.ugodbase[UGOD_ORIGINAL])].filecode);
 #endif
+
+  if (Race_if(PM_ENT) || Race_if(PM_HALF_DRAGON) || Race_if(PM_CLOCKWORK_AUTOMATON)) {
+    (void)fprintf(rfile, SEP "species0=%s", species[flags.initspecies].name);
+  }
+
+  if (flags.descendant) {
+    (void)fprintf(rfile, SEP "inherited=%s", artilist[u.inherited].name);
+  }
 
   (void)fprintf(rfile, "\n");
 
@@ -909,10 +924,15 @@ boolean so;
 		    !(*bp == ' ' && (bp-linebuf < hppos));
 		    bp--)
 		;
+	    /* special case: word is too long, wrap in the middle */
+	    if (linebuf+15 >= bp) bp = linebuf + hppos - 1;
 	    /* special case: if about to wrap in the middle of maximum
 	       dungeon depth reached, wrap in front of it instead */
 	    if (bp > linebuf + 5 && !strncmp(bp - 5, " [max", 5)) bp -= 5;
-	    Strcpy(linebuf3, bp+1);
+	    if (*bp != ' ')
+		Strcpy(linebuf3, bp);
+	    else
+		Strcpy(linebuf3, bp+1);
 	    *bp = 0;
 	    if (so) {
 		while (bp < linebuf + (COLNO-1)) *bp++ = ' ';

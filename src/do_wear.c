@@ -2240,7 +2240,7 @@ doputon()
 			otmp->otyp != BLINDFOLD && otmp->otyp != ANDROID_VISOR && 
 			otmp->otyp != TOWEL && otmp->otyp != LENSES && 
 			otmp->otyp != SUNGLASSES && otmp->otyp != LIVING_MASK &&
-			otmp->otyp != SOUL_LENS
+			otmp->otyp != SOUL_LENS && otmp->otyp != NIGHT_VISION_GOGGLES
 		) {
 			You_cant("wear that!");
 			return MOVE_CANCELLED;

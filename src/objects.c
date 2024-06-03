@@ -1251,6 +1251,8 @@ TOOL(("armor salve", "strange shell"),
 								0,  MZ_SMALL,  0, 1, 1,   0, 10, 666, SHELL_MAT, CLR_GRAY),
 TOOL(("sensor pack", "rigid box"), /*Needs encyc entry*//*Needs tile*/
 								0,  MZ_SMALL, 0, 1, 1,   0, 15,2000, PLASTIC,CLR_WHITE),
+TOOL(("night vision goggles", "strange goggles"), /*Needs encyc entry*//*Needs tile*/
+                                0,  MZ_TINY, 0, 1, 0,   0, 15, 200, GLASS, CLR_GREEN, O_POWER(EXTRAMISSION)),
 TOOL(("mask"),			1,  MZ_SMALL, 0, 0, 0,  10, 10,  80, LEATHER, CLR_WHITE),
 TOOL(("R'lyehian faceplate", "ebon pane"), /*Needs tile*/
 								0,  MZ_SMALL, 0, 1, 0,   0, 15, 200, GLASS, CLR_BLACK, O_POWER(POISON_RES, WATERPROOF)),

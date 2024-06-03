@@ -7776,6 +7776,7 @@ doapply()
 	} else switch(obj->otyp){
 	case BLINDFOLD:
 	case ANDROID_VISOR:
+	case NIGHT_VISION_GOGGLES:
 	case LENSES:
 	case SUNGLASSES:
 	case SOUL_LENS:

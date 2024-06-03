@@ -559,7 +559,7 @@ boolean affect_game_state;
 					MOVECOST(NORMAL_SPEED/12);
 				} else if(uwep && uwep->oartifact == ART_SODE_NO_SHIRAYUKI && u.ulevel >= 14) {
 					MOVECOST(NORMAL_SPEED/4);
-				} else if(uwep && (uwep->oartifact == ART_TOBIUME && u.ulevel >= 10 || (Role_if(PM_KENSEI) && u.ulevel >= 7 && uwep->oartifact == ART_BONDED_BLADE))) {
+				} else if(uwep && ((uwep->oartifact == ART_TOBIUME && u.ulevel >= 10) || (Role_if(PM_KENSEI) && u.ulevel >= 7 && uwep->oartifact == ART_BONDED_BLADE))) {
 					if (affect_game_state) {
 						if((HStealth&TIMEOUT) < 2)
 							set_itimeout(&HStealth, 2L);
@@ -4153,8 +4153,8 @@ boolean new_game;	/* false => restoring an old game */
 	Sprintf(eos(racebuf), "%s", urace.adj);
     }
 
-    pline(new_game ? "%s %s, welcome to SlashDNH!  You are a%s %s %s."
-		   : "%s %s, the%s %s %s, welcome back to SlashDNH!",
+    pline(new_game ? "%s %s, welcome to SlashDNH!  You are a%s %s%s %s."
+		   : "%s %s, the%s %s%s %s, welcome back to SlashDNH!",
 	  Hello((struct monst *) 0), plname, buf, racebuf, (flags.descendant) ? " descendant" : "",
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 	if(iflags.dnethack_start_text){

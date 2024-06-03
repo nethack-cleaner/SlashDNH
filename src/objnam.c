@@ -2003,7 +2003,6 @@ boolean getting_obj_base_desc;
 			}	
 			if (typ == LENSES ||
 				typ == SUNGLASSES ||
-				typ == NIGHT_VISION_GOGGLES ||
 				typ == HAWAIIAN_SHORTS ||
 				is_boots(obj) ||
 				is_gloves(obj)

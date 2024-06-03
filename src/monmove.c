@@ -473,40 +473,6 @@ struct monst *mtmp;
   } else return(FALSE);
 }
 
-<<<<<<< HEAD
-=======
-boolean
-scaryElb(mtmp)
-struct monst *mtmp;
-{
-  if(Infuture) return FALSE;
-  if(ELBERETH_HIGH_POWER){
-	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || is_blind(mtmp) ||
-	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN || 
-	    is_lminion(mtmp) || mtmp->mtyp == PM_ANGEL ||
-	    (is_rider(mtmp->data) && !(mtmp->mtyp == PM_NAZGUL)) || 
-		mtmp->mtyp == PM_MINOTAUR)
-		return(FALSE);
-	return (boolean) (mtmp->mtyp != PM_ELDER_PRIEST) &&
-					(mtmp->mtyp != PM_GREAT_CTHULHU) &&
-					(mtmp->mtyp != PM_CHOKHMAH_SEPHIRAH) &&
-					(mtmp->mtyp != PM_CHAOS || rn2(2)) &&
-					(mtmp->mtyp != PM_DEMOGORGON || !rn2(3)) &&
-					(mtmp->mtyp != PM_LAMASHTU) &&
-					(mtmp->mtyp != PM_ASMODEUS || !rn2(9));
-  }
-  else{
-	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || is_blind(mtmp) ||
-	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN || 
-	    is_lminion(mtmp) || mtmp->mtyp == PM_ANGEL ||
-	    (is_rider(mtmp->data) && !(mtmp->mtyp == PM_NAZGUL)) || 
-		mtmp->mtyp == PM_MINOTAUR)
-		return(FALSE);
-	return (boolean) mtmp->data->mlet == S_ORC || mtmp->data->mlet == S_OGRE 
-				|| mtmp->data->mlet == S_TROLL || mtmp->mtyp == PM_ELVEN_WRAITH || mtmp->mtyp == PM_NAZGUL;
-  }
-}
->>>>>>> 3c94dc37ed999e339ded495c6220277624c1a80e
 #endif /* OVL2 */
 #ifdef OVL0
 

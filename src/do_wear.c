@@ -2240,8 +2240,7 @@ doputon()
 			otmp->otyp != BLINDFOLD && otmp->otyp != ANDROID_VISOR && 
 			otmp->otyp != TOWEL && otmp->otyp != LENSES && 
 			otmp->otyp != SUNGLASSES && otmp->otyp != LIVING_MASK &&
-			otmp->otyp != SOUL_LENS && otmp->otyp != NIGHT_VISION_GOGGLES &&
-			otmp->otyp != NIGHT_VISION_GOGGLES
+			otmp->otyp != SOUL_LENS
 		) {
 			You_cant("wear that!");
 			return MOVE_CANCELLED;
@@ -3158,12 +3157,6 @@ uchar aatyp;
 		&& (slot & (ARM_DR | HEAD_DR))
 	){
 		bas_udr += 3;
-	}
-	/* Wearing the Star Emperor's ring adds up to +3 magical DR to the head */
-	if(uring_art(ART_STAR_EMPEROR_S_RING)
-		&& (slot&HEAD_DR)
-	){
-		bas_udr += u.ulevel/10;
 	}
 	/* The Crown of Vermin adds up to +3 magic DR to the head (in practice it will usually at 2 or less due to missing vermin) */
 	if(uarm && uarm->oartifact == ART_SCORPION_CARAPACE && check_carapace_mod(uarm, CPROP_CROWN)

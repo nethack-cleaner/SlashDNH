@@ -9033,7 +9033,7 @@ arti_invoke(obj)
 	    if(!level_tele())
 			goto nothing_special;
 	    break;
-	case CREATE_PORTAL: {
+	case CREATE_PORTAL:
 		if(obj->oartifact == ART_SILVER_KEY && IS_ALTAR(levl[u.ux][u.uy].typ) && god_at_altar(u.ux, u.uy) == GOD_YOG_SOTHOTH){
 			if(yn("Travel to the Gate of the Silver Key?") == 'y'){
 				/*With appologies to "Through the Gates of the Silver Key" by H. P. Lovecraft. */
@@ -9046,37 +9046,9 @@ arti_invoke(obj)
 				u.specialSealsKnown |= SEAL_YOG_SOTHOTH;
 			}
 		}
-	    int i, num_ok_dungeons, last_ok_dungeon = 0;
-	    d_level newlev;
-	    extern int n_dgns; /* from dungeon.c */
-	    winid tmpwin = create_nhwindow(NHW_MENU);
-	    anything any;
-
-	    any.a_void = 0;	/* set all bits to zero */
-	    start_menu(tmpwin);
-	    /* use index+1 (cant use 0) as identifier */
-	    for (i = num_ok_dungeons = 0; i < n_dgns; i++) {
-		if (!dungeons[i].dunlev_ureached) continue;
-		if(!strcmp(dungeons[i].dname,"Nowhere")) continue;
-		char *ret = strstr(dungeons[i].dname, "Starting Zone");
-		if (ret && strlen(ret) > 5) continue;
-		any.a_int = i+1;
-		add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE,
-			 dungeons[i].dname, MENU_UNSELECTED);
-		num_ok_dungeons++;
-		last_ok_dungeon = i;
-	    }
-	    end_menu(tmpwin, "Open a portal to which dungeon?");
-	    if (num_ok_dungeons > 1) {
-		/* more than one entry; display menu for choices */
-		menu_item *selected;
-		int n;
-
-		n = select_menu(tmpwin, PICK_ONE, &selected);
-		if (n <= 0) {
-		    destroy_nhwindow(tmpwin);
-		    goto nothing_special;
-		}
+		else if(!branch_tele())
+			goto nothing_special;
+	    break;
 	case LOOT_SELF:
 		obj->age = 0; //Age will be reset in loot container for Esscoo only
 		if(use_container(obj, TRUE) == MOVE_CANCELLED){

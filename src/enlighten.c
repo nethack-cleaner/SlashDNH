@@ -2953,7 +2953,6 @@ boolean dumping;
 		} else {
 			you_have_never("hit with a wielded weapon");
 		}
-#ifdef WIZARD
 	else if (wizard) {
 	    Sprintf(buf, "used a wielded weapon %ld time%s",
 		    u.uconduct.weaphit, plur(u.uconduct.weaphit));

@@ -874,7 +874,6 @@ int oldlevel, newlevel;
 
 	// set default values
 	abil = 0;
-	abil2 = 0;
 	rabil = 0;
 	sabil = 0;
 
@@ -902,7 +901,7 @@ int oldlevel, newlevel;
 	case PM_KNIGHT:         abil = kni_abil;	break;
 	case PM_KENSEI:
 	case PM_BLIND_MASTER:
-		abil2 = blind_abil;
+		abil = blind_abil;
 	case PM_DRUNKEN_MASTER:
 	case PM_MONK:
 		abil = mon_abil;

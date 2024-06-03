@@ -400,7 +400,6 @@
 #define EWeldproof	u.uprops[WELDPROOF].extrinsic
 #define Weldproof	(HWeldproof || EWeldproof || \
 					 is_demon(youracedata) || is_undead(youracedata) || (u.ulycn >= LOW_PM))
-					)
 
 /*** Appearance and behavior ***/
 #define Adornment		u.uprops[ADORNED].extrinsic

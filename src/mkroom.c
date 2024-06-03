@@ -501,8 +501,6 @@ mklolthvaultitem()
 		}
 		else type = RING_CLASS;
 	}
-	else if(rn2(2))
-		type = SCOIN_CLASS;
 	else if(rn2(2)){
 		type = misc_hell_vault[rn2(SIZE(misc_hell_vault))];
 		otmp = mksobj(type, NO_MKOBJ_FLAGS);

@@ -66,7 +66,7 @@ struct Role roles[] = {
 	PM_MONK, NON_PM, NON_PM,
 	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
-	ART_EYES_OF_THE_OVERWORLD,
+	ART_EYE_OF_THE_OVERWORLD,
 	MA_HUMAN|MA_DWARF|MA_ORC, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
@@ -512,7 +512,7 @@ struct Role roles[] = {
 	PM_BLIND_MASTER, NON_PM, NON_PM,
 	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
-	ART_EYES_OF_THE_OVERWORLD,
+	ART_EYE_OF_THE_OVERWORLD,
 	MA_HUMAN, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
@@ -539,7 +539,7 @@ struct Role roles[] = {
 	PM_DRUNKEN_MASTER, NON_PM, NON_PM,
 	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
-	ART_EYES_OF_THE_OVERWORLD,
+	ART_EYE_OF_THE_OVERWORLD,
 	MA_HUMAN, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
@@ -566,7 +566,7 @@ struct Role roles[] = {
 	PM_KENSEI, NON_PM, NON_PM,
 	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
 	NON_PM, NON_PM, NON_PM, NON_PM,
-	ART_EYES_OF_THE_OVERWORLD,
+	ART_EYE_OF_THE_OVERWORLD,
 	MA_HUMAN, ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
@@ -1400,21 +1400,6 @@ const struct Race races[] = {
 	{  4, 0,  0, 4,  2, 0 },	/* Energy */
 	NORMALNIGHTVIS,
 	SPE_DETECT_TREASURE, -10
-},
-{	"Inheritor", "human", "humanity", "Inh",
-	{"man", "woman"},
-	PM_INHERITOR, NON_PM, PM_HUMAN_MUMMY, PM_HUMAN,
-	ROLE_MALE|ROLE_FEMALE |
-	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
-	/*MA_HUMAN disabled*/ 0, 0, MA_GNOME|MA_ORC|MA_ELF,
-	/*    Str     Int Wis Dex Con Cha */
-	{      3,      3,  3,  3,  3,  3 },
-	{ STR18(100), 18, 18, 18, 18, 18 },
-	/* Init   Lower  Higher */
-	{  2, 0,  0, 2,  1, 0 },	/* Hit points */
-	{  1, 0,  2, 0,  2, 0 },		/* Energy */
-	NORMALNIGHTVIS,
-	SPE_ABJURATION, -20
 },
 {	"orc", "orcish", "orcdom", "Orc",
 	{0, 0},

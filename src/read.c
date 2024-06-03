@@ -3962,7 +3962,7 @@ createmon:
 				mm_flags |= MM_EDOG;
 			if (makesummoned)
 				mm_flags |= MM_ESUM;
-			if (noequip)
+			if (noequip || achieve.nomonsterinv)
 				mm_flags |= NO_MINVENT;
 			if (makemale)
 				mm_flags |= MM_MALE;

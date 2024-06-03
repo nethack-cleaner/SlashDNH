@@ -949,6 +949,7 @@ struct u_achieve {
 		Bitfield(isfrenzy,1);
 		Bitfield(isyeoman,1);
 		Bitfield(clockarc,1);
+		Bitfield(nomonsterinv,1);
 		Bitfield(lightsaberpro,1);
 		Bitfield(demogorgonmet,1);
 		Bitfield(lamashtumet,1);

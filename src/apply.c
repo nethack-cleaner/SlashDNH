@@ -5870,6 +5870,7 @@ struct obj *obj;
             Sprintf(achieve.wishes12, buf);
 			u.uconduct.wishes++; //Counts as a wish
 			long futurewishflag = Role_if(PM_TOURIST) ? 0 : MG_FUTURE_WISH;
+			achieve.nomonsterinv = TRUE;
 			mtmp = create_particular(u.ux, u.uy, MT_DOMESTIC, 0, FALSE, MA_MINION | MA_DEMON | MA_FEY | MA_PRIMORDIAL, MG_NOWISH | MG_NOTAME | futurewishflag, G_UNIQ, (char *)0);
 			if (!mtmp) {
 				pline("Perhaps try summoning something else?");
@@ -5879,6 +5880,7 @@ struct obj *obj;
 				pline("The gate closes as %s passes through.", a_monnam(mtmp));
 				consumed = TRUE;
 			}
+			achieve.nomonsterinv = FALSE;
 			break;
 		}
 		case SUMMON_DEMON_LORD:

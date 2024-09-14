@@ -1367,6 +1367,9 @@ as_extra_healing:
 			delayed_killer = "the draught of Midas";
 			killer_format = KILLED_BY;
 			You("are turning to gold!");
+		} else if (uclockwork && u.clk_material != GOLD) {
+			u.clk_material = GOLD;
+			You("turn to gold.");
 		} else
 			You_feel("shiny inside.");
 		break;
@@ -1621,6 +1624,9 @@ potionhit(register struct monst *mon, register struct obj *obj, boolean your_fau
 			delayed_killer = "the draught of Midas";
 			killer_format = KILLED_BY;
 			You("are turning to gold!");
+		} else if (uclockwork && u.clk_material != GOLD) {
+			u.clk_material = GOLD;
+			You("turn to gold.");
 		} else
 			You_feel("shiny inside.");
 		break;

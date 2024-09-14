@@ -108,6 +108,7 @@ extern void copy_oprop_list(struct obj *, unsigned long int *);
 extern const char *artifact_name(const char *,short *, int *);
 extern boolean art_already_exists(int);
 extern boolean art_already_exists_byname(int,const char *);
+extern int get_already_exists_byname(int,const char *);
 extern void flag_existance(int, int);
 extern void artifact_exists(struct obj *,const char *,boolean);
 extern struct obj * mksartifact(int);
@@ -782,6 +783,7 @@ extern int induced_align(int);
 extern boolean Invocation_lev(d_level *);
 extern int level_difficulty(void);
 extern schar lev_by_name(const char *);
+extern void name_by_lev(char *, d_level *);
 #ifdef WIZARD
 extern boolean print_dungeon(boolean,boolean,schar *,int *);
 #endif

@@ -2051,6 +2051,19 @@ art_already_exists_byname(int otyp, const char *artiname)
 	return FALSE;
 }
 
+int
+get_already_exists_byname(int otyp, const char * artiname)
+{
+	int i;
+	if (otyp && *artiname){
+	    for (i = 1; artilist[i].otyp; i++){
+			if (artinstance[i].exists && !strcmp(artilist[i].name, artiname))
+				return i;
+		}
+	}
+	return 0;
+}
+
 void
 flag_existance(int m, int mod)
 {
@@ -2072,6 +2085,8 @@ artifact_exists(struct obj *otmp, const char *name, boolean mod)
 			/* for "summoned" temporary artifacts, artinstance things are skipped, such as declaring the artifact extant */
 			if (!get_ox(otmp, OX_ESUM)) {
 				flag_existance(m, mod);
+				artinstance[m].spawn_dnum = u.uz.dnum;
+				artinstance[m].spawn_dlevel = u.uz.dlevel;
 				// artinstance[m].exists = mod;
 				if(otmp->oartifact == ART_ROD_OF_SEVEN_PARTS){
 					artinstance[ART_ROD_OF_SEVEN_PARTS].RoSPkills = 7;//number of hits untill you gain a +

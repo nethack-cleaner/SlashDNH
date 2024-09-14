@@ -1358,6 +1358,18 @@ as_extra_healing:
 		else
 			pline("Magical energies course through your body.");
 		}break;
+	case POT_MIDAS:
+		if (!Golded && !(Stone_resistance && youracedata->mtyp != PM_STONE_GOLEM)
+			&& !is_gold(youracedata)
+			&& !(poly_when_golded(youracedata) && polymon(PM_GOLD_GOLEM))
+			) {
+			Golded = 9;
+			delayed_killer = "the draught of Midas";
+			killer_format = KILLED_BY;
+			You("are turning to gold!");
+		} else
+			You_feel("shiny inside.");
+		break;
 	case POT_POLYMORPH:
 		You_feel("a little %s.", Hallucination ? "normal" : "strange");
 		if (!Unchanging) polyself(FALSE);
@@ -1600,6 +1612,18 @@ potionhit(register struct monst *mon, register struct obj *obj, boolean your_fau
 			rn2(10 - (uarmh->cursed? 8 : 0)))
 		    get_wet(uarmh, TRUE);
 	break;
+	case POT_MIDAS:
+		if (!Golded && !(Stone_resistance && youracedata->mtyp != PM_STONE_GOLEM)
+			&& !is_gold(youracedata)
+			&& !(poly_when_golded(youracedata) && polymon(PM_GOLD_GOLEM))
+			) {
+			Golded = 9;
+			delayed_killer = "the draught of Midas";
+			killer_format = KILLED_BY;
+			You("are turning to gold!");
+		} else
+			You_feel("shiny inside.");
+		break;
 	}
     } else {
 	boolean angermon = TRUE;
@@ -1930,6 +1954,11 @@ potionhit(register struct monst *mon, register struct obj *obj, boolean your_fau
 	case POT_POLYMORPH:
 		(void) bhitm(mon, obj);
 		break;
+	case POT_MIDAS:
+		if (!resists_ston(mon) && !is_gold(mon->data)) {
+			minstagoldify(mon, TRUE);
+		}
+		break;
 /*
 	case POT_GAIN_LEVEL:
 	case POT_LEVITATION:
@@ -2117,6 +2146,10 @@ potionbreathe(register struct obj *obj)
 	case POT_ACID:
 	case POT_POLYMORPH:
 		You_feel("tender.");
+		exercise(A_CON, FALSE);
+		break;
+	case POT_MIDAS:
+		You("taste gold flakes.");
 		exercise(A_CON, FALSE);
 		break;
 	case POT_BLOOD:
@@ -2996,6 +3029,11 @@ dodip(void)
 		goto poof;
 	}
 #endif
+	if(potion->otyp == POT_MIDAS && obj->obj_material != GOLD){
+		pline("%s %s into gold.", The(xname(obj)), obj->quan != 1 ? "turn" : "turns");
+		set_material(obj, GOLD);
+		goto poof;
+	}
 	
 	if( (potion->otyp == POT_ACID || 
 			(potion->otyp == POT_BLOOD && acidic(&mons[potion->corpsenm]))) 

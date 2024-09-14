@@ -3272,7 +3272,7 @@ dotatmenu(const char *prompt)
 	if(!(u.utats & TAT_HYPHEN) && mvitals[PM_ASPECT_OF_THE_SILENCE].died > 0){
 		any.a_int = TAT_HYPHEN;	/* must be non-zero */
 		add_menu(tmpwin, NO_GLYPH, &any,
-			'h', 0, ATR_NONE, tat_to_name(TAT_HYPHEN),
+			'H', 0, ATR_NONE, tat_to_name(TAT_HYPHEN),
 			MENU_UNSELECTED);
 	}
 	if(!(u.utats & TAT_FLAMING_WHIP) && mvitals[PM_LUNGORTHIN].died > 0){
@@ -6405,6 +6405,10 @@ dobinding(int tx, int ty)
 			|| carrying_art(ART_SILVER_KEY)
 			){
 				You("percieve a great BEING beyond the gate, and it addresses you with waves of thunderous and burning power.");
+				if(Role_if(PM_ANACHRONOUNBINDER)){
+					pline("It cannot pass through the askew gate.");
+					return MOVE_STANDARD;
+				}
 				You("are smote and changed by the unendurable violence of its voice!");
 				exercise(A_CON, FALSE);
 				bindspirit(ep->ward_id);

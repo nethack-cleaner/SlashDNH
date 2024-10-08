@@ -673,7 +673,7 @@ give_up:	/* Quit */
 		}
 
 		/* Permit the user to pick, if there is more than one */
-		if (n > 1) {
+		if (n > 1 && 0) {
 		    tty_clear_nhwindow(BASE_WINDOW);
 		    tty_putstr(BASE_WINDOW, 0, "Choosing Species");
 		    win = create_nhwindow(NHW_MENU);
@@ -707,7 +707,12 @@ give_up:	/* Quit */
 		    k = selected[0].item.a_int - 1;
 		    free((void *) selected),	selected = 0;
 		}
-		flags.initspecies = k;
+		flags.initspecies = randspecies(flags.initrole, flags.initrace, flags.initgend);
+		if (!strcmpi(races[flags.initrace].noun, "treant")) {
+			if (flags.initspecies == ENT_CYPRESS || flags.initspecies == ENT_FIR || flags.initspecies == ENT_POPLAR || flags.initspecies == ENT_SPRUCE || flags.initspecies == ENT_DOGWOOD || flags.initspecies == ENT_ELM) {
+				flags.initspecies = ENT_BEECH;
+			}
+		}
 	    }
 	}
 

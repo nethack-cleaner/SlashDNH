@@ -3711,8 +3711,8 @@ welcome(boolean new_game)	/* false => restoring an old game */
 	Sprintf(eos(racebuf), "%s", urace.adj);
     }
 
-    pline(new_game ? "%s %s, welcome to notnotdNetHack!  You are a%s %s%s %s."
-		   : "%s %s, the%s %s%s %s, welcome back to notnotdNetHack!",
+    pline(new_game ? "%s %s, welcome to SlashDNH!  You are a%s %s%s %s."
+		   : "%s %s, the%s %s%s %s, welcome back to SlashDNH!",
 	  Hello((struct monst *) 0), plname, buf, racebuf, (flags.descendant) ? " descendant" : "",
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 	if(iflags.dnethack_start_text){

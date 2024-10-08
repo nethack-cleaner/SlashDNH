@@ -316,7 +316,7 @@ tty_player_selection(void)
 	rigid_role_checks();
 
 	/* Should we randomly pick for the player? */
-	if (!flags.randomall &&
+	if (0 && !flags.randomall &&
 	    (flags.initrole == ROLE_NONE || flags.initrace == ROLE_NONE ||
 	     flags.initgend == ROLE_NONE || 
 			(flags.initalign == ROLE_NONE && !(flags.initrole != ROLE_NONE && roles[flags.initrole].malenum == PM_EXILE))
@@ -711,6 +711,7 @@ give_up:	/* Quit */
 	    }
 	}
 
+	flags.descendant = 0;
 	/* Select descendant status, if necessary */
 	if (flags.descendant < 0) {
 	    if (pick4u == 'y' || flags.descendant == ROLE_RANDOM || flags.randomall || flags.initrole < 0 || !validdescendant(flags.initrole)) {

@@ -1118,7 +1118,7 @@ unlock_file(const char *filename)
 
 const char *configfile =
 #ifdef UNIX
-			".notnotdnethackrc";
+			".slashdnhrc";
 #else
 			"NetHack.cnf";
 #endif

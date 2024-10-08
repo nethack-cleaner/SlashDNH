@@ -3,7 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* NetHack 3.4.3, dNethack version 3.15.1 */
-#define VERSION_MAJOR	2024
+#define VERSION_MAJOR	1
 /* Started at 3.4.3, for the nethack version. Incremented straight 
    to 3.6 with the advent of the Noble role, counting the initial
    release as 3.5 (with Pirate already in, I think?).
@@ -15,7 +15,7 @@
    Incremented to 3.11 with the introduction Anachrononauts.
    Incremented to 3.12 with the introduction Magic chests, scrolls of antimagic, resistance, and consecration, YARevison to chaos quest, beter resistance-from-diet, and lightsaber forms.
 */
-#define VERSION_MINOR	5
+#define VERSION_MINOR	0
 /*
  * PATCHLEVEL is updated for each release.
  *
@@ -52,7 +52,7 @@
  * 3.22.0: Drow Healer, Elf Madman, Healer quest revision, Human, Vampire, and Gnome madman differentiation, new psychic and goatmom monster spells, center of all balance adjustments, y'ha-talla insight traits, amnesia cures monster madnesses, complex ward handling refactor, blasphemous lurker madness, the many wormy fingers entity (internally the "psurlon" template, but this is an artifact name), tweak glyph code to leak less info to blind PCs, allow option-file setting of template symbols, quest guardian-ship is a faction, named ("semiunique") monsters in hell get max HD and HP, and misc bug fixes and tweaks.
  * 3.23.0: Yog-Sothoth cult, Cult revisions and mutations system, Bokrug "cult", Descendant option, Knight fighting styles, Advanced spellcasting fixes, Monk moves are free, Samurai "Kendo", Half dragon level 15 intrinsics, Attack and Passive pet commands, Mercurial weapon insight traits and gith artifact "swords", Scorpion Carapace revision, MC3 nerf, Monster smiths and forges v1, Random Insight monsters, Depths monster gen zone, Variable monster Hit Dice sizes, and misc bug fixes and tweaks.
  */
-#define PATCHLEVEL	15
+#define PATCHLEVEL	0
 /*
  * Incrementing EDITLEVEL can be used to force invalidation of old bones
  * and save files.
@@ -60,10 +60,10 @@
 #define EDITLEVEL	0
 
 #define COPYRIGHT_BANNER_A \
-"notnotdNetHack, Copyright 2024"
+"SlashDNH, Copyright 2025"
 
 #define COPYRIGHT_BANNER_B \
-"  Based on notdNetHack, Copyright 2017-2024"
+"  Based on notnotdNetHack, Copyright 2017-2024"
 
 #define COPYRIGHT_BANNER_C \
 "    Based on dNetHack, Copyright 2012-2024"

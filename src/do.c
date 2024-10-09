@@ -1950,6 +1950,21 @@ deferred_goto(void)
 	    free((void *)dfr_pre_msg),  dfr_pre_msg = 0;
 	if (dfr_post_msg)
 	    free((void *)dfr_post_msg),  dfr_post_msg = 0;
+	if (!u.solvedstarter) {
+		pline("Congratulations on solving the starter quest!");
+		u.solvedstarter = TRUE;
+		for (int x1 = -2; x1 <= 2; x1++) {
+			for (int y1 = -2; y1 <= 2; y1++) {
+				if (u.ux + x1 >= 0 && u.uy + y1 >= 0) {
+					struct trap *ttmp;
+					if ((ttmp = t_at(u.ux + x1, u.uy + y1))) {
+						deltrap(ttmp);
+						newsym(u.ux + x1, u.uy + y1);
+					}
+				}
+			}
+		}
+	}
 }
 
 

@@ -363,7 +363,6 @@ give_up:	/* Quit */
 	    char rolenamebuf[QBUFSZ];
 	    /* Process the choice */
 	    if (pick4u == 'y' || flags.initrole == ROLE_RANDOM || flags.randomall) {
-		/* Pick a random role */
 		flags.initrole = pick_role(flags.initrace, flags.initgend,
 						flags.initalign, PICK_RANDOM);
 		if (flags.initrole < 0) {
@@ -377,7 +376,7 @@ give_up:	/* Quit */
 		win = create_nhwindow(NHW_MENU);
 		start_menu(win);
 		any.a_void = 0;         /* zero out all bits */
-		for (i = 0; roles[i].name.m; i++) {
+		for (i = 0; i < INITIALROLES; i++) {
 		    if (ok_role(i, flags.initrace, flags.initgend,
 							flags.initalign)) {
 			any.a_int = i+1;	/* must be non-zero */
@@ -405,8 +404,6 @@ give_up:	/* Quit */
 				    flags.initalign, PICK_RANDOM)+1;
 		if (any.a_int == 0)	/* must be non-zero */
 		    any.a_int = randrole(0)+1;
-		add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
-				"Random", MENU_UNSELECTED);
 		any.a_int = i+1;	/* must be non-zero */
 		add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
 				"Quit", MENU_UNSELECTED);
@@ -477,8 +474,6 @@ give_up:	/* Quit */
 					flags.initalign, PICK_RANDOM)+1;
 		    if (any.a_int == 0)	/* must be non-zero */
 			any.a_int = randrace(flags.initrole)+1;
-		    add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
-				    "Random", MENU_UNSELECTED);
 		    any.a_int = i+1;	/* must be non-zero */
 		    add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
 				    "Quit", MENU_UNSELECTED);
@@ -548,8 +543,6 @@ give_up:	/* Quit */
 					    flags.initalign, PICK_RANDOM)+1;
 		    if (any.a_int == 0)	/* must be non-zero */
 			any.a_int = randgend(flags.initrole, flags.initrace)+1;
-		    add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
-				    "Random", MENU_UNSELECTED);
 		    any.a_int = i+1;	/* must be non-zero */
 		    add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
 				    "Quit", MENU_UNSELECTED);
@@ -621,8 +614,6 @@ give_up:	/* Quit */
 					    flags.initgend, PICK_RANDOM)+1;
 		    if (any.a_int == 0)	/* must be non-zero */
 			any.a_int = randalign(flags.initrole, flags.initrace)+1;
-		    add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
-				    "Random", MENU_UNSELECTED);
 		    any.a_int = i+1;	/* must be non-zero */
 		    add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
 				    "Quit", MENU_UNSELECTED);
@@ -692,8 +683,6 @@ give_up:	/* Quit */
 					    flags.initgend, PICK_RANDOM)+1;
 		    if (any.a_int == 0)	/* must be non-zero */
 			any.a_int = randspecies(flags.initrole, flags.initrace, flags.initgend)+1;
-		    add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE,
-				    "Random", MENU_UNSELECTED);
 		    any.a_int = i+1;	/* must be non-zero */
 		    add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE,
 				    "Quit", MENU_UNSELECTED);
@@ -736,7 +725,6 @@ give_up:	/* Quit */
 		add_menu(win, NO_GLYPH, &any , 'n', 0, ATR_NONE, "No past inheritance", MENU_UNSELECTED);
 
 		any.a_int = rn2(2)+1;
-		add_menu(win, NO_GLYPH, &any , '*', 0, ATR_NONE, "Random", MENU_UNSELECTED);
 
 		any.a_int = 4;
 		add_menu(win, NO_GLYPH, &any , 'q', 0, ATR_NONE, "Quit", MENU_UNSELECTED);

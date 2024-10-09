@@ -370,8 +370,8 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
 						}
 					}
 				}
-			} else if(In_neu(&u.uz) || In_spire(&u.uz)){
-				if((u.uz.dnum == neutral_dnum && u.uz.dlevel <= sum_of_all_level.dlevel) || In_spire(&u.uz)){
+			} else if(In_neu(&u.uz)) {
+				if((u.uz.dnum == neutral_dnum && u.uz.dlevel <= sum_of_all_level.dlevel)) {
 					if(offset >= S_vwall && offset <= S_trwall){
 						color = CLR_BROWN;
 					}
@@ -536,8 +536,6 @@ mapglyph(int glyph, glyph_t *ochar, int *ocolor, unsigned int *obgcolor, int x, 
 					color = CLR_BLACK;
 				else if (In_lost_cities(&sstairs.tolev))
 					color = CLR_BLUE;
-				else if (In_spire(&sstairs.tolev))
-					color = CLR_BROWN;
 				else if (In_outlands(&sstairs.tolev))
 					color = CLR_BROWN;
 				else if (In_outlands(&u.uz)) /* if not going to lost cities, going to illurien */

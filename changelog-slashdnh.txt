@@ -1,0 +1,8 @@
+Version 1.0.0:
+1. You can NOT select a random role/race/align
+2. You can NOT chose to be an inheritor.
+3. You can NOT pick your species for Half dragon or Ent
+4. The "fast" Ent species won't be assigned to player characters
+5. Removed "The Spire" branch
+6. Increased XP requirements per level
+7. Moved many of the roles from initial character selection off so they can be added to the starter quests

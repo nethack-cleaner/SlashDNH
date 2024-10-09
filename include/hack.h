@@ -106,6 +106,8 @@
 #define ESCAPED		20
 #define ASCENDED	21
 
+#define INITIALROLES	10
+
 #include "align.h"
 #include "dungeon.h"
 #include "monsym.h"

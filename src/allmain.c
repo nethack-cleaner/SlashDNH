@@ -3771,6 +3771,11 @@ welcome(boolean new_game)	/* false => restoring an old game */
 		pline("Use f to fire from your power suit.");	
 	}
 	}
+	if (new_game) {
+		if (Role_if(PM_ARCHEOLOGIST)){
+			goto_level(&sz_arc_level, FALSE, FALSE, FALSE);
+		}
+	}
 }
 
 #ifdef POSITIONBAR

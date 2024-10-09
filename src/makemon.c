@@ -1376,11 +1376,6 @@ human_initweap(register struct monst *mtmp, int mkobjflags, int faction, int goo
 			while(quan--)
 				(void)mongets(mtmp, rnd_misc_item(mtmp), NO_MKOBJ_FLAGS);
 		}
-	} else if(ptr->mtyp == PM_LADY_OF_PAIN){
-		otmp = mksobj(SKELETON_KEY, mkobjflags);
-		otmp = oname(otmp, artiname(ART_CAGE_KEY));
-		(void) mpickobj(mtmp,otmp);
-				
 	} else if(is_mercenary(ptr)) {
 		int w1 = 0, w2 = 0;
 		switch (mm) {

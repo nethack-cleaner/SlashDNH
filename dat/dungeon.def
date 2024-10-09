@@ -24,6 +24,7 @@ BRANCH:		"The Black Forest" @ (4, 0) portal
 BRANCH:		"The Archipelago" @ (4, 0) portal
 %REINCARNATION LEVEL:		"rogue" "R" @ (15, 4)
 BRANCH:		"Nowhere" @ (4, 0) portal
+BRANCH:		"sz_arc" @ (2, 0) portal
 LEVEL:		"oracle" "O" @ (5, 5)
 CHAINBRANCH:	"Vlad's Tower" "oracle" + (0,0) no_up up
 CHAINBRANCH:	"The Collapsed Mineshaft" "oracle" + (0,0)
@@ -114,6 +115,11 @@ DUNGEON:        "Nowhere" "none" (1, 0)
 ALIGNMENT:      neutral
 DESCRIPTION:    mazelike
 LEVEL:          "nowhere" "none" @ (1, 0)
+
+DUNGEON:        "sz_arc" "none" (1, 0)
+ALIGNMENT:      neutral
+DESCRIPTION:    mazelike
+LEVEL:          "sz_arc" "none" @ (1, 0)
 
 
 DUNGEON:	"The Collapsed Mineshaft" "Y" (1, 0)
@@ -213,7 +219,6 @@ LEVEL:		"out4" "D" @ (5,0)
 LEVEL:		"spire" "E" @ (6,0)
 LEVEL:		"sumall" "none" @ (7,0)
 BRANCH:		"The Dispensary" @ (2, 4)
-BRANCH:		"The Spire" @ (6, 0) up
 BRANCH:		"The Lost Cities" @ (-1, 0)
 
 
@@ -359,28 +364,6 @@ DUNGEON:        "The Dispensary" "none" (1, 0)
 ALIGNMENT:      neutral
 DESCRIPTION:    mazelike
 LEVEL:          "lbyrnth" "none" @ (1, 0)
-
-
-##
-DUNGEON:        "The Spire" "none" (15, 0)
-ALIGNMENT:      neutral
-DESCRIPTION:    mazelike
-ENTRY:		-1
-LEVEL:          "sigil" "none" @ (1, 0)
-LEVEL:          "stairs2" "none" @ (2, 0)
-LEVEL:          "stairs1" "none" @ (3, 0)
-LEVEL:          "stairs2" "none" @ (4, 0)
-LEVEL:          "stairs1" "none" @ (5, 0)
-LEVEL:          "stairs2" "none" @ (6, 0)
-LEVEL:          "stairs1" "none" @ (7, 0)
-LEVEL:          "stairs2" "none" @ (8, 0)
-LEVEL:          "stairs1" "none" @ (9, 0)
-LEVEL:          "stairs2" "none" @ (10, 0)
-LEVEL:          "stairs1" "none" @ (11, 0)
-LEVEL:          "stairs2" "none" @ (12, 0)
-LEVEL:          "stairs1" "none" @ (13, 0)
-LEVEL:          "stairs2" "none" @ (14, 0)
-LEVEL:          "stairs3" "none" @ (15, 0)
 
 
 #

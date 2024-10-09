@@ -716,6 +716,8 @@ struct level_map {
 	{ "sigil",	&sigil_level },
 	{ "nowhere",	&nowhere_level },
 
+	{ "sz_arc",	&sz_arc_level },
+
 	{ "icetwn",	&icetown_level },
 	{ "iceboss",	&iceboss_level },
 	
@@ -768,7 +770,6 @@ struct level_map {
 	{ "towrtop",	&towertop_level },
 	/*Neutral Levels*/
 	{ "gatetwn",&gatetown_level },
-	{ "spire",	&spire_level },
 	{ "sumall",	&sum_of_all_level },
 	{ "leth-a",	&lethe_headwaters },
 	{ "lethe-e",	&bridge_temple },
@@ -1067,7 +1068,6 @@ init_dungeons(void)		/* initialize the "dungeon" structs */
 	quest_dnum = dname_to_dnum("The Quest");
 	neutral_dnum = dname_to_dnum("Neutral Quest");
 	rlyeh_dnum = dname_to_dnum("The Lost Cities");
-	spire_dnum = dname_to_dnum("The Spire");
 	chaos_dnum = dname_to_dnum("Chaos Quest");
 	law_dnum = dname_to_dnum("Law Quest");
 	sokoban_dnum = dname_to_dnum("Lokoban");
@@ -2237,7 +2237,11 @@ donamelevel(void)
 
 	if (!(mptr = find_mapseen(&u.uz))) return MOVE_CANCELLED;
 
-	Sprintf(qbuf,"What do you want to call this dungeon level? ");
+	if (mptr->custom) {
+		Sprintf(qbuf,"What do you want to call this dungeon level? (Current: %s)", mptr->custom);
+	} else {
+		Sprintf(qbuf,"What do you want to call this dungeon level? ");
+	}
 	getlin(qbuf, nbuf);
 
 	if (index(nbuf, '\033')) return MOVE_CANCELLED;
@@ -2454,6 +2458,7 @@ interest_mapseen(mapseen *mptr)
 {
 	return ((on_level(&u.uz, &mptr->lev) || (!mptr->feat.forgot)) && (
 		INTEREST(mptr->feat) ||
+		on_level(&u.uz, &mptr->lev) ||
 		(Is_hell1(&mptr->lev)) || 
 		(Is_hell2(&mptr->lev)) || 
 		(Is_hell3(&mptr->lev)) || 
@@ -2720,23 +2725,27 @@ print_mapseen(winid win, mapseen *mptr, boolean printdun)
 	/* The quest and knox should appear to be level 1 to match
 	 * other text.
 	 */
-	if (mptr->lev.dnum == quest_dnum || mptr->lev.dnum == knox_level.dnum)
+	if (mptr->lev.dnum == quest_dnum || mptr->lev.dnum == knox_level.dnum) {
 		depthstart = 1;
-	else
+	} else {
 		depthstart = dungeons[mptr->lev.dnum].depth_start;  
+	}
 
 	if (printdun) {
 		/* Sokoban lies about dunlev_ureached and we should
 		 * suppress the negative numbers in the endgame.
 		 */
-		if (dungeons[mptr->lev.dnum].dunlev_ureached == 1 ||
-			mptr->lev.dnum == sokoban_dnum || In_endgame(&mptr->lev))
+		if (dungeons[mptr->lev.dnum].dunlev_ureached == 1 || mptr->lev.dnum == sokoban_dnum || In_endgame(&mptr->lev)) {
+			if (!strcmp(dungeons[mptr->lev.dnum].dname, "sz_arc")) {
+				return;
+			}
 			Sprintf(buf, "%s:", dungeons[mptr->lev.dnum].dname);
-		else
+		} else {
 			Sprintf(buf, "%s: levels %d to %d", 
 				dungeons[mptr->lev.dnum].dname,
 				depthstart, depthstart + 
 				dungeons[mptr->lev.dnum].dunlev_ureached - 1);
+		}
 		putstr(win, ATR_INVERSE, buf);
 	}
 

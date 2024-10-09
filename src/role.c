@@ -128,31 +128,165 @@ struct Role roles[] = {
 	{  5, 0,  0,  1,  1, 0 },15,	/* Energy */
 	-5, 10, 5, 10,  25, 0/*Special*/, SPE_SLEEP, -14
 },
-{	{"Caveman", "Cavewoman"}, {
-	{"Troglodyte",  0},
-	{"Aborigine",   0},
-	{"Wanderer",    0},
-	{"Vagrant",     0},
-	{"Wayfarer",    0},
-	{"Roamer",      0},
-	{"Nomad",       0},
-	{"Rover",       0},
-	{"Pioneer",     0} },
-	GOD_ANU, GOD_ISHTAR, GOD_ANSHAR, /* Babylonian */
-	"Cav", "the Caves of the Ancestors", "the Dragon's Lair",
-	PM_CAVEMAN, PM_CAVEWOMAN, PM_LITTLE_DOG,
-	PM_SHAMAN_KARNOV, PM_NEANDERTHAL, PM_CHROMATIC_DRAGON,
-	PM_BUGBEAR, PM_HILL_GIANT, S_HUMANOID, S_GIANT,
-	ART_SCEPTRE_OF_MIGHT,
-	MA_HUMAN|MA_DWARF|MA_GNOME|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_ETHEREAL|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_LAWFUL|ROLE_NEUTRAL,
+{	{"Monk", 0}, {
+	{"Candidate",         0},
+	{"Novice",            0},
+	{"Initiate",          0},
+	{"Student of Stones", 0},
+	{"Student of Waters", 0},
+	{"Student of Metals", 0},
+	{"Student of Winds",  0},
+	{"Student of Fire",   0},
+	{"Master",            0} },
+	GOD_PRINCE_NEZHA, GOD_LAOZI, GOD_THE_HUNSHI_SIHOU, /* Chinese */
+	"Mon", "the Monastery of Chan-Sune",
+	  "the Monastery of the Earth-Lord",
+	PM_MONK, NON_PM, NON_PM,
+	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
+	NON_PM, NON_PM, NON_PM, NON_PM,
+	ART_EYE_OF_THE_OVERWORLD,
+	MA_HUMAN|MA_CLOCK|MA_ANIMAL|MA_DRAGON|MA_FEY|MA_ETHEREAL|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
 	/* Str Int Wis Dex Con Cha */
-	{  10,  7,  7,  7,  8,  6 },
-	{  30,  6,  7, 20, 30,  7 },
+	{  10,  7,  8,  8,  7,  7 },
+	{  25, 10, 20, 20, 15, 10 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0, 8,  0, 2 },	/* Hit points */
-	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
-	0, 12, 0, 1,  8, A_INT, SPE_DIG, -1000
+	{  8, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  8, 0,  0, 2,  0, 2 },10,	/* Energy */
+	10, 8,-2, 2, 20, A_WIS, SPE_RESTORE_ABILITY, -24
+},
+	// "The Silver Fire", "_The Fury", "The Shadow",	/* Sorta-eberron */
+	// "_The Inheritor", "_The Dawnflower", "_The Everbloom",	/* Sorta-glorion */
+{	{"Priest", "Priestess"}, {
+	{"Aspirant",    0},
+	{"Acolyte",     0},
+	{"Adept",       0},
+	{"Priest",      "Priestess"},
+	{"Curate",      0},
+	{"Canon",       "Canoness"},
+	{"Lama",        0},
+	{"Patriarch",   "Matriarch"},
+	{"High Priest", "High Priestess"} },
+	0, 0, 0,	/* chosen randomly from among the other roles */
+	"Pri", "the Great Temple", "the Temple of the Legion",
+	PM_PRIEST, PM_PRIESTESS, NON_PM,
+	PM_ARCH_PRIEST, PM_ACOLYTE, PM_LEGION,
+	PM_LEGIONNAIRE, PM_BLACK_PUDDING, S_ZOMBIE, S_PUDDING,
+	ART_MITRE_OF_HOLINESS,
+	MA_HUMAN|MA_ELF|MA_CLOCK|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  7, 10,  7,  7,  7 },
+	{  15, 10, 30, 15, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 12, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  4, 3,  2, 4,  0, 4 },10,	/* Energy */
+	0, 3,-2, 1, 10, A_WIS, SPE_REMOVE_CURSE,    -7
+},
+{	{"Pirate", 0}, {
+	{"Landlubber",    	0},
+	{"Swabbie",        	0},
+	{"Cutthroat",       0},
+	{"Bosun",      		0},
+	{"Second Mate",     0},
+	{"First Mate",      0},
+	{"Captain",			0},
+	{"Pirate Lord",   	0},
+	{"Dread Pirate",  	0} },
+	GOD_THE_LORD, GOD_THE_DEEP_BLUE_SEA, GOD_THE_DEVIL,	/* Christian, sorta */
+	"Pir", "Tortuga", "Shipwreck Island",
+	PM_PIRATE, NON_PM, NON_PM,
+	PM_MAYOR_CUMMERBUND, PM_PIRATE_BROTHER, PM_BLACKBEARD_S_GHOST,
+	PM_SKELETAL_PIRATE, PM_SOLDIER, S_RODENT, S_ELEMENTAL, /* Ghost pirates, soldiers, rats in the food stores, and the occasional storm*/
+	ART_TREASURY_OF_PROTEUS,
+	MA_HUMAN|MA_ELF|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_CHAOTIC|ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{  10,  7, 7,  10, 10,  7 },
+	{  22, 15, 10, 22, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 20, 0,  0, 6,  0, 2 },	/* Hit points (10 +d8 for 11 levels comes up a bit over 20 +d6 for 11 levels) */
+	{  1, 0,  0, 1,  0, 0 },12,	/* Energy */
+	10, 8, 0, 2,  9, A_INT, SPE_CAUSE_FEAR,    -1000
+},
+  /* Note:  Rogue precedes Ranger so that use of `-R' on the command line
+     retains its traditional meaning. */
+{	{"Ranger", 0}, {
+	{"Tenderfoot",    0},
+	{"Lookout",       0},
+	{"Trailblazer",   0},
+	{"Reconnoiterer", "Reconnoiteress"},
+	{"Scout",         0},
+	{"Arbalester",    0},	/* One skilled at crossbows */
+	{"Archer",        0},
+	{"Sharpshooter",  0},
+	{"Marksman",      "Markswoman"} },
+	GOD_APOLLO, GOD_LATONA, GOD_DIANA, /* Roman */
+	"Ran", "Orion's camp", "the cave of the wumpus",
+	PM_RANGER, NON_PM, PM_LITTLE_DOG /* Orion & canis major */,
+	PM_ORION, PM_HUNTER, PM_SCORPIUS,
+	PM_FOREST_CENTAUR, PM_SCORPION, S_CENTAUR, S_SPIDER,
+	ART_LONGBOW_OF_DIANA,
+	MA_HUMAN|MA_ELF|MA_GNOME|MA_ORC|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{  13, 13, 13,  9, 13,  7 },
+	{  30, 10, 10, 20, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 13, 0,  0, 6,  1, 0 },	/* Hit points */
+	{  1, 0,  1, 0,  1, 0 },12,	/* Energy */
+	10, 9, 2, 1, 10, A_INT, SPE_INVISIBILITY,   -1000
+},
+{	{"Samurai", 0}, {
+	{"Hatamoto",    0},  /* Banner Knight */
+	{"Ronin",       0},  /* no allegiance */
+	{"Ninja",       "Kunoichi"},  /* secret society */
+	{"Joshu",       0},  /* heads a castle */
+	{"Ryoshu",      0},  /* has a territory */
+	{"Kokushu",     0},  /* heads a province */
+	{"Daimyo",      0},  /* a samurai lord */
+	{"Kuge",        0},  /* Noble of the Court */
+	{"Shogun",      0} },/* supreme commander, warlord */
+	GOD_AMATERASU_OMIKAMI, GOD_RAIJIN, GOD_SUSANOWO, /* Japanese */
+	"Sam", "the Castle of the Taro Clan", "the Shogun's Castle",
+	PM_SAMURAI, NON_PM, PM_LITTLE_DOG,
+	PM_LORD_SATO, PM_ROSHI, PM_ASHIKAGA_TAKAUJI,
+	PM_WOLF, PM_STALKER, S_DOG, S_ELEMENTAL,
+	ART_TSURUGI_OF_MURAMASA,
+	MA_HUMAN|MA_CLOCK|MA_DRAGON|MA_FEY, ROLE_MALE|ROLE_FEMALE | ROLE_LAWFUL,
+	/* Str Int Wis Dex Con Cha */
+	{  10,  8,  7, 10, 17,  6 },
+	{  30, 10,  8, 30, 14,  8 },
+	/* Init   Lower  Higher */
+	{ 13, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },11,	/* Energy */
+	10, 10, 0, 0,  8, A_INT, SPE_CLAIRVOYANCE,    -10
+},
+{	{"Wizard", 0}, {
+	{"Evoker",      0},
+	{"Conjurer",    0},
+	{"Thaumaturge", 0},
+	{"Magician",    0},
+	{"Enchanter",   "Enchantress"},
+	{"Sorcerer",    "Sorceress"},
+	{"Necromancer", 0},
+	{"Wizard",      0},
+	{"Archmage",        0} },
+	GOD_PTAH, GOD_THOTH, GOD_ANHUR, /* Egyptian */
+	"Wiz", "the Lonely Tower", "the Tower of Darkness",
+	PM_WIZARD, NON_PM, PM_KITTEN,
+	PM_NEFERET_THE_GREEN, PM_APPRENTICE, PM_DARK_ONE,
+	PM_VAMPIRE_BAT, PM_XORN, S_BAT, S_WRAITH,
+	ART_EYE_OF_THE_AETHIOPICA,
+	MA_HUMAN|MA_ELF|MA_GNOME|MA_ORC|MA_VAMPIRE|MA_DRAGON|MA_REPTILIAN|MA_ETHEREAL|MA_PLANT|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   7, 10,  7,  7,  7,  7 },
+	{  10, 30, 10, 20, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 10, 0,  0, 4,  0, 1 },	/* Hit points */
+	{  4, 3,  2, 4,  0, 6 },12,	/* Energy */
+	0, 1, 0, 3, 10, A_INT, SPE_MAGIC_MISSILE,   -5
 },
 {	{"Convict", 0}, {
 	{"Detainee",     0},
@@ -180,6 +314,32 @@ struct Role roles[] = {
 	{  8, 0,  0, 8,  0, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	-10, 5, 0, 2, 10, A_INT, SPE_TELEPORT_AWAY,   -19
+},
+{	{"Caveman", "Cavewoman"}, {
+	{"Troglodyte",  0},
+	{"Aborigine",   0},
+	{"Wanderer",    0},
+	{"Vagrant",     0},
+	{"Wayfarer",    0},
+	{"Roamer",      0},
+	{"Nomad",       0},
+	{"Rover",       0},
+	{"Pioneer",     0} },
+	GOD_ANU, GOD_ISHTAR, GOD_ANSHAR, /* Babylonian */
+	"Cav", "the Caves of the Ancestors", "the Dragon's Lair",
+	PM_CAVEMAN, PM_CAVEWOMAN, PM_LITTLE_DOG,
+	PM_SHAMAN_KARNOV, PM_NEANDERTHAL, PM_CHROMATIC_DRAGON,
+	PM_BUGBEAR, PM_HILL_GIANT, S_HUMANOID, S_GIANT,
+	ART_SCEPTRE_OF_MIGHT,
+	MA_HUMAN|MA_DWARF|MA_GNOME|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_ETHEREAL|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
+	  ROLE_LAWFUL|ROLE_NEUTRAL,
+	/* Str Int Wis Dex Con Cha */
+	{  10,  7,  7,  7,  8,  6 },
+	{  30,  6,  7, 20, 30,  7 },
+	/* Init   Lower  Higher */
+	{ 14, 0,  0, 8,  0, 2 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
+	0, 12, 0, 1,  8, A_INT, SPE_DIG, -1000
 },
 {	{"Healer", 0}, {
 	{"Rhizotomist",    0},
@@ -257,33 +417,6 @@ struct Role roles[] = {
 	{  1, 4,  1, 2,  0, 3 },10,	/* Energy */
 	10, 8,-2, 0,  9, A_WIS, SPE_TURN_UNDEAD, -1000
 },
-{	{"Monk", 0}, {
-	{"Candidate",         0},
-	{"Novice",            0},
-	{"Initiate",          0},
-	{"Student of Stones", 0},
-	{"Student of Waters", 0},
-	{"Student of Metals", 0},
-	{"Student of Winds",  0},
-	{"Student of Fire",   0},
-	{"Master",            0} },
-	GOD_PRINCE_NEZHA, GOD_LAOZI, GOD_THE_HUNSHI_SIHOU, /* Chinese */
-	"Mon", "the Monastery of Chan-Sune",
-	  "the Monastery of the Earth-Lord",
-	PM_MONK, NON_PM, NON_PM,
-	PM_GRAND_MASTER, PM_ABBOT, PM_MASTER_KAEN,
-	NON_PM, NON_PM, NON_PM, NON_PM,
-	ART_EYE_OF_THE_OVERWORLD,
-	MA_HUMAN|MA_CLOCK|MA_ANIMAL|MA_DRAGON|MA_FEY|MA_ETHEREAL|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
-	/* Str Int Wis Dex Con Cha */
-	{  10,  7,  8,  8,  7,  7 },
-	{  25, 10, 20, 20, 15, 10 },
-	/* Init   Lower  Higher */
-	{  8, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  8, 0,  0, 2,  0, 2 },10,	/* Energy */
-	10, 8,-2, 2, 20, A_WIS, SPE_RESTORE_ABILITY, -24
-},
 {	{"Madman", "Madwoman"}, {
 	{"Ward",     0},
 	{"Escapee",   0},
@@ -311,8 +444,6 @@ struct Role roles[] = {
 	{  4, 3,  0, 1,  2, 4 },14,	/* Energy */
 	0, 3,-2, 2, 10, A_CHA, SPE_CONFUSE_MONSTER, -24
 },
-	// "The Silver Fire", "_The Fury", "The Shadow",	/* Sorta-eberron */
-	// "_The Inheritor", "_The Dawnflower", "_The Everbloom",	/* Sorta-glorion */
 {	{"Nobleman", "Noblewoman"}, {
 	{"Pargar",       0},
 	{"Cneaz",	     0},
@@ -340,60 +471,6 @@ struct Role roles[] = {
 	{  2, 2,  0, 2,  0, 2 },10,	/* Energy */
 	10, 4,-4, 4, 8, A_INT, SPE_PROTECTION, -1000
 },
-{	{"Priest", "Priestess"}, {
-	{"Aspirant",    0},
-	{"Acolyte",     0},
-	{"Adept",       0},
-	{"Priest",      "Priestess"},
-	{"Curate",      0},
-	{"Canon",       "Canoness"},
-	{"Lama",        0},
-	{"Patriarch",   "Matriarch"},
-	{"High Priest", "High Priestess"} },
-	0, 0, 0,	/* chosen randomly from among the other roles */
-	"Pri", "the Great Temple", "the Temple of the Legion",
-	PM_PRIEST, PM_PRIESTESS, NON_PM,
-	PM_ARCH_PRIEST, PM_ACOLYTE, PM_LEGION,
-	PM_LEGIONNAIRE, PM_BLACK_PUDDING, S_ZOMBIE, S_PUDDING,
-	ART_MITRE_OF_HOLINESS,
-	MA_HUMAN|MA_ELF|MA_CLOCK|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
-	/* Str Int Wis Dex Con Cha */
-	{   7,  7, 10,  7,  7,  7 },
-	{  15, 10, 30, 15, 20, 10 },
-	/* Init   Lower  Higher */
-	{ 12, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  4, 3,  2, 4,  0, 4 },10,	/* Energy */
-	0, 3,-2, 1, 10, A_WIS, SPE_REMOVE_CURSE,    -7
-},
-{	{"Pirate", 0}, {
-	{"Landlubber",    	0},
-	{"Swabbie",        	0},
-	{"Cutthroat",       0},
-	{"Bosun",      		0},
-	{"Second Mate",     0},
-	{"First Mate",      0},
-	{"Captain",			0},
-	{"Pirate Lord",   	0},
-	{"Dread Pirate",  	0} },
-	GOD_THE_LORD, GOD_THE_DEEP_BLUE_SEA, GOD_THE_DEVIL,	/* Christian, sorta */
-	"Pir", "Tortuga", "Shipwreck Island",
-	PM_PIRATE, NON_PM, NON_PM,
-	PM_MAYOR_CUMMERBUND, PM_PIRATE_BROTHER, PM_BLACKBEARD_S_GHOST,
-	PM_SKELETAL_PIRATE, PM_SOLDIER, S_RODENT, S_ELEMENTAL, /* Ghost pirates, soldiers, rats in the food stores, and the occasional storm*/
-	ART_TREASURY_OF_PROTEUS,
-	MA_HUMAN|MA_ELF|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_CHAOTIC|ROLE_NEUTRAL,
-	/* Str Int Wis Dex Con Cha */
-	{  10,  7, 7,  10, 10,  7 },
-	{  22, 15, 10, 22, 20, 10 },
-	/* Init   Lower  Higher */
-	{ 20, 0,  0, 6,  0, 2 },	/* Hit points (10 +d8 for 11 levels comes up a bit over 20 +d6 for 11 levels) */
-	{  1, 0,  0, 1,  0, 0 },12,	/* Energy */
-	10, 8, 0, 2,  9, A_INT, SPE_CAUSE_FEAR,    -1000
-},
-  /* Note:  Rogue precedes Ranger so that use of `-R' on the command line
-     retains its traditional meaning. */
 {	{"Rogue", 0}, {
 	{"Footpad",     0},
 	{"Cutpurse",    0},
@@ -419,57 +496,6 @@ struct Role roles[] = {
 	{ 10, 0,  0, 6,  1, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },11,	/* Energy */
 	10, 8, 0, 1,  9, A_INT, SPE_DETECT_TREASURE, -1000
-},
-{	{"Ranger", 0}, {
-	{"Tenderfoot",    0},
-	{"Lookout",       0},
-	{"Trailblazer",   0},
-	{"Reconnoiterer", "Reconnoiteress"},
-	{"Scout",         0},
-	{"Arbalester",    0},	/* One skilled at crossbows */
-	{"Archer",        0},
-	{"Sharpshooter",  0},
-	{"Marksman",      "Markswoman"} },
-	GOD_APOLLO, GOD_LATONA, GOD_DIANA, /* Roman */
-	"Ran", "Orion's camp", "the cave of the wumpus",
-	PM_RANGER, NON_PM, PM_LITTLE_DOG /* Orion & canis major */,
-	PM_ORION, PM_HUNTER, PM_SCORPIUS,
-	PM_FOREST_CENTAUR, PM_SCORPION, S_CENTAUR, S_SPIDER,
-	ART_LONGBOW_OF_DIANA,
-	MA_HUMAN|MA_ELF|MA_GNOME|MA_ORC|MA_DRAGON|MA_ANIMAL|MA_REPTILIAN|MA_PLANT, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_NEUTRAL|ROLE_CHAOTIC,
-	/* Str Int Wis Dex Con Cha */
-	{  13, 13, 13,  9, 13,  7 },
-	{  30, 10, 10, 20, 20, 10 },
-	/* Init   Lower  Higher */
-	{ 13, 0,  0, 6,  1, 0 },	/* Hit points */
-	{  1, 0,  1, 0,  1, 0 },12,	/* Energy */
-	10, 9, 2, 1, 10, A_INT, SPE_INVISIBILITY,   -1000
-},
-{	{"Samurai", 0}, {
-	{"Hatamoto",    0},  /* Banner Knight */
-	{"Ronin",       0},  /* no allegiance */
-	{"Ninja",       "Kunoichi"},  /* secret society */
-	{"Joshu",       0},  /* heads a castle */
-	{"Ryoshu",      0},  /* has a territory */
-	{"Kokushu",     0},  /* heads a province */
-	{"Daimyo",      0},  /* a samurai lord */
-	{"Kuge",        0},  /* Noble of the Court */
-	{"Shogun",      0} },/* supreme commander, warlord */
-	GOD_AMATERASU_OMIKAMI, GOD_RAIJIN, GOD_SUSANOWO, /* Japanese */
-	"Sam", "the Castle of the Taro Clan", "the Shogun's Castle",
-	PM_SAMURAI, NON_PM, PM_LITTLE_DOG,
-	PM_LORD_SATO, PM_ROSHI, PM_ASHIKAGA_TAKAUJI,
-	PM_WOLF, PM_STALKER, S_DOG, S_ELEMENTAL,
-	ART_TSURUGI_OF_MURAMASA,
-	MA_HUMAN|MA_CLOCK|MA_DRAGON|MA_FEY, ROLE_MALE|ROLE_FEMALE | ROLE_LAWFUL,
-	/* Str Int Wis Dex Con Cha */
-	{  10,  8,  7, 10, 17,  6 },
-	{  30, 10,  8, 30, 14,  8 },
-	/* Init   Lower  Higher */
-	{ 13, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  1, 0,  0, 1,  0, 1 },11,	/* Energy */
-	10, 10, 0, 0,  8, A_INT, SPE_CLAIRVOYANCE,    -10
 },
 {	{"Tourist", 0}, {
 	{"Rambler",     0},
@@ -546,32 +572,6 @@ struct Role roles[] = {
 	{ 14, 0,  0, 8,  0, 2 },	/* Hit points */
 	{  1, 0,  2, 2,  0, 2 },10,	/* Energy */
 	0, 10,-2, 0,  9, A_WIS, SPE_CONE_OF_COLD,    -1000 /*Valks CAN ALWAYS cast Cone of Cold*/
-},
-{	{"Wizard", 0}, {
-	{"Evoker",      0},
-	{"Conjurer",    0},
-	{"Thaumaturge", 0},
-	{"Magician",    0},
-	{"Enchanter",   "Enchantress"},
-	{"Sorcerer",    "Sorceress"},
-	{"Necromancer", 0},
-	{"Wizard",      0},
-	{"Archmage",        0} },
-	GOD_PTAH, GOD_THOTH, GOD_ANHUR, /* Egyptian */
-	"Wiz", "the Lonely Tower", "the Tower of Darkness",
-	PM_WIZARD, NON_PM, PM_KITTEN,
-	PM_NEFERET_THE_GREEN, PM_APPRENTICE, PM_DARK_ONE,
-	PM_VAMPIRE_BAT, PM_XORN, S_BAT, S_WRAITH,
-	ART_EYE_OF_THE_AETHIOPICA,
-	MA_HUMAN|MA_ELF|MA_GNOME|MA_ORC|MA_VAMPIRE|MA_DRAGON|MA_REPTILIAN|MA_ETHEREAL|MA_PLANT|MA_AQUATIC, ROLE_MALE|ROLE_FEMALE |
-	  ROLE_NEUTRAL|ROLE_CHAOTIC,
-	/* Str Int Wis Dex Con Cha */
-	{   7, 10,  7,  7,  7,  7 },
-	{  10, 30, 10, 20, 20, 10 },
-	/* Init   Lower  Higher */
-	{ 10, 0,  0, 4,  0, 1 },	/* Hit points */
-	{  4, 3,  2, 4,  0, 6 },12,	/* Energy */
-	0, 1, 0, 3, 10, A_INT, SPE_MAGIC_MISSILE,   -5
 },
 /* Array terminator */
 {{0, 0}}
@@ -1474,14 +1474,14 @@ pick_role(int racenum, int gendnum, int alignnum, int pickhow)
     int i;
     int roles_ok = 0;
 
-    for (i = 0; i < SIZE(roles)-1; i++) {
+    for (i = 0; i < INITIALROLES; i++) {
 	if (ok_role(i, racenum, gendnum, alignnum))
 	    roles_ok++;
     }
     if (roles_ok == 0 || (roles_ok > 1 && pickhow == PICK_RIGID))
 	return ROLE_NONE;
     roles_ok = rn2(roles_ok);
-    for (i = 0; i < SIZE(roles)-1; i++) {
+    for (i = 0; i < INITIALROLES; i++) {
 	if (ok_role(i, racenum, gendnum, alignnum)) {
 	    if (roles_ok == 0)
 		return i;

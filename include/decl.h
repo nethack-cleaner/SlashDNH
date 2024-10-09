@@ -136,7 +136,9 @@ extern struct dgn_topology {		/* special dungeon levels for speed */
     d_level	d_sacris_level;
 
     xchar	d_nowhere_dnum;
+    xchar	d_sz_arc_dnum;
     d_level	d_nowhere_level;
+    d_level	d_sz_arc_level;
 
 	/*The Lost Tomb*/
     xchar	d_tomb_dnum;
@@ -268,6 +270,7 @@ extern struct dgn_topology {		/* special dungeon levels for speed */
 #define sacris_level		(dungeon_topology.d_sacris_level)
 
 #define nowhere_level		(dungeon_topology.d_nowhere_level)
+#define sz_arc_level		(dungeon_topology.d_sz_arc_level)
 
 	/*Planes*/
 #define earth_level		(dungeon_topology.d_earth_level)
